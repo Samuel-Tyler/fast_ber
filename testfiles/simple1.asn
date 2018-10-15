@@ -1,0 +1,7 @@
+Clock DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+Time ::= SEQUENCE {
+the_time	DATE
+}
+
+END

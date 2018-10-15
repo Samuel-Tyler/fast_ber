@@ -1,0 +1,9 @@
+Empty DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+Empty ::= SEQUENCE
+{
+
+}
+
+
+END
