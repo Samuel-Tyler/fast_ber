@@ -8,25 +8,85 @@
 
 %code requires
 {
-    #include <map>
+    #include <unordered_map>
     #include <list>
     #include <vector>
     #include <string>
     #include <iostream>
     #include <algorithm>
     #include <fstream>
+    #include <variant>
 
-    struct Context;
+    enum class BuiltinType {
+       BitStringType,
+       BooleanType,
+       CharacterStringType,
+       ChoiceType,
+       DateType,
+       DateTimeType,
+       DurationType,
+       EmbeddedPDVType,
+       EnumeratedType,
+       ExternalType,
+       InstanceOfType,
+       IntegerType,
+       IRIType,
+       NullType,
+       ObjectClassFieldType,
+       ObjectIdentifierType,
+       OctetStringType,
+       RealType,
+       RelativeIRIType,
+       RelativeOIDType,
+       SequenceType,
+       SequenceOfType,
+       SetType,
+       SetOfType,
+       PrefixedType,
+       TimeType,
+       TimeOfDayType,
+    };
+
+    std::string to_string(BuiltinType type)
+    {
+      switch(type)
+      {
+      case BuiltinType::BitStringType:
+         return "BitStringType";
+      default:
+         return "Unknown type";
+      }
+    }
+    struct Type
+    {
+        std::string               name;
+        std::variant<BuiltinType> type;
+    };
+
+    struct Assignment {
+        std::string name;
+        Type        type;
+    };
+
+    struct Asn1Tree {
+        std::string module_reference;
+        std::vector<Assignment> assignments;
+    };
+
+   
+     struct Context;
 }
 
 %code
 {
-    struct Context
+     struct Context
     {
         const char* cursor;
         yy::location location;
-    };
 
+        Asn1Tree asn1_tree;
+        // std::unordered_map<s
+    };
     void yy::asn1_parser::error(const location_type& l, const std::string& m)
     {
         std::cerr << (l.begin.filename ? l.begin.filename->c_str() : "(undefined)");
@@ -112,7 +172,7 @@
 %token IMPLICIT
 %token IMPLIED
 %token IMPORTS
-%token INCLUDES
+%token INCLUDES "INCLUDES"
 %token INSTANCE
 %token INSTRUCTIONS
 %token INTEGER
@@ -161,18 +221,63 @@
 %token VisibleString
 %token WITH
 
+%token DEFINED_AS "::="
+%token ELIPSIS "..."
+%token RANGE ".."
 %token OPEN_BRACE "{"
 %token CLOSE_BRACE "}"
-%token DEFINED_AS "::="
-%token COLON " : "
+%token OPEN_PARENTHESIS "("
+%token CLOSE_PARENTHESIS ")"
+%token OPEN_SQUARE_BRACKET "["
+%token CLOSE_SQUARE_BRACKET "]"
+%token LESS_THAN "<"
+%token GREATER_THAN ">"
+%token EXCLAMATION_MARK "!"
+%token QUOTATION_MARK "\""
+%token AMPERSAND "&"
+%token APOSTROPHE "\'"
+%token ASTERISK "*"
+%token COMMA ","
+%token FULL_STOP "."
+%token HYPHEN_MINUS "-"
+%token SOLIDUS "/"
+%token COLON ":"
+%token SEMICOLON ";"
+%token EQUALS_SIGN "="
+%token AT "@"
+%token VERTICAL_LINE "|"
+%token ACCENT "^"
 
-%token NO_WS
 %token PLUS
 %token STAR
 %token QUESTION_MARK
-%token GENERIC_IDENTIFIER
+%token GENERIC_IDENTIFIER_UPPERCASE
+%token GENERIC_IDENTIFIER_LOWERCASE
+%token GENERIC_INTEGER
 
-%type<std::string> GENERIC_IDENTIFIER
+%token xmlasn1typename
+
+%type<std::string> GENERIC_IDENTIFIER_UPPERCASE
+%type<std::string> GENERIC_IDENTIFIER_LOWERCASE
+%type<std::string> typereference
+%type<std::string> identifier
+%type<std::string> modulereference
+%type<std::string> valuereference
+%type<double>      realnumber
+%type<int> number
+%type<BuiltinType> BuiltinType;
+%type<Assignment>  TypeAssignment;
+%type<Type>        Type;
+
+%right RANGE
+%left COLON
+%right FULL_STOP
+
+%nonassoc EXCEPT
+%nonassoc "^"
+%nonassoc "|"
+%nonassoc GENERIC_IDENTIFIER_LOWERCASE
+%nonassoc GENERIC_IDENTIFIER_UPPERCASE
 %%
 
 ModuleDefinition:
@@ -377,30 +482,19 @@ ObjectClassFieldValue:
 |   FixedTypeFieldVal;
 
 OpenTypeFieldVal:
-    Type ":" Value;
+    Type COLON Value;
 
 FixedTypeFieldVal:
     BuiltinValue
 |   ReferencedValue;
-
-XMLObjectClassFieldValue:
-    XMLOpenTypeFieldVal
-|   XMLFixedTypeFieldVal;
-
-XMLOpenTypeFieldVal:
-    XMLTypedValue
-|   xmlhstring;
-
-XMLFixedTypeFieldVal:
-    XMLBuiltinValue;
-
+/*
 InformationFromObjects:
     ValueFromObject
 |   ValueSetFromObjects
 |   TypeFromObject
 |   ObjectFromObject
 |   ObjectSetFromObjects;
-
+*/
 ReferencedObjects:
     DefinedObject
 |   ParameterizedObject
@@ -427,9 +521,6 @@ InstanceOfType:
 
 InstanceOfValue:
     Value;
-
-XMLInstanceOfValue:
-    XMLValue;
 
 ParameterizedAssignment:
     ParameterizedTypeAssignment
@@ -537,8 +628,8 @@ UserDefinedConstraint:
     CONSTRAINED BY "{" UserDefinedConstraintParameter "," STAR "}";
 
 UserDefinedConstraintParameter:
-    Governor ":" Value
-|   Governor ":" Object
+    Governor ":" Value %prec COLON
+|   Governor ":" Object %prec COLON
 |   DefinedObjectSet
 |   Type
 |   DefinedObjectClass;
@@ -586,7 +677,10 @@ EncodingControlSection:
 
 ModuleIdentifier:
     modulereference
-    DefinitiveIdentification;
+    DefinitiveIdentification
+{
+    context.asn1_tree.module_reference = $1;
+};
 
 DefinitiveIdentification:
     DefinitiveOID
@@ -694,13 +788,14 @@ AssignmentList:
 
 Assignment:
     TypeAssignment
+    { context.asn1_tree.assignments.push_back($1); }
 |   ValueAssignment
 |   XMLValueAssignment
 |   ValueSetTypeAssignment
 |   ObjectClassAssignment
 |   ObjectAssignment
 |   ObjectSetAssignment
-|   ParameterizedAssignment;
+|   ParameterizedAssignment
 
 DefinedType:
     ExternalTypeReference
@@ -728,6 +823,7 @@ ExternalValueReference:
     "."
     valuereference;
 
+/*
 AbsoluteReference:
     "@"
     ModuleIdentifier
@@ -736,7 +832,7 @@ AbsoluteReference:
 
 ItemSpec:
     typereference
-|   ItemId " . " ComponentId;
+|   ItemId FULL_STOP ComponentId;
 
 ItemId:
     ItemSpec;
@@ -745,11 +841,15 @@ ComponentId:
     identifier
 |   number
 |   "*";
+*/
 
 TypeAssignment:
     typereference
     DEFINED_AS
-    Type;
+    Type
+{
+    $$ = Assignment{ $1, $3 };
+}
 
 ValueAssignment:
     valuereference
@@ -763,11 +863,11 @@ XMLValueAssignment:
     XMLTypedValue;
 
 XMLTypedValue:
-    "<" NO_WS NonParameterizedTypeName ">";
+    "<" NonParameterizedTypeName ">";
 
 XMLValue:
-    "</" NO_WS NonParameterizedTypeName ">"
-|   "<" NO_WS NonParameterizedTypeName "/>";
+    "</" NonParameterizedTypeName ">"
+|   "<" NonParameterizedTypeName "/>";
 
 ValueSetTypeAssignment:
     typereference
@@ -780,37 +880,65 @@ ValueSet:
 
 Type:
     BuiltinType
+    { $$ = Type{ "", $1}; }
 |   ReferencedType
 |   ConstrainedType;
 
 BuiltinType:
     BitStringType
+    { $$ = BuiltinType::BitStringType; }
 |   BooleanType
+    { $$ = BuiltinType::BooleanType; }
 |   CharacterStringType
+    { $$ = BuiltinType::CharacterStringType; }
 |   ChoiceType
+    { $$ = BuiltinType::ChoiceType; }
 |   DateType
+    { $$ = BuiltinType::DateType; }
 |   DateTimeType
+    { $$ = BuiltinType::DateTimeType; }
 |   DurationType
+    { $$ = BuiltinType::DurationType; }
 |   EmbeddedPDVType
+    { $$ = BuiltinType::EmbeddedPDVType; }
 |   EnumeratedType
+    { $$ = BuiltinType::EnumeratedType; }
 |   ExternalType
+    { $$ = BuiltinType::ExternalType; }
 |   InstanceOfType
+    { $$ = BuiltinType::InstanceOfType; }
 |   IntegerType
+    { $$ = BuiltinType::IntegerType; }
 |   IRIType
+    { $$ = BuiltinType::IRIType; }
 |   NullType
+    { $$ = BuiltinType::NullType; }
 |   ObjectClassFieldType
+    { $$ = BuiltinType::ObjectClassFieldType; }
 |   ObjectIdentifierType
+    { $$ = BuiltinType::ObjectIdentifierType; }
 |   OctetStringType
+    { $$ = BuiltinType::OctetStringType; }
 |   RealType
+    { $$ = BuiltinType::RealType; }
 |   RelativeIRIType
+    { $$ = BuiltinType::RelativeIRIType; }
 |   RelativeOIDType
+    { $$ = BuiltinType::RelativeOIDType; }
 |   SequenceType
+    { $$ = BuiltinType::SequenceType; }
 |   SequenceOfType
+    { $$ = BuiltinType::SequenceOfType; }
 |   SetType
+    { $$ = BuiltinType::SetType; }
 |   SetOfType
+    { $$ = BuiltinType::SetOfType; }
 |   PrefixedType
+    { $$ = BuiltinType::PrefixedType; }
 |   TimeType
-|   TimeOfDayType;
+    { $$ = BuiltinType::TimeType; }
+|   TimeOfDayType
+    { $$ = BuiltinType::TimeOfDayType; }
 
 ReferencedType:
     DefinedType
@@ -827,11 +955,11 @@ Value:
     BuiltinValue
 |   ReferencedValue
 |   ObjectClassFieldValue;
-
+/*
 XMLValue:
     XMLBuiltinValue
 |   XMLObjectClassFieldValue;
-
+*/
 BuiltinValue:
     BitStringValue
 |   BooleanValue
@@ -855,7 +983,7 @@ BuiltinValue:
 |   SetOfValue
 |   PrefixedValue
 |   TimeValue;
-
+/*
 XMLBuiltinValue:
     XMLBitStringValue
 |   XMLBooleanValue
@@ -879,7 +1007,7 @@ XMLBuiltinValue:
 |   XMLSetOfValue
 |   XMLPrefixedValue
 |   XMLTimeValue;
-
+*/
 ReferencedValue:
     DefinedValue
 |   ValueFromObject;
@@ -887,26 +1015,26 @@ ReferencedValue:
 NamedValue:
     identifier
     Value;
-
+/*
 XMLNamedValue:
-    "<" NO_WS identifier ">"
+    "<" identifier ">"
     XMLValue
-    "</" NO_WS identifier ">";
-
+    "</" identifier ">";
+*/
 BooleanType:
     BOOLEAN;
 
 BooleanValue:
     TRUE
 |   FALSE;
-
+/*
 XMLBooleanValue:
     EmptyElementBoolean
 |   TextBoolean;
-
+*/
 EmptyElementBoolean:
-    "<" NO_WS "true" "/>"
-|   "<" NO_WS "false" "/>";
+    "<" "true" "/>"
+|   "<" "false" "/>";
 
 TextBoolean:
     extended-true
@@ -931,7 +1059,7 @@ SignedNumber:
 IntegerValue:
     SignedNumber
 |   identifier;
-
+/*
 XMLIntegerValue:
     XMLSignedNumber
 |   EmptyElementInteger
@@ -939,10 +1067,10 @@ XMLIntegerValue:
 
 XMLSignedNumber:
     number
-|   "-" NO_WS number;
-
+|   "-" number;
+*/
 EmptyElementInteger:
-    "<" NO_WS identifier "/>";
+    "<" identifier "/>";
 
 TextInteger:
     identifier;
@@ -972,13 +1100,13 @@ EnumerationItem:
 
 EnumeratedValue:
     identifier;
-
+/*
 XMLEnumeratedValue:
     EmptyElementEnumerated
 |   TextEnumerated;
-
+*/
 EmptyElementEnumerated:
-    "<" NO_WS identifier "/>";
+    "<" identifier "/>";
 
 TextEnumerated:
     identifier;
@@ -999,27 +1127,27 @@ SpecialRealValue:
     PLUS_INFINITY
 |   MINUS_INFINITY
 |   NOT_A_NUMBER;
-
+/*
 XMLRealValue:
     XMLNumericRealValue
 |   XMLSpecialRealValue;
 
 XMLNumericRealValue:
     realnumber
-|   "-" NO_WS realnumber;
+|   "-" realnumber;
 
 XMLSpecialRealValue:
     EmptyElementReal
 |   TextReal;
-
+*/
 EmptyElementReal:
-    "<" NO_WS PLUS_INFINITY "/>"
-|   "<" NO_WS MINUS_INFINITY "/>"
-|   "<" NO_WS NOT_A_NUMBER "/>";
+    "<" PLUS_INFINITY "/>"
+|   "<" MINUS_INFINITY "/>"
+|   "<" NOT_A_NUMBER "/>";
 
 TextReal:
     " INF "
-|   "-" NO_WS " INF "
+|   "-" " INF "
 |   " NaN ";
 
 BitStringType:
@@ -1056,8 +1184,8 @@ XMLIdentifierList:
 |   TextList;
 
 EmptyElementList:
-"<" NO_WS identifier "/>"
-|   EmptyElementList "<" NO_WS identifier "/>";
+"<" identifier "/>"
+|   EmptyElementList "<" identifier "/>";
 
 TextList:
     identifier
@@ -1070,11 +1198,11 @@ OctetStringValue:
     bstring
 |   hstring
 |   CONTAINING Value;
-
+/*
 XMLOctetStringValue:
     XMLTypedValue
 |   xmlhstring;
-
+*/
 NullType:
     ASN_NULL;
 
@@ -1108,7 +1236,7 @@ RootComponentTypeList:
     ComponentTypeList;
 
 ExtensionEndMarker:
-    "," " ... "
+    "," "..."
 
 ExtensionAdditions:
     "," ExtensionAdditionList
@@ -1146,7 +1274,7 @@ SequenceValue:
 ComponentValueList:
     NamedValue
 |   ComponentValueList "," NamedValue;
-
+/*
 XMLSequenceValue:
     XMLComponentValueList
 |   %empty;
@@ -1154,7 +1282,7 @@ XMLSequenceValue:
 XMLComponentValueList:
     XMLNamedValue
 |   XMLComponentValueList XMLNamedValue;
-
+*/
 SequenceOfType:
     SEQUENCE OF Type
 |   SEQUENCE OF NamedType;
@@ -1171,7 +1299,7 @@ ValueList:
 NamedValueList:
     NamedValue
 |   NamedValueList "," NamedValue;
-
+/*
 XMLSequenceOfValue:
     XMLValueList
 |   XMLDelimitedItemList
@@ -1183,20 +1311,20 @@ XMLValueList:
 
 XMLValueOrEmpty:
     XMLValue
-|   "<" NO_WS NonParameterizedTypeName "/>";
+|   "<" NonParameterizedTypeName "/>";
 
 XMLDelimitedItemList:
     XMLDelimitedItem
 |   XMLDelimitedItem XMLDelimitedItemList;
 
 XMLDelimitedItem:
-    "<" NO_WS NonParameterizedTypeName ">"
+    "<" NonParameterizedTypeName ">"
     XMLValue
-    "</" NO_WS NonParameterizedTypeName ">"
-|   "<" NO_WS identifier ">"
+    "</" NonParameterizedTypeName ">"
+|   "<" identifier ">"
     XMLValue
-    "</" NO_WS identifier ">";
-
+    "</" identifier ">";
+*/
 SetType:
     SET "{" "}"
 |   SET "{" ExtensionAndException OptionalExtensionMarker "}"
@@ -1205,11 +1333,11 @@ SetType:
 SetValue:
     "{" ComponentValueList "}"
 |   "{" "}";
-
+/*
 XMLSetValue:
     XMLComponentValueList
 |   %empty;
-
+*/
 SetOfType:
     SET OF Type
 |   SET OF NamedType;
@@ -1218,12 +1346,12 @@ SetOfValue:
     "{" ValueList "}"
 |   "{" NamedValueList "}"
 |   "{" "}";
-
+/*
 XMLSetOfValue:
     XMLValueList
 |   XMLDelimitedItemList
 |   %empty;
-
+*/
 ChoiceType:
     CHOICE "{" AlternativeTypeLists "}";
 
@@ -1259,12 +1387,12 @@ AlternativeTypeList:
 
 ChoiceValue:
     identifier DEFINED_AS Value;
-
+/*
 XMLChoiceValue:
-    "<" NO_WS identifier ">"
+    "<" identifier ">"
     XMLValue
-    "</" NO_WS identifier ">";
-
+    "</" identifier ">";
+*/
 SelectionType:
     identifier "<" Type;
 
@@ -1338,13 +1466,13 @@ NumberForm:
 
 NameAndNumberForm:
     identifier "(" NumberForm ")";
-
+/*
 XMLObjectIdentifierValue:
     XMLObjIdComponentList;
 
 XMLObjIdComponentList:
     XMLObjIdComponent
-|   XMLObjIdComponent NO_WS " . " NO_WS XMLObjIdComponentList;
+|   XMLObjIdComponent "." XMLObjIdComponentList;
 
 XMLObjIdComponent:
     NameForm
@@ -1355,9 +1483,9 @@ XMLNumberForm:
     number;
 
 XMLNameAndNumberForm:
-    identifier NO_WS
-    "(" NO_WS XMLNumberForm NO_WS ")";
-
+    identifier
+    "(" XMLNumberForm ")";
+*/
 RelativeOIDType:
     RELATIVE_OID;
 
@@ -1372,18 +1500,18 @@ RelativeOIDComponents:
     NumberForm
 |   NameAndNumberForm
 |   DefinedValue;
-
+/*
 XMLRelativeOIDValue:
     XMLRelativeOIDComponentList;
 
 XMLRelativeOIDComponentList:
     XMLRelativeOIDComponent
-|   XMLRelativeOIDComponent NO_WS " . " NO_WS XMLRelativeOIDComponentList;
+|   XMLRelativeOIDComponent "." XMLRelativeOIDComponentList;
 
 XMLRelativeOIDComponent:
     XMLNumberForm
 |   XMLNameAndNumberForm;
-
+*/
 IRIType:
     OID_IRI;
 
@@ -1403,11 +1531,11 @@ SubsequentArcIdentifier:
 ArcIdentifier :
     integerUnicodeLabel
 |   non-integerUnicodeLabel
-
+/*
 XMLIRIValue :
     FirstArcIdentifier
     SubsequentArcIdentifier
-
+*/
 RelativeIRIType:
     RELATIVE_OID_IRI;
 
@@ -1419,39 +1547,39 @@ RelativeIRIValue:
 
 FirstRelativeArcIdentifier:
     ArcIdentifier;
-
+/*
 XMLRelativeIRIValue:
     FirstRelativeArcIdentifier
     SubsequentArcIdentifier
-
+*/
 EmbeddedPDVType:
     EMBEDDED
     PDV;
 
 EmbeddedPDVValue:
     SequenceValue
-
+/*
 XMLEmbeddedPDVValue:
     XMLSequenceValue;
-
+*/
 ExternalType:
     EXTERNAL;
 
 ExternalValue:
     SequenceValue;
-
+/*
 XMLExternalValue:
     XMLSequenceValue;
-
+*/
 TimeType:
     TIME;
 
 TimeValue:
     tstring;
-
+/*
 XMLTimeValue:
     xmltstring;
-
+*/
 DateType:
     DATE;
 
@@ -1471,11 +1599,11 @@ CharacterStringType:
 CharacterStringValue:
     RestrictedCharacterStringValue
 |   UnrestrictedCharacterStringValue;
-
+/*
 XMLCharacterStringValue:
     XMLRestrictedCharacterStringValue
 |   XMLUnrestrictedCharacterStringValue;
-
+*/
 RestrictedCharacterStringType:
     BMPString
 |   GeneralString
@@ -1533,19 +1661,19 @@ TableColumn:
 
 TableRow:
     number;
-
+/*
 XMLRestrictedCharacterStringValue:
     xmlcstring;
-
+*/
 UnrestrictedCharacterStringType:
     CHARACTER STRING;
 
 UnrestrictedCharacterStringValue:
     SequenceValue;
-
+/*
 XMLUnrestrictedCharacterStringValue:
     XMLSequenceValue;
-
+*/
 UsefulType:
     typereference
     UTF8String
@@ -1591,8 +1719,8 @@ SubtypeConstraint:
 
 ElementSetSpecs:
     RootElementSetSpec
-|   RootElementSetSpec "," " ... "
-|   RootElementSetSpec "," " ... " "," AdditionalElementSetSpec;
+|   RootElementSetSpec "," ELIPSIS
+|   RootElementSetSpec "," ELIPSIS "," AdditionalElementSetSpec;
 
 RootElementSetSpec:
     ElementSetSpec;
@@ -1650,28 +1778,33 @@ SubtypeElements:
 |   TypeConstraint
 |   InnerTypeConstraints
 |   PatternConstraint
-|   PropertySettings
-|   DurationRange
+|   PropertySettings;
+/*|   DurationRange
 |   TimePointRange
-|   RecurrenceRange;
+|   RecurrenceRange;*/
 
 SingleValue:
-    Value;
+    Value
+{
+   std::cout << "single value\n";
+};
 
 ContainedSubtype:
     Includes Type;
 
 Includes:
-    INCLUDES
-|   %empty;
+    INCLUDES;
+//|   %empty; Conflicts with TypeConstraint 
 
 ValueRange:
-    LowerEndpoint " .. " UpperEndpoint;
+    LowerEndpoint RANGE UpperEndpoint;
 
 LowerEndpoint:
     LowerEndValue
-|   LowerEndValue "<";
-
+|   LowerEndValue "<"
+{
+std::cout << "got lower";
+};
 UpperEndpoint:
     UpperEndValue
 |   "<" UpperEndValue;
@@ -1708,7 +1841,7 @@ FullSpecification:
     "{" TypeConstraints "}";
 
 PartialSpecification:
-    "{" " ... " "," TypeConstraints "}";
+    "{" ELIPSIS "," TypeConstraints "}";
 
 TypeConstraints:
     NamedConstraint
@@ -1768,19 +1901,20 @@ ExceptionIdentification:
 |   Type DEFINED_AS Value;
 
 typereference:
-	GENERIC_IDENTIFIER;
-
-xmlasn1typename:
-	GENERIC_IDENTIFIER;
+	GENERIC_IDENTIFIER_UPPERCASE
+{ $$ = $1; }
 
 identifier:
-	GENERIC_IDENTIFIER;
+    GENERIC_IDENTIFIER_LOWERCASE
+{ $$ = $1; }
 
 valuereference:
-	GENERIC_IDENTIFIER;
+	GENERIC_IDENTIFIER_LOWERCASE
+{ $$ = $1; }
 
 modulereference:
-	GENERIC_IDENTIFIER;
+	GENERIC_IDENTIFIER_UPPERCASE
+{ $$ = $1; }
 
 %%
 
@@ -1792,7 +1926,7 @@ namespace yy {
         const char* start = context.cursor;
         const char* YYMARKER = nullptr;
         context.location.step();
-
+        //std::cout << "parsing = " << start << std::endl;
         // Lexer
         %{
 			re2c:yyfill:enable   = 0;
@@ -1892,16 +2026,14 @@ namespace yy {
             "VisibleString"         { context.location.columns(context.cursor - start); return asn1_parser::make_VisibleString (context.location); }
             "WITH"                  { context.location.columns(context.cursor - start); return asn1_parser::make_WITH (context.location); }
 
-            "::="                   { context.location.columns(context.cursor - start); return asn1_parser::make_DEFINED_AS (context.location); }
-
-            // Symbols
-            ":"                     { context.location.columns(context.cursor - start); return asn1_parser::make_COLON(context.location); }
-            "{"                     { context.location.columns(context.cursor - start); return asn1_parser::make_OPEN_BRACE(context.location); }
-            "}"                     { context.location.columns(context.cursor - start); return asn1_parser::make_CLOSE_BRACE(context.location); }
-            [{}<>,\.]               { context.location.columns(context.cursor - start); return asn1_parser::symbol_type(asn1_parser::token_type(*start), context.location); }
+            // Comments
+            "--" [^\r\n]*           { context.location.columns(context.cursor - start); return yylex(context); }
 
             // Identifiers
-            [A-Za-z_0-9]+               { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER(std::string(start, context.cursor), context.location); }
+         // [0-9]+\.[0-9]+          { context.location.columns(context.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context.cursor)), context.location); }
+            [0-9]+                  { std::cout << "got int\n"; context.location.columns(context.cursor - start); return asn1_parser::make_number(std::stoi(std::string(start, context.cursor)), context.location); }
+            [A-Z][A-Za-z_0-9\-]+    { /* std::cout << "got string = " << std::string(start, context.cursor) << std::endl;*/ context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(std::string(start, context.cursor), context.location); }
+            [a-z][A-Za-z_0-9\-]+    { /*std::cout << "got string = " << std::string(start, context.cursor) << std::endl;*/ context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(std::string(start, context.cursor), context.location); }
 
             // End of file
             "\000"                  { context.location.columns(context.cursor - start); return asn1_parser::make_END_OF_FILE(context.location); }
@@ -1910,9 +2042,33 @@ namespace yy {
             "\r\n" | [\r\n]         { context.location.columns(context.cursor - start); context.location.lines();   return yylex(context); }
             [\t\v\b\f ]             { context.location.columns(context.cursor - start); context.location.columns(); return yylex(context); }
 
-            // Comments
-            "--" [^\r\n]*           { context.location.columns(context.cursor - start); return yylex(context); }
+            // Symbols
+            "::="                   { context.location.columns(context.cursor - start); return asn1_parser::make_DEFINED_AS (context.location); }
+            "\.\.\."                { context.location.columns(context.cursor - start); return asn1_parser::make_ELIPSIS (context.location); }
+            "\.\."                  { std::cout << "got dots\n"; context.location.columns(context.cursor - start); return asn1_parser::make_RANGE (context.location); }
+            "{"                     { context.location.columns(context.cursor - start); return asn1_parser::make_OPEN_BRACE (context.location); }
+            "}"                     { context.location.columns(context.cursor - start); return asn1_parser::make_CLOSE_BRACE (context.location); }
+            "("                     { context.location.columns(context.cursor - start); return asn1_parser::make_OPEN_PARENTHESIS (context.location); }
+            ")"                     { context.location.columns(context.cursor - start); return asn1_parser::make_CLOSE_PARENTHESIS (context.location); }
+            "["                     { context.location.columns(context.cursor - start); return asn1_parser::make_OPEN_SQUARE_BRACKET (context.location); }
+            "]"                     { context.location.columns(context.cursor - start); return asn1_parser::make_CLOSE_SQUARE_BRACKET (context.location); }
+            ":"                     { context.location.columns(context.cursor - start); return asn1_parser::make_COLON (context.location); }
+            ";"                     { context.location.columns(context.cursor - start); return asn1_parser::make_SEMICOLON (context.location); }
+            ","                     { context.location.columns(context.cursor - start); return asn1_parser::make_COMMA (context.location); }
+            "-"                     { context.location.columns(context.cursor - start); return asn1_parser::make_HYPHEN_MINUS (context.location); }
+            "\."                    { context.location.columns(context.cursor - start); return asn1_parser::make_FULL_STOP (context.location); }
+            .                       { throw(std::runtime_error(std::string("Unknown symbol!") + *start)); context.location.columns(context.cursor - start); return asn1_parser::symbol_type(asn1_parser::token_type(*start), context.location); }
         %}
+    }
+}
+
+void generate_output_file(const Asn1Tree& tree)
+{
+    std::cout << "Module name = "  << tree.module_reference << "\n";
+
+    for (const auto& assignment: tree.assignments)
+    {
+        std::cout << "Assignment: " << assignment.name << " is of type " << to_string(std::get<BuiltinType>(assignment.type.type)) << "\n";
     }
 }
 
@@ -1945,6 +2101,7 @@ int main(int argc, char** argv)
 
     if (!res)
     {
+      generate_output_file(context.asn1_tree);
       std::cout << "Parse success!\n";
     }
 }

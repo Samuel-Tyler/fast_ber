@@ -1,0 +1,10 @@
+Clock DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+Collection ::= SEQUENCE {
+time Time
+}
+Time ::= SEQUENCE {
+the_time	DATE
+}
+
+END
