@@ -1,0 +1,9 @@
+[submodule "3rd_party/GSL"]
+	path = 3rd_party/GSL
+	url = https://github.com/Microsoft/GSL.git
+[submodule "3rd_party/Catch2"]
+	path = 3rd_party/Catch2
+	url = https://github.com/catchorg/Catch2.git
+[submodule "3rd_party/abseil-cpp"]
+	path = 3rd_party/abseil-cpp
+	url = https://github.com/abseil/abseil-cpp.git

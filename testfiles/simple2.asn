@@ -1,8 +1,7 @@
 Clock DEFINITIONS AUTOMATIC TAGS ::= BEGIN
 
 Collection ::= SEQUENCE {
-time Time,
-hello INTEGER
+time Time
 }
 Time ::= SEQUENCE {
 the_time	DATE

@@ -8,73 +8,7 @@
 
 %code requires
 {
-    #include <unordered_map>
-    #include <list>
-    #include <vector>
-    #include <string>
-    #include <iostream>
-    #include <algorithm>
-    #include <fstream>
-    #include <variant>
-
-    enum class BuiltinType {
-       BitStringType,
-       BooleanType,
-       CharacterStringType,
-       ChoiceType,
-       DateType,
-       DateTimeType,
-       DurationType,
-       EmbeddedPDVType,
-       EnumeratedType,
-       ExternalType,
-       InstanceOfType,
-       IntegerType,
-       IRIType,
-       NullType,
-       ObjectClassFieldType,
-       ObjectIdentifierType,
-       OctetStringType,
-       RealType,
-       RelativeIRIType,
-       RelativeOIDType,
-       SequenceType,
-       SequenceOfType,
-       SetType,
-       SetOfType,
-       PrefixedType,
-       TimeType,
-       TimeOfDayType,
-    };
-
-    std::string to_string(BuiltinType type)
-    {
-      switch(type)
-      {
-      case BuiltinType::BitStringType:
-         return "BitStringType";
-      default:
-         return "Unknown type";
-      }
-    }
-    struct Type
-    {
-        std::string               name;
-        std::variant<BuiltinType> type;
-    };
-
-    struct Assignment {
-        std::string name;
-        Type        type;
-    };
-
-    struct Asn1Tree {
-        std::string module_reference;
-        std::vector<Assignment> assignments;
-    };
-
-   
-     struct Context;
+    #include "fast_ber/compiler/CompilerTypes.hpp"
 }
 
 %code
@@ -257,17 +191,26 @@
 
 %token xmlasn1typename
 
-%type<std::string> GENERIC_IDENTIFIER_UPPERCASE
-%type<std::string> GENERIC_IDENTIFIER_LOWERCASE
-%type<std::string> typereference
-%type<std::string> identifier
-%type<std::string> modulereference
-%type<std::string> valuereference
-%type<double>      realnumber
-%type<int> number
-%type<BuiltinType> BuiltinType;
-%type<Assignment>  TypeAssignment;
-%type<Type>        Type;
+%type<std::string>       GENERIC_IDENTIFIER_UPPERCASE
+%type<std::string>       GENERIC_IDENTIFIER_LOWERCASE
+%type<std::string>       typereference
+%type<std::string>       identifier
+%type<std::string>       modulereference
+%type<std::string>       valuereference
+%type<double>            realnumber
+%type<int>               number
+%type<BuiltinType>       BuiltinType;
+%type<DefinedType>       DefinedType;
+%type<DefinedType>       ReferencedType;
+%type<Assignment>        TypeAssignment;
+%type<Type>              Type;
+%type<ComponentTypeList> SequenceType;
+%type<NamedType>         NamedType;
+%type<ComponentType>     ComponentType;
+%type<ComponentTypeList> ComponentTypeList;
+%type<ComponentTypeList> ComponentTypeLists;
+%type<ComponentTypeList> RootComponentTypeList;
+%type<Value>             Value;
 
 %right RANGE
 %left COLON
@@ -800,6 +743,7 @@ Assignment:
 DefinedType:
     ExternalTypeReference
 |   typereference
+    { $$ = DefinedType{$1}; }
 |   ParameterizedType
 |   ParameterizedValueSetType;
 
@@ -877,79 +821,54 @@ ValueSetTypeAssignment:
 
 ValueSet:
     "{" ElementSetSpecs "}";
-
+    
 Type:
     BuiltinType
-    { $$ = Type{ "", $1}; }
+    { $$ = $1; }
 |   ReferencedType
-|   ConstrainedType;
+    { $$ = $1; }
+|   ConstrainedType
+    { $$ = Type(); std::cout << "constrained type\n"; }
 
-BuiltinType:
-    BitStringType
-    { $$ = BuiltinType::BitStringType; }
-|   BooleanType
-    { $$ = BuiltinType::BooleanType; }
-|   CharacterStringType
-    { $$ = BuiltinType::CharacterStringType; }
-|   ChoiceType
-    { $$ = BuiltinType::ChoiceType; }
-|   DateType
-    { $$ = BuiltinType::DateType; }
-|   DateTimeType
-    { $$ = BuiltinType::DateTimeType; }
-|   DurationType
-    { $$ = BuiltinType::DurationType; }
-|   EmbeddedPDVType
-    { $$ = BuiltinType::EmbeddedPDVType; }
-|   EnumeratedType
-    { $$ = BuiltinType::EnumeratedType; }
-|   ExternalType
-    { $$ = BuiltinType::ExternalType; }
-|   InstanceOfType
-    { $$ = BuiltinType::InstanceOfType; }
-|   IntegerType
-    { $$ = BuiltinType::IntegerType; }
-|   IRIType
-    { $$ = BuiltinType::IRIType; }
-|   NullType
-    { $$ = BuiltinType::NullType; }
-|   ObjectClassFieldType
-    { $$ = BuiltinType::ObjectClassFieldType; }
-|   ObjectIdentifierType
-    { $$ = BuiltinType::ObjectIdentifierType; }
-|   OctetStringType
-    { $$ = BuiltinType::OctetStringType; }
-|   RealType
-    { $$ = BuiltinType::RealType; }
-|   RelativeIRIType
-    { $$ = BuiltinType::RelativeIRIType; }
-|   RelativeOIDType
-    { $$ = BuiltinType::RelativeOIDType; }
-|   SequenceType
-    { $$ = BuiltinType::SequenceType; }
-|   SequenceOfType
-    { $$ = BuiltinType::SequenceOfType; }
-|   SetType
-    { $$ = BuiltinType::SetType; }
-|   SetOfType
-    { $$ = BuiltinType::SetOfType; }
-|   PrefixedType
-    { $$ = BuiltinType::PrefixedType; }
-|   TimeType
-    { $$ = BuiltinType::TimeType; }
-|   TimeOfDayType
-    { $$ = BuiltinType::TimeOfDayType; }
+BuiltinType: 
+    BitStringType { $$ = BitStringType(); }
+|   BooleanType { $$ = BooleanType(); }
+|   CharacterStringType { $$ = CharacterStringType(); }
+|   ChoiceType { $$ = ChoiceType(); }
+|   DateType { $$ = DateType(); }
+|   DateTimeType { $$ = DateTimeType(); }
+|   DurationType { $$ = DurationType(); }
+|   EmbeddedPDVType { $$ = EmbeddedPDVType(); }
+|   EnumeratedType { $$ = EnumeratedType(); }
+|   ExternalType { $$ = ExternalType(); }
+|   InstanceOfType { $$ = InstanceOfType(); }
+|   IntegerType { $$ = IntegerType(); }
+|   IRIType { $$ = IRIType(); }
+|   NullType { $$ = NullType(); }
+|   ObjectClassFieldType { $$ = ObjectClassFieldType(); }
+|   ObjectIdentifierType { $$ = ObjectIdentifierType(); }
+|   OctetStringType { $$ = OctetStringType(); }
+|   RealType { $$ = RealType(); }
+|   RelativeIRIType { $$ = RelativeIRIType(); }
+|   RelativeOIDType { $$ = RelativeOIDType(); }
+|   SequenceType { $$ = $1; }
+|   SequenceOfType { $$ = SequenceOfType(); }
+|   SetType { $$ = SetType(); }
+|   SetOfType { $$ = SetOfType(); }
+|   PrefixedType { $$ = PrefixedType(); }
+|   TimeType { $$ = TimeType(); }
+|   TimeOfDayType { $$ = TimeOfDayType(); }
 
-ReferencedType:
-    DefinedType
-|   UsefulType
-|   SelectionType
-|   TypeFromObject
-|   ValueSetFromObjects;
+ReferencedType: 
+    DefinedType { $$ = {$1}; }
+|   UsefulType { std::cout << "useful type\n"; }
+|   SelectionType { std::cout << "selection type\n"; }
+|   TypeFromObject { std::cout << "typeobject type\n"; }
+|   ValueSetFromObjects { std::cout << "valuset type\n"; }
 
-NamedType:
-    identifier
-    Type;
+NamedType: 
+    identifier Type
+    { $$ = NamedType{$1, $2}; }
 
 Value:
     BuiltinValue
@@ -1214,8 +1133,10 @@ XMLNullValue:
 
 SequenceType:
     SEQUENCE "{" "}"
+    { $$ = SequenceType(); }
 |   SEQUENCE "{" ExtensionAndException OptionalExtensionMarker "}"
-|   SEQUENCE "{" ComponentTypeLists "}";
+|   SEQUENCE "{" ComponentTypeLists "}"
+    { $$ = $3; }
 
 ExtensionAndException:
     " ... "
@@ -1227,13 +1148,15 @@ OptionalExtensionMarker:
 
 ComponentTypeLists:
     RootComponentTypeList
+    { $$ = $1; }
 |   RootComponentTypeList "," ExtensionAndException ExtensionAdditions
 |   OptionalExtensionMarker RootComponentTypeList "," ExtensionAndException ExtensionAdditions
 |   ExtensionEndMarker "," RootComponentTypeList ExtensionAndException ExtensionAdditions ExensionEndMarker ","
 |   RootComponentTypeList ExtensionAndException ExtensionAdditions OptionalExtensionMarker
 
 RootComponentTypeList:
-    ComponentTypeList;
+    ComponentTypeList
+    { $$ = $1; }
 
 ExtensionEndMarker:
     "," "..."
@@ -1259,12 +1182,17 @@ VersionNumber:
 
 ComponentTypeList:
     ComponentType
-|   ComponentTypeList "," ComponentType;
+    { $$ = ComponentTypeList{$1}; }
+|   ComponentTypeList "," ComponentType
+    { $1.push_back($3); $$ = $1; }
 
 ComponentType:
     NamedType
+    { $$ = ComponentType{$1, false, std::nullopt}; }
 |   NamedType OPTIONAL
+    { $$ = ComponentType{$1, true, std::nullopt}; }
 |   NamedType DEFAULT Value
+    { $$ = ComponentType{$1, false, $3}; }
 |   COMPONENTS OF Type;
 
 SequenceValue:
@@ -2062,46 +1990,4 @@ namespace yy {
     }
 }
 
-void generate_output_file(const Asn1Tree& tree)
-{
-    std::cout << "Module name = "  << tree.module_reference << "\n";
-
-    for (const auto& assignment: tree.assignments)
-    {
-        std::cout << "Assignment: " << assignment.name << " is of type " << to_string(std::get<BuiltinType>(assignment.type.type)) << "\n";
-    }
-}
-
-int main(int argc, char** argv)
-{
-    if (argc != 2)
-    {
-        std::cout << "Please provide ASN file for parsing\n";
-        return -1;
-    }
-
-    std::string filename = argv[1];
-    std::ifstream f(filename);
-    if (!f.good())
-    {
-        std::cout << "Could not open input file\n";
-        return -1;
-    }
-
-    std::string buffer(std::istreambuf_iterator<char>(f), {});
-
-    Context context;
-    context.cursor = buffer.c_str();
-    context.location.begin.filename = &filename;
-    context.location.end.filename   = &filename;
-
-    yy::asn1_parser parser(context);
-
-    const auto res = parser.parse();
-
-    if (!res)
-    {
-      generate_output_file(context.asn1_tree);
-      std::cout << "Parse success!\n";
-    }
-}
+#include "compiler/CompilerMain.cpp"
