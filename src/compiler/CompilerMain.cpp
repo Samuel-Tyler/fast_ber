@@ -1,10 +1,16 @@
+#include "asn1_sam.hpp"
 #include "fast_ber/compiler/CompilerTypes.hpp"
+
+void generate_include(const std::string& path)
+{
+    std::cout << "#include \"" << path << "\"\n";
+}
 
 void generate_output_file(const Asn1Tree& tree)
 {
-    std::cout << "#include \"fast_ber/ber_types/All.hpp\"\n";
-    std::cout << "#include \"fast_ber/util/Encode.hpp\"\n\n";
-    std::cout << "namespace fast_ber {\n\n";
+    generate_include("fast_ber/ber_types/All.hpp");
+    generate_include("fast_ber/util/Encode.hpp");
+    std::cout << "\nnamespace fast_ber {\n\n";
     std::cout << "namespace " << tree.module_reference << " {\n\n";
 
     for (auto iter = tree.assignments.crbegin(); iter != tree.assignments.crend(); ++iter)
