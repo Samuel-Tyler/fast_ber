@@ -7,7 +7,7 @@ build/clock.hpp: build/asn1_sam
 build/asn1_sam: src/compiler/CompilerMain.cpp build/asn1_sam.hpp
 	g++ -o $@ $< -Wall -Wextra -Wpedantic -O3 -std=c++1z  -Ibuild -I3rd_party/abseil-cpp -I3rd_party/GSL/include -Isrc -Iinclude
 
-build/asn1_sam.cpp: build/asn1_sam.re
+build/asn1_sam.hpp: build/asn1_sam.re
 	re2c -o "$@" "$<"
 
 build/asn1_sam.re: src/asn1_sam.y build

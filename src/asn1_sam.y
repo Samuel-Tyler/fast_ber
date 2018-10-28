@@ -1989,5 +1989,3 @@ namespace yy {
         %}
     }
 }
-
-#include "compiler/CompilerMain.cpp"

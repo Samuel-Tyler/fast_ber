@@ -178,34 +178,4 @@ std::string to_string(const Type& type)
     return std::visit([](const auto& t) { return to_string(t); }, type);
 }
 
-std::string to_string(const Assignment& assignment)
-{
-    if (std::holds_alternative<BuiltinType>(assignment.type) &&
-        std::holds_alternative<SequenceType>(std::get<BuiltinType>(assignment.type)))
-    {
-        const SequenceType& sequence = std::get<SequenceType>(std::get<BuiltinType>(assignment.type));
-
-        std::string res = "struct " + assignment.name + " {\n";
-
-        for (const ComponentType& component : sequence)
-        {
-            res += "    " + (to_string(component.named_type.type) + " " + component.named_type.name + ";\n");
-        }
-        res += "};\n\n";
-
-        res += "size_t encode(absl::Span<uint8_t> output, const " + assignment.name + "& input)\n{\n";
-        res += "    return encode_combine(output";
-        for (const ComponentType& component : sequence)
-        {
-            res += ", input." + component.named_type.name;
-        }
-        res += ");\n}\n";
-        return res;
-    }
-    else
-    {
-        throw std::runtime_error("Unhandled assignment type: " + to_string(assignment.type));
-    }
-}
-
 struct Context;
