@@ -1,0 +1,16 @@
+Simple DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+Collection ::= SEQUENCE {
+    hello OCTET STRING,
+    goodbye OCTET STRING,
+    integer INTEGER,
+    boolean BOOLEAN,
+    child Child --,
+    --    optional_child Child OPTIONAL
+}
+
+Child ::= SEQUENCE {
+    meaning_of_life INTEGER OPTIONAL
+}
+
+END

@@ -1,0 +1,10 @@
+Simple DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+Collection ::= SEQUENCE {
+    hello OCTET STRING,
+    goodbye OCTET STRING,
+    integer INTEGER,
+    boolean BOOLEAN
+}
+
+END

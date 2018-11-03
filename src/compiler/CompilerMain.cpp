@@ -1,5 +1,7 @@
-#include "asn1_sam.hpp"
+#include "autogen/asn_compiler.hpp"
 #include "fast_ber/compiler/CompilerTypes.hpp"
+
+std::string make_type_optional(const std::string& type) { return "Optional<" + type + ">"; }
 
 std::string create_assignment(const Assignment& assignment)
 {
@@ -12,17 +14,67 @@ std::string create_assignment(const Assignment& assignment)
 
         for (const ComponentType& component : sequence)
         {
-            res += "    " + (to_string(component.named_type.type) + " " + component.named_type.name + ";\n");
+            std::string component_type = to_string(component.named_type.type);
+            if (component.is_optional)
+            {
+                component_type = make_type_optional(component_type);
+            }
+            res += "    " + component_type + " " + component.named_type.name + ";\n";
+        }
+        res += "};\n\n";
+        return res;
+    }
+    else
+    {
+        throw std::runtime_error("Unhandled assignment type: " + to_string(assignment.type));
+    }
+}
+
+std::string create_encode_decode_functions(const Assignment& assignment)
+{
+    if (std::holds_alternative<BuiltinType>(assignment.type) &&
+        std::holds_alternative<SequenceType>(std::get<BuiltinType>(assignment.type)))
+    {
+        const SequenceType& sequence = std::get<SequenceType>(std::get<BuiltinType>(assignment.type));
+        std::string         res;
+        const std::string   tags_class = assignment.name + "Tags";
+
+        int i = 0;
+        res += "enum class " + tags_class + " : int {\n";
+        for (const ComponentType& component : sequence)
+        {
+            res += "    " + component.named_type.name + " = " + std::to_string(i++) + ",\n";
         }
         res += "};\n\n";
 
-        res += "size_t encode(absl::Span<uint8_t> output, const " + assignment.name + "& input)\n{\n";
-        res += "    return encode_combine(output";
+        res += "EncodeResult encode_with_new_id(absl::Span<uint8_t> output, const " + assignment.name +
+               "& input, Class class_, int tag)\n{\n";
+        res += "    return encode_combine(output, class_, tag";
         for (const ComponentType& component : sequence)
         {
-            res += ", input." + component.named_type.name;
+            res += ",\n                          input." + component.named_type.name + ", Class::context_specific, " +
+                   "val(" + tags_class + "::" + component.named_type.name + ")";
+        }
+        res += ");\n}\n\n";
+
+        res += "bool decode(const BerView& input, " + assignment.name + "& output, Tag tag)\n{\n";
+        res += "    return decode_combine(input, tag";
+        for (const ComponentType& component : sequence)
+        {
+            res += ",\n                          output." + component.named_type.name + ", val(" + tags_class +
+                   "::" + component.named_type.name + ")";
         }
         res += ");\n}\n";
+
+        res += "bool decode(absl::Span<const uint8_t> input, " + assignment.name + "& output, Tag tag)\n{\n";
+        res += "    return decode(BerView(input), output, tag);\n";
+        res += "}\n";
+
+        res += "bool decode(BerViewIterator& input, " + assignment.name + "& output, Tag tag)\n{\n";
+        res += "    bool success = decode(*input, output, tag) > 0;\n";
+        res += "    ++input;\n";
+        res += "    return success;\n";
+        res += "}\n";
         return res;
     }
     else
@@ -53,6 +105,12 @@ std::string create_body(const Asn1Tree& tree)
     {
         output += create_assignment(*iter) + "\n";
     }
+
+    output += "\n\n\n\n\n\n/* Encoding and Decoding Functionality */\n\n\n";
+    for (auto iter = tree.assignments.crbegin(); iter != tree.assignments.crend(); ++iter)
+    {
+        output += create_encode_decode_functions(*iter) + "\n";
+    }
     return output;
 }
 
@@ -61,6 +119,7 @@ void generate_output_file(const Asn1Tree& tree)
     std::string output;
     output += create_include("fast_ber/ber_types/All.hpp");
     output += create_include("fast_ber/util/Encode.hpp");
+    output += create_include("fast_ber/util/Decode.hpp");
     output += "\n";
 
     output += add_namespace("fast_ber", add_namespace(tree.module_reference, create_body(tree)));

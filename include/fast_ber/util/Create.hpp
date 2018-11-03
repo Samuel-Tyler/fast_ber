@@ -2,6 +2,7 @@
 
 #include "fast_ber/ber_types/Class.hpp"
 #include "fast_ber/ber_types/Construction.hpp"
+#include "fast_ber/ber_types/Tag.hpp"
 
 #include "absl/types/span.h"
 
@@ -10,11 +11,11 @@ namespace fast_ber
 
 // Create ber tag in provided buffer
 // Return the size of the created tag field or zero on fail
-inline size_t create_tag(absl::Span<uint8_t> output, long tag) noexcept;
+inline size_t create_tag(absl::Span<uint8_t> output, Tag tag) noexcept;
 
 // Create ber identifier octets
 // Return the size of the created tag field or zero on fail
-inline size_t create_identifier(absl::Span<uint8_t> output, Construction construction, Class class_, long tag) noexcept;
+inline size_t create_identifier(absl::Span<uint8_t> output, Construction construction, Class class_, Tag tag) noexcept;
 
 // Create ber length octets
 // Return the size of the created tag field or zero on fail
@@ -22,10 +23,10 @@ inline size_t create_length(absl::Span<uint8_t> output, uint64_t length) noexcep
 
 // Create a ber header consisting of construction, class, tag and size
 // Return the size of the created header or zero on fail
-inline size_t create_header(absl::Span<uint8_t> output, Construction construction, Class class_, long tag,
+inline size_t create_header(absl::Span<uint8_t> output, Construction construction, Class class_, Tag tag,
                             size_t length) noexcept;
 
-inline size_t create_tag(absl::Span<uint8_t> output, long tag) noexcept
+inline size_t create_tag(absl::Span<uint8_t> output, Tag tag) noexcept
 {
     if (tag < 0 || output.length() == 0)
     {
@@ -62,7 +63,7 @@ inline size_t create_tag(absl::Span<uint8_t> output, long tag) noexcept
     }
 }
 
-inline size_t create_identifier(absl::Span<uint8_t> output, Construction construction, Class class_, long tag) noexcept
+inline size_t create_identifier(absl::Span<uint8_t> output, Construction construction, Class class_, Tag tag) noexcept
 {
     if (output.size() < 1)
     {
@@ -164,7 +165,7 @@ inline size_t create_length(absl::Span<uint8_t> output, uint64_t length) noexcep
     return 0;
 }
 
-inline size_t create_header(absl::Span<uint8_t> output, Construction construction, Class class_, long tag,
+inline size_t create_header(absl::Span<uint8_t> output, Construction construction, Class class_, Tag tag,
                             size_t length) noexcept
 {
     if (output.size() < 2)

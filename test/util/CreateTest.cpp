@@ -7,7 +7,7 @@
 
 TEST_CASE("Create: Tag length")
 {
-    std::array<uint8_t, 10> buffer;
+    std::array<uint8_t, 10> buffer = {};
 
     REQUIRE(fast_ber::create_tag(absl::Span<uint8_t>(buffer.begin(), buffer.size()), 0) == 1);
     REQUIRE(fast_ber::create_tag(absl::Span<uint8_t>(buffer.begin(), buffer.size()), 30) == 1);
@@ -54,7 +54,7 @@ TEST_CASE("Create: Creating tags")
     {
         std::array<uint8_t, 10> buffer;
 
-        long tag;
+        fast_ber::Tag tag;
         INFO(test_val);
 
         REQUIRE(fast_ber::create_tag(absl::Span<uint8_t>(buffer.begin(), buffer.size()), test_val));

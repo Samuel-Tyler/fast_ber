@@ -4,5 +4,5 @@
 
 namespace fast_ber
 {
-using PrintableString = OctetString;
+using VisibleString = OctetString;
 }

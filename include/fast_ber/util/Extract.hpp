@@ -2,6 +2,7 @@
 
 #include "fast_ber/ber_types/Class.hpp"
 #include "fast_ber/ber_types/Construction.hpp"
+#include "fast_ber/ber_types/Tag.hpp"
 
 #include "absl/types/span.h"
 
@@ -16,9 +17,13 @@ inline bool extract_construction(absl::Span<const uint8_t> input, Construction& 
 // Return true on success, false on fail
 inline bool extract_class(absl::Span<const uint8_t> input, Class& class_) noexcept;
 
+// Extract the length of the tag field of a ber packet
+// Return length of the identifier octets on success, false on fail
+inline size_t extract_tag_length(absl::Span<const uint8_t> input, Tag& tag) noexcept;
+
 // Extract the tag of a ber packet
 // Return length of the identifier octets on success, false on fail
-inline size_t extract_tag(absl::Span<const uint8_t> input, long& tag) noexcept;
+inline size_t extract_tag(absl::Span<const uint8_t> input, Tag& tag) noexcept;
 
 // Extract the length of a ber packet
 // Return the length of the length octets on success, false on fail
@@ -46,17 +51,41 @@ inline bool extract_class(absl::Span<const uint8_t> input, Class& class_) noexce
     return true;
 }
 
-inline size_t extract_tag(absl::Span<const uint8_t> input, long& tag) noexcept
+inline size_t extract_tag_length(absl::Span<const uint8_t> input) noexcept
 {
     if (input.size() == 0)
     {
-        return false;
+        return 0;
+    }
+
+    if ((input[0] & 0x1F) != 0x1F)
+    {
+        return 1;
+    }
+    else
+    {
+        for (size_t i = 1; i < input.length(); i++)
+        {
+            if ((input[i] & 0x80) == 0)
+            {
+                return i + 1;
+            }
+        }
+        return 0;
+    }
+}
+
+inline size_t extract_tag(absl::Span<const uint8_t> input, Tag& tag) noexcept
+{
+    if (input.size() == 0)
+    {
+        return 0;
     }
 
     if ((input[0] & 0x1F) != 0x1F)
     {
         tag = input[0] & 0x1F;
-        return true;
+        return 1;
     }
     else
     {
@@ -67,12 +96,12 @@ inline size_t extract_tag(absl::Span<const uint8_t> input, long& tag) noexcept
 
             if ((input[i] & 0x80) == 0)
             {
-                return true;
+                return i + 1;
             }
 
             tag *= 0x80;
         }
-        return false;
+        return 0;
     }
 }
 

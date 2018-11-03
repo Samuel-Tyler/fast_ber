@@ -1,24 +1,59 @@
 #include "fast_ber/ber_types/Integer.hpp"
 
 #include <catch2/catch.hpp>
-#include <iostream>
+#include <limits>
+
 TEST_CASE("Integer: Construction from int")
 {
-    /* std::initializer_list<int64_t> test_vals{-9999999999, -50, -20, 0, 20, 50, 99999, 999999999};
+    std::initializer_list<int64_t> test_vals{std::numeric_limits<int64_t>::min(),
+                                             std::numeric_limits<int>::min(),
+                                             -9999999999,
+                                             -27837,
+                                             -256,
+                                             -255,
+                                             -254,
+                                             -50,
+                                             -20,
+                                             -1,
+                                             0,
+                                             1,
+                                             255,
+                                             256,
+                                             20,
+                                             50,
+                                             99999,
+                                             27836,
+                                             27837,
+                                             27838,
+                                             37699,
+                                             999999999,
+                                             std::numeric_limits<int>::max(),
+                                             std::numeric_limits<int64_t>::max()};
 
-     for (int64_t val : test_vals)
-     {
-         fast_ber::Integer i(val);
-         REQUIRE(i.value() == val);
-     }*/
+    for (int64_t val : test_vals)
+    {
+        fast_ber::Integer integer(val);
+        REQUIRE(integer == val);
+    }
 }
 
 TEST_CASE("Integer: Encoding")
-{ /*
-     fast_ber::Integer        i(100);
-     std::array<uint8_t, 100> buffer;
+{
+    fast_ber::Integer        i(100);
+    std::array<uint8_t, 100> buffer;
 
-     size_t size = i.encode(absl::Span<uint8_t>(buffer.begin(), buffer.size()));
+    size_t size =
+        i.encode_with_new_id(absl::Span<uint8_t>(buffer.begin(), buffer.size()), fast_ber::Class::context_specific, 50);
 
-     REQUIRE(size > 0);*/
+    REQUIRE(size == 4);
+}
+
+TEST_CASE("Integer: Assign from raw")
+{
+    fast_ber::Integer      i(100);
+    std::array<uint8_t, 4> test_data = {0x00, 0x02, 0x12, 0x34};
+
+    size_t size = i.assign_ber(absl::MakeSpan(test_data.data(), test_data.size()));
+    REQUIRE(size == 4);
+    REQUIRE(i == 0x1234);
 }
