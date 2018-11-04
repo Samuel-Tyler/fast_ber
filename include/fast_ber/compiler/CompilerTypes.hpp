@@ -2,7 +2,9 @@
 
 #include "fast_ber/ber_types/All.hpp"
 
+#include "absl/memory/memory.h"
 #include "absl/types/variant.h"
+
 #include <algorithm>
 #include <fstream>
 #include <list>
@@ -14,82 +16,83 @@ struct ComponentType;
 using ComponentTypeList = std::vector<ComponentType>;
 using SequenceType      = ComponentTypeList;
 
-class BitStringType
+struct NamedType;
+
+struct BitStringType
 {
 };
-class BooleanType
+struct BooleanType
 {
 };
-class CharacterStringType
+struct CharacterStringType
 {
 };
-class ChoiceType
+struct ChoiceType
 {
 };
-class DateType
+struct DateType
 {
 };
-class DateTimeType
+struct DateTimeType
 {
 };
-class DurationType
+struct DurationType
 {
 };
-class EmbeddedPDVType
+struct EmbeddedPDVType
 {
 };
-class EnumeratedType
+struct EnumeratedType
 {
 };
-class ExternalType
+struct ExternalType
 {
 };
-class InstanceOfType
+struct InstanceOfType
 {
 };
-class IntegerType
+struct IntegerType
 {
 };
-class IRIType
+struct IRIType
 {
 };
-class NullType
+struct NullType
 {
 };
-class ObjectClassFieldType
+struct ObjectClassFieldType
 {
 };
-class ObjectIdentifierType
+struct ObjectIdentifierType
 {
 };
-class OctetStringType
+struct OctetStringType
 {
 };
-class RealType
+struct RealType
 {
 };
-class RelativeIRIType
+struct RelativeIRIType
 {
 };
-class RelativeOIDType
+struct RelativeOIDType
 {
 };
-class SequenceOfType
+struct SequenceOfType;
+
+struct SetType
 {
 };
-class SetType
+struct SetOfType
 {
 };
-class SetOfType
+struct PrefixedType
 {
 };
-class PrefixedType
+struct TimeType
 {
 };
-class TimeType
-{
-};
-class TimeOfDayType
+struct TimeOfDayType
 {
 };
 
@@ -120,7 +123,6 @@ std::string to_string(const RealType&) { return "Real"; }
 std::string to_string(const RelativeIRIType&) { return "RelativeIRI"; }
 std::string to_string(const RelativeOIDType&) { return "RelativeOID"; }
 std::string to_string(const SequenceType&) { return "Sequence"; }
-std::string to_string(const SequenceOfType&) { return "SequenceOf"; }
 std::string to_string(const SetType&) { return "Set"; }
 std::string to_string(const SetOfType&) { return "SetOf"; }
 std::string to_string(const PrefixedType&) { return "Prefixed"; }
@@ -135,6 +137,14 @@ struct DefinedType
 std::string to_string(const DefinedType& type) { return type.name; }
 
 using Type = absl::variant<BuiltinType, DefinedType>;
+
+struct SequenceOfType
+{
+    // Shared pointers used to prevent circular references
+    bool                       has_name;
+    std::shared_ptr<NamedType> named_type;
+    std::shared_ptr<Type>      type;
+};
 
 struct NamedType
 {
@@ -178,5 +188,17 @@ to_string_helper string_helper;
 std::string      to_string(const Type& type);
 std::string      to_string(const BuiltinType& type) { return absl::visit(string_helper, type); }
 std::string      to_string(const Type& type) { return absl::visit(string_helper, type); }
+
+std::string to_string(const SequenceOfType& sequence)
+{
+    if (sequence.has_name)
+    {
+        return "SequenceOf<" + sequence.named_type->name + ">";
+    }
+    else
+    {
+        return "SequenceOf<" + to_string(*sequence.type) + ">";
+    }
+}
 
 struct Context;

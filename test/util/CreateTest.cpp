@@ -27,7 +27,7 @@ TEST_CASE("Create: Tag length")
 
 TEST_CASE("Create: Length length")
 {
-    std::array<uint8_t, 10> buffer;
+    std::array<uint8_t, 10> buffer = {};
 
     REQUIRE(fast_ber::create_length(absl::Span<uint8_t>(buffer.begin(), buffer.size()), 0) == 1);
     REQUIRE(fast_ber::create_length(absl::Span<uint8_t>(buffer.begin(), buffer.size()), 0x7F) == 1);
@@ -52,7 +52,7 @@ TEST_CASE("Create: Creating tags")
 
     for (const long test_val : test_vals)
     {
-        std::array<uint8_t, 10> buffer;
+        std::array<uint8_t, 10> buffer = {};
 
         fast_ber::Tag tag;
         INFO(test_val);
@@ -70,7 +70,7 @@ TEST_CASE("Create: Creating lengths")
 
     for (const uint64_t test_val : test_vals)
     {
-        std::array<uint8_t, 10> buffer;
+        std::array<uint8_t, 10> buffer = {};
 
         uint64_t length;
         INFO(test_val);

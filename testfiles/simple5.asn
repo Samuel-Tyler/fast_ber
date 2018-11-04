@@ -10,7 +10,8 @@ Collection ::= SEQUENCE {
 }
 
 Child ::= SEQUENCE {
-    meaning_of_life INTEGER OPTIONAL
+    meaning_of_life INTEGER OPTIONAL,
+    list SEQUENCE OF OCTET STRING
 }
 
 END

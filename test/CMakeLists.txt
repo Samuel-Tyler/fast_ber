@@ -1,9 +1,8 @@
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O3 -Wall -Wextra -pedantic -Wall -Wcast-align -Wpointer-arith -Wfloat-equal -pedantic")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=undefined -fsanitize=memory")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=undefined -fsanitize=address")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNDEBUG")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=undefined -fsanitize=address")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNDEBUG")
 
 project(fast_ber_tests)
 
@@ -22,7 +21,7 @@ add_custom_command(
 
 add_executable(fast_ber_tests Test ${TEST_SRC} ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple.hpp)
 target_include_directories(fast_ber_tests PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-target_link_libraries (fast_ber_tests fast_ber_lib)
+target_link_libraries (fast_ber_tests fast_ber_lib absl_internal_throw_delegate)
 
 enable_testing()
 add_test(NAME fast_ber_compiler_0 COMMAND fast_ber_compiler ../../testfiles/simple0.asn)

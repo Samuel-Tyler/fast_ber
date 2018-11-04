@@ -3,6 +3,7 @@
 #include "catch2/catch.hpp"
 
 #include <fstream>
+#include <vector>
 
 TEST_CASE("Testing a generated ber container")
 {
@@ -21,14 +22,19 @@ TEST_CASE("Testing a generated ber container")
     collection.goodbye               = goodbye;
     collection.integer               = 5;
     collection.boolean               = true;
-    collection.child.meaning_of_life = 55;
-    collection.optional_child        = fast_ber::Simple::Child{800};
+    collection.child.meaning_of_life = -42;
+    collection.optional_child        = fast_ber::Simple::Child{999999999, {"The", "second", "child"}};
 
-    // for (long i = 0; i < 100000000; i++)
+    //  for (long i = 0; i < 100000000; i++)
     {
         encode_size = fast_ber::Simple::encode_with_new_id(absl::MakeSpan(buffer.data(), buffer.size()), collection,
                                                            fast_ber::Class::context_specific, 0)
                           .encode_length;
+    }
+    std::cout << "encoding done\n";
+
+    // for (long i = 0; i < 100000000; i++)
+    {
         success = fast_ber::Simple::decode(absl::MakeSpan(buffer.data(), buffer.size()), new_collection, 0);
     }
 
@@ -42,6 +48,9 @@ TEST_CASE("Testing a generated ber container")
     REQUIRE(new_collection.child.meaning_of_life.has_value());
     REQUIRE(new_collection.optional_child.has_value());
     REQUIRE(new_collection.optional_child->meaning_of_life.has_value());
-    REQUIRE(*new_collection.child.meaning_of_life == 55);
-    REQUIRE(*new_collection.optional_child->meaning_of_life == 800);
+    REQUIRE(*new_collection.child.meaning_of_life == -42);
+    REQUIRE(new_collection.child.list.size() == 0);
+    REQUIRE(new_collection.optional_child->list ==
+            fast_ber::SequenceOf<fast_ber::OctetString>{"The", "second", "child"});
+    REQUIRE(*new_collection.optional_child->meaning_of_life == 999999999);
 }

@@ -211,6 +211,7 @@
 %type<ComponentTypeList> ComponentTypeLists;
 %type<ComponentTypeList> RootComponentTypeList;
 %type<Value>             Value;
+%type<SequenceOfType>    SequenceOfType;
 
 %right RANGE
 %left COLON
@@ -852,7 +853,7 @@ BuiltinType:
 |   RelativeIRIType { $$ = RelativeIRIType(); }
 |   RelativeOIDType { $$ = RelativeOIDType(); }
 |   SequenceType { $$ = $1; }
-|   SequenceOfType { $$ = SequenceOfType(); }
+|   SequenceOfType { $$ = $1; }
 |   SetType { $$ = SetType(); }
 |   SetOfType { $$ = SetOfType(); }
 |   PrefixedType { $$ = PrefixedType(); }
@@ -1213,7 +1214,9 @@ XMLComponentValueList:
 */
 SequenceOfType:
     SEQUENCE OF Type
-|   SEQUENCE OF NamedType;
+    { $$ = SequenceOfType{ false, nullptr, std::make_shared<Type>($3) }; }
+|   SEQUENCE OF NamedType
+    { $$ = SequenceOfType{ true, std::make_shared<NamedType>($3), nullptr }; }
 
 SequenceOfValue:
     "{" ValueList "}"

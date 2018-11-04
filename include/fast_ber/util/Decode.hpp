@@ -4,6 +4,7 @@
 #include "fast_ber/ber_types/Class.hpp"
 #include "fast_ber/ber_types/Construction.hpp"
 #include "fast_ber/util/BerView.hpp"
+#include "fast_ber/util/DecodePrimitive.hpp"
 
 #include <iostream>
 
@@ -16,40 +17,7 @@ int val(T t) noexcept
     return static_cast<int>(t);
 }
 
-template <typename T>
-bool primitive_decode_impl(BerViewIterator& input, T& output, Tag tag)
-{
-    if (!input->is_valid())
-    {
-        std::cerr << "Invalid packet found when decoding. Expected tag = " << tag << "\n";
-        return false;
-    }
-    if (tag != input->tag())
-    {
-        std::cerr << "Unexpected tag found when decoding. Expected tag = " << tag << " got " << input->tag() << "\n";
-        return false;
-    }
-    bool success = output.assign_ber(*input) > 0;
-    ++input;
-    return success;
-}
-
-bool decode(BerViewIterator& input, Boolean& output, Tag tag) noexcept
-{
-    return primitive_decode_impl(input, output, tag);
-}
-
-bool decode(BerViewIterator& input, Integer& output, Tag tag) noexcept
-{
-    return primitive_decode_impl(input, output, tag);
-}
-
-bool decode(BerViewIterator& input, OctetString& output, Tag tag) noexcept
-{
-    return primitive_decode_impl(input, output, tag);
-}
-
-bool decode_combine_impl(BerViewIterator&) noexcept { return true; }
+inline bool decode_combine_impl(BerViewIterator&) noexcept { return true; }
 
 template <typename... Args, typename T>
 bool decode_combine_impl(BerViewIterator& input, T& object, Tag tag, Args&&... args) noexcept
