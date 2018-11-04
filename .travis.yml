@@ -2,10 +2,8 @@ sudo: required
 language: cpp
 
 before_install:
-  - sudo apt update
-  - sudo apt install -y bison
-  - sudo apt install -y re2c
-  - cd 3rd_party/re2c
+  - cd 3rd_party/re2c/re2c
+  - ./autogen.sh
   - ./configure
   - make
   - sudo make install
