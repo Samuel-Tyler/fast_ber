@@ -6,6 +6,11 @@ before_install:
   - sudo apt install -y bison
   - sudo apt install -y re2c
 
+addons:
+  apt:
+    packages:
+      - bison
+
 script:
   - mkdir build
   - cd build
