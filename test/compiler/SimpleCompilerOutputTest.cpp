@@ -23,8 +23,7 @@ TEST_CASE("Testing a generated ber container")
     collection.boolean               = true;
     collection.child.meaning_of_life = 55;
 
-    //   for (long i = 0; i < 100000000; i++)
-
+    // for (long i = 0; i < 100000000; i++)
     {
         encode_size = fast_ber::Simple::encode_with_new_id(absl::MakeSpan(buffer.data(), buffer.size()), collection,
                                                            fast_ber::Class::context_specific, 0)

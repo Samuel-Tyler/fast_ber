@@ -5,10 +5,10 @@ std::string make_type_optional(const std::string& type) { return "Optional<" + t
 
 std::string create_assignment(const Assignment& assignment)
 {
-    if (std::holds_alternative<BuiltinType>(assignment.type) &&
-        std::holds_alternative<SequenceType>(std::get<BuiltinType>(assignment.type)))
+    if (absl::holds_alternative<BuiltinType>(assignment.type) &&
+        absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(assignment.type)))
     {
-        const SequenceType& sequence = std::get<SequenceType>(std::get<BuiltinType>(assignment.type));
+        const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(assignment.type));
 
         std::string res = "struct " + assignment.name + " {\n";
 
@@ -32,10 +32,10 @@ std::string create_assignment(const Assignment& assignment)
 
 std::string create_encode_decode_functions(const Assignment& assignment)
 {
-    if (std::holds_alternative<BuiltinType>(assignment.type) &&
-        std::holds_alternative<SequenceType>(std::get<BuiltinType>(assignment.type)))
+    if (absl::holds_alternative<BuiltinType>(assignment.type) &&
+        absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(assignment.type)))
     {
-        const SequenceType& sequence = std::get<SequenceType>(std::get<BuiltinType>(assignment.type));
+        const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(assignment.type));
         std::string         res;
         const std::string   tags_class = assignment.name + "Tags";
 

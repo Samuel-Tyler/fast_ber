@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 project(fast_ber)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
@@ -24,7 +24,7 @@ add_custom_command(
 target_include_directories(fast_ber_lib INTERFACE
                            ../include
                            ../3rd_party/abseil-cpp
-                           ../3rd_party/GSL/include
+                           #        ../3rd_party/GSL/include
                            ${CMAKE_CURRENT_BINARY_DIR})
 
 
@@ -32,4 +32,4 @@ aux_source_directory(compiler SRC_LIST)
 add_executable(${PROJECT_NAME}_compiler ${SRC_LIST} ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1_compiler.hpp)
 
 target_link_libraries(fast_ber_lib)
-target_link_libraries(${PROJECT_NAME}_compiler fast_ber_lib)
+target_link_libraries(${PROJECT_NAME}_compiler fast_ber_lib absl::base absl_variant)

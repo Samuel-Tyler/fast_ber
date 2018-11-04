@@ -2,6 +2,7 @@
 
 #include "fast_ber/ber_types/All.hpp"
 
+#include "absl/types/variant.h"
 #include <algorithm>
 #include <fstream>
 #include <list>
@@ -93,11 +94,11 @@ class TimeOfDayType
 {
 };
 
-using BuiltinType = std::variant<BitStringType, BooleanType, CharacterStringType, ChoiceType, DateType, DateTimeType,
-                                 DurationType, EmbeddedPDVType, EnumeratedType, ExternalType, InstanceOfType,
-                                 IntegerType, IRIType, NullType, ObjectClassFieldType, ObjectIdentifierType,
-                                 OctetStringType, RealType, RelativeIRIType, RelativeOIDType, SequenceType,
-                                 SequenceOfType, SetType, SetOfType, PrefixedType, TimeType, TimeOfDayType>;
+using BuiltinType = absl::variant<BitStringType, BooleanType, CharacterStringType, ChoiceType, DateType, DateTimeType,
+                                  DurationType, EmbeddedPDVType, EnumeratedType, ExternalType, InstanceOfType,
+                                  IntegerType, IRIType, NullType, ObjectClassFieldType, ObjectIdentifierType,
+                                  OctetStringType, RealType, RelativeIRIType, RelativeOIDType, SequenceType,
+                                  SequenceOfType, SetType, SetOfType, PrefixedType, TimeType, TimeOfDayType>;
 
 std::string to_string(const BitStringType&) { return "BitString"; }
 std::string to_string(const BooleanType&) { return "Boolean"; }
@@ -134,7 +135,7 @@ struct DefinedType
 
 std::string to_string(const DefinedType& type) { return type.name; }
 
-using Type = std::variant<BuiltinType, DefinedType>;
+using Type = absl::variant<BuiltinType, DefinedType>;
 
 struct NamedType
 {
@@ -148,9 +149,9 @@ struct Value
 
 struct ComponentType
 {
-    NamedType            named_type;
-    bool                 is_optional = false;
-    std::optional<Value> value;
+    NamedType             named_type;
+    bool                  is_optional;
+    absl::optional<Value> value;
 };
 
 struct Assignment
@@ -165,16 +166,18 @@ struct Asn1Tree
     std::vector<Assignment> assignments;
 };
 
-std::string to_string(const Type& type);
-
-std::string to_string(const BuiltinType& type)
+struct to_string_helper
 {
-    return std::visit([](const auto& t) { return to_string(t); }, type);
-}
+    template <typename T>
+    std::string operator()(const T& t)
+    {
+        return to_string(t);
+    }
+};
 
-std::string to_string(const Type& type)
-{
-    return std::visit([](const auto& t) { return to_string(t); }, type);
-}
+to_string_helper string_helper;
+std::string      to_string(const Type& type);
+std::string      to_string(const BuiltinType& type) { return absl::visit(string_helper, type); }
+std::string      to_string(const Type& type) { return absl::visit(string_helper, type); }
 
 struct Context;

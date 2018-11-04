@@ -859,14 +859,14 @@ BuiltinType:
 |   TimeType { $$ = TimeType(); }
 |   TimeOfDayType { $$ = TimeOfDayType(); }
 
-ReferencedType: 
+ReferencedType:
     DefinedType { $$ = {$1}; }
 |   UsefulType { std::cout << "useful type\n"; }
 |   SelectionType { std::cout << "selection type\n"; }
 |   TypeFromObject { std::cout << "typeobject type\n"; }
 |   ValueSetFromObjects { std::cout << "valuset type\n"; }
 
-NamedType: 
+NamedType:
     identifier Type
     { $$ = NamedType{$1, $2}; }
 
@@ -1188,9 +1188,9 @@ ComponentTypeList:
 
 ComponentType:
     NamedType
-    { $$ = ComponentType{$1, false, std::nullopt}; }
+    { $$ = ComponentType{$1, false, absl::nullopt}; }
 |   NamedType OPTIONAL
-    { $$ = ComponentType{$1, true, std::nullopt}; }
+    { $$ = ComponentType{$1, true, absl::nullopt}; }
 |   NamedType DEFAULT Value
     { $$ = ComponentType{$1, false, $3}; }
 |   COMPONENTS OF Type;
