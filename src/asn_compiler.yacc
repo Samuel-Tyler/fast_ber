@@ -860,7 +860,7 @@ BuiltinType:
 |   TimeOfDayType { $$ = TimeOfDayType(); }
 
 ReferencedType:
-    DefinedType { $$ = DefinedType{$1}; }
+    DefinedType { $$ = $1; }
 |   UsefulType { std::cout << "useful type\n"; }
 |   SelectionType { std::cout << "selection type\n"; }
 |   TypeFromObject { std::cout << "typeobject type\n"; }
