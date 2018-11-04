@@ -4,8 +4,8 @@ language: cpp
 
 before_install:
   - sudo apt update
-  - sudo apt install bison
-  - sudo apt install re2c
+  - sudo apt install -y bison
+  - sudo apt install -y re2c
 
 script:
   - mkdir build
