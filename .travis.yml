@@ -1,6 +1,11 @@
 dist: trusty
-sudo: false
+sudo: true
 language: cpp
+
+before_install:
+  - sudo apt update
+  - sudo apt install bison
+  - sudo apt install re2c
 
 script:
   - mkdir build
