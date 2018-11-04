@@ -14,11 +14,13 @@ endif()
 add_library(fast_ber_lib INTERFACE)
 
 add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1_compiler.hpp
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp
+    BYPRODUCTS ${CMAKE_BINARY_DIR}/autogen/asn_compiler.re
+    DEPENDS ${CMAKE_SOURCE_DIR}/src/asn_compiler.yacc
+
     COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/autogen
     COMMAND bison ${CMAKE_CURRENT_SOURCE_DIR}/asn_compiler.yacc -t --report=all -o ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.re
-    COMMAND re2c ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.re -o ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/asn_compiler.yacc
+    COMMAND re2c -o ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.re
 )
 
 target_include_directories(fast_ber_lib INTERFACE
@@ -29,7 +31,7 @@ target_include_directories(fast_ber_lib INTERFACE
 
 
 aux_source_directory(compiler SRC_LIST)
-add_executable(${PROJECT_NAME}_compiler ${SRC_LIST} ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1_compiler.hpp)
+add_executable(${PROJECT_NAME}_compiler ${SRC_LIST} ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp)
 
 target_link_libraries(fast_ber_lib)
 target_link_libraries(${PROJECT_NAME}_compiler fast_ber_lib absl::base absl_variant)
