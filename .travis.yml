@@ -5,6 +5,11 @@ before_install:
   - sudo apt update
   - sudo apt install -y bison
   - sudo apt install -y re2c
+  - cd 3rd_party/re2c
+  - ./configure
+  - make
+  - sudo make install
+  - cd ../..
 
 addons:
   apt:

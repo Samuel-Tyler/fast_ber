@@ -7,3 +7,6 @@
 [submodule "3rd_party/abseil-cpp"]
 	path = 3rd_party/abseil-cpp
 	url = https://github.com/abseil/abseil-cpp.git
+[submodule "3rd_party/re2c"]
+	path = 3rd_party/re2c
+	url = https://github.com/skvadrik/re2c.git
