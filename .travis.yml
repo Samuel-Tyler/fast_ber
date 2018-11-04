@@ -7,13 +7,12 @@ before_install:
   - ./configure
   - make
   - sudo make install
-  - cd ../..
+  - cd ../../..
 
 addons:
   apt:
     packages:
       - bison
-      - re2c
 
 script:
   - mkdir build
