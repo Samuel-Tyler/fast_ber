@@ -5,8 +5,8 @@ Collection ::= SEQUENCE {
     goodbye OCTET STRING,
     integer INTEGER,
     boolean BOOLEAN,
-    child Child --,
-    --    optional_child Child OPTIONAL
+    child Child,
+    optional_child Child OPTIONAL
 }
 
 Child ::= SEQUENCE {

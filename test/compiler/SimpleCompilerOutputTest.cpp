@@ -22,6 +22,7 @@ TEST_CASE("Testing a generated ber container")
     collection.integer               = 5;
     collection.boolean               = true;
     collection.child.meaning_of_life = 55;
+    collection.optional_child        = fast_ber::Simple::Child{800};
 
     // for (long i = 0; i < 100000000; i++)
     {
@@ -39,5 +40,8 @@ TEST_CASE("Testing a generated ber container")
     REQUIRE(new_collection.integer == 5);
     REQUIRE(new_collection.boolean == true);
     REQUIRE(new_collection.child.meaning_of_life.has_value());
+    REQUIRE(new_collection.optional_child.has_value());
+    REQUIRE(new_collection.optional_child->meaning_of_life.has_value());
     REQUIRE(*new_collection.child.meaning_of_life == 55);
+    REQUIRE(*new_collection.optional_child->meaning_of_life == 800);
 }

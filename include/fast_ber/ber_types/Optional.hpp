@@ -33,9 +33,7 @@ bool decode(BerViewIterator& input, Optional<T>& output, Tag tag) noexcept
     {
 
         output.emplace(T());
-        bool success = output->assign_ber(*input) > 0;
-        ++input;
-        return success;
+        return decode(input, *output, tag) > 0;
     }
     else
     {
