@@ -1,6 +1,10 @@
 sudo: required
 language: cpp
 
+compiler:
+  - clang
+  - gcc
+
 before_install:
   - cd 3rd_party/re2c/re2c
   - ./autogen.sh
