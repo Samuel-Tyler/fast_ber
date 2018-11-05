@@ -11,4 +11,21 @@ struct EncodeResult
     size_t encode_length;
 };
 
+inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> output, Class class_, int tag,
+                                         size_t content_length) noexcept
+{
+    std::array<uint8_t, 30> buffer;
+    size_t header_length = create_header(absl::MakeSpan(buffer.data(), buffer.size()), Construction::constructed,
+                                         class_, tag, content_length);
+    assert(header_length != 0);
+    if (header_length + content_length > output.length())
+    {
+        return EncodeResult{false, 0};
+    }
+
+    std::memmove(output.data() + header_length, output.data(), content_length);
+    std::memcpy(output.data(), buffer.data(), header_length);
+    return EncodeResult{true, header_length + content_length};
+}
+
 } // namespace fast_ber
