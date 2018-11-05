@@ -4,8 +4,8 @@ A performant ASN.1 BER encoding and decoding library written in C++11.
 ## Introduction
 fast_ber is a small, lightweight library for BER encoding and decoding. Fast ber forgoes some tight ASN.1 specification conformance to provide fast encoding and decoding performance in common use cases.
 
-#### Design decisions
-- Simple, modern C++ interface using POD structs
+#### Design Decisions
+- Simple, modern C++ interface. ASN.1 sequences are represented as POD structs
 - No exceptions, no RTTI, limited memory allocations (everything is small buffer optimised)
 - Header only
 - View classes for zero copy decoding
@@ -15,7 +15,7 @@ fast_ber is a small, lightweight library for BER encoding and decoding. Fast ber
 - No circular data structures
 - Field size and value constraints implemented
 
-## Usage:
+## Usage
 1. Build the compiler:
 ```
 mkdir build_cmake
@@ -49,6 +49,33 @@ END
 ```
 cd build_cmake
 ./src/fast_ber_compiler pokemon.asn > pokemon.hpp
+```
+output:
+```
+#include "fast_ber/ber_types/All.hpp"
+#include "fast_ber/util/Encode.hpp"
+#include "fast_ber/util/Decode.hpp"
+
+namespace fast_ber {
+namespace Pokemon {
+
+struct Pokemon {
+    OctetString name;
+    OctetString category;
+    OctetString type;
+    OctetString ability;
+    OctetString weakness;
+    Integer weight;
+};
+
+struct Team {
+    SequenceOf<Pokemon> members;
+};
+
+... helper functions ...
+
+} // End namespace Pokemon
+} // End namespace fast_ber
 ```
 
 4. Include the header file into your application. Fields in the generated structure can be assigned to standard types. Encode and decode functions are used to serialize and deserialize the data.
