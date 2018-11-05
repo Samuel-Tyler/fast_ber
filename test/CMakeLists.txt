@@ -21,7 +21,7 @@ add_custom_command(
 
 add_executable(fast_ber_tests Test ${TEST_SRC} ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple.hpp)
 target_include_directories(fast_ber_tests PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-target_link_libraries (fast_ber_tests fast_ber_lib absl_internal_throw_delegate)
+target_link_libraries (fast_ber_tests fast_ber_lib absl::strings)
 
 enable_testing()
 add_test(NAME fast_ber_compiler_0 COMMAND fast_ber_compiler ../../testfiles/simple0.asn)

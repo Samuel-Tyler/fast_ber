@@ -1,0 +1,16 @@
+Pokemon DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+Team ::= SEQUENCE {
+    members SEQUENCE OF Pokemon
+}
+
+Pokemon ::= SEQUENCE {
+    name OCTET STRING,
+    category OCTET STRING,
+    type OCTET STRING,
+    ability OCTET STRING,
+    weakness OCTET STRING,
+    weight INTEGER
+}
+
+END

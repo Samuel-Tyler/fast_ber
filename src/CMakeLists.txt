@@ -11,7 +11,7 @@ if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
 endif()
 
-add_library(fast_ber_lib INTERFACE)
+add_library(fast_ber_lib)
 
 add_custom_command(
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp
@@ -26,12 +26,11 @@ add_custom_command(
 target_include_directories(fast_ber_lib INTERFACE
                            ../include
                            ../3rd_party/abseil-cpp
-                           #        ../3rd_party/GSL/include
                            ${CMAKE_CURRENT_BINARY_DIR})
 
 
 aux_source_directory(compiler SRC_LIST)
 add_executable(${PROJECT_NAME}_compiler ${SRC_LIST} ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp)
 
-target_link_libraries(fast_ber_lib)
-target_link_libraries(${PROJECT_NAME}_compiler fast_ber_lib absl::base absl_variant)
+target_link_libraries(fast_ber_lib absl::base absl_internal_throw_delegate absl::strings)
+target_link_libraries(${PROJECT_NAME}_compiler fast_ber_lib absl::base absl_variant absl_str_format)
