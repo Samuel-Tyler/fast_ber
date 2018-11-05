@@ -24,7 +24,7 @@ int main()
     for (const auto& member : team.members)
     {
         std::cout << "Pokemon = " << member.name << '\n';
-        std::cout << "Category = " << member.ability << '\n';
+        std::cout << "Category = " << member.category << '\n';
         std::cout << "Type = " << member.type << '\n';
         std::cout << "Ability = " << member.ability << '\n';
         std::cout << "Weakness = " << member.weakness << '\n';
