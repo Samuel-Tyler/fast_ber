@@ -51,7 +51,7 @@ cd build_cmake
 ./src/fast_ber_compiler pokemon.asn > pokemon.hpp
 ```
 
-4. Include the header file into your application. Fields in the generated structure can be assigned to standard types. Encode and decode functions are use to serialize and deserialize the data.
+4. Include the header file into your application. Fields in the generated structure can be assigned to standard types. Encode and decode functions are used to serialize and deserialize the data.
 ```
 #include "pokemon.hpp"
 
@@ -64,7 +64,7 @@ int main()
     team.members.push_back(piplup);
 
     std::array<uint8_t, 2000> buffer;
-    const auto encode_result = fast_ber::Pokemon::encode_with_new_id(absl::MakeSpan(buffer.data(), buffer.size()), team);
+    const auto encode_result = fast_ber::Pokemon::encode(absl::MakeSpan(buffer.data(), buffer.size()), team);
     if (!encode_result.success)
     {
         return -1;
