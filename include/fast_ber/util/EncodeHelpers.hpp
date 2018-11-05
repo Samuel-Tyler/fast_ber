@@ -8,7 +8,7 @@ namespace fast_ber
 struct EncodeResult
 {
     bool   success;
-    size_t encode_length;
+    size_t length;
 };
 
 inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> output, Class class_, int tag,

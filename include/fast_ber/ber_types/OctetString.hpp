@@ -1,7 +1,7 @@
 #pragma once
 
 #include "fast_ber/util/BerContainer.hpp"
-#include "fast_ber/util/EncodeResult.hpp"
+#include "fast_ber/util/EncodeHelpers.hpp"
 
 #include "absl/strings/string_view.h"
 #include "absl/types/span.h"
@@ -62,15 +62,16 @@ class OctetString
     size_t assign_ber(absl::Span<const uint8_t> buffer) noexcept;
 
     void   resize() noexcept;
-    size_t encode_with_new_id(absl::Span<uint8_t> buffer, Class, Tag tag) const noexcept;
+    size_t encode_with_specific_id(absl::Span<uint8_t> buffer, Class, Tag tag) const noexcept;
 
   private:
     BerContainer m_contents;
 }; // namespace fast_ber
 
-inline EncodeResult encode_with_new_id(absl::Span<uint8_t>& output, const OctetString& object, Class class_, int tag)
+inline EncodeResult encode_with_specific_id(absl::Span<uint8_t>& output, const OctetString& object, Class class_,
+                                            int tag)
 {
-    size_t encode_length = object.encode_with_new_id(output, class_, tag);
+    size_t encode_length = object.encode_with_specific_id(output, class_, tag);
     return EncodeResult{encode_length > 0, encode_length};
 }
 
@@ -128,9 +129,9 @@ inline size_t OctetString::assign_ber(absl::Span<const uint8_t> buffer) noexcept
     return m_contents.assign_ber(buffer);
 }
 
-inline size_t OctetString::encode_with_new_id(absl::Span<uint8_t> buffer, Class class_, Tag tag) const noexcept
+inline size_t OctetString::encode_with_specific_id(absl::Span<uint8_t> buffer, Class class_, Tag tag) const noexcept
 {
-    return m_contents.encode_with_new_id(buffer, Construction::primitive, class_, tag);
+    return m_contents.encode_with_specific_id(buffer, Construction::primitive, class_, tag);
 }
 
 } // namespace fast_ber

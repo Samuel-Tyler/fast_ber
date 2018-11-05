@@ -11,8 +11,7 @@ int main()
     team.members.push_back(piplup);
 
     std::array<uint8_t, 2000> buffer;
-    const auto encode_result = fast_ber::Pokemon::encode_with_new_id(absl::MakeSpan(buffer.data(), buffer.size()), team,
-                                                                     fast_ber::Class::context_specific, 0);
+    const auto encode_result = fast_ber::Pokemon::encode(absl::MakeSpan(buffer.data(), buffer.size()), team);
     if (!encode_result.success)
     {
         std::cout << "Failed to encode data\n";
@@ -26,6 +25,6 @@ int main()
         return -1;
     }
     output.write(reinterpret_cast<const char*>(buffer.data()),
-                 static_cast<std::streamsize>(encode_result.encode_length));
+                 static_cast<std::streamsize>(encode_result.length));
     return 0;
 }

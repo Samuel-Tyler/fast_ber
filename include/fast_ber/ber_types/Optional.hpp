@@ -5,7 +5,7 @@
 
 #include "fast_ber/ber_types/Class.hpp"
 #include "fast_ber/ber_types/Tag.hpp"
-#include "fast_ber/util/EncodeResult.hpp"
+#include "fast_ber/util/EncodeHelpers.hpp"
 
 namespace fast_ber
 {
@@ -13,12 +13,12 @@ template <typename T>
 using Optional = absl::optional<T>;
 
 template <typename T>
-EncodeResult encode_with_new_id(absl::Span<uint8_t> buffer, const Optional<T>& optional_type, Class class_,
-                                Tag tag) noexcept
+EncodeResult encode_with_specific_id(absl::Span<uint8_t> buffer, const Optional<T>& optional_type, Class class_,
+                                     Tag tag) noexcept
 {
     if (optional_type.has_value())
     {
-        return encode_with_new_id(buffer, *optional_type, class_, tag);
+        return encode_with_specific_id(buffer, *optional_type, class_, tag);
     }
     else
     {
@@ -27,13 +27,13 @@ EncodeResult encode_with_new_id(absl::Span<uint8_t> buffer, const Optional<T>& o
 }
 
 template <typename T>
-bool decode(BerViewIterator& input, Optional<T>& output, Tag tag) noexcept
+bool decode_with_specific_id(BerViewIterator& input, Optional<T>& output, Tag tag) noexcept
 {
     if (input->is_valid() && input->tag() == tag)
     {
 
         output.emplace(T());
-        return decode(input, *output, tag) > 0;
+        return decode_with_specific_id(input, *output, tag) > 0;
     }
     else
     {

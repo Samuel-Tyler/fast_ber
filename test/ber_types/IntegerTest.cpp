@@ -43,7 +43,7 @@ TEST_CASE("Integer: Encoding")
     std::array<uint8_t, 100> buffer;
 
     size_t size =
-        i.encode_with_new_id(absl::Span<uint8_t>(buffer.begin(), buffer.size()), fast_ber::Class::context_specific, 50);
+        i.encode_with_specific_id(absl::Span<uint8_t>(buffer.begin(), buffer.size()), fast_ber::Class::context_specific, 50);
 
     REQUIRE(size == 4);
 }

@@ -56,7 +56,7 @@ class BerContainer
     const BerView& view() const noexcept { return m_view; }
 
     size_t encode(absl::Span<uint8_t> buffer) const noexcept { return m_view.encode(buffer); }
-    size_t encode_with_new_id(absl::Span<uint8_t> buffer, Construction construction, Class class_, Tag tag) const
+    size_t encode_with_specific_id(absl::Span<uint8_t> buffer, Construction construction, Class class_, Tag tag) const
         noexcept;
 
   private:
@@ -177,10 +177,10 @@ inline void BerContainer::resize_content(size_t size)
     assert(m_view.is_valid());
 }
 
-inline size_t BerContainer::encode_with_new_id(absl::Span<uint8_t> buffer, Construction construction, Class class_,
+inline size_t BerContainer::encode_with_specific_id(absl::Span<uint8_t> buffer, Construction construction, Class class_,
                                                Tag tag) const noexcept
 {
-    return m_view.encode_with_new_id(buffer, construction, class_, tag);
+    return m_view.encode_with_specific_id(buffer, construction, class_, tag);
 }
 
 } // namespace fast_ber

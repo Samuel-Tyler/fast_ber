@@ -4,7 +4,7 @@
 #include "fast_ber/ber_types/Class.hpp"
 #include "fast_ber/ber_types/Construction.hpp"
 #include "fast_ber/util/Create.hpp"
-#include "fast_ber/util/EncodeResult.hpp"
+#include "fast_ber/util/EncodeHelpers.hpp"
 
 #include <cstring> // For std::memmove
 #include <iostream>
@@ -18,15 +18,15 @@ template <typename... Args, typename T>
 bool encode_combine_impl(absl::Span<uint8_t>& output, size_t& encoding_length, const T& object, Class class_, int tag,
                          const Args&... args) noexcept
 {
-    const EncodeResult result = encode_with_new_id(output, object, class_, tag);
+    const EncodeResult result = encode_with_specific_id(output, object, class_, tag);
     if (!result.success)
     {
         std::cerr << "Failed encoding packet, tag = " << tag << std::endl;
         return false;
     }
 
-    output.remove_prefix(result.encode_length);
-    encoding_length += result.encode_length;
+    output.remove_prefix(result.length);
+    encoding_length += result.length;
     return encode_combine_impl(output, encoding_length, args...);
 }
 

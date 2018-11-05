@@ -25,3 +25,7 @@ target_include_directories(sample_decode PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 target_link_libraries (sample_encode fast_ber_lib)
 target_link_libraries (sample_decode fast_ber_lib)
 
+enable_testing()
+add_test(NAME sample_encode COMMAND sample_encode)
+add_test(NAME sample_decode COMMAND sample_decode)
+add_test(NAME clean_up COMMAND rm pokemon.ber)

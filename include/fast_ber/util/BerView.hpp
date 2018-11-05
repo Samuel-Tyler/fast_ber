@@ -49,7 +49,7 @@ class BerView
     BerViewIterator end() const noexcept;
 
     size_t encode(absl::Span<uint8_t> buffer) const noexcept;
-    size_t encode_with_new_id(absl::Span<uint8_t> buffer, Construction construction, Class class_, Tag tag) const
+    size_t encode_with_specific_id(absl::Span<uint8_t> buffer, Construction construction, Class class_, Tag tag) const
         noexcept;
 
   private:
@@ -236,7 +236,7 @@ inline size_t BerView::encode(absl::Span<uint8_t> buffer) const noexcept
     return ber_length();
 }
 
-inline size_t BerView::encode_with_new_id(absl::Span<uint8_t> buffer, Construction construction, Class class_,
+inline size_t BerView::encode_with_specific_id(absl::Span<uint8_t> buffer, Construction construction, Class class_,
                                           Tag tag) const noexcept
 {
     size_t id_length = create_identifier(buffer, construction, class_, tag);

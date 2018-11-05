@@ -135,11 +135,11 @@ TEST_CASE("SimpleCompilerOutput: Testing a generated ber container")
     collection.child.meaning_of_life = -42;
     collection.optional_child = fast_ber::Simple::Child{999999999, {"The", "second", "child", std::string(2000, 'x')}};
 
-    fast_ber::EncodeResult encode_result = fast_ber::Simple::encode_with_new_id(
-        absl::MakeSpan(buffer.data(), buffer.size()), collection, fast_ber::Class::context_specific, 0);
-    bool decode_success = fast_ber::Simple::decode(absl::MakeSpan(buffer.data(), buffer.size()), new_collection, 0);
+    fast_ber::EncodeResult encode_result =
+        fast_ber::Simple::encode(absl::MakeSpan(buffer.data(), buffer.size()), collection);
+    bool decode_success = fast_ber::Simple::decode(absl::MakeSpan(buffer.data(), buffer.size()), new_collection);
 
-    output.write(reinterpret_cast<const char*>(buffer.data()), (long)encode_result.encode_length);
+    output.write(reinterpret_cast<const char*>(buffer.data()), (long)encode_result.length);
 
     REQUIRE(encode_result.success);
     REQUIRE(decode_success);
@@ -165,7 +165,7 @@ TEST_CASE("SimpleCompilerOutput: Decode Performance")
     {
         fast_ber::Simple::Collection collection;
         success = fast_ber::Simple::decode(
-            absl::MakeSpan(test_collection_packet.begin(), test_collection_packet.size()), collection, 0);
+            absl::MakeSpan(test_collection_packet.begin(), test_collection_packet.size()), collection);
     }
     REQUIRE(success);
 }
@@ -187,9 +187,7 @@ TEST_CASE("SimpleCompilerOutput: Encode Performance")
 
     for (int i = 0; i < 1000000; i++)
     {
-        encode_size = fast_ber::Simple::encode_with_new_id(absl::MakeSpan(buffer.data(), buffer.size()), collection,
-                                                           fast_ber::Class::context_specific, 0)
-                          .encode_length;
+        encode_size = fast_ber::Simple::encode(absl::MakeSpan(buffer.data(), buffer.size()), collection).length;
     }
     REQUIRE(encode_size == test_collection_packet.size());
 }

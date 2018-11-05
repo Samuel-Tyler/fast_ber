@@ -25,7 +25,7 @@ TEST_CASE("Boolean: Encoding false")
     std::array<uint8_t, 100> buffer;
     std::array<uint8_t, 3>   expected = {0x80, 0x01, 0x01};
 
-    size_t size = test.encode_with_new_id(absl::Span<uint8_t>(buffer.begin(), buffer.size()),
+    size_t size = test.encode_with_specific_id(absl::Span<uint8_t>(buffer.begin(), buffer.size()),
                                           fast_ber::Class::context_specific, 0);
 
     REQUIRE(size == 3);
@@ -38,7 +38,7 @@ TEST_CASE("Boolean: Encoding true")
     std::array<uint8_t, 100> buffer;
     std::array<uint8_t, 3>   expected = {0x80, 0x01, 0x00};
 
-    size_t size = test.encode_with_new_id(absl::Span<uint8_t>(buffer.begin(), buffer.size()),
+    size_t size = test.encode_with_specific_id(absl::Span<uint8_t>(buffer.begin(), buffer.size()),
                                           fast_ber::Class::context_specific, 0);
     REQUIRE(size == 3);
     REQUIRE(absl::MakeSpan(buffer.data(), 3) == absl::MakeSpan(expected));

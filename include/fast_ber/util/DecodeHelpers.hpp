@@ -1,10 +1,10 @@
 #pragma once
 
 #include "absl/types/span.h"
-#include "fast_ber/util/BerView.hpp"
-#include "fast_ber/ber_types/OctetString.hpp"
-#include "fast_ber/ber_types/Integer.hpp"
 #include "fast_ber/ber_types/Boolean.hpp"
+#include "fast_ber/ber_types/Integer.hpp"
+#include "fast_ber/ber_types/OctetString.hpp"
+#include "fast_ber/util/BerView.hpp"
 
 #include <iostream>
 
@@ -29,17 +29,17 @@ bool primitive_decode_impl(BerViewIterator& input, T& output, Tag tag) noexcept
     return success;
 }
 
-inline bool decode(BerViewIterator& input, Boolean& output, Tag tag) noexcept
+inline bool decode_with_specific_id(BerViewIterator& input, Boolean& output, Tag tag) noexcept
 {
     return primitive_decode_impl(input, output, tag);
 }
 
-inline bool decode(BerViewIterator& input, Integer& output, Tag tag) noexcept
+inline bool decode_with_specific_id(BerViewIterator& input, Integer& output, Tag tag) noexcept
 {
     return primitive_decode_impl(input, output, tag);
 }
 
-inline bool decode(BerViewIterator& input, OctetString& output, Tag tag) noexcept
+inline bool decode_with_specific_id(BerViewIterator& input, OctetString& output, Tag tag) noexcept
 {
     return primitive_decode_impl(input, output, tag);
 }

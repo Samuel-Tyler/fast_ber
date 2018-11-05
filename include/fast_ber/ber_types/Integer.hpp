@@ -5,7 +5,7 @@
 #include "fast_ber/ber_types/Construction.hpp"
 #include "fast_ber/util/BerView.hpp"
 #include "fast_ber/util/Create.hpp"
-#include "fast_ber/util/EncodeResult.hpp"
+#include "fast_ber/util/EncodeHelpers.hpp"
 #include "fast_ber/util/Extract.hpp"
 
 #include <algorithm>
@@ -39,7 +39,7 @@ class Integer
     size_t   assign_ber(const BerView& rhs) noexcept;
     size_t   assign_ber(absl::Span<const uint8_t> buffer) noexcept;
 
-    size_t encode_with_new_id(absl::Span<uint8_t> buffer, Class, Tag tag) const noexcept;
+    size_t encode_with_specific_id(absl::Span<uint8_t> buffer, Class, Tag tag) const noexcept;
 
   private:
     void    set_content_length(uint8_t length) noexcept { m_data[0] = length; }
@@ -49,9 +49,9 @@ class Integer
     std::array<uint8_t, sizeof(int64_t) + sizeof(uint8_t)> m_data;
 };
 
-inline EncodeResult encode_with_new_id(absl::Span<uint8_t>& output, const Integer& object, Class class_, int tag)
+inline EncodeResult encode_with_specific_id(absl::Span<uint8_t>& output, const Integer& object, Class class_, int tag)
 {
-    size_t encode_length = object.encode_with_new_id(output, class_, tag);
+    size_t encode_length = object.encode_with_specific_id(output, class_, tag);
     return EncodeResult{encode_length > 0, encode_length};
 }
 
@@ -167,7 +167,7 @@ inline size_t Integer::assign_ber(const BerView& view) noexcept
 
 inline size_t Integer::assign_ber(absl::Span<const uint8_t> buffer) noexcept { return assign_ber(BerView(buffer)); }
 
-inline size_t Integer::encode_with_new_id(absl::Span<uint8_t> buffer, Class class_, Tag tag) const noexcept
+inline size_t Integer::encode_with_specific_id(absl::Span<uint8_t> buffer, Class class_, Tag tag) const noexcept
 {
     size_t tag_length = create_identifier(buffer, Construction::primitive, class_, tag);
     if (tag_length == 0)

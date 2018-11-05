@@ -47,7 +47,7 @@ std::string create_encode_decode_functions(const Assignment& assignment)
         }
         res += "};\n\n";
 
-        res += "EncodeResult encode_with_new_id(absl::Span<uint8_t> output, const " + assignment.name +
+        res += "EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const " + assignment.name +
                "& input, Class class_, int tag)\n{\n";
         res += "    return encode_combine(output, class_, tag";
         for (const ComponentType& component : sequence)
@@ -57,24 +57,29 @@ std::string create_encode_decode_functions(const Assignment& assignment)
         }
         res += ");\n}\n\n";
 
-        res += "bool decode(const BerView& input, " + assignment.name + "& output, Tag tag)\n{\n";
+        res += "EncodeResult encode(absl::Span<uint8_t> output, const " + assignment.name + "& input)\n{\n";
+        res += "    return encode_with_specific_id(output, input, Class::universal, val(UniversalTag::sequence_of));\n";
+        res += "}\n\n";
+
+        res += "bool decode_with_specific_id(const BerView& input, " + assignment.name + "& output, Tag tag)\n{\n";
         res += "    return decode_combine(input, tag";
         for (const ComponentType& component : sequence)
         {
             res += ",\n                          output." + component.named_type.name + ", val(" + tags_class +
                    "::" + component.named_type.name + ")";
         }
-        res += ");\n}\n";
+        res += ");\n}\n\n";
 
-        res += "bool decode(absl::Span<const uint8_t> input, " + assignment.name + "& output, Tag tag)\n{\n";
-        res += "    return decode(BerView(input), output, tag);\n";
-        res += "}\n";
-
-        res += "bool decode(BerViewIterator& input, " + assignment.name + "& output, Tag tag)\n{\n";
-        res += "    bool success = decode(*input, output, tag) > 0;\n";
+        res += "bool decode_with_specific_id(BerViewIterator& input, " + assignment.name + "& output, Tag tag)\n{\n";
+        res += "    bool success = decode_with_specific_id(*input, output, tag) > 0;\n";
         res += "    ++input;\n";
         res += "    return success;\n";
-        res += "}\n";
+        res += "}\n\n";
+
+        res += "bool decode(absl::Span<const uint8_t> input, " + assignment.name + "& output)\n{\n";
+        res += "    return decode_with_specific_id(BerView(input), output, val(UniversalTag::sequence_of));\n";
+        res += "}\n\n";
+
         return res;
     }
     else
