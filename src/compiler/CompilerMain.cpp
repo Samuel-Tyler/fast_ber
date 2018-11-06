@@ -61,8 +61,9 @@ std::string create_encode_decode_functions(const Assignment& assignment)
         res += "    return encode_with_specific_id(output, input, Class::universal, val(UniversalTag::sequence_of));\n";
         res += "}\n\n";
 
+        res += "constexpr const char " + assignment.name + "_name[] = \"" + assignment.name + "\";\n";
         res += "bool decode_with_specific_id(const BerView& input, " + assignment.name + "& output, Tag tag)\n{\n";
-        res += "    return decode_combine(input, tag";
+        res += "    return decode_combine< " + assignment.name + "_name>(input, tag";
         for (const ComponentType& component : sequence)
         {
             res += ",\n                          output." + component.named_type.name + ", val(" + tags_class +
