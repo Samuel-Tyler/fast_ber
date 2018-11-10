@@ -2,6 +2,7 @@
 
 #include "absl/types/span.h"
 #include "fast_ber/ber_types/Boolean.hpp"
+#include "fast_ber/ber_types/Identifier.hpp"
 #include "fast_ber/ber_types/Integer.hpp"
 #include "fast_ber/ber_types/OctetString.hpp"
 #include "fast_ber/util/BerView.hpp"
@@ -10,9 +11,9 @@ namespace fast_ber
 {
 
 template <typename T>
-bool primitive_decode_impl(BerViewIterator& input, T& output, Tag tag) noexcept
+bool primitive_decode_impl(BerViewIterator& input, T& output, const ExplicitIdentifier& id) noexcept
 {
-    if (!input->is_valid() || tag != input->tag())
+    if (!input->is_valid() || val(id.tag) != input->tag())
     {
         return false;
     }
@@ -22,19 +23,22 @@ bool primitive_decode_impl(BerViewIterator& input, T& output, Tag tag) noexcept
     return success;
 }
 
-inline bool decode_with_specific_id(BerViewIterator& input, Boolean& output, Tag tag) noexcept
+template <typename ID>
+bool decode_with_specific_id(BerViewIterator& input, Boolean& output, const ID& id) noexcept
 {
-    return primitive_decode_impl(input, output, tag);
+    return primitive_decode_impl(input, output, id);
 }
 
-inline bool decode_with_specific_id(BerViewIterator& input, Integer& output, Tag tag) noexcept
+template <typename ID>
+bool decode_with_specific_id(BerViewIterator& input, Integer& output, const ID& id) noexcept
 {
-    return primitive_decode_impl(input, output, tag);
+    return primitive_decode_impl(input, output, id);
 }
 
-inline bool decode_with_specific_id(BerViewIterator& input, OctetString& output, Tag tag) noexcept
+template <typename ID>
+bool decode_with_specific_id(BerViewIterator& input, OctetString& output, const ID& id) noexcept
 {
-    return primitive_decode_impl(input, output, tag);
+    return primitive_decode_impl(input, output, id);
 }
 
 } // namespace fast_ber

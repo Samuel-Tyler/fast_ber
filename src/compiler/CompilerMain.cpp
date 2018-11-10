@@ -30,7 +30,7 @@ std::string create_assignment(const Assignment& assignment)
     }
 }
 
-std::string create_encode_decode_functions(const Assignment& assignment)
+std::string create_encode_functions(const Assignment& assignment)
 {
     if (absl::holds_alternative<BuiltinType>(assignment.type) &&
         absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(assignment.type)))
@@ -39,46 +39,66 @@ std::string create_encode_decode_functions(const Assignment& assignment)
         std::string         res;
         const std::string   tags_class = assignment.name + "Tags";
 
-        int i = 0;
-        res += "enum class " + tags_class + " : int {\n";
+        res += "namespace " + tags_class + " {\n";
         for (const ComponentType& component : sequence)
         {
-            res += "    " + component.named_type.name + " = " + std::to_string(i++) + ",\n";
+            res += "static const auto " + component.named_type.name + " = " + universal_tag(component.named_type.type) +
+                   ";\n";
         }
-        res += "};\n\n";
+        res += "}\n\n";
 
         res += "EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const " + assignment.name +
-               "& input, Class class_, int tag)\n{\n";
-        res += "    return encode_combine(output, class_, tag";
+               "& input, const ExplicitIdentifier& id)\n{\n";
+        res += "    return encode_combine(output, id";
         for (const ComponentType& component : sequence)
         {
-            res += ",\n                          input." + component.named_type.name + ", Class::context_specific, " +
-                   "val(" + tags_class + "::" + component.named_type.name + ")";
+            res += ",\n                          input." + component.named_type.name + ", " + tags_class +
+                   "::" + component.named_type.name;
         }
         res += ");\n}\n\n";
 
         res += "EncodeResult encode(absl::Span<uint8_t> output, const " + assignment.name + "& input)\n{\n";
-        res += "    return encode_with_specific_id(output, input, Class::universal, val(UniversalTag::sequence_of));\n";
+        res += "    return encode_with_specific_id(output, input, ExplicitIdentifier{UniversalTag::sequence_of});\n";
         res += "}\n\n";
 
+        return res;
+    }
+    else
+    {
+        throw std::runtime_error("Unhandled assignment type: " + to_string(assignment.type));
+    }
+}
+
+std::string create_decode_functions(const Assignment& assignment)
+{
+    if (absl::holds_alternative<BuiltinType>(assignment.type) &&
+        absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(assignment.type)))
+    {
+        const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(assignment.type));
+        std::string         res;
+        const std::string   tags_class = assignment.name + "Tags";
+
         res += "constexpr const char " + assignment.name + "_name[] = \"" + assignment.name + "\";\n";
-        res += "bool decode_with_specific_id(const BerView& input, " + assignment.name + "& output, Tag tag)\n{\n";
-        res += "    return decode_combine< " + assignment.name + "_name>(input, tag";
+        res += "bool decode_with_specific_id(const BerView& input, " + assignment.name +
+               "& output, const ExplicitIdentifier& id)\n{\n";
+        res += "    return decode_combine<" + assignment.name + "_name>(input, id";
         for (const ComponentType& component : sequence)
         {
-            res += ",\n                          output." + component.named_type.name + ", val(" + tags_class +
-                   "::" + component.named_type.name + ")";
+            res += ",\n                          output." + component.named_type.name + ", " + tags_class +
+                   "::" + component.named_type.name;
         }
         res += ");\n}\n\n";
 
-        res += "bool decode_with_specific_id(BerViewIterator& input, " + assignment.name + "& output, Tag tag)\n{\n";
-        res += "    bool success = decode_with_specific_id(*input, output, tag) > 0;\n";
+        res += "bool decode_with_specific_id(BerViewIterator& input, " + assignment.name +
+               "& output, const ExplicitIdentifier& id)\n{\n";
+        res += "    bool success = decode_with_specific_id(*input, output, id) > 0;\n";
         res += "    ++input;\n";
         res += "    return success;\n";
         res += "}\n\n";
 
         res += "bool decode(absl::Span<const uint8_t> input, " + assignment.name + "& output)\n{\n";
-        res += "    return decode_with_specific_id(BerView(input), output, val(UniversalTag::sequence_of));\n";
+        res += "    return decode_with_specific_id(BerView(input), output, "
+               "ExplicitIdentifier{UniversalTag::sequence_of});\n";
         res += "}\n\n";
 
         return res;
@@ -112,10 +132,11 @@ std::string create_body(const Asn1Tree& tree)
         output += create_assignment(*iter) + "\n";
     }
 
-    output += "\n\n\n\n\n\n/* Encoding and Decoding Functionality */\n\n\n";
+    output += "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Encoding and Decoding Functionality */\n\n\n";
     for (auto iter = tree.assignments.crbegin(); iter != tree.assignments.crend(); ++iter)
     {
-        output += create_encode_decode_functions(*iter) + "\n";
+        output += create_encode_functions(*iter);
+        output += create_decode_functions(*iter) + "\n";
     }
     return output;
 }

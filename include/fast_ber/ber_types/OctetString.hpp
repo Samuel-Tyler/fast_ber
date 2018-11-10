@@ -1,7 +1,6 @@
 #pragma once
 
 #include "fast_ber/util/BerContainer.hpp"
-#include "fast_ber/util/EncodeHelpers.hpp"
 
 #include "absl/strings/string_view.h"
 #include "absl/types/span.h"
@@ -67,13 +66,6 @@ class OctetString
   private:
     BerContainer m_contents;
 }; // namespace fast_ber
-
-inline EncodeResult encode_with_specific_id(absl::Span<uint8_t>& output, const OctetString& object, Class class_,
-                                            int tag)
-{
-    size_t encode_length = object.encode_with_specific_id(output, class_, tag);
-    return EncodeResult{encode_length > 0, encode_length};
-}
 
 inline OctetString& OctetString::operator=(absl::Span<const uint8_t> rhs) noexcept
 {

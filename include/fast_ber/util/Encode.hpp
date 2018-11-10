@@ -3,6 +3,7 @@
 #include "absl/types/span.h"
 #include "fast_ber/ber_types/Class.hpp"
 #include "fast_ber/ber_types/Construction.hpp"
+#include "fast_ber/ber_types/Identifier.hpp"
 #include "fast_ber/util/Create.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
 
@@ -14,14 +15,14 @@ namespace fast_ber
 
 bool encode_combine_impl(absl::Span<uint8_t>&, size_t&) noexcept { return true; }
 
-template <typename... Args, typename T>
-bool encode_combine_impl(absl::Span<uint8_t>& output, size_t& encoding_length, const T& object, Class class_, int tag,
+template <typename... Args, typename T, typename ID>
+bool encode_combine_impl(absl::Span<uint8_t>& output, size_t& encoding_length, const T& object, const ID& id,
                          const Args&... args) noexcept
 {
-    const EncodeResult result = encode_with_specific_id(output, object, class_, tag);
+    const EncodeResult result = encode_with_specific_id(output, object, id);
     if (!result.success)
     {
-        std::cerr << "Failed encoding packet, tag = " << tag << std::endl;
+        std::cerr << "Failed encoding packet, tag = " << reference_tag(id) << std::endl;
         return false;
     }
 
@@ -30,8 +31,8 @@ bool encode_combine_impl(absl::Span<uint8_t>& output, size_t& encoding_length, c
     return encode_combine_impl(output, encoding_length, args...);
 }
 
-template <typename... Args>
-EncodeResult encode_combine(const absl::Span<uint8_t> output, Class class_, int tag, const Args&... args) noexcept
+template <typename... Args, typename ID>
+EncodeResult encode_combine(const absl::Span<uint8_t> output, const ID& id, const Args&... args) noexcept
 {
     auto   encoding_output = output;
     size_t encode_length   = 0;
@@ -41,7 +42,7 @@ EncodeResult encode_combine(const absl::Span<uint8_t> output, Class class_, int 
         return EncodeResult{false, 0};
     }
 
-    return wrap_with_ber_header(output, class_, tag, encode_length);
+    return wrap_with_ber_header(output, id.class_, val(id.tag), encode_length);
 }
 
 } // namespace fast_ber

@@ -16,10 +16,10 @@ add_library(fast_ber_lib)
 add_custom_command(
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp
     BYPRODUCTS ${CMAKE_BINARY_DIR}/autogen/asn_compiler.re
-    DEPENDS ${CMAKE_SOURCE_DIR}/src/asn_compiler.yacc
+    DEPENDS ${CMAKE_SOURCE_DIR}/src/compiler/asn_compiler.yacc
 
     COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/autogen
-    COMMAND bison ${CMAKE_CURRENT_SOURCE_DIR}/asn_compiler.yacc -t --report=all -o ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.re
+    COMMAND bison ${CMAKE_CURRENT_SOURCE_DIR}/compiler/asn_compiler.yacc -t --report=all -o ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.re
     COMMAND re2c -o ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.re
 )
 

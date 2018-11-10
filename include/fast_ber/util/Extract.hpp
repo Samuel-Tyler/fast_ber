@@ -118,22 +118,20 @@ inline size_t extract_length(absl::Span<const uint8_t> input, uint64_t& length, 
         length = input[0];
         return 1;
     }
-    else
-    {
-        const size_t tag_length = input[0] & 0x7F;
-        if (tag_length > 8 || tag_length == 0 || tag_length + 1 > input.length())
-        {
-            return false;
-        }
 
-        length = 0;
-        for (size_t i = 1; i < tag_length + 1; i++)
-        {
-            length *= 0x100;
-            length += input[i];
-        }
-        return tag_length + 1;
+    const size_t tag_length = input[0] & 0x7F;
+    if (tag_length > 8 || tag_length == 0 || tag_length + 1 > input.length())
+    {
+        return false;
     }
+
+    length = 0;
+    for (size_t i = 1; i < tag_length + 1; i++)
+    {
+        length *= 0x100;
+        length += input[i];
+    }
+    return tag_length + 1;
 }
 
 } // namespace fast_ber

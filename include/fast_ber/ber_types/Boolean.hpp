@@ -6,7 +6,6 @@
 #include "fast_ber/ber_types/Construction.hpp"
 #include "fast_ber/util/BerView.hpp"
 #include "fast_ber/util/Create.hpp"
-#include "fast_ber/util/EncodeHelpers.hpp"
 #include "fast_ber/util/Extract.hpp"
 
 #include <algorithm>
@@ -41,12 +40,6 @@ class Boolean
   private:
     std::array<uint8_t, 2> m_data;
 }; // namespace fast_ber
-
-inline EncodeResult encode_with_specific_id(absl::Span<uint8_t>& output, const Boolean& object, Class class_, int tag)
-{
-    size_t encode_length = object.encode_with_specific_id(output, class_, tag);
-    return EncodeResult{encode_length > 0, encode_length};
-}
 
 inline Boolean& Boolean::operator=(bool rhs) noexcept
 {
