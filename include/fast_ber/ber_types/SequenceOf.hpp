@@ -4,6 +4,7 @@
 #include "absl/types/span.h"
 
 #include "fast_ber/ber_types/Class.hpp"
+#include "fast_ber/ber_types/Identifier.hpp"
 #include "fast_ber/ber_types/Tag.hpp"
 #include "fast_ber/util/DecodeHelpers.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
@@ -14,12 +15,6 @@ constexpr const size_t default_inlined_size = 5;
 
 template <typename T, size_t N = default_inlined_size>
 using SequenceOf = absl::InlinedVector<T, N>;
-
-template <typename ID1, typename ID2>
-SequenceId<ID1, ID2> make_sequence_id(const ID1& inner, const ID2& outer)
-{
-    return SequenceId<ID1, ID2>{inner, outer};
-}
 
 template <typename T, typename ID1, typename ID2>
 EncodeResult encode_with_specific_id(const absl::Span<uint8_t> buffer, const SequenceOf<T>& sequence,
@@ -38,7 +33,7 @@ EncodeResult encode_with_specific_id(const absl::Span<uint8_t> buffer, const Seq
         content_buffer.remove_prefix(element_encode_result.length);
     }
 
-    return wrap_with_ber_header(buffer, ids.sequence_id.class_, val(ids.sequence_id.tag), combined_length);
+    return wrap_with_ber_header(buffer, ids.outer_id.class_, val(ids.outer_id.tag), combined_length);
 }
 
 template <typename T>
@@ -53,7 +48,8 @@ template <typename T, typename ID1, typename ID2>
 bool decode_with_specific_id(BerViewIterator& input, SequenceOf<T>& output, const SequenceId<ID1, ID2>& ids) noexcept
 {
     output.clear();
-    if (!(input->is_valid() && input->tag() == 16 && input->construction() == Construction::constructed))
+    if (!(input->is_valid() && input->tag() == val(ids.outer_id.tag) &&
+          input->construction() == Construction::constructed))
     {
         return false;
     }

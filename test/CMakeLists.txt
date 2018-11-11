@@ -19,7 +19,14 @@ add_custom_command(
     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/../src/fast_ber_compiler ../testfiles/simple5.asn
 )
 
-add_executable(fast_ber_tests Test ${TEST_SRC} ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple.hpp)
+add_custom_command(
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/choice.hpp
+    COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/autogen
+    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/../src/fast_ber_compiler ${CMAKE_CURRENT_SOURCE_DIR}/../testfiles/choice.asn > ${CMAKE_CURRENT_BINARY_DIR}/autogen/choice.hpp
+    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/../src/fast_ber_compiler ../testfiles/choice.asn
+)
+
+add_executable(fast_ber_tests Test ${TEST_SRC} autogen/choice.hpp autogen/simple.hpp)
 target_include_directories(fast_ber_tests PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 target_link_libraries (fast_ber_tests fast_ber_lib absl::strings)
 

@@ -13,7 +13,7 @@
 namespace fast_ber
 {
 
-bool encode_combine_impl(absl::Span<uint8_t>&, size_t&) noexcept { return true; }
+inline bool encode_combine_impl(absl::Span<uint8_t>&, size_t&) noexcept { return true; }
 
 template <typename... Args, typename T, typename ID>
 bool encode_combine_impl(absl::Span<uint8_t>& output, size_t& encoding_length, const T& object, const ID& id,

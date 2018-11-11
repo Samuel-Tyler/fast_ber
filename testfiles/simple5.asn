@@ -6,7 +6,13 @@ Collection ::= SEQUENCE {
     integer INTEGER,
     boolean BOOLEAN,
     child Child,
-    optional_child Child OPTIONAL
+    optional_child Child OPTIONAL,
+    the_choice CHOICE {
+        hello OCTET STRING,
+        goodbye OCTET STRING,
+        integer INTEGER,
+        boolean BOOLEAN
+    }
 }
 
 Child ::= SEQUENCE {

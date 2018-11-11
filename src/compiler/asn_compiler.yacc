@@ -212,6 +212,10 @@
 %type<ComponentTypeList> RootComponentTypeList;
 %type<Value>             Value;
 %type<SequenceOfType>    SequenceOfType;
+%type<ChoiceType>        ChoiceType;
+%type<std::vector<NamedType>> AlternativeTypeList;
+%type<std::vector<NamedType>> AlternativeTypeLists
+%type<std::vector<NamedType>> RootAlternativeTypeList;
 
 %right RANGE
 %left COLON
@@ -835,7 +839,7 @@ BuiltinType:
     BitStringType { $$ = BitStringType(); }
 |   BooleanType { $$ = BooleanType(); }
 |   CharacterStringType { $$ = CharacterStringType(); }
-|   ChoiceType { $$ = ChoiceType(); }
+|   ChoiceType { $$ = $1; }
 |   DateType { $$ = DateType(); }
 |   DateTimeType { $$ = DateTimeType(); }
 |   DurationType { $$ = DurationType(); }
@@ -1284,10 +1288,12 @@ XMLSetOfValue:
 |   %empty;
 */
 ChoiceType:
-    CHOICE "{" AlternativeTypeLists "}";
+    CHOICE "{" AlternativeTypeLists "}"
+    { $$ = ChoiceType{ $3 }; }
 
 AlternativeTypeLists:
     RootAlternativeTypeList
+    { $$ = $1; }
 |   RootAlternativeTypeList
     ","
     ExtensionAndException
@@ -1295,7 +1301,8 @@ AlternativeTypeLists:
     OptionalExtensionMarker;
 
 RootAlternativeTypeList:
-    AlternativeTypeList;
+    AlternativeTypeList
+    { $$ = $1; }
 
 ExtensionAdditionAlternatives:
     "," ExtensionAdditionAlternativesList
@@ -1314,7 +1321,9 @@ ExtensionAdditionAlternativesGroup:
 
 AlternativeTypeList:
     NamedType
-|   AlternativeTypeList "," NamedType;
+    { $$ = std::vector<NamedType> { $1 }; }
+|   AlternativeTypeList "," NamedType
+    { $1.push_back( $3 ); $$ = $1; }
 
 ChoiceValue:
     identifier DEFINED_AS Value;

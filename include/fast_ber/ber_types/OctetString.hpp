@@ -33,11 +33,14 @@ class OctetString
 
     OctetString&         operator=(absl::Span<const uint8_t> buffer) noexcept;
     bool                 operator==(absl::string_view view) const noexcept { return absl::string_view(*this) == view; }
+    bool                 operator==(const OctetString& rhs) const noexcept;
+    bool                 operator==(const std::string& rhs) const noexcept;
+    bool                 operator==(const char* rhs) const noexcept;
     bool                 operator!=(absl::string_view view) const noexcept { return !((*this) == view); }
     uint8_t&             operator[](size_t n) noexcept { return data()[n]; }
     const uint8_t&       operator[](size_t n) const noexcept { return data()[n]; }
     friend std::ostream& operator<<(std::ostream& os, const OctetString& str) noexcept;
-                         operator absl::string_view() const noexcept { return absl::string_view(c_str(), length()); }
+    explicit             operator absl::string_view() const noexcept { return absl::string_view(c_str(), length()); }
 
     uint8_t*                  data() noexcept { return m_contents.content_data(); }
     const uint8_t*            data() const noexcept { return m_contents.content_data(); }
@@ -86,6 +89,18 @@ inline OctetString& OctetString::operator=(const OctetString& rhs) noexcept
 {
     assign(rhs);
     return *this;
+}
+inline bool OctetString::operator==(const OctetString& rhs) const noexcept
+{
+    return absl::string_view(*this) == absl::string_view(rhs);
+}
+inline bool OctetString::operator==(const std::string& rhs) const noexcept
+{
+    return absl::string_view(*this) == absl::string_view(rhs);
+}
+inline bool OctetString::operator==(const char* rhs) const noexcept
+{
+    return absl::string_view(*this) == absl::string_view(rhs);
 }
 
 inline std::ostream& operator<<(std::ostream& os, const OctetString& str) noexcept

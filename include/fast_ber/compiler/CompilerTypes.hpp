@@ -28,9 +28,7 @@ struct BooleanType
 struct CharacterStringType
 {
 };
-struct ChoiceType
-{
-};
+struct ChoiceType;
 struct DateType
 {
 };
@@ -114,6 +112,10 @@ struct SequenceOfType
     std::shared_ptr<NamedType> named_type;
     std::shared_ptr<Type>      type;
 };
+struct ChoiceType
+{
+    std::vector<NamedType> choices;
+};
 
 struct NamedType
 {
@@ -177,7 +179,22 @@ std::string to_string(const Type& type);
 std::string to_string(const BitStringType&) { return "BitString"; }
 std::string to_string(const BooleanType&) { return "Boolean"; }
 std::string to_string(const CharacterStringType&) { return "CharacterString"; }
-std::string to_string(const ChoiceType&) { return "Choice"; }
+std::string to_string(const ChoiceType& choice)
+{
+    bool        is_first = true;
+    std::string res      = "Choice<";
+    for (const auto& named_type : choice.choices)
+    {
+        if (!is_first)
+        {
+            res += ", ";
+        }
+        res += to_string(named_type.type);
+        is_first = false;
+    }
+    res += ">";
+    return res;
+}
 std::string to_string(const DateType&) { return "Date"; }
 std::string to_string(const DateTimeType&) { return "DateTime"; }
 std::string to_string(const DurationType&) { return "Duration"; }
@@ -245,7 +262,23 @@ std::string universal_tag(const Type& type);
 std::string universal_tag(const BitStringType&) { return "ExplicitIdentifier{UniversalTag::bit_string"; }
 std::string universal_tag(const BooleanType&) { return "ExplicitIdentifier{UniversalTag::boolean}"; }
 std::string universal_tag(const CharacterStringType&) { return "ExplicitIdentifier{UniversalTag::bit_string}"; }
-std::string universal_tag(const ChoiceType&) { return "ExplicitIdentifier{UniversalTag::choice_type}"; }
+std::string universal_tag(const ChoiceType& choice)
+{
+
+    bool        is_first = true;
+    std::string res      = "make_choice_id(";
+    for (const auto& named_type : choice.choices)
+    {
+        if (!is_first)
+        {
+            res += ", ";
+        }
+        res += universal_tag(named_type.type);
+        is_first = false;
+    }
+    res += ")";
+    return res;
+}
 std::string universal_tag(const DateType&) { return "ExplicitIdentifier{UniversalTag::date_type}"; }
 std::string universal_tag(const DateTimeType&) { return "ExplicitIdentifier{UniversalTag::date_time}"; }
 std::string universal_tag(const DurationType&) { return "ExplicitIdentifier{UniversalTag::duration}"; }
@@ -298,7 +331,6 @@ struct UniversalTagHelper
 
 ToStringHelper     string_helper;
 UniversalTagHelper tag_helper;
-std::string        to_string(const Type& type);
 std::string        to_string(const BuiltinType& type) { return absl::visit(string_helper, type); }
 std::string        to_string(const Type& type) { return absl::visit(string_helper, type); }
 std::string        universal_tag(const DefinedType&) { return "ExplicitIdentifier{UniversalTag::sequence_of}"; }
