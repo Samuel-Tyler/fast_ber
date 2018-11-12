@@ -1,4 +1,6 @@
+#include "fast_ber/ber_types/Identifier.hpp"
 #include "fast_ber/ber_types/Integer.hpp"
+#include "fast_ber/util/EncodeHelpers.hpp"
 
 #include <catch2/catch.hpp>
 #include <limits>
@@ -41,11 +43,13 @@ TEST_CASE("Integer: Encoding")
 {
     fast_ber::Integer        i(100);
     std::array<uint8_t, 100> buffer;
+    std::array<uint8_t, 3>   expected = {0x02, 0x01, 0x64};
+    size_t size = fast_ber::encode_with_specific_id(absl::Span<uint8_t>(buffer.begin(), buffer.size()), i,
+                                                    fast_ber::ExplicitIdentifier{fast_ber::UniversalTag::integer})
+                      .length;
 
-    size_t size =
-        i.encode_with_specific_id(absl::Span<uint8_t>(buffer.begin(), buffer.size()), fast_ber::Class::context_specific, 50);
-
-    REQUIRE(size == 4);
+    REQUIRE(size == 3);
+    REQUIRE(absl::MakeSpan(buffer.data(), 3) == absl::MakeSpan(expected));
 }
 
 TEST_CASE("Integer: Assign from raw")

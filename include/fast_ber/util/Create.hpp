@@ -2,6 +2,7 @@
 
 #include "fast_ber/ber_types/Class.hpp"
 #include "fast_ber/ber_types/Construction.hpp"
+#include "fast_ber/ber_types/Identifier.hpp"
 #include "fast_ber/ber_types/Tag.hpp"
 
 #include "absl/types/span.h"
@@ -12,10 +13,13 @@ namespace fast_ber
 // Create ber tag in provided buffer
 // Return the size of the created tag field or zero on fail
 inline size_t create_tag(absl::Span<uint8_t> output, Tag tag) noexcept;
+inline size_t create_tag(absl::Span<uint8_t> output, UniversalTag tag) noexcept;
 
 // Create ber identifier octets
 // Return the size of the created tag field or zero on fail
 inline size_t create_identifier(absl::Span<uint8_t> output, Construction construction, Class class_, Tag tag) noexcept;
+inline size_t create_identifier(absl::Span<uint8_t> output, Construction construction, Class class_,
+                                UniversalTag tag) noexcept;
 
 // Create ber length octets
 // Return the size of the created tag field or zero on fail
@@ -24,6 +28,8 @@ inline size_t create_length(absl::Span<uint8_t> output, uint64_t length) noexcep
 // Create a ber header consisting of construction, class, tag and size
 // Return the size of the created header or zero on fail
 inline size_t create_header(absl::Span<uint8_t> output, Construction construction, Class class_, Tag tag,
+                            size_t length) noexcept;
+inline size_t create_header(absl::Span<uint8_t> output, Construction construction, Class class_, UniversalTag tag,
                             size_t length) noexcept;
 
 inline size_t create_tag(absl::Span<uint8_t> output, Tag tag) noexcept
@@ -62,6 +68,7 @@ inline size_t create_tag(absl::Span<uint8_t> output, Tag tag) noexcept
         return 0;
     }
 }
+inline size_t create_tag(absl::Span<uint8_t> output, UniversalTag tag) noexcept { return create_tag(output, val(tag)); }
 
 inline size_t create_identifier(absl::Span<uint8_t> output, Construction construction, Class class_, Tag tag) noexcept
 {
@@ -76,6 +83,12 @@ inline size_t create_identifier(absl::Span<uint8_t> output, Construction constru
     set_class(output[0], class_);
 
     return create_tag(output, tag);
+}
+
+inline size_t create_identifier(absl::Span<uint8_t> output, Construction construction, Class class_,
+                                UniversalTag tag) noexcept
+{
+    return create_identifier(output, construction, class_, val(tag));
 }
 
 inline size_t create_length(absl::Span<uint8_t> output, uint64_t length) noexcept
@@ -183,6 +196,11 @@ inline size_t create_header(absl::Span<uint8_t> output, Construction constructio
     }
 
     return id_length + length_length;
+}
+inline size_t create_header(absl::Span<uint8_t> output, Construction construction, Class class_, UniversalTag tag,
+                            size_t length) noexcept
+{
+    return create_header(output, construction, class_, val(tag), length);
 }
 
 } // namespace fast_ber

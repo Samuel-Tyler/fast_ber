@@ -23,6 +23,38 @@ bool primitive_decode_impl(BerViewIterator& input, T& output, const ExplicitIden
     return success;
 }
 
+template <typename T>
+bool primitive_decode_impl(BerViewIterator& input, T& output, const TaggedExplicitIdentifier& id) noexcept
+{
+    if (!input->is_valid() || val(id.outer_tag) != input->tag())
+    {
+        return false;
+    }
+
+    BerView inner = fast_ber::BerView(input->content());
+    if (!inner.is_valid() || val(id.inner_tag) != inner.tag())
+    {
+        return false;
+    }
+
+    bool success = output.assign_ber(inner) > 0;
+    ++input;
+    return success;
+}
+
+template <typename T>
+bool primitive_decode_impl(BerViewIterator& input, T& output, const ImplicitIdentifier& id) noexcept
+{
+    if (!input->is_valid() || val(id.tag) != input->tag())
+    {
+        return false;
+    }
+
+    bool success = output.assign_ber(*input) > 0;
+    ++input;
+    return success;
+}
+
 template <typename ID>
 bool decode_with_specific_id(BerViewIterator& input, Boolean& output, const ID& id) noexcept
 {

@@ -49,8 +49,7 @@ class BerView
     BerViewIterator end() const noexcept;
 
     size_t encode(absl::Span<uint8_t> buffer) const noexcept;
-    size_t encode_with_specific_id(absl::Span<uint8_t> buffer, Construction construction, Class class_, Tag tag) const
-        noexcept;
+    size_t encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
   private:
     absl::Span<const uint8_t> m_full_packet;
@@ -236,17 +235,8 @@ inline size_t BerView::encode(absl::Span<uint8_t> buffer) const noexcept
     return ber_length();
 }
 
-inline size_t BerView::encode_with_specific_id(absl::Span<uint8_t> buffer, Construction construction, Class class_,
-                                          Tag tag) const noexcept
+inline size_t BerView::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
 {
-    size_t id_length = create_identifier(buffer, construction, class_, tag);
-    if (id_length == 0 || id_length > buffer.size())
-    {
-        return 0;
-    }
-
-    buffer.remove_prefix(id_length);
-
     auto ber = this->ber();
     ber.remove_prefix(identifier_length());
     if (ber.size() > buffer.size())
@@ -255,7 +245,7 @@ inline size_t BerView::encode_with_specific_id(absl::Span<uint8_t> buffer, Const
     }
 
     std::memcpy(buffer.data(), ber.data(), ber.size());
-    return id_length + ber.length();
+    return ber.length();
 }
 
 } // namespace fast_ber

@@ -141,7 +141,7 @@ TEST_CASE("SimpleCompilerOutput: Testing a generated ber container")
         fast_ber::Simple::encode(absl::MakeSpan(buffer.data(), buffer.size()), collection);
     bool decode_success = fast_ber::Simple::decode(absl::MakeSpan(buffer.data(), buffer.size()), new_collection);
 
-    output.write(reinterpret_cast<const char*>(buffer.data()), (long)encode_result.length);
+    output.write(reinterpret_cast<const char*>(buffer.data()), static_cast<long>(encode_result.length));
 
     REQUIRE(encode_result.success);
     REQUIRE(decode_success);

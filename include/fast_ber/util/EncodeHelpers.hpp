@@ -16,7 +16,7 @@ struct EncodeResult
     size_t length;
 };
 
-inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> output, Class class_, int tag,
+inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> output, Class class_, Tag tag,
                                          size_t content_length) noexcept
 {
     std::array<uint8_t, 30> buffer;
@@ -33,25 +33,65 @@ inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> output, Class class
     return EncodeResult{true, header_length + content_length};
 }
 
-template <typename ID>
-EncodeResult encode_with_specific_id(absl::Span<uint8_t>& output, const Integer& object, const ID& id)
+template <typename T>
+EncodeResult encode_with_specific_id_impl(absl::Span<uint8_t> output, const T& object, const ExplicitIdentifier& id)
 {
-    size_t encode_length = object.encode_with_specific_id(output, id.class_, val(id.tag));
-    return EncodeResult{encode_length > 0, encode_length};
+    size_t id_length = create_identifier(output, Construction::primitive, id.class_, id.tag);
+    if (id_length == 0 || id_length > output.size())
+    {
+        return EncodeResult{false, 0};
+    }
+
+    output.remove_prefix(id_length);
+
+    size_t encode_length = object.encode_content_and_length(output);
+    return EncodeResult{encode_length > 0, id_length + encode_length};
+}
+
+template <typename T>
+EncodeResult encode_with_specific_id_impl(absl::Span<uint8_t> output, const T& object,
+                                          const TaggedExplicitIdentifier& id)
+{
+    size_t encode_length = object.encode(output);
+    if (encode_length == 0)
+    {
+        return EncodeResult{false, 0};
+    }
+
+    return wrap_with_ber_header(output, id.outer_class, id.outer_tag, encode_length);
+}
+
+template <typename T>
+EncodeResult encode_with_specific_id_impl(absl::Span<uint8_t> output, const T& object, const ImplicitIdentifier& id)
+{
+    size_t id_length = create_identifier(output, Construction::primitive, id.class_, id.tag);
+    if (id_length == 0 || id_length > output.size())
+    {
+        return EncodeResult{false, 0};
+    }
+
+    output.remove_prefix(id_length);
+
+    size_t encode_length = object.encode_content_and_length(output);
+    return EncodeResult{encode_length > 0, id_length + encode_length};
 }
 
 template <typename ID>
-EncodeResult encode_with_specific_id(absl::Span<uint8_t>& output, const OctetString& object, const ID& id)
+EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const Integer& object, const ID& id)
 {
-    size_t encode_length = object.encode_with_specific_id(output, id.class_, val(id.tag));
-    return EncodeResult{encode_length > 0, encode_length};
+    return encode_with_specific_id_impl(output, object, id);
 }
 
 template <typename ID>
-EncodeResult encode_with_specific_id(absl::Span<uint8_t>& output, const Boolean& object, const ID& id)
+EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const OctetString& object, const ID& id)
 {
-    size_t encode_length = object.encode_with_specific_id(output, id.class_, val(id.tag));
-    return EncodeResult{encode_length > 0, encode_length};
+    return encode_with_specific_id_impl(output, object, id);
+}
+
+template <typename ID>
+EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const Boolean& object, const ID& id)
+{
+    return encode_with_specific_id_impl(output, object, id);
 }
 
 } // namespace fast_ber

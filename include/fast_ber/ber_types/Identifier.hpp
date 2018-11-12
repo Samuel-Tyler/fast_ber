@@ -4,6 +4,8 @@
 #include "fast_ber/ber_types/Construction.hpp"
 #include "fast_ber/ber_types/Tag.hpp"
 
+#include <tuple>
+
 namespace fast_ber
 {
 
