@@ -5,15 +5,16 @@ A performant ASN.1 BER encoding and decoding library written in C++11.
 fast_ber is a small, lightweight library for BER encoding and decoding. Fast ber forgoes some tight ASN.1 specification conformance to provide fast encoding and decoding performance in common use cases.
 
 #### Design Decisions
-- Simple, modern C++ interface. ASN.1 sequences are represented as POD structs
-- No exceptions, no RTTI, limited memory allocations (everything is small buffer optimised)
+- Simple, modern C++ interface
+- ASN.1 sequences are represented as POD structs - no private members or complex getters and setters
+- No exceptions, no RTTI and limited memory allocations (everything is small buffer optimised)
 - Header only
-- View classes for zero copy decoding
+- View classes are provided for zero copy decoding
 - Interfaces mimic STL types such as std::string, std::vector and std::optional
 
 #### Limitations
 - No circular data structures
-- Field size and value constraints implemented
+- Size and value constraints are not implemented
 
 ## Usage
 1. Build the compiler:
@@ -98,4 +99,5 @@ int main()
     }
     
     return 0;
+}
 ```
