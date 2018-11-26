@@ -26,7 +26,7 @@ make
 ctest
 ```
 
-2. Define a ASN.1 file - Example: pokemon.asn
+2. Define an ASN.1 file - Example: pokemon.asn
 ```
 Pokemon DEFINITIONS AUTOMATIC TAGS ::= BEGIN
 
@@ -101,3 +101,32 @@ int main()
     return 0;
 }
 ```
+
+## Features
+fast_ber is in development. The following table documents what has been implemented and what features are coming soon.
+
+Command | Description |
+| --- | --- |
+| Integer | Yes |
+| Boolean | Yes |
+| String types | Yes |
+| Date / Time types | No |
+| Object Identifier | No |
+Todos:
+Any type
+Enumerated
+Implicit tags
+Tagged explicit
+Dates / Times
+Limit indefinitive length
+Structure reordering
+Time and Date structures
+Object Identifier
+Arbitrary top level object
+Embedded sequences
+
+Luxury
+Imports
+Partial decoding
+Move some encoding to compile time
+High / low conformance modes
