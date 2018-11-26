@@ -5,7 +5,7 @@ Collection ::= SEQUENCE {
     string2 [1] OCTET STRING,
     integer [2] EXPLICIT INTEGER,
     bool1 [3] IMPLICIT BOOLEAN,
-    bool2 [PRIVATE 4] BOOLEAN,
+    bool2 [PRIVATE 4] EXPLICIT BOOLEAN,
     bool3 [APPLICATION 5] BOOLEAN
 }
 
