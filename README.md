@@ -26,7 +26,7 @@ make
 ctest
 ```
 
-2. Define a ASN.1 file - Example: pokemon.asn
+2. Define an ASN.1 file - Example: pokemon.asn
 ```
 Pokemon DEFINITIONS AUTOMATIC TAGS ::= BEGIN
 
@@ -49,7 +49,7 @@ END
 3. Compile an asn file into a header file defining the ber structure
 ```
 cd build_cmake
-./src/fast_ber_compiler pokemon.asn > pokemon.hpp
+./src/fast_ber_compiler pokemon.asn pokemon
 ```
 output:
 ```
@@ -101,3 +101,37 @@ int main()
     return 0;
 }
 ```
+
+## Features
+fast_ber is in development. The following table documents what has been implemented and what features are coming soon.
+
+Command | Description |
+| --- | --- |
+| Integer | Yes |
+| Boolean | Yes |
+| String types | Yes |
+| Date / Time types | No |
+| Object Identifier | No |
+Any type No
+Set
+Choice Type
+Sequencr
+Enumerated
+SequenceOf
+SetOf
+Implicit tags
+Tagged explicit
+Dates / Times
+I ndefdinitive length No
+Arbritary Definition order No
+
+Time and Date structures
+Object Identifier
+Arbitrary top level object
+Embedded sequences
+
+Luxury
+Imports
+Partial decoding
+Move some encoding to compile time
+High / low conformance modes
