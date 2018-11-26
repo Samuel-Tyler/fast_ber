@@ -49,7 +49,7 @@ END
 3. Compile an asn file into a header file defining the ber structure
 ```
 cd build_cmake
-./src/fast_ber_compiler pokemon.asn > pokemon.hpp
+./src/fast_ber_compiler pokemon.asn pokemon
 ```
 output:
 ```
@@ -112,14 +112,19 @@ Command | Description |
 | String types | Yes |
 | Date / Time types | No |
 | Object Identifier | No |
-Todos:
-Any type
+Any type No
+Set
+Choice Type
+Sequencr
 Enumerated
+SequenceOf
+SetOf
 Implicit tags
 Tagged explicit
 Dates / Times
-Limit indefinitive length
-Structure reordering
+I ndefdinitive length No
+Arbritary Definition order No
+
 Time and Date structures
 Object Identifier
 Arbitrary top level object
