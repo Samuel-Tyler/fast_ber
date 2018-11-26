@@ -4,7 +4,7 @@
 %define api.value.type variant
 %define parse.assert
 %define parse.error verbose
-%locations   // <--
+%locations
 
 %code requires
 {
@@ -13,13 +13,12 @@
 
 %code
 {
-     struct Context
+    struct Context
     {
         const char* cursor;
         yy::location location;
 
         Asn1Tree asn1_tree;
-        // std::unordered_map<s
     };
     void yy::asn1_parser::error(const location_type& l, const std::string& m)
     {
@@ -204,6 +203,8 @@
 %type<DefinedType>       ReferencedType;
 %type<Assignment>        TypeAssignment;
 %type<Type>              Type;
+%type<Class>             Class;
+%type<int>               ClassNumber;
 %type<ComponentTypeList> SequenceType;
 %type<NamedType>         NamedType;
 %type<ComponentType>     ComponentType;
@@ -216,6 +217,10 @@
 %type<std::vector<NamedType>> AlternativeTypeList;
 %type<std::vector<NamedType>> AlternativeTypeLists
 %type<std::vector<NamedType>> RootAlternativeTypeList;
+%type<TaggingMode>       TagDefault;
+%type<Tag>               Tag;
+%type<TaggedType>        TaggedType;
+%type<PrefixedType>      PrefixedType;
 
 %right RANGE
 %left COLON
@@ -238,7 +243,8 @@ ModuleDefinition:
     BEGIN
     ModuleBody
     EncodingControlSections
-    END;
+    END
+    { context.asn1_tree.tagging_default = $4; }
 
 SyntaxList:
    "{" TokenOrGroupSpec "}";
@@ -665,9 +671,13 @@ EncodingReferenceDefault:
 
 TagDefault:
     EXPLICIT TAGS
+    { $$ = TaggingMode::explicit_; }
 |   IMPLICIT TAGS
+    { $$ = TaggingMode::implicit; }
 |   AUTOMATIC TAGS
-|   %empty;
+    { $$ = TaggingMode::automatic; }
+|   %empty
+    { $$ = TaggingMode::explicit_; }
 
 ExtensionDefault:
     EXTENSIBILITY IMPLIED
@@ -826,7 +836,7 @@ ValueSetTypeAssignment:
 
 ValueSet:
     "{" ElementSetSpecs "}";
-    
+
 Type:
     BuiltinType
     { $$ = $1; }
@@ -835,7 +845,7 @@ Type:
 |   ConstrainedType
     { $$ = Type(); std::cout << "constrained type\n"; }
 
-BuiltinType: 
+BuiltinType:
     BitStringType { $$ = BitStringType(); }
 |   BooleanType { $$ = BooleanType(); }
 |   CharacterStringType { $$ = CharacterStringType(); }
@@ -860,7 +870,7 @@ BuiltinType:
 |   SequenceOfType { $$ = $1; }
 |   SetType { $$ = SetType(); }
 |   SetOfType { $$ = SetOfType(); }
-|   PrefixedType { $$ = PrefixedType(); }
+|   PrefixedType { $$ = $1; }
 |   TimeType { $$ = TimeType(); }
 |   TimeOfDayType { $$ = TimeOfDayType(); }
 
@@ -873,7 +883,7 @@ ReferencedType:
 
 NamedType:
     identifier Type
-    { $$ = NamedType{$1, $2}; }
+    { $$ = NamedType{ $1, $2 }; }
 
 Value:
     BuiltinValue
@@ -1338,6 +1348,7 @@ SelectionType:
 
 PrefixedType:
     TaggedType
+    { $$ = PrefixedType($1); }
 |   EncodingPrefixedType;
 
 PrefixedValue:
@@ -1354,11 +1365,15 @@ EncodingPrefix:
 
 TaggedType:
     Tag Type
+    { $$ = TaggedType{ $1, TaggingMode::automatic, $2 }; }
 |   Tag IMPLICIT Type
-|   Tag EXPLICIT Type;
+    { $$ = TaggedType{ $1, TaggingMode::implicit, $3 }; }
+|   Tag EXPLICIT Type
+    { $$ = TaggedType{ $1, TaggingMode::explicit_, $3 }; }
 
 Tag:
-    "[" EncodingReference Class ClassNumber "]";
+    "[" EncodingReference Class ClassNumber "]"
+    { $$ = Tag{ $3, $4 }; }
 
 EncodingReference:
     encodingreference ":"
@@ -1366,13 +1381,18 @@ EncodingReference:
 
 ClassNumber:
     number
+    { $$ = $1; }
 |   DefinedValue;
 
 Class:
     UNIVERSAL
+    { $$ = Class::universal; }
 |   APPLICATION
+    { $$ = Class::application; }
 |   PRIVATE
-|   %empty;
+    { $$ = Class::private_; }
+|   %empty
+    { $$ = Class::context_specific; }
 
 EncodingPrefixedType:
     EncodingPrefix Type;
@@ -1970,8 +1990,8 @@ re2c:define:YYCURSOR = "context.cursor";
 "--" [^\r\n]*           { context.location.columns(context.cursor - start); return yylex(context); }
 
 // Identifiers
-//[0-9]+\.[0-9]+          { context.location.columns(context.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context.cursor)), context.location); }
-[0-9]+                  { std::cout << "got int\n"; context.location.columns(context.cursor - start); return asn1_parser::make_number(std::stoi(std::string(start, context.cursor)), context.location); }
+//[0-9]+\.[0-9]+        { context.location.columns(context.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context.cursor)), context.location); }
+[0-9]+                  { context.location.columns(context.cursor - start); return asn1_parser::make_number(std::stoi(std::string(start, context.cursor)), context.location); }
 [A-Z][A-Za-z_0-9\-]+    { /* std::cout << "got string = " << std::string(start, context.cursor) << std::endl;*/ context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(std::string(start, context.cursor), context.location); }
 [a-z][A-Za-z_0-9\-]+    { /*std::cout << "got string = " << std::string(start, context.cursor) << std::endl;*/ context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(std::string(start, context.cursor), context.location); }
 

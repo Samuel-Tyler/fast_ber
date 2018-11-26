@@ -188,6 +188,9 @@ inline void BerView::assign(absl::Span<const uint8_t> data) noexcept
 
     if (tag_length == 0 || len_length == 0 || complete_length > data.length())
     {
+        m_id_length      = 0;
+        m_header_length  = 0;
+        m_content_length = 0;
         return;
     }
 

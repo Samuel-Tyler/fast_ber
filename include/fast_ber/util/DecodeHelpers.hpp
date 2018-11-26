@@ -32,7 +32,7 @@ bool primitive_decode_impl(BerViewIterator& input, T& output, const TaggedExplic
     }
 
     BerView inner = fast_ber::BerView(input->content());
-    if (!inner.is_valid() || val(id.inner_tag) != inner.tag())
+    if (!inner.is_valid() || val(id.inner_id.tag) != inner.tag())
     {
         return false;
     }

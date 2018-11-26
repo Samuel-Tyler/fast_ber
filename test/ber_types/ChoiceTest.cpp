@@ -32,7 +32,7 @@ TEST_CASE("Choice: Check string choice matches simple string type")
 TEST_CASE("Choice: Generated choice")
 {
     fast_ber::MakeAChoice::Collection collection;
-    collection.the_choice = 5;
+    collection.the_choice = fast_ber::Integer(5);
 
     std::vector<uint8_t> buffer(1000);
     size_t length = fast_ber::MakeAChoice::encode(absl::MakeSpan(buffer.data(), buffer.size()), collection).length;

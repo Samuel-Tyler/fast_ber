@@ -19,7 +19,7 @@ class Boolean
 {
   public:
     Boolean() noexcept : Boolean(false) {}
-    explicit Boolean(bool val) noexcept { assign(val); }
+    Boolean(bool val) noexcept { assign(val); }
     explicit Boolean(BerView& view) noexcept { assign_ber(view); }
     explicit Boolean(absl::Span<const uint8_t> ber_data) noexcept { assign_ber(ber_data); }
 

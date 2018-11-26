@@ -21,8 +21,7 @@ struct TaggedExplicitIdentifier
 {
     Class              outer_class;
     Tag                outer_tag;
-    static const Class inner_class = Class::universal;
-    UniversalTag       inner_tag;
+    ExplicitIdentifier inner_id;
 };
 
 // Any class or tag is valid

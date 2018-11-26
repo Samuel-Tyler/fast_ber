@@ -22,11 +22,11 @@ TEST_CASE("Identifier: Encode TaggedExplicitIdentifier")
     fast_ber::Integer        i(4);
     std::array<uint8_t, 100> buffer;
     std::array<uint8_t, 5>   expected = {0xB4, 0x03, 0x02, 0x01, 0x04};
-    size_t                   size =
-        fast_ber::encode_with_specific_id(
-            absl::Span<uint8_t>(buffer.begin(), buffer.size()), i,
-            fast_ber::TaggedExplicitIdentifier{fast_ber::Class::context_specific, 20, fast_ber::UniversalTag::integer})
-            .length;
+    size_t                   size     = fast_ber::encode_with_specific_id(
+                      absl::Span<uint8_t>(buffer.begin(), buffer.size()), i,
+                      fast_ber::TaggedExplicitIdentifier{fast_ber::Class::context_specific, 20,
+                                                         fast_ber::ExplicitIdentifier{fast_ber::UniversalTag::integer}})
+                      .length;
 
     REQUIRE(size == 5);
     REQUIRE(absl::MakeSpan(buffer.data(), 5) == absl::MakeSpan(expected));
@@ -64,7 +64,8 @@ TEST_CASE("Identifier: Decode TaggedExplicitIdentifier")
     fast_ber::Integer      i        = 500;
     bool                   success  = fast_ber::decode_with_specific_id(
         iterator, i,
-        fast_ber::TaggedExplicitIdentifier{fast_ber::Class::context_specific, 20, fast_ber::UniversalTag::integer});
+        fast_ber::TaggedExplicitIdentifier{fast_ber::Class::context_specific, 20,
+                                           fast_ber::ExplicitIdentifier{fast_ber::UniversalTag::integer}});
 
     REQUIRE(success);
     REQUIRE(i == 4);
