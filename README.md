@@ -120,6 +120,7 @@ fast_ber is in development. The following table documents what has been implemen
 | Dates / Times | No |
 | Null | No |
 | Any | No |
+
 | Feature | Implemented |
 | --- | --- |
 | Explicit tags | Yes |
