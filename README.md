@@ -1,8 +1,8 @@
 # fast_ber
-A performant ASN.1 BER encoding and decoding library written in C++11.
+A performant ASN.1 BER encoding and decoding library written in C++11
 
 ## Introduction
-fast_ber is a small, lightweight library for BER encoding and decoding. Fast ber forgoes some tight ASN.1 specification conformance to provide fast encoding and decoding performance in common use cases.
+fast_ber is a small, lightweight library for BER encoding and decoding. Fast ber forgoes some tight ASN.1 specification conformance to provide fast encoding and decoding performance in common use cases
 
 #### Design Decisions
 - Simple, modern C++ interface
@@ -79,7 +79,7 @@ struct Team {
 } // End namespace fast_ber
 ```
 
-4. Include the header file into your application. Fields in the generated structure can be assigned to standard types. Encode and decode functions are used to serialize and deserialize the data.
+4. Include the header file into your application. Fields in the generated structure can be assigned to standard types. Encode and decode functions are used to serialize and deserialize the data
 ```
 #include "pokemon.hpp"
 
@@ -103,35 +103,39 @@ int main()
 ```
 
 ## Features
-fast_ber is in development. The following table documents what has been implemented and what features are coming soon.
+fast_ber is in development. The following table documents what has been implemented and what features are coming soon
 
-Command | Description |
+| Type | Implemented |
 | --- | --- |
 | Integer | Yes |
 | Boolean | Yes |
-| String types | Yes |
-| Date / Time types | No |
+| Strings | Yes |
+| Sequence | Yes |
+| Sequence Of | Yes |
+| Choice | Yes |
+| Set | No |
+| Set Of | No |
+| Enumerated | No |
 | Object Identifier | No |
-Any type No
-Set
-Choice Type
-Sequencr
-Enumerated
-SequenceOf
-SetOf
-Implicit tags
-Tagged explicit
-Dates / Times
-I ndefdinitive length No
-Arbritary Definition order No
+| Dates / Times | No |
+| Null | No |
+| Any | No |
+| Feature | Implemented |
+| --- | --- |
+| Explicit tags | Yes |
+| Implicit tags | Yes |
+| Indefinitive length | No |
+| Arbitrary top level structure | No |
+| Arbritary definition order | No |
+| Embedded Types | No |
 
-Time and Date structures
-Object Identifier
-Arbitrary top level object
-Embedded sequences
+## Possible Future Extensions
+The following features may be added in the future
 
-Luxury
+```
 Imports
 Partial decoding
-Move some encoding to compile time
+Partial encode at compile time (templated / constexpr)
 High / low conformance modes
+DER mode
+```
