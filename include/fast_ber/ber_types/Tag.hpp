@@ -3,7 +3,7 @@
 namespace fast_ber
 {
 
-using Tag = long;
+using Tag = long long;
 
 enum class UniversalTag : Tag
 {

@@ -56,7 +56,7 @@ class BerView
     size_t                    m_id_length;     // Also length field offset
     size_t                    m_header_length; // Also content offset
     size_t                    m_content_length;
-    long                      m_tag;
+    Tag                       m_tag;
     bool                      m_valid;
 };
 
