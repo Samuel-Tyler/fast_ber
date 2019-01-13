@@ -197,7 +197,7 @@
 %type<std::string>       modulereference
 %type<std::string>       valuereference
 %type<double>            realnumber
-%type<int>               number
+%type<long long>         number
 %type<BuiltinType>       BuiltinType;
 %type<DefinedType>       DefinedType;
 %type<DefinedType>       ReferencedType;
@@ -889,11 +889,7 @@ Value:
     BuiltinValue
 |   ReferencedValue
 |   ObjectClassFieldValue;
-/*
-XMLValue:
-    XMLBuiltinValue
-|   XMLObjectClassFieldValue;
-*/
+
 BuiltinValue:
     BitStringValue
 |   BooleanValue
@@ -902,8 +898,7 @@ BuiltinValue:
 |   EmbeddedPDVValue
 |   EnumeratedValue
 |   ExternalValue
-|   InstanceOfValue
-|   IntegerValue
+|   IntegerValue/*
 |   IRIValue
 |   NullValue
 |   ObjectIdentifierValue
@@ -917,30 +912,6 @@ BuiltinValue:
 |   SetOfValue
 |   PrefixedValue
 |   TimeValue;
-/*
-XMLBuiltinValue:
-    XMLBitStringValue
-|   XMLBooleanValue
-|   XMLCharacterStringValue
-|   XMLChoiceValue
-|   XMLEmbeddedPDVValue
-|   XMLEnumeratedValue
-|   XMLExternalValue
-|   XMLInstanceOfValue
-|   XMLIntegerValue
-|   XMLIRIValue
-|   XMLNullValue
-|   XMLObjectIdentifierValue
-|   XMLOctetStringValue
-|   XMLRealValue
-|   XMLRelativeIRIValue
-|   XMLRelativeOIDValue
-|   XMLSequenceValue
-|   XMLSequenceOfValue
-|   XMLSetValue
-|   XMLSetOfValue
-|   XMLPrefixedValue
-|   XMLTimeValue;
 */
 ReferencedValue:
     DefinedValue
@@ -949,23 +920,14 @@ ReferencedValue:
 NamedValue:
     identifier
     Value;
-/*
-XMLNamedValue:
-    "<" identifier ">"
-    XMLValue
-    "</" identifier ">";
-*/
+
 BooleanType:
     BOOLEAN;
 
 BooleanValue:
     TRUE
 |   FALSE;
-/*
-XMLBooleanValue:
-    EmptyElementBoolean
-|   TextBoolean;
-*/
+
 EmptyElementBoolean:
     "<" "true" "/>"
 |   "<" "false" "/>";
@@ -1132,11 +1094,7 @@ OctetStringValue:
     bstring
 |   hstring
 |   CONTAINING Value;
-/*
-XMLOctetStringValue:
-    XMLTypedValue
-|   xmlhstring;
-*/
+
 NullType:
     ASN_NULL;
 
@@ -1217,15 +1175,7 @@ SequenceValue:
 ComponentValueList:
     NamedValue
 |   ComponentValueList "," NamedValue;
-/*
-XMLSequenceValue:
-    XMLComponentValueList
-|   %empty;
 
-XMLComponentValueList:
-    XMLNamedValue
-|   XMLComponentValueList XMLNamedValue;
-*/
 SequenceOfType:
     SEQUENCE OF Type
     { $$ = SequenceOfType{ false, nullptr, std::make_shared<Type>($3) }; }
@@ -1244,32 +1194,7 @@ ValueList:
 NamedValueList:
     NamedValue
 |   NamedValueList "," NamedValue;
-/*
-XMLSequenceOfValue:
-    XMLValueList
-|   XMLDelimitedItemList
-|   %empty;
 
-XMLValueList:
-    XMLValueOrEmpty
-|   XMLValueOrEmpty XMLValueList;
-
-XMLValueOrEmpty:
-    XMLValue
-|   "<" NonParameterizedTypeName "/>";
-
-XMLDelimitedItemList:
-    XMLDelimitedItem
-|   XMLDelimitedItem XMLDelimitedItemList;
-
-XMLDelimitedItem:
-    "<" NonParameterizedTypeName ">"
-    XMLValue
-    "</" NonParameterizedTypeName ">"
-|   "<" identifier ">"
-    XMLValue
-    "</" identifier ">";
-*/
 SetType:
     SET "{" "}"
 |   SET "{" ExtensionAndException OptionalExtensionMarker "}"
@@ -1278,11 +1203,7 @@ SetType:
 SetValue:
     "{" ComponentValueList "}"
 |   "{" "}";
-/*
-XMLSetValue:
-    XMLComponentValueList
-|   %empty;
-*/
+
 SetOfType:
     SET OF Type
 |   SET OF NamedType;
@@ -1291,12 +1212,7 @@ SetOfValue:
     "{" ValueList "}"
 |   "{" NamedValueList "}"
 |   "{" "}";
-/*
-XMLSetOfValue:
-    XMLValueList
-|   XMLDelimitedItemList
-|   %empty;
-*/
+
 ChoiceType:
     CHOICE "{" AlternativeTypeLists "}"
     { $$ = ChoiceType{ $3 }; }
@@ -1991,9 +1907,9 @@ re2c:define:YYCURSOR = "context.cursor";
 
 // Identifiers
 //[0-9]+\.[0-9]+        { context.location.columns(context.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context.cursor)), context.location); }
-[0-9]+                  { context.location.columns(context.cursor - start); return asn1_parser::make_number(std::stoi(std::string(start, context.cursor)), context.location); }
-[A-Z][A-Za-z_0-9\-]+    { /* std::cout << "got string = " << std::string(start, context.cursor) << std::endl;*/ context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(std::string(start, context.cursor), context.location); }
-[a-z][A-Za-z_0-9\-]+    { /*std::cout << "got string = " << std::string(start, context.cursor) << std::endl;*/ context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(std::string(start, context.cursor), context.location); }
+[0-9]+                  { context.location.columns(context.cursor - start); return asn1_parser::make_number(std::stoll(std::string(start, context.cursor)), context.location); }
+[A-Z][A-Za-z_0-9\-]+    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(std::string(start, context.cursor), context.location); }
+[a-z][A-Za-z_0-9\-]+    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(std::string(start, context.cursor), context.location); }
 
 // End of file
 "\000"                  { context.location.columns(context.cursor - start); return asn1_parser::make_END_OF_FILE(context.location); }

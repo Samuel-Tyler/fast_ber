@@ -37,4 +37,5 @@ add_test(NAME fast_ber_compiler_2 COMMAND fast_ber_compiler ../../testfiles/simp
 add_test(NAME fast_ber_compiler_3 COMMAND fast_ber_compiler ../../testfiles/simple3.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple3)
 add_test(NAME fast_ber_compiler_4 COMMAND fast_ber_compiler ../../testfiles/simple4.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple4)
 add_test(NAME fast_ber_compiler_5 COMMAND fast_ber_compiler ../../testfiles/simple5.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple5)
+add_test(NAME fast_ber_compiler_6 COMMAND fast_ber_compiler ../../testfiles/SGSN-CDR-def-v2009A.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/real_schema)
 add_test(NAME fast_ber_tests COMMAND fast_ber_tests)
