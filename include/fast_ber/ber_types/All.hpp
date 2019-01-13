@@ -25,6 +25,7 @@
 #include "SequenceOf.hpp"
 #include "Set.hpp"
 #include "SetOf.hpp"
+#include "TaggedType.hpp"
 #include "Time.hpp"
 #include "TimeOfDay.hpp"
 #include "VisibleString.hpp"

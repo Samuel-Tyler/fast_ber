@@ -33,10 +33,10 @@ inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> output, Class class
     return EncodeResult{true, header_length + content_length};
 }
 
-template <typename T>
-EncodeResult encode_with_specific_id_impl(absl::Span<uint8_t> output, const T& object, const ExplicitIdentifier& id)
+template <typename T, UniversalTag T2>
+EncodeResult encode_with_specific_id_impl(absl::Span<uint8_t> output, const T& object, const ExplicitIdentifier<T2>& id)
 {
-    size_t id_length = create_identifier(output, Construction::primitive, id.class_, id.tag);
+    size_t id_length = create_identifier(output, Construction::primitive, id.class_(), id.tag());
     if (id_length == 0 || id_length > output.size())
     {
         return EncodeResult{false, 0};
@@ -48,9 +48,9 @@ EncodeResult encode_with_specific_id_impl(absl::Span<uint8_t> output, const T& o
     return EncodeResult{encode_length > 0, id_length + encode_length};
 }
 
-template <typename T>
+template <typename T, Class T2, Tag T3, typename T4>
 EncodeResult encode_with_specific_id_impl(absl::Span<uint8_t> output, const T& object,
-                                          const TaggedExplicitIdentifier& id)
+                                          const TaggedExplicitIdentifier<T2, T3, T4>& id)
 {
     size_t encode_length = object.encode(output);
     if (encode_length == 0)
@@ -58,13 +58,14 @@ EncodeResult encode_with_specific_id_impl(absl::Span<uint8_t> output, const T& o
         return EncodeResult{false, 0};
     }
 
-    return wrap_with_ber_header(output, id.outer_class, id.outer_tag, encode_length);
+    return wrap_with_ber_header(output, id.outer_class(), id.outer_tag(), encode_length);
 }
 
-template <typename T>
-EncodeResult encode_with_specific_id_impl(absl::Span<uint8_t> output, const T& object, const ImplicitIdentifier& id)
+template <typename T, Class T2, Tag T3>
+EncodeResult encode_with_specific_id_impl(absl::Span<uint8_t> output, const T& object,
+                                          const ImplicitIdentifier<T2, T3>& id)
 {
-    size_t id_length = create_identifier(output, Construction::primitive, id.class_, id.tag);
+    size_t id_length = create_identifier(output, Construction::primitive, id.class_(), id.tag());
     if (id_length == 0 || id_length > output.size())
     {
         return EncodeResult{false, 0};

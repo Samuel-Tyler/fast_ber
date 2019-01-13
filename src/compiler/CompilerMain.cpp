@@ -13,7 +13,7 @@ std::string strip_path(const std::string& path)
 
 std::string make_type_optional(const std::string& type) { return "Optional<" + type + ">"; }
 
-std::string create_assignment(const Assignment& assignment)
+std::string create_assignment(const Assignment& assignment, TaggingMode tagging_mode)
 {
     if (absl::holds_alternative<BuiltinType>(assignment.type) &&
         absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(assignment.type)))
@@ -36,7 +36,8 @@ std::string create_assignment(const Assignment& assignment)
     }
     else
     {
-        throw std::runtime_error("Unhandled assignment type: " + to_string(assignment.type));
+        return "using " + assignment.name + " = " + "TaggedType<" + to_string(assignment.type) + ", " +
+               universal_tag(assignment.type, tagging_mode) + ">;\n\n";
     }
 }
 
@@ -53,12 +54,20 @@ std::string create_encode_functions(const Assignment& assignment, TaggingMode ta
         for (const ComponentType& component : sequence)
         {
             res += "static const auto " + component.named_type.name + " = " +
-                   universal_tag(component.named_type.type, tagging_mode) + ";\n";
+                   universal_tag(component.named_type.type, tagging_mode);
+            if (!absl::holds_alternative<BuiltinType>(component.named_type.type) ||
+                !(absl::holds_alternative<ChoiceType>(absl::get<BuiltinType>(component.named_type.type)) ||
+                  absl::holds_alternative<SequenceOfType>(absl::get<BuiltinType>(component.named_type.type))))
+            {
+                res += "{}";
+            }
+            res += ";\n";
         }
         res += "}\n\n";
 
+        res += "template <fast_ber::UniversalTag T>\n";
         res += "inline EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const " + assignment.name +
-               "& input, const ExplicitIdentifier& id) noexcept\n{\n";
+               "& input, const ExplicitIdentifier<T>& id) noexcept\n{\n";
         res += "    return encode_combine(output, id";
         for (const ComponentType& component : sequence)
         {
@@ -69,14 +78,14 @@ std::string create_encode_functions(const Assignment& assignment, TaggingMode ta
 
         res += "inline EncodeResult encode(absl::Span<uint8_t> output, const " + assignment.name +
                "& input) noexcept\n{\n";
-        res += "    return encode_with_specific_id(output, input, ExplicitIdentifier{UniversalTag::sequence_of});\n";
+        res += "    return encode_with_specific_id(output, input, ExplicitIdentifier<UniversalTag::sequence_of>{});\n";
         res += "}\n\n";
 
         return res;
     }
     else
     {
-        throw std::runtime_error("Unhandled assignment type: " + to_string(assignment.type));
+        return "";
     }
 }
 
@@ -90,8 +99,9 @@ std::string create_decode_functions(const Assignment& assignment)
         const std::string   tags_class = assignment.name + "Tags";
 
         res += "constexpr const char " + assignment.name + "_name[] = \"" + assignment.name + "\";\n";
+        res += "template <fast_ber::UniversalTag T>\n";
         res += "inline bool decode_with_specific_id(const BerView& input, " + assignment.name +
-               "& output, const ExplicitIdentifier& id) noexcept\n{\n";
+               "& output, const ExplicitIdentifier<T>& id) noexcept\n{\n";
         res += "    return decode_combine<" + assignment.name + "_name>(input, id";
         for (const ComponentType& component : sequence)
         {
@@ -100,8 +110,9 @@ std::string create_decode_functions(const Assignment& assignment)
         }
         res += ");\n}\n\n";
 
+        res += "template <fast_ber::UniversalTag T>\n";
         res += "inline bool decode_with_specific_id(BerViewIterator& input, " + assignment.name +
-               "& output, const ExplicitIdentifier& id) noexcept\n{\n";
+               "& output, const ExplicitIdentifier<T>& id) noexcept\n{\n";
         res += "    bool success = decode_with_specific_id(*input, output, id) > 0;\n";
         res += "    ++input;\n";
         res += "    return success;\n";
@@ -109,14 +120,14 @@ std::string create_decode_functions(const Assignment& assignment)
 
         res += "inline bool decode(absl::Span<const uint8_t> input, " + assignment.name + "& output) noexcept\n{\n";
         res += "    return decode_with_specific_id(BerView(input), output, "
-               "ExplicitIdentifier{UniversalTag::sequence_of});\n";
+               "ExplicitIdentifier<UniversalTag::sequence_of>{});\n";
         res += "}\n\n";
 
         return res;
     }
     else
     {
-        throw std::runtime_error("Unhandled assignment type: " + to_string(assignment.type));
+        return "";
     }
 }
 
@@ -140,7 +151,7 @@ std::string create_body(const Asn1Tree& tree, const std::string detail_filename)
 
     for (auto iter = tree.assignments.crbegin(); iter != tree.assignments.crend(); ++iter)
     {
-        output += create_assignment(*iter);
+        output += create_assignment(*iter, tree.tagging_default);
     }
 
     output += create_include(strip_path(detail_filename)) + '\n';

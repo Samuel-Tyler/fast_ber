@@ -12,28 +12,21 @@ aux_source_directory(ber_types TEST_SRC)
 aux_source_directory(util TEST_SRC)
 aux_source_directory(compiler TEST_SRC)
 
-add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple.hpp
-    COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/autogen
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/../src/fast_ber_compiler ${CMAKE_CURRENT_SOURCE_DIR}/../testfiles/simple5.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple
-    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/../src/fast_ber_compiler ../testfiles/simple5.asn
-)
+function(fast_ber_generate input_file output_name)
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}.hpp
+        COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/autogen
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/../src/fast_ber_compiler ${CMAKE_CURRENT_SOURCE_DIR}/${input_file} ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}
+        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/../src/fast_ber_compiler ${input_file}
+    )
+endfunction(fast_ber_generate)
 
-add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/choice.hpp
-    COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/autogen
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/../src/fast_ber_compiler ${CMAKE_CURRENT_SOURCE_DIR}/../testfiles/choice.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/choice
-    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/../src/fast_ber_compiler ../testfiles/choice.asn
-)
+fast_ber_generate(../testfiles/simple5.asn simple)
+fast_ber_generate(../testfiles/choice.asn choice)
+fast_ber_generate(../testfiles/tags.asn tags)
+fast_ber_generate(../testfiles/top_level_encodings.asn top_level_encodings)
 
-add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/tags.hpp
-    COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/autogen
-    COMMAND ${CMAKE_CURRENT_BINARY_DIR}/../src/fast_ber_compiler ${CMAKE_CURRENT_SOURCE_DIR}/../testfiles/tags.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/tags
-    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/../src/fast_ber_compiler ../testfiles/tags.asn
-)
-
-add_executable(fast_ber_tests Test ${TEST_SRC} autogen/choice.hpp autogen/simple.hpp autogen/tags.hpp)
+add_executable(fast_ber_tests Test ${TEST_SRC} autogen/choice.hpp autogen/simple.hpp autogen/tags.hpp autogen/top_level_encodings.hpp)
 target_include_directories(fast_ber_tests PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 target_link_libraries (fast_ber_tests fast_ber_lib absl::strings)
 

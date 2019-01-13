@@ -1,0 +1,17 @@
+Simple DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+Collection ::= SEQUENCE {
+--    my_choice MyChoice,
+--    my_int MyInt,
+--    my_string MyString
+}
+
+--MyChoice ::= CHOICE {
+--    hello OCTET STRING,
+--    goodbye OCTET STRING
+--}
+
+MyInt ::= INTEGER
+MyString ::= OCTET STRING
+
+END

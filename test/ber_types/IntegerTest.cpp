@@ -45,7 +45,7 @@ TEST_CASE("Integer: Encoding")
     std::array<uint8_t, 100> buffer;
     std::array<uint8_t, 3>   expected = {0x02, 0x01, 0x64};
     size_t size = fast_ber::encode_with_specific_id(absl::Span<uint8_t>(buffer.begin(), buffer.size()), i,
-                                                    fast_ber::ExplicitIdentifier{fast_ber::UniversalTag::integer})
+                                                    fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::integer>{})
                       .length;
 
     REQUIRE(size == 3);

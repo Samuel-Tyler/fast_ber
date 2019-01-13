@@ -30,7 +30,7 @@ EncodeResult encode_with_specific_id(absl::Span<uint8_t> buffer, const Optional<
 template <typename T, typename ID>
 bool decode_with_specific_id(BerViewIterator& input, Optional<T>& output, const ID& id) noexcept
 {
-    if (input->is_valid() && input->tag() == val(id.tag))
+    if (input->is_valid() && input->tag() == val(id.tag()))
     {
         output.emplace(T());
         return decode_with_specific_id(input, *output, id) > 0;

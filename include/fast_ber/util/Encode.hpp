@@ -42,7 +42,7 @@ EncodeResult encode_combine(const absl::Span<uint8_t> output, const ID& id, cons
         return EncodeResult{false, 0};
     }
 
-    return wrap_with_ber_header(output, id.class_, val(id.tag), encode_length);
+    return wrap_with_ber_header(output, id.class_(), val(id.tag()), encode_length);
 }
 
 } // namespace fast_ber

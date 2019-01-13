@@ -31,17 +31,17 @@ bool decode_combine_impl(BerViewIterator& input, T& object, const ID& id, Args&&
     return decode_combine_impl<parent_name>(input, args...);
 }
 
-template <const char* parent_name, typename... Args>
-bool decode_combine(const BerView& input, const ExplicitIdentifier& id, Args&&... args) noexcept
+template <const char* parent_name, UniversalTag tag, typename... Args>
+bool decode_combine(const BerView& input, const ExplicitIdentifier<tag>& id, Args&&... args) noexcept
 {
     if (!input.is_valid())
     {
         std::cerr << "Error decoding " << parent_name << ": Input is not valid ber\n";
         return false;
     }
-    if (input.tag() != val(id.tag))
+    if (input.tag() != val(id.tag()))
     {
-        std::cerr << "Error decoding " << parent_name << ": Expected tag = " << val(id.tag) << " got " << input.tag()
+        std::cerr << "Error decoding " << parent_name << ": Expected tag = " << val(id.tag()) << " got " << input.tag()
                   << "\n";
         return false;
     }

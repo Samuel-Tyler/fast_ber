@@ -10,8 +10,8 @@
 TEST_CASE("Choice: Check string choice matches simple string type")
 {
     const auto choice = fast_ber::Choice<fast_ber::Integer, fast_ber::OctetString>("Test string");
-    const auto tags   = fast_ber::make_choice_id(fast_ber::ExplicitIdentifier{fast_ber::UniversalTag::integer},
-                                               fast_ber::ExplicitIdentifier{fast_ber::UniversalTag::octet_string});
+    const auto tags   = fast_ber::make_choice_id(fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::integer>{},
+                                               fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>{});
 
     std::vector<uint8_t> choice_encoded(100);
     std::vector<uint8_t> string_encoded(100);

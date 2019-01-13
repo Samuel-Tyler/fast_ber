@@ -28,7 +28,7 @@ TEST_CASE("Boolean: Encoding false")
     std::array<uint8_t, 3>   expected = {0x01, 0x01, 0x01};
 
     size_t size = encode_with_specific_id(absl::Span<uint8_t>(buffer.begin(), buffer.size()), test,
-                                          fast_ber::ExplicitIdentifier{fast_ber::UniversalTag::boolean})
+                                          fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::boolean>{})
                       .length;
 
     REQUIRE(size == 3);
@@ -42,7 +42,7 @@ TEST_CASE("Boolean: Encoding true")
     std::array<uint8_t, 3>   expected = {0x01, 0x01, 0x00};
 
     size_t size = encode_with_specific_id(absl::Span<uint8_t>(buffer.begin(), buffer.size()), test,
-                                          fast_ber::ExplicitIdentifier{fast_ber::UniversalTag::boolean})
+                                          fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::boolean>{})
                       .length;
     REQUIRE(size == 3);
     REQUIRE(absl::MakeSpan(buffer.data(), 3) == absl::MakeSpan(expected));
