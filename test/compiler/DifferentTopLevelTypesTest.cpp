@@ -4,4 +4,61 @@
 
 #include <vector>
 
-// TEST_CASE("Different Top Level Types: Integer as top level type") { std::array<uint8_t, 5000> buffer; }
+TEST_CASE("Different Top Level Types: Integer as top level type")
+{
+    std::array<uint8_t, 5000> buffer;
+    fast_ber::TopLevel::MyInt my_int     = 20;
+    fast_ber::TopLevel::MyInt my_new_int = -20;
+
+    my_int = 50;
+    REQUIRE(my_int == 50);
+
+    my_int.encode(absl::MakeSpan(buffer.data(), buffer.size()));
+    my_new_int.decode(absl::MakeSpan(buffer.data(), buffer.size()));
+
+    REQUIRE(my_int == my_new_int);
+}
+
+TEST_CASE("Different Top Level Types: String as top level type")
+{
+    std::array<uint8_t, 5000>    buffer;
+    fast_ber::TopLevel::MyString my_string     = "<%%%%>";
+    fast_ber::TopLevel::MyString my_new_string = "fail";
+
+    my_string.encode(absl::MakeSpan(buffer.data(), buffer.size()));
+    my_new_string.decode(absl::MakeSpan(buffer.data(), buffer.size()));
+
+    REQUIRE(my_string == my_new_string);
+}
+
+TEST_CASE("Different Top Level Types: Choice as top level type")
+{
+    std::array<uint8_t, 5000>    buffer;
+    fast_ber::TopLevel::MyChoice my_string     = fast_ber::OctetString("The String");
+    fast_ber::TopLevel::MyChoice my_new_string = 500;
+
+    REQUIRE(my_string == "The String");
+    REQUIRE(my_new_string == 500);
+
+    my_string.encode(absl::MakeSpan(buffer.data(), buffer.size()));
+    my_new_string.decode(absl::MakeSpan(buffer.data(), buffer.size()));
+
+    REQUIRE(my_string == "The String");
+    REQUIRE(my_new_string == "The String");
+}
+
+TEST_CASE("Different Top Level Types: Collection")
+{
+    std::array<uint8_t, 5000>      buffer;
+    fast_ber::TopLevel::Collection my_collection;
+    fast_ber::TopLevel::Collection my_new_collection;
+
+    my_collection.my_int    = 50;
+    my_collection.my_string = "hello!";
+
+    fast_ber::TopLevel::encode(absl::MakeSpan(buffer.data(), buffer.size()), my_collection);
+    fast_ber::TopLevel::decode(absl::MakeSpan(buffer.data(), buffer.size()), my_new_collection);
+
+    REQUIRE(my_collection.my_int == 50);
+    REQUIRE(my_collection.my_string == "hello!");
+}

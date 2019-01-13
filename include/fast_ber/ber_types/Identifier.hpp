@@ -37,30 +37,15 @@ struct ImplicitIdentifier
 template <typename ID1, typename ID2>
 struct SequenceId
 {
-    ID1 outer_id;
-    ID2 inner_id;
+    static ID1 outer_id() { return ID1{}; }
+    static ID2 inner_id() { return ID2{}; }
 };
 
 template <typename... IDs>
-struct ChoiceID
+struct ChoiceId
 {
-    std::tuple<IDs...> ids;
+    static std::tuple<IDs...> ids() { return std::tuple<IDs...>{}; }
 };
-
-template <typename ID1, typename ID2>
-SequenceId<ID1, ID2> make_sequence_id(const ID1& outer, const ID2& inner)
-{
-    return SequenceId<ID1, ID2>{outer, inner};
-}
-
-template <typename... IDs>
-ChoiceID<IDs...> make_choice_id(const IDs&... ids)
-{
-    const auto       tuple = std::make_tuple(ids...);
-    ChoiceID<IDs...> choice;
-    choice.ids = tuple;
-    return choice;
-}
 
 template <UniversalTag T>
 Tag reference_tag(const ExplicitIdentifier<T>& id)
@@ -83,13 +68,13 @@ Tag reference_tag(const ImplicitIdentifier<T1, T2>& id)
 template <typename ID1, typename ID2>
 Tag reference_tag(const SequenceId<ID1, ID2>& id)
 {
-    return reference_tag(id.outer_id);
+    return reference_tag(id.outer_id());
 }
 
 template <typename... IDs>
-Tag reference_tag(const ChoiceID<IDs...>& id)
+Tag reference_tag(const ChoiceId<IDs...>& id)
 {
-    return reference_tag(std::get<0>(id.ids));
+    return reference_tag(std::get<0>(id.ids()));
 }
 
 } // namespace fast_ber

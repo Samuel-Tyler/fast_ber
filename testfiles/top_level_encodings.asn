@@ -1,15 +1,15 @@
-Simple DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+TopLevel DEFINITIONS AUTOMATIC TAGS ::= BEGIN
 
 Collection ::= SEQUENCE {
 --    my_choice MyChoice,
---    my_int MyInt,
---    my_string MyString
+    my_int MyInt,
+    my_string MyString
 }
 
---MyChoice ::= CHOICE {
---    hello OCTET STRING,
---    goodbye OCTET STRING
---}
+MyChoice ::= CHOICE {
+    hello OCTET STRING,
+    integer INTEGER
+}
 
 MyInt ::= INTEGER
 MyString ::= OCTET STRING

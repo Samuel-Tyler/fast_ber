@@ -73,4 +73,11 @@ bool decode_with_specific_id(BerViewIterator& input, OctetString& output, const 
     return primitive_decode_impl(input, output, id);
 }
 
+template <typename T, typename ID>
+bool decode_with_specific_id(absl::Span<const uint8_t> input, T& output, const ID& id) noexcept
+{
+    BerViewIterator iter(input);
+    return decode_with_specific_id(iter, output, id);
+}
+
 } // namespace fast_ber

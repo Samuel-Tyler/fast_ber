@@ -55,13 +55,7 @@ std::string create_encode_functions(const Assignment& assignment, TaggingMode ta
         {
             res += "static const auto " + component.named_type.name + " = " +
                    universal_tag(component.named_type.type, tagging_mode);
-            if (!absl::holds_alternative<BuiltinType>(component.named_type.type) ||
-                !(absl::holds_alternative<ChoiceType>(absl::get<BuiltinType>(component.named_type.type)) ||
-                  absl::holds_alternative<SequenceOfType>(absl::get<BuiltinType>(component.named_type.type))))
-            {
-                res += "{}";
-            }
-            res += ";\n";
+            res += "{};\n";
         }
         res += "}\n\n";
 

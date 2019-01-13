@@ -334,17 +334,17 @@ std::string universal_tag(const CharacterStringType&, TaggingMode)
 std::string universal_tag(const ChoiceType& choice, TaggingMode tagging_mode)
 {
     bool        is_first = true;
-    std::string res      = "make_choice_id(";
+    std::string res      = "ChoiceId<";
     for (const auto& named_type : choice.choices)
     {
         if (!is_first)
         {
             res += ", ";
         }
-        res += universal_tag(named_type.type, tagging_mode) + "{}";
+        res += universal_tag(named_type.type, tagging_mode);
         is_first = false;
     }
-    res += ")";
+    res += ">";
     return res;
 }
 std::string universal_tag(const DateType&, TaggingMode) { return "ExplicitIdentifier<UniversalTag::date_type>"; }
@@ -387,8 +387,8 @@ std::string universal_tag(const RelativeOIDType&, TaggingMode)
 std::string universal_tag(const SequenceType&, TaggingMode) { return "ExplicitIdentifier<UniversalTag::sequence>"; }
 std::string universal_tag(const SequenceOfType& sequence, TaggingMode tagging_mode)
 {
-    return "make_sequence_id(ExplicitIdentifier<UniversalTag::sequence_of>{}, " +
-           universal_tag(*sequence.type, tagging_mode) + "{})";
+    return "SequenceId<ExplicitIdentifier<UniversalTag::sequence_of>, " + universal_tag(*sequence.type, tagging_mode) +
+           ">";
 }
 std::string universal_tag(const SetType&, TaggingMode) { return "ExplicitIdentifier<UniversalTag::set>"; }
 std::string universal_tag(const SetOfType&, TaggingMode) { return "ExplicitIdentifier<UniversalTag::set_of>"; }
