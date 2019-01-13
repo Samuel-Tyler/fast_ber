@@ -126,7 +126,7 @@ fast_ber is in development. The following table documents what has been implemen
 | Explicit tags | Yes |
 | Implicit tags | Yes |
 | Indefinitive length | No |
-| Arbitrary top level structure | No |
+| Arbitrary top level structure | Yes |
 | Arbritary definition order | No |
 | Embedded Types | No |
 
