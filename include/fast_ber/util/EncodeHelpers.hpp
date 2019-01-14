@@ -2,13 +2,16 @@
 
 #include <cstddef>
 
-#include "fast_ber/ber_types/Boolean.hpp"
-#include "fast_ber/ber_types/Identifier.hpp"
-#include "fast_ber/ber_types/Integer.hpp"
-#include "fast_ber/ber_types/OctetString.hpp"
+#include "absl/types/span.h"
 
 namespace fast_ber
 {
+
+class Boolean;
+class Identifier;
+class Integer;
+class Null;
+class OctetString;
 
 struct EncodeResult
 {
@@ -91,6 +94,12 @@ EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const OctetStri
 
 template <typename ID>
 EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const Boolean& object, const ID& id)
+{
+    return encode_with_specific_id_impl(output, object, id);
+}
+
+template <typename ID>
+EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const Null& object, const ID& id)
 {
     return encode_with_specific_id_impl(output, object, id);
 }
