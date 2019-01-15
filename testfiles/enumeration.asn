@@ -1,0 +1,22 @@
+Enumerations
+
+DEFINITIONS EXPLICIT TAGS ::=
+
+BEGIN
+
+Enumeration           ::= ENUMERATED
+{
+  apple,
+  orange,
+  pear,
+  banana
+}
+
+NumberedEnumeration   ::= ENUMERATED
+{
+  red                 (0),
+  green               (1),
+  blue                (2)
+}
+
+END

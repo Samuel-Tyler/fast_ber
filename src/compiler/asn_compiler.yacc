@@ -198,8 +198,16 @@
 %type<std::string>       valuereference
 %type<double>            realnumber
 %type<long long>         number
+%type<long long>         SignedNumber
+%type<long long>         DefinedValue
 %type<BuiltinType>       BuiltinType;
 %type<DefinedType>       DefinedType;
+%type<EnumeratedType>    EnumeratedType;
+%type<EnumeratedType>    Enumerations;
+%type<EnumeratedType>    RootEnumeration;
+%type<EnumeratedType>    AdditionalEnumeration;
+%type<EnumeratedType>    Enumeration;
+%type<EnumerationValue>  EnumerationItem;
 %type<DefinedType>       ReferencedType;
 %type<Assignment>        TypeAssignment;
 %type<Type>              Type;
@@ -207,6 +215,7 @@
 %type<int>               ClassNumber;
 %type<ComponentTypeList> SequenceType;
 %type<NamedType>         NamedType;
+%type<NamedNumber>       NamedNumber;
 %type<ComponentType>     ComponentType;
 %type<ComponentTypeList> ComponentTypeList;
 %type<ComponentTypeList> ComponentTypeLists;
@@ -472,9 +481,6 @@ ObjectSetFromObjects:
 
 InstanceOfType:
     INSTANCE OF DefinedObjectClass;
-
-InstanceOfValue:
-    Value;
 
 ParameterizedAssignment:
     ParameterizedTypeAssignment
@@ -854,7 +860,7 @@ BuiltinType:
 |   DateTimeType { $$ = DateTimeType(); }
 |   DurationType { $$ = DurationType(); }
 |   EmbeddedPDVType { $$ = EmbeddedPDVType(); }
-|   EnumeratedType { $$ = EnumeratedType(); }
+|   EnumeratedType { $$ = $1; }
 |   ExternalType { $$ = ExternalType(); }
 |   InstanceOfType { $$ = InstanceOfType(); }
 |   IntegerType { $$ = IntegerType(); }
@@ -928,14 +934,6 @@ BooleanValue:
     TRUE
 |   FALSE;
 
-EmptyElementBoolean:
-    "<" "true" "/>"
-|   "<" "false" "/>";
-
-TextBoolean:
-    extended-true
-|   extended-false;
-
 IntegerType:
     INTEGER
 |   INTEGER "{" NamedNumberList "}";
@@ -946,105 +944,62 @@ NamedNumberList:
 
 NamedNumber:
     identifier "(" SignedNumber ")"
-|   identifier "(" DefinedValue ")";
+    { $$ = NamedNumber{ $1, $3 }; }
+|   identifier "(" DefinedValue ")"
+    { $$ = NamedNumber{ $1, $3 }; }
 
 SignedNumber:
     number
-|   "-" number;
+    { $$ = $1; }
+|   "-" number
+    { $$ = -$2; }
 
 IntegerValue:
     SignedNumber
 |   identifier;
-/*
-XMLIntegerValue:
-    XMLSignedNumber
-|   EmptyElementInteger
-|   TextInteger;
-
-XMLSignedNumber:
-    number
-|   "-" number;
-*/
-EmptyElementInteger:
-    "<" identifier "/>";
-
-TextInteger:
-    identifier;
 
 EnumeratedType:
-    ENUMERATED
-    "{" Enumerations "}";
+    ENUMERATED "{" Enumerations "}"
+    { $$ = $3; }
 
 Enumerations:
     RootEnumeration
-|   RootEnumeration "," " ... " ExceptionSpec
-|   RootEnumeration "," " ... " ExceptionSpec "," AdditionalEnumeration;
+    { $$ = $1;
+    $$.accept_anything = false; }
+|   RootEnumeration "," "..." ExceptionSpec
+    { $$ = $1;
+      $$.accept_anything = true; }
+|   RootEnumeration "," "..." ExceptionSpec "," AdditionalEnumeration
+    { $$ = $1;
+      $$.accept_anything = true;
+      $$.enum_values.insert($$.enum_values.end(), $6.enum_values.begin(), $6.enum_values.end()); }
 
 RootEnumeration:
-    Enumeration;
+    Enumeration
+    { $$ = $1; }
 
 AdditionalEnumeration:
-    Enumeration;
+    Enumeration
+    { $$ = $1; }
 
 Enumeration:
     EnumerationItem
-|   EnumerationItem "," Enumeration;
+    { $$.enum_values.push_back($1); }
+|   EnumerationItem "," Enumeration
+    { $$ = $3; $$.enum_values.push_back($1); }
 
 EnumerationItem:
     identifier
-|   NamedNumber;
+    { $$.name  = $1; }
+|   NamedNumber
+    { $$.name  = $1.name;
+      $$.value = $1.number; }
 
 EnumeratedValue:
-    identifier;
-/*
-XMLEnumeratedValue:
-    EmptyElementEnumerated
-|   TextEnumerated;
-*/
-EmptyElementEnumerated:
-    "<" identifier "/>";
-
-TextEnumerated:
     identifier;
 
 RealType:
     REAL;
-
-RealValue:
-    NumericRealValue
-|   SpecialRealValue;
-
-NumericRealValue:
-    realnumber
-|   "-" realnumber
-|   SequenceValue;
-
-SpecialRealValue:
-    PLUS_INFINITY
-|   MINUS_INFINITY
-|   NOT_A_NUMBER;
-/*
-XMLRealValue:
-    XMLNumericRealValue
-|   XMLSpecialRealValue;
-
-XMLNumericRealValue:
-    realnumber
-|   "-" realnumber;
-
-XMLSpecialRealValue:
-    EmptyElementReal
-|   TextReal;
-*/
-EmptyElementReal:
-    "<" PLUS_INFINITY "/>"
-|   "<" MINUS_INFINITY "/>"
-|   "<" NOT_A_NUMBER "/>";
-
-TextReal:
-    " INF "
-|   "-" " INF "
-|   " NaN ";
 
 BitStringType:
     BIT STRING
@@ -1069,24 +1024,6 @@ IdentifierList:
     identifier
 |   IdentifierList "," identifier;
 
-XMLBitStringValue:
-    XMLTypedValue
-|   xmlbstring
-|   XMLIdentifierList
-|   %empty;
-
-XMLIdentifierList:
-    EmptyElementList
-|   TextList;
-
-EmptyElementList:
-"<" identifier "/>"
-|   EmptyElementList "<" identifier "/>";
-
-TextList:
-    identifier
-|   TextList identifier;
-
 OctetStringType:
     OCTET STRING;
 
@@ -1097,12 +1034,6 @@ OctetStringValue:
 
 NullType:
     ASN_NULL;
-
-NullValue:
-    ASN_NULL;
-
-XMLNullValue:
-    %empty;
 
 SequenceType:
     SEQUENCE "{" "}"
@@ -1253,12 +1184,7 @@ AlternativeTypeList:
 
 ChoiceValue:
     identifier DEFINED_AS Value;
-/*
-XMLChoiceValue:
-    "<" identifier ">"
-    XMLValue
-    "</" identifier ">";
-*/
+
 SelectionType:
     identifier "<" Type;
 
@@ -1269,9 +1195,6 @@ PrefixedType:
 
 PrefixedValue:
     Value;
-
-XMLPrefixedValue:
-    XMLValue;
 
 EncodingPrefixedType:
     EncodingPrefix Type
@@ -1342,26 +1265,7 @@ NumberForm:
 
 NameAndNumberForm:
     identifier "(" NumberForm ")";
-/*
-XMLObjectIdentifierValue:
-    XMLObjIdComponentList;
 
-XMLObjIdComponentList:
-    XMLObjIdComponent
-|   XMLObjIdComponent "." XMLObjIdComponentList;
-
-XMLObjIdComponent:
-    NameForm
-|   XMLNumberForm
-|   XMLNameAndNumberForm;
-
-XMLNumberForm:
-    number;
-
-XMLNameAndNumberForm:
-    identifier
-    "(" XMLNumberForm ")";
-*/
 RelativeOIDType:
     RELATIVE_OID;
 
@@ -1376,18 +1280,7 @@ RelativeOIDComponents:
     NumberForm
 |   NameAndNumberForm
 |   DefinedValue;
-/*
-XMLRelativeOIDValue:
-    XMLRelativeOIDComponentList;
 
-XMLRelativeOIDComponentList:
-    XMLRelativeOIDComponent
-|   XMLRelativeOIDComponent "." XMLRelativeOIDComponentList;
-
-XMLRelativeOIDComponent:
-    XMLNumberForm
-|   XMLNameAndNumberForm;
-*/
 IRIType:
     OID_IRI;
 
@@ -1407,11 +1300,7 @@ SubsequentArcIdentifier:
 ArcIdentifier :
     integerUnicodeLabel
 |   non-integerUnicodeLabel
-/*
-XMLIRIValue :
-    FirstArcIdentifier
-    SubsequentArcIdentifier
-*/
+
 RelativeIRIType:
     RELATIVE_OID_IRI;
 
@@ -1423,39 +1312,26 @@ RelativeIRIValue:
 
 FirstRelativeArcIdentifier:
     ArcIdentifier;
-/*
-XMLRelativeIRIValue:
-    FirstRelativeArcIdentifier
-    SubsequentArcIdentifier
-*/
+
 EmbeddedPDVType:
     EMBEDDED
     PDV;
 
 EmbeddedPDVValue:
     SequenceValue
-/*
-XMLEmbeddedPDVValue:
-    XMLSequenceValue;
-*/
+
 ExternalType:
     EXTERNAL;
 
 ExternalValue:
     SequenceValue;
-/*
-XMLExternalValue:
-    XMLSequenceValue;
-*/
+
 TimeType:
     TIME;
 
 TimeValue:
     tstring;
-/*
-XMLTimeValue:
-    xmltstring;
-*/
+
 DateType:
     DATE;
 
@@ -1475,11 +1351,7 @@ CharacterStringType:
 CharacterStringValue:
     RestrictedCharacterStringValue
 |   UnrestrictedCharacterStringValue;
-/*
-XMLCharacterStringValue:
-    XMLRestrictedCharacterStringValue
-|   XMLUnrestrictedCharacterStringValue;
-*/
+
 RestrictedCharacterStringType:
     BMPString
 |   GeneralString
@@ -1537,19 +1409,13 @@ TableColumn:
 
 TableRow:
     number;
-/*
-XMLRestrictedCharacterStringValue:
-    xmlcstring;
-*/
+
 UnrestrictedCharacterStringType:
     CHARACTER STRING;
 
 UnrestrictedCharacterStringValue:
     SequenceValue;
-/*
-XMLUnrestrictedCharacterStringValue:
-    XMLSequenceValue;
-*/
+
 UsefulType:
     typereference
     UTF8String
@@ -1678,9 +1544,7 @@ ValueRange:
 LowerEndpoint:
     LowerEndValue
 |   LowerEndValue "<"
-{
-std::cout << "got lower";
-};
+
 UpperEndpoint:
     UpperEndValue
 |   "<" UpperEndValue;
@@ -1744,28 +1608,6 @@ PatternConstraint:
 
 PropertySettings:
     SETTINGS simplestring;
-
-PropertySettingsList:
-    PropertyAndSettingPair
-|   PropertySettingsList PropertyAndSettingPair;
-
-PropertyAndSettingPair:
-    PropertyName "=" SettingName;
-
-PropertyName:
-    psname;
-
-SettingName:
-    psname;
-
-DurationRange:
-    ValueRange;
-
-TimePointRange:
-    ValueRange;
-
-RecurrenceRange:
-    ValueRange;
 
 ExceptionSpec:
     "!" ExceptionIdentification

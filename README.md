@@ -115,10 +115,10 @@ fast_ber is in development. The following table documents what has been implemen
 | Choice | Yes |
 | Set | No |
 | Set Of | No |
-| Enumerated | No |
+| Enumerated | Yes |
 | Object Identifier | No |
 | Dates / Times | No |
-| Null | No |
+| Null | Yes |
 | Any | No |
 
 | Feature | Implemented |

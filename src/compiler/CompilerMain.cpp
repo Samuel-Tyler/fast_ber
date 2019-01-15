@@ -11,8 +11,6 @@ std::string strip_path(const std::string& path)
     return path.substr(found + 1);
 }
 
-std::string make_type_optional(const std::string& type) { return "Optional<" + type + ">"; }
-
 std::string create_assignment(const Assignment& assignment, TaggingMode tagging_mode)
 {
     if (absl::holds_alternative<BuiltinType>(assignment.type) &&
@@ -20,19 +18,14 @@ std::string create_assignment(const Assignment& assignment, TaggingMode tagging_
     {
         const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(assignment.type));
 
-        std::string res = "struct " + assignment.name + " {\n";
-
-        for (const ComponentType& component : sequence)
-        {
-            std::string component_type = to_string(component.named_type.type);
-            if (component.is_optional)
-            {
-                component_type = make_type_optional(component_type);
-            }
-            res += "    " + component_type + " " + component.named_type.name + ";\n";
-        }
-        res += "};\n\n";
+        std::string res = "struct " + assignment.name + to_string(sequence);
         return res;
+    }
+    else if (absl::holds_alternative<BuiltinType>(assignment.type) &&
+             absl::holds_alternative<EnumeratedType>(absl::get<BuiltinType>(assignment.type)))
+    {
+        return "enum class " + assignment.name +
+               to_string(absl::get<EnumeratedType>(absl::get<BuiltinType>(assignment.type)));
     }
     else
     {

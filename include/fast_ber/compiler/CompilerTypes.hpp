@@ -33,6 +33,16 @@ using ComponentTypeList = std::vector<ComponentType>;
 using SequenceType      = ComponentTypeList;
 
 struct NamedType;
+struct NamedNumber
+{
+    std::string name;
+    long long   number;
+};
+struct EnumerationValue
+{
+    std::string               name;
+    absl::optional<long long> value;
+};
 
 struct BitStringType
 {
@@ -58,6 +68,8 @@ struct EmbeddedPDVType
 };
 struct EnumeratedType
 {
+    std::vector<EnumerationValue> enum_values;
+    bool                          accept_anything;
 };
 struct ExternalType
 {
@@ -264,7 +276,22 @@ std::string to_string(const DateType&) { return "Date"; }
 std::string to_string(const DateTimeType&) { return "DateTime"; }
 std::string to_string(const DurationType&) { return "Duration"; }
 std::string to_string(const EmbeddedPDVType&) { return "EmbeddedPDV"; }
-std::string to_string(const EnumeratedType&) { return "Enumerated"; }
+std::string to_string(const EnumeratedType& enumerated)
+{
+    std::string res = " {\n";
+    for (const EnumerationValue& enum_value : enumerated.enum_values)
+    {
+        res += "    " + enum_value.name;
+        if (enum_value.value)
+        {
+            res += " = " + std::to_string(*enum_value.value);
+        }
+        res += ",\n";
+    }
+    res += "};\n\n";
+
+    return res;
+}
 std::string to_string(const ExternalType&) { return "External"; }
 std::string to_string(const InstanceOfType&) { return "InstanceOf"; }
 std::string to_string(const IntegerType&) { return "Integer"; }
@@ -276,7 +303,24 @@ std::string to_string(const OctetStringType&) { return "OctetString"; }
 std::string to_string(const RealType&) { return "Real"; }
 std::string to_string(const RelativeIRIType&) { return "RelativeIRI"; }
 std::string to_string(const RelativeOIDType&) { return "RelativeOID"; }
-std::string to_string(const SequenceType&) { return "Sequence"; }
+std::string make_type_optional(const std::string& type) { return "Optional<" + type + ">"; }
+std::string to_string(const SequenceType& sequence)
+{
+    std::string res = " {\n";
+
+    for (const ComponentType& component : sequence)
+    {
+        std::string component_type = to_string(component.named_type.type);
+        if (component.is_optional)
+        {
+            component_type = make_type_optional(component_type);
+        }
+        res += "    " + component_type + " " + component.named_type.name + ";\n";
+    }
+    res += "};\n\n";
+
+    return res;
+}
 std::string to_string(const SequenceOfType& sequence)
 {
     if (sequence.has_name)

@@ -24,9 +24,10 @@ endfunction(fast_ber_generate)
 fast_ber_generate(../testfiles/simple5.asn simple)
 fast_ber_generate(../testfiles/choice.asn choice)
 fast_ber_generate(../testfiles/tags.asn tags)
+fast_ber_generate(../testfiles/enumeration.asn enum)
 fast_ber_generate(../testfiles/top_level_encodings.asn top_level_encodings)
 
-add_executable(fast_ber_tests Test ${TEST_SRC} autogen/choice.hpp autogen/simple.hpp autogen/tags.hpp autogen/top_level_encodings.hpp)
+add_executable(fast_ber_tests Test ${TEST_SRC} autogen/choice.hpp autogen/simple.hpp autogen/tags.hpp autogen/top_level_encodings.hpp autogen/enum.hpp)
 target_include_directories(fast_ber_tests PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 target_link_libraries (fast_ber_tests fast_ber_lib absl::strings)
 
