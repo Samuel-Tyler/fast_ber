@@ -4,14 +4,12 @@
 
 #include "catch2/catch.hpp"
 
-#include <fstream>
 #include <vector>
 
 TEST_CASE("Tags: Encoding a packet with various tagging modes")
 {
-    std::array<uint8_t, 5000> buffer;
-
-    fast_ber::Tags::Collection tags{};
+    std::array<uint8_t, 5000>  buffer = {};
+    fast_ber::Tags::Collection tags   = {};
 
     fast_ber::EncodeResult encode_result = fast_ber::Tags::encode(absl::MakeSpan(buffer.data(), buffer.size()), tags);
     REQUIRE(encode_result.success);
@@ -63,7 +61,7 @@ TEST_CASE("Tags: Encoding a packet with various tagging modes")
 
 TEST_CASE("Tags: Encoding and decoding a packet with various tagging modes")
 {
-    std::array<uint8_t, 5000> buffer;
+    std::array<uint8_t, 5000> buffer = {};
 
     fast_ber::Tags::Collection tags{"Implicit", "And explicit tags", 0, true, false, true};
     fast_ber::Tags::Collection tags_copy{};

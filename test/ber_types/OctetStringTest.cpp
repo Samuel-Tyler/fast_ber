@@ -66,7 +66,7 @@ TEST_CASE("OctetString: Construction from sample packet")
 
 TEST_CASE("OctetString: Encode to buffer")
 {
-    std::array<uint8_t, 100> buffer;
+    std::array<uint8_t, 100> buffer = {};
 
     fast_ber::OctetString octet_string(std::string("Hello world"));
     size_t                encoded_length =
@@ -78,7 +78,7 @@ TEST_CASE("OctetString: Encode to buffer")
 
 TEST_CASE("OctetString: Destructive encode to buffer")
 {
-    std::array<uint8_t, 200> buffer;
+    std::array<uint8_t, 200> buffer = {};
 
     fast_ber::OctetString octet_string(std::string(150, 'c'));
     size_t                encoded_length =
@@ -108,12 +108,12 @@ TEST_CASE("OctetString: Iterators")
 
 TEST_CASE("OctetString: Assign")
 {
-    const auto                  test_data      = std::string(9999, 'c');
-    const fast_ber::OctetString octet_string_1 = fast_ber::OctetString(test_data);
-    const fast_ber::OctetString octet_string_2(octet_string_1);
-    const fast_ber::OctetString octet_string_3(test_data);
-    const fast_ber::OctetString octet_string_4 = test_data;
-    fast_ber::OctetString       octet_string_5;
+    const auto                   test_data      = std::string(9999, 'c');
+    const fast_ber::OctetString  octet_string_1 = fast_ber::OctetString(test_data);
+    const fast_ber::OctetString& octet_string_2(octet_string_1);
+    const fast_ber::OctetString  octet_string_3(test_data);
+    const fast_ber::OctetString  octet_string_4 = test_data;
+    fast_ber::OctetString        octet_string_5;
 
     octet_string_5 = octet_string_4;
 
@@ -126,15 +126,15 @@ TEST_CASE("OctetString: Assign")
 
 TEST_CASE("OctetString: StringView")
 {
-   /* const auto                  test = "StringView test";
+    const auto                  test = "StringView test";
     const fast_ber::OctetString octet_string(test);
 
     REQUIRE(absl::string_view(octet_string.c_str(), octet_string.length()) == test);
-*/}
+}
 
-   TEST_CASE("OctetString: Equality")
-   {
-       fast_ber::OctetString test_octets = "Duck";
-       REQUIRE(test_octets == "Duck");
-       REQUIRE(test_octets != "Quack");
-   }
+TEST_CASE("OctetString: Equality")
+{
+    fast_ber::OctetString test_octets = "Duck";
+    REQUIRE(test_octets == "Duck");
+    REQUIRE(test_octets != "Quack");
+}

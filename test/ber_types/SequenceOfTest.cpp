@@ -9,7 +9,7 @@
 template <typename T>
 void test_sequences(const std::initializer_list<fast_ber::SequenceOf<T>>& sequences)
 {
-    std::array<uint8_t, 10000> buffer;
+    std::array<uint8_t, 10000> buffer = {};
     for (const auto& sequence : sequences)
     {
         fast_ber::SequenceOf<T> copy;
@@ -23,7 +23,6 @@ void test_sequences(const std::initializer_list<fast_ber::SequenceOf<T>>& sequen
         REQUIRE(iter == fast_ber::BerViewIterator(fast_ber::End::end));
     }
 }
-
 TEST_CASE("SequenceOf: Encode decode integer")
 {
     std::initializer_list<fast_ber::SequenceOf<fast_ber::Integer>> sequences{

@@ -24,7 +24,7 @@ TEST_CASE("Boolean: Assignment")
 TEST_CASE("Boolean: Encoding false")
 {
     fast_ber::Boolean        test(true);
-    std::array<uint8_t, 100> buffer;
+    std::array<uint8_t, 100> buffer   = {};
     std::array<uint8_t, 3>   expected = {0x01, 0x01, 0x01};
 
     size_t size = encode_with_specific_id(absl::Span<uint8_t>(buffer.begin(), buffer.size()), test,
@@ -38,7 +38,7 @@ TEST_CASE("Boolean: Encoding false")
 TEST_CASE("Boolean: Encoding true")
 {
     fast_ber::Boolean        test(false);
-    std::array<uint8_t, 100> buffer;
+    std::array<uint8_t, 100> buffer   = {};
     std::array<uint8_t, 3>   expected = {0x01, 0x01, 0x00};
 
     size_t size = encode_with_specific_id(absl::Span<uint8_t>(buffer.begin(), buffer.size()), test,

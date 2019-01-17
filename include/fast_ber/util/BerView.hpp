@@ -22,7 +22,7 @@ enum class End
 class BerView
 {
   public:
-    BerView() noexcept : m_valid(false) {}
+    BerView() noexcept  = default;
     BerView(absl::Span<const uint8_t> data) noexcept { assign(data); }
     BerView(absl::Span<const uint8_t> data, size_t header_length, size_t content_length) noexcept;
 
@@ -57,7 +57,7 @@ class BerView
     size_t                    m_header_length; // Also content offset
     size_t                    m_content_length;
     Tag                       m_tag;
-    bool                      m_valid;
+    bool                      m_valid{false};
 };
 
 class MutableBerView : public BerView
@@ -220,12 +220,12 @@ inline void BerView::assign(absl::Span<const uint8_t> ber_data, Tag tag, size_t 
     m_valid          = true;
 }
 
-inline BerViewIterator        BerView::begin() const noexcept { return BerViewIterator(content()); }
-inline BerViewIterator        BerView::end() const noexcept { return BerViewIterator(End::end); }
+inline BerViewIterator        BerView::begin() const noexcept { return {content()}; }
+inline BerViewIterator        BerView::end() const noexcept { return {End::end}; }
 inline BerViewIterator        MutableBerView::cbegin() const noexcept { return BerView::begin(); }
 inline BerViewIterator        MutableBerView::cend() const noexcept { return BerView::end(); }
-inline MutableBerViewIterator MutableBerView::begin() noexcept { return MutableBerViewIterator(content()); }
-inline MutableBerViewIterator MutableBerView::end() noexcept { return MutableBerViewIterator(End::end); }
+inline MutableBerViewIterator MutableBerView::begin() noexcept { return {content()}; }
+inline MutableBerViewIterator MutableBerView::end() noexcept { return {End::end}; }
 
 inline size_t BerView::encode(absl::Span<uint8_t> buffer) const noexcept
 {

@@ -14,7 +14,7 @@ namespace fast_ber
 class Null
 {
   public:
-    Null() noexcept {}
+    Null() noexcept = default;
 
     size_t assign_ber(const BerView& rhs) noexcept;
     size_t assign_ber(absl::Span<const uint8_t> buffer) noexcept { return assign_ber(BerView(buffer)); }

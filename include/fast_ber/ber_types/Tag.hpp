@@ -1,9 +1,11 @@
 #pragma once
 
+#include <cstdint>
+
 namespace fast_ber
 {
 
-using Tag = long long;
+using Tag = int64_t;
 
 enum class UniversalTag : Tag
 {

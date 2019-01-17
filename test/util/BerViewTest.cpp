@@ -33,5 +33,5 @@ TEST_CASE("BerView: Empty packet")
     REQUIRE(view.tag() == 0);
 
     REQUIRE(view.ber() == empty_packet);
-    REQUIRE(view.content() == std::initializer_list<uint8_t>());
+    REQUIRE(view.content().empty());
 }

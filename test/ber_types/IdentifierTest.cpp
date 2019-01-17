@@ -7,7 +7,7 @@
 TEST_CASE("Identifier: Encode ExplicitIdentifier")
 {
     fast_ber::Integer        i(4);
-    std::array<uint8_t, 100> buffer;
+    std::array<uint8_t, 100> buffer   = {};
     std::array<uint8_t, 3>   expected = {0x02, 0x01, 0x04};
     size_t size = fast_ber::encode_with_specific_id(absl::Span<uint8_t>(buffer.begin(), buffer.size()), i,
                                                     fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::integer>{})
@@ -20,7 +20,7 @@ TEST_CASE("Identifier: Encode ExplicitIdentifier")
 TEST_CASE("Identifier: Encode TaggedExplicitIdentifier")
 {
     fast_ber::Integer        i(4);
-    std::array<uint8_t, 100> buffer;
+    std::array<uint8_t, 100> buffer   = {};
     std::array<uint8_t, 5>   expected = {0xB4, 0x03, 0x02, 0x01, 0x04};
     size_t                   size =
         fast_ber::encode_with_specific_id(
@@ -36,7 +36,7 @@ TEST_CASE("Identifier: Encode TaggedExplicitIdentifier")
 TEST_CASE("Identifier: Encode ImplicitIdentifier")
 {
     fast_ber::Integer        i(4);
-    std::array<uint8_t, 100> buffer;
+    std::array<uint8_t, 100> buffer   = {};
     std::array<uint8_t, 3>   expected = {0x94, 0x01, 0x04};
     size_t                   size =
         fast_ber::encode_with_specific_id(absl::Span<uint8_t>(buffer.begin(), buffer.size()), i,

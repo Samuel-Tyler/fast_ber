@@ -45,8 +45,7 @@ template <typename... Variants, typename... IDs>
 EncodeResult encode_with_specific_id(absl::Span<uint8_t> buffer, const Choice<Variants...> choice,
                                      const ChoiceId<IDs...>& id) noexcept
 {
-    // static_assert(absl::variant_size<decltype(choice.variant)>() == std::tuple_size(id.ids));
-    constexpr int depth = (int)std::tuple_size<decltype(id.ids())>::value;
+    constexpr auto depth = static_cast<int>(std::tuple_size<decltype(id.ids())>::value);
     return encode_if<0, depth>(buffer, choice, id);
 }
 
@@ -81,7 +80,7 @@ bool decode_with_specific_id(BerViewIterator& input, Choice<Variants...>& output
         return false;
     }
 
-    constexpr int depth = static_cast<int>(std::tuple_size<decltype(id.ids())>::value);
+    constexpr auto depth = static_cast<int>(std::tuple_size<decltype(id.ids())>::value);
     return decode_if<0, depth>(input, output, id);
 }
 

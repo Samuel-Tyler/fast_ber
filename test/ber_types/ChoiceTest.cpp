@@ -13,8 +13,8 @@ TEST_CASE("Choice: Check string choice matches simple string type")
     const auto tags   = fast_ber::ChoiceId<fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::integer>,
                                          fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>>{};
 
-    std::vector<uint8_t> choice_encoded(100);
-    std::vector<uint8_t> string_encoded(100);
+    std::vector<uint8_t> choice_encoded(100, 0x00);
+    std::vector<uint8_t> string_encoded(100, 0x00);
 
     size_t choice_encode_length =
         fast_ber::encode_with_specific_id(absl::MakeSpan(choice_encoded.data(), choice_encoded.size()), choice, tags)
@@ -34,7 +34,7 @@ TEST_CASE("Choice: Generated choice")
     fast_ber::MakeAChoice::Collection collection;
     collection.the_choice = fast_ber::Integer(5);
 
-    std::vector<uint8_t> buffer(1000);
+    std::vector<uint8_t> buffer(1000, 0x00);
     size_t length = fast_ber::MakeAChoice::encode(absl::MakeSpan(buffer.data(), buffer.size()), collection).length;
     buffer.resize(length);
 

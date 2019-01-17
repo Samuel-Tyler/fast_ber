@@ -4,7 +4,6 @@
 
 #include "catch2/catch.hpp"
 
-#include <fstream>
 #include <vector>
 
 TEST_CASE("Enumeration: Creating an enum")
@@ -19,7 +18,7 @@ TEST_CASE("Enumeration: Creating an enum")
 
 TEST_CASE("Enumeration: Encode Decode")
 {
-    std::array<uint8_t, 100> data;
+    std::array<uint8_t, 100> data = {};
 
     fast_ber::Enumerations::Enumeration enum_one = fast_ber::Enumerations::Enumeration::pear;
     fast_ber::Enumerations::Enumeration enum_two = fast_ber::Enumerations::Enumeration::orange;

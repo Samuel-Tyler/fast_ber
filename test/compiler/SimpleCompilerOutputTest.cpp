@@ -2,7 +2,6 @@
 
 #include "catch2/catch.hpp"
 
-#include <fstream>
 #include <vector>
 
 const std::initializer_list<uint8_t> test_collection_packet = {
@@ -120,8 +119,7 @@ const std::initializer_list<uint8_t> test_collection_packet = {
 
 TEST_CASE("SimpleCompilerOutput: Testing a generated ber container")
 {
-    std::array<uint8_t, 5000> buffer;
-    std::ofstream             output("test_out.ber");
+    std::array<uint8_t, 5000> buffer = {};
 
     const std::string hello   = "Hello world!";
     const std::string goodbye = "Good bye world!";
@@ -141,8 +139,6 @@ TEST_CASE("SimpleCompilerOutput: Testing a generated ber container")
         fast_ber::Simple::encode(absl::MakeSpan(buffer.data(), buffer.size()), collection);
     bool decode_success = fast_ber::Simple::decode(absl::MakeSpan(buffer.data(), buffer.size()), new_collection);
 
-    output.write(reinterpret_cast<const char*>(buffer.data()), static_cast<long>(encode_result.length));
-
     REQUIRE(encode_result.success);
     REQUIRE(decode_success);
     REQUIRE(new_collection.hello == "Hello world!");
@@ -153,7 +149,7 @@ TEST_CASE("SimpleCompilerOutput: Testing a generated ber container")
     REQUIRE(new_collection.optional_child.has_value());
     REQUIRE(new_collection.optional_child->meaning_of_life.has_value());
     REQUIRE(*new_collection.child.meaning_of_life == -42);
-    REQUIRE(new_collection.child.list.size() == 0);
+    REQUIRE(new_collection.child.list.empty());
     REQUIRE(new_collection.optional_child->list ==
             fast_ber::SequenceOf<fast_ber::OctetString>{"The", "second", "child", std::string(2000, 'x')});
     REQUIRE(*new_collection.optional_child->meaning_of_life == 999999999);
@@ -180,7 +176,7 @@ TEST_CASE("SimpleCompilerOutput: Encode Performance")
     const std::string         goodbye     = "Good bye world!";
     const std::string         the         = "The";
     const std::string         second      = "second";
-    std::array<uint8_t, 5000> buffer;
+    std::array<uint8_t, 5000> buffer      = {};
     size_t                    encode_size = 0;
 
     fast_ber::Simple::Collection collection{

@@ -6,8 +6,9 @@
 
 struct TestPacket
 {
+    TestPacket(std::initializer_list<uint8_t> d, fast_ber::Tag t, uint64_t l) noexcept : data(d), tag(t), length(l) {}
     std::initializer_list<uint8_t> data;
-    long                           tag;
+    fast_ber::Tag                  tag;
     uint64_t                       length;
 };
 

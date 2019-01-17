@@ -40,7 +40,7 @@ class OctetString
     uint8_t&             operator[](size_t n) noexcept { return data()[n]; }
     const uint8_t&       operator[](size_t n) const noexcept { return data()[n]; }
     friend std::ostream& operator<<(std::ostream& os, const OctetString& str) noexcept;
-    explicit             operator absl::string_view() const noexcept { return absl::string_view(c_str(), length()); }
+    explicit             operator absl::string_view() const noexcept { return {c_str(), length()}; }
 
     uint8_t*                  data() noexcept { return m_contents.content_data(); }
     const uint8_t*            data() const noexcept { return m_contents.content_data(); }

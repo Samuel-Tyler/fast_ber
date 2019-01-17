@@ -6,7 +6,7 @@
 
 TEST_CASE("Different Top Level Types: Integer as top level type")
 {
-    std::array<uint8_t, 5000> buffer;
+    std::array<uint8_t, 5000> buffer     = {};
     fast_ber::TopLevel::MyInt my_int     = 20;
     fast_ber::TopLevel::MyInt my_new_int = -20;
 
@@ -21,7 +21,7 @@ TEST_CASE("Different Top Level Types: Integer as top level type")
 
 TEST_CASE("Different Top Level Types: String as top level type")
 {
-    std::array<uint8_t, 5000>    buffer;
+    std::array<uint8_t, 5000>    buffer        = {};
     fast_ber::TopLevel::MyString my_string     = "<%%%%>";
     fast_ber::TopLevel::MyString my_new_string = "fail";
 
@@ -33,7 +33,7 @@ TEST_CASE("Different Top Level Types: String as top level type")
 
 TEST_CASE("Different Top Level Types: Choice as top level type")
 {
-    std::array<uint8_t, 5000>    buffer;
+    std::array<uint8_t, 5000>    buffer        = {};
     fast_ber::TopLevel::MyChoice my_string     = fast_ber::OctetString("The String");
     fast_ber::TopLevel::MyChoice my_new_string = 500;
 
@@ -49,7 +49,7 @@ TEST_CASE("Different Top Level Types: Choice as top level type")
 
 TEST_CASE("Different Top Level Types: Collection")
 {
-    std::array<uint8_t, 5000>      buffer;
+    std::array<uint8_t, 5000>      buffer = {};
     fast_ber::TopLevel::Collection my_collection;
     fast_ber::TopLevel::Collection my_new_collection;
 

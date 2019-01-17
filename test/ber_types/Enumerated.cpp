@@ -13,7 +13,7 @@ enum class TestEnum
 
 TEST_CASE("Enumerated: Encode Decode")
 {
-    std::array<uint8_t, 100> data;
+    std::array<uint8_t, 100> data = {};
 
     TestEnum enum_one = TestEnum::option_one;
     TestEnum enum_two = TestEnum::option_three;
