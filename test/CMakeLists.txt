@@ -1,16 +1,4 @@
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O3 -Wall -Wextra -pedantic -Wall -Wcast-align -Wpointer-arith -Wfloat-equal -pedantic")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=undefined -fsanitize=address")
-add_definitions(-DNDEBUG)
-
 project(fast_ber_tests)
-
-include_directories(../3rd_party/Catch2/single_include)
-
-aux_source_directory(ber_types TEST_SRC)
-aux_source_directory(util TEST_SRC)
-aux_source_directory(compiler TEST_SRC)
 
 function(fast_ber_generate input_file output_name)
     add_custom_command(
@@ -27,11 +15,15 @@ fast_ber_generate(../testfiles/tags.asn tags)
 fast_ber_generate(../testfiles/enumeration.asn enum)
 fast_ber_generate(../testfiles/top_level_encodings.asn top_level_encodings)
 
+aux_source_directory(ber_types TEST_SRC)
+aux_source_directory(util TEST_SRC)
+aux_source_directory(compiler TEST_SRC)
+
 add_executable(fast_ber_tests Test ${TEST_SRC} autogen/choice.hpp autogen/simple.hpp autogen/tags.hpp autogen/top_level_encodings.hpp autogen/enum.hpp)
+target_include_directories(fast_ber_tests PRIVATE SYSTEM ../3rd_party/Catch2/single_include)
 target_include_directories(fast_ber_tests PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 target_link_libraries (fast_ber_tests fast_ber_lib absl::strings)
 
-enable_testing()
 add_test(NAME fast_ber_compiler_0 COMMAND fast_ber_compiler ../../testfiles/simple0.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple0)
 add_test(NAME fast_ber_compiler_1 COMMAND fast_ber_compiler ../../testfiles/simple1.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple1)
 add_test(NAME fast_ber_compiler_2 COMMAND fast_ber_compiler ../../testfiles/simple2.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple2)
