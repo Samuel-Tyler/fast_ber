@@ -1,5 +1,9 @@
 #include "autogen/asn_compiler.hpp"
 #include "fast_ber/compiler/CompilerTypes.hpp"
+#include "fast_ber/compiler/Dependencies.hpp"
+#include "fast_ber/compiler/ReorderAssignments.hpp"
+
+#include <unordered_map>
 
 std::string strip_path(const std::string& path)
 {
@@ -11,31 +15,37 @@ std::string strip_path(const std::string& path)
     return path.substr(found + 1);
 }
 
-std::string create_assignment(const Assignment& assignment, TaggingMode tagging_mode)
+AssignmentInfo create_assignment(const Assignment& assignment, TaggingMode tagging_mode)
 {
+    AssignmentInfo info;
+    info.name       = assignment.name;
+    info.depends_on = dependenies(assignment.type);
+
     if (absl::holds_alternative<BuiltinType>(assignment.type) &&
         absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(assignment.type)))
     {
         const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(assignment.type));
-        return "struct " + assignment.name + to_string(sequence);
+        info.assignment              = "struct " + assignment.name + to_string(sequence);
     }
     else if (absl::holds_alternative<BuiltinType>(assignment.type) &&
              absl::holds_alternative<SetType>(absl::get<BuiltinType>(assignment.type)))
     {
         const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(assignment.type));
-        return "struct " + assignment.name + to_string(set);
+        info.assignment    = "struct " + assignment.name + to_string(set);
     }
     else if (absl::holds_alternative<BuiltinType>(assignment.type) &&
              absl::holds_alternative<EnumeratedType>(absl::get<BuiltinType>(assignment.type)))
     {
         const EnumeratedType& enumerated = absl::get<EnumeratedType>(absl::get<BuiltinType>(assignment.type));
-        return "enum class " + assignment.name + to_string(enumerated);
+        info.assignment                  = "enum class " + assignment.name + to_string(enumerated);
     }
     else
     {
-        return "using " + assignment.name + " = " + "TaggedType<" + to_string(assignment.type) + ", " +
-               universal_tag(assignment.type, tagging_mode) + ">;\n\n";
+        info.assignment = "using " + assignment.name + " = " + "TaggedType<" + to_string(assignment.type) + ", " +
+                          universal_tag(assignment.type, tagging_mode) + ">;\n\n";
     }
+
+    return info;
 }
 
 std::string create_encode_functions(const Assignment& assignment, TaggingMode tagging_mode)
@@ -140,9 +150,19 @@ std::string create_body(const Asn1Tree& tree, const std::string detail_filename)
     std::string output;
     output += "\n";
 
-    for (auto iter = tree.assignments.crbegin(); iter != tree.assignments.crend(); ++iter)
+    std::unordered_map<std::string, AssignmentInfo> assignment_infos;
+    assignment_infos.reserve(tree.assignments.size());
+
+    for (const Assignment& assignment : tree.assignments)
     {
-        output += create_assignment(*iter, tree.tagging_default);
+        const AssignmentInfo& assignment_info  = create_assignment(assignment, tree.tagging_default);
+        assignment_infos[assignment_info.name] = assignment_info;
+    }
+
+    const std::vector<AssignmentInfo>& ordered_assignment_infos = reorder_assignments(assignment_infos);
+    for (const AssignmentInfo& assignment : ordered_assignment_infos)
+    {
+        output += assignment.assignment;
     }
 
     output += create_include(strip_path(detail_filename)) + '\n';
@@ -155,10 +175,10 @@ std::string create_detail_body(const Asn1Tree& tree)
     output += "\n";
 
     output += "/* Functionality provided for Encoding and Decoding BER */\n\n";
-    for (auto iter = tree.assignments.crbegin(); iter != tree.assignments.crend(); ++iter)
+    for (const Assignment& assignment : tree.assignments)
     {
-        output += create_encode_functions(*iter, tree.tagging_default);
-        output += create_decode_functions(*iter) + "\n";
+        output += create_encode_functions(assignment, tree.tagging_default);
+        output += create_decode_functions(assignment) + "\n";
     }
     return output;
 }

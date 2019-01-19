@@ -528,6 +528,15 @@ struct ToStringHelper
     }
 };
 
+struct DependsOnHelper
+{
+    template <typename T>
+    std::vector<std::string> operator()(const T& t)
+    {
+        return depends_on(t);
+    }
+};
+
 struct UniversalTagHelper
 {
     template <typename T>
@@ -539,9 +548,11 @@ struct UniversalTagHelper
     TaggingMode tagging_mode;
 };
 
-ToStringHelper string_helper;
-std::string    to_string(const BuiltinType& type) { return absl::visit(string_helper, type); }
-std::string    to_string(const Type& type) { return absl::visit(string_helper, type); }
+static ToStringHelper string_helper;
+
+std::string to_string(const BuiltinType& type) { return absl::visit(string_helper, type); }
+std::string to_string(const Type& type) { return absl::visit(string_helper, type); }
+
 std::string universal_tag(const DefinedType&, TaggingMode) { return "ExplicitIdentifier<UniversalTag::sequence_of>"; }
 std::string universal_tag(const BuiltinType& type, TaggingMode tagging_mode)
 {
