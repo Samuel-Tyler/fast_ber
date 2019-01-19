@@ -12,6 +12,15 @@
 #include <unordered_map>
 #include <vector>
 
+#include <iostream>
+
+std::string santize_name(const std::string& name)
+{
+    auto copy = name;
+    std::replace(copy.begin(), copy.end(), '-', '_');
+    return copy;
+}
+
 enum class TaggingMode
 {
     explicit_,
@@ -30,7 +39,6 @@ enum class Class
 struct ComponentType;
 struct TaggedType;
 using ComponentTypeList = std::vector<ComponentType>;
-using SequenceType      = ComponentTypeList;
 
 struct NamedType;
 struct NamedNumber
@@ -104,14 +112,17 @@ struct RelativeIRIType
 struct RelativeOIDType
 {
 };
+struct SequenceType
+{
+    ComponentTypeList components;
+};
 struct SequenceOfType;
-
 struct SetType
 {
+    ComponentTypeList components;
 };
-struct SetOfType
-{
-};
+struct SetOfType;
+
 // unique ptr used to avoid circular reference on stack
 struct PrefixedType
 {
@@ -159,6 +170,14 @@ struct SequenceOfType
     std::shared_ptr<NamedType> named_type;
     std::shared_ptr<Type>      type;
 };
+struct SetOfType
+{
+    // Shared pointers used to prevent circular references
+    bool                       has_name;
+    std::shared_ptr<NamedType> named_type;
+    std::shared_ptr<Type>      type;
+};
+
 struct ChoiceType
 {
     std::vector<NamedType> choices;
@@ -308,7 +327,7 @@ std::string to_string(const SequenceType& sequence)
 {
     std::string res = " {\n";
 
-    for (const ComponentType& component : sequence)
+    for (const ComponentType& component : sequence.components)
     {
         std::string component_type = to_string(component.named_type.type);
         if (component.is_optional)
@@ -332,8 +351,35 @@ std::string to_string(const SequenceOfType& sequence)
         return "SequenceOf<" + to_string(*sequence.type) + ">";
     }
 }
-std::string to_string(const SetType&) { return "Set"; }
-std::string to_string(const SetOfType&) { return "SetOf"; }
+std::string to_string(const SetType& set)
+{
+    std::string res = " {\n";
+
+    for (const ComponentType& component : set.components)
+    {
+        std::string component_type = to_string(component.named_type.type);
+        if (component.is_optional)
+        {
+            component_type = make_type_optional(component_type);
+        }
+        res += "    " + component_type + " " + component.named_type.name + ";\n";
+    }
+    res += "};\n\n";
+
+    return res;
+}
+std::string to_string(const SetOfType& set)
+{
+    if (set.has_name)
+    {
+        return "SetOf<" + set.named_type->name + ">";
+    }
+    else
+    {
+        assert(set.type);
+        return "SetOf<" + to_string(*set.type) + ">";
+    }
+}
 std::string to_string(const PrefixedType& prefixed_type) { return to_string(prefixed_type.tagged_type->type); }
 std::string to_string(const TimeType&) { return "Time"; }
 std::string to_string(const TimeOfDayType&) { return "TimeOfDay"; }

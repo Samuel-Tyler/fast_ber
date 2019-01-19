@@ -17,15 +17,19 @@ std::string create_assignment(const Assignment& assignment, TaggingMode tagging_
         absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(assignment.type)))
     {
         const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(assignment.type));
-
-        std::string res = "struct " + assignment.name + to_string(sequence);
-        return res;
+        return "struct " + assignment.name + to_string(sequence);
+    }
+    else if (absl::holds_alternative<BuiltinType>(assignment.type) &&
+             absl::holds_alternative<SetType>(absl::get<BuiltinType>(assignment.type)))
+    {
+        const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(assignment.type));
+        return "struct " + assignment.name + to_string(set);
     }
     else if (absl::holds_alternative<BuiltinType>(assignment.type) &&
              absl::holds_alternative<EnumeratedType>(absl::get<BuiltinType>(assignment.type)))
     {
-        return "enum class " + assignment.name +
-               to_string(absl::get<EnumeratedType>(absl::get<BuiltinType>(assignment.type)));
+        const EnumeratedType& enumerated = absl::get<EnumeratedType>(absl::get<BuiltinType>(assignment.type));
+        return "enum class " + assignment.name + to_string(enumerated);
     }
     else
     {
@@ -44,7 +48,7 @@ std::string create_encode_functions(const Assignment& assignment, TaggingMode ta
         const std::string   tags_class = assignment.name + "Tags";
 
         res += "namespace " + tags_class + " {\n";
-        for (const ComponentType& component : sequence)
+        for (const ComponentType& component : sequence.components)
         {
             res += "static const auto " + component.named_type.name + " = " +
                    universal_tag(component.named_type.type, tagging_mode);
@@ -56,7 +60,7 @@ std::string create_encode_functions(const Assignment& assignment, TaggingMode ta
         res += "inline EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const " + assignment.name +
                "& input, const ExplicitIdentifier<T>& id) noexcept\n{\n";
         res += "    return encode_combine(output, id";
-        for (const ComponentType& component : sequence)
+        for (const ComponentType& component : sequence.components)
         {
             res += ",\n                          input." + component.named_type.name + ", " + tags_class +
                    "::" + component.named_type.name;
@@ -90,7 +94,7 @@ std::string create_decode_functions(const Assignment& assignment)
         res += "inline bool decode_with_specific_id(const BerView& input, " + assignment.name +
                "& output, const ExplicitIdentifier<T>& id) noexcept\n{\n";
         res += "    return decode_combine<" + assignment.name + "_name>(input, id";
-        for (const ComponentType& component : sequence)
+        for (const ComponentType& component : sequence.components)
         {
             res += ",\n                          output." + component.named_type.name + ", " + tags_class +
                    "::" + component.named_type.name;

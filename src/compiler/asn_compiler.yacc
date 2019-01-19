@@ -213,7 +213,9 @@
 %type<Type>              Type;
 %type<Class>             Class;
 %type<int>               ClassNumber;
-%type<ComponentTypeList> SequenceType;
+
+%type<SetType>           SetType;
+%type<SequenceType>      SequenceType;
 %type<NamedType>         NamedType;
 %type<NamedNumber>       NamedNumber;
 %type<ComponentType>     ComponentType;
@@ -221,6 +223,7 @@
 %type<ComponentTypeList> ComponentTypeLists;
 %type<ComponentTypeList> RootComponentTypeList;
 %type<Value>             Value;
+%type<SetOfType>         SetOfType;
 %type<SequenceOfType>    SequenceOfType;
 %type<ChoiceType>        ChoiceType;
 %type<std::vector<NamedType>> AlternativeTypeList;
@@ -849,7 +852,7 @@ Type:
 |   ReferencedType
     { $$ = $1; }
 |   ConstrainedType
-    { $$ = Type(); std::cout << "constrained type\n"; }
+    { $$ = Type(); }
 
 BuiltinType:
     BitStringType { $$ = BitStringType(); }
@@ -874,8 +877,8 @@ BuiltinType:
 |   RelativeOIDType { $$ = RelativeOIDType(); }
 |   SequenceType { $$ = $1; }
 |   SequenceOfType { $$ = $1; }
-|   SetType { $$ = SetType(); }
-|   SetOfType { $$ = SetOfType(); }
+|   SetType { $$ = $1; }
+|   SetOfType { $$ = $1; }
 |   PrefixedType { $$ = $1; }
 |   TimeType { $$ = TimeType(); }
 |   TimeOfDayType { $$ = TimeOfDayType(); }
@@ -1040,14 +1043,14 @@ SequenceType:
     { $$ = SequenceType(); }
 |   SEQUENCE "{" ExtensionAndException OptionalExtensionMarker "}"
 |   SEQUENCE "{" ComponentTypeLists "}"
-    { $$ = $3; }
+    { $$ = SequenceType{$3}; }
 
 ExtensionAndException:
-    " ... "
-|   " ... " ExceptionSpec;
+    "..."
+|   "..." ExceptionSpec;
 
 OptionalExtensionMarker:
-    "," " ... "
+    "," "..."
 |   %empty;
 
 ComponentTypeLists:
@@ -1128,8 +1131,10 @@ NamedValueList:
 
 SetType:
     SET "{" "}"
+    { $$ = SetType{}; }
 |   SET "{" ExtensionAndException OptionalExtensionMarker "}"
-|   SET "{" ComponentTypeLists "}";
+|   SET "{" ComponentTypeLists "}"
+    { $$ = SetType{$3}; }
 
 SetValue:
     "{" ComponentValueList "}"
@@ -1137,7 +1142,9 @@ SetValue:
 
 SetOfType:
     SET OF Type
-|   SET OF NamedType;
+    { $$ = SetOfType{ false, nullptr, std::make_shared<Type>($3) }; }
+|   SET OF NamedType
+    { $$ = SetOfType{ true, std::make_shared<NamedType>($3), nullptr }; }
 
 SetOfValue:
     "{" ValueList "}"
@@ -1526,10 +1533,7 @@ SubtypeElements:
 |   RecurrenceRange;*/
 
 SingleValue:
-    Value
-{
-   std::cout << "single value\n";
-};
+    Value;
 
 ContainedSubtype:
     Includes Type;
@@ -1750,8 +1754,8 @@ re2c:define:YYCURSOR = "context.cursor";
 // Identifiers
 //[0-9]+\.[0-9]+        { context.location.columns(context.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context.cursor)), context.location); }
 [0-9]+                  { context.location.columns(context.cursor - start); return asn1_parser::make_number(std::stoll(std::string(start, context.cursor)), context.location); }
-[A-Z][A-Za-z_0-9\-]+    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(std::string(start, context.cursor), context.location); }
-[a-z][A-Za-z_0-9\-]+    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(std::string(start, context.cursor), context.location); }
+[A-Z][A-Za-z_0-9\-]+    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(santize_name(std::string(start, context.cursor)), context.location); }
+[a-z][A-Za-z_0-9\-]+    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(santize_name(std::string(start, context.cursor)), context.location); }
 
 // End of file
 "\000"                  { context.location.columns(context.cursor - start); return asn1_parser::make_END_OF_FILE(context.location); }
@@ -1763,7 +1767,7 @@ re2c:define:YYCURSOR = "context.cursor";
 // Symbols
 "::="                   { context.location.columns(context.cursor - start); return asn1_parser::make_DEFINED_AS (context.location); }
 "\.\.\."                { context.location.columns(context.cursor - start); return asn1_parser::make_ELIPSIS (context.location); }
-"\.\."                  { std::cout << "got dots\n"; context.location.columns(context.cursor - start); return asn1_parser::make_RANGE (context.location); }
+"\.\."                  { context.location.columns(context.cursor - start); return asn1_parser::make_RANGE (context.location); }
 "{"                     { context.location.columns(context.cursor - start); return asn1_parser::make_OPEN_BRACE (context.location); }
 "}"                     { context.location.columns(context.cursor - start); return asn1_parser::make_CLOSE_BRACE (context.location); }
 "("                     { context.location.columns(context.cursor - start); return asn1_parser::make_OPEN_PARENTHESIS (context.location); }

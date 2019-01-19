@@ -22,7 +22,7 @@ enum class End
 class BerView
 {
   public:
-    BerView() noexcept  = default;
+    BerView() noexcept = default;
     BerView(absl::Span<const uint8_t> data) noexcept { assign(data); }
     BerView(absl::Span<const uint8_t> data, size_t header_length, size_t content_length) noexcept;
 
