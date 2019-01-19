@@ -13,8 +13,8 @@ TEST_CASE("Different Top Level Types: Integer as top level type")
     my_int = 50;
     REQUIRE(my_int == 50);
 
-    my_int.encode(absl::MakeSpan(buffer.data(), buffer.size()));
-    my_new_int.decode(absl::MakeSpan(buffer.data(), buffer.size()));
+    fast_ber::encode_with_specific_id(absl::MakeSpan(buffer.data(), buffer.size()), my_int);
+    fast_ber::decode(absl::MakeSpan(buffer.data(), buffer.size()), my_new_int);
 
     REQUIRE(my_int == my_new_int);
 }
@@ -25,8 +25,8 @@ TEST_CASE("Different Top Level Types: String as top level type")
     fast_ber::TopLevel::MyString my_string     = "<%%%%>";
     fast_ber::TopLevel::MyString my_new_string = "fail";
 
-    my_string.encode(absl::MakeSpan(buffer.data(), buffer.size()));
-    my_new_string.decode(absl::MakeSpan(buffer.data(), buffer.size()));
+    fast_ber::encode_with_specific_id(absl::MakeSpan(buffer.data(), buffer.size()), my_string);
+    fast_ber::decode(absl::MakeSpan(buffer.data(), buffer.size()), my_new_string);
 
     REQUIRE(my_string == my_new_string);
 }
@@ -59,6 +59,6 @@ TEST_CASE("Different Top Level Types: Collection")
     fast_ber::TopLevel::encode(absl::MakeSpan(buffer.data(), buffer.size()), my_collection);
     fast_ber::TopLevel::decode(absl::MakeSpan(buffer.data(), buffer.size()), my_new_collection);
 
-    REQUIRE(my_collection.my_int == 50);
-    REQUIRE(my_collection.my_string == "hello!");
+    REQUIRE(my_collection.my_int == fast_ber::Integer{50});
+    REQUIRE(my_collection.my_string == fast_ber::OctetString{"hello!"});
 }

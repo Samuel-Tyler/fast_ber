@@ -2,6 +2,8 @@
 
 #include <cstddef>
 
+#include "fast_ber/ber_types/Identifier.hpp"
+
 #include "absl/types/span.h"
 
 namespace fast_ber
@@ -80,26 +82,26 @@ EncodeResult encode_with_specific_id_impl(absl::Span<uint8_t> output, const T& o
     return EncodeResult{encode_length > 0, id_length + encode_length};
 }
 
-template <typename ID>
-EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const Integer& object, const ID& id)
+template <typename ID = ExplicitIdentifier<UniversalTag::integer>>
+EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const Integer& object, const ID& id = ID{})
 {
     return encode_with_specific_id_impl(output, object, id);
 }
 
-template <typename ID>
-EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const OctetString& object, const ID& id)
+template <typename ID = ExplicitIdentifier<UniversalTag::octet_string>>
+EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const OctetString& object, const ID& id = ID{})
 {
     return encode_with_specific_id_impl(output, object, id);
 }
 
-template <typename ID>
-EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const Boolean& object, const ID& id)
+template <typename ID = ExplicitIdentifier<UniversalTag::boolean>>
+EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const Boolean& object, const ID& id = ID{})
 {
     return encode_with_specific_id_impl(output, object, id);
 }
 
-template <typename ID>
-EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const Null& object, const ID& id)
+template <typename ID = ExplicitIdentifier<UniversalTag::null>>
+EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const Null& object, const ID& id = ID{})
 {
     return encode_with_specific_id_impl(output, object, id);
 }

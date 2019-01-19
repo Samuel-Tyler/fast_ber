@@ -41,8 +41,18 @@ AssignmentInfo create_assignment(const Assignment& assignment, TaggingMode taggi
     }
     else
     {
-        info.assignment = "using " + assignment.name + " = " + "TaggedType<" + to_string(assignment.type) + ", " +
-                          universal_tag(assignment.type, tagging_mode) + ">;\n\n";
+        if (absl::holds_alternative<BuiltinType>(assignment.type) &&
+            (absl::holds_alternative<PrefixedType>(absl::get<BuiltinType>(assignment.type)) ||
+             absl::holds_alternative<ChoiceType>(absl::get<BuiltinType>(assignment.type))))
+        {
+            // Alter the tag in tagged types
+            info.assignment = "using " + assignment.name + " = " + "TaggedType<" + to_string(assignment.type) + ", " +
+                              universal_tag(assignment.type, tagging_mode) + ">;\n\n";
+        }
+        else
+        {
+            info.assignment = "using " + assignment.name + " = " + to_string(assignment.type) + ";\n\n";
+        }
     }
 
     return info;
