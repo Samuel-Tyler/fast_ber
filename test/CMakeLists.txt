@@ -14,7 +14,7 @@ function(asn1c_generate input_file)
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c/Collection.h
         COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c
         COMMAND cd ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c  && asn1c -fno-constraints -fno-include-deps ${CMAKE_CURRENT_SOURCE_DIR}/${input_file}
-        COMMAND rm ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c/converter-sample.c
+        COMMAND rm -rf ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c/converter-*.c
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${input_file}
     )
 endfunction(asn1c_generate)
