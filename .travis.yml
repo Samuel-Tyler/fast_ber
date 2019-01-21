@@ -15,7 +15,8 @@ before_install:
   - cd 3rd_party/asn1c
   - test -f configure || autoreconf -iv
   - ./configure
-  - sudo make install
+  - make
+  - sudo -i make install
   - cd ../..
 
 addons:

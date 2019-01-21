@@ -11,7 +11,7 @@ endfunction(fast_ber_generate)
 
 function(asn1c_generate input_file)
     add_custom_command(
-        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c/Collection.h
+        OUTPUT autogen/asn1c/Collection.h autogen/asn1c/asn_codecs_prim.c autogen/asn1c/constraints.c autogen/asn1c/OCTET_STRING.c autogen/asn1c/asn_SEQUENCE_OF.c autogen/asn1c/constr_CHOICE.c autogen/asn1c/per_decoder.c autogen/asn1c/asn_SET_OF.c autogen/asn1c/constr_SEQUENCE.c autogen/asn1c/per_encoder.c autogen/asn1c/ber_decoder.c autogen/asn1c/constr_SEQUENCE_OF.c autogen/asn1c/per_opentype.c autogen/asn1c/ber_tlv_length.c autogen/asn1c/constr_SET_OF.c autogen/asn1c/per_support.c autogen/asn1c/ber_tlv_tag.c autogen/asn1c/constr_TYPE.c autogen/asn1c/xer_decoder.c autogen/asn1c/BIT_STRING.c autogen/asn1c/der_encoder.c autogen/asn1c/xer_encoder.c autogen/asn1c/BOOLEAN.c autogen/asn1c/INTEGER.c autogen/asn1c/xer_support.c autogen/asn1c/Child.c autogen/asn1c/NativeEnumerated.c autogen/asn1c/Collection.c autogen/asn1c/NativeInteger.c
         COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c
         COMMAND cd ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c  && asn1c -fno-constraints -fno-include-deps ${CMAKE_CURRENT_SOURCE_DIR}/${input_file}
         COMMAND rm -rf ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c/converter-*.c
@@ -32,9 +32,9 @@ aux_source_directory(ber_types TEST_SRC)
 aux_source_directory(util TEST_SRC)
 aux_source_directory(compiler TEST_SRC)
 aux_source_directory(performance TEST_SRC)
-aux_source_directory(${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c TEST_SRC)
 
 add_executable(fast_ber_tests Test ${TEST_SRC} autogen/asn1c/Collection.h autogen/choice.hpp autogen/simple.hpp autogen/tags.hpp autogen/top_level_encodings.hpp autogen/enum.hpp autogen/real_schema.hpp)
+target_sources(fast_ber_tests PRIVATE autogen/asn1c/Collection.h autogen/asn1c/asn_codecs_prim.c autogen/asn1c/constraints.c autogen/asn1c/OCTET_STRING.c autogen/asn1c/asn_SEQUENCE_OF.c autogen/asn1c/constr_CHOICE.c autogen/asn1c/per_decoder.c autogen/asn1c/asn_SET_OF.c autogen/asn1c/constr_SEQUENCE.c autogen/asn1c/per_encoder.c autogen/asn1c/ber_decoder.c autogen/asn1c/constr_SEQUENCE_OF.c autogen/asn1c/per_opentype.c autogen/asn1c/ber_tlv_length.c autogen/asn1c/constr_SET_OF.c autogen/asn1c/per_support.c autogen/asn1c/ber_tlv_tag.c autogen/asn1c/constr_TYPE.c autogen/asn1c/xer_decoder.c autogen/asn1c/BIT_STRING.c autogen/asn1c/der_encoder.c autogen/asn1c/xer_encoder.c autogen/asn1c/BOOLEAN.c autogen/asn1c/INTEGER.c autogen/asn1c/xer_support.c autogen/asn1c/Child.c autogen/asn1c/NativeEnumerated.c autogen/asn1c/Collection.c autogen/asn1c/NativeInteger.c)
 target_include_directories(fast_ber_tests PRIVATE SYSTEM ../3rd_party/Catch2/single_include)
 target_include_directories(fast_ber_tests PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(fast_ber_tests PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c TEST_SRC)
