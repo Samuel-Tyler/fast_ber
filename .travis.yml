@@ -6,13 +6,17 @@ compiler:
   - gcc
 
 before_install:
-  - sudo apt install -y asn1c
   - cd 3rd_party/re2c/re2c
   - ./autogen.sh
   - ./configure
   - make
   - sudo make install
   - cd ../../..
+  - cd 3rd_party/asn1c
+  - test -f configure || autoreconf -iv
+  - ./configure
+  - sudo make install
+  - cd ../..
 
 addons:
   apt:

@@ -10,3 +10,6 @@
 [submodule "3rd_party/re2c"]
 	path = 3rd_party/re2c
 	url = https://github.com/skvadrik/re2c.git
+[submodule "3rd_party/asn1c"]
+	path = 3rd_party/asn1c
+	url = https://github.com/vlm/asn1c
