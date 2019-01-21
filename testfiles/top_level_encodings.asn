@@ -1,9 +1,9 @@
 TopLevel DEFINITIONS AUTOMATIC TAGS ::= BEGIN
 
 Collection ::= SEQUENCE {
---    my_choice MyChoice,
-    my_int MyInt,
-    my_string MyString
+    --my-choice MyChoice,
+    my-int MyInt,
+    my-string MyString
 }
 
 MyChoice ::= CHOICE {

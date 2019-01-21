@@ -4,7 +4,7 @@ Collection ::= SEQUENCE {
 time Time
 }
 Time ::= SEQUENCE {
-the_time	DATE
+the-time	DATE
 }
 
 END

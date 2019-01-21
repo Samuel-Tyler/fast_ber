@@ -1,23 +1,23 @@
-Simple DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+Simple DEFINITIONS IMPLICIT TAGS ::= BEGIN
 
 Collection ::= SEQUENCE {
-    hello OCTET STRING,
-    goodbye OCTET STRING,
-    integer INTEGER,
-    boolean BOOLEAN,
-    child Child,
-    optional_child Child OPTIONAL,
-    the_choice CHOICE {
-        hello OCTET STRING,
-        goodbye OCTET STRING,
-        integer INTEGER,
-        boolean BOOLEAN
+    hello [0] OCTET STRING,
+    goodbye [1] OCTET STRING,
+    integer [2] INTEGER,
+    boolean [3] BOOLEAN,
+    child [4] Child,
+    optional-child [5] Child OPTIONAL,
+    the-choice [6] CHOICE {
+        hello [0] OCTET STRING,
+        goodbye [1] OCTET STRING,
+        integer [2] INTEGER,
+        boolean [3] BOOLEAN
     }
 }
 
 Child ::= SEQUENCE {
-    meaning_of_life INTEGER OPTIONAL,
-    list SEQUENCE OF OCTET STRING
+    meaning-of-life [0] INTEGER OPTIONAL,
+    list [1] SEQUENCE OF OCTET STRING
 }
 
 END

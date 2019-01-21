@@ -387,7 +387,8 @@ std::string to_string(const TimeOfDayType&) { return "TimeOfDay"; }
 std::string universal_tag(const BitStringType&, TaggingMode);
 std::string universal_tag(const BooleanType&, TaggingMode);
 std::string universal_tag(const CharacterStringType&, TaggingMode);
-std::string universal_tag(const ChoiceType&, TaggingMode);
+std::string universal_tag(const ChoiceType&, TaggingMode,
+                          const std::string& outer_tag = "ExplicitIdentifier<UniversalTag::sequence>");
 std::string universal_tag(const DateType&, TaggingMode);
 std::string universal_tag(const DateTimeType&, TaggingMode);
 std::string universal_tag(const DurationType&, TaggingMode);
@@ -405,7 +406,7 @@ std::string universal_tag(const RealType&, TaggingMode);
 std::string universal_tag(const RelativeIRIType&, TaggingMode);
 std::string universal_tag(const RelativeOIDType&, TaggingMode);
 std::string universal_tag(const SequenceType&, TaggingMode);
-std::string universal_tag(const SequenceOfType&, TaggingMode);
+std::string universal_tag(const SequenceOfType&, TaggingMode, const std::string& outer_tag);
 std::string universal_tag(const SetType&, TaggingMode);
 std::string universal_tag(const SetOfType&, TaggingMode);
 std::string universal_tag(const PrefixedType&, TaggingMode);
@@ -421,10 +422,10 @@ std::string universal_tag(const CharacterStringType&, TaggingMode)
 {
     return "ExplicitIdentifier<UniversalTag::bit_string>";
 }
-std::string universal_tag(const ChoiceType& choice, TaggingMode tagging_mode)
+std::string universal_tag(const ChoiceType& choice, TaggingMode tagging_mode, const std::string& outer_tag)
 {
     bool        is_first = true;
-    std::string res      = "ChoiceId<";
+    std::string res      = "ChoiceId<" + outer_tag + ",";
     for (const auto& named_type : choice.choices)
     {
         if (!is_first)
@@ -448,7 +449,7 @@ std::string universal_tag(const EnumeratedType&, TaggingMode) { return "Explicit
 std::string universal_tag(const ExternalType&, TaggingMode) { return "ExplicitIdentifier<UniversalTag::external>"; }
 std::string universal_tag(const InstanceOfType&, TaggingMode)
 {
-    return "ExplicitIdentifier<U{niversalTag::instance_of>";
+    return "ExplicitIdentifier<UniversalTag::instance_of>";
 }
 std::string universal_tag(const IntegerType&, TaggingMode) { return "ExplicitIdentifier<UniversalTag::integer>"; }
 std::string universal_tag(const IRIType&, TaggingMode) { return "ExplicitIdentifier<UniversalTag::iri>"; }
@@ -475,10 +476,10 @@ std::string universal_tag(const RelativeOIDType&, TaggingMode)
     return "ExplicitIdentifier<UniversalTag::relative_oid>";
 }
 std::string universal_tag(const SequenceType&, TaggingMode) { return "ExplicitIdentifier<UniversalTag::sequence>"; }
-std::string universal_tag(const SequenceOfType& sequence, TaggingMode tagging_mode)
+std::string universal_tag(const SequenceOfType& sequence, TaggingMode tagging_mode,
+                          const std::string& outer_tag = "ExplicitIdentifier<UniversalTag::sequence_of>")
 {
-    return "SequenceId<ExplicitIdentifier<UniversalTag::sequence_of>, " + universal_tag(*sequence.type, tagging_mode) +
-           ">";
+    return "SequenceId<" + outer_tag + ", " + universal_tag(*sequence.type, tagging_mode) + ">";
 }
 std::string universal_tag(const SetType&, TaggingMode) { return "ExplicitIdentifier<UniversalTag::set>"; }
 std::string universal_tag(const SetOfType&, TaggingMode) { return "ExplicitIdentifier<UniversalTag::set_of>"; }
@@ -489,7 +490,8 @@ std::string universal_tag(const PrefixedType& prefixed, TaggingMode tagging_mode
 }
 std::string universal_tag(const TaggedType& tagged_type, TaggingMode tagging_mode)
 {
-    bool is_explicit = false;
+    std::string outer_tag   = "";
+    bool        is_explicit = false;
     if (tagged_type.tagging_mode == TaggingMode::explicit_)
     {
         is_explicit = true;
@@ -505,14 +507,30 @@ std::string universal_tag(const TaggedType& tagged_type, TaggingMode tagging_mod
 
     if (is_explicit)
     {
-        return "TaggedExplicitIdentifier<Class::" + to_string(tagged_type.tag.class_) + ", " +
-               std::to_string(tagged_type.tag.tag_number) + ", " + universal_tag(tagged_type.type, tagging_mode) + ">";
+        outer_tag = "TaggedExplicitIdentifier<Class::" + to_string(tagged_type.tag.class_) + ", " +
+                    std::to_string(tagged_type.tag.tag_number) + ", " + universal_tag(tagged_type.type, tagging_mode) +
+                    ">";
     }
     else
     {
-        return "ImplicitIdentifier<Class::" + to_string(tagged_type.tag.class_) + ", " +
-               std::to_string(tagged_type.tag.tag_number) + ">";
+        outer_tag = "ImplicitIdentifier<Class::" + to_string(tagged_type.tag.class_) + ", " +
+                    std::to_string(tagged_type.tag.tag_number) + ">";
     }
+
+    if (absl::holds_alternative<BuiltinType>(tagged_type.type))
+    {
+        if (absl::holds_alternative<ChoiceType>(absl::get<BuiltinType>(tagged_type.type)))
+        {
+            return universal_tag(absl::get<ChoiceType>(absl::get<BuiltinType>(tagged_type.type)), tagging_mode,
+                                 outer_tag);
+        }
+        if (absl::holds_alternative<SequenceOfType>(absl::get<BuiltinType>(tagged_type.type)))
+        {
+            return universal_tag(absl::get<SequenceOfType>(absl::get<BuiltinType>(tagged_type.type)), tagging_mode,
+                                 outer_tag);
+        }
+    }
+    return outer_tag;
 }
 std::string universal_tag(const TimeType&, TaggingMode) { return "ExplicitIdentifier<UniversalTag::time>"; }
 std::string universal_tag(const TimeOfDayType&, TaggingMode) { return "ExplicitIdentifier<UniversalTag::time_of_day"; }

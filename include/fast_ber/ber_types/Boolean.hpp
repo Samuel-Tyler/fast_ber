@@ -58,17 +58,16 @@ inline Boolean& Boolean::operator=(const BerView& rhs) noexcept
     return *this;
 }
 
-inline void   Boolean::assign(bool val) noexcept { m_data = {0x1, static_cast<uint8_t>(val)}; }
+inline void   Boolean::assign(bool val) noexcept { m_data = {0x1, static_cast<uint8_t>(val ? 0xFF : 0x00)}; }
 inline void   Boolean::assign(const Boolean& rhs) noexcept { m_data = rhs.m_data; }
 inline size_t Boolean::assign_ber(const BerView& rhs) noexcept
 {
-    if (!rhs.is_valid() || rhs.construction() != Construction::primitive || rhs.content_length() != 1 ||
-        *(rhs.content_data()) > 1)
+    if (!rhs.is_valid() || rhs.construction() != Construction::primitive || rhs.content_length() != 1)
     {
         return 0;
     }
 
-    m_data = {0x1, *(rhs.content_data())};
+    m_data = {0x1, static_cast<uint8_t>((*(rhs.content_data()) == 0) ? 0x00 : 0xFF)};
     return 2 + rhs.identifier_length();
 }
 

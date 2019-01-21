@@ -25,7 +25,7 @@ TEST_CASE("Boolean: Encoding false")
 {
     fast_ber::Boolean        test(true);
     std::array<uint8_t, 100> buffer   = {};
-    std::array<uint8_t, 3>   expected = {0x01, 0x01, 0x01};
+    std::array<uint8_t, 3>   expected = {0x01, 0x01, 0xFF};
 
     size_t size = encode_with_specific_id(absl::Span<uint8_t>(buffer.begin(), buffer.size()), test,
                                           fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::boolean>{})

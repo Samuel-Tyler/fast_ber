@@ -43,7 +43,8 @@ AssignmentInfo create_assignment(const Assignment& assignment, TaggingMode taggi
     {
         if (absl::holds_alternative<BuiltinType>(assignment.type) &&
             (absl::holds_alternative<PrefixedType>(absl::get<BuiltinType>(assignment.type)) ||
-             absl::holds_alternative<ChoiceType>(absl::get<BuiltinType>(assignment.type))))
+             absl::holds_alternative<ChoiceType>(absl::get<BuiltinType>(assignment.type)) ||
+             absl::holds_alternative<SequenceOfType>(absl::get<BuiltinType>(assignment.type))))
         {
             // Alter the tag in tagged types
             info.assignment = "using " + assignment.name + " = " + "TaggedType<" + to_string(assignment.type) + ", " +
@@ -63,22 +64,33 @@ std::string create_encode_functions(const Assignment& assignment, TaggingMode ta
     if (absl::holds_alternative<BuiltinType>(assignment.type) &&
         absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(assignment.type)))
     {
-        const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(assignment.type));
         std::string         res;
+        const SequenceType& sequence   = absl::get<SequenceType>(absl::get<BuiltinType>(assignment.type));
         const std::string   tags_class = assignment.name + "Tags";
 
         res += "namespace " + tags_class + " {\n";
+        int tag_counter = 0;
         for (const ComponentType& component : sequence.components)
         {
-            res += "static const auto " + component.named_type.name + " = " +
-                   universal_tag(component.named_type.type, tagging_mode);
+            res += "static const auto " + component.named_type.name + " = ";
+            if (absl::holds_alternative<BuiltinType>(component.named_type.type) &&
+                (absl::holds_alternative<PrefixedType>(absl::get<BuiltinType>(component.named_type.type)) ||
+                 absl::holds_alternative<ChoiceType>(absl::get<BuiltinType>(component.named_type.type)) ||
+                 absl::holds_alternative<SequenceOfType>(absl::get<BuiltinType>(component.named_type.type))))
+            {
+                res += universal_tag(component.named_type.type, tagging_mode);
+            }
+            else
+            {
+                res += "ImplicitIdentifier<Class::context_specific, " + std::to_string(tag_counter++) + ">";
+            }
             res += "{};\n";
         }
         res += "}\n\n";
 
-        res += "template <fast_ber::UniversalTag T>\n";
+        res += "template <typename ID = ExplicitIdentifier<UniversalTag::sequence_of>>\n";
         res += "inline EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const " + assignment.name +
-               "& input, const ExplicitIdentifier<T>& id) noexcept\n{\n";
+               "& input, const ID& id = ID{}) noexcept\n{\n";
         res += "    return encode_combine(output, id";
         for (const ComponentType& component : sequence.components)
         {
@@ -87,9 +99,10 @@ std::string create_encode_functions(const Assignment& assignment, TaggingMode ta
         }
         res += ");\n}\n\n";
 
+        res += "template <typename ID = ExplicitIdentifier<UniversalTag::sequence_of>>";
         res += "inline EncodeResult encode(absl::Span<uint8_t> output, const " + assignment.name +
                "& input) noexcept\n{\n";
-        res += "    return encode_with_specific_id(output, input, ExplicitIdentifier<UniversalTag::sequence_of>{});\n";
+        res += "    return encode_with_specific_id(output, input, ID{});\n";
         res += "}\n\n";
 
         return res;
@@ -110,9 +123,9 @@ std::string create_decode_functions(const Assignment& assignment)
         const std::string   tags_class = assignment.name + "Tags";
 
         res += "constexpr const char " + assignment.name + "_name[] = \"" + assignment.name + "\";\n";
-        res += "template <fast_ber::UniversalTag T>\n";
+        res += "template <typename ID = ExplicitIdentifier<UniversalTag::sequence_of>>\n";
         res += "inline bool decode_with_specific_id(const BerView& input, " + assignment.name +
-               "& output, const ExplicitIdentifier<T>& id) noexcept\n{\n";
+               "& output, const ID& id = ID{}) noexcept\n{\n";
         res += "    return decode_combine<" + assignment.name + "_name>(input, id";
         for (const ComponentType& component : sequence.components)
         {
@@ -121,9 +134,9 @@ std::string create_decode_functions(const Assignment& assignment)
         }
         res += ");\n}\n\n";
 
-        res += "template <fast_ber::UniversalTag T>\n";
+        res += "template <typename ID = ExplicitIdentifier<UniversalTag::sequence_of>>\n";
         res += "inline bool decode_with_specific_id(BerViewIterator& input, " + assignment.name +
-               "& output, const ExplicitIdentifier<T>& id) noexcept\n{\n";
+               "& output, const ID& id = ID{}) noexcept\n{\n";
         res += "    bool success = decode_with_specific_id(*input, output, id) > 0;\n";
         res += "    ++input;\n";
         res += "    return success;\n";

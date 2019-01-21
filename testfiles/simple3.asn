@@ -5,7 +5,7 @@ time Time,
 hello INTEGER
 }
 Time ::= SEQUENCE {
-the_time	DATE
+the-time	DATE
 }
 
 END

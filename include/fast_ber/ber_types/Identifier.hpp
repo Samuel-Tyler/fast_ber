@@ -41,9 +41,10 @@ struct SequenceId
     static ID2 inner_id() { return ID2{}; }
 };
 
-template <typename... IDs>
+template <typename OuterID, typename... IDs>
 struct ChoiceId
 {
+    static OuterID            outer_id() { return OuterID{}; }
     static std::tuple<IDs...> ids() { return std::tuple<IDs...>{}; }
 };
 
@@ -75,6 +76,36 @@ template <typename... IDs>
 Tag reference_tag(const ChoiceId<IDs...>& id)
 {
     return reference_tag(std::get<0>(id.ids()));
+}
+
+template <UniversalTag T>
+Class reference_class(const ExplicitIdentifier<T>& id)
+{
+    return id.class_();
+}
+
+template <Class T1, Tag T2, typename T3>
+Class reference_class(const TaggedExplicitIdentifier<T1, T2, T3>& id)
+{
+    return id.outer_class();
+}
+
+template <Class T1, Tag T2>
+Class reference_class(const ImplicitIdentifier<T1, T2>& id)
+{
+    return id.class_();
+}
+
+template <typename ID1, typename ID2>
+Class reference_class(const SequenceId<ID1, ID2>& id)
+{
+    return class_(id.outer_id());
+}
+
+template <typename ID, typename... IDs>
+Class reference_class(const ChoiceId<ID, IDs...>& id)
+{
+    return class_(id.outer_id());
 }
 
 } // namespace fast_ber

@@ -1,7 +1,7 @@
 MakeAChoice DEFINITIONS AUTOMATIC TAGS ::= BEGIN
 
 Collection ::= SEQUENCE {
-    the_choice CHOICE {
+    the-choice CHOICE {
         hello OCTET STRING,
         goodbye OCTET STRING,
         integer INTEGER,

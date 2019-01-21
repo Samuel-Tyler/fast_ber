@@ -33,7 +33,8 @@ EncodeResult encode_with_specific_id(const absl::Span<uint8_t> buffer, const Seq
         content_buffer.remove_prefix(element_encode_result.length);
     }
 
-    return wrap_with_ber_header(buffer, ids.outer_id().class_(), val(ids.outer_id().tag()), combined_length);
+    return wrap_with_ber_header(buffer, reference_class(ids.outer_id()), reference_tag(ids.outer_id()),
+                                combined_length);
 }
 
 template <typename T>
@@ -48,14 +49,14 @@ template <typename T, typename ID1, typename ID2>
 bool decode_with_specific_id(BerViewIterator& input, SequenceOf<T>& output, const SequenceId<ID1, ID2>& ids) noexcept
 {
     output.clear();
-    if (!(input->is_valid() && input->tag() == val(ids.outer_id().tag()) &&
-          input->construction() == Construction::constructed))
+    if (!(input->is_valid() && input->tag() == reference_tag(ids.outer_id())) &&
+        input->construction() == Construction::constructed)
     {
         return false;
     }
 
     auto child = input->begin();
-    while (child->is_valid() && child->tag() == val(ids.inner_id().tag()))
+    while (child->is_valid() && child->tag() == reference_tag(ids.inner_id()))
     {
         output.emplace_back(T());
         bool success = decode_with_specific_id(child, output.back(), ids.inner_id()) > 0;

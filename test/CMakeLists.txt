@@ -9,6 +9,16 @@ function(fast_ber_generate input_file output_name)
     )
 endfunction(fast_ber_generate)
 
+function(asn1c_generate input_file)
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c/Collection.h
+        COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c
+        COMMAND cd ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c  && asn1c -fno-constraints -fno-include-deps ${CMAKE_CURRENT_SOURCE_DIR}/${input_file}
+        COMMAND rm ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c/converter-sample.c
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${input_file}
+    )
+endfunction(asn1c_generate)
+
 fast_ber_generate(../testfiles/simple5.asn simple)
 fast_ber_generate(../testfiles/choice.asn choice)
 fast_ber_generate(../testfiles/tags.asn tags)
@@ -16,13 +26,18 @@ fast_ber_generate(../testfiles/enumeration.asn enum)
 fast_ber_generate(../testfiles/top_level_encodings.asn top_level_encodings)
 fast_ber_generate(../testfiles/SGSN-CDR-def-v2009A.asn real_schema)
 
+asn1c_generate(../testfiles/simple5.asn)
+
 aux_source_directory(ber_types TEST_SRC)
 aux_source_directory(util TEST_SRC)
 aux_source_directory(compiler TEST_SRC)
+aux_source_directory(performance TEST_SRC)
+aux_source_directory(${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c TEST_SRC)
 
-add_executable(fast_ber_tests Test ${TEST_SRC} autogen/choice.hpp autogen/simple.hpp autogen/tags.hpp autogen/top_level_encodings.hpp autogen/enum.hpp autogen/real_schema.hpp)
+add_executable(fast_ber_tests Test ${TEST_SRC} autogen/asn1c/Collection.h autogen/choice.hpp autogen/simple.hpp autogen/tags.hpp autogen/top_level_encodings.hpp autogen/enum.hpp autogen/real_schema.hpp)
 target_include_directories(fast_ber_tests PRIVATE SYSTEM ../3rd_party/Catch2/single_include)
 target_include_directories(fast_ber_tests PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(fast_ber_tests PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c TEST_SRC)
 target_link_libraries (fast_ber_tests fast_ber_lib absl::strings)
 
 add_test(NAME fast_ber_compiler_0 COMMAND fast_ber_compiler ../../testfiles/simple0.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple0)

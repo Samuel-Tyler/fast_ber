@@ -1,7 +1,7 @@
 Clock DEFINITIONS AUTOMATIC TAGS ::= BEGIN
 
 Time ::= SEQUENCE {
-the_time	DATE
+the-time	DATE
 }
 
 END
