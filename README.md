@@ -140,3 +140,20 @@ Partial encode at compile time (templated / constexpr)
 High / low conformance modes
 DER mode
 ```
+
+## Benchmarks
+
+fast_ber includes benchmarks against asn1c, an ASN library written in C. Here is an example of the output:
+```
+-------------------------------------------------------------------------------
+benchmark name                                  iters   elapsed ns      average 
+-------------------------------------------------------------------------------
+fast_ber        - decode large packet               1    428252588   428.253 ms 
+asn1c           - decode large packet               1   1562105248    1.56211 s 
+fast_ber        - decode small packet               1     90785932   90.7859 ms 
+asn1c           - decode small packet               1    679468389   679.468 ms 
+fast_ber        - encode                            1    557656167   557.656 ms 
+asn1c           - encode                            1   1740894147    1.74089 s 
+fast_ber        - construct                         1    611129978    611.13 ms 
+asn1c           - construct                         1    366788030   366.788 ms 
+```

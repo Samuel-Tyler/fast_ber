@@ -36,7 +36,7 @@ add_executable(${PROJECT_NAME} Test ${BENCH_SRC} ${CMAKE_CURRENT_BINARY_DIR}/aut
 target_sources(${PROJECT_NAME} PRIVATE autogen/asn1c/Collection.h autogen/asn1c/asn_codecs_prim.c autogen/asn1c/constraints.c autogen/asn1c/OCTET_STRING.c autogen/asn1c/asn_SEQUENCE_OF.c autogen/asn1c/constr_CHOICE.c autogen/asn1c/per_decoder.c autogen/asn1c/asn_SET_OF.c autogen/asn1c/constr_SEQUENCE.c autogen/asn1c/per_encoder.c autogen/asn1c/ber_decoder.c autogen/asn1c/constr_SEQUENCE_OF.c autogen/asn1c/per_opentype.c autogen/asn1c/ber_tlv_length.c autogen/asn1c/constr_SET_OF.c autogen/asn1c/per_support.c autogen/asn1c/ber_tlv_tag.c autogen/asn1c/constr_TYPE.c autogen/asn1c/xer_decoder.c autogen/asn1c/BIT_STRING.c autogen/asn1c/der_encoder.c autogen/asn1c/xer_encoder.c autogen/asn1c/BOOLEAN.c autogen/asn1c/INTEGER.c autogen/asn1c/xer_support.c autogen/asn1c/Child.c autogen/asn1c/NativeEnumerated.c autogen/asn1c/Collection.c autogen/asn1c/NativeInteger.c)
 target_include_directories(${PROJECT_NAME} PRIVATE SYSTEM ${CMAKE_SOURCE_DIR}/3rd_party/Catch2/single_include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c TEST_SRC)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c)
 target_link_libraries(${PROJECT_NAME} fast_ber_lib absl::strings)
 
 add_test(NAME fast_ber_benchmarks COMMAND ${PROJECT_NAME})
