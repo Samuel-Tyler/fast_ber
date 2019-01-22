@@ -22,7 +22,7 @@ function(asn1c_generate input_file)
     add_custom_command(
         OUTPUT autogen/asn1c/Collection.h autogen/asn1c/asn_codecs_prim.c autogen/asn1c/constraints.c autogen/asn1c/OCTET_STRING.c autogen/asn1c/asn_SEQUENCE_OF.c autogen/asn1c/constr_CHOICE.c autogen/asn1c/per_decoder.c autogen/asn1c/asn_SET_OF.c autogen/asn1c/constr_SEQUENCE.c autogen/asn1c/per_encoder.c autogen/asn1c/ber_decoder.c autogen/asn1c/constr_SEQUENCE_OF.c autogen/asn1c/per_opentype.c autogen/asn1c/ber_tlv_length.c autogen/asn1c/constr_SET_OF.c autogen/asn1c/per_support.c autogen/asn1c/ber_tlv_tag.c autogen/asn1c/constr_TYPE.c autogen/asn1c/xer_decoder.c autogen/asn1c/BIT_STRING.c autogen/asn1c/der_encoder.c autogen/asn1c/xer_encoder.c autogen/asn1c/BOOLEAN.c autogen/asn1c/INTEGER.c autogen/asn1c/xer_support.c autogen/asn1c/Child.c autogen/asn1c/NativeEnumerated.c autogen/asn1c/Collection.c autogen/asn1c/NativeInteger.c
         COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c
-        COMMAND cd ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c && ${CMAKE_SOURCE_DIR}/3rd_party/asn1c/asn1c/asn1c -fno-constraints -fno-include-deps ${CMAKE_CURRENT_SOURCE_DIR}/${input_file}
+        COMMAND cd ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c && ${CMAKE_SOURCE_DIR}/3rd_party/asn1c/asn1c/asn1c -fno-constraints -fno-include-deps ${CMAKE_CURRENT_SOURCE_DIR}/${input_file} 2> /dev/null
         COMMAND rm -rf ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c/converter-*.c
         DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${input_file}
     )

@@ -20,8 +20,8 @@ aux_source_directory(ber_types TEST_SRC)
 aux_source_directory(util TEST_SRC)
 aux_source_directory(compiler TEST_SRC)
 
-add_executable(fast_ber_tests Test ${TEST_SRC} autogen/asn1c/Collection.h autogen/choice.hpp autogen/simple.hpp autogen/tags.hpp autogen/top_level_encodings.hpp autogen/enum.hpp autogen/real_schema.hpp)
-target_include_directories(fast_ber_tests PRIVATE SYSTEM ../3rd_party/Catch2/single_include)
+add_executable(fast_ber_tests Test ${TEST_SRC} autogen/choice.hpp autogen/simple.hpp autogen/tags.hpp autogen/top_level_encodings.hpp autogen/enum.hpp autogen/real_schema.hpp)
+target_include_directories(fast_ber_tests PRIVATE SYSTEM ${CMAKE_SOURCE_DIR}/3rd_party/Catch2/single_include)
 target_include_directories(fast_ber_tests PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 target_link_libraries (fast_ber_tests fast_ber_lib absl::strings)
 
