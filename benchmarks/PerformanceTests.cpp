@@ -223,7 +223,7 @@ TEST_CASE("Benchmark: Encode Performance")
     asn1c_collection.the_choice.present = the_choice_PR_goodbye;
     OCTET_STRING_fromString(&asn1c_collection.the_choice.choice.goodbye, "I chose a string!");
 
-    BENCHMARK("fast_ber - encode")
+    BENCHMARK("fast_ber        - encode")
     {
         for (int i = 0; i < 100000; i++)
         {
@@ -233,7 +233,7 @@ TEST_CASE("Benchmark: Encode Performance")
         }
     }
 
-    BENCHMARK("asn1c    - encode")
+    BENCHMARK("asn1c           - encode")
     {
         for (int i = 0; i < 100000; i++)
         {
@@ -270,7 +270,7 @@ TEST_CASE("Benchmark: Object Construction Performance")
     const std::string second      = "second";
     const std::string child       = "child";
 
-    BENCHMARK("fast_ber - construct")
+    BENCHMARK("fast_ber        - construct")
     {
         for (int i = 0; i < 100000; i++)
         {
@@ -285,7 +285,7 @@ TEST_CASE("Benchmark: Object Construction Performance")
         }
     }
 
-    BENCHMARK("asn1c    - construct")
+    BENCHMARK("asn1c           - construct")
     {
         for (int i = 0; i < 100000; i++)
         {

@@ -12,12 +12,6 @@ before_install:
   - make
   - sudo make install
   - cd ../../..
-  - cd 3rd_party/asn1c
-  - test -f configure || autoreconf -iv
-  - ./configure
-  - make
-  - sudo -i make install
-  - cd ../..
 
 addons:
   apt:

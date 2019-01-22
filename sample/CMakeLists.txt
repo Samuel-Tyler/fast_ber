@@ -17,4 +17,4 @@ target_link_libraries (sample_decode fast_ber_lib)
 
 add_test(NAME sample_encode COMMAND sample_encode)
 add_test(NAME sample_decode COMMAND sample_decode)
-add_test(NAME clean_up COMMAND rm pokemon.ber)
+add_test(NAME sample_clean_up COMMAND rm pokemon.ber)
