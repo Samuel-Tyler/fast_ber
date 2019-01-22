@@ -2,7 +2,7 @@ project(fast_ber_benchmarks)
 
 add_custom_command(
     OUTPUT ${CMAKE_SOURCE_DIR}/3rd_party/asn1c/asn1c/asn1c
-    COMMAND cd 3rd_party/asn1c && test -f configure || autoreconf -iv && ./configure && make
+    COMMAND cd ${CMAKE_SOURCE_DIR}/3rd_party/asn1c && test -f configure || autoreconf -iv && ./configure && make
 )
 
 if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
@@ -13,7 +13,7 @@ function(fast_ber_generate input_file output_name)
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}.hpp
         COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/autogen
-        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/../src/fast_ber_compiler ${CMAKE_CURRENT_SOURCE_DIR}/${input_file} ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/../src/fast_ber_compiler ${input_file} ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/../src/fast_ber_compiler ${input_file}
     )
 endfunction(fast_ber_generate)
@@ -22,14 +22,14 @@ function(asn1c_generate input_file)
     add_custom_command(
         OUTPUT autogen/asn1c/Collection.h autogen/asn1c/asn_codecs_prim.c autogen/asn1c/constraints.c autogen/asn1c/OCTET_STRING.c autogen/asn1c/asn_SEQUENCE_OF.c autogen/asn1c/constr_CHOICE.c autogen/asn1c/per_decoder.c autogen/asn1c/asn_SET_OF.c autogen/asn1c/constr_SEQUENCE.c autogen/asn1c/per_encoder.c autogen/asn1c/ber_decoder.c autogen/asn1c/constr_SEQUENCE_OF.c autogen/asn1c/per_opentype.c autogen/asn1c/ber_tlv_length.c autogen/asn1c/constr_SET_OF.c autogen/asn1c/per_support.c autogen/asn1c/ber_tlv_tag.c autogen/asn1c/constr_TYPE.c autogen/asn1c/xer_decoder.c autogen/asn1c/BIT_STRING.c autogen/asn1c/der_encoder.c autogen/asn1c/xer_encoder.c autogen/asn1c/BOOLEAN.c autogen/asn1c/INTEGER.c autogen/asn1c/xer_support.c autogen/asn1c/Child.c autogen/asn1c/NativeEnumerated.c autogen/asn1c/Collection.c autogen/asn1c/NativeInteger.c
         COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c
-        COMMAND cd ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c && ${CMAKE_SOURCE_DIR}/3rd_party/asn1c/asn1c/asn1c -fno-constraints -fno-include-deps ${CMAKE_CURRENT_SOURCE_DIR}/${input_file} 2> /dev/null
+        COMMAND cd ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c && ${CMAKE_SOURCE_DIR}/3rd_party/asn1c/asn1c/asn1c -fno-constraints -fno-include-deps ${input_file} 2> /dev/null
         COMMAND rm -rf ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c/converter-*.c
-        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${input_file}
+        DEPENDS ${input_file} ${CMAKE_CURRENT_BINARY_DIR}/asn1c
     )
 endfunction(asn1c_generate)
 
-fast_ber_generate(../testfiles/simple5.asn simple)
-asn1c_generate(../testfiles/simple5.asn)
+fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/simple5.asn simple)
+asn1c_generate(${CMAKE_SOURCE_DIR}/testfiles/simple5.asn)
 
 aux_source_directory(. BENCH_SRC)
 add_executable(${PROJECT_NAME} Test ${BENCH_SRC} ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c/Collection.h autogen/simple.hpp)
