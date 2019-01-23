@@ -10,6 +10,11 @@
 namespace fast_ber
 {
 
+struct DecodeResult
+{
+    bool success;
+};
+
 template <typename T, UniversalTag T2>
 bool primitive_decode_impl(BerViewIterator& input, T& output, const ExplicitIdentifier<T2>& id) noexcept
 {

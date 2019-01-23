@@ -6,6 +6,7 @@
 #include "fast_ber/ber_types/Construction.hpp"
 #include "fast_ber/util/BerView.hpp"
 #include "fast_ber/util/Create.hpp"
+#include "fast_ber/util/EncodeHelpers.hpp"
 #include "fast_ber/util/Extract.hpp"
 
 #include <algorithm>
@@ -35,8 +36,7 @@ class Boolean
     size_t   assign_ber(const BerView& rhs) noexcept;
     size_t   assign_ber(absl::Span<const uint8_t> buffer) noexcept;
 
-    size_t encode(absl::Span<uint8_t> buffer) const noexcept;
-    size_t encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
+    EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
   private:
     std::array<uint8_t, 2> m_data;
@@ -73,32 +73,16 @@ inline size_t Boolean::assign_ber(const BerView& rhs) noexcept
 
 inline size_t Boolean::assign_ber(absl::Span<const uint8_t> buffer) noexcept { return assign_ber(BerView(buffer)); }
 
-inline size_t Boolean::encode(absl::Span<uint8_t> buffer) const noexcept
-{
-    size_t id_length = create_identifier(buffer, Construction::primitive, Class::universal, UniversalTag::boolean);
-    if (id_length == 0)
-    {
-        return 0;
-    }
-    buffer.remove_prefix(id_length);
-
-    size_t encode_length = encode_content_and_length(buffer);
-    if (encode_length == 0)
-    {
-        return 0;
-    }
-    return id_length + encode_length;
-}
-inline size_t Boolean::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
+inline EncodeResult Boolean::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
 {
     if (buffer.size() < m_data.size())
     {
-        return 0;
+        return EncodeResult{false, 0};
     }
 
     buffer[0] = m_data[0];
     buffer[1] = m_data[1];
-    return m_data.size();
+    return EncodeResult{true, m_data.size()};
 }
 
 } // namespace fast_ber

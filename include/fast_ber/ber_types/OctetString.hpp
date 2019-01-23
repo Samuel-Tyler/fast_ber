@@ -1,6 +1,7 @@
 #pragma once
 
 #include "fast_ber/util/BerContainer.hpp"
+#include "fast_ber/util/EncodeHelpers.hpp"
 
 #include "absl/strings/string_view.h"
 #include "absl/types/span.h"
@@ -63,9 +64,8 @@ class OctetString
     size_t assign_ber(const BerContainer& container) noexcept;
     size_t assign_ber(absl::Span<const uint8_t> buffer) noexcept;
 
-    void   resize() noexcept;
-    size_t encode(absl::Span<uint8_t> buffer) const noexcept;
-    size_t encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
+    void         resize() noexcept;
+    EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
   private:
     BerContainer m_contents;
@@ -137,26 +137,10 @@ inline size_t OctetString::assign_ber(absl::Span<const uint8_t> buffer) noexcept
     return m_contents.assign_ber(buffer);
 }
 
-inline size_t OctetString::encode(absl::Span<uint8_t> buffer) const noexcept
+inline EncodeResult OctetString::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
 {
-    size_t id_length = create_identifier(buffer, Construction::primitive, Class::universal, UniversalTag::octet_string);
-    if (id_length == 0)
-    {
-        return 0;
-    }
-    buffer.remove_prefix(id_length);
-
-    size_t encode_length = encode_content_and_length(buffer);
-    if (encode_length == 0)
-    {
-        return 0;
-    }
-
-    return id_length + encode_length;
-}
-inline size_t OctetString::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
-{
-    return m_contents.encode_content_and_length(buffer);
+    size_t size = m_contents.encode_content_and_length(buffer);
+    return EncodeResult{size > 0, size};
 }
 
 } // namespace fast_ber

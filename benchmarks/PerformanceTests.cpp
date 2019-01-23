@@ -124,23 +124,25 @@ const std::initializer_list<uint8_t> small_test_collection_packet = {
     0x21, 0x82, 0x01, 0x05, 0x83, 0x01, 0xff, 0xa4, 0x02, 0xa1, 0x00, 0xa6, 0x13, 0x81, 0x11, 0x49,
     0x20, 0x63, 0x68, 0x6f, 0x73, 0x65, 0x20, 0x61, 0x20, 0x73, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x21};
 
+const int iterations = 1000000;
+
 TEST_CASE("Benchmark: Decode Performance")
 {
     bool           success = false;
     asn_dec_rval_t rval    = {};
 
-    BENCHMARK("fast_ber decode - large packet")
+    BENCHMARK("fast_ber        - decode " + std::to_string(large_test_collection_packet.size()) + " byte packet")
     {
-        for (int i = 0; i < 100000; i++)
+        for (int i = 0; i < iterations; i++)
         {
             fast_ber::Simple::Collection collection;
             success = fast_ber::decode(
                 absl::MakeSpan(large_test_collection_packet.begin(), large_test_collection_packet.size()), collection);
         }
     }
-    BENCHMARK("asn1c decode    - large packet")
+    BENCHMARK("asn1c           - decode " + std::to_string(large_test_collection_packet.size()) + " byte packet")
     {
-        for (int i = 0; i < 100000; i++)
+        for (int i = 0; i < iterations; i++)
         {
             Collection_t* collection = nullptr;
             rval = asn_DEF_Collection.ber_decoder(nullptr, &asn_DEF_Collection, reinterpret_cast<void**>(&collection),
@@ -153,18 +155,18 @@ TEST_CASE("Benchmark: Decode Performance")
     REQUIRE(rval.code == RC_OK);
     REQUIRE(success);
 
-    BENCHMARK("fast_ber decode - small packet")
+    BENCHMARK("fast_ber        - decode " + std::to_string(small_test_collection_packet.size()) + " byte packet")
     {
-        for (int i = 0; i < 100000; i++)
+        for (int i = 0; i < iterations; i++)
         {
             fast_ber::Simple::Collection collection;
             success = fast_ber::decode(
                 absl::MakeSpan(small_test_collection_packet.begin(), small_test_collection_packet.size()), collection);
         }
     }
-    BENCHMARK("asn1c decode    - small packet")
+    BENCHMARK("asn1c           - decode " + std::to_string(small_test_collection_packet.size()) + " byte packet")
     {
-        for (int i = 0; i < 100000; i++)
+        for (int i = 0; i < iterations; i++)
         {
             Collection_t* collection = nullptr;
             rval = asn_DEF_Collection.ber_decoder(nullptr, &asn_DEF_Collection, reinterpret_cast<void**>(&collection),
@@ -225,7 +227,7 @@ TEST_CASE("Benchmark: Encode Performance")
 
     BENCHMARK("fast_ber        - encode")
     {
-        for (int i = 0; i < 100000; i++)
+        for (int i = 0; i < iterations; i++)
         {
             encode_size =
                 fast_ber::encode(absl::MakeSpan(fast_ber_buffer.data(), fast_ber_buffer.size()), collection).length;
@@ -234,7 +236,7 @@ TEST_CASE("Benchmark: Encode Performance")
 
     BENCHMARK("asn1c           - encode")
     {
-        for (int i = 0; i < 100000; i++)
+        for (int i = 0; i < iterations; i++)
         {
             rval = der_encode_to_buffer(&asn_DEF_Collection, (void*)&asn1c_collection, asn1c_buffer.data(),
                                         asn1c_buffer.size());
@@ -271,7 +273,7 @@ TEST_CASE("Benchmark: Object Construction Performance")
 
     BENCHMARK("fast_ber        - construct")
     {
-        for (int i = 0; i < 100000; i++)
+        for (int i = 0; i < iterations; i++)
         {
             fast_ber::Simple::Collection collection{
                 hello,
@@ -286,7 +288,7 @@ TEST_CASE("Benchmark: Object Construction Performance")
 
     BENCHMARK("asn1c           - construct")
     {
-        for (int i = 0; i < 100000; i++)
+        for (int i = 0; i < iterations; i++)
         {
             Collection_t asn1c_collection = {};
             OCTET_STRING_fromString(&asn1c_collection.hello, hello.c_str());

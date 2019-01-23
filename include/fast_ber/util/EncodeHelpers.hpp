@@ -49,26 +49,25 @@ EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const Expl
 
     output.remove_prefix(id_length);
 
-    size_t encode_length = object.encode_content_and_length(output);
-    return EncodeResult{encode_length > 0, id_length + encode_length};
+    EncodeResult encode_res = object.encode_content_and_length(output);
+    encode_res.length += id_length;
+    return encode_res;
 }
 
 template <typename T, Class T2, Tag T3, typename T4>
-EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object,
-                                          const TaggedExplicitIdentifier<T2, T3, T4>& id)
+EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const TaggedExplicitIdentifier<T2, T3, T4>& id)
 {
-    size_t encode_length = object.encode(output);
-    if (encode_length == 0)
+    EncodeResult inner_encoding = encode(output, object, id.inner_id());
+    if (!inner_encoding.success)
     {
         return EncodeResult{false, 0};
     }
 
-    return wrap_with_ber_header(output, id.outer_class(), id.outer_tag(), encode_length);
+    return wrap_with_ber_header(output, id.outer_class(), id.outer_tag(), inner_encoding.length);
 }
 
 template <typename T, Class T2, Tag T3>
-EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object,
-                                          const ImplicitIdentifier<T2, T3>& id)
+EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const ImplicitIdentifier<T2, T3>& id)
 {
     size_t id_length = create_identifier(output, Construction::primitive, id.class_(), id.tag());
     if (id_length == 0 || id_length > output.size())
@@ -78,8 +77,9 @@ EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object,
 
     output.remove_prefix(id_length);
 
-    size_t encode_length = object.encode_content_and_length(output);
-    return EncodeResult{encode_length > 0, id_length + encode_length};
+    EncodeResult encode_res = object.encode_content_and_length(output);
+    encode_res.length += id_length;
+    return encode_res;
 }
 
 template <typename ID = ExplicitIdentifier<UniversalTag::integer>>
