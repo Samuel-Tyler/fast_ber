@@ -137,12 +137,6 @@ std::string create_decode_functions(const Assignment& assignment, const std::str
         res += "    return success;\n";
         res += "}\n\n";
 
-        res += "inline bool decode(absl::Span<const uint8_t> input, " + module_name + "::" + assignment.name +
-               "& output) noexcept\n{\n";
-        res += "    return decode(BerView(input), output, "
-               "ExplicitIdentifier<UniversalTag::sequence_of>{});\n";
-        res += "}\n\n";
-
         return res;
     }
     else
