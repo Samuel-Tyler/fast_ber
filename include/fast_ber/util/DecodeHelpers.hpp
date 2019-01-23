@@ -56,35 +56,35 @@ bool primitive_decode_impl(BerViewIterator& input, T& output, const ImplicitIden
 }
 
 template <typename ID = ExplicitIdentifier<UniversalTag::boolean>>
-bool decode_with_specific_id(BerViewIterator& input, Boolean& output, const ID& id = {}) noexcept
+bool decode(BerViewIterator& input, Boolean& output, const ID& id = {}) noexcept
 {
     return primitive_decode_impl(input, output, id);
 }
 
 template <typename ID = ExplicitIdentifier<UniversalTag::integer>>
-bool decode_with_specific_id(BerViewIterator& input, Integer& output, const ID& id = {}) noexcept
+bool decode(BerViewIterator& input, Integer& output, const ID& id = {}) noexcept
 {
     return primitive_decode_impl(input, output, id);
 }
 
 template <typename ID = ExplicitIdentifier<UniversalTag::octet_string>>
-bool decode_with_specific_id(BerViewIterator& input, OctetString& output, const ID& id = {}) noexcept
+bool decode(BerViewIterator& input, OctetString& output, const ID& id = {}) noexcept
 {
     return primitive_decode_impl(input, output, id);
 }
 
 template <typename T, typename ID>
-bool decode_with_specific_id(absl::Span<const uint8_t> input, T& output, const ID& id) noexcept
+bool decode(absl::Span<const uint8_t> input, T& output, const ID& id) noexcept
 {
     BerViewIterator iter(input);
-    return decode_with_specific_id(iter, output, id);
+    return decode(iter, output, id);
 }
 
 template <typename T>
 bool decode(absl::Span<const uint8_t> input, T& output) noexcept
 {
     BerViewIterator iter(input);
-    return decode_with_specific_id(iter, output);
+    return decode(iter, output);
 }
 
 } // namespace fast_ber

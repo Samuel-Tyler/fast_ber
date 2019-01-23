@@ -21,7 +21,7 @@ bool decode_combine_impl(BerViewIterator&) noexcept
 template <const char* parent_name, typename T, typename ID, typename... Args>
 bool decode_combine_impl(BerViewIterator& input, T& object, const ID& id, Args&&... args) noexcept
 {
-    bool success = decode_with_specific_id(input, object, id);
+    bool success = decode(input, object, id);
     if (!success)
     {
         std::cerr << "Error decoding " << parent_name << ": could not decode field with tag " << reference_tag(id)

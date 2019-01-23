@@ -39,7 +39,7 @@ inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> output, Class class
 }
 
 template <typename T, UniversalTag T2>
-EncodeResult encode_with_specific_id_impl(absl::Span<uint8_t> output, const T& object, const ExplicitIdentifier<T2>& id)
+EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const ExplicitIdentifier<T2>& id)
 {
     size_t id_length = create_identifier(output, Construction::primitive, id.class_(), id.tag());
     if (id_length == 0 || id_length > output.size())
@@ -54,7 +54,7 @@ EncodeResult encode_with_specific_id_impl(absl::Span<uint8_t> output, const T& o
 }
 
 template <typename T, Class T2, Tag T3, typename T4>
-EncodeResult encode_with_specific_id_impl(absl::Span<uint8_t> output, const T& object,
+EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object,
                                           const TaggedExplicitIdentifier<T2, T3, T4>& id)
 {
     size_t encode_length = object.encode(output);
@@ -67,7 +67,7 @@ EncodeResult encode_with_specific_id_impl(absl::Span<uint8_t> output, const T& o
 }
 
 template <typename T, Class T2, Tag T3>
-EncodeResult encode_with_specific_id_impl(absl::Span<uint8_t> output, const T& object,
+EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object,
                                           const ImplicitIdentifier<T2, T3>& id)
 {
     size_t id_length = create_identifier(output, Construction::primitive, id.class_(), id.tag());
@@ -83,27 +83,27 @@ EncodeResult encode_with_specific_id_impl(absl::Span<uint8_t> output, const T& o
 }
 
 template <typename ID = ExplicitIdentifier<UniversalTag::integer>>
-EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const Integer& object, const ID& id = ID{})
+EncodeResult encode(absl::Span<uint8_t> output, const Integer& object, const ID& id = ID{})
 {
-    return encode_with_specific_id_impl(output, object, id);
+    return encode_impl(output, object, id);
 }
 
 template <typename ID = ExplicitIdentifier<UniversalTag::octet_string>>
-EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const OctetString& object, const ID& id = ID{})
+EncodeResult encode(absl::Span<uint8_t> output, const OctetString& object, const ID& id = ID{})
 {
-    return encode_with_specific_id_impl(output, object, id);
+    return encode_impl(output, object, id);
 }
 
 template <typename ID = ExplicitIdentifier<UniversalTag::boolean>>
-EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const Boolean& object, const ID& id = ID{})
+EncodeResult encode(absl::Span<uint8_t> output, const Boolean& object, const ID& id = ID{})
 {
-    return encode_with_specific_id_impl(output, object, id);
+    return encode_impl(output, object, id);
 }
 
 template <typename ID = ExplicitIdentifier<UniversalTag::null>>
-EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const Null& object, const ID& id = ID{})
+EncodeResult encode(absl::Span<uint8_t> output, const Null& object, const ID& id = ID{})
 {
-    return encode_with_specific_id_impl(output, object, id);
+    return encode_impl(output, object, id);
 }
 
 } // namespace fast_ber

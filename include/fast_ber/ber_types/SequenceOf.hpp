@@ -17,14 +17,14 @@ template <typename T, size_t N = default_inlined_size>
 using SequenceOf = absl::InlinedVector<T, N>;
 
 template <typename T, typename ID1, typename ID2>
-EncodeResult encode_with_specific_id(const absl::Span<uint8_t> buffer, const SequenceOf<T>& sequence,
+EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T>& sequence,
                                      const SequenceId<ID1, ID2>& ids) noexcept
 {
     auto   content_buffer  = buffer;
     size_t combined_length = 0;
     for (const auto& element : sequence)
     {
-        const auto element_encode_result = encode_with_specific_id(content_buffer, element, ids.inner_id());
+        const auto element_encode_result = encode(content_buffer, element, ids.inner_id());
         if (!element_encode_result.success)
         {
             return {false, 0};
@@ -40,13 +40,13 @@ EncodeResult encode_with_specific_id(const absl::Span<uint8_t> buffer, const Seq
 template <typename T>
 EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T>& sequence) noexcept
 {
-    return encode_with_specific_id(
+    return encode(
         buffer, sequence,
         SequenceId<ExplicitIdentifier<UniversalTag::sequence_of>, ExplicitIdentifier<UniversalTag::sequence_of>>{});
 }
 
 template <typename T, typename ID1, typename ID2>
-bool decode_with_specific_id(BerViewIterator& input, SequenceOf<T>& output, const SequenceId<ID1, ID2>& ids) noexcept
+bool decode(BerViewIterator& input, SequenceOf<T>& output, const SequenceId<ID1, ID2>& ids) noexcept
 {
     output.clear();
     if (!(input->is_valid() && input->tag() == reference_tag(ids.outer_id())) &&
@@ -59,7 +59,7 @@ bool decode_with_specific_id(BerViewIterator& input, SequenceOf<T>& output, cons
     while (child->is_valid() && child->tag() == reference_tag(ids.inner_id()))
     {
         output.emplace_back(T());
-        bool success = decode_with_specific_id(child, output.back(), ids.inner_id()) > 0;
+        bool success = decode(child, output.back(), ids.inner_id()) > 0;
         if (!success)
         {
             return false;
@@ -73,7 +73,7 @@ bool decode_with_specific_id(BerViewIterator& input, SequenceOf<T>& output, cons
 template <typename T>
 bool decode(BerViewIterator& input, SequenceOf<T>& output) noexcept
 {
-    return decode_with_specific_id(
+    return decode(
         input, output,
         SequenceId<ExplicitIdentifier<UniversalTag::sequence_of>, ExplicitIdentifier<UniversalTag::sequence_of>>{});
 }

@@ -59,7 +59,8 @@ AssignmentInfo create_assignment(const Assignment& assignment, TaggingMode taggi
     return info;
 }
 
-std::string create_encode_functions(const Assignment& assignment, TaggingMode tagging_mode)
+std::string create_encode_functions(const Assignment& assignment, const std::string& module_name,
+                                    TaggingMode tagging_mode)
 {
     if (absl::holds_alternative<BuiltinType>(assignment.type) &&
         absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(assignment.type)))
@@ -89,7 +90,7 @@ std::string create_encode_functions(const Assignment& assignment, TaggingMode ta
         res += "}\n\n";
 
         res += "template <typename ID = ExplicitIdentifier<UniversalTag::sequence_of>>\n";
-        res += "inline EncodeResult encode_with_specific_id(absl::Span<uint8_t> output, const " + assignment.name +
+        res += "inline EncodeResult encode(absl::Span<uint8_t> output, const " + module_name + "::" + assignment.name +
                "& input, const ID& id = ID{}) noexcept\n{\n";
         res += "    return encode_combine(output, id";
         for (const ComponentType& component : sequence.components)
@@ -98,13 +99,6 @@ std::string create_encode_functions(const Assignment& assignment, TaggingMode ta
                    "::" + component.named_type.name;
         }
         res += ");\n}\n\n";
-
-        res += "template <typename ID = ExplicitIdentifier<UniversalTag::sequence_of>>";
-        res += "inline EncodeResult encode(absl::Span<uint8_t> output, const " + assignment.name +
-               "& input) noexcept\n{\n";
-        res += "    return encode_with_specific_id(output, input, ID{});\n";
-        res += "}\n\n";
-
         return res;
     }
     else
@@ -113,7 +107,7 @@ std::string create_encode_functions(const Assignment& assignment, TaggingMode ta
     }
 }
 
-std::string create_decode_functions(const Assignment& assignment)
+std::string create_decode_functions(const Assignment& assignment, const std::string& module_name)
 {
     if (absl::holds_alternative<BuiltinType>(assignment.type) &&
         absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(assignment.type)))
@@ -122,9 +116,10 @@ std::string create_decode_functions(const Assignment& assignment)
         std::string         res;
         const std::string   tags_class = assignment.name + "Tags";
 
-        res += "constexpr const char " + assignment.name + "_name[] = \"" + assignment.name + "\";\n";
+        res +=
+            "constexpr const char " + assignment.name + "_name[] = \"" + module_name + "::" + assignment.name + "\";\n";
         res += "template <typename ID = ExplicitIdentifier<UniversalTag::sequence_of>>\n";
-        res += "inline bool decode_with_specific_id(const BerView& input, " + assignment.name +
+        res += "inline bool decode(const BerView& input, " + module_name + "::" + assignment.name +
                "& output, const ID& id = ID{}) noexcept\n{\n";
         res += "    return decode_combine<" + assignment.name + "_name>(input, id";
         for (const ComponentType& component : sequence.components)
@@ -135,15 +130,16 @@ std::string create_decode_functions(const Assignment& assignment)
         res += ");\n}\n\n";
 
         res += "template <typename ID = ExplicitIdentifier<UniversalTag::sequence_of>>\n";
-        res += "inline bool decode_with_specific_id(BerViewIterator& input, " + assignment.name +
+        res += "inline bool decode(BerViewIterator& input, " + module_name + "::" + assignment.name +
                "& output, const ID& id = ID{}) noexcept\n{\n";
-        res += "    bool success = decode_with_specific_id(*input, output, id) > 0;\n";
+        res += "    bool success = decode(*input, output, id) > 0;\n";
         res += "    ++input;\n";
         res += "    return success;\n";
         res += "}\n\n";
 
-        res += "inline bool decode(absl::Span<const uint8_t> input, " + assignment.name + "& output) noexcept\n{\n";
-        res += "    return decode_with_specific_id(BerView(input), output, "
+        res += "inline bool decode(absl::Span<const uint8_t> input, " + module_name + "::" + assignment.name +
+               "& output) noexcept\n{\n";
+        res += "    return decode(BerView(input), output, "
                "ExplicitIdentifier<UniversalTag::sequence_of>{});\n";
         res += "}\n\n";
 
@@ -168,7 +164,7 @@ std::string add_namespace(const std::string& name, const std::string& enclosed)
     return output;
 }
 
-std::string create_body(const Asn1Tree& tree, const std::string detail_filename)
+std::string create_body(const Asn1Tree& tree)
 {
     std::string output;
     output += "\n";
@@ -188,7 +184,6 @@ std::string create_body(const Asn1Tree& tree, const std::string detail_filename)
         output += assignment.assignment;
     }
 
-    output += create_include(strip_path(detail_filename)) + '\n';
     return output;
 }
 
@@ -200,8 +195,8 @@ std::string create_detail_body(const Asn1Tree& tree)
     output += "/* Functionality provided for Encoding and Decoding BER */\n\n";
     for (const Assignment& assignment : tree.assignments)
     {
-        output += create_encode_functions(assignment, tree.tagging_default);
-        output += create_decode_functions(assignment) + "\n";
+        output += create_encode_functions(assignment, tree.module_reference, tree.tagging_default);
+        output += create_decode_functions(assignment, tree.module_reference) + "\n";
     }
     return output;
 }
@@ -215,7 +210,8 @@ std::string create_output_file(const Asn1Tree& tree, const std::string detail_fi
     output += create_include("fast_ber/util/Decode.hpp");
     output += "\n";
 
-    output += add_namespace("fast_ber", add_namespace(tree.module_reference, create_body(tree, detail_filename)));
+    output += add_namespace("fast_ber", add_namespace(tree.module_reference, create_body(tree)));
+    output += '\n' + create_include(strip_path(detail_filename)) + '\n';
 
     return output;
 }
@@ -269,6 +265,6 @@ int main(int argc, char** argv)
     if (!res)
     {
         output_file << create_output_file(context.asn1_tree, detail_filame);
-        detail_output_file << create_detail_body(context.asn1_tree);
+        detail_output_file << add_namespace("fast_ber", create_detail_body(context.asn1_tree));
     }
 }

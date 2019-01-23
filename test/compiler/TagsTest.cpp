@@ -11,7 +11,7 @@ TEST_CASE("Tags: Encoding a packet with various tagging modes")
     std::array<uint8_t, 5000>  buffer = {};
     fast_ber::Tags::Collection tags   = {};
 
-    fast_ber::EncodeResult encode_result = fast_ber::Tags::encode(absl::MakeSpan(buffer.data(), buffer.size()), tags);
+    fast_ber::EncodeResult encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), tags);
     REQUIRE(encode_result.success);
 
     fast_ber::BerView tags_view(absl::MakeSpan(buffer.data(), encode_result.length));
@@ -66,9 +66,9 @@ TEST_CASE("Tags: Encoding and decoding a packet with various tagging modes")
     fast_ber::Tags::Collection tags{"Implicit", "And explicit tags", 0, true, false, true};
     fast_ber::Tags::Collection tags_copy{};
 
-    fast_ber::EncodeResult encode_result = fast_ber::Tags::encode(absl::MakeSpan(buffer.data(), buffer.size()), tags);
+    fast_ber::EncodeResult encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), tags);
     REQUIRE(encode_result.success);
-    bool decode_result = fast_ber::Tags::decode(absl::MakeSpan(buffer.data(), buffer.size()), tags_copy);
+    bool decode_result = fast_ber::decode(absl::MakeSpan(buffer.data(), buffer.size()), tags_copy);
     REQUIRE(decode_result);
 
     REQUIRE(tags_copy.string1 == "Implicit");

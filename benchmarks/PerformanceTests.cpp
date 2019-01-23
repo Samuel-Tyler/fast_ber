@@ -134,7 +134,7 @@ TEST_CASE("Benchmark: Decode Performance")
         for (int i = 0; i < 100000; i++)
         {
             fast_ber::Simple::Collection collection;
-            success = fast_ber::Simple::decode(
+            success = fast_ber::decode(
                 absl::MakeSpan(large_test_collection_packet.begin(), large_test_collection_packet.size()), collection);
         }
     }
@@ -158,7 +158,7 @@ TEST_CASE("Benchmark: Decode Performance")
         for (int i = 0; i < 100000; i++)
         {
             fast_ber::Simple::Collection collection;
-            success = fast_ber::Simple::decode(
+            success = fast_ber::decode(
                 absl::MakeSpan(small_test_collection_packet.begin(), small_test_collection_packet.size()), collection);
         }
     }
@@ -228,8 +228,7 @@ TEST_CASE("Benchmark: Encode Performance")
         for (int i = 0; i < 100000; i++)
         {
             encode_size =
-                fast_ber::Simple::encode(absl::MakeSpan(fast_ber_buffer.data(), fast_ber_buffer.size()), collection)
-                    .length;
+                fast_ber::encode(absl::MakeSpan(fast_ber_buffer.data(), fast_ber_buffer.size()), collection).length;
         }
     }
 

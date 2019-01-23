@@ -1,5 +1,6 @@
 #pragma once
 
+#include "fast_ber/ber_types/Choice.hpp"
 #include "fast_ber/util/DecodeHelpers.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
 
@@ -26,19 +27,17 @@ class TaggedType
 
     static TagType tag() noexcept { return TagType{}; }
 
-    EncodeResult encode(absl::Span<uint8_t> output) const noexcept
-    {
-        return encode_with_specific_id(output, m_type, tag());
-    }
+    EncodeResult encode(absl::Span<uint8_t> output) const noexcept { return fast_ber::encode(output, m_type, tag()); }
 
-    bool decode(absl::Span<const uint8_t> input) noexcept { return decode_with_specific_id(input, m_type, tag()); }
+    bool decode(absl::Span<const uint8_t> input) noexcept { return fast_ber::decode(input, m_type, tag()); }
 
   private:
     Type m_type;
 };
 
-template <typename Type, typename TagType>
-EncodeResult encode(absl::Span<uint8_t> output, const TaggedType<Type, TagType>& tagged_type) noexcept
+template <typename Type, typename TagType, typename ReplacementTag = TagType>
+EncodeResult encode(absl::Span<uint8_t> output, const TaggedType<Type, TagType>& tagged_type,
+                    const ReplacementTag& tag = ReplacementTag()) noexcept
 {
     return tagged_type.encode(output);
 }

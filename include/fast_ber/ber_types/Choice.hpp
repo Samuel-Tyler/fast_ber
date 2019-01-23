@@ -33,7 +33,7 @@ EncodeResult encode_if(absl::Span<uint8_t>& buffer, const Choice<Variants...>& c
     if (choice.index() == index)
     {
         const EncodeResult& inner_encode_result =
-            encode_with_specific_id(buffer, absl::get<index>(choice), std::get<index>(ids.ids()));
+            encode(buffer, absl::get<index>(choice), std::get<index>(ids.ids()));
         if (!inner_encode_result.success)
         {
             return inner_encode_result;
@@ -49,7 +49,7 @@ EncodeResult encode_if(absl::Span<uint8_t>& buffer, const Choice<Variants...>& c
 }
 
 template <typename... Variants, typename ID, typename... IDs>
-EncodeResult encode_with_specific_id(absl::Span<uint8_t> buffer, const Choice<Variants...> choice,
+EncodeResult encode(absl::Span<uint8_t> buffer, const Choice<Variants...> choice,
                                      const ChoiceId<ID, IDs...>& id) noexcept
 {
     constexpr auto depth = static_cast<int>(std::tuple_size<decltype(id.ids())>::value);
@@ -71,7 +71,7 @@ bool decode_if(BerViewIterator& input, Choice<Variants...>& output, const Choice
     if (input->tag() == reference_tag(std::get<index>(ids.ids())))
     {
         output = Choice<Variants...>(absl::in_place_index_t<index>());
-        return decode_with_specific_id(input, absl::get<index>(output), std::get<index>(ids.ids()));
+        return decode(input, absl::get<index>(output), std::get<index>(ids.ids()));
     }
     else
     {
@@ -80,7 +80,7 @@ bool decode_if(BerViewIterator& input, Choice<Variants...>& output, const Choice
 }
 
 template <typename... Variants, typename ID, typename... IDs>
-bool decode_with_specific_id(BerViewIterator& input, Choice<Variants...>& output,
+bool decode(BerViewIterator& input, Choice<Variants...>& output,
                              const ChoiceId<ID, IDs...>& id) noexcept
 {
     if (!input->is_valid() || input->tag() != reference_tag(id.outer_id()))

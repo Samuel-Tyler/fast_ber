@@ -17,11 +17,9 @@ TEST_CASE("Choice: Check string choice matches simple string type")
     std::vector<uint8_t> string_encoded(100, 0x00);
 
     size_t choice_encode_length =
-        fast_ber::encode_with_specific_id(absl::MakeSpan(choice_encoded.data(), choice_encoded.size()), choice, tags)
-            .length;
+        fast_ber::encode(absl::MakeSpan(choice_encoded.data(), choice_encoded.size()), choice, tags).length;
     size_t string_encoded_length =
-        fast_ber::encode_with_specific_id(absl::MakeSpan(string_encoded.data(), string_encoded.size()), choice, tags)
-            .length;
+        fast_ber::encode(absl::MakeSpan(string_encoded.data(), string_encoded.size()), choice, tags).length;
 
     choice_encoded.resize(choice_encode_length);
     string_encoded.resize(string_encoded_length);
@@ -35,11 +33,11 @@ TEST_CASE("Choice: Generated choice")
     collection.the_choice = fast_ber::Integer(5);
 
     std::vector<uint8_t> buffer(1000, 0x00);
-    size_t length = fast_ber::MakeAChoice::encode(absl::MakeSpan(buffer.data(), buffer.size()), collection).length;
+    size_t               length = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), collection).length;
     buffer.resize(length);
 
     fast_ber::MakeAChoice::Collection copy;
-    bool success = fast_ber::MakeAChoice::decode(absl::MakeSpan(buffer.data(), buffer.size()), copy);
+    bool                              success = fast_ber::decode(absl::MakeSpan(buffer.data(), buffer.size()), copy);
 
     REQUIRE(length > 0);
     REQUIRE(success);

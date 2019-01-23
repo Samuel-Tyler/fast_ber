@@ -14,12 +14,12 @@ template <typename T>
 using Optional = absl::optional<T>;
 
 template <typename T, typename ID>
-EncodeResult encode_with_specific_id(absl::Span<uint8_t> buffer, const Optional<T>& optional_type,
+EncodeResult encode(absl::Span<uint8_t> buffer, const Optional<T>& optional_type,
                                      const ID& id) noexcept
 {
     if (optional_type.has_value())
     {
-        return encode_with_specific_id(buffer, *optional_type, id);
+        return encode(buffer, *optional_type, id);
     }
     else
     {
@@ -28,12 +28,12 @@ EncodeResult encode_with_specific_id(absl::Span<uint8_t> buffer, const Optional<
 }
 
 template <typename T, typename ID>
-bool decode_with_specific_id(BerViewIterator& input, Optional<T>& output, const ID& id) noexcept
+bool decode(BerViewIterator& input, Optional<T>& output, const ID& id) noexcept
 {
     if (input->is_valid() && input->tag() == val(reference_tag(id)))
     {
         output.emplace(T());
-        return decode_with_specific_id(input, *output, id) > 0;
+        return decode(input, *output, id) > 0;
     }
     else
     {
