@@ -816,7 +816,7 @@ TypeAssignment:
     DEFINED_AS
     Type
 {
-    $$ = Assignment{ $1, $3 };
+    $$ = Assignment{ $1, $3, {} };
 }
 
 ValueAssignment:

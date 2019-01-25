@@ -14,11 +14,11 @@
 namespace fast_ber
 {
 
-inline bool encode_set_combine_impl(absl::Span<uint8_t>&, size_t&) noexcept { return true; }
+inline bool encode_sequence_combine_impl(absl::Span<uint8_t>&, size_t&) noexcept { return true; }
 
 template <typename... Args, typename T, typename ID>
-bool encode_set_combine_impl(absl::Span<uint8_t>& output, size_t& encoding_length, const T& object, const ID& id,
-                             const Args&... args) noexcept
+bool encode_sequence_combine_impl(absl::Span<uint8_t>& output, size_t& encoding_length, const T& object, const ID& id,
+                                  const Args&... args) noexcept
 {
     const EncodeResult result = encode(output, object, id);
     if (!result.success)
@@ -29,15 +29,15 @@ bool encode_set_combine_impl(absl::Span<uint8_t>& output, size_t& encoding_lengt
 
     output.remove_prefix(result.length);
     encoding_length += result.length;
-    return encode_set_combine_impl(output, encoding_length, args...);
+    return encode_sequence_combine_impl(output, encoding_length, args...);
 }
 
 template <typename... Args, typename ID>
-EncodeResult encode_set_combine(const absl::Span<uint8_t> output, const ID& id, const Args&... args) noexcept
+EncodeResult encode_sequence_combine(const absl::Span<uint8_t> output, const ID& id, const Args&... args) noexcept
 {
     auto   encoding_output = output;
     size_t encode_length   = 0;
-    bool   success         = encode_set_combine_impl(encoding_output, encode_length, args...);
+    bool   success         = encode_sequence_combine_impl(encoding_output, encode_length, args...);
     if (!success)
     {
         return EncodeResult{false, 0};
@@ -47,13 +47,13 @@ EncodeResult encode_set_combine(const absl::Span<uint8_t> output, const ID& id, 
 }
 
 template <const char* parent_name>
-bool decode_set_combine_impl(BerViewIterator&) noexcept
+bool decode_sequence_combine_impl(BerViewIterator&) noexcept
 {
     return true;
 }
 
 template <const char* parent_name, typename T, typename ID, typename... Args>
-bool decode_set_combine_impl(BerViewIterator& input, T& object, const ID& id, Args&&... args) noexcept
+bool decode_sequence_combine_impl(BerViewIterator& input, T& object, const ID& id, Args&&... args) noexcept
 {
     bool success = decode(input, object, id);
     if (!success)
@@ -62,11 +62,11 @@ bool decode_set_combine_impl(BerViewIterator& input, T& object, const ID& id, Ar
                   << "\n";
         return false;
     }
-    return decode_set_combine_impl<parent_name>(input, args...);
+    return decode_sequence_combine_impl<parent_name>(input, args...);
 }
 
 template <const char* parent_name, typename ID, typename... Args>
-bool decode_set_combine(const BerView& input, const ID& id, Args&&... args) noexcept
+bool decode_sequence_combine(const BerView& input, const ID& id, Args&&... args) noexcept
 {
     if (!input.is_valid())
     {
@@ -81,7 +81,7 @@ bool decode_set_combine(const BerView& input, const ID& id, Args&&... args) noex
     }
 
     auto iterator = input.begin();
-    return decode_set_combine_impl<parent_name>(iterator, args...);
+    return decode_sequence_combine_impl<parent_name>(iterator, args...);
 }
 
 } // namespace fast_ber

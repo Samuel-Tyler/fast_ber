@@ -215,8 +215,9 @@ struct TaggedType
 
 struct Assignment
 {
-    std::string name;
-    Type        type;
+    std::string              name;
+    Type                     type;
+    std::vector<std::string> depends_on;
 };
 
 struct Asn1Tree

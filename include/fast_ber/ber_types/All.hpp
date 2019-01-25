@@ -22,6 +22,7 @@
 #include "Real.hpp"
 #include "RelativeIRI.hpp"
 #include "RelativeOID.hpp"
+#include "Sequence.hpp"
 #include "SequenceOf.hpp"
 #include "Set.hpp"
 #include "SetOf.hpp"
