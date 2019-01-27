@@ -10,7 +10,6 @@ namespace fast_ber
 {
 
 class Boolean;
-class Identifier;
 class Integer;
 class Null;
 class OctetString;

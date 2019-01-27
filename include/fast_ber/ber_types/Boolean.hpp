@@ -42,6 +42,8 @@ class Boolean
     std::array<uint8_t, 2> m_data;
 }; // namespace fast_ber
 
+inline ExplicitIdentifier<UniversalTag::boolean> identifier(const Boolean&) noexcept { return {}; }
+
 inline Boolean& Boolean::operator=(bool rhs) noexcept
 {
     assign(rhs);

@@ -14,8 +14,7 @@ template <typename T>
 using Optional = absl::optional<T>;
 
 template <typename T, typename ID>
-EncodeResult encode(absl::Span<uint8_t> buffer, const Optional<T>& optional_type,
-                                     const ID& id) noexcept
+EncodeResult encode(absl::Span<uint8_t> buffer, const Optional<T>& optional_type, const ID& id) noexcept
 {
     if (optional_type.has_value())
     {
@@ -40,6 +39,12 @@ bool decode(BerViewIterator& input, Optional<T>& output, const ID& id) noexcept
         output = absl::nullopt;
         return true;
     }
+}
+
+template <typename T>
+ExplicitIdentifier<UniversalTag::octet_string> identifier(const absl::optional<T>&) noexcept
+{
+    return {};
 }
 
 } // namespace fast_ber

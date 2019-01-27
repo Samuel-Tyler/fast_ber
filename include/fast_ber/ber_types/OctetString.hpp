@@ -71,6 +71,8 @@ class OctetString
     BerContainer m_contents;
 }; // namespace fast_ber
 
+inline ExplicitIdentifier<UniversalTag::octet_string> identifier(const OctetString&) noexcept { return {}; }
+
 inline OctetString& OctetString::operator=(absl::Span<const uint8_t> rhs) noexcept
 {
     assign(rhs);

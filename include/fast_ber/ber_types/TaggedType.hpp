@@ -8,66 +8,40 @@ namespace fast_ber
 {
 
 template <typename Type, typename TagType>
-class TaggedType
+class TaggedType : public Type
 {
   public:
-    TaggedType() : m_type() {}
-
-    template <typename T>
-    TaggedType(T t) : m_type(t)
+    template <typename T1, typename T2>
+    TaggedType(const TaggedType<T1, T2>& t) : Type(t)
     {
     }
 
-    // Implicitly convert to underlying (untagged) type
-    operator const Type&() const noexcept { return m_type; }
-    operator Type&() noexcept { return m_type; }
-
-    bool operator==(const TaggedType& rhs) const noexcept { return this->m_type == rhs.m_type; }
-    bool operator!=(const TaggedType& rhs) const noexcept { return !(*this == rhs); }
-
-    static TagType tag() noexcept { return TagType{}; }
-
     template <typename T>
-    EncodeResult encode(absl::Span<uint8_t> output, T replacement_tag) const noexcept
+    TaggedType(const T& t) : Type(t)
     {
-        return fast_ber::encode(output, m_type, replacement_tag);
     }
-    EncodeResult encode(absl::Span<uint8_t> output) const noexcept { return fast_ber::encode(output, m_type, tag()); }
 
-    template <typename T>
-    bool decode(absl::Span<const uint8_t> input, T replacement_tag) noexcept
-    {
-        return fast_ber::decode(input, m_type, replacement_tag);
-    }
-    bool decode(absl::Span<const uint8_t> input) noexcept { return fast_ber::decode(input, m_type, tag()); }
-
-  private:
-    Type m_type;
+    // No members, destructor doesn't need to be virtual
+    TaggedType() noexcept  = default;
+    ~TaggedType() noexcept = default;
 };
 
 template <typename Type, typename TagType>
-EncodeResult encode(absl::Span<uint8_t> output, const TaggedType<Type, TagType>& tagged_type) noexcept
+constexpr TagType identifier(const TaggedType<Type, TagType>&) noexcept
 {
-    return tagged_type.encode(output);
+    return TagType{};
 }
 
-template <typename Type, typename TagType, typename ReplacementTag>
-EncodeResult encode(absl::Span<uint8_t> output, const TaggedType<Type, TagType>& tagged_type,
-                    const ReplacementTag& tag) noexcept
+template <typename T, typename DefaultTag, typename ID = DefaultTag>
+EncodeResult encode(absl::Span<uint8_t> output, const TaggedType<T, DefaultTag>& object, const ID& id = ID{})
 {
-    return tagged_type.encode(output, tag);
+    return encode(output, *dynamic_cast<const T*>(&object), id);
 }
 
-template <typename Type, typename TagType>
-bool decode(absl::Span<const uint8_t> input, TaggedType<Type, TagType>& tagged_type) noexcept
+template <typename T, typename DefaultTag, typename ID = DefaultTag>
+bool decode(absl::Span<const uint8_t> output, TaggedType<T, DefaultTag>& object, const ID& id = ID{})
 {
-    return tagged_type.decode(input);
-}
-
-template <typename Type, typename TagType, typename ReplacementTag>
-bool decode(absl::Span<const uint8_t> input, TaggedType<Type, TagType>& tagged_type, const ReplacementTag& tag) noexcept
-{
-    return tagged_type.decode(input, tag);
+    return decode(output, *dynamic_cast<T*>(&object), id);
 }
 
 } // namespace fast_ber

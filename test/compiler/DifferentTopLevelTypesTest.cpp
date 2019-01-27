@@ -37,14 +37,14 @@ TEST_CASE("Different Top Level Types: Choice as top level type")
     fast_ber::TopLevel::MyChoice my_string     = fast_ber::OctetString("The String");
     fast_ber::TopLevel::MyChoice my_new_string = 500;
 
-    REQUIRE(my_string == "The String");
-    REQUIRE(my_new_string == 500);
+    REQUIRE(absl::get<fast_ber::OctetString>(my_string) == fast_ber::OctetString("The String"));
+    REQUIRE(absl::get<fast_ber::Integer>(my_new_string) == fast_ber::Integer(500));
 
-    my_string.encode(absl::MakeSpan(buffer.data(), buffer.size()));
-    my_new_string.decode(absl::MakeSpan(buffer.data(), buffer.size()));
+    fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), my_string);
+    fast_ber::decode(absl::MakeSpan(buffer.data(), buffer.size()), my_new_string);
 
-    REQUIRE(my_string == "The String");
-    REQUIRE(my_new_string == "The String");
+    REQUIRE(absl::get<fast_ber::OctetString>(my_string) == fast_ber::OctetString("The String"));
+    REQUIRE(absl::get<fast_ber::OctetString>(my_new_string) == fast_ber::OctetString("The String"));
 }
 
 TEST_CASE("Different Top Level Types: Collection")

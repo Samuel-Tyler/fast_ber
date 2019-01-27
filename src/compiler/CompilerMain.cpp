@@ -37,19 +37,7 @@ std::string create_assignment(const Assignment& assignment, TaggingMode tagging_
     }
     else
     {
-        if (absl::holds_alternative<BuiltinType>(assignment.type) &&
-            (absl::holds_alternative<PrefixedType>(absl::get<BuiltinType>(assignment.type)) ||
-             absl::holds_alternative<ChoiceType>(absl::get<BuiltinType>(assignment.type)) ||
-             absl::holds_alternative<SequenceOfType>(absl::get<BuiltinType>(assignment.type))))
-        {
-            // Alter the tag in tagged types
-            return "using " + assignment.name + " = " + "TaggedType<" + to_string(assignment.type) + ", " +
-                   universal_tag(assignment.type, tagging_mode) + ">;\n\n";
-        }
-        else
-        {
-            return "using " + assignment.name + " = " + to_string(assignment.type) + ";\n\n";
-        }
+        return "using " + assignment.name + " = " + fully_tagged_type(assignment.type, tagging_mode) + ";\n\n";
     }
 }
 
@@ -63,17 +51,21 @@ std::string create_encode_functions(const Assignment& assignment, const std::str
         const SequenceType& sequence   = absl::get<SequenceType>(absl::get<BuiltinType>(assignment.type));
         const std::string   tags_class = assignment.name + "Tags";
 
+        res += "namespace " + module_name + " {\n";
+        res += "inline ExplicitIdentifier<UniversalTag::sequence> identifier(const " + assignment.name + "&) noexcept";
+        res += "\n    {\n";
+        res += "        return {};\n";
+        res += "    }\n}\n\n";
+
         res += "namespace " + tags_class + " {\n";
         int tag_counter = 0;
         for (const ComponentType& component : sequence.components)
         {
             res += "static const auto " + component.named_type.name + " = ";
             if (absl::holds_alternative<BuiltinType>(component.named_type.type) &&
-                (absl::holds_alternative<PrefixedType>(absl::get<BuiltinType>(component.named_type.type)) ||
-                 absl::holds_alternative<ChoiceType>(absl::get<BuiltinType>(component.named_type.type)) ||
-                 absl::holds_alternative<SequenceOfType>(absl::get<BuiltinType>(component.named_type.type))))
+                (absl::holds_alternative<PrefixedType>(absl::get<BuiltinType>(component.named_type.type))))
             {
-                res += universal_tag(component.named_type.type, tagging_mode);
+                res += universal_tag(component.named_type.type, tagging_mode).tag;
             }
             else
             {
@@ -102,17 +94,21 @@ std::string create_encode_functions(const Assignment& assignment, const std::str
         const SetType&    set        = absl::get<SetType>(absl::get<BuiltinType>(assignment.type));
         const std::string tags_class = assignment.name + "Tags";
 
+        res += "namespace " + module_name + " {\n";
+        res += "inline ExplicitIdentifier<UniversalTag::sequence> identifier(const " + assignment.name + "&) noexcept";
+        res += "\n    {\n";
+        res += "        return {};\n";
+        res += "    }\n}\n\n";
+
         res += "namespace " + tags_class + " {\n";
         int tag_counter = 0;
         for (const ComponentType& component : set.components)
         {
             res += "static const auto " + component.named_type.name + " = ";
             if (absl::holds_alternative<BuiltinType>(component.named_type.type) &&
-                (absl::holds_alternative<PrefixedType>(absl::get<BuiltinType>(component.named_type.type)) ||
-                 absl::holds_alternative<ChoiceType>(absl::get<BuiltinType>(component.named_type.type)) ||
-                 absl::holds_alternative<SetType>(absl::get<BuiltinType>(component.named_type.type))))
+                (absl::holds_alternative<PrefixedType>(absl::get<BuiltinType>(component.named_type.type))))
             {
-                res += universal_tag(component.named_type.type, tagging_mode);
+                res += universal_tag(component.named_type.type, tagging_mode).tag;
             }
             else
             {
@@ -169,7 +165,6 @@ std::string create_decode_functions(const Assignment& assignment, const std::str
         res += "    ++input;\n";
         res += "    return success;\n";
         res += "}\n\n";
-
         return res;
     }
     else if (absl::holds_alternative<BuiltinType>(assignment.type) &&
@@ -199,7 +194,6 @@ std::string create_decode_functions(const Assignment& assignment, const std::str
         res += "    ++input;\n";
         res += "    return success;\n";
         res += "}\n\n";
-
         return res;
     }
     else
