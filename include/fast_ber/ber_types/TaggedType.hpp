@@ -22,7 +22,7 @@ class TaggedType : public Type
     }
 
     // No members, destructor doesn't need to be virtual
-    TaggedType() noexcept  = default;
+    TaggedType()           = default; // Noexcept fails on g++4.8
     ~TaggedType() noexcept = default;
 };
 
