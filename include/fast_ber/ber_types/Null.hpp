@@ -21,6 +21,8 @@ class Null
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 };
 
+constexpr inline ExplicitIdentifier<UniversalTag::null> identifier(const Null*) noexcept { return {}; }
+
 inline size_t Null::assign_ber(const BerView& rhs) noexcept
 {
     if (rhs.is_valid())

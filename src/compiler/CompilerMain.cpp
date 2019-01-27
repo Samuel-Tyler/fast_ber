@@ -52,7 +52,8 @@ std::string create_encode_functions(const Assignment& assignment, const std::str
         const std::string   tags_class = assignment.name + "Tags";
 
         res += "namespace " + module_name + " {\n";
-        res += "inline ExplicitIdentifier<UniversalTag::sequence> identifier(const " + assignment.name + "&) noexcept";
+        res += "constexpr inline ExplicitIdentifier<UniversalTag::sequence> identifier(const " + assignment.name +
+               "*) noexcept";
         res += "\n    {\n";
         res += "        return {};\n";
         res += "    }\n}\n\n";
@@ -95,7 +96,8 @@ std::string create_encode_functions(const Assignment& assignment, const std::str
         const std::string tags_class = assignment.name + "Tags";
 
         res += "namespace " + module_name + " {\n";
-        res += "inline ExplicitIdentifier<UniversalTag::sequence> identifier(const " + assignment.name + "&) noexcept";
+        res += "constexpr inline ExplicitIdentifier<UniversalTag::sequence> identifier(const " + assignment.name +
+               "&) noexcept";
         res += "\n    {\n";
         res += "        return {};\n";
         res += "    }\n}\n\n";

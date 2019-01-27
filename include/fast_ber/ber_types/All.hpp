@@ -3,7 +3,6 @@
 #include "BitString.hpp"
 #include "Boolean.hpp"
 #include "CharacterString.hpp"
-#include "Choice.hpp"
 #include "Date.hpp"
 #include "DateTime.hpp"
 #include "Duration.hpp"
@@ -17,7 +16,6 @@
 #include "ObjectField.hpp"
 #include "ObjectIdentifier.hpp"
 #include "OctetString.hpp"
-#include "Optional.hpp"
 #include "Prefixed.hpp"
 #include "Real.hpp"
 #include "RelativeIRI.hpp"
@@ -30,3 +28,6 @@
 #include "Time.hpp"
 #include "TimeOfDay.hpp"
 #include "VisibleString.hpp"
+
+#include "Choice.hpp"
+#include "Optional.hpp"

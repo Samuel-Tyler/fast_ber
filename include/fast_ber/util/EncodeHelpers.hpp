@@ -41,10 +41,11 @@ template <typename T, UniversalTag T2>
 EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const ExplicitIdentifier<T2>& id)
 {
     size_t id_length = create_identifier(output, Construction::primitive, id.class_(), id.tag());
-    if (id_length == 0 || id_length > output.size())
+    if (id_length == 0)
     {
         return EncodeResult{false, 0};
     }
+    assert(id_length <= output.size());
 
     output.remove_prefix(id_length);
 
@@ -69,10 +70,11 @@ template <typename T, Class T2, Tag T3>
 EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const ImplicitIdentifier<T2, T3>& id)
 {
     size_t id_length = create_identifier(output, Construction::primitive, id.class_(), id.tag());
-    if (id_length == 0 || id_length > output.size())
+    if (id_length == 0)
     {
         return EncodeResult{false, 0};
     }
+    assert(id_length <= output.size());
 
     output.remove_prefix(id_length);
 

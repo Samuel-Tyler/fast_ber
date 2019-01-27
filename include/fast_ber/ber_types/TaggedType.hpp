@@ -27,9 +27,9 @@ class TaggedType : public Type
 };
 
 template <typename Type, typename TagType>
-constexpr TagType identifier(const TaggedType<Type, TagType>&) noexcept
+constexpr TagType identifier(const TaggedType<Type, TagType>*) noexcept
 {
-    return TagType{};
+    return {};
 }
 
 template <typename T, typename DefaultTag, typename ID = DefaultTag>

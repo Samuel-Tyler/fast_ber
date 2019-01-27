@@ -18,10 +18,10 @@ template <typename... args>
 using Choice = absl::variant<args...>;
 
 template <int index, typename Variant>
-auto type_at_index() noexcept ->
-    typename absl::variant_alternative<index, typename std::remove_reference<Variant>::type>::type
+constexpr auto type_at_index() noexcept ->
+    typename absl::variant_alternative<index, typename std::remove_reference<Variant>::type>::type*
 {
-    return {};
+    return nullptr;
 }
 
 template <int index, int max_depth, typename... Variants, typename ID,
@@ -38,8 +38,9 @@ EncodeResult encode_if(absl::Span<uint8_t>& buffer, const Choice<Variants...>& c
 {
     if (choice.index() == index)
     {
-        const EncodeResult& inner_encode_result =
-            encode(buffer, absl::get<index>(choice), identifier(type_at_index<index, decltype(choice)>()));
+        const auto&         child               = absl::get<index>(choice);
+        constexpr auto      child_id            = identifier(type_at_index<index, decltype(choice)>());
+        const EncodeResult& inner_encode_result = encode(buffer, child, child_id);
         if (!inner_encode_result.success)
         {
             return inner_encode_result;
@@ -54,9 +55,10 @@ EncodeResult encode_if(absl::Span<uint8_t>& buffer, const Choice<Variants...>& c
 }
 
 template <typename... Variants, typename ID = ExplicitIdentifier<UniversalTag::choice>>
-EncodeResult encode(absl::Span<uint8_t> buffer, const Choice<Variants...> choice, const ID& id = ID{}) noexcept
+EncodeResult encode(absl::Span<uint8_t> buffer, const Choice<Variants...>& choice, const ID& id = ID{}) noexcept
 {
-    constexpr auto depth = static_cast<int>(absl::variant_size<decltype(choice)>::value);
+    constexpr auto depth =
+        static_cast<int>(absl::variant_size<typename std::remove_reference<decltype(choice)>::type>::value);
     return encode_if<0, depth>(buffer, choice, id);
 }
 
@@ -74,8 +76,9 @@ bool decode_if(BerViewIterator& input, Choice<Variants...>& output, const ID& id
 {
     if (input->tag() == reference_tag(identifier(type_at_index<index, decltype(output)>())))
     {
-        output = Choice<Variants...>(absl::in_place_index_t<index>());
-        return decode(input, absl::get<index>(output), identifier(absl::get<index>(output)));
+        output      = Choice<Variants...>(absl::in_place_index_t<index>());
+        auto& child = absl::get<index>(output);
+        return decode(input, child, identifier(&child));
     }
     else
     {

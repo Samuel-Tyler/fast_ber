@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "absl/container/inlined_vector.h"
 #include "absl/types/span.h"
@@ -23,7 +23,7 @@ EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T>& seque
     size_t combined_length = 0;
     for (const auto& element : sequence)
     {
-        const auto element_encode_result = encode(content_buffer, element, identifier(element));
+        const auto element_encode_result = encode(content_buffer, element, identifier(&element));
         if (!element_encode_result.success)
         {
             return {false, 0};
@@ -44,8 +44,8 @@ bool decode(BerViewIterator& input, SequenceOf<T>& output, const ID& id = ID{}) 
         return false;
     }
 
-    auto       child    = input->begin();
-    const auto child_id = identifier(T{});
+    auto           child    = input->begin();
+    constexpr auto child_id = identifier(static_cast<const T*>(nullptr));
 
     while (child->is_valid() && child->tag() == reference_tag(child_id))
     {

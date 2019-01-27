@@ -49,7 +49,7 @@ class Integer
     std::array<uint8_t, sizeof(int64_t) + sizeof(uint8_t)> m_data;
 };
 
-inline ExplicitIdentifier<UniversalTag::integer> identifier(const Integer&) noexcept { return {}; }
+constexpr inline ExplicitIdentifier<UniversalTag::integer> identifier(const Integer*) noexcept { return {}; }
 
 inline bool decode_integer(absl::Span<const uint8_t> input, int64_t& output) noexcept
 {

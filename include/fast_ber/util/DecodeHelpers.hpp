@@ -1,14 +1,16 @@
 #pragma once
 
 #include "absl/types/span.h"
-#include "fast_ber/ber_types/Boolean.hpp"
 #include "fast_ber/ber_types/Identifier.hpp"
-#include "fast_ber/ber_types/Integer.hpp"
-#include "fast_ber/ber_types/OctetString.hpp"
 #include "fast_ber/util/BerView.hpp"
 
 namespace fast_ber
 {
+
+class Boolean;
+class Integer;
+class Null;
+class OctetString;
 
 struct DecodeResult
 {
@@ -74,6 +76,12 @@ bool decode(BerViewIterator& input, Integer& output, const ID& id = {}) noexcept
 
 template <typename ID = ExplicitIdentifier<UniversalTag::octet_string>>
 bool decode(BerViewIterator& input, OctetString& output, const ID& id = {}) noexcept
+{
+    return primitive_decode_impl(input, output, id);
+}
+
+template <typename ID = ExplicitIdentifier<UniversalTag::null>>
+bool decode(BerViewIterator& input, Null& output, const ID& id = {}) noexcept
 {
     return primitive_decode_impl(input, output, id);
 }

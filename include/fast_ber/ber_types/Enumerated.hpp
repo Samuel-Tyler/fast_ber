@@ -1,5 +1,6 @@
 #pragma once
 
+#include "fast_ber/ber_types/Integer.hpp"
 #include "fast_ber/util/DecodeHelpers.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
 

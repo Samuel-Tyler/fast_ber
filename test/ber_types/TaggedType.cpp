@@ -13,7 +13,7 @@ TEST_CASE("TaggedType: Assign")
         b = a;
 
     REQUIRE(b == 4);
-    static_assert(fast_ber::reference_tag(identifier(b)) == 5, "Tagging");
+    REQUIRE(fast_ber::reference_tag(identifier(&b)) == 5);
 }
 
 TEST_CASE("TaggedType: Double Tagged")
@@ -25,7 +25,7 @@ TEST_CASE("TaggedType: Double Tagged")
         b = a;
 
     REQUIRE(b == 4);
-    static_assert(fast_ber::reference_tag(identifier(b)) == 10, "Tagging");
+    REQUIRE(fast_ber::reference_tag(identifier(&b)) == 10);
 }
 
 TEST_CASE("TaggedType: Encode Decode")
