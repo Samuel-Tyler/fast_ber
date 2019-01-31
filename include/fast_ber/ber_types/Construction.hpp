@@ -11,16 +11,9 @@ enum class Construction
     constructed = 1
 };
 
-inline Construction get_construction(uint8_t first_byte)
+constexpr inline Construction get_construction(uint8_t first_byte)
 {
-    if (first_byte & 0x20)
-    {
-        return Construction::constructed;
-    }
-    else
-    {
-        return Construction::primitive;
-    }
+    return (first_byte & 0x20) ? Construction::constructed : Construction::primitive;
 }
 
 inline void set_construction(uint8_t& first_byte, Construction construction)

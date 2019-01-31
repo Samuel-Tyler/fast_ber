@@ -17,30 +17,27 @@ namespace fast_ber
 template <typename... args>
 using Choice = absl::variant<args...>;
 
-template <int index, typename Variant>
-constexpr auto type_at_index() noexcept ->
-    typename absl::variant_alternative<index, typename std::remove_reference<Variant>::type>::type*
-{
-    return nullptr;
-}
-
-template <int index, int max_depth, typename... Variants, typename ID,
+template <size_t index, size_t max_depth, typename... Variants, typename ID,
           typename std::enable_if<(!(index < max_depth)), int>::type = 0>
-EncodeResult encode_if(absl::Span<uint8_t>&, const Choice<Variants...>&, const ID&) noexcept
+EncodeResult encode_if(const absl::Span<uint8_t>&, const Choice<Variants...>&, const ID&) noexcept
 {
     // No substitutions found, fail
     return EncodeResult{false, 0};
 }
 
-template <int index, int max_depth, typename... Variants, typename ID,
-          typename std::enable_if<(index < max_depth), int>::type = 0>
-EncodeResult encode_if(absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice, const ID& id) noexcept
+template <size_t index, size_t max_depth, typename... Variants, typename ID,
+          typename std::enable_if<(index < max_depth), int>::type = 0,
+          typename T = typename absl::variant_alternative<index, Choice<Variants...>>::type>
+EncodeResult encode_if(absl::Span<uint8_t> buffer, const Choice<Variants...>& choice, const ID& id) noexcept
 {
     if (choice.index() == index)
     {
-        const auto&         child               = absl::get<index>(choice);
-        constexpr auto      child_id            = identifier(type_at_index<index, decltype(choice)>());
-        const EncodeResult& inner_encode_result = encode(buffer, child, child_id);
+        const auto*    child    = absl::get_if<index>(&choice);
+        constexpr auto child_id = identifier(static_cast<T*>(nullptr));
+
+        assert(child);
+
+        const EncodeResult& inner_encode_result = encode(buffer, *child, child_id);
         if (!inner_encode_result.success)
         {
             return inner_encode_result;
@@ -70,15 +67,16 @@ bool decode_if(BerViewIterator&, Choice<Variants...>&, const ID&) noexcept
     return false;
 }
 
-template <int index, int max_depth, typename... Variants, typename ID,
-          typename std::enable_if<(index < max_depth), int>::type = 0>
+template <size_t index, size_t max_depth, typename... Variants, typename ID,
+          typename std::enable_if<(index < max_depth), int>::type = 0,
+          typename T = typename absl::variant_alternative<index, Choice<Variants...>>::type>
 bool decode_if(BerViewIterator& input, Choice<Variants...>& output, const ID& id) noexcept
 {
-    if (input->tag() == reference_tag(identifier(type_at_index<index, decltype(output)>())))
+    constexpr auto child_id = identifier(static_cast<T*>(nullptr));
+    if (input->tag() == reference_tag(child_id))
     {
-        output      = Choice<Variants...>(absl::in_place_index_t<index>());
-        auto& child = absl::get<index>(output);
-        return decode(input, child, identifier(&child));
+        T* child = &output.template emplace<index>();
+        return decode(input, *child, child_id);
     }
     else
     {
@@ -100,9 +98,8 @@ bool decode(BerViewIterator& input, Choice<Variants...>& output, const ID& id = 
         return false;
     }
 
-    constexpr auto depth =
-        static_cast<int>(absl::variant_size<typename std::remove_reference<decltype(output)>::type>::value);
-    const bool success = decode_if<0, depth>(child, output, id);
+    constexpr auto depth   = absl::variant_size<typename std::remove_reference<decltype(output)>::type>::value;
+    const bool     success = decode_if<0, depth>(child, output, id);
     ++input;
     return success;
 }

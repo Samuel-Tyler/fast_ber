@@ -16,7 +16,7 @@ namespace fast_ber
 class OctetString
 {
   public:
-    OctetString() noexcept : m_contents() {}
+    OctetString() noexcept                       = default;
     OctetString(const OctetString& rhs) noexcept = default;
     OctetString(OctetString&& rhs) noexcept      = default;
 

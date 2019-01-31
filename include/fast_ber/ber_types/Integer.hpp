@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <cstring>
+#include <limits>
 
 namespace fast_ber
 {
@@ -21,7 +22,7 @@ inline size_t encode_integer(absl::Span<uint8_t> output, int64_t input) noexcept
 class Integer
 {
   public:
-    Integer() noexcept : Integer(0) {}
+    Integer() noexcept : m_data{0x01, 0x00} {}
     Integer(int64_t num) noexcept { assign(num); }
     Integer(BerView& view) noexcept { assign_ber(view); }
 
@@ -42,7 +43,11 @@ class Integer
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
   private:
-    void    set_content_length(uint8_t length) noexcept { m_data[0] = length; }
+    void set_content_length(uint64_t length) noexcept
+    {
+        assert(length <= std::numeric_limits<uint8_t>::max());
+        m_data[0] = static_cast<uint8_t>(length);
+    }
     uint8_t content_length() const noexcept { return m_data[0]; }
     size_t  encoded_length() const noexcept { return 1 + content_length(); }
 

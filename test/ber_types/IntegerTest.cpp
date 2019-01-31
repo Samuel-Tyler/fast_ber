@@ -44,8 +44,8 @@ TEST_CASE("Integer: Encoding")
     fast_ber::Integer        i(100);
     std::array<uint8_t, 100> buffer   = {};
     std::array<uint8_t, 3>   expected = {0x02, 0x01, 0x64};
-    size_t size = fast_ber::encode(absl::Span<uint8_t>(buffer.begin(), buffer.size()), i,
-                                                    fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::integer>{})
+    size_t                   size     = fast_ber::encode(absl::Span<uint8_t>(buffer.begin(), buffer.size()), i,
+                                   fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::integer>{})
                       .length;
 
     REQUIRE(size == 3);
@@ -61,3 +61,5 @@ TEST_CASE("Integer: Assign from raw")
     REQUIRE(size == 4);
     REQUIRE(i == 0x1234);
 }
+
+TEST_CASE("Integer: Default value") { REQUIRE(fast_ber::Integer() == 0); }

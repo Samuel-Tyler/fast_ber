@@ -10,20 +10,44 @@
 TEST_CASE("Choice: Check string choice matches simple string type")
 {
     const auto choice = fast_ber::Choice<fast_ber::Integer, fast_ber::OctetString>("Test string");
-    const auto tags   = fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::integer>{};
 
     std::vector<uint8_t> choice_encoded(100, 0x00);
     std::vector<uint8_t> string_encoded(100, 0x00);
 
     size_t choice_encode_length =
-        fast_ber::encode(absl::MakeSpan(choice_encoded.data(), choice_encoded.size()), choice, tags).length;
+        fast_ber::encode(absl::MakeSpan(choice_encoded.data(), choice_encoded.size()), choice).length;
     size_t string_encoded_length =
-        fast_ber::encode(absl::MakeSpan(string_encoded.data(), string_encoded.size()), choice, tags).length;
+        fast_ber::encode(absl::MakeSpan(string_encoded.data(), string_encoded.size()), choice).length;
 
     choice_encoded.resize(choice_encode_length);
     string_encoded.resize(string_encoded_length);
 
     REQUIRE(choice_encoded == string_encoded);
+}
+
+TEST_CASE("Choice: Clashing type")
+{
+    using choice_type =
+        fast_ber::Choice<fast_ber::Integer,
+                         fast_ber::TaggedType<fast_ber::OctetString,
+                                              fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 99>>,
+                         fast_ber::TaggedType<fast_ber::OctetString,
+                                              fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 100>>>;
+    auto choice_1 = choice_type(
+        fast_ber::TaggedType<fast_ber::OctetString,
+                             fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 100>>("Test string"));
+    auto choice_2 = choice_type();
+
+    std::vector<uint8_t> choice_encoded(100, 0x00);
+
+    bool enc_success = fast_ber::encode(absl::MakeSpan(choice_encoded.data(), choice_encoded.size()), choice_1).success;
+    bool dec_success = fast_ber::decode(absl::MakeSpan(choice_encoded.data(), choice_encoded.size()), choice_2);
+
+    REQUIRE(enc_success);
+    REQUIRE(dec_success);
+    REQUIRE(absl::holds_alternative<absl::variant_alternative<2, choice_type>::type>(choice_1));
+    REQUIRE(absl::holds_alternative<absl::variant_alternative<2, choice_type>::type>(choice_2));
+    REQUIRE(choice_1 == choice_2);
 }
 
 TEST_CASE("Choice: Generated choice")

@@ -29,7 +29,8 @@ EncodeResult encode(absl::Span<uint8_t> buffer, const Optional<T>& optional_type
 template <typename T>
 EncodeResult encode(absl::Span<uint8_t> buffer, const Optional<T>& optional_type) noexcept
 {
-    return encode(buffer, optional_type, identifier(static_cast<T*>(nullptr)));
+    constexpr auto id = identifier(static_cast<T*>(nullptr));
+    return encode(buffer, optional_type, id);
 }
 
 template <typename T, typename ID>
@@ -37,7 +38,7 @@ bool decode(BerViewIterator& input, Optional<T>& output, const ID& id) noexcept
 {
     if (input->is_valid() && input->tag() == val(reference_tag(id)))
     {
-        output.emplace(T());
+        output.emplace();
         return decode(input, *output, id) > 0;
     }
     else
@@ -50,7 +51,8 @@ bool decode(BerViewIterator& input, Optional<T>& output, const ID& id) noexcept
 template <typename T>
 bool decode(BerViewIterator& input, Optional<T>& output) noexcept
 {
-    return decode(input, output, identifier(static_cast<T*>(nullptr)));
+    constexpr auto id = identifier(static_cast<T*>(nullptr));
+    return decode(input, output, id);
 }
 
 template <typename T>

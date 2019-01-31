@@ -13,7 +13,7 @@ enum class Class
     private_         = 3
 };
 
-inline Class get_class(uint8_t first_byte) { return static_cast<Class>(first_byte >> 6); }
+constexpr inline Class get_class(uint8_t first_byte) { return static_cast<Class>(first_byte >> 6); }
 
 inline void set_class(uint8_t& first_byte, Class class_)
 {

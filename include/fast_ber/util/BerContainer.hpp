@@ -63,7 +63,8 @@ class BerContainer
     MutableBerView                    m_view;
 };
 
-inline BerContainer::BerContainer() noexcept : m_data{0x80, 0x00}, m_view(absl::MakeSpan(m_data.begin(), m_data.size()))
+inline BerContainer::BerContainer() noexcept
+    : m_data{0x80, 0x00}, m_view(absl::MakeSpan(m_data.begin(), m_data.size()), 0, 1, 2, 0)
 {
 }
 

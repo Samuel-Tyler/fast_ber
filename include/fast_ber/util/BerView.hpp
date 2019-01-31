@@ -25,6 +25,8 @@ class BerView
     BerView() noexcept = default;
     BerView(absl::Span<const uint8_t> data) noexcept { assign(data); }
     BerView(absl::Span<const uint8_t> data, size_t header_length, size_t content_length) noexcept;
+    BerView(absl::Span<const uint8_t> ber_data, Tag tag, size_t tag_length, size_t header_length,
+            size_t content_length) noexcept;
 
     void assign(absl::Span<const uint8_t> data) noexcept;
     void assign(absl::Span<const uint8_t> ber_data, size_t header_length, size_t content_length) noexcept;
@@ -32,18 +34,18 @@ class BerView
                 size_t content_length) noexcept;
 
     bool         is_valid() const noexcept { return m_valid; }
-    Construction construction() const noexcept { return get_construction(m_full_packet[0]); }
-    Class        class_() const noexcept { return get_class(m_full_packet[0]); }
+    Construction construction() const noexcept { return get_construction(m_data[0]); }
+    Class        class_() const noexcept { return get_class(m_data[0]); }
     long         tag() const noexcept { return m_tag; }
     size_t       identifier_length() const noexcept { return m_id_length; }
     size_t       header_length() const noexcept { return m_header_length; }
 
     absl::Span<const uint8_t> content() const noexcept { return absl::MakeSpan(content_data(), m_content_length); }
-    const uint8_t*            content_data() const noexcept { return m_full_packet.data() + m_header_length; }
+    const uint8_t*            content_data() const noexcept { return m_data + m_header_length; }
     size_t                    content_length() const noexcept { return m_content_length; }
-    absl::Span<const uint8_t> ber() const noexcept { return m_full_packet; }
-    const uint8_t*            ber_data() const noexcept { return m_full_packet.data(); }
-    size_t                    ber_length() const noexcept { return m_full_packet.length(); }
+    absl::Span<const uint8_t> ber() const noexcept { return absl::MakeSpan(ber_data(), ber_length()); }
+    const uint8_t*            ber_data() const noexcept { return m_data; }
+    size_t                    ber_length() const noexcept { return m_header_length + m_content_length; }
 
     BerViewIterator begin() const noexcept;
     BerViewIterator end() const noexcept;
@@ -52,12 +54,12 @@ class BerView
     size_t encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
   private:
-    absl::Span<const uint8_t> m_full_packet;
-    size_t                    m_id_length;     // Also length field offset
-    size_t                    m_header_length; // Also content offset
-    size_t                    m_content_length;
-    Tag                       m_tag;
-    bool                      m_valid{false};
+    const uint8_t* m_data;
+    Tag            m_tag;
+    size_t         m_id_length;     // Also length field offset
+    size_t         m_header_length; // Also content offset
+    size_t         m_content_length;
+    bool           m_valid{false};
 };
 
 class MutableBerView : public BerView
@@ -66,6 +68,9 @@ class MutableBerView : public BerView
     MutableBerView() noexcept : BerView() {}
     MutableBerView(absl::Span<uint8_t> data) noexcept : BerView(data) {}
     MutableBerView(absl::Span<uint8_t> a, size_t b, size_t c) : BerView(a, b, c) {}
+    MutableBerView(absl::Span<const uint8_t> a, Tag b, size_t c, size_t d, size_t e) noexcept : BerView(a, b, c, d, e)
+    {
+    }
 
     BerViewIterator        cbegin() const noexcept;
     BerViewIterator        cend() const noexcept;
@@ -176,6 +181,12 @@ inline BerView::BerView(absl::Span<const uint8_t> data, size_t header_length, si
     assign(data, header_length, content_length);
 }
 
+inline BerView::BerView(absl::Span<const uint8_t> ber_data, Tag tag, size_t tag_length, size_t header_length,
+                        size_t content_length) noexcept
+{
+    assign(ber_data, tag, tag_length, header_length, content_length);
+}
+
 inline void BerView::assign(absl::Span<const uint8_t> data) noexcept
 {
     m_valid                 = false;
@@ -194,7 +205,7 @@ inline void BerView::assign(absl::Span<const uint8_t> data) noexcept
         return;
     }
 
-    m_full_packet    = absl::MakeSpan(data.data(), complete_length);
+    m_data           = data.data();
     m_id_length      = tag_length;
     m_header_length  = header_length;
     m_content_length = content_length;
@@ -210,9 +221,7 @@ inline void BerView::assign(absl::Span<const uint8_t> ber_data, size_t header_le
 inline void BerView::assign(absl::Span<const uint8_t> ber_data, Tag tag, size_t tag_length, size_t header_length,
                             size_t content_length) noexcept
 {
-    size_t complete_length = header_length + content_length;
-
-    m_full_packet    = absl::MakeSpan(ber_data.data(), complete_length);
+    m_data           = ber_data.data();
     m_id_length      = tag_length;
     m_header_length  = header_length;
     m_content_length = content_length;

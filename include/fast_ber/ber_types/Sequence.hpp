@@ -20,7 +20,7 @@ template <typename... Args, typename T, typename ID>
 bool encode_sequence_combine_impl(absl::Span<uint8_t>& output, size_t& encoding_length, const T& object, const ID& id,
                                   const Args&... args) noexcept
 {
-    const EncodeResult result = encode(output, object, id);
+    const EncodeResult& result = encode(output, object, id);
     if (!result.success)
     {
         std::cerr << "Failed encoding packet, tag = " << reference_tag(id) << std::endl;

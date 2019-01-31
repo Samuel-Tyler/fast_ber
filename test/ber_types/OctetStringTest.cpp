@@ -69,10 +69,9 @@ TEST_CASE("OctetString: Encode to buffer")
     std::array<uint8_t, 100> buffer = {};
 
     fast_ber::OctetString octet_string(std::string("Hello world"));
-    size_t                encoded_length =
-        fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), octet_string,
-                                          fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>{})
-            .length;
+    size_t                encoded_length = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), octet_string,
+                                             fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>{})
+                                .length;
     REQUIRE(absl::MakeSpan(buffer.data(), encoded_length) == hello_world_packet);
 }
 
@@ -81,17 +80,15 @@ TEST_CASE("OctetString: Destructive encode to buffer")
     std::array<uint8_t, 200> buffer = {};
 
     fast_ber::OctetString octet_string(std::string(150, 'c'));
-    size_t                encoded_length =
-        fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), octet_string,
-                                          fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>{})
-            .length;
+    size_t                encoded_length = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), octet_string,
+                                             fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>{})
+                                .length;
 
     for (size_t i = 0; i < encoded_length; i++)
     {
-        bool success =
-            fast_ber::encode(absl::MakeSpan(buffer.data(), i), octet_string,
-                                              fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>{})
-                .success;
+        bool success = fast_ber::encode(absl::MakeSpan(buffer.data(), i), octet_string,
+                                        fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>{})
+                           .success;
         REQUIRE(!success);
     }
 }
@@ -138,3 +135,5 @@ TEST_CASE("OctetString: Equality")
     REQUIRE(test_octets == "Duck");
     REQUIRE(test_octets != "Quack");
 }
+
+TEST_CASE("OctetString: Default value") { REQUIRE(fast_ber::OctetString{} == ""); }
