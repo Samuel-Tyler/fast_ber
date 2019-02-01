@@ -15,10 +15,9 @@ enum class Class
 
 constexpr inline Class get_class(uint8_t first_byte) { return static_cast<Class>(first_byte >> 6); }
 
-inline void set_class(uint8_t& first_byte, Class class_)
+constexpr inline uint8_t add_class(uint8_t first_byte, Class class_)
 {
-    first_byte &= 0x3F;
-    first_byte |= (static_cast<int>(class_) << 6);
+    return (static_cast<int>(class_) << 6) | (first_byte & 0x3F);
 }
 
 } // namespace fast_ber

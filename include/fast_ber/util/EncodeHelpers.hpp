@@ -38,15 +38,19 @@ inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> output, Class class
 }
 
 template <typename T, UniversalTag T2>
-EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const ExplicitIdentifier<T2>& id)
+EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const ExplicitIdentifier<T2>&)
 {
-    size_t id_length = create_identifier(output, Construction::primitive, id.class_(), id.tag());
-    if (id_length == 0)
+    if (output.empty())
     {
         return EncodeResult{false, 0};
     }
-    assert(id_length <= output.size());
+    constexpr auto tag_num    = val(ExplicitIdentifier<T2>::tag());
+    constexpr auto class_     = ExplicitIdentifier<T2>::class_();
+    constexpr auto id_length  = 1;
+    constexpr auto encoded_id = create_short_identifier(Construction::primitive, class_, tag_num);
+    static_assert(tag_num < 31, "Tag must be short form!");
 
+    output[0] = encoded_id;
     output.remove_prefix(id_length);
 
     EncodeResult encode_res = object.encode_content_and_length(output);

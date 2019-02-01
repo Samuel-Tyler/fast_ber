@@ -32,6 +32,8 @@ inline size_t create_header(absl::Span<uint8_t> output, Construction constructio
 inline size_t create_header(absl::Span<uint8_t> output, Construction construction, Class class_, UniversalTag tag,
                             size_t length) noexcept;
 
+constexpr inline uint8_t add_short_tag(uint8_t first_byte, Tag tag) noexcept { return tag | (first_byte & 0xE0); }
+
 inline size_t create_tag(absl::Span<uint8_t> output, Tag tag) noexcept
 {
     if (tag < 0 || output.length() == 0)
@@ -41,8 +43,7 @@ inline size_t create_tag(absl::Span<uint8_t> output, Tag tag) noexcept
 
     if (tag <= 30)
     {
-        output[0] &= 0xE0;
-        output[0] |= tag;
+        output[0] = add_short_tag(output[0], tag);
         return 1;
     }
     else
@@ -70,6 +71,11 @@ inline size_t create_tag(absl::Span<uint8_t> output, Tag tag) noexcept
 }
 inline size_t create_tag(absl::Span<uint8_t> output, UniversalTag tag) noexcept { return create_tag(output, val(tag)); }
 
+constexpr inline uint8_t create_short_identifier(Construction construction, Class class_, Tag tag)
+{
+    return add_short_tag(add_class(add_construction(0, construction), class_), tag);
+}
+
 inline size_t create_identifier(absl::Span<uint8_t> output, Construction construction, Class class_, Tag tag) noexcept
 {
     if (output.size() < 1)
@@ -79,8 +85,8 @@ inline size_t create_identifier(absl::Span<uint8_t> output, Construction constru
 
     output[0] = 0;
 
-    set_construction(output[0], construction);
-    set_class(output[0], class_);
+    output[0] = add_construction(output[0], construction);
+    output[0] = add_class(output[0], class_);
 
     return create_tag(output, tag);
 }
