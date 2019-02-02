@@ -19,8 +19,11 @@ using SequenceOf = absl::InlinedVector<T, N>;
 template <typename T, typename ID = ExplicitIdentifier<UniversalTag::sequence_of>>
 EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T>& sequence, const ID& id = ID{}) noexcept
 {
-    auto   content_buffer  = buffer;
-    size_t combined_length = 0;
+    const size_t header_length_guess = 2;
+    auto         content_buffer      = buffer;
+    size_t       combined_length     = 0;
+
+    content_buffer.remove_prefix(header_length_guess);
     for (const auto& element : sequence)
     {
         const auto element_encode_result = encode(content_buffer, element, identifier(&element));
@@ -32,7 +35,7 @@ EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T>& seque
         content_buffer.remove_prefix(element_encode_result.length);
     }
 
-    return wrap_with_ber_header(buffer, combined_length, id);
+    return wrap_with_ber_header(buffer, combined_length, id, header_length_guess);
 }
 
 template <typename T, typename ID = ExplicitIdentifier<UniversalTag::sequence_of>>

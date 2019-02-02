@@ -35,15 +35,19 @@ bool encode_sequence_combine_impl(absl::Span<uint8_t>& output, size_t& encoding_
 template <typename... Args, typename ID>
 EncodeResult encode_sequence_combine(const absl::Span<uint8_t> output, const ID& id, const Args&... args) noexcept
 {
-    auto   encoding_output = output;
-    size_t encode_length   = 0;
-    bool   success         = encode_sequence_combine_impl(encoding_output, encode_length, args...);
+    auto         encoding_output     = output;
+    const size_t header_length_guess = 2;
+    size_t       encode_length       = 0;
+
+    encoding_output.remove_prefix(header_length_guess);
+
+    bool success = encode_sequence_combine_impl(encoding_output, encode_length, args...);
     if (!success)
     {
         return EncodeResult{false, 0};
     }
 
-    return wrap_with_ber_header(output, encode_length, id);
+    return wrap_with_ber_header(output, encode_length, id, header_length_guess);
 }
 
 template <const char* parent_name>

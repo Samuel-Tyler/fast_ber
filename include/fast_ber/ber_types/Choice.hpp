@@ -37,12 +37,15 @@ EncodeResult encode_if(const absl::Span<uint8_t>& buffer, const Choice<Variants.
 
         assert(child);
 
-        const EncodeResult& inner_encode_result = encode(buffer, *child, child_id);
+        const auto header_length_guess = 2;
+        auto       child_buffer        = buffer;
+        child_buffer.remove_prefix(header_length_guess);
+        const EncodeResult& inner_encode_result = encode(child_buffer, *child, child_id);
         if (!inner_encode_result.success)
         {
             return inner_encode_result;
         }
-        return wrap_with_ber_header(buffer, inner_encode_result.length, id);
+        return wrap_with_ber_header(buffer, inner_encode_result.length, id, header_length_guess);
     }
     else
     {

@@ -35,7 +35,7 @@ template <UniversalTag T>
 inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t   content_length,
                                          const ExplicitIdentifier<T>&, size_t content_offset = 0)
 {
-    (void)content_offset;
+
     constexpr auto tag    = ExplicitIdentifier<T>::tag();
     constexpr auto class_ = ExplicitIdentifier<T>::class_();
 
@@ -44,15 +44,19 @@ inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t   co
     {
         return EncodeResult{false, 0};
     }
+    assert(buffer.length() >= content_length + content_offset);
 
-    std::memmove(buffer.data() + header_length, buffer.data(), content_length);
+    if (content_offset != header_length)
+    {
+        std::memmove(buffer.data() + header_length, buffer.data() + content_offset, content_length);
+    }
     create_header(absl::MakeSpan(buffer.data(), buffer.size()), Construction::constructed, class_, tag, content_length);
     return EncodeResult{true, header_length + content_length};
 }
 
 template <Class T1, Tag T2, typename T3>
-inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_length,
-                                         const TaggedExplicitIdentifier<T1, T2, T3>&)
+inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t                  content_length,
+                                         const TaggedExplicitIdentifier<T1, T2, T3>&, size_t content_offset = 0)
 {
     constexpr auto tag    = TaggedExplicitIdentifier<T1, T2, T3>::outer_tag();
     constexpr auto class_ = TaggedExplicitIdentifier<T1, T2, T3>::outer_class();
@@ -63,14 +67,19 @@ inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t cont
         return EncodeResult{false, 0};
     }
 
-    std::memmove(buffer.data() + header_length, buffer.data(), content_length);
+    assert(buffer.length() >= content_length + content_offset);
+
+    if (content_offset != header_length)
+    {
+        std::memmove(buffer.data() + header_length, buffer.data() + content_offset, content_length);
+    }
     create_header(absl::MakeSpan(buffer.data(), buffer.size()), Construction::constructed, class_, tag, content_length);
     return EncodeResult{true, header_length + content_length};
 }
 
 template <Class T1, Tag T2>
-inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_length,
-                                         const ImplicitIdentifier<T1, T2>&)
+inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t        content_length,
+                                         const ImplicitIdentifier<T1, T2>&, size_t content_offset = 0)
 {
     constexpr auto tag    = ImplicitIdentifier<T1, T2>::tag();
     constexpr auto class_ = ImplicitIdentifier<T1, T2>::class_();
@@ -81,7 +90,12 @@ inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t cont
         return EncodeResult{false, 0};
     }
 
-    std::memmove(buffer.data() + header_length, buffer.data(), content_length);
+    assert(buffer.length() >= content_length + content_offset);
+
+    if (content_offset != header_length)
+    {
+        std::memmove(buffer.data() + header_length, buffer.data() + content_offset, content_length);
+    }
     create_header(absl::MakeSpan(buffer.data(), buffer.size()), Construction::constructed, class_, tag, content_length);
     return EncodeResult{true, header_length + content_length};
 }
@@ -111,13 +125,16 @@ EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const Expl
 template <typename T, Class T2, Tag T3, typename T4>
 EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const TaggedExplicitIdentifier<T2, T3, T4>& id)
 {
-    EncodeResult inner_encoding = encode(output, object, id.inner_id());
+    const auto header_length_guess = 2;
+    auto       inner_buffer        = output;
+    inner_buffer.remove_prefix(header_length_guess);
+    EncodeResult inner_encoding = encode(inner_buffer, object, id.inner_id());
     if (!inner_encoding.success)
     {
         return EncodeResult{false, 0};
     }
 
-    return wrap_with_ber_header(output, inner_encoding.length, id);
+    return wrap_with_ber_header(output, inner_encoding.length, id, header_length_guess);
 }
 
 template <typename T, Class T2, Tag T3>
