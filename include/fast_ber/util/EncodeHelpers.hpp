@@ -39,7 +39,7 @@ inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t   co
     constexpr auto tag    = ExplicitIdentifier<T>::tag();
     constexpr auto class_ = ExplicitIdentifier<T>::class_();
 
-    size_t header_length = created_header_length(Construction::constructed, class_, tag, content_length);
+    size_t header_length = encoded_header_length(Construction::constructed, class_, tag, content_length);
     if (header_length + content_length > buffer.length())
     {
         return EncodeResult{false, 0};
@@ -50,7 +50,7 @@ inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t   co
     {
         std::memmove(buffer.data() + header_length, buffer.data() + content_offset, content_length);
     }
-    create_header(absl::MakeSpan(buffer.data(), buffer.size()), Construction::constructed, class_, tag, content_length);
+    encode_header(absl::MakeSpan(buffer.data(), buffer.size()), Construction::constructed, class_, tag, content_length);
     return EncodeResult{true, header_length + content_length};
 }
 
@@ -61,7 +61,7 @@ inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t     
     constexpr auto tag    = TaggedExplicitIdentifier<T1, T2, T3>::outer_tag();
     constexpr auto class_ = TaggedExplicitIdentifier<T1, T2, T3>::outer_class();
 
-    size_t header_length = created_header_length(Construction::constructed, class_, tag, content_length);
+    size_t header_length = encoded_header_length(Construction::constructed, class_, tag, content_length);
     if (header_length + content_length > buffer.length())
     {
         return EncodeResult{false, 0};
@@ -73,7 +73,7 @@ inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t     
     {
         std::memmove(buffer.data() + header_length, buffer.data() + content_offset, content_length);
     }
-    create_header(absl::MakeSpan(buffer.data(), buffer.size()), Construction::constructed, class_, tag, content_length);
+    encode_header(absl::MakeSpan(buffer.data(), buffer.size()), Construction::constructed, class_, tag, content_length);
     return EncodeResult{true, header_length + content_length};
 }
 
@@ -84,7 +84,7 @@ inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t     
     constexpr auto tag    = ImplicitIdentifier<T1, T2>::tag();
     constexpr auto class_ = ImplicitIdentifier<T1, T2>::class_();
 
-    size_t header_length = created_header_length(Construction::constructed, class_, tag, content_length);
+    size_t header_length = encoded_header_length(Construction::constructed, class_, tag, content_length);
     if (header_length + content_length > buffer.length())
     {
         return EncodeResult{false, 0};
@@ -96,7 +96,7 @@ inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t     
     {
         std::memmove(buffer.data() + header_length, buffer.data() + content_offset, content_length);
     }
-    create_header(absl::MakeSpan(buffer.data(), buffer.size()), Construction::constructed, class_, tag, content_length);
+    encode_header(absl::MakeSpan(buffer.data(), buffer.size()), Construction::constructed, class_, tag, content_length);
     return EncodeResult{true, header_length + content_length};
 }
 
@@ -111,7 +111,7 @@ EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const Expl
         return EncodeResult{false, 0};
     }
     constexpr auto id_length  = 1;
-    constexpr auto encoded_id = create_short_identifier(Construction::primitive, class_, tag);
+    constexpr auto encoded_id = encode_short_identifier(Construction::primitive, class_, tag);
     static_assert(val(tag) < 31, "Tag must be short form!");
 
     output[0] = encoded_id;
@@ -140,7 +140,7 @@ EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const Tagg
 template <typename T, Class T2, Tag T3>
 EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const ImplicitIdentifier<T2, T3>& id)
 {
-    size_t id_length = create_identifier(output, Construction::primitive, id.class_(), id.tag());
+    size_t id_length = encode_identifier(output, Construction::primitive, id.class_(), id.tag());
     if (id_length == 0)
     {
         return EncodeResult{false, 0};

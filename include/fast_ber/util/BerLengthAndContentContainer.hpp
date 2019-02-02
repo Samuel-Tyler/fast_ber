@@ -81,7 +81,7 @@ inline size_t BerLengthAndContentContainer::assign_ber(const absl::Span<const ui
 inline void BerLengthAndContentContainer::assign_content(const absl::Span<const uint8_t> content) noexcept
 {
     m_data.resize(15);
-    m_content_offset = create_length(absl::Span<uint8_t>(m_data), content.size());
+    m_content_offset = encode_length(absl::Span<uint8_t>(m_data), content.size());
 
     m_data.resize(m_content_offset + content.size());
     std::copy(content.data(), content.end(), m_data.data() + m_content_offset);
@@ -94,7 +94,7 @@ inline void BerLengthAndContentContainer::resize_content(size_t size) noexcept
     size_t old_content_offset = m_content_offset;
     size_t old_size           = m_data.size() - m_content_offset;
 
-    m_content_offset = create_length(absl::MakeSpan(length_buffer), size);
+    m_content_offset = encode_length(absl::MakeSpan(length_buffer), size);
 
     m_data.resize(m_content_offset + size);
     std::memmove(m_data.data() + m_content_offset, m_data.data() + old_content_offset, std::min(old_size, size));

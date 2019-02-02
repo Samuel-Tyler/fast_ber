@@ -1,7 +1,7 @@
 #pragma once
 
 #include "fast_ber/util/BerView.hpp"
-#include "fast_ber/util/Create.hpp"
+#include "fast_ber/util/EncodeIdentifiers.hpp"
 
 #include "absl/container/inlined_vector.h"
 #include "absl/types/span.h"
@@ -134,7 +134,7 @@ inline void BerContainer::assign_content(const absl::Span<const uint8_t> content
 {
     m_data.resize(15 + content.size());
     m_data[0]            = 0x80; // No identifier provided, use a tag of 0
-    size_t header_length = 1 + create_length(absl::Span<uint8_t>(m_data.data() + 1, m_data.size() - 1), content.size());
+    size_t header_length = 1 + encode_length(absl::Span<uint8_t>(m_data.data() + 1, m_data.size() - 1), content.size());
 
     m_data.resize(header_length + content.length());
     std::copy(content.data(), content.end(), m_data.data() + header_length);
@@ -148,7 +148,7 @@ inline void BerContainer::assign_content(Construction construction, Class class_
 {
     m_data.resize(30 + content.size());
     size_t header_length =
-        create_header(absl::MakeSpan(m_data.data(), m_data.size()), construction, class_, tag, content.size());
+        encode_header(absl::MakeSpan(m_data.data(), m_data.size()), construction, class_, tag, content.size());
 
     m_data.resize(header_length + content.length());
     std::copy(content.data(), content.end(), m_data.data() + header_length);
@@ -164,7 +164,7 @@ inline void BerContainer::resize_content(size_t size)
     size_t old_header_length = view().header_length();
     size_t old_size          = view().content_length();
     size_t length_offset     = view().identifier_length();
-    size_t length_length     = create_length(absl::MakeSpan(length_buffer), size);
+    size_t length_length     = encode_length(absl::MakeSpan(length_buffer), size);
     size_t header_length     = length_offset + length_length;
     size_t complete_length   = header_length + size;
 
