@@ -1,6 +1,6 @@
 #pragma once
 
-#include "fast_ber/util/BerContainer.hpp"
+#include "fast_ber/util/BerLengthAndContentContainer.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
 
 #include "absl/strings/string_view.h"
@@ -68,7 +68,7 @@ class OctetString
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
   private:
-    BerContainer m_contents;
+    BerLengthAndContentContainer m_contents;
 }; // namespace fast_ber
 
 constexpr inline ExplicitIdentifier<UniversalTag::octet_string> identifier(const OctetString*) noexcept { return {}; }

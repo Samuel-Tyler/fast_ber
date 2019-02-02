@@ -72,7 +72,7 @@ TEST_CASE("Component Performance: Encode")
     component_benchmark_encode(fast_ber::Null(), "Null");
     component_benchmark_encode(fast_ber::Optional<fast_ber::OctetString>("hello!"), "Optional (String)");
     component_benchmark_encode(fast_ber::Optional<fast_ber::Integer>(500), "Optional (Integer)");
-    component_benchmark_decode(fast_ber::Optional<fast_ber::Integer>(absl::nullopt), "Optional (Empty)");
+    component_benchmark_encode(fast_ber::Optional<fast_ber::Integer>(absl::nullopt), "Optional (Empty)");
     component_benchmark_encode(
         fast_ber::Choice<fast_ber::Integer, fast_ber::OctetString>(fast_ber::OctetString("hello!")), "Choice (String)");
 }

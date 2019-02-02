@@ -26,10 +26,10 @@ EncodeResult encode_if(const absl::Span<uint8_t>&, const Choice<Variants...>&, c
 }
 
 template <size_t index, size_t max_depth, typename... Variants, typename ID,
-          typename std::enable_if<(index < max_depth), int>::type = 0,
-          typename T = typename absl::variant_alternative<index, Choice<Variants...>>::type>
+          typename std::enable_if<(index < max_depth), int>::type = 0>
 EncodeResult encode_if(absl::Span<uint8_t> buffer, const Choice<Variants...>& choice, const ID& id) noexcept
 {
+    using T = typename absl::variant_alternative<index, Choice<Variants...>>::type;
     if (choice.index() == index)
     {
         const auto*    child    = absl::get_if<index>(&choice);
@@ -68,10 +68,10 @@ bool decode_if(BerViewIterator&, Choice<Variants...>&, const ID&) noexcept
 }
 
 template <size_t index, size_t max_depth, typename... Variants, typename ID,
-          typename std::enable_if<(index < max_depth), int>::type = 0,
-          typename T = typename absl::variant_alternative<index, Choice<Variants...>>::type>
+          typename std::enable_if<(index < max_depth), int>::type = 0>
 bool decode_if(BerViewIterator& input, Choice<Variants...>& output, const ID& id) noexcept
 {
+    using T                 = typename absl::variant_alternative<index, Choice<Variants...>>::type;
     constexpr auto child_id = identifier(static_cast<T*>(nullptr));
     if (input->tag() == reference_tag(child_id))
     {
