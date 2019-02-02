@@ -32,7 +32,7 @@ EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T>& seque
         content_buffer.remove_prefix(element_encode_result.length);
     }
 
-    return wrap_with_ber_header(buffer, reference_class(id), reference_tag(id), combined_length);
+    return wrap_with_ber_header(buffer, combined_length, id);
 }
 
 template <typename T, typename ID = ExplicitIdentifier<UniversalTag::sequence_of>>

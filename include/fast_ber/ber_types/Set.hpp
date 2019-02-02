@@ -43,7 +43,7 @@ EncodeResult encode_set_combine(const absl::Span<uint8_t> output, const ID& id, 
         return EncodeResult{false, 0};
     }
 
-    return wrap_with_ber_header(output, reference_class(id), reference_tag(id), encode_length);
+    return wrap_with_ber_header(output, encode_length, id);
 }
 
 template <const char* parent_name>

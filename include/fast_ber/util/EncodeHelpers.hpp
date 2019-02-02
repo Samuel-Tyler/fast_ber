@@ -1,10 +1,11 @@
-#pragma once
-
-#include <cstddef>
+﻿#pragma once
 
 #include "fast_ber/ber_types/Identifier.hpp"
 
 #include "absl/types/span.h"
+
+#include <cstddef> // for uint8_t
+#include <cstring> // for std::memmove
 
 namespace fast_ber
 {
@@ -20,35 +21,84 @@ struct EncodeResult
     size_t length;
 };
 
-inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> output, Class class_, Tag tag,
-                                         size_t content_length) noexcept
+// Creates a BER header with provided ID around the data currently in the buffer
+// The data of interest should be located in the buffer, with length "content_length"
+
+// A offset if the data in the buffer can specified by "content_offset"
+// Building the data at a specfic content_offset will remove the need for moving memory after the header
+// has been added.
+// Reasonable guesses for content_offset:
+// 2 for ExplicitIdentifier and ImplicitIdentifier, 4 for TaggedExplicitIdentifier
+// These are the samllest ID lengths, optimising for small sized ber headers.
+
+template <UniversalTag T>
+inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t   content_length,
+                                         const ExplicitIdentifier<T>&, size_t content_offset = 0)
 {
-    std::array<uint8_t, 30> buffer;
-    size_t header_length = create_header(absl::MakeSpan(buffer.data(), buffer.size()), Construction::constructed,
-                                         class_, tag, content_length);
-    assert(header_length != 0);
-    if (header_length + content_length > output.length())
+    (void)content_offset;
+    constexpr auto tag    = ExplicitIdentifier<T>::tag();
+    constexpr auto class_ = ExplicitIdentifier<T>::class_();
+
+    size_t header_length = created_header_length(Construction::constructed, class_, tag, content_length);
+    if (header_length + content_length > buffer.length())
     {
         return EncodeResult{false, 0};
     }
 
-    std::memmove(output.data() + header_length, output.data(), content_length);
-    std::memcpy(output.data(), buffer.data(), header_length);
+    std::memmove(buffer.data() + header_length, buffer.data(), content_length);
+    create_header(absl::MakeSpan(buffer.data(), buffer.size()), Construction::constructed, class_, tag, content_length);
+    return EncodeResult{true, header_length + content_length};
+}
+
+template <Class T1, Tag T2, typename T3>
+inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_length,
+                                         const TaggedExplicitIdentifier<T1, T2, T3>&)
+{
+    constexpr auto tag    = TaggedExplicitIdentifier<T1, T2, T3>::outer_tag();
+    constexpr auto class_ = TaggedExplicitIdentifier<T1, T2, T3>::outer_class();
+
+    size_t header_length = created_header_length(Construction::constructed, class_, tag, content_length);
+    if (header_length + content_length > buffer.length())
+    {
+        return EncodeResult{false, 0};
+    }
+
+    std::memmove(buffer.data() + header_length, buffer.data(), content_length);
+    create_header(absl::MakeSpan(buffer.data(), buffer.size()), Construction::constructed, class_, tag, content_length);
+    return EncodeResult{true, header_length + content_length};
+}
+
+template <Class T1, Tag T2>
+inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_length,
+                                         const ImplicitIdentifier<T1, T2>&)
+{
+    constexpr auto tag    = ImplicitIdentifier<T1, T2>::tag();
+    constexpr auto class_ = ImplicitIdentifier<T1, T2>::class_();
+
+    size_t header_length = created_header_length(Construction::constructed, class_, tag, content_length);
+    if (header_length + content_length > buffer.length())
+    {
+        return EncodeResult{false, 0};
+    }
+
+    std::memmove(buffer.data() + header_length, buffer.data(), content_length);
+    create_header(absl::MakeSpan(buffer.data(), buffer.size()), Construction::constructed, class_, tag, content_length);
     return EncodeResult{true, header_length + content_length};
 }
 
 template <typename T, UniversalTag T2>
 EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const ExplicitIdentifier<T2>&)
 {
+    constexpr auto tag    = ExplicitIdentifier<T2>::tag();
+    constexpr auto class_ = ExplicitIdentifier<T2>::class_();
+
     if (output.empty())
     {
         return EncodeResult{false, 0};
     }
-    constexpr auto tag_num    = val(ExplicitIdentifier<T2>::tag());
-    constexpr auto class_     = ExplicitIdentifier<T2>::class_();
     constexpr auto id_length  = 1;
-    constexpr auto encoded_id = create_short_identifier(Construction::primitive, class_, tag_num);
-    static_assert(tag_num < 31, "Tag must be short form!");
+    constexpr auto encoded_id = create_short_identifier(Construction::primitive, class_, tag);
+    static_assert(val(tag) < 31, "Tag must be short form!");
 
     output[0] = encoded_id;
     output.remove_prefix(id_length);
@@ -67,7 +117,7 @@ EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const Tagg
         return EncodeResult{false, 0};
     }
 
-    return wrap_with_ber_header(output, id.outer_class(), id.outer_tag(), inner_encoding.length);
+    return wrap_with_ber_header(output, inner_encoding.length, id);
 }
 
 template <typename T, Class T2, Tag T3>

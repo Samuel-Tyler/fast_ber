@@ -27,7 +27,7 @@ EncodeResult encode_if(const absl::Span<uint8_t>&, const Choice<Variants...>&, c
 
 template <size_t index, size_t max_depth, typename... Variants, typename ID,
           typename std::enable_if<(index < max_depth), int>::type = 0>
-EncodeResult encode_if(absl::Span<uint8_t> buffer, const Choice<Variants...>& choice, const ID& id) noexcept
+EncodeResult encode_if(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice, const ID& id) noexcept
 {
     using T = typename absl::variant_alternative<index, Choice<Variants...>>::type;
     if (choice.index() == index)
@@ -42,8 +42,7 @@ EncodeResult encode_if(absl::Span<uint8_t> buffer, const Choice<Variants...>& ch
         {
             return inner_encode_result;
         }
-
-        return wrap_with_ber_header(buffer, reference_class(id), reference_tag(id), inner_encode_result.length);
+        return wrap_with_ber_header(buffer, inner_encode_result.length, id);
     }
     else
     {
@@ -52,7 +51,7 @@ EncodeResult encode_if(absl::Span<uint8_t> buffer, const Choice<Variants...>& ch
 }
 
 template <typename... Variants, typename ID = ExplicitIdentifier<UniversalTag::choice>>
-EncodeResult encode(absl::Span<uint8_t> buffer, const Choice<Variants...>& choice, const ID& id = ID{}) noexcept
+EncodeResult encode(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice, const ID& id = ID{}) noexcept
 {
     constexpr auto depth =
         static_cast<int>(absl::variant_size<typename std::remove_reference<decltype(choice)>::type>::value);

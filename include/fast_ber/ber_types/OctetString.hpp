@@ -47,15 +47,15 @@ class OctetString
     const uint8_t*            data() const noexcept { return m_contents.content_data(); }
     char*                     c_str() noexcept { return reinterpret_cast<char*>(data()); }
     const char*               c_str() const noexcept { return reinterpret_cast<const char*>(data()); }
-    size_t                    size() const noexcept { return m_contents.content_length(); }
-    size_t                    length() const noexcept { return m_contents.content_length(); }
-    std::string               value() const noexcept { return std::string(c_str(), length()); }
     absl::Span<uint8_t>       span() noexcept { return m_contents.content(); }
     absl::Span<const uint8_t> span() const noexcept { return m_contents.content(); }
     uint8_t*                  begin() noexcept { return data(); }
     const uint8_t*            begin() const noexcept { return data(); }
     uint8_t*                  end() noexcept { return data() + length(); }
     const uint8_t*            end() const noexcept { return data() + length(); }
+    size_t                    size() const noexcept { return m_contents.content_length(); }
+    size_t                    length() const noexcept { return m_contents.content_length(); }
+    std::string               value() const noexcept { return std::string(c_str(), length()); }
 
     void   assign(absl::string_view buffer) noexcept;
     void   assign(absl::Span<const uint8_t> buffer) noexcept;
