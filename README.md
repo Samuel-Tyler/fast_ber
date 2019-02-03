@@ -114,9 +114,9 @@ fast_ber is in development. The following table documents what has been implemen
 | Sequence Of | Yes |
 | Choice | Yes |
 | Set | No |
-| Set Of | No |
+| Set Of | Yes |
 | Enumerated | Yes |
-| Object Identifier | No |
+| Object Identifier | Yes |
 | Dates / Times | No |
 | Null | Yes |
 | Any | No |

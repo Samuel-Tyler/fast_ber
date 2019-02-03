@@ -11,6 +11,7 @@ class Boolean;
 class Integer;
 class Null;
 class OctetString;
+class ObjectIdentifier;
 
 struct DecodeResult
 {
@@ -82,6 +83,12 @@ bool decode(BerViewIterator& input, OctetString& output, const ID& id = {}) noex
 
 template <typename ID = ExplicitIdentifier<UniversalTag::null>>
 bool decode(BerViewIterator& input, Null& output, const ID& id = {}) noexcept
+{
+    return primitive_decode_impl(input, output, id);
+}
+
+template <typename ID = ExplicitIdentifier<UniversalTag::object_identifier>>
+bool decode(BerViewIterator& input, ObjectIdentifier& output, const ID& id = {}) noexcept
 {
     return primitive_decode_impl(input, output, id);
 }

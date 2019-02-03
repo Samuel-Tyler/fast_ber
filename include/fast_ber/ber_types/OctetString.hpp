@@ -141,8 +141,7 @@ inline size_t OctetString::assign_ber(absl::Span<const uint8_t> buffer) noexcept
 
 inline EncodeResult OctetString::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
 {
-    size_t size = m_contents.encode_content_and_length(buffer);
-    return EncodeResult{size > 0, size};
+    return m_contents.encode_content_and_length(buffer);
 }
 
 } // namespace fast_ber

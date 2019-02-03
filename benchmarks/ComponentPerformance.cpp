@@ -70,6 +70,8 @@ TEST_CASE("Component Performance: Encode")
     component_benchmark_encode(fast_ber::Boolean(true), "Boolean");
     component_benchmark_encode(fast_ber::OctetString("Test string!"), "OctetString");
     component_benchmark_encode(fast_ber::Null(), "Null");
+    component_benchmark_encode(fast_ber::ObjectIdentifier(fast_ber::ObjectIdentifierComponents{1, 2, 840, 113549}),
+                               "ObjectIdentifier");
     component_benchmark_encode(fast_ber::Optional<fast_ber::OctetString>("hello!"), "Optional (String)");
     component_benchmark_encode(fast_ber::Optional<fast_ber::Integer>(500), "Optional (Integer)");
     component_benchmark_encode(fast_ber::Optional<fast_ber::Integer>(absl::nullopt), "Optional (Empty)");
@@ -85,6 +87,8 @@ TEST_CASE("Component Performance: Decode")
     component_benchmark_decode(fast_ber::Boolean(true), "Boolean");
     component_benchmark_decode(fast_ber::OctetString("Test string!"), "OctetString");
     component_benchmark_decode(fast_ber::Null(), "Null");
+    component_benchmark_decode(fast_ber::ObjectIdentifier(fast_ber::ObjectIdentifierComponents{1, 2, 840, 113549}),
+                               "ObjectIdentifier");
     component_benchmark_decode(fast_ber::Optional<fast_ber::OctetString>("hello!"), "Optional (String)");
     component_benchmark_decode(fast_ber::Optional<fast_ber::Integer>(500), "Optional (Integer)");
     component_benchmark_decode(fast_ber::Optional<fast_ber::Integer>(absl::nullopt), "Optional (Empty)");
@@ -100,6 +104,8 @@ TEST_CASE("Component Performance: Object Construction")
     component_benchmark_construct<fast_ber::Boolean>(true, "Boolean");
     component_benchmark_construct<fast_ber::OctetString>("Test string!", "OctetString");
     component_benchmark_construct<fast_ber::Null>(fast_ber::Null{}, "Null");
+    component_benchmark_construct<fast_ber::ObjectIdentifier>(fast_ber::ObjectIdentifierComponents{1, 2, 840, 113549},
+                                                              "ObjectIdentifier");
     component_benchmark_construct<fast_ber::Optional<fast_ber::OctetString>>("hello!", "Optional (String)");
     component_benchmark_construct<fast_ber::Optional<fast_ber::Integer>>(500, "Optional (Integer)");
     component_benchmark_construct<fast_ber::Optional<fast_ber::Integer>>(absl::nullopt, "Optional (Empty)");
@@ -115,6 +121,7 @@ TEST_CASE("Component Performance: Default Construction")
     component_benchmark_default_construct<fast_ber::Boolean>("Boolean");
     component_benchmark_default_construct<fast_ber::OctetString>("OctetString");
     component_benchmark_default_construct<fast_ber::Null>("Null");
+    component_benchmark_default_construct<fast_ber::ObjectIdentifier>("ObjectId");
     component_benchmark_default_construct<fast_ber::Optional<fast_ber::Integer>>("Optional");
     component_benchmark_default_construct<fast_ber::Choice<fast_ber::Integer, fast_ber::OctetString>>("Choice");
 }

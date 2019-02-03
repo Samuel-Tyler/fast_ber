@@ -1,6 +1,7 @@
 #pragma once
 
 #include "fast_ber/util/BerContainer.hpp"
+#include "fast_ber/util/EncodeHelpers.hpp"
 
 #include "absl/container/inlined_vector.h"
 #include "absl/types/span.h"
@@ -22,6 +23,8 @@ class BerLengthAndContentContainer
     }
     BerLengthAndContentContainer(absl::Span<const uint8_t> data, ConstructionMethod method) noexcept;
 
+    bool operator==(const BerLengthAndContentContainer& rhs) const noexcept { return m_data == rhs.m_data; }
+    bool operator!=(const BerLengthAndContentContainer& rhs) const noexcept { return !(*this == rhs); }
     BerLengthAndContentContainer& operator=(const BerView& view) noexcept;
     BerLengthAndContentContainer& operator=(const BerLengthAndContentContainer& container) noexcept;
     size_t                        assign_ber(const BerView& view) noexcept;
@@ -37,7 +40,7 @@ class BerLengthAndContentContainer
     const uint8_t*            content_data() const noexcept { return m_data.data() + m_content_offset; }
     size_t                    content_length() const noexcept { return m_data.size() - m_content_offset; }
 
-    size_t encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
+    EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
   private:
     absl::InlinedVector<uint8_t, 100> m_data;
@@ -73,6 +76,11 @@ inline size_t BerLengthAndContentContainer::assign_ber(const BerView& view) noex
     return length_and_content_length;
 }
 
+inline size_t BerLengthAndContentContainer::assign_ber(const BerContainer& container) noexcept
+{
+    return assign_ber(container.view());
+}
+
 inline size_t BerLengthAndContentContainer::assign_ber(const absl::Span<const uint8_t> data) noexcept
 {
     return assign_ber(BerView(data));
@@ -101,15 +109,15 @@ inline void BerLengthAndContentContainer::resize_content(size_t size) noexcept
     std::memcpy(m_data.data(), length_buffer.data(), m_content_offset);
 }
 
-inline size_t BerLengthAndContentContainer::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
+inline EncodeResult BerLengthAndContentContainer::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
 {
     if (buffer.size() < m_data.size())
     {
-        return 0;
+        return EncodeResult{false, 0};
     }
 
     std::memcpy(buffer.data(), m_data.data(), m_data.size());
-    return m_data.size();
+    return EncodeResult{true, m_data.size()};
 }
 
 } // namespace fast_ber
