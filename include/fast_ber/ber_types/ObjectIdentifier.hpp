@@ -55,6 +55,11 @@ class ObjectIdentifier
     BerLengthAndContentContainer m_contents;
 };
 
+constexpr inline ExplicitIdentifier<UniversalTag::object_identifier> identifier(const ObjectIdentifier*) noexcept
+{
+    return {};
+}
+
 inline size_t encoded_object_id_length(const ObjectIdentifierComponents& input) noexcept
 {
     if (input.size() < 2)
@@ -182,9 +187,28 @@ inline int64_t get_component_number(absl::Span<const uint8_t> input, size_t comp
             current_component_number++;
         }
     }
+
+    return -1;
 }
 
-inline size_t get_number_of_components(absl::Span<const uint8_t> input) noexcept { return 0; }
+inline size_t get_number_of_components(absl::Span<const uint8_t> input) noexcept
+{
+    if (input.empty())
+    {
+        return 0;
+    }
+
+    size_t number_of_components = 2;
+    for (size_t i = 1; i < input.length(); i++)
+    {
+        if (!(0x80 & input[i]))
+        {
+            number_of_components++;
+        }
+    }
+
+    return number_of_components;
+}
 
 inline ObjectIdentifier& ObjectIdentifier::operator=(const BerView& view) noexcept
 {
@@ -242,9 +266,10 @@ inline void ObjectIdentifier::assign(const ObjectIdentifierComponents& oid) noex
     m_contents.resize_content(encoded_length);
     EncodeResult res = encode_object_id(absl::Span<uint8_t>(m_contents.content()), oid, encoded_length);
     assert(res.success);
-    assert(res.length == m_contents.size());
+    assert(res.length == m_contents.content_length());
     (void)res;
 }
+
 inline size_t ObjectIdentifier::assign_ber(const BerView& view) noexcept { return m_contents.assign_ber(view); }
 inline size_t ObjectIdentifier::assign_ber(const BerContainer& container) noexcept
 {

@@ -14,6 +14,6 @@ TEST_CASE("RealSchema: Testing a standard asn schema")
     fast_ber::SGSN_2009A_CDR::ManagementExtensions e;
     fast_ber::encode(absl::Span<uint8_t>(buffer), smtr);
     fast_ber::encode(absl::Span<uint8_t>(buffer), pdp);
-    //  fast_ber::encode(absl::Span<uint8_t>(buffer), e);
-    // fast_ber::encode(absl::Span<uint8_t>(buffer), record);
+    fast_ber::encode(absl::Span<uint8_t>(buffer), e);
+    fast_ber::encode(absl::Span<uint8_t>(buffer), record);
 }

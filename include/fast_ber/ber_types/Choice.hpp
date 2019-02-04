@@ -25,6 +25,12 @@ EncodeResult encode_if(const absl::Span<uint8_t>&, const Choice<Variants...>&, c
     return EncodeResult{false, 0};
 }
 
+template <typename... T>
+constexpr inline ExplicitIdentifier<UniversalTag::choice> identifier(const Choice<T...>*) noexcept
+{
+    return {};
+}
+
 template <size_t index, size_t max_depth, typename... Variants, typename ID,
           typename std::enable_if<(index < max_depth), int>::type = 0>
 EncodeResult encode_if(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice, const ID& id) noexcept

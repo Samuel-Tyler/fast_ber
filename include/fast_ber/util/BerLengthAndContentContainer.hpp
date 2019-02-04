@@ -71,9 +71,9 @@ inline size_t BerLengthAndContentContainer::assign_ber(const BerView& view) noex
     m_content_offset                       = view.header_length() - view.identifier_length();
     const size_t length_and_content_length = view.content_length() + m_content_offset;
 
-    m_data.resize(length_and_content_length);
-    std::memcpy(m_data.data(), view.ber_data() + view.identifier_length(), length_and_content_length);
-    return length_and_content_length;
+    m_data.assign(view.ber_data() + view.identifier_length(),
+                  view.ber_data() + view.identifier_length() + length_and_content_length);
+    return view.identifier_length() + length_and_content_length;
 }
 
 inline size_t BerLengthAndContentContainer::assign_ber(const BerContainer& container) noexcept
@@ -97,16 +97,16 @@ inline void BerLengthAndContentContainer::assign_content(const absl::Span<const 
 
 inline void BerLengthAndContentContainer::resize_content(size_t size) noexcept
 {
-    std::array<uint8_t, 20> length_buffer;
-
     size_t old_content_offset = m_content_offset;
     size_t old_size           = m_data.size() - m_content_offset;
-
-    m_content_offset = encode_length(absl::MakeSpan(length_buffer), size);
+    m_content_offset          = encoded_length_length(size);
 
     m_data.resize(m_content_offset + size);
-    std::memmove(m_data.data() + m_content_offset, m_data.data() + old_content_offset, std::min(old_size, size));
-    std::memcpy(m_data.data(), length_buffer.data(), m_content_offset);
+    if (m_content_offset != old_content_offset)
+    {
+        std::memmove(m_data.data() + m_content_offset, m_data.data() + old_content_offset, std::min(old_size, size));
+    }
+    encode_length(absl::MakeSpan(m_data), size);
 }
 
 inline EncodeResult BerLengthAndContentContainer::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
