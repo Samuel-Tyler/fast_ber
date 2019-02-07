@@ -146,14 +146,37 @@ DER mode
 fast_ber includes benchmarks against asn1c, an ASN library written in C. Here is an example of the output:
 ```
 -------------------------------------------------------------------------------
+Benchmark: Decode Performance
+-------------------------------------------------------------------------------
+...............................................................................
+
 benchmark name                                  iters   elapsed ns      average
 -------------------------------------------------------------------------------
-fast_ber        - decode large packet               1    428252588   428.253 ms
-asn1c           - decode large packet               1   1562105248    1.56211 s
-fast_ber        - decode small packet               1     90785932   90.7859 ms
-asn1c           - decode small packet               1    679468389   679.468 ms
-fast_ber        - encode                            1    557656167   557.656 ms
-asn1c           - encode                            1   1740894147    1.74089 s
-fast_ber        - construct                         1    611129978    611.13 ms
-asn1c           - construct                         1    366788030   366.788 ms
+fast_ber        - decode 2107 byte packet           1    465768155   465.768 ms
+asn1c           - decode 2107 byte packet           1   5963799719     5.9638 s
+fast_ber        - decode 64 byte packet             1    116247675   116.248 ms
+asn1c           - decode 64 byte packet             1   3068504188     3.0685 s
+
+-------------------------------------------------------------------------------
+Benchmark: Encode Performance
+-------------------------------------------------------------------------------
+...............................................................................
+
+benchmark name                                  iters   elapsed ns      average
+-------------------------------------------------------------------------------
+fast_ber        - encode                            1    309072302   309.072 ms
+asn1c           - encode                            1   8936055854    8.93606 s
+
+-------------------------------------------------------------------------------
+Benchmark: Object Construction Performance
+-------------------------------------------------------------------------------
+...............................................................................
+
+benchmark name                                  iters   elapsed ns      average
+-------------------------------------------------------------------------------
+fast_ber        - construct                         1    664078025   664.078 ms
+asn1c           - construct                         1    671927051   671.927 ms
+
+===============================================================================
+All tests passed (28 assertions in 7 test cases)
 ```
