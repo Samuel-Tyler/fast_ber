@@ -41,7 +41,7 @@ TEST_CASE("Choice: Clashing type")
     std::vector<uint8_t> choice_encoded(100, 0x00);
 
     bool enc_success = fast_ber::encode(absl::MakeSpan(choice_encoded.data(), choice_encoded.size()), choice_1).success;
-    bool dec_success = fast_ber::decode(absl::MakeSpan(choice_encoded.data(), choice_encoded.size()), choice_2);
+    bool dec_success = fast_ber::decode(absl::MakeSpan(choice_encoded.data(), choice_encoded.size()), choice_2).success;
 
     REQUIRE(enc_success);
     REQUIRE(dec_success);
@@ -60,7 +60,7 @@ TEST_CASE("Choice: Generated choice")
     buffer.resize(length);
 
     fast_ber::MakeAChoice::Collection copy;
-    bool                              success = fast_ber::decode(absl::MakeSpan(buffer.data(), buffer.size()), copy);
+    bool success = fast_ber::decode(absl::MakeSpan(buffer.data(), buffer.size()), copy).success;
 
     REQUIRE(length > 0);
     REQUIRE(success);

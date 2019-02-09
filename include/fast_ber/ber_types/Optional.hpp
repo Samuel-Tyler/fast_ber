@@ -6,6 +6,7 @@
 #include "fast_ber/ber_types/Class.hpp"
 #include "fast_ber/ber_types/Identifier.hpp"
 #include "fast_ber/ber_types/Tag.hpp"
+#include "fast_ber/util/DecodeHelpers.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
 
 namespace fast_ber
@@ -34,29 +35,29 @@ EncodeResult encode(absl::Span<uint8_t> buffer, const Optional<T>& optional_type
 }
 
 template <typename T, typename ID>
-bool decode(BerViewIterator& input, Optional<T>& output, const ID& id) noexcept
+DecodeResult decode(BerViewIterator& input, Optional<T>& output, const ID& id) noexcept
 {
     if (input->is_valid() && input->tag() == val(reference_tag(id)))
     {
         output.emplace();
-        return decode(input, *output, id) > 0;
+        return decode(input, *output, id);
     }
     else
     {
         output = absl::nullopt;
-        return true;
+        return DecodeResult{true};
     }
 }
 
 template <typename T>
-bool decode(BerViewIterator& input, Optional<T>& output) noexcept
+DecodeResult decode(BerViewIterator& input, Optional<T>& output) noexcept
 {
     constexpr auto id = identifier(static_cast<T*>(nullptr));
     return decode(input, output, id);
 }
 
 template <typename T>
-ExplicitIdentifier<UniversalTag::octet_string> identifier(const absl::optional<T>&) noexcept
+constexpr auto identifier(const absl::optional<T>*) noexcept -> decltype(identifier(static_cast<T*>(nullptr)))
 {
     return {};
 }

@@ -69,15 +69,15 @@ EncodeResult encode(const absl::Span<uint8_t>& buffer, const Choice<Variants...>
 
 template <int index, int max_depth, typename... Variants, typename ID,
           typename std::enable_if<(!(index < max_depth)), int>::type = 0>
-bool decode_if(BerViewIterator&, Choice<Variants...>&, const ID&) noexcept
+DecodeResult decode_if(BerViewIterator&, Choice<Variants...>&, const ID&) noexcept
 {
     // No substitutions found, fail
-    return false;
+    return DecodeResult{false};
 }
 
 template <size_t index, size_t max_depth, typename... Variants, typename ID,
           typename std::enable_if<(index < max_depth), int>::type = 0>
-bool decode_if(BerViewIterator& input, Choice<Variants...>& output, const ID& id) noexcept
+DecodeResult decode_if(BerViewIterator& input, Choice<Variants...>& output, const ID& id) noexcept
 {
     using T                 = typename absl::variant_alternative<index, Choice<Variants...>>::type;
     constexpr auto child_id = identifier(static_cast<T*>(nullptr));
@@ -93,23 +93,23 @@ bool decode_if(BerViewIterator& input, Choice<Variants...>& output, const ID& id
 }
 
 template <typename... Variants, typename ID = ExplicitIdentifier<UniversalTag::choice>>
-bool decode(BerViewIterator& input, Choice<Variants...>& output, const ID& id = ID{}) noexcept
+DecodeResult decode(BerViewIterator& input, Choice<Variants...>& output, const ID& id = ID{}) noexcept
 {
     if (!input->is_valid() || input->tag() != reference_tag(id))
     {
-        return false;
+        return DecodeResult{false};
     }
 
     auto child = input->begin();
     if (!child->is_valid())
     {
-        return false;
+        return DecodeResult{false};
     }
 
-    constexpr auto depth   = absl::variant_size<typename std::remove_reference<decltype(output)>::type>::value;
-    const bool     success = decode_if<0, depth>(child, output, id);
+    constexpr auto     depth  = absl::variant_size<typename std::remove_reference<decltype(output)>::type>::value;
+    const DecodeResult result = decode_if<0, depth>(child, output, id);
     ++input;
-    return success;
+    return result;
 }
 
 } // namespace fast_ber

@@ -41,6 +41,39 @@ std::string create_assignment(const Assignment& assignment, TaggingMode tagging_
     }
 }
 
+std::string create_identifier_functions(const Assignment& assignment, const std::string& module_name)
+{
+    if (absl::holds_alternative<BuiltinType>(assignment.type) &&
+        absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(assignment.type)))
+    {
+        std::string       res;
+        const std::string tags_class = assignment.name + "Tags";
+
+        res += "constexpr inline ExplicitIdentifier<UniversalTag::sequence> identifier(const fast_ber::" + module_name +
+               "::" + assignment.name + "*) noexcept";
+        res += "\n{\n";
+        res += "    return {};\n";
+        res += "}\n\n";
+        return res;
+    }
+    else if (absl::holds_alternative<BuiltinType>(assignment.type) &&
+             absl::holds_alternative<SetType>(absl::get<BuiltinType>(assignment.type)))
+    {
+        std::string       res;
+        const std::string tags_class = assignment.name + "Tags";
+
+        res += "constexpr inline ExplicitIdentifier<UniversalTag::set> identifier(const fast_ber::" + module_name +
+               "::" + assignment.name + "*) noexcept";
+        res += "\n{\n";
+        res += "    return {};\n";
+        res += "}\n\n";
+        return res;
+    }
+    else
+    {
+        return "";
+    }
+}
 std::string create_encode_functions(const Assignment& assignment, const std::string& module_name,
                                     TaggingMode tagging_mode)
 {
@@ -50,13 +83,6 @@ std::string create_encode_functions(const Assignment& assignment, const std::str
         std::string         res;
         const SequenceType& sequence   = absl::get<SequenceType>(absl::get<BuiltinType>(assignment.type));
         const std::string   tags_class = assignment.name + "Tags";
-
-        res += "namespace " + module_name + " {\n";
-        res += "constexpr inline ExplicitIdentifier<UniversalTag::sequence> identifier(const " + assignment.name +
-               "*) noexcept";
-        res += "\n    {\n";
-        res += "        return {};\n";
-        res += "    }\n}\n\n";
 
         res += "namespace " + tags_class + " {\n";
         int tag_counter = 0;
@@ -94,13 +120,6 @@ std::string create_encode_functions(const Assignment& assignment, const std::str
         std::string       res;
         const SetType&    set        = absl::get<SetType>(absl::get<BuiltinType>(assignment.type));
         const std::string tags_class = assignment.name + "Tags";
-
-        res += "namespace " + module_name + " {\n";
-        res += "constexpr inline ExplicitIdentifier<UniversalTag::sequence> identifier(const " + assignment.name +
-               "&) noexcept";
-        res += "\n    {\n";
-        res += "        return {};\n";
-        res += "    }\n}\n\n";
 
         res += "namespace " + tags_class + " {\n";
         int tag_counter = 0;
@@ -150,7 +169,7 @@ std::string create_decode_functions(const Assignment& assignment, const std::str
         res +=
             "constexpr const char " + assignment.name + "_name[] = \"" + module_name + "::" + assignment.name + "\";\n";
         res += "template <typename ID = ExplicitIdentifier<UniversalTag::sequence>>\n";
-        res += "inline bool decode(const BerView& input, " + module_name + "::" + assignment.name +
+        res += "inline DecodeResult decode(const BerView& input, " + module_name + "::" + assignment.name +
                "& output, const ID& id = ID{}) noexcept\n{\n";
         res += "    return decode_sequence_combine<" + assignment.name + "_name>(input, id";
         for (const ComponentType& component : sequence.components)
@@ -161,11 +180,11 @@ std::string create_decode_functions(const Assignment& assignment, const std::str
         res += ");\n}\n\n";
 
         res += "template <typename ID = ExplicitIdentifier<UniversalTag::sequence>>\n";
-        res += "inline bool decode(BerViewIterator& input, " + module_name + "::" + assignment.name +
+        res += "inline DecodeResult decode(BerViewIterator& input, " + module_name + "::" + assignment.name +
                "& output, const ID& id = ID{}) noexcept\n{\n";
-        res += "    bool success = decode(*input, output, id) > 0;\n";
+        res += "    DecodeResult result = decode(*input, output, id);\n";
         res += "    ++input;\n";
-        res += "    return success;\n";
+        res += "    return result;\n";
         res += "}\n\n";
         return res;
     }
@@ -179,7 +198,7 @@ std::string create_decode_functions(const Assignment& assignment, const std::str
         res +=
             "constexpr const char " + assignment.name + "_name[] = \"" + module_name + "::" + assignment.name + "\";\n";
         res += "template <typename ID = ExplicitIdentifier<UniversalTag::set>>\n";
-        res += "inline bool decode(const BerView& input, " + module_name + "::" + assignment.name +
+        res += "inline DecodeResult decode(const BerView& input, " + module_name + "::" + assignment.name +
                "& output, const ID& id = ID{}) noexcept\n{\n";
         res += "    return decode_set_combine<" + assignment.name + "_name>(input, id";
         for (const ComponentType& component : set.components)
@@ -190,12 +209,74 @@ std::string create_decode_functions(const Assignment& assignment, const std::str
         res += ");\n}\n\n";
 
         res += "template <typename ID = ExplicitIdentifier<UniversalTag::set>>\n";
-        res += "inline bool decode(BerViewIterator& input, " + module_name + "::" + assignment.name +
+        res += "inline DecodeResult decode(BerViewIterator& input, " + module_name + "::" + assignment.name +
                "& output, const ID& id = ID{}) noexcept\n{\n";
-        res += "    bool success = decode(*input, output, id) > 0;\n";
+        res += "    DecodeResult result = decode(*input, output, id);\n";
         res += "    ++input;\n";
-        res += "    return success;\n";
+        res += "    return result;\n";
         res += "}\n\n";
+        return res;
+    }
+    else
+    {
+        return "";
+    }
+}
+
+std::string create_helper_functions(const Assignment& assignment)
+{
+    if (absl::holds_alternative<BuiltinType>(assignment.type) &&
+        absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(assignment.type)))
+    {
+        const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(assignment.type));
+        std::string         res;
+        const std::string   tags_class = assignment.name + "Tags";
+
+        res += "bool operator==(";
+        res += "const " + assignment.name + "& lhs, ";
+        res += "const " + assignment.name + "& rhs)\n";
+        res += "{\n";
+        res += "    return true";
+        for (const ComponentType& component : sequence.components)
+        {
+            res += " &&\n      lhs." + component.named_type.name + " == ";
+            res += "rhs." + component.named_type.name;
+        }
+        res += ";\n}\n\n";
+
+        res += "bool operator!=(";
+        res += "const " + assignment.name + "& lhs, ";
+        res += "const " + assignment.name + "& rhs)\n";
+        res += "{\n";
+        res += "    return !(lhs == rhs);\n}\n\n";
+
+        return res;
+    }
+    else if (absl::holds_alternative<BuiltinType>(assignment.type) &&
+             absl::holds_alternative<SetType>(absl::get<BuiltinType>(assignment.type)))
+    {
+        const SetType&    set = absl::get<SetType>(absl::get<BuiltinType>(assignment.type));
+        std::string       res;
+        const std::string tags_class = assignment.name + "Tags";
+
+        res += "bool operator==(";
+        res += "const " + assignment.name + "& lhs, ";
+        res += "const " + assignment.name + "& rhs)\n";
+        res += "{\n";
+        res += "    return true";
+        for (const ComponentType& component : set.components)
+        {
+            res += " &&\n      lhs." + component.named_type.name + " == ";
+            res += "rhs." + component.named_type.name;
+        }
+        res += ";\n}\n\n";
+
+        res += "bool operator!=(";
+        res += "const " + assignment.name + "& lhs, ";
+        res += "const " + assignment.name + "& rhs)\n";
+        res += "{\n";
+        res += "    return !(lhs == rhs);\n}\n\n";
+
         return res;
     }
     else
@@ -233,14 +314,43 @@ std::string create_body(const Asn1Tree& tree)
 std::string create_detail_body(const Asn1Tree& tree)
 {
     std::string output;
+    output += create_include("fast_ber/ber_types/Identifier.hpp");
+    output += create_include("fast_ber/util/EncodeHelpers.hpp");
+    output += create_include("fast_ber/util/DecodeHelpers.hpp");
     output += "\n";
 
     output += "/* Functionality provided for Encoding and Decoding BER */\n\n";
+
+    std::string body;
+
+    // Strange lookup rules means that these functions are defined twice in different namespaces
+    std::string ids;
     for (const Assignment& assignment : tree.assignments)
     {
-        output += create_encode_functions(assignment, tree.module_reference, tree.tagging_default);
-        output += create_decode_functions(assignment, tree.module_reference) + "\n";
+        ids += create_identifier_functions(assignment, tree.module_reference);
     }
+    body += add_namespace(tree.module_reference, ids);
+
+    for (const Assignment& assignment : tree.assignments)
+    {
+        body += create_identifier_functions(assignment, tree.module_reference);
+    }
+
+    for (const Assignment& assignment : tree.assignments)
+    {
+        body += create_encode_functions(assignment, tree.module_reference, tree.tagging_default);
+        body += create_decode_functions(assignment, tree.module_reference) + "\n";
+    }
+
+    std::string helpers;
+    for (const Assignment& assignment : tree.assignments)
+    {
+        helpers += create_helper_functions(assignment);
+    }
+
+    body += add_namespace(tree.module_reference, helpers);
+
+    output += add_namespace("fast_ber", body) + "\n";
     return output;
 }
 
@@ -276,8 +386,8 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    const std::string output_filename = std::string(argv[2]) + ".hpp";
-    const std::string detail_filame   = std::string(argv[2]) + ".detail.hpp";
+    const std::string& output_filename = std::string(argv[2]) + ".hpp";
+    const std::string& detail_filame   = std::string(argv[2]) + ".detail.hpp";
 
     std::ofstream output_file(output_filename);
     if (!output_file.good())
@@ -307,6 +417,6 @@ int main(int argc, char** argv)
         context.asn1_tree.assignments = reorder_assignments(context.asn1_tree.assignments);
 
         output_file << create_output_file(context.asn1_tree, detail_filame);
-        detail_output_file << add_namespace("fast_ber", create_detail_body(context.asn1_tree));
+        detail_output_file << create_detail_body(context.asn1_tree);
     }
 }

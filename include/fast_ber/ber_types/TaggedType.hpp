@@ -39,7 +39,7 @@ EncodeResult encode(absl::Span<uint8_t> output, const TaggedType<T, DefaultTag>&
 }
 
 template <typename T, typename DefaultTag, typename ID = DefaultTag>
-bool decode(absl::Span<const uint8_t> output, TaggedType<T, DefaultTag>& object, const ID& id = ID{})
+DecodeResult decode(absl::Span<const uint8_t> output, TaggedType<T, DefaultTag>& object, const ID& id = ID{})
 {
     return decode(output, *dynamic_cast<T*>(&object), id);
 }

@@ -137,7 +137,9 @@ TEST_CASE("Benchmark: Decode Performance")
         {
             fast_ber::Simple::Collection collection;
             success = fast_ber::decode(
-                absl::MakeSpan(large_test_collection_packet.begin(), large_test_collection_packet.size()), collection);
+                          absl::MakeSpan(large_test_collection_packet.begin(), large_test_collection_packet.size()),
+                          collection)
+                          .success;
         }
     }
     BENCHMARK("asn1c           - decode " + std::to_string(large_test_collection_packet.size()) + " byte packet")
@@ -161,7 +163,9 @@ TEST_CASE("Benchmark: Decode Performance")
         {
             fast_ber::Simple::Collection collection;
             success = fast_ber::decode(
-                absl::MakeSpan(small_test_collection_packet.begin(), small_test_collection_packet.size()), collection);
+                          absl::MakeSpan(small_test_collection_packet.begin(), small_test_collection_packet.size()),
+                          collection)
+                          .success;
         }
     }
     BENCHMARK("asn1c           - decode " + std::to_string(small_test_collection_packet.size()) + " byte packet")

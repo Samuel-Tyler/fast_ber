@@ -52,7 +52,8 @@ TEST_CASE("Identifier: Decode ExplicitIdentifier")
     std::array<uint8_t, 3> data     = {0x02, 0x01, 0x04};
     auto                   iterator = fast_ber::BerViewIterator(absl::Span<uint8_t>(data.begin(), data.size()));
     fast_ber::Integer      i        = 500;
-    bool success = fast_ber::decode(iterator, i, fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::integer>{});
+    bool                   success =
+        fast_ber::decode(iterator, i, fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::integer>{}).success;
 
     REQUIRE(success);
     REQUIRE(i == 4);
@@ -63,10 +64,12 @@ TEST_CASE("Identifier: Decode TaggedExplicitIdentifier")
     std::array<uint8_t, 5> data     = {0x94, 0x03, 0x02, 0x01, 0x04};
     auto                   iterator = fast_ber::BerViewIterator(absl::Span<uint8_t>(data.begin(), data.size()));
     fast_ber::Integer      i        = 500;
-    bool                   success  = fast_ber::decode(
-        iterator, i,
-        fast_ber::TaggedExplicitIdentifier<fast_ber::Class::context_specific, 20,
-                                           fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::integer>>{});
+    bool                   success =
+        fast_ber::decode(
+            iterator, i,
+            fast_ber::TaggedExplicitIdentifier<fast_ber::Class::context_specific, 20,
+                                               fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::integer>>{})
+            .success;
 
     REQUIRE(success);
     REQUIRE(i == 4);
@@ -77,7 +80,8 @@ TEST_CASE("Identifier: Decode ImplicitIdentifier")
     std::array<uint8_t, 3> data     = {0x94, 0x01, 0x04};
     auto                   iterator = fast_ber::BerViewIterator(absl::Span<uint8_t>(data.begin(), data.size()));
     fast_ber::Integer      i        = 500;
-    bool success = fast_ber::decode(iterator, i, fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 20>{});
+    bool                   success =
+        fast_ber::decode(iterator, i, fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 20>{}).success;
 
     REQUIRE(success);
     REQUIRE(i == 4);

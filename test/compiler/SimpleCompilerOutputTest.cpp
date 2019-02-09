@@ -23,10 +23,11 @@ TEST_CASE("SimpleCompilerOutput: Testing a generated ber container")
     collection.the_choice     = decltype(collection.the_choice){absl::in_place_index_t<1>(), "I chose a string!"};
 
     fast_ber::EncodeResult encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), collection);
-    bool decode_success = fast_ber::decode(absl::MakeSpan(buffer.data(), buffer.size()), new_collection);
+    fast_ber::DecodeResult decode_result =
+        fast_ber::decode(absl::MakeSpan(buffer.data(), buffer.size()), new_collection);
 
     REQUIRE(encode_result.success);
-    REQUIRE(decode_success);
+    REQUIRE(decode_result.success);
     REQUIRE(new_collection.hello == "Hello world!");
     REQUIRE(new_collection.goodbye == "Good bye world!");
     REQUIRE(new_collection.integer == 5);

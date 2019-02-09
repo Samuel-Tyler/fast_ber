@@ -15,7 +15,7 @@ int main()
     const auto buffer = std::vector<uint8_t>{std::istreambuf_iterator<char>(input), std::istreambuf_iterator<char>()};
 
     fast_ber::Pokemon::Team team;
-    if (!fast_ber::decode(absl::MakeSpan(buffer.data(), buffer.size()), team))
+    if (!fast_ber::decode(absl::MakeSpan(buffer.data(), buffer.size()), team).success)
     {
         std::cout << "Failed to decode input file: pokemon.ber\n";
         return -1;

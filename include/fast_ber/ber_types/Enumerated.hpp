@@ -17,19 +17,25 @@ EncodeResult encode(absl::Span<uint8_t> output, const Enumerated& input, const I
 
 template <typename Enumerated, typename ID = ExplicitIdentifier<UniversalTag::enumerated>,
           typename std::enable_if<std::is_enum<Enumerated>{}, int>::type = 0>
-bool decode(BerViewIterator& input, Enumerated& output, const ID& id = ID{}) noexcept
+DecodeResult decode(BerViewIterator& input, Enumerated& output, const ID& id = ID{}) noexcept
 {
     fast_ber::Integer i;
-    bool              success = decode(input, i, id);
-    if (success)
+    DecodeResult      result = decode(input, i, id);
+    if (result.success)
     {
         output = static_cast<Enumerated>(i.value());
-        return true;
+        return DecodeResult{true};
     }
     else
     {
-        return false;
+        return DecodeResult{false};
     }
+}
+
+template <typename Enumerated, typename std::enable_if<std::is_enum<Enumerated>{}, int>::type = 0>
+constexpr inline ExplicitIdentifier<UniversalTag::enumerated> identifier(const Enumerated*) noexcept
+{
+    return {};
 }
 
 } // namespace fast_ber

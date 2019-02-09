@@ -1,5 +1,6 @@
 ﻿#include "autogen/enum.hpp"
 
+#include "fast_ber/ber_types/Enumerated.hpp"
 #include "fast_ber/util/BerView.hpp"
 
 #include "catch2/catch.hpp"
@@ -24,10 +25,10 @@ TEST_CASE("Enumeration: Encode Decode")
     fast_ber::Enumerations::Enumeration enum_two = fast_ber::Enumerations::Enumeration::orange;
 
     REQUIRE(fast_ber::encode(absl::Span<uint8_t>(data), enum_one,
-                                              fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::enumerated>{})
+                             fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::enumerated>{})
                 .success);
-    REQUIRE(fast_ber::decode(data, enum_two,
-                                              fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::enumerated>{}));
+    REQUIRE(
+        fast_ber::decode(data, enum_two, fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::enumerated>{}).success);
 
     REQUIRE(enum_one == enum_two);
 }

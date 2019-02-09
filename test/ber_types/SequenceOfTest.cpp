@@ -16,7 +16,7 @@ void test_sequences(const std::initializer_list<fast_ber::SequenceOf<T>>& sequen
 
         size_t encode_size = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), sequence).length;
         fast_ber::BerViewIterator iter    = fast_ber::BerViewIterator(absl::MakeSpan(buffer.data(), encode_size));
-        bool                      success = fast_ber::decode(iter, copy);
+        bool                      success = fast_ber::decode(iter, copy).success;
         REQUIRE(success);
         REQUIRE(copy.size() == sequence.size());
         REQUIRE(sequence == copy);

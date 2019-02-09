@@ -16,6 +16,12 @@ constexpr const size_t default_inlined_size = 5;
 template <typename T, size_t N = default_inlined_size>
 using SequenceOf = absl::InlinedVector<T, N>;
 
+template <typename T>
+constexpr inline ExplicitIdentifier<UniversalTag::sequence_of> identifier(const SequenceOf<T>*) noexcept
+{
+    return {};
+}
+
 template <typename T, typename ID = ExplicitIdentifier<UniversalTag::sequence_of>>
 EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T>& sequence, const ID& id = ID{}) noexcept
 {
@@ -39,12 +45,12 @@ EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T>& seque
 }
 
 template <typename T, typename ID = ExplicitIdentifier<UniversalTag::sequence_of>>
-bool decode(BerViewIterator& input, SequenceOf<T>& output, const ID& id = ID{}) noexcept
+DecodeResult decode(BerViewIterator& input, SequenceOf<T>& output, const ID& id = ID{}) noexcept
 {
     output.clear();
     if (!(input->is_valid() && input->tag() == reference_tag(id)) && input->construction() == Construction::constructed)
     {
-        return false;
+        return DecodeResult{false};
     }
 
     auto           child    = input->begin();
@@ -53,15 +59,15 @@ bool decode(BerViewIterator& input, SequenceOf<T>& output, const ID& id = ID{}) 
     while (child->is_valid() && child->tag() == reference_tag(child_id))
     {
         output.emplace_back(T{});
-        bool success = decode(child, output.back(), child_id) > 0;
+        bool success = decode(child, output.back(), child_id).success;
         if (!success)
         {
-            return false;
+            return DecodeResult{false};
         }
     }
     ++input;
 
-    return true;
+    return DecodeResult{true};
 }
 
 } // namespace fast_ber

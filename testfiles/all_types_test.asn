@@ -1,0 +1,22 @@
+All DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+The-Enum ::= ENUMERATED
+{
+   apple,
+   pear,
+   orange
+}
+
+The-Set ::= SET
+{
+   member_one OCTET STRING,
+   member_two INTEGER
+}
+
+The-Sequence ::= SEQUENCE
+{
+   member_one OCTET STRING,
+   member_two INTEGER
+}
+
+END

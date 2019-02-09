@@ -38,6 +38,9 @@ class OctetString
     bool                 operator==(const std::string& rhs) const noexcept;
     bool                 operator==(const char* rhs) const noexcept;
     bool                 operator!=(absl::string_view view) const noexcept { return !((*this) == view); }
+    bool                 operator!=(const OctetString& rhs) const noexcept { return !((*this) == rhs); }
+    bool                 operator!=(const std::string& rhs) const noexcept { return !((*this) == rhs); }
+    bool                 operator!=(const char* rhs) const noexcept { return !((*this) == rhs); }
     uint8_t&             operator[](size_t n) noexcept { return data()[n]; }
     const uint8_t&       operator[](size_t n) const noexcept { return data()[n]; }
     friend std::ostream& operator<<(std::ostream& os, const OctetString& str) noexcept;

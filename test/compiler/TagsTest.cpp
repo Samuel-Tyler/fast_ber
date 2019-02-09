@@ -68,8 +68,8 @@ TEST_CASE("Tags: Encoding and decoding a packet with various tagging modes")
 
     fast_ber::EncodeResult encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), tags);
     REQUIRE(encode_result.success);
-    bool decode_result = fast_ber::decode(absl::MakeSpan(buffer.data(), buffer.size()), tags_copy);
-    REQUIRE(decode_result);
+    fast_ber::DecodeResult decode_result = fast_ber::decode(absl::MakeSpan(buffer.data(), buffer.size()), tags_copy);
+    REQUIRE(decode_result.success);
 
     REQUIRE(tags_copy.string1 == "Implicit");
     REQUIRE(tags_copy.string2 == "And explicit tags");

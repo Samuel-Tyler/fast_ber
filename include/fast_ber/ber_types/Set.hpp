@@ -14,17 +14,20 @@
 namespace fast_ber
 {
 
-inline bool encode_set_combine_impl(absl::Span<uint8_t>&, size_t&) noexcept { return true; }
+inline EncodeResult encode_set_combine_impl(absl::Span<uint8_t>&, size_t encoding_length) noexcept
+{
+    return EncodeResult{true, encoding_length};
+}
 
 template <typename... Args, typename T, typename ID>
-bool encode_set_combine_impl(absl::Span<uint8_t>& output, size_t& encoding_length, const T& object, const ID& id,
-                             const Args&... args) noexcept
+EncodeResult encode_set_combine_impl(absl::Span<uint8_t>& output, size_t encoding_length, const T& object, const ID& id,
+                                     const Args&... args) noexcept
 {
     const EncodeResult result = encode(output, object, id);
     if (!result.success)
     {
         std::cerr << "Failed encoding packet, tag = " << reference_tag(id) << std::endl;
-        return false;
+        return EncodeResult{false, result.length};
     }
 
     output.remove_prefix(result.length);
@@ -37,49 +40,48 @@ EncodeResult encode_set_combine(const absl::Span<uint8_t> output, const ID& id, 
 {
     auto   encoding_output     = output;
     size_t header_length_guess = 2;
-    size_t encode_length       = 0;
     encoding_output.remove_prefix(header_length_guess);
-    bool success = encode_set_combine_impl(encoding_output, encode_length, args...);
-    if (!success)
+    EncodeResult result = encode_set_combine_impl(encoding_output, 0, args...);
+    if (!result.success)
     {
-        return EncodeResult{false, 0};
+        return result;
     }
 
-    return wrap_with_ber_header(output, encode_length, id, header_length_guess);
+    return wrap_with_ber_header(output, result.length, id, header_length_guess);
 }
 
 template <const char* parent_name>
-bool decode_set_combine_impl(BerViewIterator&) noexcept
+DecodeResult decode_set_combine_impl(BerViewIterator&) noexcept
 {
-    return true;
+    return DecodeResult{true};
 }
 
 template <const char* parent_name, typename T, typename ID, typename... Args>
-bool decode_set_combine_impl(BerViewIterator& input, T& object, const ID& id, Args&&... args) noexcept
+DecodeResult decode_set_combine_impl(BerViewIterator& input, T& object, const ID& id, Args&&... args) noexcept
 {
-    bool success = decode(input, object, id);
-    if (!success)
+    DecodeResult result = decode(input, object, id);
+    if (!result.success)
     {
         std::cerr << "Error decoding " << parent_name << ": could not decode field with tag " << reference_tag(id)
                   << "\n";
-        return false;
+        return DecodeResult{false};
     }
     return decode_set_combine_impl<parent_name>(input, args...);
 }
 
 template <const char* parent_name, typename ID, typename... Args>
-bool decode_set_combine(const BerView& input, const ID& id, Args&&... args) noexcept
+DecodeResult decode_set_combine(const BerView& input, const ID& id, Args&&... args) noexcept
 {
     if (!input.is_valid())
     {
         std::cerr << "Error decoding " << parent_name << ": Input is not valid ber\n";
-        return false;
+        return DecodeResult{false};
     }
     if (input.tag() != reference_tag(id))
     {
         std::cerr << "Error decoding " << parent_name << ": Expected tag = " << reference_tag(id) << " got "
                   << input.tag() << "\n";
-        return false;
+        return DecodeResult{false};
     }
 
     auto iterator = input.begin();

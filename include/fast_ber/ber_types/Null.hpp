@@ -14,7 +14,14 @@ namespace fast_ber
 class Null
 {
   public:
-    Null() noexcept = default;
+    Null() noexcept            = default;
+    Null(const Null&) noexcept = default;
+    Null(Null&&) noexcept      = default;
+    explicit Null(std::nullptr_t) noexcept {}
+
+    bool           operator==(const Null&) const noexcept { return true; }
+    bool           operator!=(const Null&) const noexcept { return false; }
+    std::nullptr_t value() { return nullptr; }
 
     size_t       assign_ber(const BerView& rhs) noexcept;
     size_t       assign_ber(absl::Span<const uint8_t> buffer) noexcept { return assign_ber(BerView(buffer)); }
