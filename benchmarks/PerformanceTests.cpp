@@ -194,7 +194,7 @@ TEST_CASE("Benchmark: Encode Performance")
     const std::string         child           = "child";
     std::array<uint8_t, 5000> fast_ber_buffer = {};
     std::array<uint8_t, 5000> asn1c_buffer    = {};
-    size_t                    encode_size     = 0;
+    fast_ber::EncodeResult    encode_result   = {};
     asn_enc_rval_t            rval;
 
     fast_ber::Simple::Collection collection{
@@ -233,8 +233,8 @@ TEST_CASE("Benchmark: Encode Performance")
     {
         for (int i = 0; i < iterations; i++)
         {
-            encode_size =
-                fast_ber::encode(absl::MakeSpan(fast_ber_buffer.data(), fast_ber_buffer.size()), collection).length;
+            encode_result =
+                fast_ber::encode(absl::MakeSpan(fast_ber_buffer.data(), fast_ber_buffer.size()), collection);
         }
     }
 
@@ -247,9 +247,9 @@ TEST_CASE("Benchmark: Encode Performance")
         }
     }
 
-    REQUIRE(encode_size > 0);
+    REQUIRE(encode_result.success);
     REQUIRE(rval.encoded != -1);
-    REQUIRE(rval.encoded == encode_size);
+    REQUIRE(rval.encoded == encode_result.length);
     REQUIRE(absl::MakeSpan(fast_ber_buffer.data(), fast_ber_buffer.size()) ==
             absl::MakeSpan(asn1c_buffer.data(), asn1c_buffer.size()));
 

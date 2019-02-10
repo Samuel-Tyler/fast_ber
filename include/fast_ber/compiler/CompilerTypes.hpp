@@ -36,6 +36,12 @@ enum class Class
     private_,
 };
 
+struct ObjectIdComponentValue
+{
+    absl::optional<std::string> name;
+    absl::optional<int64_t>     value;
+};
+
 struct ComponentType;
 struct TaggedType;
 using ComponentTypeList = std::vector<ComponentType>;
@@ -183,14 +189,21 @@ struct ChoiceType
     std::vector<NamedType> choices;
 };
 
+struct Value
+{
+    absl::variant<std::vector<ObjectIdComponentValue>> value_selection;
+};
+
 struct NamedType
 {
     std::string name;
     Type        type;
 };
 
-struct Value
+struct NamedValue
 {
+    std::string name;
+    Value       type;
 };
 
 struct ComponentType
@@ -217,6 +230,7 @@ struct Assignment
 {
     std::string              name;
     Type                     type;
+    absl::optional<Value>    value;
     std::vector<std::string> depends_on;
 };
 

@@ -117,3 +117,14 @@ std::vector<std::string> depends_on(const BuiltinType& type) { return absl::visi
 std::vector<std::string> depends_on(const Type& type) { return absl::visit(depends_on_helper, type); }
 
 std::vector<std::string> dependenies(const Type& type) { return depends_on(type); }
+std::vector<std::string> dependenies(const Assignment& assignment)
+{
+    if (assignment.value)
+    {
+        return {};
+    }
+    else
+    {
+        return depends_on(assignment.type);
+    }
+}

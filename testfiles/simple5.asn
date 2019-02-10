@@ -11,12 +11,15 @@ Collection ::= SEQUENCE {
         hello [0] OCTET STRING,
         goodbye [1] OCTET STRING,
         integer [2] INTEGER,
-        boolean [3] BOOLEAN
-    }
+        boolean [3] BOOLEAN,
+        ...
+    },
+    ...
 }
 
 Child ::= SEQUENCE {
     meaning-of-life [0] INTEGER OPTIONAL,
+    ...,
     list [1] SEQUENCE OF OCTET STRING
 }
 

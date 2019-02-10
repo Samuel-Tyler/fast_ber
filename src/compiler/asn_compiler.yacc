@@ -210,6 +210,7 @@
 %type<EnumerationValue>  EnumerationItem;
 %type<DefinedType>       ReferencedType;
 %type<Assignment>        TypeAssignment;
+%type<Assignment>        ValueAssignment;
 %type<Type>              Type;
 %type<Class>             Class;
 %type<int>               ClassNumber;
@@ -222,7 +223,8 @@
 %type<ComponentTypeList> ComponentTypeList;
 %type<ComponentTypeList> ComponentTypeLists;
 %type<ComponentTypeList> RootComponentTypeList;
-%type<Value>             Value;
+%type<Value>             Value
+%type<Value>             BuiltinValue;
 %type<SetOfType>         SetOfType;
 %type<SequenceOfType>    SequenceOfType;
 %type<ChoiceType>        ChoiceType;
@@ -233,6 +235,12 @@
 %type<Tag>               Tag;
 %type<TaggedType>        TaggedType;
 %type<PrefixedType>      PrefixedType;
+%type<ObjectIdComponentValue> ObjIdComponents;
+%type<ObjectIdComponentValue> NameForm;
+%type<ObjectIdComponentValue> NumberForm;
+%type<ObjectIdComponentValue> NameAndNumberForm;
+%type<std::vector<ObjectIdComponentValue>> ObjIdComponentsList;
+%type<std::vector<ObjectIdComponentValue>> ObjectIdentifierValue;
 
 %right RANGE
 %left COLON
@@ -429,10 +437,10 @@ ObjectSet:
 
 ObjectSetSpec:
     RootElementSetSpec
-|   RootElementSetSpec "," "..."
-|   "..."
-|   "..." "," AdditionalElementSetSpec
-|   RootElementSetSpec "," "..." "," AdditionalElementSetSpec;
+|   RootElementSetSpec "," ELIPSIS
+|   ELIPSIS
+|   ELIPSIS "," AdditionalElementSetSpec
+|   RootElementSetSpec "," ELIPSIS "," AdditionalElementSetSpec;
 
 ObjectSetElements:
     Object
@@ -445,14 +453,10 @@ ObjectClassFieldType:
 
 ObjectClassFieldValue:
     OpenTypeFieldVal
-|   FixedTypeFieldVal;
 
 OpenTypeFieldVal:
     Type COLON Value;
 
-FixedTypeFieldVal:
-    BuiltinValue
-|   ReferencedValue;
 /*
 InformationFromObjects:
     ValueFromObject
@@ -757,12 +761,12 @@ Assignment:
     TypeAssignment
     { context.asn1_tree.assignments.push_back($1); }
 |   ValueAssignment
-|   XMLValueAssignment
-|   ValueSetTypeAssignment
+    { context.asn1_tree.assignments.push_back($1); }
+/*|   ValueSetTypeAssignment
 |   ObjectClassAssignment
 |   ObjectAssignment
 |   ObjectSetAssignment
-|   ParameterizedAssignment
+|   ParameterizedAssignment*/
 
 DefinedType:
     ExternalTypeReference
@@ -815,27 +819,14 @@ TypeAssignment:
     typereference
     DEFINED_AS
     Type
-{
-    $$ = Assignment{ $1, $3, {} };
-}
+    { $$ = Assignment{ $1, $3, absl::nullopt, {} }; }
 
 ValueAssignment:
     valuereference
     Type
     DEFINED_AS
-    Value;
-
-XMLValueAssignment:
-    valuereference
-    DEFINED_AS
-    XMLTypedValue;
-
-XMLTypedValue:
-    "<" NonParameterizedTypeName ">";
-
-XMLValue:
-    "</" NonParameterizedTypeName ">"
-|   "<" NonParameterizedTypeName "/>";
+    Value
+    { $$ = Assignment{ $1, $2, $4, {} }; }
 
 ValueSetTypeAssignment:
     typereference
@@ -885,10 +876,10 @@ BuiltinType:
 
 ReferencedType:
     DefinedType { $$ = $1; }
-|   UsefulType { std::cout << "useful type\n"; }
-|   SelectionType { std::cout << "selection type\n"; }
-|   TypeFromObject { std::cout << "typeobject type\n"; }
-|   ValueSetFromObjects { std::cout << "valuset type\n"; }
+|   UsefulType { throw std::runtime_error("Not handled - UsefulType"); }
+|   SelectionType { throw std::runtime_error("Not handled - SelectionType"); }
+|   TypeFromObject { throw std::runtime_error("Not handled - TypeFromObject"); }
+|   ValueSetFromObjects { throw std::runtime_error("Not handled - ValueSetFromObjects"); }
 
 NamedType:
     identifier Type
@@ -896,32 +887,36 @@ NamedType:
 
 Value:
     BuiltinValue
+    { $$ = $1; }
 |   ReferencedValue
-|   ObjectClassFieldValue;
+    { throw std::runtime_error("Unhandled field: ReferencedValue"); }
+|   ObjectClassFieldValue
+    { throw std::runtime_error("Unhandled field: ObjectClassFieldValue"); }
 
 BuiltinValue:
-    BitStringValue
-|   BooleanValue
-|   CharacterStringValue
-|   ChoiceValue
-|   EmbeddedPDVValue
-|   EnumeratedValue
-|   ExternalValue
-|   IntegerValue/*
-|   IRIValue
-|   NullValue
+//    BitStringValue
+   BooleanValue
+//|   CharacterStringValue
+//|   ChoiceValue
+//|   EmbeddedPDVValue
+//|   EnumeratedValue
+//|   ExternalValue
+|   IntegerValue
+//|   IRIValue
+//|   NullValue
 |   ObjectIdentifierValue
-|   OctetStringValue
-|   RealValue
-|   RelativeIRIValue
-|   RelativeOIDValue
-|   SequenceValue
-|   SequenceOfValue
-|   SetValue
-|   SetOfValue
-|   PrefixedValue
-|   TimeValue;
-*/
+    { $$.value_selection = $1; }
+//|   OctetStringValue
+//|   RealValue
+//|   RelativeIRIValue
+//|   RelativeOIDValue
+//|   SequenceValue
+//|   SequenceOfValue
+//|   SetValue
+//|   SetOfValue
+//|   PrefixedValue
+//|   TimeValue;
+
 ReferencedValue:
     DefinedValue
 |   ValueFromObject;
@@ -1041,51 +1036,30 @@ NullType:
 SequenceType:
     SEQUENCE "{" "}"
     { $$ = SequenceType(); }
-|   SEQUENCE "{" ExtensionAndException OptionalExtensionMarker "}"
 |   SEQUENCE "{" ComponentTypeLists "}"
     { $$ = SequenceType{$3}; }
 
 ExtensionAndException:
-    "..."
-|   "..." ExceptionSpec;
+    ELIPSIS
+|   ELIPSIS ExceptionSpec;
 
 OptionalExtensionMarker:
-    "," "..."
+    "," ELIPSIS
 |   %empty;
 
 ComponentTypeLists:
     RootComponentTypeList
     { $$ = $1; }
-|   RootComponentTypeList "," ExtensionAndException ExtensionAdditions
-|   OptionalExtensionMarker RootComponentTypeList "," ExtensionAndException ExtensionAdditions
-|   ExtensionEndMarker "," RootComponentTypeList ExtensionAndException ExtensionAdditions ExensionEndMarker ","
-|   RootComponentTypeList ExtensionAndException ExtensionAdditions OptionalExtensionMarker
 
 RootComponentTypeList:
     ComponentTypeList
     { $$ = $1; }
-
-ExtensionEndMarker:
-    "," "..."
-
-ExtensionAdditions:
-    "," ExtensionAdditionList
-|   %empty
-
-ExtensionAdditionList:
-    ExtensionAddition
-|   ExtensionAdditionList "," ExtensionAddition;
-
-ExtensionAddition:
-    ComponentType
-|   ExtensionAdditionGroup;
-
-ExtensionAdditionGroup:
-    "[[" VersionNumber ComponentTypeList "]]";
-
-VersionNumber:
-    %empty
-|   number COLON;
+|   ComponentTypeList "," ELIPSIS
+    { $$ = $1; }
+|   ComponentTypeList "," ELIPSIS "," ComponentTypeList
+    { $$ = $1; $$.insert($$.end(), $5.begin(), $5.end()); }
+|   ELIPSIS "," ComponentTypeList
+    { $$ = $3; }
 
 ComponentTypeList:
     ComponentType
@@ -1100,7 +1074,7 @@ ComponentType:
     { $$ = ComponentType{$1, true, absl::nullopt}; }
 |   NamedType DEFAULT Value
     { $$ = ComponentType{$1, false, $3}; }
-|   COMPONENTS OF Type;
+|   COMPONENTS OF Type
 
 SequenceValue:
     "{" ComponentValueList "}"
@@ -1158,30 +1132,12 @@ ChoiceType:
 AlternativeTypeLists:
     RootAlternativeTypeList
     { $$ = $1; }
-|   RootAlternativeTypeList
-    ","
-    ExtensionAndException
-    ExtensionAdditionAlternatives
-    OptionalExtensionMarker;
 
 RootAlternativeTypeList:
     AlternativeTypeList
     { $$ = $1; }
-
-ExtensionAdditionAlternatives:
-    "," ExtensionAdditionAlternativesList
-|   %empty;
-
-ExtensionAdditionAlternativesList:
-    ExtensionAdditionAlternative
-|   ExtensionAdditionAlternativesList "," ExtensionAdditionAlternative
-
-ExtensionAdditionAlternative:
-    ExtensionAdditionAlternativesGroup
-|   NamedType;
-
-ExtensionAdditionAlternativesGroup:
-    "[[" VersionNumber AlternativeTypeList "]]";
+|   AlternativeTypeList "," ELIPSIS
+    { $$ = $1; }
 
 AlternativeTypeList:
     NamedType
@@ -1251,27 +1207,36 @@ ObjectIdentifierType:
 
 ObjectIdentifierValue:
     "{" ObjIdComponentsList "}"
-|   "{" DefinedValue ObjIdComponentsList "}";
+    { $$ = $2; std::reverse($$.begin(), $$.end()); }
+|   "{" DefinedValue ObjIdComponentsList "}"
+    { $$ = $3; std::reverse($$.begin(), $$.end()); }
 
 ObjIdComponentsList:
     ObjIdComponents
-|   ObjIdComponents ObjIdComponentsList;
+    { $$.push_back($1); }
+|   ObjIdComponents ObjIdComponentsList
+    { $$ = $2; $$.push_back($1); }
 
 ObjIdComponents:
     NameForm
+    { $$ = $1; }
 |   NumberForm
+    { $$ = $1; }
 |   NameAndNumberForm
-|   DefinedValue;
+    { $$ = $1; }
 
 NameForm:
-    identifier;
+    identifier
+    { $$.name = $1; }
 
 NumberForm:
     number
-|   DefinedValue;
+    { $$.value = $1; }
+|   DefinedValue
 
 NameAndNumberForm:
-    identifier "(" NumberForm ")";
+    identifier "(" NumberForm ")"
+    { $$ = $3; $$.name = $1; }
 
 RelativeOIDType:
     RELATIVE_OID;
@@ -1510,7 +1475,7 @@ UnionMark:
 |   UNION;
 
 IntersectionMark:
-    " ^ "
+    "^"
 |   INTERSECTION;
 
 Elements:
@@ -1539,8 +1504,7 @@ ContainedSubtype:
     Includes Type;
 
 Includes:
-    INCLUDES;
-//|   %empty; Conflicts with TypeConstraint 
+    INCLUDES
 
 ValueRange:
     LowerEndpoint RANGE UpperEndpoint;
@@ -1623,7 +1587,7 @@ ExceptionIdentification:
 |   Type DEFINED_AS Value;
 
 typereference:
-	GENERIC_IDENTIFIER_UPPERCASE
+    GENERIC_IDENTIFIER_UPPERCASE
 { $$ = $1; }
 
 identifier:
@@ -1631,11 +1595,11 @@ identifier:
 { $$ = $1; }
 
 valuereference:
-	GENERIC_IDENTIFIER_LOWERCASE
+    GENERIC_IDENTIFIER_LOWERCASE
 { $$ = $1; }
 
 modulereference:
-	GENERIC_IDENTIFIER_UPPERCASE
+    GENERIC_IDENTIFIER_UPPERCASE
 { $$ = $1; }
 
 %%
@@ -1648,7 +1612,6 @@ namespace yy {
         const char* start = context.cursor;
         const char* YYMARKER = nullptr;
         context.location.step();
-        //std::cout << "parsing = " << start << std::endl;
         // Lexer
 %{
 re2c:yyfill:enable   = 0;

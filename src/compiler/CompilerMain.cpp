@@ -17,27 +17,59 @@ std::string strip_path(const std::string& path)
 
 std::string create_assignment(const Assignment& assignment, TaggingMode tagging_mode)
 {
-    if (absl::holds_alternative<BuiltinType>(assignment.type) &&
-        absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(assignment.type)))
+    if (assignment.value) // Value assignment
     {
-        const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(assignment.type));
-        return "struct " + assignment.name + to_string(sequence);
+        std::string result;
+        result += fully_tagged_type(assignment.type, tagging_mode) + " " + assignment.name + " = ObjectIdentifier{";
+        if (absl::holds_alternative<std::vector<ObjectIdComponentValue>>(assignment.value->value_selection))
+        {
+            const std::vector<ObjectIdComponentValue>& object_id_component =
+                absl::get<std::vector<ObjectIdComponentValue>>(assignment.value->value_selection);
+
+            for (size_t i = 0; i < object_id_component.size(); i++)
+            {
+                if (object_id_component[i].value)
+                {
+                    result += std::to_string(*object_id_component[i].value);
+                }
+                else
+                {
+                    result += std::to_string(0);
+                }
+
+                if (i < object_id_component.size() - 1)
+                {
+                    result += ", ";
+                }
+            }
+        }
+        result += "};\n\n";
+        return result;
     }
-    else if (absl::holds_alternative<BuiltinType>(assignment.type) &&
-             absl::holds_alternative<SetType>(absl::get<BuiltinType>(assignment.type)))
+    else // Type assignment
     {
-        const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(assignment.type));
-        return "struct " + assignment.name + to_string(set);
-    }
-    else if (absl::holds_alternative<BuiltinType>(assignment.type) &&
-             absl::holds_alternative<EnumeratedType>(absl::get<BuiltinType>(assignment.type)))
-    {
-        const EnumeratedType& enumerated = absl::get<EnumeratedType>(absl::get<BuiltinType>(assignment.type));
-        return "enum class " + assignment.name + to_string(enumerated);
-    }
-    else
-    {
-        return "using " + assignment.name + " = " + fully_tagged_type(assignment.type, tagging_mode) + ";\n\n";
+        if (absl::holds_alternative<BuiltinType>(assignment.type) &&
+            absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(assignment.type)))
+        {
+            const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(assignment.type));
+            return "struct " + assignment.name + to_string(sequence);
+        }
+        else if (absl::holds_alternative<BuiltinType>(assignment.type) &&
+                 absl::holds_alternative<SetType>(absl::get<BuiltinType>(assignment.type)))
+        {
+            const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(assignment.type));
+            return "struct " + assignment.name + to_string(set);
+        }
+        else if (absl::holds_alternative<BuiltinType>(assignment.type) &&
+                 absl::holds_alternative<EnumeratedType>(absl::get<BuiltinType>(assignment.type)))
+        {
+            const EnumeratedType& enumerated = absl::get<EnumeratedType>(absl::get<BuiltinType>(assignment.type));
+            return "enum class " + assignment.name + to_string(enumerated);
+        }
+        else
+        {
+            return "using " + assignment.name + " = " + fully_tagged_type(assignment.type, tagging_mode) + ";\n\n";
+        }
     }
 }
 
@@ -74,6 +106,7 @@ std::string create_identifier_functions(const Assignment& assignment, const std:
         return "";
     }
 }
+
 std::string create_encode_functions(const Assignment& assignment, const std::string& module_name,
                                     TaggingMode tagging_mode)
 {

@@ -50,7 +50,7 @@ std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments
     assignment_map.reserve(assignments.size());
     for (Assignment& assignment : assignments)
     {
-        assignment.depends_on           = dependenies(assignment.type);
+        assignment.depends_on           = dependenies(assignment);
         assignment_map[assignment.name] = assignment;
     }
 

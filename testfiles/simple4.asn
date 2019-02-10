@@ -4,7 +4,8 @@ Collection ::= SEQUENCE {
     hello OCTET STRING,
     goodbye OCTET STRING,
     integer INTEGER,
-    boolean BOOLEAN
+    boolean BOOLEAN,
+    ...
 }
 
 END

@@ -36,7 +36,6 @@ template <UniversalTag T>
 inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t   content_length,
                                          const ExplicitIdentifier<T>&, size_t content_offset = 0)
 {
-
     constexpr auto tag    = ExplicitIdentifier<T>::tag();
     constexpr auto class_ = ExplicitIdentifier<T>::class_();
 

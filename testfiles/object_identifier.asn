@@ -1,0 +1,17 @@
+ObjectIds
+
+DEFINITIONS EXPLICIT TAGS ::=
+
+BEGIN
+
+oid1 OBJECT IDENTIFIER ::= { one(0) }
+
+oid2 OBJECT IDENTIFIER ::= { one(0) two(1) three(2) }
+
+oid3 OBJECT IDENTIFIER ::= { one }
+
+oid4 OBJECT IDENTIFIER ::= { 0 }
+
+rsa-oid OBJECT IDENTIFIER ::= { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-1(1) rsaEncryption(1) }
+
+END

@@ -28,6 +28,10 @@ class ObjectIdentifier
     ObjectIdentifier(ObjectIdentifier&& rhs) noexcept      = default;
 
     explicit ObjectIdentifier(const ObjectIdentifierComponents& oid) noexcept { assign(oid); }
+    explicit ObjectIdentifier(const std::initializer_list<int64_t>& oid) noexcept
+    {
+        assign(ObjectIdentifierComponents(oid));
+    }
 
     ObjectIdentifier& operator=(const BerView& view) noexcept;
     ObjectIdentifier& operator=(const ObjectIdentifierComponents& rhs) noexcept;
@@ -44,7 +48,7 @@ class ObjectIdentifier
 
     ObjectIdentifierComponents value() const noexcept;
 
-    void   assign(const ObjectIdentifierComponents& oid) noexcept;
+    bool   assign(const ObjectIdentifierComponents& oid) noexcept;
     size_t assign_ber(const BerView& view) noexcept;
     size_t assign_ber(const BerContainer& container) noexcept;
     size_t assign_ber(absl::Span<const uint8_t> buffer) noexcept;
@@ -260,14 +264,16 @@ inline ObjectIdentifierComponents ObjectIdentifier::value() const noexcept
     return output;
 }
 
-inline void ObjectIdentifier::assign(const ObjectIdentifierComponents& oid) noexcept
+inline bool ObjectIdentifier::assign(const ObjectIdentifierComponents& oid) noexcept
 {
     const size_t encoded_length = encoded_object_id_length(oid);
     m_contents.resize_content(encoded_length);
     EncodeResult res = encode_object_id(absl::Span<uint8_t>(m_contents.content()), oid, encoded_length);
-    assert(res.success);
-    assert(res.length == m_contents.content_length());
-    (void)res;
+    if (res.success)
+    {
+        assert(res.length == m_contents.content_length());
+    }
+    return res.success;
 }
 
 inline size_t ObjectIdentifier::assign_ber(const BerView& view) noexcept { return m_contents.assign_ber(view); }
