@@ -10,7 +10,7 @@ add_custom_command(
     COMMAND re2c -o ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.re
 )
 
-add_library(fast_ber_lib)
+add_library(fast_ber_lib empty)
 target_include_directories(fast_ber_lib INTERFACE SYSTEM ../3rd_party/abseil-cpp)
 target_include_directories(fast_ber_lib INTERFACE ../include ${CMAKE_CURRENT_BINARY_DIR})
 
