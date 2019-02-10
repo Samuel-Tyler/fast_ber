@@ -19,8 +19,8 @@ Collection ::= SEQUENCE {
 
 Child ::= SEQUENCE {
     meaning-of-life [0] INTEGER OPTIONAL,
-    ...,
-    list [1] SEQUENCE OF OCTET STRING
+    list [1] SEQUENCE OF OCTET STRING,
+    ...
 }
 
 END
