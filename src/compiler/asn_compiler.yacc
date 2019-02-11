@@ -204,8 +204,6 @@
 %type<DefinedType>       DefinedType;
 %type<EnumeratedType>    EnumeratedType;
 %type<EnumeratedType>    Enumerations;
-%type<EnumeratedType>    RootEnumeration;
-%type<EnumeratedType>    AdditionalEnumeration;
 %type<EnumeratedType>    Enumeration;
 %type<EnumerationValue>  EnumerationItem;
 %type<DefinedType>       ReferencedType;
@@ -242,15 +240,7 @@
 %type<std::vector<ObjectIdComponentValue>> ObjIdComponentsList;
 %type<std::vector<ObjectIdComponentValue>> ObjectIdentifierValue;
 
-%right RANGE
-%left COLON
-%right FULL_STOP
-
-%nonassoc EXCEPT
-%nonassoc "^"
-%nonassoc "|"
-%nonassoc GENERIC_IDENTIFIER_LOWERCASE
-%nonassoc GENERIC_IDENTIFIER_UPPERCASE
+%right ","
 %%
 
 ModuleDefinition:
@@ -296,7 +286,7 @@ ObjectClassAssignment:
 ObjectClass:
     DefinedObjectClass
 |   ObjectClassDefn
-|   ParameterizedObjectClass;
+//|   ParameterizedObjectClass;
 
 ObjectClassDefn:
     CLASS "{" FieldSpec "," PLUS "}" WithSyntaxSpec QUESTION_MARK;
@@ -305,8 +295,6 @@ FieldSpec:
     TypeFieldSpec
 |   FixedTypeValueFieldSpec
 |   VariableTypeValueFieldSpec
-|   FixedTypeValueSetFieldSpec
-|   VariableTypeValueSetFieldSpec
 |   ObjectFieldSpec
 |   ObjectSetFieldSpec;
 
@@ -336,16 +324,6 @@ ValueOptionalitySpec:
 
 VariableTypeValueFieldSpec:
     valuefieldreference FieldName ValueOptionalitySpec QUESTION_MARK;
-
-FixedTypeValueSetFieldSpec:
-    valuesetfieldreference Type ValueSetOptionalitySpec QUESTION_MARK;
-
-ValueSetOptionalitySpec:
-    OPTIONAL
-|   DEFAULT ValueSet;
-
-VariableTypeValueSetFieldSpec:
-    valuesetfieldreference FieldName ValueSetOptionalitySpec QUESTION_MARK;
 
 ObjectFieldSpec:
     objectfieldreference DefinedObjectClass ObjectOptionalitySpec QUESTION_MARK;
@@ -395,8 +373,8 @@ ObjectAssignment:
 Object:
     DefinedObject
 |   ObjectDefn
-|   ObjectFromObject
-|   ParameterizedObject;
+//|   ObjectFromObject
+//|   ParameterizedObject;
 
 ObjectDefn:
     DefaultSyntax
@@ -418,9 +396,7 @@ DefinedSyntaxToken:
 Setting:
     Type
 |   Value
-|   ValueSet
 |   Object
-|   ObjectSet;
 
 DefinedObjectSet:
     ExternalObjectSetReference
@@ -445,8 +421,8 @@ ObjectSetSpec:
 ObjectSetElements:
     Object
 |   DefinedObjectSet
-|   ObjectSetFromObjects
-|   ParameterizedObjectSet;
+//|   ObjectSetFromObjects
+//|   ParameterizedObjectSet;
 
 ObjectClassFieldType:
     DefinedObjectClass "." FieldName;
@@ -467,9 +443,9 @@ InformationFromObjects:
 */
 ReferencedObjects:
     DefinedObject
-|   ParameterizedObject
-|   DefinedObjectSet
-|   ParameterizedObjectSet;
+//|   ParameterizedObject
+//|   DefinedObjectSet
+//|   ParameterizedObjectSet;
 
 ValueFromObject:
     ReferencedObjects "." FieldName;
@@ -489,56 +465,6 @@ ObjectSetFromObjects:
 InstanceOfType:
     INSTANCE OF DefinedObjectClass;
 
-ParameterizedAssignment:
-    ParameterizedTypeAssignment
-|   ParameterizedValueAssignment
-|   ParameterizedValueSetTypeAssignment
-|   ParameterizedObjectClassAssignment
-|   ParameterizedObjectAssignment
-|   ParameterizedObjectSetAssignment;
-
-ParameterizedTypeAssignment:
-    typereference;
-
-ParameterList:
-    Type;
-
-ParameterizedValueAssignment:
-    valuereference ParameterList Type DEFINED_AS Value;
-
-ParameterizedValueSetTypeAssignment:
-    typereference ParameterList Type DEFINED_AS ValueSet;
-
-ParameterizedObjectClassAssignment:
-    objectclassreference ParameterList: ObjectClass;
-
-ParameterizedObjectAssignment:
-    objectreference ParameterList DefinedObjectClass DEFINED_AS Object;
-
-ParameterizedObjectSetAssignment:
-    objectsetreference ParameterList DefinedObjectClass DEFINED_AS ObjectSet;
-
-ParameterList:
-   "{" Parameter "," "}";
-
-Parameter:
-    ParamGovernor ":" DummyReference
-|   DummyReference;
-
-ParamGovernor:
-    Governor
-|   DummyGovernor;
-
-Governor:
-    Type
-|   DefinedObjectClass;
-
-DummyGovernor:
-    DummyReference;
-
-DummyReference:
-    Reference;
-
 ParameterizedReference:
     Reference
 |   Reference "{" "}";
@@ -551,55 +477,10 @@ SimpleDefinedValue:
     ExternalValueReference
 |   valuereference;
 
-ParameterizedType:
-    SimpleDefinedType
-    ActualParameterList;
-
-ParameterizedValue:
-    SimpleDefinedValue
-    ActualParameterList;
-
-ParameterizedValueSetType:
-    SimpleDefinedType
-    ActualParameterList;
-
-ParameterizedObjectClass:
-    DefinedObjectClass
-    ActualParameterList;
-
-ParameterizedObjectSet:
-    DefinedObjectSet
-    ActualParameterList;
-
-ParameterizedObject:
-    DefinedObject
-    ActualParameterList;
-
-ActualParameterList:
-    "{" ActualParameter "," "}"
-
-ActualParameter:
-    Type
-|   Value
-|   ValueSet
-|   DefinedObjectClass
-|   Object
-|   ObjectSet;
-
 GeneralConstraint:
-    UserDefinedConstraint
-|   TableConstraint
-|   ContentsConstraint;
-
-UserDefinedConstraint:
-    CONSTRAINED BY "{" UserDefinedConstraintParameter "," STAR "}";
-
-UserDefinedConstraintParameter:
-    Governor ":" Value %prec COLON
-|   Governor ":" Object %prec COLON
-|   DefinedObjectSet
-|   Type
-|   DefinedObjectClass;
+//    UserDefinedConstraint
+//|   TableConstraint
+    ContentsConstraint;
 
 TableConstraint:
     SimpleTableConstraint
@@ -743,7 +624,6 @@ SymbolList:
 
 Symbol:
     Reference
-|   ParameterizedReference;
 
 Reference:
     typereference
@@ -772,13 +652,13 @@ DefinedType:
     ExternalTypeReference
 |   typereference
     { $$ = DefinedType{$1}; }
-|   ParameterizedType
-|   ParameterizedValueSetType;
+//|   ParameterizedType
+//|   ParameterizedValueSetType;
 
 DefinedValue:
     ExternalValueReference
 |   valuereference
-|   ParameterizedValue;
+//|   ParameterizedValue;
 
 NonParameterizedTypeName:
     ExternalTypeReference
@@ -828,15 +708,6 @@ ValueAssignment:
     Value
     { $$ = Assignment{ $1, $2, $4, {} }; }
 
-ValueSetTypeAssignment:
-    typereference
-    Type
-    DEFINED_AS
-    ValueSet;
-
-ValueSet:
-    "{" ElementSetSpecs "}";
-
 Type:
     BuiltinType
     { $$ = $1; }
@@ -879,7 +750,7 @@ ReferencedType:
 |   UsefulType { throw std::runtime_error("Not handled - UsefulType"); }
 |   SelectionType { throw std::runtime_error("Not handled - SelectionType"); }
 |   TypeFromObject { throw std::runtime_error("Not handled - TypeFromObject"); }
-|   ValueSetFromObjects { throw std::runtime_error("Not handled - ValueSetFromObjects"); }
+//|   ValueSetFromObjects { throw std::runtime_error("Not handled - ValueSetFromObjects"); }
 
 NamedType:
     identifier Type
@@ -919,7 +790,7 @@ BuiltinValue:
 
 ReferencedValue:
     DefinedValue
-|   ValueFromObject;
+//|   ValueFromObject;
 
 NamedValue:
     identifier
@@ -961,30 +832,22 @@ EnumeratedType:
     { $$ = $3; }
 
 Enumerations:
-    RootEnumeration
+    Enumeration
     { $$ = $1;
-    $$.accept_anything = false; }
-|   RootEnumeration "," "..." ExceptionSpec
+      $$.accept_anything = false; }
+|   Enumeration "," ELIPSIS ExceptionSpec
     { $$ = $1;
       $$.accept_anything = true; }
-|   RootEnumeration "," "..." ExceptionSpec "," AdditionalEnumeration
+|   Enumeration "," "..." ExceptionSpec "," Enumeration
     { $$ = $1;
       $$.accept_anything = true;
       $$.enum_values.insert($$.enum_values.end(), $6.enum_values.begin(), $6.enum_values.end()); }
 
-RootEnumeration:
-    Enumeration
-    { $$ = $1; }
-
-AdditionalEnumeration:
-    Enumeration
-    { $$ = $1; }
-
 Enumeration:
     EnumerationItem
     { $$.enum_values.push_back($1); }
-|   EnumerationItem "," Enumeration
-    { $$ = $3; $$.enum_values.push_back($1); }
+|   Enumeration "," EnumerationItem
+    { $$ = $1; $$.enum_values.push_back($3); }
 
 EnumerationItem:
     identifier
@@ -1043,10 +906,6 @@ ExtensionAndException:
     ELIPSIS
 |   ELIPSIS ExceptionSpec;
 
-OptionalExtensionMarker:
-    "," ELIPSIS
-|   %empty;
-
 ComponentTypeLists:
     RootComponentTypeList
     { $$ = $1; }
@@ -1090,40 +949,17 @@ SequenceOfType:
 |   SEQUENCE OF NamedType
     { $$ = SequenceOfType{ true, std::make_shared<NamedType>($3), nullptr }; }
 
-SequenceOfValue:
-    "{" ValueList "}"
-|   "{" NamedValueList "}"
-|   "{" "}";
-
-ValueList:
-    Value
-|   ValueList "," Value;
-
-NamedValueList:
-    NamedValue
-|   NamedValueList "," NamedValue;
-
 SetType:
     SET "{" "}"
     { $$ = SetType{}; }
-|   SET "{" ExtensionAndException OptionalExtensionMarker "}"
 |   SET "{" ComponentTypeLists "}"
     { $$ = SetType{$3}; }
-
-SetValue:
-    "{" ComponentValueList "}"
-|   "{" "}";
 
 SetOfType:
     SET OF Type
     { $$ = SetOfType{ false, nullptr, std::make_shared<Type>($3) }; }
 |   SET OF NamedType
     { $$ = SetOfType{ true, std::make_shared<NamedType>($3), nullptr }; }
-
-SetOfValue:
-    "{" ValueList "}"
-|   "{" NamedValueList "}"
-|   "{" "}";
 
 ChoiceType:
     CHOICE "{" AlternativeTypeLists "}"
@@ -1154,16 +990,9 @@ SelectionType:
 PrefixedType:
     TaggedType
     { $$ = PrefixedType($1); }
-|   EncodingPrefixedType;
 
 PrefixedValue:
     Value;
-
-EncodingPrefixedType:
-    EncodingPrefix Type
-
-EncodingPrefix:
-    "[" EncodingReference EncodingInstruction "]";
 
 TaggedType:
     Tag Type
@@ -1179,8 +1008,8 @@ Tag:
 
 EncodingReference:
     encodingreference ":"
-|   %empty;
-
+|   %empty
+    
 ClassNumber:
     number
     { $$ = $1; }
@@ -1341,46 +1170,6 @@ RestrictedCharacterStringType:
 
 RestrictedCharacterStringValue:
     cstring
-|   CharacterStringList
-|   Quadruple
-|   Tuple;
-
-CharacterStringList:
-    "{" CharSyms "}";
-
-CharSyms:
-    CharsDefn
-|   CharSyms "," CharsDefn;
-
-CharsDefn:
-    cstring
-|   Quadruple
-|   Tuple
-|   DefinedValue;
-
-Quadruple:
-    "{" Group "," Plane "," Row "," Cell "}";
-
-Group:
-    number;
-
-Plane:
-    number;
-
-Row:
-    number;
-
-Cell:
-    number;
-
-Tuple:
-    "{" TableColumn "," TableRow "}";
-
-TableColumn:
-    number;
-
-TableRow:
-    number;
 
 UnrestrictedCharacterStringType:
     CHARACTER STRING;

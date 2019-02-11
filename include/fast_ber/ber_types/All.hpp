@@ -29,4 +29,5 @@
 #include "TaggedType.hpp"
 #include "Time.hpp"
 #include "TimeOfDay.hpp"
+#include "UTCTime.hpp"
 #include "VisibleString.hpp"
