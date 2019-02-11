@@ -66,8 +66,8 @@ class OctetString
     size_t assign_ber(const BerView& view) noexcept;
     size_t assign_ber(const BerContainer& container) noexcept;
     size_t assign_ber(absl::Span<const uint8_t> buffer) noexcept;
+    void   resize(size_t i) noexcept { m_contents.resize_content(i); }
 
-    void         resize() noexcept;
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
   private:
