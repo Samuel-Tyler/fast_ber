@@ -6,6 +6,7 @@ add_subdirectory(3rd_party/abseil-cpp)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(default_build_type "Release")
+set(SKIP_AUTO_GENERATION false) # Set to true to avoid bison / asn1c autogeneration (use checked in files instead)
 
 if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
   add_compile_options("-O3" "-Wall" "-Wextra" "-pedantic" "-Wcast-align" "-Wpointer-arith")
@@ -21,6 +22,8 @@ if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
     add_definitions("-DNDEBUG")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -flto")
   endif()
+else()
+  set(SKIP_AUTO_GENERATION false) # Can't autogen on windows, used checked in files instead
 endif()
 
 enable_testing()

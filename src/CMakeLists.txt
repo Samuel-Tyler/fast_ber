@@ -1,14 +1,24 @@
 project(fast_ber)
 
-add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp
-    BYPRODUCTS ${CMAKE_BINARY_DIR}/autogen/asn_compiler.re
-    DEPENDS ${CMAKE_SOURCE_DIR}/src/compiler/asn_compiler.yacc
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/autogen)
+if(NOT SKIP_AUTO_GENERATION)
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp
+        BYPRODUCTS ${CMAKE_BINARY_DIR}/autogen/asn_compiler.re
+        DEPENDS ${CMAKE_SOURCE_DIR}/src/compiler/asn_compiler.yacc
 
-    COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/autogen
-    COMMAND bison ${CMAKE_CURRENT_SOURCE_DIR}/compiler/asn_compiler.yacc -t --report=all -o ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.re
-    COMMAND re2c -o ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.re
-)
+        COMMAND bison ${CMAKE_CURRENT_SOURCE_DIR}/compiler/asn_compiler.yacc -t --report=all -o ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.re
+        COMMAND re2c --no-generation-date -o ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.re
+        COMMAND cp ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp ${CMAKE_SOURCE_DIR}/src/compiler/autogen/asn_compiler.hpp
+    )
+else()
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp
+        DEPENDS ${CMAKE_SOURCE_DIR}/src/compiler/autogen/asn_compiler.hpp
+
+        COMMAND cp ${CMAKE_SOURCE_DIR}/src/compiler/autogen/asn_compiler.hpp ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp
+    )
+endif()
 
 add_library(fast_ber_lib empty)
 target_include_directories(fast_ber_lib INTERFACE SYSTEM ../3rd_party/abseil-cpp)
