@@ -97,7 +97,7 @@ inline EncodeResult encode_object_id(absl::Span<uint8_t> output, const ObjectIde
         return EncodeResult{false, 0};
     }
 
-    output[0] = 40 * input[0] + input[1];
+    output[0] = static_cast<uint8_t>(40 * input[0] + input[1]);
 
     size_t output_write_pos = encoded_length - 1;
     for (size_t i = input.size() - 1; i > 1; i--)

@@ -204,7 +204,7 @@ std::string create_decode_functions(const Assignment& assignment, const std::str
         res += "template <typename ID = ExplicitIdentifier<UniversalTag::sequence>>\n";
         res += "inline DecodeResult decode(const BerView& input, " + module_name + "::" + assignment.name +
                "& output, const ID& id = ID{}) noexcept\n{\n";
-        res += "    return decode_sequence_combine<" + assignment.name + "_name>(input, id";
+        res += "    return decode_sequence_combine(input, " + assignment.name + "_name, id";
         for (const ComponentType& component : sequence.components)
         {
             res += ",\n                          output." + component.named_type.name + ", " + tags_class +
@@ -233,7 +233,7 @@ std::string create_decode_functions(const Assignment& assignment, const std::str
         res += "template <typename ID = ExplicitIdentifier<UniversalTag::set>>\n";
         res += "inline DecodeResult decode(const BerView& input, " + module_name + "::" + assignment.name +
                "& output, const ID& id = ID{}) noexcept\n{\n";
-        res += "    return decode_set_combine<" + assignment.name + "_name>(input, id";
+        res += "    return decode_set_combine(input, " + assignment.name + "_name, id";
         for (const ComponentType& component : set.components)
         {
             res += ",\n                          output." + component.named_type.name + ", " + tags_class +
@@ -356,14 +356,14 @@ std::string create_detail_body(const Asn1Tree& tree)
 
     std::string body;
 
-    // Strange lookup rules means that these functions are defined twice in different namespaces
+  /*  // Strange lookup rules means that these functions are defined twice in different namespaces
     std::string ids;
     for (const Assignment& assignment : tree.assignments)
     {
         ids += create_identifier_functions(assignment, tree.module_reference);
     }
     body += add_namespace(tree.module_reference, ids);
-
+*/
     for (const Assignment& assignment : tree.assignments)
     {
         body += create_identifier_functions(assignment, tree.module_reference);

@@ -39,7 +39,7 @@ inline size_t encode_header(absl::Span<uint8_t> output, Construction constructio
 inline size_t encoded_header_length(Construction construction, Class class_, Tag tag, size_t length) noexcept;
 inline size_t encoded_header_length(Construction construction, Class class_, UniversalTag tag, size_t length) noexcept;
 
-constexpr inline uint8_t add_short_tag(uint8_t first_byte, Tag tag) noexcept { return tag | (first_byte & 0xE0); }
+constexpr inline uint8_t add_short_tag(uint8_t first_byte, Tag tag) noexcept { return static_cast<uint8_t>(tag) | (first_byte & 0xE0); }
 
 inline size_t encode_tag(absl::Span<uint8_t> output, Tag tag) noexcept
 {

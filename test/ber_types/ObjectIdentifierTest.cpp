@@ -22,7 +22,7 @@ TEST_CASE("Object Identifier: Encoding")
     fast_ber::ObjectIdentifier oid(fast_ber::ObjectIdentifierComponents{1, 2, 840, 113549});
     std::array<uint8_t, 100>   buffer   = {};
     std::array<uint8_t, 8>     expected = {0x06, 0x06, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d};
-    size_t                     size = fast_ber::encode(absl::Span<uint8_t>(buffer.begin(), buffer.size()), oid).length;
+    size_t                     size = fast_ber::encode(absl::Span<uint8_t>(buffer.data(), buffer.size()), oid).length;
 
     REQUIRE(absl::MakeSpan(buffer.data(), size) == absl::MakeSpan(expected));
 }

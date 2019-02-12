@@ -1,9 +1,10 @@
 project(fast_ber_tests)
 
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/autogen)
+
 function(fast_ber_generate input_file output_name)
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}.hpp
-        COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/autogen
         COMMAND ${CMAKE_BINARY_DIR}/src/fast_ber_compiler ${input_file} ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}
         DEPENDS ${CMAKE_BINARY_DIR}/src/fast_ber_compiler ${input_file}
     )

@@ -1,5 +1,7 @@
 project(fast_ber_benchmarks)
 
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/autogen)
+
 add_custom_command(
     OUTPUT ${CMAKE_SOURCE_DIR}/3rd_party/asn1c/asn1c/asn1c
     COMMAND cd ${CMAKE_SOURCE_DIR}/3rd_party/asn1c && test -f configure || autoreconf -iv && ./configure && make
@@ -12,7 +14,6 @@ endif()
 function(fast_ber_generate input_file output_name)
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}.hpp
-        COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/autogen
         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/../src/fast_ber_compiler ${input_file} ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}
         DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/../src/fast_ber_compiler ${input_file}
     )
@@ -29,11 +30,34 @@ function(asn1c_generate input_file)
             DEPENDS ${input_file} ${CMAKE_SOURCE_DIR}/3rd_party/asn1c/asn1c/asn1c
         )
     else()
-         add_custom_command(
-            OUTPUT autogen/asn1c/Collection.h autogen/asn1c/asn_codecs_prim.c autogen/asn1c/constraints.c autogen/asn1c/OCTET_STRING.c autogen/asn1c/asn_SEQUENCE_OF.c autogen/asn1c/constr_CHOICE.c autogen/asn1c/per_decoder.c autogen/asn1c/asn_SET_OF.c autogen/asn1c/constr_SEQUENCE.c autogen/asn1c/per_encoder.c autogen/asn1c/ber_decoder.c autogen/asn1c/constr_SEQUENCE_OF.c autogen/asn1c/per_opentype.c autogen/asn1c/ber_tlv_length.c autogen/asn1c/constr_SET_OF.c autogen/asn1c/per_support.c autogen/asn1c/ber_tlv_tag.c autogen/asn1c/constr_TYPE.c autogen/asn1c/xer_decoder.c autogen/asn1c/BIT_STRING.c autogen/asn1c/der_encoder.c autogen/asn1c/xer_encoder.c autogen/asn1c/BOOLEAN.c autogen/asn1c/INTEGER.c autogen/asn1c/xer_support.c autogen/asn1c/Child.c autogen/asn1c/NativeEnumerated.c autogen/asn1c/Collection.c autogen/asn1c/NativeInteger.c
-            COMMAND cp -f ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/* ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c
-            DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/Collection.h ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/asn_codecs_prim.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/constraints.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/OCTET_STRING.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/asn_SEQUENCE_OF.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/constr_CHOICE.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/per_decoder.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/asn_SET_OF.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/constr_SEQUENCE.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/per_encoder.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/ber_decoder.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/constr_SEQUENCE_OF.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/per_opentype.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/ber_tlv_length.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/constr_SET_OF.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/per_support.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/ber_tlv_tag.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/constr_TYPE.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/xer_decoder.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/BIT_STRING.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/der_encoder.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/xer_encoder.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/BOOLEAN.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/INTEGER.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/xer_support.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/Child.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/NativeEnumerated.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/Collection.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/NativeInteger.c
-        )
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/Collection.h autogen/asn1c/Collection.h COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/asn_codecs_prim.c autogen/asn1c/asn_codecs_prim.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/constraints.c autogen/asn1c/constraints.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/OCTET_STRING.c autogen/asn1c/OCTET_STRING.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/asn_SEQUENCE_OF.c autogen/asn1c/asn_SEQUENCE_OF.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/constr_CHOICE.c autogen/asn1c/constr_CHOICE.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/per_decoder.c autogen/asn1c/per_decoder.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/asn_SET_OF.c autogen/asn1c/asn_SET_OF.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/per_encoder.c autogen/asn1c/per_encoder.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/ber_decoder.c autogen/asn1c/ber_decoder.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/constr_SEQUENCE_OF.c autogen/asn1c/constr_SEQUENCE_OF.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/per_opentype.c autogen/asn1c/per_opentype.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/ber_tlv_length.c autogen/asn1c/ber_tlv_length.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/constr_SET_OF.c autogen/asn1c/constr_SET_OF.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/per_support.c autogen/asn1c/per_support.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/ber_tlv_tag.c autogen/asn1c/ber_tlv_tag.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/constr_TYPE.c autogen/asn1c/constr_TYPE.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/xer_decoder.c autogen/asn1c/xer_decoder.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/BIT_STRING.c autogen/asn1c/BIT_STRING.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/der_encoder.c autogen/asn1c/der_encoder.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/xer_encoder.c autogen/asn1c/xer_encoder.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/BOOLEAN.c autogen/asn1c/BOOLEAN.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/INTEGER.c autogen/asn1c/INTEGER.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/xer_support.c autogen/asn1c/xer_support.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/Child.c autogen/asn1c/Child.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/NativeEnumerated.c autogen/asn1c/NativeEnumerated.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/Collection.c autogen/asn1c/Collection.c COPYONLY)
+         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c/NativeInteger.c autogen/asn1c/NativeInteger.c COPYONLY)
     endif()
 endfunction(asn1c_generate)
 

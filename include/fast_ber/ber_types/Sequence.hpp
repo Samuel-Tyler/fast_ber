@@ -50,14 +50,13 @@ EncodeResult encode_sequence_combine(const absl::Span<uint8_t> output, const ID&
     return wrap_with_ber_header(output, result.length, id, header_length_guess);
 }
 
-template <const char* parent_name>
-DecodeResult decode_sequence_combine_impl(BerViewIterator&) noexcept
+inline DecodeResult decode_sequence_combine_impl(BerViewIterator&, const char*) noexcept
 {
     return DecodeResult{true};
 }
 
-template <const char* parent_name, typename T, typename ID, typename... Args>
-DecodeResult decode_sequence_combine_impl(BerViewIterator& input, T& object, const ID& id, Args&&... args) noexcept
+template <typename T, typename ID, typename... Args>
+DecodeResult decode_sequence_combine_impl(BerViewIterator& input, const char* parent_name, T& object, const ID& id, Args&&... args) noexcept
 {
     DecodeResult result = decode(input, object, id);
     if (!result.success)
@@ -66,11 +65,11 @@ DecodeResult decode_sequence_combine_impl(BerViewIterator& input, T& object, con
                   << "\n";
         return DecodeResult{false};
     }
-    return decode_sequence_combine_impl<parent_name>(input, args...);
+    return decode_sequence_combine_impl(input, parent_name, args...);
 }
 
-template <const char* parent_name, typename ID, typename... Args>
-DecodeResult decode_sequence_combine(const BerView& input, const ID& id, Args&&... args) noexcept
+template <typename ID, typename... Args>
+DecodeResult decode_sequence_combine(const BerView& input, const char* parent_name, const ID& id, Args&&... args) noexcept
 {
     if (!input.is_valid())
     {
@@ -85,7 +84,7 @@ DecodeResult decode_sequence_combine(const BerView& input, const ID& id, Args&&.
     }
 
     auto iterator = input.begin();
-    return decode_sequence_combine_impl<parent_name>(iterator, args...);
+    return decode_sequence_combine_impl(iterator, parent_name, args...);
 }
 
 } // namespace fast_ber

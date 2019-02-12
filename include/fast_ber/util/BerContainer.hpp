@@ -6,6 +6,8 @@
 #include "absl/container/inlined_vector.h"
 #include "absl/types/span.h"
 
+#include <array>
+
 namespace fast_ber
 {
 
@@ -39,7 +41,7 @@ class BerContainer
     bool         is_valid() const noexcept { return m_view.is_valid(); }
     Construction construction() const noexcept { return m_view.construction(); }
     Class        class_() const noexcept { return m_view.class_(); }
-    long         tag() const noexcept { return m_view.tag(); }
+    Tag          tag() const noexcept { return m_view.tag(); }
     size_t       identifier_length() const noexcept { return m_view.identifier_length(); }
     size_t       header_length() const noexcept { return m_view.header_length(); }
 

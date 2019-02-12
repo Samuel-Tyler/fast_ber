@@ -2,11 +2,12 @@
 
 #include "absl/types/span.h"
 
-#include <algorithm>
-#include <cstdint>
-
 #include "fast_ber/util/BerView.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
+
+#include <algorithm>
+#include <cstdint>
+#include <array>
 
 namespace fast_ber
 {

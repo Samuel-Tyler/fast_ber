@@ -84,7 +84,7 @@ inline size_t extract_tag(absl::Span<const uint8_t> input, Tag& tag) noexcept
 
     if ((input[0] & 0x1F) != 0x1F)
     {
-        tag = input[0] & 0x1F;
+        tag = static_cast<Tag>(input[0] & 0x1F);
         return 1;
     }
     else

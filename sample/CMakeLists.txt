@@ -1,9 +1,10 @@
 aux_source_directory(encode ENCODE_SRC)
 aux_source_directory(decode DECODE_SRC)
 
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/autogen)
+
 add_custom_command(
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/pokemon.hpp
-    COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/autogen
     COMMAND ${CMAKE_CURRENT_BINARY_DIR}/../src/fast_ber_compiler ${CMAKE_CURRENT_SOURCE_DIR}/../testfiles/pokemon.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/pokemon
     DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/../src/fast_ber_compiler ../testfiles/pokemon.asn
 )

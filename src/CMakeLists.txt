@@ -1,6 +1,7 @@
 project(fast_ber)
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/autogen)
+
 if(NOT SKIP_AUTO_GENERATION)
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp
@@ -12,12 +13,7 @@ if(NOT SKIP_AUTO_GENERATION)
         COMMAND cp ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp ${CMAKE_SOURCE_DIR}/src/compiler/autogen/asn_compiler.hpp
     )
 else()
-    add_custom_command(
-        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp
-        DEPENDS ${CMAKE_SOURCE_DIR}/src/compiler/autogen/asn_compiler.hpp
-
-        COMMAND cp ${CMAKE_SOURCE_DIR}/src/compiler/autogen/asn_compiler.hpp ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp
-    )
+    configure_file(${CMAKE_SOURCE_DIR}/src/compiler/autogen/asn_compiler.hpp ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp COPYONLY)
 endif()
 
 add_library(fast_ber_lib empty)

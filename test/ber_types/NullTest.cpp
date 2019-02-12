@@ -8,7 +8,7 @@ TEST_CASE("Null: Encoding")
     std::array<uint8_t, 100> buffer   = {};
     std::array<uint8_t, 2>   expected = {0x05, 0x00};
 
-    size_t size = fast_ber::encode(absl::Span<uint8_t>(buffer.begin(), buffer.size()), null,
+    size_t size = fast_ber::encode(absl::Span<uint8_t>(buffer.data(), buffer.size()), null,
                                                     fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::null>{})
                       .length;
 

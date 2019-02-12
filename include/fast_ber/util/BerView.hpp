@@ -36,7 +36,7 @@ class BerView
     bool         is_valid() const noexcept { return m_valid; }
     Construction construction() const noexcept { return get_construction(m_data[0]); }
     Class        class_() const noexcept { return get_class(m_data[0]); }
-    long         tag() const noexcept { return m_tag; }
+    Tag          tag() const noexcept { return m_tag; }
     size_t       identifier_length() const noexcept { return m_id_length; }
     size_t       header_length() const noexcept { return m_header_length; }
 

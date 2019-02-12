@@ -44,7 +44,7 @@ class BerLengthAndContentContainer
 
   private:
     absl::InlinedVector<uint8_t, 100> m_data;
-    uint32_t                          m_content_offset;
+    size_t                            m_content_offset;
 };
 
 inline BerLengthAndContentContainer& BerLengthAndContentContainer::operator=(const BerView& view) noexcept
