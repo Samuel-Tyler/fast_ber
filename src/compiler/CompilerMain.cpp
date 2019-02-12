@@ -356,18 +356,13 @@ std::string create_detail_body(const Asn1Tree& tree)
 
     std::string body;
 
-  /*  // Strange lookup rules means that these functions are defined twice in different namespaces
+    // Inside namespace due to argument dependant lookup rules
     std::string ids;
     for (const Assignment& assignment : tree.assignments)
     {
         ids += create_identifier_functions(assignment, tree.module_reference);
     }
     body += add_namespace(tree.module_reference, ids);
-*/
-    for (const Assignment& assignment : tree.assignments)
-    {
-        body += create_identifier_functions(assignment, tree.module_reference);
-    }
 
     for (const Assignment& assignment : tree.assignments)
     {
