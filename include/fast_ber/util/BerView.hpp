@@ -23,15 +23,16 @@ class BerView
 {
   public:
     BerView() noexcept = default;
-    BerView(absl::Span<const uint8_t> data) noexcept { assign(data); }
-    BerView(absl::Span<const uint8_t> data, size_t header_length, size_t content_length) noexcept;
-    BerView(absl::Span<const uint8_t> ber_data, Tag tag, size_t tag_length, size_t header_length,
-            size_t content_length) noexcept;
+    BerView(absl::Span<const uint8_t> input_ber_data) noexcept { assign(input_ber_data); }
+    BerView(absl::Span<const uint8_t> input_ber_data, size_t input_header_length, size_t input_content_length) noexcept;
+    BerView(absl::Span<const uint8_t> input_ber_data, Tag input_tag, size_t input_tag_length,
+            size_t input_header_length, size_t content_length) noexcept;
 
-    void assign(absl::Span<const uint8_t> data) noexcept;
-    void assign(absl::Span<const uint8_t> ber_data, size_t header_length, size_t content_length) noexcept;
-    void assign(absl::Span<const uint8_t> ber_data, Tag tag, size_t tag_length, size_t header_length,
-                size_t content_length) noexcept;
+    void assign(absl::Span<const uint8_t> input_ber_data) noexcept;
+    void assign(absl::Span<const uint8_t> input_ber_data, size_t input_header_length,
+                size_t input_content_length) noexcept;
+    void assign(absl::Span<const uint8_t> input_ber_data, Tag input_tag, size_t input_tag_length,
+                size_t input_header_length, size_t content_length) noexcept;
 
     bool         is_valid() const noexcept { return m_valid; }
     Construction construction() const noexcept { return get_construction(m_data[0]); }
@@ -176,28 +177,29 @@ class MutableBerViewIterator
     MutableBerView      m_view;
 };
 
-inline BerView::BerView(absl::Span<const uint8_t> data, size_t header_length, size_t content_length) noexcept
+inline BerView::BerView(absl::Span<const uint8_t> input_ber_data, size_t input_header_length,
+                        size_t input_content_length) noexcept
 {
-    assign(data, header_length, content_length);
+    assign(input_ber_data, input_header_length, input_content_length);
 }
 
-inline BerView::BerView(absl::Span<const uint8_t> ber_data, Tag tag, size_t tag_length, size_t header_length,
-                        size_t content_length) noexcept
+inline BerView::BerView(absl::Span<const uint8_t> input_ber_data, Tag input_tag, size_t input_tag_length,
+                        size_t input_header_length, size_t input_content_length) noexcept
 {
-    assign(ber_data, tag, tag_length, header_length, content_length);
+    assign(input_ber_data, input_tag, input_tag_length, input_header_length, input_content_length);
 }
 
-inline void BerView::assign(absl::Span<const uint8_t> data) noexcept
+inline void BerView::assign(absl::Span<const uint8_t> input_ber_data) noexcept
 {
-    m_valid                 = false;
-    uint64_t content_length = 0;
+    m_valid                       = false;
+    uint64_t input_content_length = 0;
 
-    size_t tag_length      = extract_tag(data, m_tag);
-    size_t len_length      = extract_length(data, content_length, tag_length);
-    size_t header_length   = tag_length + len_length;
-    size_t complete_length = header_length + content_length;
+    size_t input_tag_length      = extract_tag(input_ber_data, m_tag);
+    size_t input_len_length      = extract_length(input_ber_data, input_content_length, input_tag_length);
+    size_t input_header_length   = input_tag_length + input_len_length;
+    size_t input_complete_length = input_header_length + input_content_length;
 
-    if (tag_length == 0 || len_length == 0 || complete_length > data.length())
+    if (input_tag_length == 0 || input_len_length == 0 || input_complete_length > input_ber_data.length())
     {
         m_id_length      = 0;
         m_header_length  = 0;
@@ -205,27 +207,28 @@ inline void BerView::assign(absl::Span<const uint8_t> data) noexcept
         return;
     }
 
-    m_data           = data.data();
-    m_id_length      = tag_length;
-    m_header_length  = header_length;
-    m_content_length = content_length;
+    m_data           = input_ber_data.data();
+    m_id_length      = input_tag_length;
+    m_header_length  = input_header_length;
+    m_content_length = input_content_length;
     m_valid          = true;
 }
 
-inline void BerView::assign(absl::Span<const uint8_t> ber_data, size_t header_length, size_t content_length) noexcept
+inline void BerView::assign(absl::Span<const uint8_t> input_ber_data, size_t input_header_length,
+                            size_t input_content_length) noexcept
 {
-    size_t tag_length = extract_tag(ber_data, m_tag);
-    assign(ber_data, m_tag, tag_length, header_length, content_length);
+    size_t input_tag_length = extract_tag(input_ber_data, m_tag);
+    assign(input_ber_data, m_tag, input_tag_length, input_header_length, input_content_length);
 }
 
-inline void BerView::assign(absl::Span<const uint8_t> ber_data, Tag tag, size_t tag_length, size_t header_length,
-                            size_t content_length) noexcept
+inline void BerView::assign(absl::Span<const uint8_t> input_ber_data, Tag input_tag, size_t input_tag_length,
+                            size_t input_header_length, size_t input_content_length) noexcept
 {
-    m_data           = ber_data.data();
-    m_id_length      = tag_length;
-    m_header_length  = header_length;
-    m_content_length = content_length;
-    m_tag            = tag;
+    m_data           = input_ber_data.data();
+    m_id_length      = input_tag_length;
+    m_header_length  = input_header_length;
+    m_content_length = input_content_length;
+    m_tag            = input_tag;
     m_valid          = true;
 }
 
@@ -249,15 +252,15 @@ inline size_t BerView::encode(absl::Span<uint8_t> buffer) const noexcept
 
 inline size_t BerView::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
 {
-    auto ber = this->ber();
-    ber.remove_prefix(identifier_length());
-    if (ber.size() > buffer.size())
+    auto ber_span = this->ber();
+    ber_span.remove_prefix(identifier_length());
+    if (ber_span.size() > buffer.size())
     {
         return 0;
     }
 
-    std::memcpy(buffer.data(), ber.data(), ber.size());
-    return ber.length();
+    std::memcpy(buffer.data(), ber_span.data(), ber_span.size());
+    return ber_span.length();
 }
 
 } // namespace fast_ber

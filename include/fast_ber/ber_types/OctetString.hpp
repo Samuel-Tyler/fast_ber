@@ -20,9 +20,9 @@ class OctetString
     OctetString(const OctetString& rhs) noexcept = default;
     OctetString(OctetString&& rhs) noexcept      = default;
 
-    OctetString(const char* data) noexcept { assign(absl::string_view(data)); }
-    OctetString(const std::string& data) noexcept { assign(absl::string_view(data)); }
-    explicit OctetString(absl::Span<const uint8_t> data) noexcept { assign(data); }
+    OctetString(const char* input_data) noexcept { assign(absl::string_view(input_data)); }
+    OctetString(const std::string& input_data) noexcept { assign(absl::string_view(input_data)); }
+    explicit OctetString(absl::Span<const uint8_t> input_data) noexcept { assign(input_data); }
     explicit OctetString(const BerView& view) noexcept { assign_ber(view); }
     explicit OctetString(const BerContainer& container) noexcept { assign_ber(container); }
 

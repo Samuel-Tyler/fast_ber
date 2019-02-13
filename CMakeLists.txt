@@ -6,10 +6,10 @@ add_subdirectory(3rd_party/abseil-cpp)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(default_build_type "Release")
-set(SKIP_AUTO_GENERATION true) # Set to true to avoid bison / asn1c autogeneration (use checked in files instead)
+set(SKIP_AUTO_GENERATION false) # Set to true to avoid bison / asn1c autogeneration (use checked in files instead)
 
 if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
-  add_compile_options("-O3" "-Wall" "-Wextra" "-pedantic" "-Wcast-align" "-Wpointer-arith")
+  add_compile_options("-O3" "-Wall" "-Wextra" "-pedantic" "-Wcast-align" "-Wpointer-arith" "-Wshadow")
   add_compile_options("-Wfloat-equal" "-Wuninitialized")
   add_compile_options("-Wno-missing-field-initializers") # Stop spam on g++-4.8
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wold-style-cast")

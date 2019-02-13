@@ -44,7 +44,7 @@ class ObjectIdentifier
     friend std::ostream& operator<<(std::ostream& os, const OctetString& str) noexcept;
 
     size_t  number_of_components() const noexcept;
-    int64_t component_number(int64_t component_number) const noexcept;
+    int64_t component_number(int64_t number_of_component_to_extract) const noexcept;
 
     ObjectIdentifierComponents value() const noexcept;
 
@@ -158,18 +158,18 @@ inline DecodeResult decode_object_id(absl::Span<const uint8_t> input, absl::Inli
     return DecodeResult{true};
 }
 
-inline int64_t get_component_number(absl::Span<const uint8_t> input, size_t component_number) noexcept
+inline int64_t get_component_number(absl::Span<const uint8_t> input, size_t number_of_component_to_extract) noexcept
 {
     if (input.empty())
     {
         return -1;
     }
 
-    if (component_number == 0)
+    if (number_of_component_to_extract == 0)
     {
         return input[0] / 40;
     }
-    if (component_number == 1)
+    if (number_of_component_to_extract == 1)
     {
         return input[1] % 40;
     }
@@ -184,7 +184,7 @@ inline int64_t get_component_number(absl::Span<const uint8_t> input, size_t comp
         else
         {
             current_num = 0;
-            if (current_component_number == component_number)
+            if (current_component_number == number_of_component_to_extract)
             {
                 return current_num;
             }

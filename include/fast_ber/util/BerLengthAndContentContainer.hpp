@@ -30,9 +30,8 @@ class BerLengthAndContentContainer
     size_t                        assign_ber(const BerView& view) noexcept;
     size_t                        assign_ber(const BerContainer& container) noexcept;
     size_t                        assign_ber(const absl::Span<const uint8_t> data) noexcept;
-    void                          assign_content(const absl::Span<const uint8_t> content) noexcept;
-    void assign_content(Construction construction, Class class_, int tag, absl::Span<const uint8_t> content) noexcept;
-    void resize_content(size_t size) noexcept;
+    void                          assign_content(const absl::Span<const uint8_t> input_content) noexcept;
+    void                          resize_content(size_t size) noexcept;
 
     absl::Span<uint8_t>       content() noexcept { return absl::MakeSpan(content_data(), content_length()); }
     absl::Span<const uint8_t> content() const noexcept { return absl::MakeSpan(content_data(), content_length()); }
@@ -86,13 +85,13 @@ inline size_t BerLengthAndContentContainer::assign_ber(const absl::Span<const ui
     return assign_ber(BerView(data));
 }
 
-inline void BerLengthAndContentContainer::assign_content(const absl::Span<const uint8_t> content) noexcept
+inline void BerLengthAndContentContainer::assign_content(const absl::Span<const uint8_t> input_content) noexcept
 {
     m_data.resize(15);
-    m_content_offset = encode_length(absl::Span<uint8_t>(m_data), content.size());
+    m_content_offset = encode_length(absl::Span<uint8_t>(m_data), input_content.size());
 
-    m_data.resize(m_content_offset + content.size());
-    std::copy(content.data(), content.end(), m_data.data() + m_content_offset);
+    m_data.resize(m_content_offset + input_content.size());
+    std::copy(input_content.data(), input_content.end(), m_data.data() + m_content_offset);
 }
 
 inline void BerLengthAndContentContainer::resize_content(size_t size) noexcept
