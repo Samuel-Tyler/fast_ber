@@ -1,18 +1,32 @@
 sudo: required
 language: cpp
 
-compiler:
-  - clang
-  - gcc
+matrix:
+  include:
+    - env: BUILD_TYPE=Debug
+      compiler: clang
+      addons:
+        apt:
+          packages:
+            - bison
 
-addons:
-  apt:
-    packages:
-      - bison
+    - env: BUILD_TYPE=Release
+      compiler: clang
+
+    - env: BUILD_TYPE=Debug
+      compiler: gcc
+      addons:
+        apt:
+          packages:
+            - bison
+
+    - env: BUILD_TYPE=Release
+      compiler: gcc
+
 
 script:
   - mkdir build
   - cd build
-  - cmake ..
+  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
   - make
   - ctest

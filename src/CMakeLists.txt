@@ -4,6 +4,7 @@ file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/autogen)
 
 if(NOT SKIP_AUTO_GENERATION)
     # Build bison
+    # - Currently installed from repo due to long compile times
 
     # Build re2c
     add_custom_command(
