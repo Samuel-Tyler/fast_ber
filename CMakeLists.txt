@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(default_build_type "Release")
 set(SKIP_AUTO_GENERATION false) # Set to true to avoid bison / asn1c autogeneration (use checked in files instead)
+set(BENCHMARKS_INCLUDE_ASN1C true)
 
 if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
   add_compile_options("-O3" "-Wall" "-Wextra" "-pedantic" "-Wcast-align" "-Wpointer-arith" "-Wshadow")
@@ -24,6 +25,8 @@ if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
   endif()
 else()
   set(SKIP_AUTO_GENERATION true) # Can't autogen on windows, used checked in files instead
+  set(BENCHMARKS_INCLUDE_ASN1C false)
+  add_compile_options("/O2")
 endif()
 
 enable_testing()

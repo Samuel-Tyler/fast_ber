@@ -9,7 +9,7 @@ add_custom_command(
     COMMAND cp -f ${CMAKE_SOURCE_DIR}/3rd_party/asn1c/skeletons/*.h ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c
 )
 
-if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
     add_compile_options("-w") # Silence spam from asn1c build
 endif()
 
@@ -37,11 +37,13 @@ function(asn1c_generate input_file)
 endfunction(asn1c_generate)
 
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/simple5.asn simple)
-asn1c_generate(${CMAKE_SOURCE_DIR}/testfiles/simple5.asn)
 
 aux_source_directory(. BENCH_SRC)
-add_executable(${PROJECT_NAME} Test ${BENCH_SRC} ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c/Collection.h autogen/simple.hpp)
-target_sources(${PROJECT_NAME} PRIVATE autogen/asn1c/Collection.h autogen/asn1c/asn_codecs_prim.c autogen/asn1c/constraints.c autogen/asn1c/OCTET_STRING.c autogen/asn1c/asn_SEQUENCE_OF.c autogen/asn1c/constr_CHOICE.c autogen/asn1c/per_decoder.c autogen/asn1c/asn_SET_OF.c autogen/asn1c/constr_SEQUENCE.c autogen/asn1c/per_encoder.c autogen/asn1c/ber_decoder.c autogen/asn1c/constr_SEQUENCE_OF.c autogen/asn1c/per_opentype.c autogen/asn1c/ber_tlv_length.c autogen/asn1c/constr_SET_OF.c autogen/asn1c/per_support.c autogen/asn1c/ber_tlv_tag.c autogen/asn1c/constr_TYPE.c autogen/asn1c/xer_decoder.c autogen/asn1c/BIT_STRING.c autogen/asn1c/der_encoder.c autogen/asn1c/xer_encoder.c autogen/asn1c/BOOLEAN.c autogen/asn1c/INTEGER.c autogen/asn1c/xer_support.c autogen/asn1c/Child.c autogen/asn1c/NativeEnumerated.c autogen/asn1c/Collection.c autogen/asn1c/NativeInteger.c)
+add_executable(${PROJECT_NAME} Test ${BENCH_SRC} autogen/simple.hpp)
+if(BENCHMARKS_INCLUDE_ASN1C)
+    asn1c_generate(${CMAKE_SOURCE_DIR}/testfiles/simple5.asn)
+    target_sources(${PROJECT_NAME} PRIVATE autogen/asn1c/Collection.h autogen/asn1c/asn_codecs_prim.c autogen/asn1c/constraints.c autogen/asn1c/OCTET_STRING.c autogen/asn1c/asn_SEQUENCE_OF.c autogen/asn1c/constr_CHOICE.c autogen/asn1c/per_decoder.c autogen/asn1c/asn_SET_OF.c autogen/asn1c/constr_SEQUENCE.c autogen/asn1c/per_encoder.c autogen/asn1c/ber_decoder.c autogen/asn1c/constr_SEQUENCE_OF.c autogen/asn1c/per_opentype.c autogen/asn1c/ber_tlv_length.c autogen/asn1c/constr_SET_OF.c autogen/asn1c/per_support.c autogen/asn1c/ber_tlv_tag.c autogen/asn1c/constr_TYPE.c autogen/asn1c/xer_decoder.c autogen/asn1c/BIT_STRING.c autogen/asn1c/der_encoder.c autogen/asn1c/xer_encoder.c autogen/asn1c/BOOLEAN.c autogen/asn1c/INTEGER.c autogen/asn1c/xer_support.c autogen/asn1c/Child.c autogen/asn1c/NativeEnumerated.c autogen/asn1c/Collection.c autogen/asn1c/NativeInteger.c)
+endif()
 target_include_directories(${PROJECT_NAME} PRIVATE SYSTEM ${CMAKE_SOURCE_DIR}/3rd_party/Catch2/single_include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c)

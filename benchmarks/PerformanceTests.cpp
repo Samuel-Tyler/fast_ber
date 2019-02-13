@@ -1,4 +1,9 @@
+#define INCLUDE_ASN1C false
+
+#if INCLUDE_ASN1C
 #include "Collection.h"
+#endif
+
 #include "autogen/simple.hpp"
 
 #include "catch2/catch.hpp"
@@ -129,7 +134,6 @@ const int iterations = 1000000;
 TEST_CASE("Benchmark: Decode Performance")
 {
     bool           success = false;
-    asn_dec_rval_t rval    = {};
 
     BENCHMARK("fast_ber        - decode " + std::to_string(large_test_collection_packet.size()) + " byte packet")
     {
@@ -142,6 +146,10 @@ TEST_CASE("Benchmark: Decode Performance")
                           .success;
         }
     }
+    REQUIRE(success);
+
+#if INCLUDE_ASN1C
+    asn_dec_rval_t rval = {};
     BENCHMARK("asn1c           - decode " + std::to_string(large_test_collection_packet.size()) + " byte packet")
     {
         for (int i = 0; i < iterations; i++)
@@ -153,9 +161,8 @@ TEST_CASE("Benchmark: Decode Performance")
             asn_DEF_Collection.free_struct(&asn_DEF_Collection, collection, 0);
         }
     }
-
     REQUIRE(rval.code == RC_OK);
-    REQUIRE(success);
+#endif
 
     BENCHMARK("fast_ber        - decode " + std::to_string(small_test_collection_packet.size()) + " byte packet")
     {
@@ -168,6 +175,9 @@ TEST_CASE("Benchmark: Decode Performance")
                           .success;
         }
     }
+    REQUIRE(success);
+
+#if INCLUDE_ASN1C
     BENCHMARK("asn1c           - decode " + std::to_string(small_test_collection_packet.size()) + " byte packet")
     {
         for (int i = 0; i < iterations; i++)
@@ -179,9 +189,8 @@ TEST_CASE("Benchmark: Decode Performance")
             asn_DEF_Collection.free_struct(&asn_DEF_Collection, collection, 0);
         }
     }
-
     REQUIRE(rval.code == RC_OK);
-    REQUIRE(success);
+#endif
 }
 
 TEST_CASE("Benchmark: Encode Performance")
@@ -195,7 +204,6 @@ TEST_CASE("Benchmark: Encode Performance")
     std::array<uint8_t, 5000> fast_ber_buffer = {};
     std::array<uint8_t, 5000> asn1c_buffer    = {};
     fast_ber::EncodeResult    encode_result   = {};
-    asn_enc_rval_t            rval;
 
     fast_ber::Simple::Collection collection{
         hello,
@@ -206,7 +214,19 @@ TEST_CASE("Benchmark: Encode Performance")
         fast_ber::Simple::Child{999999999, {the, second, child, long_string}},
         decltype(collection.the_choice){absl::in_place_index_t<1>(), "I chose a string!"}};
 
-    Collection_t asn1c_collection = {};
+    BENCHMARK("fast_ber        - encode")
+    {
+        for (int i = 0; i < iterations; i++)
+        {
+            encode_result =
+                fast_ber::encode(absl::MakeSpan(fast_ber_buffer.data(), fast_ber_buffer.size()), collection);
+        }
+    }
+    REQUIRE(encode_result.success);
+
+#if INCLUDE_ASN1C
+    asn_enc_rval_t rval;
+	Collection_t asn1c_collection = {};
     OCTET_STRING_fromString(&asn1c_collection.hello, hello.c_str());
     OCTET_STRING_fromString(&asn1c_collection.goodbye, goodbye.c_str());
     asn1c_collection.integer                         = 5;
@@ -229,15 +249,6 @@ TEST_CASE("Benchmark: Encode Performance")
     asn1c_collection.the_choice.present = the_choice_PR_goodbye;
     OCTET_STRING_fromString(&asn1c_collection.the_choice.choice.goodbye, "I chose a string!");
 
-    BENCHMARK("fast_ber        - encode")
-    {
-        for (int i = 0; i < iterations; i++)
-        {
-            encode_result =
-                fast_ber::encode(absl::MakeSpan(fast_ber_buffer.data(), fast_ber_buffer.size()), collection);
-        }
-    }
-
     BENCHMARK("asn1c           - encode")
     {
         for (int i = 0; i < iterations; i++)
@@ -247,7 +258,6 @@ TEST_CASE("Benchmark: Encode Performance")
         }
     }
 
-    REQUIRE(encode_result.success);
     REQUIRE(rval.encoded != -1);
     REQUIRE(rval.encoded == encode_result.length);
     REQUIRE(absl::MakeSpan(fast_ber_buffer.data(), fast_ber_buffer.size()) ==
@@ -264,6 +274,7 @@ TEST_CASE("Benchmark: Encode Performance")
     delete asn1c_collection.child.meaning_of_life;
     delete asn1c_collection.optional_child->meaning_of_life;
     delete asn1c_collection.optional_child;
+#endif
 }
 
 TEST_CASE("Benchmark: Object Construction Performance")
@@ -290,6 +301,7 @@ TEST_CASE("Benchmark: Object Construction Performance")
         }
     }
 
+#if INCLUDE_ASN1C
     BENCHMARK("asn1c           - construct")
     {
         for (int i = 0; i < iterations; i++)
@@ -331,4 +343,5 @@ TEST_CASE("Benchmark: Object Construction Performance")
             delete asn1c_collection.optional_child;
         }
     }
+#endif
 }
