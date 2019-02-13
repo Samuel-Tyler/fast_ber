@@ -5,14 +5,6 @@ compiler:
   - clang
   - gcc
 
-before_install:
-  - cd 3rd_party/re2c/re2c
-  - ./autogen.sh
-  - ./configure
-  - make
-  - sudo make install
-  - cd ../../..
-
 addons:
   apt:
     packages:
