@@ -177,7 +177,7 @@ inline void BerContainer::resize_content(size_t size)
     size_t new_complete_length = new_header_length + size;
 
     m_data.resize(new_complete_length);
-    std::memmove(m_data.data() + new_length_offset, m_data.data() + old_header_length, std::min(old_size, size));
+    std::memmove(m_data.data() + new_header_length, m_data.data() + old_header_length, std::min(old_size, size));
     std::copy(length_buffer.data(), length_buffer.data() + new_length_length, m_data.data() + new_length_offset);
     m_view.assign(absl::MakeSpan(m_data.data(), m_data.size()), new_header_length, size);
 
