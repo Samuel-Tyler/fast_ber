@@ -5,8 +5,6 @@ file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/autogen)
 add_custom_command(
     OUTPUT ${CMAKE_SOURCE_DIR}/3rd_party/asn1c/asn1c/asn1c
     COMMAND cd ${CMAKE_SOURCE_DIR}/3rd_party/asn1c && test -f configure || autoreconf -iv && ./configure && make
-    COMMAND cp -f ${CMAKE_SOURCE_DIR}/3rd_party/asn1c/skeletons/*.c ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c
-    COMMAND cp -f ${CMAKE_SOURCE_DIR}/3rd_party/asn1c/skeletons/*.h ${CMAKE_CURRENT_SOURCE_DIR}/autogen/asn1c
 )
 
 if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
