@@ -1,5 +1,3 @@
-#define INCLUDE_ASN1C false
-
 #if INCLUDE_ASN1C
 #include "Collection.h"
 #endif
@@ -133,7 +131,7 @@ const int iterations = 1000000;
 
 TEST_CASE("Benchmark: Decode Performance")
 {
-    bool           success = false;
+    bool success = false;
 
     BENCHMARK("fast_ber        - decode " + std::to_string(large_test_collection_packet.size()) + " byte packet")
     {
@@ -148,7 +146,7 @@ TEST_CASE("Benchmark: Decode Performance")
     }
     REQUIRE(success);
 
-#if INCLUDE_ASN1C
+#ifdef INCLUDE_ASN1C
     asn_dec_rval_t rval = {};
     BENCHMARK("asn1c           - decode " + std::to_string(large_test_collection_packet.size()) + " byte packet")
     {
@@ -177,7 +175,7 @@ TEST_CASE("Benchmark: Decode Performance")
     }
     REQUIRE(success);
 
-#if INCLUDE_ASN1C
+#ifdef INCLUDE_ASN1C
     BENCHMARK("asn1c           - decode " + std::to_string(small_test_collection_packet.size()) + " byte packet")
     {
         for (int i = 0; i < iterations; i++)
@@ -224,9 +222,9 @@ TEST_CASE("Benchmark: Encode Performance")
     }
     REQUIRE(encode_result.success);
 
-#if INCLUDE_ASN1C
+#ifdef INCLUDE_ASN1C
     asn_enc_rval_t rval;
-	Collection_t asn1c_collection = {};
+    Collection_t   asn1c_collection = {};
     OCTET_STRING_fromString(&asn1c_collection.hello, hello.c_str());
     OCTET_STRING_fromString(&asn1c_collection.goodbye, goodbye.c_str());
     asn1c_collection.integer                         = 5;
@@ -301,7 +299,7 @@ TEST_CASE("Benchmark: Object Construction Performance")
         }
     }
 
-#if INCLUDE_ASN1C
+#ifdef INCLUDE_ASN1C
     BENCHMARK("asn1c           - construct")
     {
         for (int i = 0; i < iterations; i++)
