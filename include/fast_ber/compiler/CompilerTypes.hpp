@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "absl/memory/memory.h"
 #include "absl/types/optional.h"
@@ -7,12 +7,11 @@
 #include <algorithm>
 #include <fstream>
 #include <list>
+#include <map>
 #include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
-
-#include <iostream>
 
 std::string santize_name(const std::string& name)
 {
@@ -234,11 +233,15 @@ struct Assignment
     std::vector<std::string> depends_on;
 };
 
-struct Asn1Tree
+struct Module
 {
-    std::string             module_reference;
     TaggingMode             tagging_default;
     std::vector<Assignment> assignments;
+};
+
+struct Asn1Tree
+{
+    std::map<std::string, Module> modules;
 };
 
 std::string to_string(Class class_)

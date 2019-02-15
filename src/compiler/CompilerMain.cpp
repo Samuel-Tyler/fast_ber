@@ -1,4 +1,4 @@
-#include "autogen/asn_compiler.hpp"
+﻿#include "autogen/asn_compiler.hpp"
 #include "fast_ber/compiler/CompilerTypes.hpp"
 #include "fast_ber/compiler/Dependencies.hpp"
 #include "fast_ber/compiler/ReorderAssignments.hpp"
@@ -331,14 +331,14 @@ std::string add_namespace(const std::string& name, const std::string& enclosed)
     return output;
 }
 
-std::string create_body(const Asn1Tree& tree)
+std::string create_body(const std::vector<Assignment> assignments, TaggingMode tagging_default)
 {
     std::string output;
     output += "\n";
 
-    for (const Assignment& assignment : tree.assignments)
+    for (const Assignment& assignment : assignments)
     {
-        output += create_assignment(assignment, tree.tagging_default);
+        output += create_assignment(assignment, tagging_default);
     }
 
     return output;
@@ -347,38 +347,38 @@ std::string create_body(const Asn1Tree& tree)
 std::string create_detail_body(const Asn1Tree& tree)
 {
     std::string output;
-    output += create_include("fast_ber/ber_types/Identifier.hpp");
-    output += create_include("fast_ber/util/EncodeHelpers.hpp");
-    output += create_include("fast_ber/util/DecodeHelpers.hpp");
-    output += "\n";
-
     output += "/* Functionality provided for Encoding and Decoding BER */\n\n";
 
     std::string body;
 
-    // Inside namespace due to argument dependant lookup rules
-    std::string ids;
-    for (const Assignment& assignment : tree.assignments)
+    for (const auto& module_pair : tree.modules)
     {
-        ids += create_identifier_functions(assignment, tree.module_reference);
+        const std::string& module_reference = module_pair.first;
+        const Module&      module           = module_pair.second;
+
+        // Inside namespace due to argument dependant lookup rules
+        std::string ids;
+        for (const Assignment& assignment : module.assignments)
+        {
+            ids += create_identifier_functions(assignment, module_reference);
+        }
+        body += add_namespace(module_reference, ids);
+
+        for (const Assignment& assignment : module.assignments)
+        {
+            body += create_encode_functions(assignment, module_reference, module.tagging_default);
+            body += create_decode_functions(assignment, module_reference) + "\n";
+        }
+
+        std::string helpers;
+        for (const Assignment& assignment : module.assignments)
+        {
+            helpers += create_helper_functions(assignment);
+        }
+
+        body += add_namespace(module_reference, helpers);
     }
-    body += add_namespace(tree.module_reference, ids);
-
-    for (const Assignment& assignment : tree.assignments)
-    {
-        body += create_encode_functions(assignment, tree.module_reference, tree.tagging_default);
-        body += create_decode_functions(assignment, tree.module_reference) + "\n";
-    }
-
-    std::string helpers;
-    for (const Assignment& assignment : tree.assignments)
-    {
-        helpers += create_helper_functions(assignment);
-    }
-
-    body += add_namespace(tree.module_reference, helpers);
-
-    output += add_namespace("fast_ber", body) + "\n";
+    output += add_namespace("fast_ber", body) + "\n\n";
     return output;
 }
 
@@ -389,62 +389,73 @@ std::string create_output_file(const Asn1Tree& tree, const std::string detail_fi
     output += create_include("fast_ber/ber_types/All.hpp");
     output += "\n";
 
-    output += add_namespace("fast_ber", add_namespace(tree.module_reference, create_body(tree)));
-    output += '\n' + create_include(strip_path(detail_filename)) + '\n';
+    std::string definitions;
+    for (const auto& module_pair : tree.modules)
+    {
+        const std::string& module_reference = module_pair.first;
+        const Module&      module           = module_pair.second;
 
+        definitions += add_namespace(module_reference, create_body(module.assignments, module.tagging_default));
+    }
+
+    output += add_namespace("fast_ber", definitions) + '\n';
+    output += create_include(strip_path(detail_filename)) + '\n';
     return output;
 }
 
 int main(int argc, char** argv)
 {
-    if (argc != 3)
+    if (argc < 3)
     {
-        std::cout << "Please provide the following arguments:\n";
-        std::cout << "    Arg 1: asn.1 input file\n";
-        std::cout << "    Arg 2: output filename\n";
+        std::cout << "Usage: INPUT.asn... OUTPUT_NAME\n";
         return -1;
     }
 
-    std::string input_filename = argv[1];
-
-    std::ifstream input_file(input_filename);
-    if (!input_file.good())
+    Context context;
+    for (int i = 1; i < argc - 1; i++)
     {
-        std::cout << "Could not open input file\n";
-        return -1;
+        std::string   input_filename = argv[i];
+        std::ifstream input_file(input_filename);
+        if (!input_file.good())
+        {
+            std::cout << "Could not open input file: " << input_filename << "\n";
+            return -1;
+        }
+
+        std::string buffer(std::istreambuf_iterator<char>(input_file), {});
+        context.cursor                  = buffer.c_str();
+        context.location.begin.filename = &input_filename;
+        context.location.end.filename   = &input_filename;
+
+        yy::asn1_parser parser(context);
+
+        const auto res = parser.parse();
+        if (res)
+        {
+            return -1;
+        }
     }
 
-    const std::string& output_filename = std::string(argv[2]) + ".hpp";
-    const std::string& detail_filame   = std::string(argv[2]) + ".detail.hpp";
+    const std::string& output_filename = std::string(argv[argc - 1]) + ".hpp";
+    const std::string& detail_filame   = std::string(argv[argc - 1]) + ".detail.hpp";
 
     std::ofstream output_file(output_filename);
+    std::ofstream detail_output_file(detail_filame);
     if (!output_file.good())
     {
         std::cout << "Could not create output file: " + output_filename + "\n";
         return -1;
     }
-    std::ofstream detail_output_file(detail_filame);
     if (!detail_output_file.good())
     {
         std::cout << "Could not create output file: " + detail_filame + "\n";
         return -1;
     }
 
-    std::string buffer(std::istreambuf_iterator<char>(input_file), {});
-
-    Context context;
-    context.cursor                  = buffer.c_str();
-    context.location.begin.filename = &input_filename;
-    context.location.end.filename   = &input_filename;
-
-    yy::asn1_parser parser(context);
-
-    const auto res = parser.parse();
-    if (!res)
+    for (auto& module_pair : context.asn1_tree.modules)
     {
-        context.asn1_tree.assignments = reorder_assignments(context.asn1_tree.assignments);
-
-        output_file << create_output_file(context.asn1_tree, detail_filame);
-        detail_output_file << create_detail_body(context.asn1_tree);
+        module_pair.second.assignments = reorder_assignments(module_pair.second.assignments);
     }
+    output_file << create_output_file(context.asn1_tree, detail_filame);
+    detail_output_file << create_detail_body(context.asn1_tree);
 }

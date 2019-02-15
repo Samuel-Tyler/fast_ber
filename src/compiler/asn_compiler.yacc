@@ -196,6 +196,7 @@
 %type<std::string>       identifier
 %type<std::string>       modulereference
 %type<std::string>       valuereference
+%type<std::string>       ModuleIdentifier
 %type<double>            realnumber
 %type<long long>         number
 %type<long long>         SignedNumber
@@ -207,6 +208,9 @@
 %type<EnumeratedType>    Enumeration;
 %type<EnumerationValue>  EnumerationItem;
 %type<DefinedType>       ReferencedType;
+%type<std::vector<Assignment>> ModuleBody;
+%type<std::vector<Assignment>> AssignmentList;
+%type<Assignment>        Assignment;
 %type<Assignment>        TypeAssignment;
 %type<Assignment>        ValueAssignment;
 %type<Type>              Type;
@@ -254,7 +258,7 @@ ModuleDefinition:
     ModuleBody
     EncodingControlSections
     END
-    { context.asn1_tree.tagging_default = $4; }
+    { context.asn1_tree.modules[$1] = Module{ $4, $8 }; }
 
 SyntaxList:
    "{" TokenOrGroupSpec "}";
@@ -527,7 +531,7 @@ ModuleIdentifier:
     modulereference
     DefinitiveIdentification
 {
-    context.asn1_tree.module_reference = $1;
+    $$ = $1;
 };
 
 DefinitiveIdentification:
@@ -579,6 +583,7 @@ ExtensionDefault:
 
 ModuleBody:
     Exports Imports AssignmentList
+    { $$ = $3; }
 |   %empty;
 
 Exports:
@@ -634,14 +639,15 @@ Reference:
 
 AssignmentList:
     Assignment
-|   AssignmentList
-    Assignment
+    { $$.push_back($1);}
+|   AssignmentList Assignment
+    { $$ = $1; $$.push_back($2); }
 
 Assignment:
     TypeAssignment
-    { context.asn1_tree.assignments.push_back($1); }
+    { $$ = $1; }
 |   ValueAssignment
-    { context.asn1_tree.assignments.push_back($1); }
+    { $$ = $1; }
 /*|   ValueSetTypeAssignment
 |   ObjectClassAssignment
 |   ObjectAssignment
