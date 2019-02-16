@@ -198,10 +198,20 @@
 %type<std::string>       valuereference
 %type<std::string>       ModuleIdentifier
 %type<std::string>       GlobalModuleReference
+%type<std::string>       bstring
+%type<std::string>       xmlbstring
+%type<std::string>       hstring
+%type<std::string>       xmlhstring
+%type<std::string>       cstring
+%type<std::string>       xmlcstring
+%type<std::string>       simplestring
+%type<std::string>       xmltstring
 %type<double>            realnumber
 %type<long long>         number
 %type<long long>         SignedNumber
-%type<long long>         DefinedValue
+%type<DefinedValue>      DefinedValue
+%type<Value>             ReferencedValue
+%type<long long>         IntegerValue
 %type<BuiltinType>       BuiltinType;
 %type<DefinedType>       DefinedType;
 %type<EnumeratedType>    EnumeratedType;
@@ -685,6 +695,7 @@ DefinedType:
 DefinedValue:
 //    ExternalValueReference
     valuereference
+    { $$ = DefinedValue{$1}; }
 //|   ParameterizedValue;
 
 NonParameterizedTypeName:
@@ -788,19 +799,19 @@ Value:
     BuiltinValue
     { $$ = $1; }
 |   ReferencedValue
-    { throw std::runtime_error("Unhandled field: ReferencedValue"); }
+    { $$ = $1; }
 |   ObjectClassFieldValue
     { throw std::runtime_error("Unhandled field: ObjectClassFieldValue"); }
 
 BuiltinValue:
 //    BitStringValue
    BooleanValue
-|   CharacterStringValue
 //|   ChoiceValue
 //|   EmbeddedPDVValue
 //|   EnumeratedValue
 //|   ExternalValue
 |   IntegerValue
+    { $$.value_selection = $1; }
 |   IRIValue
 //|   NullValue
 |   ObjectIdentifierValue
@@ -809,10 +820,13 @@ BuiltinValue:
 |   TimeValue
 |   bstring
 |   hstring
+|   cstring
+    { $$.value_selection = $1; }
 |   CONTAINING Value;
 
 ReferencedValue:
     DefinedValue
+    { $$.defined_value = $1; }
 //|   ValueFromObject;
 
 NamedValue:
@@ -838,7 +852,7 @@ NamedNumber:
     identifier "(" SignedNumber ")"
     { $$ = NamedNumber{ $1, $3 }; }
 |   identifier "(" DefinedValue ")"
-    { $$ = NamedNumber{ $1, $3 }; }
+    { $$ = NamedNumber{ $1, 0 }; }
 
 SignedNumber:
     number
@@ -848,7 +862,7 @@ SignedNumber:
 
 IntegerValue:
     SignedNumber
-|   identifier;
+    { $$ = $1; }
 
 EnumeratedType:
     ENUMERATED "{" Enumerations "}"
@@ -1155,10 +1169,6 @@ CharacterStringType:
     RestrictedCharacterStringType
 |   UnrestrictedCharacterStringType;
 
-CharacterStringValue:
-   RestrictedCharacterStringValue
-//|   UnrestrictedCharacterStringValue;
-
 RestrictedCharacterStringType:
     BMPString
 |   GeneralString
@@ -1174,14 +1184,9 @@ RestrictedCharacterStringType:
 |   VideotexString
 |   VisibleString;
 
-RestrictedCharacterStringValue:
-    cstring
 
 UnrestrictedCharacterStringType:
     CHARACTER STRING;
-
-//UnrestrictedCharacterStringValue:
-//    SequenceValue;
 
 ConstrainedType:
     Type Constraint
@@ -1495,6 +1500,8 @@ re2c:define:YYCURSOR = "context.cursor";
 // Identifiers
 //[0-9]+\.[0-9]+        { context.location.columns(context.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context.cursor)), context.location); }
 [0-9]+                  { context.location.columns(context.cursor - start); return asn1_parser::make_number(std::stoll(std::string(start, context.cursor)), context.location); }
+["\""]("\\".|[^"\""])*["\""] 
+                        { context.location.columns(context.cursor - start); return asn1_parser::make_cstring(std::string(start, context.cursor), context.location); }
 [A-Z][A-Za-z_0-9\-]+    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(santize_name(std::string(start, context.cursor)), context.location); }
 [a-z][A-Za-z_0-9\-]+    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(santize_name(std::string(start, context.cursor)), context.location); }
 

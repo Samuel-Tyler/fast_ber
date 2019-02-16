@@ -20,10 +20,10 @@ if(NOT SKIP_AUTO_GENERATION)
 
         COMMAND bison ${CMAKE_CURRENT_SOURCE_DIR}/compiler/asn_compiler.yacc -t --report=all -o ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.re
         COMMAND ${CMAKE_SOURCE_DIR}/3rd_party/re2c/re2c/re2c --no-generation-date -o ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.re
-        COMMAND cp ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp ${CMAKE_SOURCE_DIR}/src/compiler/autogen/asn_compiler.hpp
+        COMMAND cp ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp ${CMAKE_SOURCE_DIR}/src/compiler/autogen_copy/asn_compiler.hpp
     )
 else()
-    configure_file(${CMAKE_SOURCE_DIR}/src/compiler/autogen/asn_compiler.hpp ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp COPYONLY)
+    configure_file(${CMAKE_SOURCE_DIR}/src/compiler/autogen_copy/asn_compiler.hpp ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp COPYONLY)
 endif()
 
 add_library(fast_ber_lib empty)

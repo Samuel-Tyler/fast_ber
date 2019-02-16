@@ -19,10 +19,10 @@ std::string create_assignment(const Assignment& assignment, TaggingMode tagging_
 {
     if (assignment.value) // Value assignment
     {
-        std::string result;
-        result += fully_tagged_type(assignment.type, tagging_mode) + " " + assignment.name + " = ObjectIdentifier{";
+        std::string result = fully_tagged_type(assignment.type, tagging_mode) + " " + assignment.name + " = ";
         if (absl::holds_alternative<std::vector<ObjectIdComponentValue>>(assignment.value->value_selection))
         {
+            result += "ObjectIdentifier{";
             const std::vector<ObjectIdComponentValue>& object_id_component =
                 absl::get<std::vector<ObjectIdComponentValue>>(assignment.value->value_selection);
 
@@ -42,8 +42,19 @@ std::string create_assignment(const Assignment& assignment, TaggingMode tagging_
                     result += ", ";
                 }
             }
+            result += "}";
         }
-        result += "};\n\n";
+        else if (absl::holds_alternative<std::string>(assignment.value->value_selection))
+        {
+            const std::string string = absl::get<std::string>(assignment.value->value_selection);
+            result += string;
+        }
+        else if (absl::holds_alternative<int64_t>(assignment.value->value_selection))
+        {
+            const int64_t integer = absl::get<int64_t>(assignment.value->value_selection);
+            result += std::to_string(integer);
+        }
+        result += ";\n\n";
         return result;
     }
     else // Type assignment

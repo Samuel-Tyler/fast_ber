@@ -198,9 +198,15 @@ struct ChoiceType
     std::vector<NamedType> choices;
 };
 
+struct DefinedValue
+{
+    std::string reference;
+};
+
 struct Value
 {
-    absl::variant<std::vector<ObjectIdComponentValue>> value_selection;
+    absl::optional<DefinedValue>                                             defined_value;
+    absl::variant<std::vector<ObjectIdComponentValue>, std::string, int64_t> value_selection;
 };
 
 struct NamedType

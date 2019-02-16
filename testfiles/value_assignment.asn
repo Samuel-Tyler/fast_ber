@@ -1,0 +1,7 @@
+Values DEFINITIONS IMPLICIT TAGS ::= BEGIN
+
+defined_int INTEGER           ::= -1123983485334
+defined_str OCTET STRING      ::=  "Constant string"
+defined_oid OBJECT IDENTIFIER ::= { one(0) two(1) three(2) }
+
+END
