@@ -115,7 +115,7 @@ std::string create_encode_functions(const Assignment& assignment, const std::str
     {
         std::string         res;
         const SequenceType& sequence   = absl::get<SequenceType>(absl::get<BuiltinType>(assignment.type));
-        const std::string   tags_class = assignment.name + "Tags";
+        const std::string   tags_class = module_name + "_" + assignment.name + "Tags";
 
         res += "namespace " + tags_class + " {\n";
         int tag_counter = 0;
@@ -152,7 +152,7 @@ std::string create_encode_functions(const Assignment& assignment, const std::str
     {
         std::string       res;
         const SetType&    set        = absl::get<SetType>(absl::get<BuiltinType>(assignment.type));
-        const std::string tags_class = assignment.name + "Tags";
+        const std::string tags_class = module_name + "_" + assignment.name + "Tags";
 
         res += "namespace " + tags_class + " {\n";
         int tag_counter = 0;
@@ -197,14 +197,12 @@ std::string create_decode_functions(const Assignment& assignment, const std::str
     {
         const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(assignment.type));
         std::string         res;
-        const std::string   tags_class = assignment.name + "Tags";
+        const std::string   tags_class = module_name + "_" + assignment.name + "Tags";
 
-        res +=
-            "constexpr const char " + assignment.name + "_name[] = \"" + module_name + "::" + assignment.name + "\";\n";
         res += "template <typename ID = ExplicitIdentifier<UniversalTag::sequence>>\n";
         res += "inline DecodeResult decode(const BerView& input, " + module_name + "::" + assignment.name +
                "& output, const ID& id = ID{}) noexcept\n{\n";
-        res += "    return decode_sequence_combine(input, " + assignment.name + "_name, id";
+        res += "    return decode_sequence_combine(input, \"" + module_name + "::" + assignment.name + "\", id";
         for (const ComponentType& component : sequence.components)
         {
             res += ",\n                          output." + component.named_type.name + ", " + tags_class +
@@ -226,14 +224,12 @@ std::string create_decode_functions(const Assignment& assignment, const std::str
     {
         const SetType&    set = absl::get<SetType>(absl::get<BuiltinType>(assignment.type));
         std::string       res;
-        const std::string tags_class = assignment.name + "Tags";
+        const std::string tags_class = module_name + "_" + assignment.name + "Tags";
 
-        res +=
-            "constexpr const char " + assignment.name + "_name[] = \"" + module_name + "::" + assignment.name + "\";\n";
         res += "template <typename ID = ExplicitIdentifier<UniversalTag::set>>\n";
         res += "inline DecodeResult decode(const BerView& input, " + module_name + "::" + assignment.name +
                "& output, const ID& id = ID{}) noexcept\n{\n";
-        res += "    return decode_set_combine(input, " + assignment.name + "_name, id";
+        res += "    return decode_set_combine(input, \"" + module_name + "::" + assignment.name + "\", id";
         for (const ComponentType& component : set.components)
         {
             res += ",\n                          output." + component.named_type.name + ", " + tags_class +

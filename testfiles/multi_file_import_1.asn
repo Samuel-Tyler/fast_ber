@@ -1,0 +1,11 @@
+MultiModuleA DEFINITIONS IMPLICIT TAGS ::= BEGIN
+IMPORTS
+    StringInModuleB FROM MultiModuleB
+    IntegerInModuleC FROM MultiModuleC;
+
+Collection ::= SEQUENCE {
+    string StringInModuleB,
+    integer IntegerInModuleC
+}
+
+END

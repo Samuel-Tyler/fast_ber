@@ -1,0 +1,13 @@
+MultiModuleB DEFINITIONS IMPLICIT TAGS ::= BEGIN
+EXPORTS StringInModuleB;
+
+StringInModuleB ::= OCTET STRING
+
+END
+
+MultiModuleC DEFINITIONS IMPLICIT TAGS ::= BEGIN
+EXPORTS IntegerInModuleC;
+
+IntegerInModuleC ::= INTEGER
+
+END

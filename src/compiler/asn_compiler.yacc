@@ -252,7 +252,6 @@
 %type<std::vector<ObjectIdComponentValue>> ObjIdComponentsList;
 %type<std::vector<ObjectIdComponentValue>> ObjectIdentifierValue;
 
-%right ","
 %%
 
 ModuleDefinitionList:
@@ -274,17 +273,17 @@ ModuleDefinition:
       $8.tagging_default = $4;
       context.asn1_tree.modules.push_back($8); }
 
-SyntaxList:
-   "{" TokenOrGroupSpec "}";
+//SyntaxList:
+//   "{" TokenOrGroupSpec "}";
 
-EncodingInstruction:
-    %empty;
+//EncodingInstruction:
+//    %empty;
 
-EncodingInstructionAssignmentList:
-    %empty;
+//EncodingInstructionAssignmentList:
+//    %empty;
 
-ExensionEndMarker:
-    %empty;
+//ExensionEndMarker:
+//    %empty;
 
 DefinedObjectClass:
     ExternalObjectClassReference
@@ -298,23 +297,23 @@ UsefulObjectClassReference:
     TYPE_IDENTIFIER
 |   ABSTRACT_SYNTAX;
 
-ObjectClassAssignment:
-    objectclassreference DEFINED_AS ObjectClass;
+//ObjectClassAssignment:
+//    objectclassreference DEFINED_AS ObjectClass;
 
-ObjectClass:
-    DefinedObjectClass
-|   ObjectClassDefn
+//ObjectClass:
+//    DefinedObjectClass
+//|   ObjectClassDefn
 //|   ParameterizedObjectClass;
 
-ObjectClassDefn:
-    CLASS "{" FieldSpec "," PLUS "}" WithSyntaxSpec QUESTION_MARK;
+//ObjectClassDefn:
+//    CLASS "{" FieldSpec "," PLUS "}" WithSyntaxSpec QUESTION_MARK;
 
-FieldSpec:
-    TypeFieldSpec
-|   FixedTypeValueFieldSpec
-|   VariableTypeValueFieldSpec
-|   ObjectFieldSpec
-|   ObjectSetFieldSpec;
+//FieldSpec:
+//    TypeFieldSpec
+//|   FixedTypeValueFieldSpec
+//|   VariableTypeValueFieldSpec
+//|   ObjectFieldSpec
+//|   ObjectSetFieldSpec;
 
 PrimitiveFieldName:
     typefieldreference
@@ -326,8 +325,8 @@ PrimitiveFieldName:
 FieldName:
     PrimitiveFieldName "." PLUS;
 
-TypeFieldSpec:
-    typefieldreference TypeOptionalitySpec QUESTION_MARK;
+//TypeFieldSpec:
+//    typefieldreference TypeOptionalitySpec QUESTION_MARK;
 
 TypeOptionalitySpec:
     OPTIONAL
@@ -357,11 +356,11 @@ ObjectSetOptionalitySpec:
     OPTIONAL
 |   DEFAULT;
 
-ObjectSeWithSyntaxSpec:
-    WITH SYNTAX SyntaxList;
+//ObjectSeWithSyntaxSpec:
+//    WITH SYNTAX SyntaxList;
 
-WithSyntaxSpec:
-    WITH SYNTAX SyntaxList;
+//WithSyntaxSpec:
+//    WITH SYNTAX SyntaxList;
 
 TokenOrGroupSpec:
     RequiredToken
@@ -526,20 +525,21 @@ ContentsConstraint:
 |   ENCODED BY Value
 |   CONTAINING Type ENCODED BY Value;
 
-EncodingPrefixedType:
-    EncodingPrefix Type;
+//EncodingPrefixedType:
+//    EncodingPrefix Type;
 
-EncodingPrefix:
-    "[" EncodingReference EncodingInstruction "]";
+//EncodingPrefix:
+//    "[" EncodingReference EncodingInstruction "]";
 
 EncodingControlSections:
-    EncodingControlSection EncodingControlSections
-|   %empty;
+//    EncodingControlSection EncodingControlSections
+//|
+    %empty;
 
-EncodingControlSection:
-    ENCODING_CONTROL
-    encodingreference
-    EncodingInstructionAssignmentList;
+//EncodingControlSection:
+//    ENCODING_CONTROL
+//    encodingreference
+//    EncodingInstructionAssignmentList;
 
 ModuleIdentifier:
     modulereference
@@ -598,7 +598,8 @@ ExtensionDefault:
 ModuleBody:
     Exports Imports AssignmentList
     { $$ = Module{ {}, TaggingMode(), $1, $2, $3}; }
-|   %empty;
+|   %empty
+    { }
 
 Exports:
     EXPORTS SymbolsExported ";"
@@ -794,26 +795,21 @@ Value:
 BuiltinValue:
 //    BitStringValue
    BooleanValue
-//|   CharacterStringValue
+|   CharacterStringValue
 //|   ChoiceValue
 //|   EmbeddedPDVValue
 //|   EnumeratedValue
 //|   ExternalValue
 |   IntegerValue
-//|   IRIValue
+|   IRIValue
 //|   NullValue
 |   ObjectIdentifierValue
     { $$.value_selection = $1; }
-//|   OctetStringValue
 //|   RealValue
-//|   RelativeIRIValue
-//|   RelativeOIDValue
-//|   SequenceValue
-//|   SequenceOfValue
-//|   SetValue
-//|   SetOfValue
-//|   PrefixedValue
-//|   TimeValue;
+|   TimeValue
+|   bstring
+|   hstring
+|   CONTAINING Value;
 
 ReferencedValue:
     DefinedValue
@@ -915,11 +911,6 @@ IdentifierList:
 OctetStringType:
     OCTET STRING;
 
-OctetStringValue:
-    bstring
-|   hstring
-|   CONTAINING Value;
-
 NullType:
     ASN_NULL;
 
@@ -1018,9 +1009,6 @@ PrefixedType:
     TaggedType
     { $$ = PrefixedType($1); }
 
-PrefixedValue:
-    Value;
-
 TaggedType:
     Tag Type
     { $$ = TaggedType{ $1, TaggingMode::automatic, $2 }; }
@@ -1052,11 +1040,11 @@ Class:
 |   %empty
     { $$ = Class::context_specific; }
 
-EncodingPrefixedType:
-    EncodingPrefix Type;
+//EncodingPrefixedType:
+//    EncodingPrefix Type;
 
-EncodingPrefix:
-    "[" EncodingReference EncodingInstruction "]";
+//EncodingPrefix:
+//  "[" EncodingReference EncodingInstruction "]";
 
 ObjectIdentifierType:
     OBJECT IDENTIFIER;
@@ -1097,17 +1085,14 @@ NameAndNumberForm:
 RelativeOIDType:
     RELATIVE_OID;
 
-RelativeOIDValue:
-    "{" RelativeOIDComponentsList "}";
+//RelativeOIDComponentsList:
+//    RelativeOIDComponents
+//|   RelativeOIDComponents RelativeOIDComponentsList;
 
-RelativeOIDComponentsList:
-    RelativeOIDComponents
-|   RelativeOIDComponents RelativeOIDComponentsList;
-
-RelativeOIDComponents:
-    NumberForm
-|   NameAndNumberForm
-|   DefinedValue;
+//RelativeOIDComponents:
+//    NumberForm
+//|   NameAndNumberForm
+//|   DefinedValue;
 
 IRIType:
     OID_IRI;
@@ -1131,12 +1116,6 @@ ArcIdentifier :
 
 RelativeIRIType:
     RELATIVE_OID_IRI;
-
-RelativeIRIValue:
-    "\""
-    FirstRelativeArcIdentifier
-    SubsequentArcIdentifier
-    "\"";
 
 FirstRelativeArcIdentifier:
     ArcIdentifier;
@@ -1177,8 +1156,8 @@ CharacterStringType:
 |   UnrestrictedCharacterStringType;
 
 CharacterStringValue:
-    RestrictedCharacterStringValue
-|   UnrestrictedCharacterStringValue;
+   RestrictedCharacterStringValue
+//|   UnrestrictedCharacterStringValue;
 
 RestrictedCharacterStringType:
     BMPString
@@ -1201,8 +1180,8 @@ RestrictedCharacterStringValue:
 UnrestrictedCharacterStringType:
     CHARACTER STRING;
 
-UnrestrictedCharacterStringValue:
-    SequenceValue;
+//UnrestrictedCharacterStringValue:
+//    SequenceValue;
 
 ConstrainedType:
     Type Constraint
