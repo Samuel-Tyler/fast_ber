@@ -87,6 +87,9 @@ struct EnumeratedType
 struct ExternalType
 {
 };
+struct GeneralizedTimeType
+{
+};
 struct InstanceOfType
 {
 };
@@ -100,6 +103,9 @@ struct NullType
 {
 };
 struct ObjectClassFieldType
+{
+};
+struct ObjectDescriptorType
 {
 };
 struct ObjectIdentifierType
@@ -156,17 +162,21 @@ struct TimeType
 struct TimeOfDayType
 {
 };
+struct UTCTimeType
+{
+};
 struct DefinedType
 {
     std::string name;
 };
 
-using BuiltinType = absl::variant<BitStringType, BooleanType, CharacterStringType, ChoiceType, DateType, DateTimeType,
-                                  DurationType, EmbeddedPDVType, EnumeratedType, ExternalType, InstanceOfType,
-                                  IntegerType, IRIType, NullType, ObjectClassFieldType, ObjectIdentifierType,
-                                  OctetStringType, RealType, RelativeIRIType, RelativeOIDType, SequenceType,
-                                  SequenceOfType, SetType, SetOfType, PrefixedType, TimeType, TimeOfDayType>;
-using Type        = absl::variant<BuiltinType, DefinedType>;
+using BuiltinType =
+    absl::variant<BitStringType, BooleanType, CharacterStringType, ChoiceType, DateType, DateTimeType, DurationType,
+                  EmbeddedPDVType, EnumeratedType, ExternalType, GeneralizedTimeType, InstanceOfType, IntegerType,
+                  IRIType, NullType, ObjectClassFieldType, ObjectDescriptorType, ObjectIdentifierType, OctetStringType,
+                  RealType, RelativeIRIType, RelativeOIDType, SequenceType, SequenceOfType, SetType, SetOfType,
+                  PrefixedType, TimeType, TimeOfDayType, UTCTimeType>;
+using Type = absl::variant<BuiltinType, DefinedType>;
 
 struct SequenceOfType
 {
@@ -233,15 +243,28 @@ struct Assignment
     std::vector<std::string> depends_on;
 };
 
+struct Import
+{
+    std::string              module_reference;
+    std::vector<std::string> imports;
+};
+
+struct Export
+{
+};
+
 struct Module
 {
+    std::string             module_reference;
     TaggingMode             tagging_default;
+    std::vector<Export>     exports;
+    std::vector<Import>     imports;
     std::vector<Assignment> assignments;
 };
 
 struct Asn1Tree
 {
-    std::map<std::string, Module> modules;
+    std::vector<Module> modules;
 };
 
 std::string to_string(Class class_)
@@ -277,11 +300,13 @@ std::string to_string(const DurationType&);
 std::string to_string(const EmbeddedPDVType&);
 std::string to_string(const EnumeratedType&);
 std::string to_string(const ExternalType&);
+std::string to_string(const GeneralizedTimeType& type);
 std::string to_string(const InstanceOfType&);
 std::string to_string(const IntegerType&);
 std::string to_string(const IRIType&);
 std::string to_string(const NullType&);
 std::string to_string(const ObjectClassFieldType&);
+std::string to_string(const ObjectDescriptorType&);
 std::string to_string(const ObjectIdentifierType&);
 std::string to_string(const OctetStringType&);
 std::string to_string(const RealType&);
@@ -294,6 +319,7 @@ std::string to_string(const SetOfType&);
 std::string to_string(const PrefixedType&);
 std::string to_string(const TimeType&);
 std::string to_string(const TimeOfDayType&);
+std::string to_string(const UTCTimeType& type);
 std::string to_string(const DefinedType&);
 std::string to_string(const BuiltinType& type);
 std::string to_string(const Type& type);
@@ -312,6 +338,7 @@ TaggingInfo universal_tag(const IntegerType&, TaggingMode);
 TaggingInfo universal_tag(const IRIType&, TaggingMode);
 TaggingInfo universal_tag(const NullType&, TaggingMode);
 TaggingInfo universal_tag(const ObjectClassFieldType&, TaggingMode);
+TaggingInfo universal_tag(const ObjectDescriptorType&, TaggingMode);
 TaggingInfo universal_tag(const ObjectIdentifierType&, TaggingMode);
 TaggingInfo universal_tag(const OctetStringType&, TaggingMode);
 TaggingInfo universal_tag(const RealType&, TaggingMode);
@@ -370,11 +397,13 @@ std::string to_string(const EnumeratedType& enumerated)
     return res;
 }
 std::string to_string(const ExternalType&) { return "External"; }
+std::string to_string(const GeneralizedTimeType&) { return "GeneralizedTime"; }
 std::string to_string(const InstanceOfType&) { return "InstanceOf"; }
 std::string to_string(const IntegerType&) { return "Integer"; }
 std::string to_string(const IRIType&) { return "IRI"; }
 std::string to_string(const NullType&) { return "Null"; }
 std::string to_string(const ObjectClassFieldType&) { return "ObjectClassField"; }
+std::string to_string(const ObjectDescriptorType&) { return "ObjectDescriptor"; }
 std::string to_string(const ObjectIdentifierType&) { return "ObjectIdentifier"; }
 std::string to_string(const OctetStringType&) { return "OctetString"; }
 std::string to_string(const RealType&) { return "Real"; }
@@ -441,6 +470,7 @@ std::string to_string(const SetOfType& set)
 std::string to_string(const PrefixedType& prefixed_type) { return to_string(prefixed_type.tagged_type->type); }
 std::string to_string(const TimeType&) { return "Time"; }
 std::string to_string(const TimeOfDayType&) { return "TimeOfDay"; }
+std::string to_string(const UTCTimeType&) { return "UTCTime"; }
 
 TaggingInfo universal_tag(const BitStringType&, TaggingMode)
 {
@@ -482,6 +512,10 @@ TaggingInfo universal_tag(const ExternalType&, TaggingMode)
 {
     return TaggingInfo{"ExplicitIdentifier<UniversalTag::external>", true};
 }
+TaggingInfo universal_tag(const GeneralizedTimeType&, TaggingMode)
+{
+    return TaggingInfo{"ExplicitIdentifier<UniversalTag::generalized_time>", true};
+}
 TaggingInfo universal_tag(const InstanceOfType&, TaggingMode)
 {
     return TaggingInfo{"ExplicitIdentifier<UniversalTag::instance_of>", true};
@@ -501,6 +535,10 @@ TaggingInfo universal_tag(const NullType&, TaggingMode)
 TaggingInfo universal_tag(const ObjectClassFieldType&, TaggingMode)
 {
     return TaggingInfo{"ExplicitIdentifier<UniversalTag::object_class_field>", true};
+}
+TaggingInfo universal_tag(const ObjectDescriptorType&, TaggingMode)
+{
+    return TaggingInfo{"ExplicitIdentifier<UniversalTag::object_descriptor>", true};
 }
 TaggingInfo universal_tag(const ObjectIdentifierType&, TaggingMode)
 {
@@ -580,6 +618,10 @@ TaggingInfo universal_tag(const TimeType&, TaggingMode)
 TaggingInfo universal_tag(const TimeOfDayType&, TaggingMode)
 {
     return TaggingInfo{"ExplicitIdentifier<UniversalTag::time_of_day", true};
+}
+TaggingInfo universal_tag(const UTCTimeType&, TaggingMode)
+{
+    return TaggingInfo{"ExplicitIdentifier<UniversalTag::utc_time>", true};
 }
 
 std::string to_string(const DefinedType& type) { return type.name; }

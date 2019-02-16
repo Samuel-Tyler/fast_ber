@@ -331,14 +331,26 @@ std::string add_namespace(const std::string& name, const std::string& enclosed)
     return output;
 }
 
-std::string create_body(const std::vector<Assignment> assignments, TaggingMode tagging_default)
+std::string create_body(const Module& module)
 {
     std::string output;
     output += "\n";
 
-    for (const Assignment& assignment : assignments)
+    for (const Import& import : module.imports)
     {
-        output += create_assignment(assignment, tagging_default);
+        for (const auto& import_name : import.imports)
+        {
+            output += "using " + import_name + " = " + import.module_reference + "::" + import_name + ";\n";
+        }
+        if (import.imports.size() > 0)
+        {
+            output += "\n";
+        }
+    }
+
+    for (const Assignment& assignment : module.assignments)
+    {
+        output += create_assignment(assignment, module.tagging_default);
     }
 
     return output;
@@ -351,23 +363,20 @@ std::string create_detail_body(const Asn1Tree& tree)
 
     std::string body;
 
-    for (const auto& module_pair : tree.modules)
+    for (const auto& module : tree.modules)
     {
-        const std::string& module_reference = module_pair.first;
-        const Module&      module           = module_pair.second;
-
         // Inside namespace due to argument dependant lookup rules
         std::string ids;
         for (const Assignment& assignment : module.assignments)
         {
-            ids += create_identifier_functions(assignment, module_reference);
+            ids += create_identifier_functions(assignment, module.module_reference);
         }
-        body += add_namespace(module_reference, ids);
+        body += add_namespace(module.module_reference, ids);
 
         for (const Assignment& assignment : module.assignments)
         {
-            body += create_encode_functions(assignment, module_reference, module.tagging_default);
-            body += create_decode_functions(assignment, module_reference) + "\n";
+            body += create_encode_functions(assignment, module.module_reference, module.tagging_default);
+            body += create_decode_functions(assignment, module.module_reference) + "\n";
         }
 
         std::string helpers;
@@ -376,7 +385,7 @@ std::string create_detail_body(const Asn1Tree& tree)
             helpers += create_helper_functions(assignment);
         }
 
-        body += add_namespace(module_reference, helpers);
+        body += add_namespace(module.module_reference, helpers);
     }
     output += add_namespace("fast_ber", body) + "\n\n";
     return output;
@@ -390,12 +399,9 @@ std::string create_output_file(const Asn1Tree& tree, const std::string detail_fi
     output += "\n";
 
     std::string definitions;
-    for (const auto& module_pair : tree.modules)
+    for (const auto& module : tree.modules)
     {
-        const std::string& module_reference = module_pair.first;
-        const Module&      module           = module_pair.second;
-
-        definitions += add_namespace(module_reference, create_body(module.assignments, module.tagging_default));
+        definitions += add_namespace(module.module_reference, create_body(module));
     }
 
     output += add_namespace("fast_ber", definitions) + '\n';
@@ -411,51 +417,64 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    Context context;
-    for (int i = 1; i < argc - 1; i++)
+    try
     {
-        std::string   input_filename = argv[i];
-        std::ifstream input_file(input_filename);
-        if (!input_file.good())
+        Context context;
+        for (int i = 1; i < argc - 1; i++)
         {
-            std::cout << "Could not open input file: " << input_filename << "\n";
+            std::string   input_filename = argv[i];
+            std::ifstream input_file(input_filename);
+            if (!input_file.good())
+            {
+                std::cout << "Could not open input file: " << input_filename << "\n";
+                return -1;
+            }
+
+            std::string buffer(std::istreambuf_iterator<char>(input_file), {});
+            context.cursor                  = buffer.c_str();
+            context.location.begin.filename = &input_filename;
+            context.location.end.filename   = &input_filename;
+
+            yy::asn1_parser parser(context);
+
+            const auto res = parser.parse();
+            if (res)
+            {
+                return -1;
+            }
+        }
+
+        const std::string& output_filename = std::string(argv[argc - 1]) + ".hpp";
+        const std::string& detail_filame   = std::string(argv[argc - 1]) + ".detail.hpp";
+
+        std::ofstream output_file(output_filename);
+        std::ofstream detail_output_file(detail_filame);
+        if (!output_file.good())
+        {
+            std::cout << "Could not create output file: " + output_filename + "\n";
+            return -1;
+        }
+        if (!detail_output_file.good())
+        {
+            std::cout << "Could not create output file: " + detail_filame + "\n";
             return -1;
         }
 
-        std::string buffer(std::istreambuf_iterator<char>(input_file), {});
-        context.cursor                  = buffer.c_str();
-        context.location.begin.filename = &input_filename;
-        context.location.end.filename   = &input_filename;
+        context.asn1_tree.modules = reorder_modules(context.asn1_tree.modules);
 
-        yy::asn1_parser parser(context);
-
-        const auto res = parser.parse();
-        if (res)
+        for (auto& module : context.asn1_tree.modules)
         {
-            return -1;
+            module.assignments = reorder_assignments(module.assignments, module.imports);
         }
+
+        output_file << create_output_file(context.asn1_tree, detail_filame);
+        detail_output_file << create_detail_body(context.asn1_tree);
+
+        return 0;
     }
-
-    const std::string& output_filename = std::string(argv[argc - 1]) + ".hpp";
-    const std::string& detail_filame   = std::string(argv[argc - 1]) + ".detail.hpp";
-
-    std::ofstream output_file(output_filename);
-    std::ofstream detail_output_file(detail_filame);
-    if (!output_file.good())
+    catch (const std::exception& e)
     {
-        std::cout << "Could not create output file: " + output_filename + "\n";
+        std::cout << "Compilation error: " << e.what() << "\n";
         return -1;
     }
-    if (!detail_output_file.good())
-    {
-        std::cout << "Could not create output file: " + detail_filame + "\n";
-        return -1;
-    }
-
-    for (auto& module_pair : context.asn1_tree.modules)
-    {
-        module_pair.second.assignments = reorder_assignments(module_pair.second.assignments);
-    }
-    output_file << create_output_file(context.asn1_tree, detail_filame);
-    detail_output_file << create_detail_body(context.asn1_tree);
 }

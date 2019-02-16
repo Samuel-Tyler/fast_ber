@@ -1,0 +1,25 @@
+ModuleA DEFINITIONS IMPLICIT TAGS ::= BEGIN
+IMPORTS
+    StringInModuleB FROM ModuleB
+    IntegerInModuleC FROM ModuleC;
+
+Collection ::= SEQUENCE {
+    string StringInModuleB,
+    integer IntegerInModuleC
+}
+
+END
+
+ModuleB DEFINITIONS IMPLICIT TAGS ::= BEGIN
+EXPORTS StringInModuleB;
+
+StringInModuleB ::= OCTET STRING
+
+END
+
+ModuleC DEFINITIONS IMPLICIT TAGS ::= BEGIN
+EXPORTS IntegerInModuleC;
+
+IntegerInModuleC ::= INTEGER
+
+END

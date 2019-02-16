@@ -129,12 +129,12 @@ fast_ber is in development. The following table documents what has been implemen
 | Arbitrary top level structure | Yes |
 | Arbritary definition order | Yes |
 | Embedded Types | No |
+| Imports | Yes |
 
 ## Possible Future Extensions
 The following features may be added in the future
 
 ```
-Imports
 Partial decoding
 Partial encode at compile time (templated / constexpr)
 High / low conformance modes

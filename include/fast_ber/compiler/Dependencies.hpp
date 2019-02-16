@@ -12,11 +12,13 @@ std::vector<std::string> depends_on(const DurationType&);
 std::vector<std::string> depends_on(const EmbeddedPDVType&);
 std::vector<std::string> depends_on(const EnumeratedType&);
 std::vector<std::string> depends_on(const ExternalType&);
+std::vector<std::string> depends_on(const GeneralizedTimeType&);
 std::vector<std::string> depends_on(const InstanceOfType&);
 std::vector<std::string> depends_on(const IntegerType&);
 std::vector<std::string> depends_on(const IRIType&);
 std::vector<std::string> depends_on(const NullType&);
 std::vector<std::string> depends_on(const ObjectClassFieldType&);
+std::vector<std::string> depends_on(const ObjectDescriptorType&);
 std::vector<std::string> depends_on(const ObjectIdentifierType&);
 std::vector<std::string> depends_on(const OctetStringType&);
 std::vector<std::string> depends_on(const RealType&);
@@ -29,6 +31,8 @@ std::vector<std::string> depends_on(const SetOfType& set);
 std::vector<std::string> depends_on(const PrefixedType&);
 std::vector<std::string> depends_on(const TimeType&);
 std::vector<std::string> depends_on(const TimeOfDayType&);
+std::vector<std::string> depends_on(const UTCTimeType&);
+
 std::vector<std::string> depends_on(const DefinedType&);
 std::vector<std::string> depends_on(const BuiltinType& type);
 std::vector<std::string> depends_on(const Type& type);
@@ -52,11 +56,13 @@ std::vector<std::string> depends_on(const DurationType&) { return {}; }
 std::vector<std::string> depends_on(const EmbeddedPDVType&) { return {}; }
 std::vector<std::string> depends_on(const EnumeratedType&) { return {}; }
 std::vector<std::string> depends_on(const ExternalType&) { return {}; }
+std::vector<std::string> depends_on(const GeneralizedTimeType&) { return {}; }
 std::vector<std::string> depends_on(const InstanceOfType&) { return {}; }
 std::vector<std::string> depends_on(const IntegerType&) { return {}; }
 std::vector<std::string> depends_on(const IRIType&) { return {}; }
 std::vector<std::string> depends_on(const NullType&) { return {}; }
 std::vector<std::string> depends_on(const ObjectClassFieldType&) { return {}; }
+std::vector<std::string> depends_on(const ObjectDescriptorType&) { return {}; }
 std::vector<std::string> depends_on(const ObjectIdentifierType&) { return {}; }
 std::vector<std::string> depends_on(const OctetStringType&) { return {}; }
 std::vector<std::string> depends_on(const RealType&) { return {}; }
@@ -110,6 +116,7 @@ std::vector<std::string> depends_on(const PrefixedType& prefixed_type)
 }
 std::vector<std::string> depends_on(const TimeType&) { return {}; }
 std::vector<std::string> depends_on(const TimeOfDayType&) { return {}; }
+std::vector<std::string> depends_on(const UTCTimeType&) { return {}; }
 std::vector<std::string> depends_on(const DefinedType& defined) { return {defined.name}; }
 
 static DependsOnHelper   depends_on_helper;

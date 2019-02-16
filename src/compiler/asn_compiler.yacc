@@ -197,6 +197,7 @@
 %type<std::string>       modulereference
 %type<std::string>       valuereference
 %type<std::string>       ModuleIdentifier
+%type<std::string>       GlobalModuleReference
 %type<double>            realnumber
 %type<long long>         number
 %type<long long>         SignedNumber
@@ -207,8 +208,11 @@
 %type<EnumeratedType>    Enumerations;
 %type<EnumeratedType>    Enumeration;
 %type<EnumerationValue>  EnumerationItem;
-%type<DefinedType>       ReferencedType;
-%type<std::vector<Assignment>> ModuleBody;
+%type<std::vector<Export>> Exports;
+%type<Module>            ModuleBody;
+%type<std::vector<NamedType>> AlternativeTypeList;
+%type<std::vector<NamedType>> AlternativeTypeLists
+%type<std::vector<NamedType>> RootAlternativeTypeList;
 %type<std::vector<Assignment>> AssignmentList;
 %type<Assignment>        Assignment;
 %type<Assignment>        TypeAssignment;
@@ -227,16 +231,20 @@
 %type<ComponentTypeList> RootComponentTypeList;
 %type<Value>             Value
 %type<Value>             BuiltinValue;
+%type<PrefixedType>      PrefixedType;
+%type<std::string>       Reference;
 %type<SetOfType>         SetOfType;
 %type<SequenceOfType>    SequenceOfType;
+%type<std::string>       Symbol;
+%type<std::vector<Import>> Imports;
+%type<std::vector<Import>> SymbolsImported;
+%type<std::vector<Import>> SymbolsFromModuleList;
+%type<Import>            SymbolsFromModule;
+%type<std::vector<std::string>> SymbolList;
 %type<ChoiceType>        ChoiceType;
-%type<std::vector<NamedType>> AlternativeTypeList;
-%type<std::vector<NamedType>> AlternativeTypeLists
-%type<std::vector<NamedType>> RootAlternativeTypeList;
 %type<TaggingMode>       TagDefault;
 %type<Tag>               Tag;
 %type<TaggedType>        TaggedType;
-%type<PrefixedType>      PrefixedType;
 %type<ObjectIdComponentValue> ObjIdComponents;
 %type<ObjectIdComponentValue> NameForm;
 %type<ObjectIdComponentValue> NumberForm;
@@ -246,6 +254,10 @@
 
 %right ","
 %%
+
+ModuleDefinitionList:
+    ModuleDefinition
+|   ModuleDefinition ModuleDefinitionList
 
 ModuleDefinition:
     ModuleIdentifier
@@ -258,7 +270,9 @@ ModuleDefinition:
     ModuleBody
     EncodingControlSections
     END
-    { context.asn1_tree.modules[$1] = Module{ $4, $8 }; }
+    { $8.module_reference = $1;
+      $8.tagging_default = $4;
+      context.asn1_tree.modules.push_back($8); }
 
 SyntaxList:
    "{" TokenOrGroupSpec "}";
@@ -583,7 +597,7 @@ ExtensionDefault:
 
 ModuleBody:
     Exports Imports AssignmentList
-    { $$ = $3; }
+    { $$ = Module{ {}, TaggingMode(), $1, $2, $3}; }
 |   %empty;
 
 Exports:
@@ -596,26 +610,28 @@ SymbolsExported:
 |   %empty;
 
 Imports:
-    IMPORTS
-    SymbolsImported ";"
+    IMPORTS SymbolsImported ";"
+    { $$ = $2; }
 |   %empty;
 
 SymbolsImported:
     SymbolsFromModuleList
+    { $$ = $1; }
 |   %empty;
 
 SymbolsFromModuleList:
     SymbolsFromModule
-|   SymbolsFromModuleList SymbolsFromModule;
+    { $$.push_back($1); }
+|   SymbolsFromModuleList SymbolsFromModule
+    { $$ = $1; $$.push_back($2); }
 
 SymbolsFromModule:
-    SymbolList
-    FROM
-    GlobalModuleReference;
+    SymbolList FROM GlobalModuleReference
+    { $$ = Import{ $3, $1 }; }
 
 GlobalModuleReference:
-    modulereference
-    AssignedIdentifier;
+    modulereference AssignedIdentifier
+    { $$ = $1; }
 
 AssignedIdentifier:
     ObjectIdentifierValue
@@ -624,15 +640,19 @@ AssignedIdentifier:
 
 SymbolList:
     Symbol
-|   SymbolList
-    "," Symbol;
+    { $$.push_back($1); }
+|   SymbolList "," Symbol
+    { $$ = $1; $$.push_back($3); }
 
 Symbol:
     Reference
+    { $$ = $1; }
 
 Reference:
     typereference
+    { $$ = $1; }
 |   valuereference
+    { $$ = $1; }
 |   objectclassreference
 |   objectreference
 |   objectsetreference;
@@ -662,8 +682,8 @@ DefinedType:
 //|   ParameterizedValueSetType;
 
 DefinedValue:
-    ExternalValueReference
-|   valuereference
+//    ExternalValueReference
+    valuereference
 //|   ParameterizedValue;
 
 NonParameterizedTypeName:
@@ -717,10 +737,15 @@ ValueAssignment:
 Type:
     BuiltinType
     { $$ = $1; }
-|   ReferencedType
-    { $$ = $1; }
 |   ConstrainedType
     { $$ = Type(); }
+|   DefinedType
+    { $$ = $1; }
+|   SelectionType
+    { throw std::runtime_error("Not handled - SelectionType"); }
+|   TypeFromObject
+    { throw std::runtime_error("Not handled - TypeFromObject"); }
+//|   ValueSetFromObjects { throw std::runtime_error("Not handled - ValueSetFromObjects"); }
 
 BuiltinType:
     BitStringType { $$ = BitStringType(); }
@@ -733,11 +758,13 @@ BuiltinType:
 |   EmbeddedPDVType { $$ = EmbeddedPDVType(); }
 |   EnumeratedType { $$ = $1; }
 |   ExternalType { $$ = ExternalType(); }
+|   GeneralizedTime { $$ = GeneralizedTimeType(); }
 |   InstanceOfType { $$ = InstanceOfType(); }
 |   IntegerType { $$ = IntegerType(); }
 |   IRIType { $$ = IRIType(); }
 |   NullType { $$ = NullType(); }
 |   ObjectClassFieldType { $$ = ObjectClassFieldType(); }
+|   ObjectDescriptor { $$ = ObjectDescriptorType(); }
 |   ObjectIdentifierType { $$ = ObjectIdentifierType(); }
 |   OctetStringType { $$ = OctetStringType(); }
 |   RealType { $$ = RealType(); }
@@ -750,13 +777,7 @@ BuiltinType:
 |   PrefixedType { $$ = $1; }
 |   TimeType { $$ = TimeType(); }
 |   TimeOfDayType { $$ = TimeOfDayType(); }
-
-ReferencedType:
-    DefinedType { $$ = $1; }
-|   UsefulType { throw std::runtime_error("Not handled - UsefulType"); }
-|   SelectionType { throw std::runtime_error("Not handled - SelectionType"); }
-|   TypeFromObject { throw std::runtime_error("Not handled - TypeFromObject"); }
-//|   ValueSetFromObjects { throw std::runtime_error("Not handled - ValueSetFromObjects"); }
+|   UTCTime { $$ = UTCTimeType(); }
 
 NamedType:
     identifier Type
@@ -1183,25 +1204,6 @@ UnrestrictedCharacterStringType:
 UnrestrictedCharacterStringValue:
     SequenceValue;
 
-UsefulType:
-    typereference
-    UTF8String
-    GraphicString
-    NumericString
-    VisibleString
-    PrintableString
-    TeletexString
-    ISO646String
-    GeneralString
-    T61String
-    VideotexString
-    UniversalString
-    BMPString
-    IA5String
-    GeneralizedTime
-    UTCTime
-    ObjectDescriptor;
-
 ConstrainedType:
     Type Constraint
 |   TypeWithConstraint;
@@ -1418,7 +1420,6 @@ re2c:define:YYCURSOR = "context.cursor";
 "ABSTRACT_SYNTAX"       { context.location.columns(context.cursor - start); return asn1_parser::make_ABSTRACT_SYNTAX (context.location); }
 "ALL"                   { context.location.columns(context.cursor - start); return asn1_parser::make_ALL (context.location); }
 "APPLICATION"           { context.location.columns(context.cursor - start); return asn1_parser::make_APPLICATION (context.location); }
-"ASN_NULL"              { context.location.columns(context.cursor - start); return asn1_parser::make_ASN_NULL (context.location); }
 "AUTOMATIC"             { context.location.columns(context.cursor - start); return asn1_parser::make_AUTOMATIC (context.location); }
 "BEGIN"                 { context.location.columns(context.cursor - start); return asn1_parser::make_BEGIN (context.location); }
 "BIT"                   { context.location.columns(context.cursor - start); return asn1_parser::make_BIT (context.location); }
@@ -1467,6 +1468,7 @@ re2c:define:YYCURSOR = "context.cursor";
 "MIN"                   { context.location.columns(context.cursor - start); return asn1_parser::make_MIN (context.location); }
 "MINUS_INFINITY"        { context.location.columns(context.cursor - start); return asn1_parser::make_MINUS_INFINITY (context.location); }
 "NOT_A_NUMBER"          { context.location.columns(context.cursor - start); return asn1_parser::make_NOT_A_NUMBER (context.location); }
+"NULL"                  { context.location.columns(context.cursor - start); return asn1_parser::make_ASN_NULL (context.location); }
 "NumericString"         { context.location.columns(context.cursor - start); return asn1_parser::make_NumericString (context.location); }
 "OBJECT"                { context.location.columns(context.cursor - start); return asn1_parser::make_OBJECT (context.location); }
 "ObjectDescriptor"      { context.location.columns(context.cursor - start); return asn1_parser::make_ObjectDescriptor (context.location); }
@@ -1507,7 +1509,9 @@ re2c:define:YYCURSOR = "context.cursor";
 "WITH"                  { context.location.columns(context.cursor - start); return asn1_parser::make_WITH (context.location); }
 
 // Comments
-"--" [^\r\n]*           { context.location.columns(context.cursor - start); return yylex(context); }
+"--" ([\-]?[^\r\n\-])* "--" 
+                        { context.location.columns(context.cursor - start); return yylex(context); }
+"--" ([\-]?[^\r\n\-])*  { context.location.columns(context.cursor - start); return yylex(context); }
 
 // Identifiers
 //[0-9]+\.[0-9]+        { context.location.columns(context.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context.cursor)), context.location); }
@@ -1519,7 +1523,7 @@ re2c:define:YYCURSOR = "context.cursor";
 "\000"                  { context.location.columns(context.cursor - start); return asn1_parser::make_END_OF_FILE(context.location); }
 
 // White space
-"\r\n" | [\r\n]         { context.location.columns(context.cursor - start); context.location.lines();   return yylex(context); }
+"\r\n" | "\n"           { context.location.columns(context.cursor - start); context.location.lines();   return yylex(context); }
 [\t\v\b\f ]             { context.location.columns(context.cursor - start); context.location.columns(); return yylex(context); }
 
 // Symbols
