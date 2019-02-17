@@ -5,18 +5,18 @@ file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/autogen)
 function(fast_ber_generate input_file output_name)
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}.hpp
-        COMMAND ${CMAKE_BINARY_DIR}/src/fast_ber_compiler ${input_file} ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}
-        DEPENDS ${CMAKE_BINARY_DIR}/src/fast_ber_compiler ${input_file}
+        COMMAND fast_ber_compiler ${input_file} ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}
+        DEPENDS fast_ber_compiler ${input_file}
     )
 endfunction(fast_ber_generate)
 
 function(fast_ber_generate2 input_file1 input_file2 output_name)
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}.hpp
-        COMMAND ${CMAKE_BINARY_DIR}/src/fast_ber_compiler ${input_file1} ${input_file2} ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}
-        DEPENDS ${CMAKE_BINARY_DIR}/src/fast_ber_compiler ${input_file1} ${input_file2}
+        COMMAND fast_ber_compiler ${input_file1} ${input_file2} ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}
+        DEPENDS fast_ber_compiler ${input_file1} ${input_file2}
     )
-endfunction(fast_ber_generate)
+endfunction(fast_ber_generate2)
 
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/simple5.asn simple)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/choice.asn choice)
@@ -41,11 +41,11 @@ target_include_directories(fast_ber_tests PRIVATE SYSTEM ${CMAKE_SOURCE_DIR}/3rd
 target_include_directories(fast_ber_tests PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 target_link_libraries (fast_ber_tests fast_ber_lib absl::strings)
 
-add_test(NAME fast_ber_compiler_0 COMMAND ${CMAKE_BINARY_DIR}/src/fast_ber_compiler ${CMAKE_SOURCE_DIR}/testfiles/simple0.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple0)
-add_test(NAME fast_ber_compiler_1 COMMAND ${CMAKE_BINARY_DIR}/src/fast_ber_compiler ${CMAKE_SOURCE_DIR}/testfiles/simple1.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple1)
-add_test(NAME fast_ber_compiler_2 COMMAND ${CMAKE_BINARY_DIR}/src/fast_ber_compiler ${CMAKE_SOURCE_DIR}/testfiles/simple2.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple2)
-add_test(NAME fast_ber_compiler_3 COMMAND ${CMAKE_BINARY_DIR}/src/fast_ber_compiler ${CMAKE_SOURCE_DIR}/testfiles/simple3.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple3)
-add_test(NAME fast_ber_compiler_4 COMMAND ${CMAKE_BINARY_DIR}/src/fast_ber_compiler ${CMAKE_SOURCE_DIR}/testfiles/simple4.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple4)
-add_test(NAME fast_ber_compiler_5 COMMAND ${CMAKE_BINARY_DIR}/src/fast_ber_compiler ${CMAKE_SOURCE_DIR}/testfiles/simple5.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple5)
-add_test(NAME fast_ber_compiler_6 COMMAND ${CMAKE_BINARY_DIR}/src/fast_ber_compiler ${CMAKE_SOURCE_DIR}/testfiles/SGSN-CDR-def-v2009A.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/real_schema)
-add_test(NAME fast_ber_tests COMMAND ${CMAKE_BINARY_DIR}/test/fast_ber_tests)
+add_test(NAME fast_ber_compiler_0 COMMAND fast_ber_compiler ${CMAKE_SOURCE_DIR}/testfiles/simple0.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple0)
+add_test(NAME fast_ber_compiler_1 COMMAND fast_ber_compiler ${CMAKE_SOURCE_DIR}/testfiles/simple1.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple1)
+add_test(NAME fast_ber_compiler_2 COMMAND fast_ber_compiler ${CMAKE_SOURCE_DIR}/testfiles/simple2.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple2)
+add_test(NAME fast_ber_compiler_3 COMMAND fast_ber_compiler ${CMAKE_SOURCE_DIR}/testfiles/simple3.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple3)
+add_test(NAME fast_ber_compiler_4 COMMAND fast_ber_compiler ${CMAKE_SOURCE_DIR}/testfiles/simple4.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple4)
+add_test(NAME fast_ber_compiler_5 COMMAND fast_ber_compiler ${CMAKE_SOURCE_DIR}/testfiles/simple5.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple5)
+add_test(NAME fast_ber_compiler_6 COMMAND fast_ber_compiler ${CMAKE_SOURCE_DIR}/testfiles/SGSN-CDR-def-v2009A.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/real_schema)
+add_test(NAME fast_ber_tests COMMAND fast_ber_tests)

@@ -5,7 +5,7 @@ add_subdirectory(3rd_party/abseil-cpp)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(default_build_type "Release")
+set(default_build_type Release)
 set(SKIP_AUTO_GENERATION false) # Set to true to avoid bison / asn1c autogeneration (use checked in files instead)
 set(BENCHMARKS_INCLUDE_ASN1C true)
 
@@ -27,7 +27,10 @@ if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER MA
 else()
   set(SKIP_AUTO_GENERATION true) # Can't autogen on windows, used checked in files instead
   set(BENCHMARKS_INCLUDE_ASN1C false)
-  add_compile_options("/O2")
+  set(CTEST_CONFIGURATION_TYPE "${CMAKE_BUILD_TYPE}")
+  if (CMAKE_BUILD_TYPE MATCHES Release)
+    add_compile_options("/O2")
+  endif ()
 endif()
 
 enable_testing()

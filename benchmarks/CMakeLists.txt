@@ -14,8 +14,8 @@ endif()
 function(fast_ber_generate input_file output_name)
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}.hpp
-        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/../src/fast_ber_compiler ${input_file} ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}
-        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/../src/fast_ber_compiler ${input_file}
+        COMMAND fast_ber_compiler ${input_file} ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}
+        DEPENDS fast_ber_compiler ${input_file}
     )
 endfunction(fast_ber_generate)
 

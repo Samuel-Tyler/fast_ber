@@ -13,10 +13,11 @@ image:
   - Visual Studio 2017
   
 build_script:
-  - mkdir build
-  - cd build
-  - cmake .. -DCMAKE_BUILD_TYPE=$env:CONFIGURATION -G "NMake Makefiles"
-  - nmake
+- cmd: >-
+    mkdir build
+    cd build
+    cmake .. -G "Visual Studio 15 2017 Win64" -DCMAKE_BUILD_TYPE:STRING=Release
+    cmake --build . --config "Release"
 
 test_script:
-  - ctest
+- cmd: ctest -C Release
