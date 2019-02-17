@@ -7,7 +7,6 @@ configuration:
   - Release
 
 image:
-  - Visual Studio 2015
   - Visual Studio 2017
   
 build_script:
@@ -18,9 +17,9 @@ build_script:
     
     cd build
     
-    cmake .. -DCMAKE_BUILD_TYPE=Release
+    cmake .. -DCMAKE_BUILD_TYPE=$env:CONFIGURATION
    
-    cmake --build . --config "Release"
+    cmake --build . --config $env:CONFIGURATION
 
 test_script:
-  - ctest -C Release
+  - ctest -C $env:CONFIGURATION
