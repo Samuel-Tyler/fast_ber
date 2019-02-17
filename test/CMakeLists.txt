@@ -10,6 +10,14 @@ function(fast_ber_generate input_file output_name)
     )
 endfunction(fast_ber_generate)
 
+function(fast_ber_generate2 input_file1 input_file2 output_name)
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}.hpp
+        COMMAND ${CMAKE_BINARY_DIR}/src/fast_ber_compiler ${input_file1} ${input_file2} ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}
+        DEPENDS ${CMAKE_BINARY_DIR}/src/fast_ber_compiler ${input_file1} ${input_file2}
+    )
+endfunction(fast_ber_generate)
+
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/simple5.asn simple)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/choice.asn choice)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/tags.asn tags)
@@ -18,10 +26,11 @@ fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/object_identifier.asn object_ide
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/top_level_encodings.asn top_level_encodings)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/all_types_test.asn all_types)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/import.asn import)
-fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/multi_file_import_*.asn multi_file_import)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/value_assignment.asn value_assign)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/embedded.asn embedded)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/SGSN-CDR-def-v2009A.asn real_schema)
+fast_ber_generate2(${CMAKE_SOURCE_DIR}/testfiles/multi_file_import_1.asn
+                   ${CMAKE_SOURCE_DIR}/testfiles/multi_file_import_2.asn multi_file_import)
 
 aux_source_directory(ber_types TEST_SRC)
 aux_source_directory(util TEST_SRC)
