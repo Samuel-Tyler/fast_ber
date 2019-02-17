@@ -17,9 +17,9 @@ build_script:
     
     cd build
     
-    cmake .. -DCMAKE_BUILD_TYPE=$env:CONFIGURATION
+    cmake .. -DCMAKE_BUILD_TYPE="$env:CONFIGURATION"
    
-    cmake --build . --config $env:CONFIGURATION
+    cmake --build . --config "$env:CONFIGURATION"
 
 test_script:
-  - ctest -C $env:CONFIGURATION
+  - ctest -C "$env:CONFIGURATION"
