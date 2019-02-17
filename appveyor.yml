@@ -1,0 +1,20 @@
+shallow_clone: true
+
+platform:
+  - x86
+  - x64
+
+configuration:
+  - Debug
+  - Release
+
+image:
+  - Visual Studio 2015
+  - Visual Studio 2017
+  
+build_script:
+  - cmake .. -DCMAKE_BUILD_TYPE=$env:CONFIGURATION -G "NMake Makefiles"
+  - nmake
+
+test_script:
+  - ctest
