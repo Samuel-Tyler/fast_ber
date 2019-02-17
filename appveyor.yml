@@ -13,6 +13,8 @@ image:
   - Visual Studio 2017
   
 build_script:
+  - mkdir build
+  - cd build
   - cmake .. -DCMAKE_BUILD_TYPE=$env:CONFIGURATION -G "NMake Makefiles"
   - nmake
 
