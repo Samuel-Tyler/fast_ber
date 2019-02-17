@@ -1,0 +1,17 @@
+Simple DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+OuterCollection ::= SEQUENCE {
+    middle_collection SEQUENCE {
+        inner_collection SEQUENCE {
+            string OCTET STRING
+        }
+    },
+
+    outer_choice CHOICE {
+        inner_choice CHOICE {
+            integer INTEGER
+        }
+    }
+}
+
+END

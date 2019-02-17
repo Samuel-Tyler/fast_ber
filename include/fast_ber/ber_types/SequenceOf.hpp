@@ -1,13 +1,6 @@
 #pragma once
 
-#include "absl/container/inlined_vector.h"
-#include "absl/types/span.h"
-
-#include "fast_ber/ber_types/Class.hpp"
-#include "fast_ber/ber_types/Identifier.hpp"
-#include "fast_ber/ber_types/Tag.hpp"
-#include "fast_ber/util/DecodeHelpers.hpp"
-#include "fast_ber/util/EncodeHelpers.hpp"
+#include "fast_ber/ber_types/Sequence.hpp"
 
 namespace fast_ber
 {

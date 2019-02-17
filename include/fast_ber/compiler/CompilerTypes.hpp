@@ -423,13 +423,22 @@ std::string to_string(const SequenceType& sequence)
     for (const ComponentType& component : sequence.components)
     {
         std::string component_type = to_string(component.named_type.type);
-        if (component.is_optional)
+        if (absl::holds_alternative<BuiltinType>(component.named_type.type) &&
+            absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(component.named_type.type)))
         {
-            component_type = make_type_optional(component_type);
+            res += "struct " + component.named_type.name + "_type " + component_type;
+            res += "    " + component.named_type.name + "_type " + component.named_type.name + ";\n";
         }
-        res += "    " + component_type + " " + component.named_type.name + ";\n";
+        else
+        {
+            if (component.is_optional)
+            {
+                component_type = make_type_optional(component_type);
+            }
+            res += "    " + component_type + " " + component.named_type.name + ";\n";
+        }
     }
-    res += "};\n\n";
+    res += "};\n";
 
     return res;
 }
@@ -451,13 +460,22 @@ std::string to_string(const SetType& set)
     for (const ComponentType& component : set.components)
     {
         std::string component_type = to_string(component.named_type.type);
-        if (component.is_optional)
+        if (absl::holds_alternative<BuiltinType>(component.named_type.type) &&
+            absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(component.named_type.type)))
         {
-            component_type = make_type_optional(component_type);
+            res += "    struct " + component.named_type.name + "_type " + component_type + "\n;";
+            res += component.named_type.name + "_type " + component.named_type.name + ";\n";
         }
-        res += "    " + component_type + " " + component.named_type.name + ";\n";
+        else
+        {
+            if (component.is_optional)
+            {
+                component_type = make_type_optional(component_type);
+            }
+            res += "    " + component_type + " " + component.named_type.name + ";\n";
+        }
     }
-    res += "};\n\n";
+    res += "};\n";
 
     return res;
 }
