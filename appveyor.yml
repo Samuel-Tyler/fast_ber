@@ -12,6 +12,8 @@ image:
   
 build_script:
 - cmd: >-
+    git submodule update --init
+
     mkdir build
     
     cd build
