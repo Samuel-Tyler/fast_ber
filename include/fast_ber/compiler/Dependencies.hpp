@@ -82,7 +82,7 @@ std::vector<std::string> depends_on(const SequenceOfType& sequence)
 {
     if (sequence.has_name)
     {
-        return {sequence.named_type->name};
+        return depends_on(sequence.named_type->type);
     }
     else
     {
@@ -103,7 +103,7 @@ std::vector<std::string> depends_on(const SetOfType& set)
 {
     if (set.has_name)
     {
-        return {set.named_type->name};
+        return depends_on(set.named_type->type);
     }
     else
     {
