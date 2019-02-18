@@ -111,7 +111,7 @@ inline EncodeResult encode_object_id(absl::Span<uint8_t> output, const ObjectIde
         bool first = true;
         do
         {
-            output[output_write_pos] = component % 128;
+            output[output_write_pos] = static_cast<uint8_t>(component % 128);
             if (first)
             {
                 first = false;
