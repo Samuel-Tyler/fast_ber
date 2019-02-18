@@ -31,7 +31,7 @@ TEST_CASE("Extract: Lengths")
 {
     for (const auto& packet : packets)
     {
-        uint64_t length = 0xFF;
+        size_t length = 0xFF;
         REQUIRE(fast_ber::extract_length(packet.data, length, 1) == 1);
         REQUIRE(length == packet.length);
     };

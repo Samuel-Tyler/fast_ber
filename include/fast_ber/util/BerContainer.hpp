@@ -63,7 +63,7 @@ class BerContainer
     size_t encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
   private:
-    absl::InlinedVector<uint8_t, 100> m_data;
+    absl::InlinedVector<uint8_t, 100u> m_data;
     MutableBerView                    m_view;
 };
 

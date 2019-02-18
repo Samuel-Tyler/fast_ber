@@ -192,7 +192,7 @@ inline BerView::BerView(absl::Span<const uint8_t> input_ber_data, Tag input_tag,
 inline void BerView::assign(absl::Span<const uint8_t> input_ber_data) noexcept
 {
     m_valid                       = false;
-    uint64_t input_content_length = 0;
+    size_t input_content_length = 0;
 
     size_t input_tag_length      = extract_tag(input_ber_data, m_tag);
     size_t input_len_length      = extract_length(input_ber_data, input_content_length, input_tag_length);

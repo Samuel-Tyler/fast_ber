@@ -27,7 +27,7 @@ inline size_t extract_tag(absl::Span<const uint8_t> input, Tag& tag) noexcept;
 
 // Extract the length of a ber packet
 // Return the length of the length octets on success, false on fail
-inline size_t extract_length(absl::Span<const uint8_t> input, uint64_t& length, size_t length_offset) noexcept;
+inline size_t extract_length(absl::Span<const uint8_t> input, size_t& length, size_t length_offset) noexcept;
 
 inline bool extract_construction(absl::Span<const uint8_t> input, Construction& construction) noexcept
 {
@@ -105,7 +105,7 @@ inline size_t extract_tag(absl::Span<const uint8_t> input, Tag& tag) noexcept
     }
 }
 
-inline size_t extract_length(absl::Span<const uint8_t> input, uint64_t& length, size_t length_offset) noexcept
+inline size_t extract_length(absl::Span<const uint8_t> input, size_t& length, size_t length_offset) noexcept
 {
     input.remove_prefix(length_offset);
     if (input.size() == 0)

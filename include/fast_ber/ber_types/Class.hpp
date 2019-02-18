@@ -17,7 +17,7 @@ constexpr inline Class get_class(uint8_t first_byte) { return static_cast<Class>
 
 constexpr inline uint8_t add_class(uint8_t first_byte, Class class_)
 {
-    return (static_cast<int>(class_) << 6) | (first_byte & 0x3F);
+    return (static_cast<uint8_t>(class_) << 6) | (first_byte & 0x3F);
 }
 
 } // namespace fast_ber

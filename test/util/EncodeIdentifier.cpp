@@ -72,7 +72,7 @@ TEST_CASE("EncodeIdentifiers: Creating lengths")
     {
         std::array<uint8_t, 10> buffer = {};
 
-        uint64_t length = 0;
+        size_t length = 0;
         INFO(test_val);
 
         REQUIRE(fast_ber::encode_length(absl::Span<uint8_t>(buffer.data(), buffer.size()), test_val));
