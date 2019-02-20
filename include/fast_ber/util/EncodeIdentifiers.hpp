@@ -39,7 +39,10 @@ inline size_t encode_header(absl::Span<uint8_t> output, Construction constructio
 inline size_t encoded_header_length(Construction construction, Class class_, Tag tag, size_t length) noexcept;
 inline size_t encoded_header_length(Construction construction, Class class_, UniversalTag tag, size_t length) noexcept;
 
-constexpr inline uint8_t add_short_tag(uint8_t first_byte, Tag tag) noexcept { return static_cast<uint8_t>(tag) | (first_byte & 0xE0); }
+constexpr inline uint8_t add_short_tag(uint8_t first_byte, Tag tag) noexcept
+{
+    return static_cast<uint8_t>(tag) | (first_byte & 0xE0);
+}
 
 inline size_t encode_tag(absl::Span<uint8_t> output, Tag tag) noexcept
 {
@@ -59,7 +62,7 @@ inline size_t encode_tag(absl::Span<uint8_t> output, Tag tag) noexcept
 
         for (size_t i = 1; i < output.size(); i++)
         {
-            output[i] = tag % 0x80;
+            output[i] = static_cast<uint8_t>(tag % 0x80);
             tag /= 0x80;
 
             if (i != 1)
@@ -205,7 +208,7 @@ inline size_t encode_length(absl::Span<uint8_t> output, uint64_t length) noexcep
         output[7] = (length >> 0) & 0xFF;
         return 8;
     }
-    else if (length <= 0xFFFFFFFFFFFFFFFF && output.length() > 8)
+    else if (output.length() > 8)
     {
         output[0] = 0x88;
         output[1] = (length >> 56) & 0xFF;
@@ -255,12 +258,10 @@ inline size_t encoded_length_length(size_t length) noexcept
     {
         return 8;
     }
-    else if (length <= 0xFFFFFFFFFFFFFFFF)
+    else
     {
         return 9;
     }
-
-    return 0;
 }
 
 inline size_t encode_header(absl::Span<uint8_t> output, Construction construction, Class class_, Tag tag,

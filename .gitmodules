@@ -10,10 +10,13 @@
 [submodule "3rd_party/re2c"]
 	path = 3rd_party/re2c
 	url = https://github.com/skvadrik/re2c.git
-    ignore = dirty
+	ignore = dirty
 [submodule "3rd_party/asn1c"]
 	path = 3rd_party/asn1c
-	url = https://github.com/vlm/asn1c
+	url = https://github.com/vlm/asn1c.git
 [submodule "3rd_party/bison"]
 	path = 3rd_party/bison
 	url = https://git.savannah.gnu.org/git/bison.git
+[submodule "3rd_party/--force"]
+	path = 3rd_party/--force
+	url = https://github.com/vlm/asn1c.git
