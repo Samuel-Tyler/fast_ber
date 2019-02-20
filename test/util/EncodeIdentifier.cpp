@@ -65,10 +65,9 @@ TEST_CASE("EncodeIdentifiers: Creating tags")
 
 TEST_CASE("EncodeIdentifiers: Creating lengths")
 {
-    const auto test_vals = std::initializer_list<uint64_t>{0,   1,   10,    55,    66,     127,       128,        255,
-                                                           256, 500, 14000, 99244, 382348, 400532434, 99999999999};
+    const auto test_vals = std::initializer_list<size_t>{0,   1,   10,    55,    66,     127,       128,        255, 256, 500, 14000, 99244, 382348, 400532434, 99999999999};
 
-    for (const uint64_t test_val : test_vals)
+    for (const size_t test_val : test_vals)
     {
         std::array<uint8_t, 10> buffer = {};
 

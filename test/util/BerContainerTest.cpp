@@ -7,17 +7,17 @@
 TEST_CASE("BerContainer: Empty construction")
 {
     fast_ber::BerContainer container;
-    const auto             expected = std::initializer_list<uint8_t>({0x80, 0x00});
+    const auto expected = std::array<uint8_t, 2>({0x80, 0x00});
 
     REQUIRE(container.is_valid());
     REQUIRE(container.tag() == 0);
     REQUIRE(container.content_length() == 0);
-    REQUIRE(container.ber() == absl::MakeSpan(expected.begin(), expected.size()));
+    REQUIRE(container.ber() == absl::MakeSpan(expected.data(), expected.size()));
 }
 
 TEST_CASE("BerContainer: Resize larger")
 {
-    const auto             test_data = std::initializer_list<uint8_t>({'a', 'b', 'c'});
+    const auto             test_data = std::array<uint8_t, 3>({'a', 'b', 'c'});
     fast_ber::BerContainer container(test_data, fast_ber::ConstructionMethod::construct_with_provided_content);
 
     size_t new_size = 99999;
@@ -37,7 +37,7 @@ TEST_CASE("BerContainer: Resize larger")
 
 TEST_CASE("BerContainer: Resize smaller")
 {
-    const auto             test_data = std::initializer_list<uint8_t>({'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'});
+    const auto             test_data = std::array<uint8_t, 9>({'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'});
     fast_ber::BerContainer container(test_data, fast_ber::ConstructionMethod::construct_with_provided_content);
 
     size_t new_size = 5;
@@ -52,12 +52,12 @@ TEST_CASE("BerContainer: Resize smaller")
     REQUIRE(container.is_valid());
     REQUIRE(container.tag() == 0);
     REQUIRE(container.content_length() == new_size);
-    REQUIRE(container.content() == absl::MakeSpan(test_data.begin(), new_size));
+    REQUIRE(container.content() == absl::MakeSpan(test_data.data(), new_size));
 }
 
 TEST_CASE("BerContainer: Resize same size")
 {
-    const auto             test_data = std::initializer_list<uint8_t>({'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'});
+    const auto             test_data = std::array<uint8_t, 9>({'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'});
     fast_ber::BerContainer container(test_data, fast_ber::ConstructionMethod::construct_with_provided_content);
 
     size_t new_size = test_data.size();
