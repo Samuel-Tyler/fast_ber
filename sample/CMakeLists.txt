@@ -3,12 +3,6 @@ aux_source_directory(decode DECODE_SRC)
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/autogen)
 
-add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/pokemon.hpp
-    COMMAND fast_ber_compiler ${CMAKE_CURRENT_SOURCE_DIR}/../testfiles/pokemon.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/pokemon
-    DEPENDS fast_ber_compiler ../testfiles/pokemon.asn
-)
-
 add_executable(sample_encode ${ENCODE_SRC} ${CMAKE_CURRENT_BINARY_DIR}/autogen/pokemon.hpp)
 add_executable(sample_decode ${DECODE_SRC} ${CMAKE_CURRENT_BINARY_DIR}/autogen/pokemon.hpp)
 target_include_directories(sample_encode PRIVATE ${CMAKE_CURRENT_BINARY_DIR})

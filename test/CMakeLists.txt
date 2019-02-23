@@ -2,14 +2,6 @@ project(fast_ber_tests)
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/autogen)
 
-function(fast_ber_generate input_file output_name)
-    add_custom_command(
-        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}.hpp
-        COMMAND fast_ber_compiler ${input_file} ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}
-        DEPENDS fast_ber_compiler ${input_file}
-    )
-endfunction(fast_ber_generate)
-
 function(fast_ber_generate2 input_file1 input_file2 output_name)
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}.hpp
@@ -48,5 +40,6 @@ add_test(NAME fast_ber_compiler_3 COMMAND fast_ber_compiler ${CMAKE_SOURCE_DIR}/
 add_test(NAME fast_ber_compiler_4 COMMAND fast_ber_compiler ${CMAKE_SOURCE_DIR}/testfiles/simple4.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple4)
 add_test(NAME fast_ber_compiler_5 COMMAND fast_ber_compiler ${CMAKE_SOURCE_DIR}/testfiles/simple5.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/simple5)
 add_test(NAME fast_ber_compiler_6 COMMAND fast_ber_compiler ${CMAKE_SOURCE_DIR}/testfiles/sequence_of.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/sequence_of)
-add_test(NAME fast_ber_compiler_7 COMMAND fast_ber_compiler ${CMAKE_SOURCE_DIR}/testfiles/SGSN-CDR-def-v2009A.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/real_schema)
+add_test(NAME fast_ber_compiler_7 COMMAND fast_ber_compiler ${CMAKE_SOURCE_DIR}/testfiles/extension.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/extension)
+add_test(NAME fast_ber_compiler_8 COMMAND fast_ber_compiler ${CMAKE_SOURCE_DIR}/testfiles/SGSN-CDR-def-v2009A.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/real_schema)
 add_test(NAME fast_ber_tests COMMAND fast_ber_tests)

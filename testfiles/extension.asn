@@ -1,0 +1,42 @@
+Extension DEFINITIONS IMPLICIT TAGS ::= BEGIN
+
+Extension-1 ::= SEQUENCE {
+    normal-item-1 INTEGER,
+    normal-item-2 INTEGER,
+    normal-item-3 INTEGER,
+    ...,
+    extension-1 INTEGER,
+    extension-2 INTEGER,
+    extension-3 INTEGER,
+    ...
+}
+
+Extension-2 ::= SEQUENCE {
+    ...,
+    extension-only INTEGER,
+    ...
+}
+
+Extension-3 ::= SEQUENCE {
+    ...
+}
+
+Extension-4 ::= SEQUENCE {
+    ...,
+    ...
+}
+
+EnumExtension-1 ::= ENUMERATED {
+    normal-item-1,
+    normal-item-2,
+    normal-item-3,
+    ...,
+    additional-enum
+}
+
+EnumExtension-2 ::= ENUMERATED {
+    ...
+}
+
+
+END

@@ -875,10 +875,11 @@ Enumerations:
 |   Enumeration "," ELIPSIS ExceptionSpec
     { $$ = $1;
       $$.accept_anything = true; }
-|   Enumeration "," "..." ExceptionSpec "," Enumeration
+|   Enumeration "," ELIPSIS ExceptionSpec "," Enumeration
     { $$ = $1;
       $$.accept_anything = true;
       $$.enum_values.insert($$.enum_values.end(), $6.enum_values.begin(), $6.enum_values.end()); }
+|   ELIPSIS ExceptionSpec
 
 Enumeration:
     EnumerationItem
@@ -949,8 +950,16 @@ RootComponentTypeList:
     { $$ = $1; }
 |   ComponentTypeList "," ELIPSIS "," ComponentTypeList
     { $$ = $1; $$.insert($$.end(), $5.begin(), $5.end()); }
+|   ComponentTypeList "," ELIPSIS "," ComponentTypeList "," ELIPSIS
+    { $$ = $1; $$.insert($$.end(), $5.begin(), $5.end()); }
 |   ELIPSIS "," ComponentTypeList
     { $$ = $3; }
+|   ELIPSIS "," ComponentTypeList "," ELIPSIS
+    { $$ = $3; }
+|   ELIPSIS
+    { $$ = {}; }
+|   ELIPSIS "," ELIPSIS
+    { $$ = {}; }
 
 ComponentTypeList:
     ComponentType

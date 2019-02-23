@@ -15,7 +15,7 @@ if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER MA
   add_compile_options("-Wno-missing-field-initializers") # Stop spam on g++-4.8
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wold-style-cast")
 
-  if (CMAKE_BUILD_TYPE MATCHES Debug)
+  if (CMAKE_BUILD_TYPE MATCHES "Debug")
     add_compile_options("-g")
     # add_compile_options("-fsanitize=address" "-Werror")
     # set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fsanitize=address")
@@ -29,7 +29,7 @@ else()
   set(BENCHMARKS_INCLUDE_ASN1C false)
   set(CTEST_CONFIGURATION_TYPE "${CMAKE_BUILD_TYPE}")
   add_compile_options("/W4")
-  if (CMAKE_BUILD_TYPE MATCHES Release)
+  if (CMAKE_BUILD_TYPE MATCHES "Release")
     add_compile_options("/O2")
   endif ()
 endif()

@@ -35,3 +35,12 @@ add_executable(${PROJECT_NAME}_compiler ${SRC_LIST} ${CMAKE_CURRENT_BINARY_DIR}/
 
 target_link_libraries(fast_ber_lib absl::base absl_internal_throw_delegate absl_variant absl::strings absl::optional)
 target_link_libraries(${PROJECT_NAME}_compiler fast_ber_lib absl_str_format)
+
+# CMake function to generate c++ include files from a given ASN1 input
+function(fast_ber_generate input_file output_name)
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}.hpp
+        COMMAND fast_ber_compiler ${input_file} ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}
+        DEPENDS fast_ber_compiler ${input_file}
+    )
+endfunction(fast_ber_generate)
