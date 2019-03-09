@@ -88,7 +88,7 @@ void resolve_module_dependencies(const std::unordered_map<std::string, Module>& 
     const auto& module_iter = module_map.find(name);
     if (module_iter == module_map.end())
     {
-        throw std::runtime_error("Reference to undefined type: " + name);
+        throw std::runtime_error("Reference to undefined module: " + name);
     }
 
     if (assigned_names.count(name) == 1)

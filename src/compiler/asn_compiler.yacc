@@ -52,7 +52,6 @@
 %token extended-true
 %token tstring
 %token extended-false
-%token objectclassreference
 %token objectreference
 %token objectsetreference
 %token typefieldreference
@@ -60,7 +59,6 @@
 %token valuesetfieldreference
 %token objectfieldreference
 %token objectsetfieldreference
-%token word
 
 %token ABSENT
 %token ABSTRACT_SYNTAX
@@ -183,7 +181,6 @@
 
 %token PLUS
 %token STAR
-%token QUESTION_MARK
 %token GENERIC_IDENTIFIER_UPPERCASE
 %token GENERIC_IDENTIFIER_LOWERCASE
 %token GENERIC_INTEGER
@@ -196,6 +193,10 @@
 %type<std::string>       identifier
 %type<std::string>       modulereference
 %type<std::string>       valuereference
+%type<std::string>       typefieldreference
+%type<std::string>       valuefieldreference
+%type<std::string>       objectclassreference
+%type<std::string>       word
 %type<std::string>       ModuleIdentifier
 %type<std::string>       GlobalModuleReference
 %type<std::string>       bstring
@@ -210,8 +211,6 @@
 %type<long long>         number
 %type<long long>         SignedNumber
 %type<DefinedValue>      DefinedValue
-%type<Value>             ReferencedValue
-%type<long long>         IntegerValue
 %type<BuiltinType>       BuiltinType;
 %type<DefinedType>       DefinedType;
 %type<EnumeratedType>    EnumeratedType;
@@ -239,8 +238,9 @@
 %type<ComponentTypeList> ComponentTypeList;
 %type<ComponentTypeList> ComponentTypeLists;
 %type<ComponentTypeList> RootComponentTypeList;
-%type<Value>             Value
-%type<Value>             BuiltinValue;
+%type<Value>             Value;
+%type<std::vector<Value>> SequenceOfValues;
+//%type<Value>             BuiltinValue;
 %type<PrefixedType>      PrefixedType;
 %type<std::string>       Reference;
 %type<SetOfType>         SetOfType;
@@ -283,8 +283,8 @@ ModuleDefinition:
       $8.tagging_default = $4;
       context.asn1_tree.modules.push_back($8); }
 
-//SyntaxList:
-//   "{" TokenOrGroupSpec "}";
+SyntaxList:
+   "{" TokenOrGroupSpecList "}";
 
 //EncodingInstruction:
 //    %empty;
@@ -307,85 +307,106 @@ UsefulObjectClassReference:
     TYPE_IDENTIFIER
 |   ABSTRACT_SYNTAX;
 
-//ObjectClassAssignment:
-//    objectclassreference DEFINED_AS ObjectClass;
+ObjectClassAssignment:
+    typereference DEFINED_AS ObjectClass;
 
-//ObjectClass:
-//    DefinedObjectClass
-//|   ObjectClassDefn
+ObjectClass:
+    DefinedObjectClass
+|   ObjectClassDefn
 //|   ParameterizedObjectClass;
 
-//ObjectClassDefn:
-//    CLASS "{" FieldSpec "," PLUS "}" WithSyntaxSpec QUESTION_MARK;
+ObjectClassDefn:
+    CLASS "{" FieldSpecList "}" WithSyntaxSpec
 
-//FieldSpec:
-//    TypeFieldSpec
-//|   FixedTypeValueFieldSpec
-//|   VariableTypeValueFieldSpec
-//|   ObjectFieldSpec
-//|   ObjectSetFieldSpec;
+FieldSpecList:
+    FieldSpec
+|   FieldSpecList "," FieldSpec
 
-PrimitiveFieldName:
+FieldSpec:
+    TypeFieldSpec
+|   FixedTypeValueFieldSpec
+|   VariableTypeValueFieldSpec
+|   ObjectFieldSpec
+|   ObjectSetFieldSpec;
+
+FieldName:
     typefieldreference
 |   valuefieldreference
 |   valuesetfieldreference
 |   objectfieldreference
 |   objectsetfieldreference;
 
-FieldName:
-    PrimitiveFieldName "." PLUS;
+FieldNameList:
+    FieldName
+|   FieldNameList "." FieldName
 
-//TypeFieldSpec:
-//    typefieldreference TypeOptionalitySpec QUESTION_MARK;
+TypeFieldSpec:
+    typefieldreference TypeOptionalitySpec
 
 TypeOptionalitySpec:
     OPTIONAL
-|   DEFAULT Type;
+|   DEFAULT Type
+|   %empty
+
+OptionalUnique:
+    UNIQUE
+|   %empty
 
 FixedTypeValueFieldSpec:
-    valuefieldreference Type UNIQUE QUESTION_MARK ValueOptionalitySpec QUESTION_MARK;
+    valuefieldreference Type OptionalUnique ValueOptionalitySpec;
 
 ValueOptionalitySpec:
     OPTIONAL
-|   DEFAULT Value;
+|   DEFAULT Value
+|   %empty
 
 VariableTypeValueFieldSpec:
-    valuefieldreference FieldName ValueOptionalitySpec QUESTION_MARK;
+    valuefieldreference FieldName ValueOptionalitySpec;
 
 ObjectFieldSpec:
-    objectfieldreference DefinedObjectClass ObjectOptionalitySpec QUESTION_MARK;
+    typefieldreference DefinedObjectClass ObjectOptionalitySpec;
 
 ObjectOptionalitySpec:
     OPTIONAL
-|   DEFAULT Object;
+|   DEFAULT Object
+|   %empty
 
 ObjectSetFieldSpec:
-    objectsetfieldreference DefinedObjectClass ObjectSetOptionalitySpec QUESTION_MARK;
+    objectsetfieldreference DefinedObjectClass ObjectSetOptionalitySpec;
 
 ObjectSetOptionalitySpec:
     OPTIONAL
-|   DEFAULT;
+|   DEFAULT
+|   %empty
 
 //ObjectSeWithSyntaxSpec:
 //    WITH SYNTAX SyntaxList;
 
-//WithSyntaxSpec:
-//    WITH SYNTAX SyntaxList;
+WithSyntaxSpec:
+    WITH SYNTAX SyntaxList
+|   %empty
+
+TokenOrGroupSpecList:
+    TokenOrGroupSpec
+|   TokenOrGroupSpecList TokenOrGroupSpec
 
 TokenOrGroupSpec:
     RequiredToken
 |   OptionalGroup;
 
 OptionalGroup:
-    "[" TokenOrGroupSpec PLUS "]";
+    "[" TokenOrGroupSpecList "]";
 
 RequiredToken:
+    LiteralList FieldName
+
+LiteralList:
     Literal
-|   PrimitiveFieldName;
+|   LiteralList Literal
 
 Literal:
     word
-|   ",";
+|   ","
 
 DefinedObject:
     ExternalObjectReference
@@ -411,10 +432,14 @@ DefaultSyntax:
     "{" FieldSetting "," STAR "}";
 
 FieldSetting:
-     PrimitiveFieldName Setting;
+     FieldName Setting;
 
 DefinedSyntax:
-    "{" DefinedSyntaxToken STAR "}";
+    "{" DefinedSyntaxList "}";
+
+DefinedSyntaxList:
+    DefinedSyntaxToken
+|   DefinedSyntaxList DefinedSyntaxToken
 
 DefinedSyntaxToken:
     Literal
@@ -423,17 +448,17 @@ DefinedSyntaxToken:
 Setting:
     Type
 |   Value
-|   Object
+//|   Object
 
 DefinedObjectSet:
     ExternalObjectSetReference
-|   objectsetreference;
+|   typereference;
 
 ExternalObjectSetReference:
-    modulereference "." objectsetreference;
+    modulereference "." typereference;
 
 ObjectSetAssignment:
-    objectsetreference DefinedObjectClass DEFINED_AS ObjectSet;
+    typereference DefinedObjectSet DEFINED_AS ObjectSet;
 
 ObjectSet:
     "{" ObjectSetSpec "}";
@@ -452,13 +477,60 @@ ObjectSetElements:
 //|   ParameterizedObjectSet;
 
 ObjectClassFieldType:
-    DefinedObjectClass "." FieldName;
+    typereference "." FieldNameList
+|   valuereference "." FieldNameList
 
 ObjectClassFieldValue:
-    OpenTypeFieldVal
-
-OpenTypeFieldVal:
     Type COLON Value;
+
+ParameterizedAssignment:
+    ParameterizedTypeAssignment
+|   ParameterizedValueAssignment
+|   ParameterizedValueSetTypeAssignment
+|   ParameterizedObjectClassAssignment
+|   ParameterizedObjectAssignment
+|   ParameterizedObjectSetAssignment;
+
+ParameterizedTypeAssignment:
+    typereference ParameterList DEFINED_AS Type 
+ 
+ParameterizedValueAssignment:
+    valuereference ParameterList Type DEFINED_AS Value;
+
+ParameterizedValueSetTypeAssignment:
+    typereference ParameterList Type DEFINED_AS Value 
+ 
+ParameterizedObjectClassAssignment:
+    objectclassreference ParameterList: ObjectClass;
+
+ParameterizedObjectAssignment:
+    objectreference ParameterList DefinedObjectClass DEFINED_AS Object;
+
+ParameterizedObjectSetAssignment:
+    typereference ParameterList DefinedObjectClass DEFINED_AS ObjectSet;
+
+ParameterList:
+   "{" ParameterSeries "}";
+
+ParameterSeries:
+    Parameter
+|   ParameterSeries "," Parameter
+
+Parameter:
+    ParamGovernor ":" Reference
+|   Reference;
+
+ParamGovernor:
+    Governor
+|   Reference;
+
+Governor:
+    Type
+|   DefinedObjectClass;
+
+ParameterizedReference:
+    Reference
+|   Reference "{" "}";
 
 /*
 InformationFromObjects:
@@ -475,19 +547,19 @@ ReferencedObjects:
 //|   ParameterizedObjectSet;
 
 ValueFromObject:
-    ReferencedObjects "." FieldName;
+    ReferencedObjects "." FieldNameList;
 
 ValueSetFromObjects:
-    ReferencedObjects "." FieldName;
+    ReferencedObjects "." FieldNameList;
 
 TypeFromObject:
-    ReferencedObjects "." FieldName;
+    ReferencedObjects "." FieldNameList;
 
 ObjectFromObject:
-    ReferencedObjects "." FieldName;
+    ReferencedObjects "." FieldNameList;
 
 ObjectSetFromObjects:
-    ReferencedObjects "." FieldName;
+    ReferencedObjects "." FieldNameList;
 
 InstanceOfType:
     INSTANCE OF DefinedObjectClass;
@@ -505,30 +577,42 @@ SimpleDefinedValue:
 |   valuereference;
 
 GeneralConstraint:
-//    UserDefinedConstraint
-//|   TableConstraint
-    ContentsConstraint;
+    UserDefinedConstraint
+|   TableConstraint
+|   ContentsConstraint;
+
+UserDefinedConstraint:
+    CONSTRAINED BY "{" UserDefinedConstraintParameter "}"
+
+UserDefinedConstraintParameter:
+    Governor ":" Value
+|   Governor ":" Object
+//|   DefinedObjectSet
+|   Type
+|   DefinedObjectClass
+|   %empty
 
 TableConstraint:
-    SimpleTableConstraint
-|   ComponentRelationConstraint;
+    ObjectSet
+    { std::cout << "Simple constraint\n"; }
+|   ObjectSet "{" AtNotationList "}"
+    { std::cout << "Relation constraint\n"; }
 
-SimpleTableConstraint:
-    ObjectSet;
-
-ComponentRelationConstraint:
-    "{" DefinedObjectSet "}" "{" AtNotation "," "}";
+AtNotationList:
+    AtNotation
+|   AtNotationList "," AtNotation
 
 AtNotation:
-    ComponentIdList
-|   "@." Level ComponentIdList;
+    "@" ComponentIdList
+|   "@" "." Level ComponentIdList;
 
 Level:
     "." Level
 |   %empty;
 
 ComponentIdList:
-    identifier ".";
+    identifier
+|   ComponentIdList "." identifier
 
 ContentsConstraint:
     CONTAINING Type
@@ -646,7 +730,7 @@ GlobalModuleReference:
 
 AssignedIdentifier:
     ObjectIdentifierValue
-|   DefinedValue
+|   valuereference
 |   %empty;
 
 SymbolList:
@@ -662,11 +746,15 @@ Symbol:
 Reference:
     typereference
     { $$ = $1; }
+|   typereference "{" "}"
+    { $$ = $1; }
 |   valuereference
     { $$ = $1; }
+    
+/*
 |   objectclassreference
 |   objectreference
-|   objectsetreference;
+|   objectsetreference; */
 
 AssignmentList:
     Assignment
@@ -679,24 +767,41 @@ Assignment:
     { $$ = $1; }
 |   ValueAssignment
     { $$ = $1; }
-/*|   ValueSetTypeAssignment
 |   ObjectClassAssignment
-|   ObjectAssignment
+//|   ValueSetTypeAssignment
+/*|   ObjectAssignment */ObjectSetAssignment
 |   ObjectSetAssignment
-|   ParameterizedAssignment*/
+|   ParameterizedAssignment
 
 DefinedType:
     ExternalTypeReference
 |   typereference
     { $$ = DefinedType{$1}; }
-//|   ParameterizedType
+|   ParameterizedType
 //|   ParameterizedValueSetType;
 
 DefinedValue:
 //    ExternalValueReference
     valuereference
     { $$ = DefinedValue{$1}; }
-//|   ParameterizedValue;
+|   ParameterizedValue;
+
+ParameterizedType:
+    SimpleDefinedType ActualParameterList 
+
+ParameterizedValue:
+    SimpleDefinedValue ActualParameterList 
+
+ActualParameterList:
+    "{" ActualParameter "}"
+
+ActualParameter:
+    Type
+|   Value
+//|   ValueSet
+|   DefinedObjectClass
+//|   Object
+//|   ObjectSet 
 
 NonParameterizedTypeName:
     ExternalTypeReference
@@ -754,7 +859,7 @@ Type:
 |   DefinedType
     { $$ = $1; }
 |   SelectionType
-    { throw std::runtime_error("Not handled - SelectionType"); }
+    { std::cout << "Warning: Not handled - SelectionType\n"; }
 |   TypeFromObject
     { throw std::runtime_error("Not handled - TypeFromObject"); }
 //|   ValueSetFromObjects { throw std::runtime_error("Not handled - ValueSetFromObjects"); }
@@ -796,38 +901,61 @@ NamedType:
     { $$ = NamedType{ $1, $2 }; }
 
 Value:
-    BuiltinValue
-    { $$ = $1; }
-|   ReferencedValue
-    { $$ = $1; }
-|   ObjectClassFieldValue
-    { throw std::runtime_error("Unhandled field: ObjectClassFieldValue"); }
-
-BuiltinValue:
-//    BitStringValue
-   BooleanValue
-//|   ChoiceValue
-//|   EmbeddedPDVValue
-//|   EnumeratedValue
-//|   ExternalValue
-|   IntegerValue
-    { $$.value_selection = $1; }
+    BooleanValue
+    { throw std::runtime_error("Unhandled field: BooleanValue"); }
 |   IRIValue
-//|   NullValue
-|   ObjectIdentifierValue
-    { $$.value_selection = $1; }
-//|   RealValue
+    { throw std::runtime_error("Unhandled field: IRIValue"); }
+|   ASN_NULL
+    { throw std::runtime_error("Unhandled field: ASN_NULL"); }
 |   TimeValue
+    { throw std::runtime_error("Unhandled field: TimeValue"); }
 |   bstring
+    { throw std::runtime_error("Unhandled field: bstring"); }
 |   hstring
+    { throw std::runtime_error("Unhandled field: hstring"); }
 |   cstring
     { $$.value_selection = $1; }
-|   CONTAINING Value;
+|   CONTAINING Value
+    { throw std::runtime_error("Unhandled field: CONTAINING"); }
+|   GENERIC_IDENTIFIER_UPPERCASE
+    { $$.value_selection = $1; }
+|   GENERIC_IDENTIFIER_LOWERCASE
+    { $$.value_selection = $1; }
+|   GENERIC_IDENTIFIER_LOWERCASE "(" number ")"
+    { $$.value_selection = NamedNumber{$1, $3}; }
+|   ":"
+|   SignedNumber
+    { $$.value_selection = $1; }
+|   realnumber
+    { $$.value_selection = $1; }
+|   ObjectClassFieldType
+    { throw std::runtime_error("Unhandled field: ValueCommaListChoice"); }
+|   Value COLON Value
+    { throw std::runtime_error("Unhandled field: ValueCommaListChoice"); }
+//|   ObjectClassFieldValue
+//    { throw std::runtime_error("Unhandled field: ObjectClassFieldValue"); }
+|   "{" SequenceOfValues "}"
+    { $$.value_selection = $2; }
+|   ValueChoice
+    { throw std::runtime_error("Unhandled field: ValueChoice"); }
+|   OPTIONAL
+    { throw std::runtime_error("Unhandled field: OPTIONAL"); }
+|   ValueCommaListChoice
+    { throw std::runtime_error("Unhandled field: ValueCommaListChoice"); }
 
-ReferencedValue:
-    DefinedValue
-    { $$.defined_value = $1; }
-//|   ValueFromObject;
+ValueCommaListChoice:
+    Value "," Value
+|   ValueCommaListChoice "," Value
+
+ValueChoice:
+    Value VERTICAL_LINE Value
+|   ValueChoice VERTICAL_LINE Value
+
+SequenceOfValues:
+    Value
+    { $$.push_back($1); }
+|   SequenceOfValues Value
+    { $$ = $1; $$.push_back($2); }
 
 NamedValue:
     identifier
@@ -859,10 +987,6 @@ SignedNumber:
     { $$ = $1; }
 |   "-" number
     { $$ = -$2; }
-
-IntegerValue:
-    SignedNumber
-    { $$ = $1; }
 
 EnumeratedType:
     ENUMERATED "{" Enumerations "}"
@@ -1270,7 +1394,7 @@ IntersectionMark:
 
 Elements:
     SubtypeElements
-|   ObjectSetElements
+//|   ObjectSetElements
 |   "(" ElementSetSpec ")";
 
 SubtypeElements:
@@ -1288,7 +1412,17 @@ SubtypeElements:
 |   RecurrenceRange;*/
 
 SingleValue:
-    Value;
+    BooleanValue
+//|   IRIValue
+|   ASN_NULL
+|   TimeValue
+|   bstring
+|   hstring
+|   cstring
+|   GENERIC_IDENTIFIER_UPPERCASE
+|   GENERIC_IDENTIFIER_LOWERCASE
+|   SignedNumber
+|   realnumber
 
 ContainedSubtype:
     Includes Type;
@@ -1308,11 +1442,11 @@ UpperEndpoint:
 |   "<" UpperEndValue;
 
 LowerEndValue:
-    Value
+    SingleValue
 |   MIN;
 
 UpperEndValue:
-    Value
+    SingleValue
 |   MAX;
 
 SizeConstraint:
@@ -1374,23 +1508,106 @@ ExceptionSpec:
 ExceptionIdentification:
     SignedNumber
 |   DefinedValue
-|   Type DEFINED_AS Value;
+|   Type ":" Value;
 
 typereference:
     GENERIC_IDENTIFIER_UPPERCASE
-{ $$ = $1; }
+    { $$ = $1; }
 
 identifier:
     GENERIC_IDENTIFIER_LOWERCASE
-{ $$ = $1; }
+    { $$ = $1; }
 
 valuereference:
     GENERIC_IDENTIFIER_LOWERCASE
-{ $$ = $1; }
+    { $$ = $1; }
 
 modulereference:
     GENERIC_IDENTIFIER_UPPERCASE
-{ $$ = $1; }
+    { $$ = $1; }
+
+objectclassreference:
+    GENERIC_IDENTIFIER_UPPERCASE
+    { $$ = $1; }
+
+word:
+    GENERIC_IDENTIFIER_UPPERCASE
+|   ABSENT
+|   ABSTRACT_SYNTAX
+|   ALL
+|   APPLICATION
+|   ASN_NULL
+|   AUTOMATIC
+|   BEGIN
+|   BIT
+|   BMPString
+|   BOOLEAN
+|   BY
+|   CHARACTER
+|   CHOICE
+|   CLASS
+|   COMPONENT
+|   COMPONENTS
+|   CONSTRAINED
+|   CONTAINING
+|   DATE
+|   DATE_TIME
+|   DEFAULT
+|   DEFINITIONS
+|   DURATION
+|   EMBEDDED
+|   ENCODED
+|   ENCODING_CONTROL
+|   END
+|   ENUMERATED
+|   EXCEPT
+|   EXPLICIT
+|   EXPORTS
+|   EXTENSIBILITY
+|   EXTERNAL
+|   FALSE
+|   FROM
+|   IDENTIFIER
+|   IMPLICIT
+|   IMPLIED
+|   IMPORTS
+|   INCLUDES "INCLUDES"
+|   INSTANCE
+|   INSTRUCTIONS
+|   INTEGER
+|   INTERSECTION
+|   MAX
+|   MIN
+|   MINUS_INFINITY
+|   NOT_A_NUMBER
+|   OBJECT
+|   OCTET
+|   OF
+|   OID_IRI
+|   OPTIONAL
+|   PATTERN
+|   PDV
+|   PLUS_INFINITY
+|   PRESENT
+|   PRIVATE
+|   REAL
+|   RELATIVE_OID
+|   RELATIVE_OID_IRI
+|   SEQUENCE
+|   SET
+|   SETTINGS
+|   SIZE
+|   STRING
+|   SYNTAX
+|   TAGS
+|   TIME
+|   TIME_OF_DAY
+|   TRUE
+|   TYPE_IDENTIFIER
+|   UNION
+|   UNIQUE
+|   UNIVERSAL
+|   WITH
 
 %%
 
@@ -1410,7 +1627,7 @@ re2c:define:YYCURSOR = "context.cursor";
 
 // Keywords
 "ABSENT"                { context.location.columns(context.cursor - start); return asn1_parser::make_ABSENT (context.location); }
-"ABSTRACT_SYNTAX"       { context.location.columns(context.cursor - start); return asn1_parser::make_ABSTRACT_SYNTAX (context.location); }
+"ABSTRACT-SYNTAX"       { context.location.columns(context.cursor - start); return asn1_parser::make_ABSTRACT_SYNTAX (context.location); }
 "ALL"                   { context.location.columns(context.cursor - start); return asn1_parser::make_ALL (context.location); }
 "APPLICATION"           { context.location.columns(context.cursor - start); return asn1_parser::make_APPLICATION (context.location); }
 "AUTOMATIC"             { context.location.columns(context.cursor - start); return asn1_parser::make_AUTOMATIC (context.location); }
@@ -1427,7 +1644,7 @@ re2c:define:YYCURSOR = "context.cursor";
 "CONSTRAINED"           { context.location.columns(context.cursor - start); return asn1_parser::make_CONSTRAINED (context.location); }
 "CONTAINING"            { context.location.columns(context.cursor - start); return asn1_parser::make_CONTAINING (context.location); }
 "DATE"                  { context.location.columns(context.cursor - start); return asn1_parser::make_DATE (context.location); }
-"DATE_TIME"             { context.location.columns(context.cursor - start); return asn1_parser::make_DATE_TIME (context.location); }
+"DATE-TIME"             { context.location.columns(context.cursor - start); return asn1_parser::make_DATE_TIME (context.location); }
 "DEFAULT"               { context.location.columns(context.cursor - start); return asn1_parser::make_DEFAULT (context.location); }
 "DEFINITIONS"           { context.location.columns(context.cursor - start); return asn1_parser::make_DEFINITIONS (context.location); }
 "DURATION"              { context.location.columns(context.cursor - start); return asn1_parser::make_DURATION (context.location); }
@@ -1459,8 +1676,8 @@ re2c:define:YYCURSOR = "context.cursor";
 "ISO646String"          { context.location.columns(context.cursor - start); return asn1_parser::make_ISO646String (context.location); }
 "MAX"                   { context.location.columns(context.cursor - start); return asn1_parser::make_MAX (context.location); }
 "MIN"                   { context.location.columns(context.cursor - start); return asn1_parser::make_MIN (context.location); }
-"MINUS_INFINITY"        { context.location.columns(context.cursor - start); return asn1_parser::make_MINUS_INFINITY (context.location); }
-"NOT_A_NUMBER"          { context.location.columns(context.cursor - start); return asn1_parser::make_NOT_A_NUMBER (context.location); }
+"MINUS-INFINITY"        { context.location.columns(context.cursor - start); return asn1_parser::make_MINUS_INFINITY (context.location); }
+"NOT-A-NUMBER"          { context.location.columns(context.cursor - start); return asn1_parser::make_NOT_A_NUMBER (context.location); }
 "NULL"                  { context.location.columns(context.cursor - start); return asn1_parser::make_ASN_NULL (context.location); }
 "NumericString"         { context.location.columns(context.cursor - start); return asn1_parser::make_NumericString (context.location); }
 "OBJECT"                { context.location.columns(context.cursor - start); return asn1_parser::make_OBJECT (context.location); }
@@ -1476,8 +1693,8 @@ re2c:define:YYCURSOR = "context.cursor";
 "PrintableString"       { context.location.columns(context.cursor - start); return asn1_parser::make_PrintableString (context.location); }
 "PRIVATE"               { context.location.columns(context.cursor - start); return asn1_parser::make_PRIVATE (context.location); }
 "REAL"                  { context.location.columns(context.cursor - start); return asn1_parser::make_REAL (context.location); }
-"RELATIVE_OID"          { context.location.columns(context.cursor - start); return asn1_parser::make_RELATIVE_OID (context.location); }
-"RELATIVE_OID_IRI"      { context.location.columns(context.cursor - start); return asn1_parser::make_RELATIVE_OID_IRI (context.location); }
+"RELATIVE-OID"          { context.location.columns(context.cursor - start); return asn1_parser::make_RELATIVE_OID (context.location); }
+"RELATIVE-OID-IRI"      { context.location.columns(context.cursor - start); return asn1_parser::make_RELATIVE_OID_IRI (context.location); }
 "SEQUENCE"              { context.location.columns(context.cursor - start); return asn1_parser::make_SEQUENCE (context.location); }
 "SET"                   { context.location.columns(context.cursor - start); return asn1_parser::make_SET (context.location); }
 "SETTINGS"              { context.location.columns(context.cursor - start); return asn1_parser::make_SETTINGS (context.location); }
@@ -1488,9 +1705,9 @@ re2c:define:YYCURSOR = "context.cursor";
 "TAGS"                  { context.location.columns(context.cursor - start); return asn1_parser::make_TAGS (context.location); }
 "TeletexString"         { context.location.columns(context.cursor - start); return asn1_parser::make_TeletexString (context.location); }
 "TIME"                  { context.location.columns(context.cursor - start); return asn1_parser::make_TIME (context.location); }
-"TIME_OF_DAY"           { context.location.columns(context.cursor - start); return asn1_parser::make_TIME_OF_DAY (context.location); }
+"TIME-OF-DAY"           { context.location.columns(context.cursor - start); return asn1_parser::make_TIME_OF_DAY (context.location); }
 "TRUE"                  { context.location.columns(context.cursor - start); return asn1_parser::make_TRUE (context.location); }
-"TYPE_IDENTIFIER"       { context.location.columns(context.cursor - start); return asn1_parser::make_TYPE_IDENTIFIER (context.location); }
+"TYPE-IDENTIFIER"       { context.location.columns(context.cursor - start); return asn1_parser::make_TYPE_IDENTIFIER (context.location); }
 "UNION"                 { context.location.columns(context.cursor - start); return asn1_parser::make_UNION (context.location); }
 "UNIQUE"                { context.location.columns(context.cursor - start); return asn1_parser::make_UNIQUE (context.location); }
 "UNIVERSAL"             { context.location.columns(context.cursor - start); return asn1_parser::make_UNIVERSAL (context.location); }
@@ -1513,6 +1730,8 @@ re2c:define:YYCURSOR = "context.cursor";
                         { context.location.columns(context.cursor - start); return asn1_parser::make_cstring(std::string(start, context.cursor), context.location); }
 [A-Z][A-Za-z_0-9\-]+    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(santize_name(std::string(start, context.cursor)), context.location); }
 [a-z][A-Za-z_0-9\-]+    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(santize_name(std::string(start, context.cursor)), context.location); }
+[&][A-Z][A-Za-z_0-9\-]+ { context.location.columns(context.cursor - start); return asn1_parser::make_typefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
+[&][a-z][A-Za-z_0-9\-]+ { context.location.columns(context.cursor - start); return asn1_parser::make_valuefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
 
 // End of file
 "\000"                  { context.location.columns(context.cursor - start); return asn1_parser::make_END_OF_FILE(context.location); }
@@ -1536,6 +1755,10 @@ re2c:define:YYCURSOR = "context.cursor";
 ","                     { context.location.columns(context.cursor - start); return asn1_parser::make_COMMA (context.location); }
 "-"                     { context.location.columns(context.cursor - start); return asn1_parser::make_HYPHEN_MINUS (context.location); }
 "\."                    { context.location.columns(context.cursor - start); return asn1_parser::make_FULL_STOP (context.location); }
+"|"                     { context.location.columns(context.cursor - start); return asn1_parser::make_VERTICAL_LINE (context.location); }
+"!"                     { context.location.columns(context.cursor - start); return asn1_parser::make_EXCLAMATION_MARK (context.location); }
+"<"                     { context.location.columns(context.cursor - start); return asn1_parser::make_LESS_THAN (context.location); }
+"@"                     { context.location.columns(context.cursor - start); return asn1_parser::make_AT (context.location); }
 .                       { throw(std::runtime_error(std::string("Unknown symbol!") + *start)); context.location.columns(context.cursor - start); return asn1_parser::symbol_type(asn1_parser::token_type(*start), context.location); }
 %}
     }

@@ -35,12 +35,6 @@ enum class Class
     private_,
 };
 
-struct ObjectIdComponentValue
-{
-    absl::optional<std::string> name;
-    absl::optional<int64_t>     value;
-};
-
 struct ComponentType;
 struct TaggedType;
 using ComponentTypeList = std::vector<ComponentType>;
@@ -49,12 +43,12 @@ struct NamedType;
 struct NamedNumber
 {
     std::string name;
-    long long   number;
+    int64_t     number;
 };
 struct EnumerationValue
 {
-    std::string               name;
-    absl::optional<long long> value;
+    std::string             name;
+    absl::optional<int64_t> value;
 };
 
 struct BitStringType
@@ -205,8 +199,8 @@ struct DefinedValue
 
 struct Value
 {
-    absl::optional<DefinedValue>                                             defined_value;
-    absl::variant<std::vector<ObjectIdComponentValue>, std::string, int64_t> value_selection;
+    absl::optional<DefinedValue>                                         defined_value;
+    absl::variant<std::vector<Value>, std::string, int64_t, NamedNumber> value_selection;
 };
 
 struct NamedType
@@ -294,6 +288,48 @@ struct TaggingInfo
 {
     std::string tag;
     bool        is_default_tagged;
+};
+
+struct ObjectIdComponentValue
+{
+    absl::optional<std::string> name;
+    absl::optional<int64_t>     value;
+};
+
+struct ObjectIdComponents
+{
+    ObjectIdComponents(const Value& value)
+    {
+        if (!absl::holds_alternative<std::vector<Value>>(value.value_selection))
+        {
+            throw std::runtime_error("Failed to interpret value as object identifier");
+        }
+        const std::vector<Value>& value_list = absl::get<std::vector<Value>>(value.value_selection);
+        components.reserve(value_list.size());
+        for (const Value& component : value_list)
+        {
+            if (absl::holds_alternative<std::string>(component.value_selection))
+            {
+                const std::string& name = absl::get<std::string>(component.value_selection);
+                components.push_back(ObjectIdComponentValue{name, absl::nullopt});
+            }
+            else if (absl::holds_alternative<int64_t>(component.value_selection))
+            {
+                const int64_t& number = absl::get<int64_t>(component.value_selection);
+                components.push_back(ObjectIdComponentValue{absl::nullopt, number});
+            }
+            else if (absl::holds_alternative<NamedNumber>(component.value_selection))
+            {
+                const NamedNumber& named_number = absl::get<NamedNumber>(component.value_selection);
+                components.push_back(ObjectIdComponentValue{named_number.name, named_number.number});
+            }
+            else
+            {
+                throw std::runtime_error("Failed to interpret value as object identifier");
+            }
+        }
+    }
+    std::vector<ObjectIdComponentValue> components;
 };
 
 std::string to_string(const BitStringType&);

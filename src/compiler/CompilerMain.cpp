@@ -3,6 +3,7 @@
 #include "fast_ber/compiler/Dependencies.hpp"
 #include "fast_ber/compiler/ReorderAssignments.hpp"
 
+#include <string>
 #include <unordered_map>
 
 std::string strip_path(const std::string& path)
@@ -32,27 +33,33 @@ std::string create_assignment(const Assignment& assignment, TaggingMode tagging_
     if (assignment.value) // Value assignment
     {
         std::string result = fully_tagged_type(assignment.type, tagging_mode) + " " + assignment.name + " = ";
-        if (absl::holds_alternative<std::vector<ObjectIdComponentValue>>(assignment.value->value_selection))
+        if (absl::holds_alternative<std::vector<Value>>(assignment.value->value_selection))
         {
             result += "ObjectIdentifier{";
-            const std::vector<ObjectIdComponentValue>& object_id_component =
-                absl::get<std::vector<ObjectIdComponentValue>>(assignment.value->value_selection);
-
-            for (size_t i = 0; i < object_id_component.size(); i++)
+            try
             {
-                if (object_id_component[i].value)
-                {
-                    result += std::to_string(*object_id_component[i].value);
-                }
-                else
-                {
-                    result += std::to_string(0);
-                }
+                const ObjectIdComponents& object_id = ObjectIdComponents(*assignment.value);
 
-                if (i < object_id_component.size() - 1)
+                for (size_t i = 0; i < object_id.components.size(); i++)
                 {
-                    result += ", ";
+                    if (object_id.components[i].value)
+                    {
+                        result += std::to_string(*object_id.components[i].value);
+                    }
+                    else
+                    {
+                        result += std::to_string(0);
+                    }
+
+                    if (i < object_id.components.size() - 1)
+                    {
+                        result += ", ";
+                    }
                 }
+            }
+            catch (const std::runtime_error& e)
+            {
+                throw(std::runtime_error("Can't assign value to " + assignment.name + std::string(" : ") + e.what()));
             }
             result += "}";
         }
