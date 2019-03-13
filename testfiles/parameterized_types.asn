@@ -1,0 +1,12 @@
+Parameterized DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+T1 ::= OCTET STRING
+
+T3 ::= T2{T1}
+
+T2{X} ::= SEQUENCE {
+    a INTEGER,
+    b X
+}
+
+END

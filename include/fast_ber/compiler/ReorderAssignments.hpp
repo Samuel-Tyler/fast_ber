@@ -44,13 +44,21 @@ void resolve_dependencies(const std::unordered_map<std::string, Assignment>& ass
 
 // Reorder assignments, defining
 // Should be able to detect missing assignments and circular dependencies
-std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments, std::vector<Import> imports)
+std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments, const std::vector<Import>& imports)
 {
     std::unordered_map<std::string, Assignment> assignment_map;
     assignment_map.reserve(assignments.size());
     for (Assignment& assignment : assignments)
     {
-        assignment.depends_on           = dependenies(assignment);
+        assignment.depends_on = dependenies(assignment);
+        // Any parameterized references are already defined and do not need to be resolved,
+        // Therefore remove any names which are defined as parameters from dependancy list
+        assignment.depends_on.erase(std::remove_if(assignment.depends_on.begin(), assignment.depends_on.end(),
+                                                   [&assignment](const std::string& dependancy) {
+                                                       return assignment.parameters.count(dependancy) > 0;
+                                                   }),
+                                    assignment.depends_on.end());
+
         assignment_map[assignment.name] = assignment;
     }
 

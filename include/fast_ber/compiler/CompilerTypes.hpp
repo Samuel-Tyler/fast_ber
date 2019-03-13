@@ -1,5 +1,7 @@
 #pragma once
 
+#include "fast_ber/compiler/CppGeneration.hpp"
+
 #include "absl/memory/memory.h"
 #include "absl/types/optional.h"
 #include "absl/types/variant.h"
@@ -9,6 +11,7 @@
 #include <list>
 #include <map>
 #include <memory>
+#include <set>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -159,10 +162,7 @@ struct TimeOfDayType
 struct UTCTimeType
 {
 };
-struct DefinedType
-{
-    std::string name;
-};
+struct DefinedType;
 
 using BuiltinType =
     absl::variant<BitStringType, BooleanType, CharacterStringType, ChoiceType, DateType, DateTimeType, DurationType,
@@ -172,6 +172,11 @@ using BuiltinType =
                   PrefixedType, TimeType, TimeOfDayType, UTCTimeType>;
 using Type = absl::variant<BuiltinType, DefinedType>;
 
+struct DefinedType
+{
+    std::string       name;
+    std::vector<Type> parameters;
+};
 struct SequenceOfType
 {
     // Shared pointers used to prevent circular references
@@ -241,6 +246,7 @@ struct Assignment
     Type                     type;
     absl::optional<Value>    value;
     std::vector<std::string> depends_on;
+    std::set<std::string>    parameters;
 };
 
 struct Import
@@ -684,7 +690,19 @@ TaggingInfo universal_tag(const UTCTimeType&, TaggingMode)
     return TaggingInfo{"ExplicitIdentifier<UniversalTag::utc_time>", true};
 }
 
-std::string to_string(const DefinedType& type) { return type.name; }
+std::string to_string(const DefinedType& type)
+{
+    if (!type.parameters.empty())
+    {
+        std::set<std::string> parameter_types;
+        for (const Type& paramter : type.parameters)
+        {
+            parameter_types.insert(to_string(paramter));
+        }
+        return type.name + create_template_arguments(parameter_types);
+    }
+    return type.name;
+}
 
 struct ToStringHelper
 {
@@ -692,15 +710,6 @@ struct ToStringHelper
     std::string operator()(const T& t)
     {
         return to_string(t);
-    }
-};
-
-struct DependsOnHelper
-{
-    template <typename T>
-    std::vector<std::string> operator()(const T& t)
-    {
-        return depends_on(t);
     }
 };
 

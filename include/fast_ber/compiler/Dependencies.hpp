@@ -117,8 +117,27 @@ std::vector<std::string> depends_on(const PrefixedType& prefixed_type)
 std::vector<std::string> depends_on(const TimeType&) { return {}; }
 std::vector<std::string> depends_on(const TimeOfDayType&) { return {}; }
 std::vector<std::string> depends_on(const UTCTimeType&) { return {}; }
-std::vector<std::string> depends_on(const DefinedType& defined) { return {defined.name}; }
+std::vector<std::string> depends_on(const DefinedType& defined)
+{
+    std::vector<std::string> depends{defined.name};
 
+    for (const Type& paramater : defined.parameters)
+    {
+        const std::vector<std::string> param_depends = depends_on(paramater);
+        depends.insert(depends.end(), param_depends.begin(), param_depends.end());
+    }
+
+    return depends;
+}
+
+struct DependsOnHelper
+{
+    template <typename T>
+    std::vector<std::string> operator()(const T& t)
+    {
+        return depends_on(t);
+    }
+};
 static DependsOnHelper   depends_on_helper;
 std::vector<std::string> depends_on(const BuiltinType& type) { return absl::visit(depends_on_helper, type); }
 std::vector<std::string> depends_on(const Type& type) { return absl::visit(depends_on_helper, type); }

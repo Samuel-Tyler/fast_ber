@@ -213,6 +213,8 @@
 %type<DefinedValue>      DefinedValue
 %type<BuiltinType>       BuiltinType;
 %type<DefinedType>       DefinedType;
+%type<std::string>       SimpleDefinedType;
+%type<DefinedType>       ParameterizedType;
 %type<EnumeratedType>    EnumeratedType;
 %type<EnumeratedType>    Enumerations;
 %type<EnumeratedType>    Enumeration;
@@ -226,7 +228,16 @@
 %type<Assignment>        Assignment;
 %type<Assignment>        TypeAssignment;
 %type<Assignment>        ValueAssignment;
+%type<Assignment>        ParameterizedAssignment
+%type<Assignment>        ParameterizedTypeAssignment;
+%type<Assignment>        ParameterizedValueAssignment;
+%type<Assignment>        ParameterizedValueSetTypeAssignment;
+%type<Assignment>        ParameterizedObjectClassAssignment;
+%type<Assignment>        ParameterizedObjectAssignment;
+%type<Assignment>        ParameterizedObjectSetAssignment;
 %type<Type>              Type;
+%type<std::vector<Type>> ActualParameterList;
+%type<Type>              ActualParameter;
 %type<Class>             Class;
 %type<int>               ClassNumber;
 
@@ -261,6 +272,9 @@
 %type<ObjectIdComponentValue> NameAndNumberForm;
 %type<std::vector<ObjectIdComponentValue>> ObjIdComponentsList;
 %type<std::vector<ObjectIdComponentValue>> ObjectIdentifierValue;
+%type<std::set<std::string>> ParameterList;
+%type<std::set<std::string>> ParameterSeries;
+%type<std::string>           Parameter;
 
 %%
 
@@ -285,15 +299,6 @@ ModuleDefinition:
 
 SyntaxList:
    "{" TokenOrGroupSpecList "}";
-
-//EncodingInstruction:
-//    %empty;
-
-//EncodingInstructionAssignmentList:
-//    %empty;
-
-//ExensionEndMarker:
-//    %empty;
 
 DefinedObjectClass:
     ExternalObjectClassReference
@@ -485,6 +490,7 @@ ObjectClassFieldValue:
 
 ParameterizedAssignment:
     ParameterizedTypeAssignment
+    { $$ = $1; }
 |   ParameterizedValueAssignment
 |   ParameterizedValueSetTypeAssignment
 |   ParameterizedObjectClassAssignment
@@ -492,7 +498,8 @@ ParameterizedAssignment:
 |   ParameterizedObjectSetAssignment;
 
 ParameterizedTypeAssignment:
-    typereference ParameterList DEFINED_AS Type 
+    typereference ParameterList DEFINED_AS Type
+    { std::cout << "param assign\n"; $$ = Assignment{ $1, $4, absl::nullopt, {}, $2 }; }
  
 ParameterizedValueAssignment:
     valuereference ParameterList Type DEFINED_AS Value;
@@ -510,15 +517,20 @@ ParameterizedObjectSetAssignment:
     typereference ParameterList DefinedObjectClass DEFINED_AS ObjectSet;
 
 ParameterList:
-   "{" ParameterSeries "}";
+   "{" ParameterSeries "}"
+    { $$ = $2; }
 
 ParameterSeries:
     Parameter
+    { $$.insert($1); }
 |   ParameterSeries "," Parameter
+    { $$ = $1; $1.insert($3); }
 
 Parameter:
     ParamGovernor ":" Reference
-|   Reference;
+    { $$ = $3; }
+|   Reference
+    { $$ = $1; }
 
 ParamGovernor:
     Governor
@@ -570,7 +582,8 @@ ParameterizedReference:
 
 SimpleDefinedType:
     ExternalTypeReference
-|   typereference;
+|   typereference
+    { $$ = $1; }
 
 SimpleDefinedValue:
     ExternalValueReference
@@ -772,12 +785,14 @@ Assignment:
 /*|   ObjectAssignment */ObjectSetAssignment
 |   ObjectSetAssignment
 |   ParameterizedAssignment
+    { $$ = $1; }
 
 DefinedType:
     ExternalTypeReference
 |   typereference
-    { $$ = DefinedType{$1}; }
+    { $$ = DefinedType{$1, {}}; }
 |   ParameterizedType
+    { $$ = $1; }
 //|   ParameterizedValueSetType;
 
 DefinedValue:
@@ -787,17 +802,20 @@ DefinedValue:
 |   ParameterizedValue;
 
 ParameterizedType:
-    SimpleDefinedType ActualParameterList 
+    SimpleDefinedType ActualParameterList
+    { $$ = DefinedType{$1, $2}; }
 
 ParameterizedValue:
     SimpleDefinedValue ActualParameterList 
 
 ActualParameterList:
     "{" ActualParameter "}"
+    { $$.push_back($2); }
 
 ActualParameter:
     Type
-|   Value
+    { $$ = $1; }
+//|   Value
 //|   ValueSet
 |   DefinedObjectClass
 //|   Object
@@ -839,9 +857,7 @@ ComponentId:
 */
 
 TypeAssignment:
-    typereference
-    DEFINED_AS
-    Type
+    typereference DEFINED_AS Type
     { $$ = Assignment{ $1, $3, absl::nullopt, {} }; }
 
 ValueAssignment:
@@ -861,8 +877,8 @@ Type:
 |   SelectionType
     { std::cout << "Warning: Not handled - SelectionType\n"; }
 |   TypeFromObject
-    { throw std::runtime_error("Not handled - TypeFromObject"); }
-//|   ValueSetFromObjects { throw std::runtime_error("Not handled - ValueSetFromObjects"); }
+    { std::cout << std::string("Not handled - TypeFromObject\n"); }
+//|   ValueSetFromObjects { std::cout << std::string("Not handled - ValueSetFromObjects\n"); }
 
 BuiltinType:
     BitStringType { $$ = BitStringType(); }
@@ -902,21 +918,21 @@ NamedType:
 
 Value:
     BooleanValue
-    { throw std::runtime_error("Unhandled field: BooleanValue"); }
+    { std::cout << std::string("Unhandled field: BooleanValue\n"); }
 |   IRIValue
-    { throw std::runtime_error("Unhandled field: IRIValue"); }
+    { std::cout << std::string("Unhandled field: IRIValue\n"); }
 |   ASN_NULL
-    { throw std::runtime_error("Unhandled field: ASN_NULL"); }
+    { std::cout << std::string("Unhandled field: ASN_NULL\n"); }
 |   TimeValue
-    { throw std::runtime_error("Unhandled field: TimeValue"); }
+    { std::cout << std::string("Unhandled field: TimeValue\n"); }
 |   bstring
-    { throw std::runtime_error("Unhandled field: bstring"); }
+    { std::cout << std::string("Unhandled field: bstring\n"); }
 |   hstring
-    { throw std::runtime_error("Unhandled field: hstring"); }
+    { std::cout << std::string("Unhandled field: hstring\n"); }
 |   cstring
     { $$.value_selection = $1; }
 |   CONTAINING Value
-    { throw std::runtime_error("Unhandled field: CONTAINING"); }
+    { std::cout << std::string("Unhandled field: CONTAINING\n"); }
 |   GENERIC_IDENTIFIER_UPPERCASE
     { $$.value_selection = $1; }
 |   GENERIC_IDENTIFIER_LOWERCASE
@@ -929,19 +945,19 @@ Value:
 |   realnumber
     { $$.value_selection = $1; }
 |   ObjectClassFieldType
-    { throw std::runtime_error("Unhandled field: ValueCommaListChoice"); }
+    { std::cout << std::string("Unhandled field: ValueCommaListChoice\n"); }
 |   Value COLON Value
-    { throw std::runtime_error("Unhandled field: ValueCommaListChoice"); }
+    { std::cout << std::string("Unhandled field: ValueCommaListChoice\n"); }
 //|   ObjectClassFieldValue
-//    { throw std::runtime_error("Unhandled field: ObjectClassFieldValue"); }
+//    { std::cout << std::string("Unhandled field: ObjectClassFieldValue\n"); }
 |   "{" SequenceOfValues "}"
     { $$.value_selection = $2; }
 |   ValueChoice
-    { throw std::runtime_error("Unhandled field: ValueChoice"); }
+    { std::cout << std::string("Unhandled field: ValueChoice\n"); }
 |   OPTIONAL
-    { throw std::runtime_error("Unhandled field: OPTIONAL"); }
+    { std::cout << std::string("Unhandled field: OPTIONAL\n"); }
 |   ValueCommaListChoice
-    { throw std::runtime_error("Unhandled field: ValueCommaListChoice"); }
+    { std::cout << std::string("Unhandled field: ValueCommaListChoice\n"); }
 
 ValueCommaListChoice:
     Value "," Value
@@ -1728,10 +1744,10 @@ re2c:define:YYCURSOR = "context.cursor";
 [0-9]+                  { context.location.columns(context.cursor - start); return asn1_parser::make_number(std::stoll(std::string(start, context.cursor)), context.location); }
 ["\""]("\\".|[^"\""])*["\""] 
                         { context.location.columns(context.cursor - start); return asn1_parser::make_cstring(std::string(start, context.cursor), context.location); }
-[A-Z][A-Za-z_0-9\-]+    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(santize_name(std::string(start, context.cursor)), context.location); }
-[a-z][A-Za-z_0-9\-]+    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(santize_name(std::string(start, context.cursor)), context.location); }
-[&][A-Z][A-Za-z_0-9\-]+ { context.location.columns(context.cursor - start); return asn1_parser::make_typefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
-[&][a-z][A-Za-z_0-9\-]+ { context.location.columns(context.cursor - start); return asn1_parser::make_valuefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
+[A-Z][A-Za-z_0-9\-]*    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(santize_name(std::string(start, context.cursor)), context.location); }
+[a-z][A-Za-z_0-9\-]*    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(santize_name(std::string(start, context.cursor)), context.location); }
+[&][A-Z][A-Za-z_0-9\-]* { context.location.columns(context.cursor - start); return asn1_parser::make_typefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
+[&][a-z][A-Za-z_0-9\-]* { context.location.columns(context.cursor - start); return asn1_parser::make_valuefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
 
 // End of file
 "\000"                  { context.location.columns(context.cursor - start); return asn1_parser::make_END_OF_FILE(context.location); }
