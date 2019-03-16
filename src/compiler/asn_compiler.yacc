@@ -815,7 +815,7 @@ ActualParameterList:
 ActualParameter:
     Type
     { $$ = $1; }
-|   Value
+//|   Value
 //|   ValueSet
 |   DefinedObjectClass
 //|   Object
