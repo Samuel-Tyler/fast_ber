@@ -441,6 +441,12 @@ bool is_choice(const Type& type)
            absl::holds_alternative<ChoiceType>(absl::get<BuiltinType>(type));
 }
 
+bool is_prefixed(const Type& type)
+{
+    return absl::holds_alternative<BuiltinType>(type) &&
+           absl::holds_alternative<PrefixedType>(absl::get<BuiltinType>(type));
+}
+
 int unnamed_definition_reference_num = 0;
 
 std::string to_string(const BitStringType&) { return "BitString"; }
@@ -608,7 +614,18 @@ std::string to_string(const SetOfType& set)
         return "SequenceOf<" + to_string(type) + ">";
     }
 }
-std::string to_string(const PrefixedType& prefixed_type) { return to_string(prefixed_type.tagged_type->type); }
+std::string to_string(const PrefixedType& prefixed_type)
+{
+    if (is_sequence(prefixed_type.tagged_type->type))
+    {
+        return "UnnamedSequence" + std::to_string(unnamed_definition_reference_num++);
+    }
+    else if (is_set(prefixed_type.tagged_type->type))
+    {
+        return "UnnamedSet" + std::to_string(unnamed_definition_reference_num++);
+    }
+    return to_string(prefixed_type.tagged_type->type);
+}
 std::string to_string(const TimeType&) { return "Time"; }
 std::string to_string(const TimeOfDayType&) { return "TimeOfDay"; }
 std::string to_string(const UTCTimeType&) { return "UTCTime"; }

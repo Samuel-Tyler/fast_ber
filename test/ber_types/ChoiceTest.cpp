@@ -53,7 +53,8 @@ TEST_CASE("Choice: Clashing type")
 TEST_CASE("Choice: Generated choice")
 {
     fast_ber::MakeAChoice::Collection collection;
-    collection.the_choice = fast_ber::Integer(5);
+    collection.the_choice =
+        fast_ber::TaggedType<fast_ber::Integer, fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 2>>(5);
 
     std::vector<uint8_t> buffer(1000, 0x00);
     size_t               length = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), collection).length;

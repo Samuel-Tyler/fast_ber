@@ -155,6 +155,20 @@ void find_nested_structs(const Type& type, std::vector<NamedType>& nested_struct
             find_nested_structs(choice_selection.type, nested_structs);
         }
     }
+    else if (is_prefixed(type))
+    {
+        const Type& inner_type = absl::get<PrefixedType>(absl::get<BuiltinType>(type)).tagged_type->type;
+        if (is_set(inner_type))
+        {
+            nested_structs.push_back(NamedType{"UnnamedSet" + std::to_string(unnamed_definition_num++), inner_type});
+        }
+        else if (is_sequence(inner_type))
+        {
+            nested_structs.push_back(
+                NamedType{"UnnamedSequence" + std::to_string(unnamed_definition_num++), inner_type});
+        }
+        find_nested_structs(inner_type, nested_structs);
+    }
 }
 
 // structs (Sequence and Sets) cannot be defined within other definitions in C++, due to this nested assignments are

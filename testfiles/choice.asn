@@ -2,11 +2,11 @@ MakeAChoice DEFINITIONS AUTOMATIC TAGS ::= BEGIN
 
 Collection ::= SEQUENCE {
     the-choice CHOICE {
-        hello OCTET STRING,
-        goodbye OCTET STRING,
-        integer INTEGER,
-        boolean BOOLEAN,
-        sequence SEQUENCE { i INTEGER }
+        hello [0] OCTET STRING,
+        goodbye [1] OCTET STRING,
+        integer [2] INTEGER,
+        boolean [3] BOOLEAN,
+        sequence [4] SEQUENCE { i INTEGER }
     }
 }
 
