@@ -89,6 +89,97 @@ std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments
     return ordered_assignments;
 }
 
+int unnamed_definition_num = 0;
+// Finds any sequence or set types nested within a type
+void find_nested_structs(const Type& type, std::vector<NamedType>& nested_structs)
+{
+    if (is_set(type))
+    {
+        for (const ComponentType& component : absl::get<SetType>(absl::get<BuiltinType>(type)).components)
+        {
+            find_nested_structs(component.named_type.type, nested_structs);
+        }
+    }
+    else if (is_sequence(type))
+    {
+        for (const ComponentType& component : absl::get<SequenceType>(absl::get<BuiltinType>(type)).components)
+        {
+            find_nested_structs(component.named_type.type, nested_structs);
+        }
+    }
+    else if (is_set_of(type))
+    {
+        const SetOfType& set_of     = absl::get<SetOfType>(absl::get<BuiltinType>(type));
+        const Type&      inner_type = set_of.has_name ? set_of.named_type->type : *set_of.type;
+        if (is_set(inner_type))
+        {
+            nested_structs.push_back(NamedType{"UnnamedSet" + std::to_string(unnamed_definition_num++), inner_type});
+        }
+        else if (is_sequence(inner_type))
+        {
+            nested_structs.push_back(
+                NamedType{"UnnamedSequence" + std::to_string(unnamed_definition_num++), inner_type});
+        }
+        find_nested_structs(inner_type, nested_structs);
+    }
+    else if (is_sequence_of(type))
+    {
+        const SequenceOfType& sequence_of = absl::get<SequenceOfType>(absl::get<BuiltinType>(type));
+        const Type&           inner_type  = sequence_of.has_name ? sequence_of.named_type->type : *sequence_of.type;
+        if (is_set(inner_type))
+        {
+            nested_structs.push_back(NamedType{"UnnamedSet" + std::to_string(unnamed_definition_num++), inner_type});
+        }
+        else if (is_sequence(inner_type))
+        {
+            nested_structs.push_back(
+                NamedType{"UnnamedSequence" + std::to_string(unnamed_definition_num++), inner_type});
+        }
+        find_nested_structs(inner_type, nested_structs);
+    }
+    else if (is_choice(type))
+    {
+        const ChoiceType& choice = absl::get<ChoiceType>(absl::get<BuiltinType>(type));
+        for (const NamedType& choice_selection : choice.choices)
+        {
+            if (is_set(choice_selection.type))
+            {
+                nested_structs.push_back(
+                    NamedType{"UnnamedSet" + std::to_string(unnamed_definition_num++), choice_selection.type});
+            }
+            else if (is_sequence(choice_selection.type))
+            {
+                nested_structs.push_back(
+                    NamedType{"UnnamedSequence" + std::to_string(unnamed_definition_num++), choice_selection.type});
+            }
+            find_nested_structs(choice_selection.type, nested_structs);
+        }
+    }
+}
+
+// structs (Sequence and Sets) cannot be defined within other definitions in C++, due to this nested assignments are
+// split into top level assignment statements. Note - assignments are assumed to already have been ordered
+std::vector<Assignment> split_nested_structures(const std::vector<Assignment>& assignments)
+{
+    std::vector<Assignment> split_assignments;
+    split_assignments.reserve(assignments.size());
+
+    for (const Assignment& assignment : assignments)
+    {
+        std::vector<NamedType> nested_structs;
+        find_nested_structs(assignment.type, nested_structs);
+
+        for (auto nested_iter = nested_structs.rbegin(); nested_iter != nested_structs.rend(); nested_iter++)
+        {
+            split_assignments.push_back(Assignment{nested_iter->name, nested_iter->type, {}, {}, {}});
+        }
+
+        split_assignments.push_back(assignment);
+    }
+
+    return split_assignments;
+}
+
 void resolve_module_dependencies(const std::unordered_map<std::string, Module>& module_map, const std::string& name,
                                  std::unordered_set<std::string>& assigned_names,
                                  std::unordered_set<std::string>& visited_names, std::vector<Module>& ordered_modules)
@@ -137,8 +228,11 @@ std::vector<Module> reorder_modules(const std::vector<Module>& modules)
     std::unordered_set<std::string> assigned_modules;
     std::unordered_set<std::string> visited_modules;
 
-    resolve_module_dependencies(module_map, modules.begin()->module_reference, assigned_modules, visited_modules,
-                                ordered_modules);
+    for (const Module& module : modules)
+    {
+        resolve_module_dependencies(module_map, module.module_reference, assigned_modules, visited_modules,
+                                    ordered_modules);
+    }
     if (modules.size() != ordered_modules.size())
     {
         throw std::runtime_error("Failed to re-order modules!");

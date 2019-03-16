@@ -1,4 +1,4 @@
-﻿/*#include "autogen/real_schema.hpp"
+﻿#include "autogen/real_schema.hpp"
 
 #include "catch2/catch.hpp"
 
@@ -12,9 +12,16 @@ TEST_CASE("RealSchema: Testing a standard asn schema")
     fast_ber::SGSN_2009A_CDR::SGSNSMTRecord        smtr;
     fast_ber::SGSN_2009A_CDR::CAMELInformationPDP  pdp;
     fast_ber::SGSN_2009A_CDR::ManagementExtensions e;
+
     fast_ber::encode(absl::Span<uint8_t>(buffer), smtr);
     fast_ber::encode(absl::Span<uint8_t>(buffer), pdp);
     fast_ber::encode(absl::Span<uint8_t>(buffer), e);
     fast_ber::encode(absl::Span<uint8_t>(buffer), record);
+
+    fast_ber::decode(absl::Span<uint8_t>(buffer), smtr);
+    fast_ber::decode(absl::Span<uint8_t>(buffer), pdp);
+    fast_ber::decode(absl::Span<uint8_t>(buffer), e);
+    fast_ber::decode(absl::Span<uint8_t>(buffer), record);
+
+    REQUIRE(record == record);
 }
-*/

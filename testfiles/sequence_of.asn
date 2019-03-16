@@ -8,5 +8,7 @@ NamedType     ::= OCTET STRING
 SequenceOne   ::= SEQUENCE OF OCTET STRING
 SequenceTwo   ::= SEQUENCE OF NamedType
 SequenceThree ::= SEQUENCE OF named-string OCTET STRING
+SequenceFour  ::= SEQUENCE OF SET { string OCTET STRING }
+SequenceFive  ::= SEQUENCE OF SET { set SEQUENCE OF string OCTET STRING }
 
 END

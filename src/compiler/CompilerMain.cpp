@@ -62,36 +62,12 @@ std::string create_assignment(const Assignment& assignment, TaggingMode tagging_
             const int64_t integer = absl::get<int64_t>(assignment.value->value_selection);
             result += std::to_string(integer);
         }
-        result += ";\n\n";
+        result += ";\n";
         return result;
     }
     else // Type assignment
     {
-        std::string template_definition = create_template_definition(assignment.parameters);
-
-        if (absl::holds_alternative<BuiltinType>(assignment.type) &&
-            absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(assignment.type)))
-        {
-            const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(assignment.type));
-            return template_definition + "struct " + assignment.name + to_string(sequence);
-        }
-        else if (absl::holds_alternative<BuiltinType>(assignment.type) &&
-                 absl::holds_alternative<SetType>(absl::get<BuiltinType>(assignment.type)))
-        {
-            const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(assignment.type));
-            return template_definition + "struct " + assignment.name + to_string(set);
-        }
-        else if (absl::holds_alternative<BuiltinType>(assignment.type) &&
-                 absl::holds_alternative<EnumeratedType>(absl::get<BuiltinType>(assignment.type)))
-        {
-            const EnumeratedType& enumerated = absl::get<EnumeratedType>(absl::get<BuiltinType>(assignment.type));
-            return "enum class " + assignment.name + to_string(enumerated);
-        }
-        else
-        {
-            return template_definition + "using " + assignment.name + " = " +
-                   fully_tagged_type(assignment.type, tagging_mode) + ";\n\n";
-        }
+        return create_type_assignment(assignment, tagging_mode);
     }
 }
 
@@ -496,6 +472,7 @@ int main(int argc, char** argv)
         for (auto& module : context.asn1_tree.modules)
         {
             module.assignments = reorder_assignments(module.assignments, module.imports);
+            module.assignments = split_nested_structures(module.assignments);
         }
 
         output_file << create_output_file(context.asn1_tree, detail_filame);

@@ -11,6 +11,7 @@
 #include <list>
 #include <map>
 #include <memory>
+#include <numeric>
 #include <set>
 #include <string>
 #include <unordered_map>
@@ -405,6 +406,43 @@ TaggingInfo universal_tag(const BuiltinType& type, TaggingMode);
 TaggingInfo universal_tag(const Type& type, TaggingMode);
 std::string fully_tagged_type(const Type& type, TaggingMode tagging_mode);
 
+bool is_set(const Type& type)
+{
+    return absl::holds_alternative<BuiltinType>(type) && absl::holds_alternative<SetType>(absl::get<BuiltinType>(type));
+}
+
+bool is_sequence(const Type& type)
+{
+    return absl::holds_alternative<BuiltinType>(type) &&
+           absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(type));
+}
+
+bool is_set_of(const Type& type)
+{
+    return absl::holds_alternative<BuiltinType>(type) &&
+           absl::holds_alternative<SetOfType>(absl::get<BuiltinType>(type));
+}
+
+bool is_sequence_of(const Type& type)
+{
+    return absl::holds_alternative<BuiltinType>(type) &&
+           absl::holds_alternative<SequenceOfType>(absl::get<BuiltinType>(type));
+}
+
+bool is_enumerated(const Type& type)
+{
+    return absl::holds_alternative<BuiltinType>(type) &&
+           absl::holds_alternative<EnumeratedType>(absl::get<BuiltinType>(type));
+}
+
+bool is_choice(const Type& type)
+{
+    return absl::holds_alternative<BuiltinType>(type) &&
+           absl::holds_alternative<ChoiceType>(absl::get<BuiltinType>(type));
+}
+
+int unnamed_definition_reference_num = 0;
+
 std::string to_string(const BitStringType&) { return "BitString"; }
 std::string to_string(const BooleanType&) { return "Boolean"; }
 std::string to_string(const CharacterStringType&) { return "CharacterString"; }
@@ -415,12 +453,24 @@ std::string to_string(const ChoiceType& choice)
     for (const auto& named_type : choice.choices)
     {
         if (!is_first)
-        {
             res += ", ";
+
+        if (is_sequence(named_type.type))
+        {
+            res += "UnnamedSequence" + std::to_string(unnamed_definition_reference_num++);
         }
-        res += fully_tagged_type(named_type.type, TaggingMode::implicit);
+        else if (is_set(named_type.type))
+        {
+            res += "UnnamedSet" + std::to_string(unnamed_definition_reference_num++);
+        }
+        else
+        {
+            res += fully_tagged_type(named_type.type, TaggingMode::implicit);
+        }
+
         is_first = false;
     }
+
     res += ">";
     return res;
 }
@@ -465,8 +515,7 @@ std::string to_string(const SequenceType& sequence)
     for (const ComponentType& component : sequence.components)
     {
         std::string component_type = to_string(component.named_type.type);
-        if (absl::holds_alternative<BuiltinType>(component.named_type.type) &&
-            absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(component.named_type.type)))
+        if (is_set(component.named_type.type) || is_sequence(component.named_type.type))
         {
             res += "struct " + component.named_type.name + "_type " + component_type;
             res += "    " + component.named_type.name + "_type " + component.named_type.name + ";\n";
@@ -486,13 +535,27 @@ std::string to_string(const SequenceType& sequence)
 }
 std::string to_string(const SequenceOfType& sequence)
 {
-    if (sequence.has_name)
+    const Type& type = sequence.has_name ? sequence.named_type->type : *sequence.type;
+
+    if (is_sequence(type))
     {
-        return "SequenceOf<" + sequence.named_type->name + ">";
+        if (sequence.has_name)
+        {
+            return "SequenceOf<" + sequence.named_type->name + ">";
+        }
+        return "SequenceOf<UnnamedSequence" + std::to_string(unnamed_definition_reference_num++) + ">";
+    }
+    else if (is_set(type))
+    {
+        if (sequence.has_name)
+        {
+            return "SequenceOf<" + sequence.named_type->name + ">";
+        }
+        return "SequenceOf<UnnamedSet" + std::to_string(unnamed_definition_reference_num++) + ">";
     }
     else
     {
-        return "SequenceOf<" + to_string(*sequence.type) + ">";
+        return "SequenceOf<" + to_string(type) + ">";
     }
 }
 std::string to_string(const SetType& set)
@@ -502,10 +565,9 @@ std::string to_string(const SetType& set)
     for (const ComponentType& component : set.components)
     {
         std::string component_type = to_string(component.named_type.type);
-        if (absl::holds_alternative<BuiltinType>(component.named_type.type) &&
-            absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(component.named_type.type)))
+        if (is_set(component.named_type.type) || is_sequence(component.named_type.type))
         {
-            res += "    struct " + component.named_type.name + "_type " + component_type + "\n;";
+            res += "    struct " + component.named_type.name + "_type " + component_type;
             res += component.named_type.name + "_type " + component.named_type.name + ";\n";
         }
         else
@@ -523,14 +585,27 @@ std::string to_string(const SetType& set)
 }
 std::string to_string(const SetOfType& set)
 {
-    if (set.has_name)
+    const Type& type = set.has_name ? set.named_type->type : *set.type;
+
+    if (is_sequence(type))
     {
-        return "SetOf<" + set.named_type->name + ">";
+        if (set.has_name)
+        {
+            return "SequenceOf<" + set.named_type->name + ">";
+        }
+        return "SequenceOf<UnnamedSequence" + std::to_string(unnamed_definition_reference_num++) + ">";
+    }
+    else if (is_set(type))
+    {
+        if (set.has_name)
+        {
+            return "SequenceOf<" + set.named_type->name + ">";
+        }
+        return "SequenceOf<UnnamedSet" + std::to_string(unnamed_definition_reference_num++) + ">";
     }
     else
     {
-        assert(set.type);
-        return "SetOf<" + to_string(*set.type) + ">";
+        return "SequenceOf<" + to_string(type) + ">";
     }
 }
 std::string to_string(const PrefixedType& prefixed_type) { return to_string(prefixed_type.tagged_type->type); }
@@ -752,6 +827,28 @@ TaggingInfo universal_tag(const Type& type, TaggingMode tagging_mode)
 {
     UniversalTagHelper tag_helper{tagging_mode};
     return absl::visit(tag_helper, type);
+}
+
+std::string create_type_assignment(const std::string& name, const Type& type, const TaggingMode& tagging_mode)
+{
+    if (is_set(type) || is_sequence(type))
+    {
+        return "struct " + name + to_string(type);
+    }
+    else if (is_enumerated(type))
+    {
+        return "enum class " + name + to_string(type);
+    }
+    else
+    {
+        return "using " + name + " = " + fully_tagged_type(type, tagging_mode) + ";\n";
+    }
+}
+
+std::string create_type_assignment(const Assignment& assignment, const TaggingMode& tagging_mode)
+{
+    const std::string& template_definition = create_template_definition(assignment.parameters);
+    return template_definition + create_type_assignment(assignment.name, assignment.type, tagging_mode) + "\n";
 }
 
 struct Context;
