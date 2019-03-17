@@ -576,6 +576,10 @@ std::string to_string(const ChoiceType& choice)
         {
             res += "UnnamedSet" + std::to_string(unnamed_definition_reference_num++);
         }
+        else if (is_enumerated(named_type.type))
+        {
+            return "UnnamedEnum" + std::to_string(unnamed_definition_reference_num++);
+        }
         else
         {
             res += fully_tagged_type(named_type.type, TaggingMode::implicit);
@@ -666,6 +670,14 @@ std::string to_string(const SequenceOfType& sequence)
         }
         return "SequenceOf<UnnamedSet" + std::to_string(unnamed_definition_reference_num++) + ">";
     }
+    else if (is_enumerated(type))
+    {
+        if (sequence.has_name)
+        {
+            return "SequenceOf<" + sequence.named_type->name + ">";
+        }
+        return "SequenceOf<UnnamedEnum" + std::to_string(unnamed_definition_reference_num++) + ">";
+    }
     else
     {
         return "SequenceOf<" + to_string(type) + ">";
@@ -716,6 +728,14 @@ std::string to_string(const SetOfType& set)
         }
         return "SequenceOf<UnnamedSet" + std::to_string(unnamed_definition_reference_num++) + ">";
     }
+    else if (is_enumerated(type))
+    {
+        if (set.has_name)
+        {
+            return "SequenceOf<" + set.named_type->name + ">";
+        }
+        return "SequenceOf<UnnamedEnum" + std::to_string(unnamed_definition_reference_num++) + ">";
+    }
     else
     {
         return "SequenceOf<" + to_string(type) + ">";
@@ -730,6 +750,10 @@ std::string to_string(const PrefixedType& prefixed_type)
     else if (is_set(prefixed_type.tagged_type->type))
     {
         return "UnnamedSet" + std::to_string(unnamed_definition_reference_num++);
+    }
+    else if (is_enumerated(prefixed_type.tagged_type->type))
+    {
+        return "UnnamedEnum" + std::to_string(unnamed_definition_reference_num++);
     }
     return to_string(prefixed_type.tagged_type->type);
 }

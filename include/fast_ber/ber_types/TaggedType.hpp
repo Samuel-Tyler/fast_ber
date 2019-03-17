@@ -7,7 +7,7 @@
 namespace fast_ber
 {
 
-template <typename Type, typename TagType>
+template <typename Type, typename TagType, typename Enable = void>
 class TaggedType : public Type
 {
   public:
@@ -24,6 +24,29 @@ class TaggedType : public Type
     // No members, destructor doesn't need to be virtual
     TaggedType()           = default; // Noexcept fails on g++4.8
     ~TaggedType() noexcept = default;
+
+    Type&       get() { return *this; }
+    const Type& get() const { return *this; }
+};
+
+// Special template required for enums as they can't be inhereted from
+template <typename Type, typename TagType>
+struct TaggedType<Type, TagType, typename std::enable_if<std::is_enum<Type>::value>::type>
+{
+    Type enumerated;
+
+    TaggedType() = default;
+    TaggedType(const Type& t) : enumerated(t) {}
+    TaggedType& operator=(const Type& t)
+    {
+        enumerated = t;
+        return *this;
+    }
+
+                operator Type&() { return enumerated; }
+                operator const Type&() const { return enumerated; }
+    Type&       get() { return enumerated; }
+    const Type& get() const { return enumerated; }
 };
 
 template <typename Type, typename TagType>
@@ -35,13 +58,13 @@ constexpr TagType identifier(const TaggedType<Type, TagType>*) noexcept
 template <typename T, typename DefaultTag, typename ID = DefaultTag>
 EncodeResult encode(absl::Span<uint8_t> output, const TaggedType<T, DefaultTag>& object, const ID& id = ID{})
 {
-    return encode(output, *dynamic_cast<const T*>(&object), id);
+    return encode(output, object.get(), id);
 }
 
 template <typename T, typename DefaultTag, typename ID = DefaultTag>
 DecodeResult decode(absl::Span<const uint8_t> output, TaggedType<T, DefaultTag>& object, const ID& id = ID{})
 {
-    return decode(output, *dynamic_cast<T*>(&object), id);
+    return decode(output, object.get(), id);
 }
 
 } // namespace fast_ber
