@@ -42,6 +42,7 @@ struct TaggedType<Type, TagType, typename std::enable_if<std::is_enum<Type>::val
         enumerated = t;
         return *this;
     }
+    bool operator==(const Type& t) { return enumerated == t; }
 
                 operator Type&() { return enumerated; }
                 operator const Type&() const { return enumerated; }
