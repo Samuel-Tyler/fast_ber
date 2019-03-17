@@ -1,4 +1,4 @@
-# fast_ber
+# fast_ber ![version](https://img.shields.io/github/tag/samuel-tyler/fast_ber.svg) [![Travis status](https://ci.appveyor.com/api/projects/status/32r7s2skrgm9ubva?svg=true)](https://ci.appveyor.com/project/Samuel-Tyler/fast-ber) [![Appveyor status](https://travis-ci.org/Samuel-Tyler/fast_ber.svg?branch=master)](https://travis-ci.org/Samuel-Tyler/fast_ber)
 A performant ASN.1 BER encoding and decoding library written in C++11
 
 ## Introduction
@@ -128,7 +128,7 @@ fast_ber is in development. The following table documents what has been implemen
 | Indefinitive length | No |
 | Arbitrary top level structure | Yes |
 | Arbritary definition order | Yes |
-| Embedded Types | No |
+| Embedded Types | Yes |
 | Imports | Yes |
 
 ## Possible Future Extensions
