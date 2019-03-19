@@ -1,0 +1,5 @@
+Times DEFINITIONS IMPLICIT TAGS ::= BEGIN
+
+GenTime ::= GeneralizedTime
+
+END

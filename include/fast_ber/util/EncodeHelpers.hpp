@@ -15,6 +15,7 @@ class Integer;
 class Null;
 class OctetString;
 class ObjectIdentifier;
+class GeneralizedTime;
 
 struct EncodeResult
 {
@@ -180,6 +181,12 @@ EncodeResult encode(absl::Span<uint8_t> output, const Null& object, const ID& id
 
 template <typename ID = ExplicitIdentifier<UniversalTag::object_identifier>>
 EncodeResult encode(absl::Span<uint8_t> output, const ObjectIdentifier& object, const ID& id = ID{})
+{
+    return encode_impl(output, object, id);
+}
+
+template <typename ID = ExplicitIdentifier<UniversalTag::generalized_time>>
+EncodeResult encode(absl::Span<uint8_t> output, const GeneralizedTime& object, const ID& id = ID{})
 {
     return encode_impl(output, object, id);
 }

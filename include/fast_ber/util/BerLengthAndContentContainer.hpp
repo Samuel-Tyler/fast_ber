@@ -21,7 +21,9 @@ class BerLengthAndContentContainer
         : m_data{container.m_data}, m_content_offset{container.m_content_offset}
     {
     }
-    BerLengthAndContentContainer(absl::Span<const uint8_t> data, ConstructionMethod method) noexcept;
+    BerLengthAndContentContainer(
+        absl::Span<const uint8_t> data,
+        ConstructionMethod        method = ConstructionMethod::construct_with_provided_content) noexcept;
 
     bool operator==(const BerLengthAndContentContainer& rhs) const noexcept { return m_data == rhs.m_data; }
     bool operator!=(const BerLengthAndContentContainer& rhs) const noexcept { return !(*this == rhs); }
