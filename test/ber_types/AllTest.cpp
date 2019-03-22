@@ -4,6 +4,8 @@
 
 #include <catch2/catch.hpp>
 
+#include "absl/time/clock.h"
+
 using namespace fast_ber;
 enum TestEnum
 {

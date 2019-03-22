@@ -6,6 +6,8 @@
 #include <catch2/catch.hpp>
 #include <limits>
 
+#include "absl/time/clock.h"
+
 TEST_CASE("GeneralizedTime: Assign")
 {
     const absl::Time          now = absl::Now();

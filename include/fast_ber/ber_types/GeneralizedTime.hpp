@@ -3,7 +3,6 @@
 #include "fast_ber/util/BerLengthAndContentContainer.hpp"
 
 #include "absl/strings/string_view.h"
-#include "absl/time/clock.h"
 #include "absl/time/time.h"
 
 namespace fast_ber
