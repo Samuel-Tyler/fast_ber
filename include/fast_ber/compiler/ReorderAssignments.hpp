@@ -120,6 +120,10 @@ void find_nested_structs(const Type& type, std::vector<NamedType>& nested_struct
             nested_structs.push_back(
                 NamedType{"UnnamedSequence" + std::to_string(unnamed_definition_num++), inner_type});
         }
+        else if (is_enumerated(inner_type))
+        {
+            nested_structs.push_back(NamedType{"UnnamedEnum" + std::to_string(unnamed_definition_num++), inner_type});
+        }
         find_nested_structs(inner_type, nested_structs);
     }
     else if (is_sequence_of(type))
@@ -135,6 +139,10 @@ void find_nested_structs(const Type& type, std::vector<NamedType>& nested_struct
             nested_structs.push_back(
                 NamedType{"UnnamedSequence" + std::to_string(unnamed_definition_num++), inner_type});
         }
+        else if (is_enumerated(inner_type))
+        {
+            nested_structs.push_back(NamedType{"UnnamedEnum" + std::to_string(unnamed_definition_num++), inner_type});
+        }
         find_nested_structs(inner_type, nested_structs);
     }
     else if (is_choice(type))
@@ -142,15 +150,21 @@ void find_nested_structs(const Type& type, std::vector<NamedType>& nested_struct
         const ChoiceType& choice = absl::get<ChoiceType>(absl::get<BuiltinType>(type));
         for (const NamedType& choice_selection : choice.choices)
         {
-            if (is_set(choice_selection.type))
+            const Type& inner_type = choice_selection.type;
+            if (is_set(inner_type))
             {
                 nested_structs.push_back(
-                    NamedType{"UnnamedSet" + std::to_string(unnamed_definition_num++), choice_selection.type});
+                    NamedType{"UnnamedSet" + std::to_string(unnamed_definition_num++), inner_type});
             }
-            else if (is_sequence(choice_selection.type))
+            else if (is_sequence(inner_type))
             {
                 nested_structs.push_back(
-                    NamedType{"UnnamedSequence" + std::to_string(unnamed_definition_num++), choice_selection.type});
+                    NamedType{"UnnamedSequence" + std::to_string(unnamed_definition_num++), inner_type});
+            }
+            else if (is_enumerated(inner_type))
+            {
+                nested_structs.push_back(
+                    NamedType{"UnnamedEnum" + std::to_string(unnamed_definition_num++), inner_type});
             }
             find_nested_structs(choice_selection.type, nested_structs);
         }
@@ -166,6 +180,10 @@ void find_nested_structs(const Type& type, std::vector<NamedType>& nested_struct
         {
             nested_structs.push_back(
                 NamedType{"UnnamedSequence" + std::to_string(unnamed_definition_num++), inner_type});
+        }
+        else if (is_enumerated(inner_type))
+        {
+            nested_structs.push_back(NamedType{"UnnamedEnum" + std::to_string(unnamed_definition_num++), inner_type});
         }
         find_nested_structs(inner_type, nested_structs);
     }

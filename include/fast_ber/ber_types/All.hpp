@@ -10,6 +10,7 @@
 #include "EmbeddedPDV.hpp"
 #include "Enumerated.hpp"
 #include "External.hpp"
+#include "GeneralizedTime.hpp"
 #include "IRI.hpp"
 #include "InstanceOf.hpp"
 #include "Integer.hpp"

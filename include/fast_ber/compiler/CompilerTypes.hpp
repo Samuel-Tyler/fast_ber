@@ -15,12 +15,119 @@
 #include <set>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
+static const std::unordered_set<std::string> reserved_keywords = {"alignas",
+                                                                  "alignof",
+                                                                  "and",
+                                                                  "and_eq",
+                                                                  "asm",
+                                                                  "atomic_cancel",
+                                                                  "atomic_commit",
+                                                                  "atomic_noexcept",
+                                                                  "auto",
+                                                                  "bitand",
+                                                                  "bitor",
+                                                                  "bool",
+                                                                  "break",
+                                                                  "case",
+                                                                  "catch",
+                                                                  "char",
+                                                                  "char8_t",
+                                                                  "char16_t",
+                                                                  "char32_t",
+                                                                  "class",
+                                                                  "compl",
+                                                                  "concept",
+                                                                  "const",
+                                                                  "consteval",
+                                                                  "constexpr",
+                                                                  "const_cast",
+                                                                  "continue",
+                                                                  "co_await",
+                                                                  "co_return",
+                                                                  "co_yield",
+                                                                  "decltype",
+                                                                  "default",
+                                                                  "delete",
+                                                                  "do",
+                                                                  "double",
+                                                                  "dynamic_cast",
+                                                                  "else",
+                                                                  "enum",
+                                                                  "explicit",
+                                                                  "export",
+                                                                  "extern",
+                                                                  "false",
+                                                                  "float",
+                                                                  "for",
+                                                                  "friend",
+                                                                  "goto",
+                                                                  "if",
+                                                                  "import",
+                                                                  "inline",
+                                                                  "int",
+                                                                  "long",
+                                                                  "module",
+                                                                  "mutable",
+                                                                  "namespace",
+                                                                  "new",
+                                                                  "noexcept",
+                                                                  "not",
+                                                                  "not_eq",
+                                                                  "nullptr",
+                                                                  "operator",
+                                                                  "or",
+                                                                  "or_eq",
+                                                                  "private",
+                                                                  "protected",
+                                                                  "public",
+                                                                  "reflexpr",
+                                                                  "register",
+                                                                  "reinterpret_cast",
+                                                                  "requires",
+                                                                  "return",
+                                                                  "short",
+                                                                  "signed",
+                                                                  "sizeof",
+                                                                  "static",
+                                                                  "static_assert",
+                                                                  "static_cast",
+                                                                  "struct",
+                                                                  "switch",
+                                                                  "synchronized",
+                                                                  "template",
+                                                                  "this",
+                                                                  "thread_local",
+                                                                  "throw",
+                                                                  "true",
+                                                                  "try",
+                                                                  "typedef",
+                                                                  "typeid",
+                                                                  "typename",
+                                                                  "union",
+                                                                  "unsigned",
+                                                                  "using",
+                                                                  "virtual",
+                                                                  "void",
+                                                                  "volatile",
+                                                                  "wchar_t",
+                                                                  "while",
+                                                                  "xor",
+                                                                  "xor_eq"};
+
+// Switch asn '-' for C++ '_'
+// Rename any names which are reserved in C++
 std::string santize_name(const std::string& name)
 {
     auto copy = name;
     std::replace(copy.begin(), copy.end(), '-', '_');
+
+    if (reserved_keywords.count(copy) > 0)
+    {
+        return copy + "_";
+    }
     return copy;
 }
 
@@ -469,6 +576,10 @@ std::string to_string(const ChoiceType& choice)
         {
             res += "UnnamedSet" + std::to_string(unnamed_definition_reference_num++);
         }
+        else if (is_enumerated(named_type.type))
+        {
+            return "UnnamedEnum" + std::to_string(unnamed_definition_reference_num++);
+        }
         else
         {
             res += fully_tagged_type(named_type.type, TaggingMode::implicit);
@@ -559,6 +670,14 @@ std::string to_string(const SequenceOfType& sequence)
         }
         return "SequenceOf<UnnamedSet" + std::to_string(unnamed_definition_reference_num++) + ">";
     }
+    else if (is_enumerated(type))
+    {
+        if (sequence.has_name)
+        {
+            return "SequenceOf<" + sequence.named_type->name + ">";
+        }
+        return "SequenceOf<UnnamedEnum" + std::to_string(unnamed_definition_reference_num++) + ">";
+    }
     else
     {
         return "SequenceOf<" + to_string(type) + ">";
@@ -609,6 +728,14 @@ std::string to_string(const SetOfType& set)
         }
         return "SequenceOf<UnnamedSet" + std::to_string(unnamed_definition_reference_num++) + ">";
     }
+    else if (is_enumerated(type))
+    {
+        if (set.has_name)
+        {
+            return "SequenceOf<" + set.named_type->name + ">";
+        }
+        return "SequenceOf<UnnamedEnum" + std::to_string(unnamed_definition_reference_num++) + ">";
+    }
     else
     {
         return "SequenceOf<" + to_string(type) + ">";
@@ -623,6 +750,10 @@ std::string to_string(const PrefixedType& prefixed_type)
     else if (is_set(prefixed_type.tagged_type->type))
     {
         return "UnnamedSet" + std::to_string(unnamed_definition_reference_num++);
+    }
+    else if (is_enumerated(prefixed_type.tagged_type->type))
+    {
+        return "UnnamedEnum" + std::to_string(unnamed_definition_reference_num++);
     }
     return to_string(prefixed_type.tagged_type->type);
 }

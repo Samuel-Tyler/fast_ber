@@ -12,6 +12,7 @@ class Integer;
 class Null;
 class OctetString;
 class ObjectIdentifier;
+class GeneralizedTime;
 
 struct DecodeResult
 {
@@ -90,6 +91,12 @@ DecodeResult decode(BerViewIterator& input, Null& output, const ID& id = {}) noe
 
 template <typename ID = ExplicitIdentifier<UniversalTag::object_identifier>>
 DecodeResult decode(BerViewIterator& input, ObjectIdentifier& output, const ID& id = {}) noexcept
+{
+    return primitive_decode_impl(input, output, id);
+}
+
+template <typename ID = ExplicitIdentifier<UniversalTag::generalized_time>>
+DecodeResult decode(BerViewIterator& input, GeneralizedTime& output, const ID& id = {}) noexcept
 {
     return primitive_decode_impl(input, output, id);
 }

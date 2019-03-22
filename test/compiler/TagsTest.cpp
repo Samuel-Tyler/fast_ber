@@ -78,3 +78,17 @@ TEST_CASE("Tags: Encoding and decoding a packet with various tagging modes")
     REQUIRE(!tags_copy.bool2);
     REQUIRE(tags_copy.bool3);
 }
+
+TEST_CASE("Tags: Tagging an enum")
+{
+    fast_ber::Tags::TaggedEnum a = fast_ber::Tags::UnnamedEnum0::enum_;
+    REQUIRE(fast_ber::reference_tag(identifier(&a)) == 7);
+    REQUIRE(a == fast_ber::Tags::UnnamedEnum0::enum_);
+
+    std::array<uint8_t, 5000> buffer        = {};
+    fast_ber::EncodeResult    encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), a);
+    fast_ber::DecodeResult    decode_result = fast_ber::decode(absl::MakeSpan(buffer.data(), buffer.size()), a);
+
+    REQUIRE(encode_result.success);
+    REQUIRE(decode_result.success);
+}
