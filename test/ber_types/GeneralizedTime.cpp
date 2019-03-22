@@ -6,32 +6,41 @@
 #include <catch2/catch.hpp>
 #include <limits>
 
-TEST_CASE("GeneralizdTime: Assign")
+TEST_CASE("GeneralizedTime: Assign")
 {
-    const auto                now = std::chrono::high_resolution_clock::now();
+    const absl::Time          now = absl::Now();
     fast_ber::GeneralizedTime time(now);
-    REQUIRE(time.universal_time_available());
-    REQUIRE(fast_ber::GeneralizedTime(time.universal_time()).string() == time.string());
+    REQUIRE(fast_ber::GeneralizedTime(time.time()).string() == time.string());
 
-    time.set_local_time(std::chrono::high_resolution_clock::time_point());
-    REQUIRE(time.local_time_available());
-
-    REQUIRE(time.local_time() == std::chrono::high_resolution_clock::time_point());
-    REQUIRE(time.string() == "19700101000000");
-
-    time.set_universal_time(std::chrono::high_resolution_clock::time_point());
-    REQUIRE(time.universal_time_available());
-    REQUIRE(time.universal_time() == std::chrono::high_resolution_clock::time_point());
+    time.set_time(absl::UnixEpoch());
+    REQUIRE(time.time() == absl::UnixEpoch());
     REQUIRE(time.string() == "19700101000000Z");
+    REQUIRE(time.format() == fast_ber::GeneralizedTime::TimeFormat::universal);
+
+    time.set_time(absl::UnixEpoch(), 150);
+    REQUIRE(time.time() == absl::UnixEpoch());
+    REQUIRE(time.string() == "19700101000000+0230");
+    REQUIRE(time.format() == fast_ber::GeneralizedTime::TimeFormat::universal_with_timezone);
+
+    time.set_time(absl::UnixEpoch(), -30);
+    REQUIRE(time.time() == absl::UnixEpoch());
+    REQUIRE(time.string() == "19700101000000-0030");
+    REQUIRE(time.format() == fast_ber::GeneralizedTime::TimeFormat::universal_with_timezone);
+
+    absl::CivilSecond cs(2017, 1, 2, 3, 4, 5);
+    time.set_time(cs);
+    REQUIRE(time.time() == absl::FromCivil(cs, absl::LocalTimeZone()));
+    REQUIRE(time.string() == "20170102030405");
+    REQUIRE(time.format() == fast_ber::GeneralizedTime::TimeFormat::local);
 }
 
-TEST_CASE("GeneralizdTime: Encode Decode")
+TEST_CASE("GeneralizedTime: Encode Decode")
 
 {
     std::array<uint8_t, 100> buffer = {};
 
-    fast_ber::GeneralizedTime first  = std::chrono::high_resolution_clock::time_point();
-    fast_ber::GeneralizedTime second = std::chrono::high_resolution_clock::time_point();
+    fast_ber::GeneralizedTime first  = absl::FromTimeT(1500000000);
+    fast_ber::GeneralizedTime second = absl::FromTimeT(1000000000);
 
     fast_ber::EncodeResult encode_res = fast_ber::encode(absl::Span<uint8_t>(buffer), first);
     fast_ber::DecodeResult decode_res = fast_ber::decode(absl::Span<uint8_t>(buffer), second);
@@ -49,7 +58,7 @@ TEST_CASE("GeneralizdTime: Encoding")
     std::array<uint8_t, 17>  expected = {0x18, 0x0F, 0x32, 0x30, 0x31, 0x39, 0x30, 0x33, 0x31,
                                         0x39, 0x32, 0x31, 0x30, 0x39, 0x34, 0x32, 0x5A};
 
-    fast_ber::GeneralizedTime time       = std::chrono::high_resolution_clock::from_time_t(1553029782);
+    fast_ber::GeneralizedTime time       = absl::FromTimeT(1553029782);
     fast_ber::EncodeResult    encode_res = fast_ber::encode(absl::Span<uint8_t>(buffer), time);
 
     REQUIRE(encode_res.success);
@@ -57,10 +66,8 @@ TEST_CASE("GeneralizdTime: Encoding")
     REQUIRE(absl::MakeSpan(buffer.data(), expected.size()) == absl::MakeSpan(expected.data(), expected.size()));
 }
 
-TEST_CASE("GeneralizdTime: Default value")
+TEST_CASE("GeneralizedTime: Default value")
 {
     REQUIRE(fast_ber::GeneralizedTime().string() == "19700101000000Z");
-    REQUIRE(fast_ber::GeneralizedTime().universal_time_available());
-    REQUIRE(fast_ber::GeneralizedTime().universal_time() ==
-            std::chrono::time_point<std::chrono::high_resolution_clock>());
+    REQUIRE(fast_ber::GeneralizedTime().time() == absl::UnixEpoch());
 }

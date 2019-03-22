@@ -3,109 +3,132 @@
 #include "fast_ber/util/BerLengthAndContentContainer.hpp"
 
 #include "absl/strings/string_view.h"
-
-#include <chrono>
-#include <ctime>
+#include "absl/time/clock.h"
+#include "absl/time/time.h"
 
 namespace fast_ber
 {
 constexpr const int minimum_timestamp_length = 10;
 constexpr const int max_timestamp_length     = 23;
 
+const std::string g_local_time_format                    = "%E4Y%m%d%H%M%S";
+const std::string g_universal_time_format                = "%E4Y%m%d%H%M%SZ";
+const std::string g_universal_time_with_time_zone_format = "%E4Y%m%d%H%M%S";
+
 class GeneralizedTime
 {
   public:
-    template <typename T>
-    void set_local_time(const std::chrono::time_point<T>& time);
-    template <typename T>
-    void set_local_time(const std::chrono::time_point<T>& time, int utc_offset_hours, int utc_offset_minutes);
-    template <typename T>
-    void set_universal_time(const std::chrono::time_point<T>& time);
+    enum class TimeFormat
+    {
+        universal,
+        universal_with_timezone,
+        local
+    };
 
-    bool                                                        local_time_available() const;
-    bool                                                        universal_time_available() const;
-    std::chrono::time_point<std::chrono::high_resolution_clock> local_time() const;
-    std::chrono::time_point<std::chrono::high_resolution_clock> universal_time() const;
-    std::string                                                 string() const;
+    void set_time(const absl::CivilSecond& cs);
+    void set_time(const absl::Time& time);
+    void set_time(const absl::Time& time, int timezone_offset_minutes);
+
+    absl::Time  time() const;
+    std::string string() const;
+    TimeFormat  format() const;
 
     size_t       assign_ber(const BerView& view) noexcept;
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
-    template <typename T>
-    GeneralizedTime(const std::chrono::time_point<T>& time)
-    {
-        set_universal_time(time);
-    }
-    GeneralizedTime() { set_universal_time(std::chrono::time_point<std::chrono::high_resolution_clock>()); }
+    GeneralizedTime(const absl::Time& time) { set_time(time); }
+    GeneralizedTime() { set_time(absl::Time()); }
 
   private:
     BerLengthAndContentContainer m_contents;
 };
 
-inline bool operator==(const GeneralizedTime& lhs, const GeneralizedTime& rhs)
+constexpr inline ExplicitIdentifier<UniversalTag::generalized_time> identifier(const GeneralizedTime*) noexcept
 {
-    if (lhs.universal_time_available() && rhs.universal_time_available())
-    {
-        return lhs.universal_time() == rhs.universal_time();
-    }
-    if (lhs.local_time_available() && rhs.local_time_available())
-    {
-        return lhs.local_time() == rhs.local_time();
-    }
-    return false;
+    return {};
 }
 
-template <typename T>
-void GeneralizedTime::set_local_time(const std::chrono::time_point<T>& time)
-{
-    std::array<char, max_timestamp_length + 1> buffer;
-    const std::time_t                          ctime  = std::chrono::high_resolution_clock::to_time_t(time);
-    const std::tm*                             ctime2 = std::gmtime(&ctime);
+inline bool operator==(const GeneralizedTime& lhs, const GeneralizedTime& rhs) { return lhs.time() == rhs.time(); }
+inline bool operator!=(const GeneralizedTime& lhs, const GeneralizedTime& rhs) { return !(lhs == rhs); }
 
-    strftime(buffer.data(), buffer.size(), "%Y%m%d%H%M%S", ctime2);
+inline void GeneralizedTime::set_time(const absl::Time& time)
+{
+    std::string time_str = absl::FormatTime(g_universal_time_format, time, absl::UTCTimeZone());
+
     m_contents.assign_content(
-        absl::Span<const uint8_t>(reinterpret_cast<const uint8_t*>(buffer.data()), strlen(buffer.data())));
-    assert(local_time_available());
+        absl::Span<const uint8_t>(reinterpret_cast<const uint8_t*>(time_str.data()), time_str.length()));
 }
 
-template <typename T>
-void GeneralizedTime::set_universal_time(const std::chrono::time_point<T>& time)
+inline void GeneralizedTime::set_time(const absl::CivilSecond& cs)
 {
-    std::array<char, max_timestamp_length + 1> buffer;
-    const std::time_t                          ctime  = std::chrono::high_resolution_clock::to_time_t(time);
-    const std::tm*                             ctime2 = std::gmtime(&ctime);
-    strftime(buffer.data(), buffer.size(), "%Y%m%d%H%M%SZ", ctime2);
+    std::string time_str =
+        absl::FormatTime(g_local_time_format, absl::FromCivil(cs, absl::LocalTimeZone()), absl::LocalTimeZone());
+
     m_contents.assign_content(
-        absl::Span<const uint8_t>(reinterpret_cast<const uint8_t*>(buffer.data()), strlen(buffer.data())));
-    assert(universal_time_available());
+        absl::Span<const uint8_t>(reinterpret_cast<const uint8_t*>(time_str.data()), time_str.length()));
 }
 
-inline bool GeneralizedTime::local_time_available() const { return m_contents.content().back() != 'Z'; }
-
-inline bool GeneralizedTime::universal_time_available() const
+inline void GeneralizedTime::set_time(const absl::Time& time, int timezone_offset_minutes)
 {
-    return (m_contents.content().back() == 'Z') || (m_contents.content()[m_contents.content_length() - 5] == '-') ||
-           (m_contents.content()[m_contents.content_length() - 5] == '+');
+    std::string time_str = absl::FormatTime(g_universal_time_with_time_zone_format, time, absl::UTCTimeZone());
+
+    std::string timezone_extension = std::string(5, '\0');
+    snprintf(&timezone_extension[0], timezone_extension.length() + 1, "%c%2.2d%2.2d",
+             (timezone_offset_minutes >= 0) ? '+' : '-', std::abs(timezone_offset_minutes) / 60,
+             std::abs(timezone_offset_minutes) % 60);
+    time_str += timezone_extension;
+
+    m_contents.assign_content(
+        absl::Span<const uint8_t>(reinterpret_cast<const uint8_t*>(time_str.data()), time_str.length()));
 }
 
-inline std::chrono::time_point<std::chrono::high_resolution_clock> GeneralizedTime::local_time() const
+inline GeneralizedTime::TimeFormat GeneralizedTime::format() const
 {
-    assert(local_time_available());
-    std::array<char, max_timestamp_length + 1> buffer = {};
-    tm                                         time   = {};
-    std::memcpy(buffer.data(), m_contents.content_data(), m_contents.content_length());
-    strptime(buffer.data(), "%Y%m%d%H%M%S", &time);
-    return std::chrono::high_resolution_clock::from_time_t(timegm(&time));
+    if (m_contents.content().back() == 'Z')
+    {
+        return TimeFormat::universal;
+    }
+    else if ((m_contents.content()[m_contents.content_length() - 5] == '-') ||
+             (m_contents.content()[m_contents.content_length() - 5] == '+'))
+    {
+        return TimeFormat::universal_with_timezone;
+    }
+    else
+    {
+        return TimeFormat::local;
+    }
 }
 
-inline std::chrono::time_point<std::chrono::high_resolution_clock> GeneralizedTime::universal_time() const
+inline absl::Time GeneralizedTime::time() const
 {
-    assert(universal_time_available());
-    std::array<char, max_timestamp_length + 1> buffer = {};
-    tm                                         time   = {};
-    std::memcpy(buffer.data(), m_contents.content_data(), m_contents.content_length());
-    strptime(buffer.data(), "%Y%m%d%H%M%SZ", &time);
-    return std::chrono::high_resolution_clock::from_time_t(timegm(&time));
+    thread_local std::string s_error_string;
+    absl::Time               time;
+    const TimeFormat         frmt = format();
+
+    if (frmt == TimeFormat::universal)
+    {
+        if (!absl::ParseTime(g_universal_time_format, this->string(), absl::UTCTimeZone(), &time, &s_error_string))
+        {
+            throw std::runtime_error("Failed to parse time: " + s_error_string);
+        }
+    }
+    else if (frmt == TimeFormat::universal_with_timezone)
+    {
+        const auto time_str = this->string();
+        if (!absl::ParseTime(g_universal_time_with_time_zone_format, time_str.substr(.0, time_str.length() - 5),
+                             absl::UTCTimeZone(), &time, &s_error_string))
+        {
+            throw std::runtime_error("Failed to parse time: " + s_error_string);
+        }
+    }
+    else if (frmt == TimeFormat::local)
+    {
+        if (!absl::ParseTime(g_local_time_format, this->string(), absl::UTCTimeZone(), &time, &s_error_string))
+        {
+            throw std::runtime_error("Failed to parse time: " + s_error_string);
+        }
+    }
+    return time;
 }
 
 inline std::string GeneralizedTime::string() const

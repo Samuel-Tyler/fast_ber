@@ -55,6 +55,7 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
     // test_type(fast_ber::EmbeddedPDV);
     test_type(fast_ber::All::The_Enum(fast_ber::All::The_Enum::pear));
     // test_type(fast_ber::External);
+    test_type(fast_ber::GeneralizedTime(absl::Now()));
     // test_type(fast_ber::IRI);
     // test_type(fast_ber::InstanceOf);
     test_type(fast_ber::Integer(5));
