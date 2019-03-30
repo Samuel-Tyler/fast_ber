@@ -1,6 +1,7 @@
 Pokemon DEFINITIONS EXPLICIT TAGS ::= BEGIN
 
 Team ::= SEQUENCE {
+    team-name OCTET STRING,
     members SEQUENCE OF Pokemon
 }
 

@@ -30,14 +30,15 @@ int main()
         return -1;
     }
 
+    std::cout << team.team_name << ", " << team.members.size() << " members\n\n";
     for (const auto& member : team.members)
     {
-        std::cout << "Pokemon = " << member.name << '\n';
-        std::cout << "Category = " << member.category << '\n';
-        std::cout << "Type = " << capatalize(to_string(member.type)) << '\n';
-        std::cout << "Ability = " << member.ability << '\n';
-        std::cout << "Weakness = " << member.weakness << '\n';
-        std::cout << "Weight = " << member.weight << '\n';
+        std::cout << "  Pokemon = " << member.name << '\n';
+        std::cout << "    Category = " << member.category << '\n';
+        std::cout << "    Type = " << capatalize(to_string(member.type)) << '\n';
+        std::cout << "    Ability = " << member.ability << '\n';
+        std::cout << "    Weakness = " << member.weakness << '\n';
+        std::cout << "    Weight = " << member.weight << '\n';
         std::cout << "\n";
     }
     return 0;

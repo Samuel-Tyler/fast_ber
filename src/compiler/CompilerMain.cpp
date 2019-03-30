@@ -2,6 +2,7 @@
 #include "fast_ber/compiler/CompilerTypes.hpp"
 #include "fast_ber/compiler/CppGeneration.hpp"
 #include "fast_ber/compiler/Dependencies.hpp"
+#include "fast_ber/compiler/Identifier.hpp"
 #include "fast_ber/compiler/ReorderAssignments.hpp"
 
 #include <string>
@@ -15,6 +16,28 @@ std::string strip_path(const std::string& path)
         return path;
     }
     return path.substr(found + 1);
+}
+
+std::string create_type_assignment(const std::string& name, const Type& type, const TaggingMode& tagging_mode)
+{
+    if (is_set(type) || is_sequence(type))
+    {
+        return "struct " + name + to_string(type);
+    }
+    else if (is_enumerated(type))
+    {
+        return "enum class " + name + to_string(type);
+    }
+    else
+    {
+        return "using " + name + " = " + fully_tagged_type(type, tagging_mode) + ";\n";
+    }
+}
+
+std::string create_type_assignment(const Assignment& assignment, const TaggingMode& tagging_mode)
+{
+    const std::string& template_definition = create_template_definition(assignment.parameters);
+    return template_definition + create_type_assignment(assignment.name, assignment.type, tagging_mode) + "\n";
 }
 
 std::string create_assignment(const Assignment& assignment, TaggingMode tagging_mode)
@@ -76,8 +99,7 @@ std::string create_identifier_functions(const Assignment& assignment, const std:
     std::string full_assignment_name = assignment.name + create_template_arguments(assignment.parameters);
     std::string res                  = create_template_definition(assignment.parameters);
 
-    if (absl::holds_alternative<BuiltinType>(assignment.type) &&
-        absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(assignment.type)))
+    if (is_sequence(assignment.type))
     {
         const std::string tags_class = assignment.name + "Tags";
 
@@ -88,8 +110,7 @@ std::string create_identifier_functions(const Assignment& assignment, const std:
         res += "}\n\n";
         return res;
     }
-    else if (absl::holds_alternative<BuiltinType>(assignment.type) &&
-             absl::holds_alternative<SetType>(absl::get<BuiltinType>(assignment.type)))
+    else if (is_set(assignment.type))
     {
         const std::string tags_class = full_assignment_name + "Tags";
 
@@ -106,60 +127,70 @@ std::string create_identifier_functions(const Assignment& assignment, const std:
     }
 }
 
+std::string collection_name(const SequenceType&) { return "sequence"; }
+std::string collection_name(const SetType&) { return "set"; }
+
 template <typename CollectionType>
-std::string create_collection_encode_functions(const std::string assignment_name, const CollectionType& collection,
-                                               const std::string& module_name, const std::string& collection_name,
-                                               TaggingMode tagging_mode, const std::set<std::string>& parameters)
+std::string create_collection_encode_functions(const std::string            assignment_name,
+                                               const std::set<std::string>& parameters,
+                                               const CollectionType& collection, const Module& module)
 {
     std::string res;
-    std::string tags_class = module_name + "_" + assignment_name + "Tags";
+    std::string tags_class = module.module_reference + "_" + assignment_name + "Tags";
     std::replace(tags_class.begin(), tags_class.end(), ':', '_');
 
     res += "namespace " + tags_class + " {\n";
     int tag_counter = 0;
     for (const ComponentType& component : collection.components)
     {
-        res += "static const auto " + component.named_type.name + " = ";
-        if (absl::holds_alternative<BuiltinType>(component.named_type.type) &&
-            (absl::holds_alternative<PrefixedType>(absl::get<BuiltinType>(component.named_type.type))))
+        res += "static constexpr auto " + component.named_type.name + " = ";
+        if (is_prefixed(component.named_type.type))
         {
-            res += universal_tag(component.named_type.type, tagging_mode).tag;
+            res += identifier(component.named_type.type, module.tagging_default).tag + "{}";
+        }
+        else if (module.tagging_default == TaggingMode::automatic)
+        {
+            res += "ImplicitIdentifier<Class::context_specific, " + std::to_string(tag_counter++) + ">{}";
+        }
+        else if (is_defined(component.named_type.type))
+        {
+            const DefinedType& defined = absl::get<DefinedType>(component.named_type.type);
+            res += "identifier(static_cast<" + module.module_reference + "::" + defined.name + "*>(nullptr))";
         }
         else
         {
-            res += "ImplicitIdentifier<Class::context_specific, " + std::to_string(tag_counter++) + ">";
+            res += identifier(component.named_type.type, module.tagging_default).tag + "{}";
         }
-        res += "{};\n";
+        res += ";\n";
     }
     res += "}\n\n";
 
     // Make child encode functions
     for (const ComponentType& component : collection.components)
     {
-        if (absl::holds_alternative<BuiltinType>(component.named_type.type) &&
-            absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(component.named_type.type)))
+        if (is_sequence(component.named_type.type))
         {
             const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(component.named_type.type));
 
             res += create_collection_encode_functions(assignment_name + "::" + component.named_type.name + "_type",
-                                                      sequence, module_name, "sequence", tagging_mode, parameters);
+                                                      parameters, sequence, module);
         }
-        else if (absl::holds_alternative<BuiltinType>(component.named_type.type) &&
-                 absl::holds_alternative<SetType>(absl::get<BuiltinType>(component.named_type.type)))
+        else if (is_set(component.named_type.type))
         {
             const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(component.named_type.type));
 
-            res += create_collection_encode_functions(assignment_name + "::" + component.named_type.name + "_type", set,
-                                                      module_name, "set", tagging_mode, parameters);
+            res += create_collection_encode_functions(assignment_name + "::" + component.named_type.name + "_type",
+                                                      parameters, set, module);
         }
     }
 
     std::set<std::string> template_args = parameters;
-    template_args.insert("ID = ExplicitIdentifier<UniversalTag::" + collection_name + ">");
+    template_args.insert("ID = ExplicitIdentifier<UniversalTag::" + collection_name(collection) + ">");
 
     res += create_template_definition(template_args);
-    res += "inline EncodeResult encode(absl::Span<uint8_t> output, const " + module_name + "::" + assignment_name +
-           create_template_arguments(parameters) + "& input, const ID& id = ID{}) noexcept\n{\n";
+    res += "inline EncodeResult encode(absl::Span<uint8_t> output, const " + module.module_reference +
+           "::" + assignment_name + create_template_arguments(parameters) +
+           "& input, const ID& id = ID{}) noexcept\n{\n";
     res += "    return encode_sequence_combine(output, id";
     for (const ComponentType& component : collection.components)
     {
@@ -171,22 +202,22 @@ std::string create_collection_encode_functions(const std::string assignment_name
 }
 
 template <typename CollectionType>
-std::string create_collection_decode_functions(const std::string assignment_name, const CollectionType& collection,
-                                               const std::string& module_name, const std::string& collection_name,
-                                               const std::set<std::string>& parameters)
+std::string create_collection_decode_functions(const std::string            assignment_name,
+                                               const std::set<std::string>& parameters,
+                                               const CollectionType& collection, const Module& module)
 {
     std::string res;
-    std::string tags_class = module_name + "_" + assignment_name + "Tags";
+    std::string tags_class = module.module_reference + "_" + assignment_name + "Tags";
     std::replace(tags_class.begin(), tags_class.end(), ':', '_');
 
     std::set<std::string> template_args = parameters;
-    template_args.insert("ID = ExplicitIdentifier<UniversalTag::" + collection_name + ">");
+    template_args.insert("ID = ExplicitIdentifier<UniversalTag::" + collection_name(collection) + ">");
 
     res += create_template_definition(template_args);
-    res += "inline DecodeResult decode(const BerView& input, " + module_name + "::" + assignment_name +
+    res += "inline DecodeResult decode(const BerView& input, " + module.module_reference + "::" + assignment_name +
            create_template_arguments(parameters) + "& output, const ID& id = ID{}) noexcept\n{\n";
-    res +=
-        "    return decode_" + collection_name + "_combine(input, \"" + module_name + "::" + assignment_name + "\", id";
+    res += "    return decode_" + collection_name(collection) + "_combine(input, \"" + module.module_reference +
+           "::" + assignment_name + "\", id";
     for (const ComponentType& component : collection.components)
     {
         res += ",\n                          output." + component.named_type.name + ", " + tags_class +
@@ -197,26 +228,24 @@ std::string create_collection_decode_functions(const std::string assignment_name
     // Make child decode functions
     for (const ComponentType& component : collection.components)
     {
-        if (absl::holds_alternative<BuiltinType>(component.named_type.type) &&
-            absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(component.named_type.type)))
+        if (is_sequence(component.named_type.type))
         {
             const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(component.named_type.type));
 
             res += create_collection_decode_functions(assignment_name + "::" + component.named_type.name + "_type",
-                                                      sequence, module_name, "sequence", parameters);
+                                                      parameters, sequence, module);
         }
-        else if (absl::holds_alternative<BuiltinType>(component.named_type.type) &&
-                 absl::holds_alternative<SetType>(absl::get<BuiltinType>(component.named_type.type)))
+        else if (is_set(component.named_type.type))
         {
             const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(component.named_type.type));
 
-            res += create_collection_decode_functions(assignment_name + "::" + component.named_type.name + "_type", set,
-                                                      module_name, "set", parameters);
+            res += create_collection_decode_functions(assignment_name + "::" + component.named_type.name + "_type",
+                                                      parameters, set, module);
         }
     }
 
     res += create_template_definition(template_args);
-    res += "inline DecodeResult decode(BerViewIterator& input, " + module_name + "::" + assignment_name +
+    res += "inline DecodeResult decode(BerViewIterator& input, " + module.module_reference + "::" + assignment_name +
            create_template_arguments(parameters) + "& output, const ID& id = ID{}) noexcept\n{\n";
     res += "    DecodeResult result = decode(*input, output, id);\n";
     res += "    ++input;\n";
@@ -225,42 +254,34 @@ std::string create_collection_decode_functions(const std::string assignment_name
     return res;
 }
 
-std::string create_encode_functions(const Assignment& assignment, const std::string& module_name,
-                                    TaggingMode tagging_mode)
+std::string create_encode_functions(const Assignment& assignment, const Module& module)
 {
-    if (absl::holds_alternative<BuiltinType>(assignment.type) &&
-        absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(assignment.type)))
+    if (is_sequence(assignment.type))
     {
         const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(assignment.type));
-        return create_collection_encode_functions(assignment.name, sequence, module_name, "sequence", tagging_mode,
-                                                  assignment.parameters);
+        return create_collection_encode_functions(assignment.name, assignment.parameters, sequence, module);
     }
-    else if (absl::holds_alternative<BuiltinType>(assignment.type) &&
-             absl::holds_alternative<SetType>(absl::get<BuiltinType>(assignment.type)))
+    else if (is_set(assignment.type))
     {
         std::string    res;
         const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(assignment.type));
-        return create_collection_encode_functions(assignment.name, set, module_name, "set", tagging_mode,
-                                                  assignment.parameters);
+        return create_collection_encode_functions(assignment.name, assignment.parameters, set, module);
     }
 
     return "";
 }
 
-std::string create_decode_functions(const Assignment& assignment, const std::string& module_name)
+std::string create_decode_functions(const Assignment& assignment, const Module& module)
 {
-    if (absl::holds_alternative<BuiltinType>(assignment.type) &&
-        absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(assignment.type)))
+    if (is_sequence(assignment.type))
     {
         const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(assignment.type));
-        return create_collection_decode_functions(assignment.name, sequence, module_name, "sequence",
-                                                  assignment.parameters);
+        return create_collection_decode_functions(assignment.name, assignment.parameters, sequence, module);
     }
-    else if (absl::holds_alternative<BuiltinType>(assignment.type) &&
-             absl::holds_alternative<SetType>(absl::get<BuiltinType>(assignment.type)))
+    else if (is_set(assignment.type))
     {
         const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(assignment.type));
-        return create_collection_decode_functions(assignment.name, set, module_name, "set", assignment.parameters);
+        return create_collection_decode_functions(assignment.name, assignment.parameters, set, module);
     }
     else
     {
@@ -300,15 +321,13 @@ std::string create_collection_equality_operators(const CollectionType& collectio
     // Create assignments for any children too
     for (const ComponentType& component : collection.components)
     {
-        if (absl::holds_alternative<BuiltinType>(component.named_type.type) &&
-            absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(component.named_type.type)))
+        if (is_sequence(component.named_type.type))
         {
             const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(component.named_type.type));
             child_equality += create_collection_equality_operators(
                 sequence, name + "::" + component.named_type.name + "_type", parameters);
         }
-        else if (absl::holds_alternative<BuiltinType>(component.named_type.type) &&
-                 absl::holds_alternative<SetType>(absl::get<BuiltinType>(component.named_type.type)))
+        else if (is_set(component.named_type.type))
         {
             const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(component.named_type.type));
             child_equality += create_collection_equality_operators(
@@ -385,7 +404,7 @@ std::string create_detail_body(const Asn1Tree& tree)
 
     std::string body;
 
-    for (const auto& module : tree.modules)
+    for (const Module& module : tree.modules)
     {
         // Inside namespace due to argument dependant lookup rules
         std::string ids;
@@ -397,8 +416,8 @@ std::string create_detail_body(const Asn1Tree& tree)
 
         for (const Assignment& assignment : module.assignments)
         {
-            body += create_encode_functions(assignment, module.module_reference, module.tagging_default);
-            body += create_decode_functions(assignment, module.module_reference) + "\n";
+            body += create_encode_functions(assignment, module);
+            body += create_decode_functions(assignment, module) + "\n";
         }
 
         std::string helpers;
