@@ -30,7 +30,7 @@ else()
   set(CTEST_CONFIGURATION_TYPE "${CMAKE_BUILD_TYPE}")
   add_compile_options("/W4")
   if (CMAKE_BUILD_TYPE MATCHES "Release")
-    add_compile_options("/O2")
+    add_compile_options("/O2" "-DNOMINMAX")
   endif ()
 endif()
 
