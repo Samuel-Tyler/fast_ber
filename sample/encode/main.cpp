@@ -5,12 +5,12 @@
 int main()
 {
     fast_ber::Pokemon::Team    team;
-    fast_ber::Pokemon::Pokemon muchlax = {"Munchlax", "Big Eater", "Normal", "Thick Fat, Pickup", "Fighting", 105};
-    fast_ber::Pokemon::Pokemon piplup  = {"Piplup", "Penguin", "Water", "Torrent", "Electric, Grass", 12};
+    fast_ber::Pokemon::Pokemon muchlax = {"Munchlax", "Big Eater", fast_ber::Pokemon::Type::normal, "Thick Fat, Pickup", "Fighting", 105};
+    fast_ber::Pokemon::Pokemon piplup  = {"Piplup", "Penguin", fast_ber::Pokemon::Type::water, "Torrent", "Electric, Grass", 12};
     team.members.push_back(muchlax);
     team.members.push_back(piplup);
 
-    std::array<uint8_t, 2000> buffer;
+    std::array<uint8_t, 2000> buffer{};
     const auto                encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), team);
     if (!encode_result.success)
     {

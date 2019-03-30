@@ -54,7 +54,7 @@ std::string create_assignment(const Assignment& assignment, TaggingMode tagging_
         }
         else if (absl::holds_alternative<std::string>(assignment.value->value_selection))
         {
-            const std::string string = absl::get<std::string>(assignment.value->value_selection);
+            const std::string& string = absl::get<std::string>(assignment.value->value_selection);
             result += string;
         }
         else if (absl::holds_alternative<int64_t>(assignment.value->value_selection))
@@ -320,17 +320,32 @@ std::string create_collection_equality_operators(const CollectionType& collectio
 
 std::string create_helper_functions(const Assignment& assignment)
 {
-    if (absl::holds_alternative<BuiltinType>(assignment.type) &&
-        absl::holds_alternative<SequenceType>(absl::get<BuiltinType>(assignment.type)))
+    if (is_sequence(assignment.type))
     {
         const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(assignment.type));
         return create_collection_equality_operators(sequence, assignment.name, assignment.parameters);
     }
-    else if (absl::holds_alternative<BuiltinType>(assignment.type) &&
-             absl::holds_alternative<SetType>(absl::get<BuiltinType>(assignment.type)))
+    else if (is_set(assignment.type))
     {
         const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(assignment.type));
         return create_collection_equality_operators(set, assignment.name, assignment.parameters);
+    }
+    else if (is_enumerated(assignment.type))
+    {
+        const EnumeratedType& e = absl::get<EnumeratedType>(absl::get<BuiltinType>(assignment.type));
+
+        std::string res = "const char* to_string(const " + assignment.name + "& e)\n";
+        res += "{\n";
+        res += "    switch (e)\n";
+        res += "    {\n";
+        for (const EnumerationValue& enum_value : e.enum_values)
+        {
+            res += "    case " + assignment.name + "::" + enum_value.name + ": return \"" + enum_value.name + "\";\n";
+        }
+        res += "    default: return \"Invalid state!\";\n";
+        res += "    }\n";
+        res += "}\n";
+        return res;
     }
     else
     {

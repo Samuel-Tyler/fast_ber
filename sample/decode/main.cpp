@@ -4,6 +4,15 @@
 #include <iostream>
 #include <vector>
 
+std::string capatalize(std::string s)
+{
+    if (s.length() > 0)
+    {
+        s[0] = std::toupper(s[0]);
+    }
+    return s;
+}
+
 int main()
 {
     std::ifstream input("pokemon.ber", std::ios::binary);
@@ -25,7 +34,7 @@ int main()
     {
         std::cout << "Pokemon = " << member.name << '\n';
         std::cout << "Category = " << member.category << '\n';
-        std::cout << "Type = " << member.type << '\n';
+        std::cout << "Type = " << capatalize(to_string(member.type)) << '\n';
         std::cout << "Ability = " << member.ability << '\n';
         std::cout << "Weakness = " << member.weakness << '\n';
         std::cout << "Weight = " << member.weight << '\n';

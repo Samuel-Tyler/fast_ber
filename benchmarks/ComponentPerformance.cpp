@@ -9,7 +9,7 @@ const int iterations = 1000000;
 template <typename T>
 void component_benchmark_encode(const T& type, const std::string& type_name)
 {
-    std::array<uint8_t, 1000> buffer;
+    std::array<uint8_t, 1000> buffer{};
     fast_ber::EncodeResult    res = {};
     BENCHMARK("fast_ber        - encode " + type_name)
     {
@@ -24,7 +24,7 @@ void component_benchmark_encode(const T& type, const std::string& type_name)
 template <typename T>
 void component_benchmark_decode(const T& type, const std::string& type_name)
 {
-    std::array<uint8_t, 1000> buffer;
+    std::array<uint8_t, 1000> buffer{};
     fast_ber::encode(absl::Span<uint8_t>(buffer), type);
 
     T decoded_copy;
