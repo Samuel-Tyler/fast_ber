@@ -124,6 +124,12 @@ class BerViewIterator
 
     friend bool operator!=(const BerViewIterator& lhs, const BerViewIterator& rhs) noexcept { return !(lhs == rhs); }
 
+    using difference_type   = std::ptrdiff_t;
+    using value_type        = const BerView;
+    using pointer           = const BerView*;
+    using reference         = const BerView&;
+    using iterator_category = std::forward_iterator_tag;
+
   private:
     absl::Span<const uint8_t> m_buffer;
     BerView                   m_view;
@@ -152,8 +158,8 @@ class MutableBerViewIterator
         return *this;
     }
 
-    const BerView& operator*() const noexcept { return m_view; }
-    const BerView* operator->() const noexcept { return &m_view; }
+    MutableBerView& operator*() noexcept { return m_view; }
+    MutableBerView* operator->() noexcept { return &m_view; }
 
     friend bool operator==(const MutableBerViewIterator& lhs, const MutableBerViewIterator& rhs) noexcept
     {
@@ -171,6 +177,12 @@ class MutableBerViewIterator
     {
         return !(lhs == rhs);
     }
+
+    using difference_type   = std::ptrdiff_t;
+    using value_type        = MutableBerView;
+    using pointer           = MutableBerView*;
+    using reference         = MutableBerView&;
+    using iterator_category = std::forward_iterator_tag;
 
   private:
     absl::Span<uint8_t> m_buffer;
@@ -191,7 +203,7 @@ inline BerView::BerView(absl::Span<const uint8_t> input_ber_data, Tag input_tag,
 
 inline void BerView::assign(absl::Span<const uint8_t> input_ber_data) noexcept
 {
-    m_valid                       = false;
+    m_valid                     = false;
     size_t input_content_length = 0;
 
     size_t input_tag_length      = extract_tag(input_ber_data, m_tag);
