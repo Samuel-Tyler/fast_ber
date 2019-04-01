@@ -4,14 +4,16 @@
 
 int main()
 {
-    fast_ber::Pokemon::Team    team{ "Sam's Team", {} };
-    fast_ber::Pokemon::Pokemon muchlax = {"Munchlax", "Big Eater", fast_ber::Pokemon::Type::normal, "Thick Fat, Pickup", "Fighting", 105};
-    fast_ber::Pokemon::Pokemon piplup  = {"Piplup", "Penguin", fast_ber::Pokemon::Type::water, "Torrent", "Electric, Grass", 12};
+    fast_ber::Pokemon::Team    team{"Sam's Team"};
+    fast_ber::Pokemon::Pokemon muchlax = {"Munchlax",          "Big Eater", fast_ber::Pokemon::Type::normal,
+                                          "Thick Fat, Pickup", "Fighting",  105};
+    fast_ber::Pokemon::Pokemon piplup  = {"Piplup",  "Penguin",         fast_ber::Pokemon::Type::water,
+                                         "Torrent", "Electric, Grass", 12};
     team.members.push_back(muchlax);
     team.members.push_back(piplup);
 
     std::array<uint8_t, 2000> buffer{};
-    const auto                encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), team);
+    const auto                encode_result = fast_ber::encode(absl::Span<uint8_t>(buffer), team);
     if (!encode_result.success)
     {
         std::cout << "Failed to encode data\n";

@@ -25,6 +25,28 @@ TEST_CASE("Choice: Check string choice matches simple string type")
     REQUIRE(choice_encoded == string_encoded);
 }
 
+TEST_CASE("Choice: Basic choice")
+{
+    fast_ber::Choice<fast_ber::Integer, fast_ber::OctetString> choice_1;
+    fast_ber::Choice<fast_ber::Integer, fast_ber::OctetString> choice_2;
+
+    choice_1 = "Test string";
+    choice_2 = 10;
+
+    REQUIRE(absl::holds_alternative<fast_ber::OctetString>(choice_1));
+    REQUIRE(absl::holds_alternative<fast_ber::Integer>(choice_2));
+
+    std::vector<uint8_t> choice_encoded(100, 0x00);
+    bool enc_success = fast_ber::encode(absl::MakeSpan(choice_encoded.data(), choice_encoded.size()), choice_1).success;
+    bool dec_success = fast_ber::decode(absl::MakeSpan(choice_encoded.data(), choice_encoded.size()), choice_2).success;
+
+    REQUIRE(enc_success);
+    REQUIRE(dec_success);
+    REQUIRE(absl::holds_alternative<fast_ber::OctetString>(choice_1));
+    REQUIRE(absl::holds_alternative<fast_ber::OctetString>(choice_2));
+    REQUIRE(choice_1 == choice_2);
+}
+
 TEST_CASE("Choice: Clashing type")
 {
     using choice_type =
