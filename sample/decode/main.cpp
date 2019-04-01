@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <cctype>
 
 std::string capatalize(std::string s)
 {
