@@ -215,7 +215,6 @@
 %type<DefinedType>       DefinedType;
 %type<std::string>       SimpleDefinedType;
 %type<DefinedType>       ParameterizedType;
-%type<EnumeratedType>    EnumeratedType;
 %type<EnumeratedType>    Enumerations;
 %type<EnumeratedType>    Enumeration;
 %type<EnumerationValue>  EnumerationItem;
@@ -240,14 +239,40 @@
 %type<Assignment>        ParameterizedObjectSetAssignment;
 %type<Type>              Type;
 %type<Type>              ConstrainedType;
+%type<BitStringType>     BitStringType;
+%type<BooleanType>       BooleanType;
+%type<CharacterStringType> CharacterStringType;
+%type<ChoiceType>        ChoiceType;
+%type<DateType>          DateType;
+%type<DateTimeType>      DateTimeType;
+%type<DurationType>      DurationType;
+%type<EmbeddedPDVType>   EmbeddedPDVType;
+%type<EnumeratedType>    EnumeratedType;
+%type<ExternalType>      ExternalType;
+%type<InstanceOfType>    InstanceOfType;
+%type<IntegerType>       IntegerType;
+%type<IRIType>           IRIType;
+%type<NullType>          NullType;
+%type<ObjectClassFieldType> ObjectClassFieldType;
+%type<ObjectIdentifierType> ObjectIdentifierType;
+%type<OctetStringType>   OctetStringType;
+%type<RealType>          RealType;
+%type<RelativeIRIType>   RelativeIRIType;
+%type<RelativeOIDType>   RelativeOIDType;
+%type<SequenceType>      SequenceType;
+%type<SequenceOfType>    SequenceOfType;
+%type<SetType>           SetType;
+%type<SetOfType>         SetOfType;
+%type<PrefixedType>      PrefixedType;
+%type<TimeType>          TimeType;
+%type<TimeOfDayType>     TimeOfDayType;
 %type<std::vector<Type>> ActualParameterList;
 %type<Type>              ActualParameter;
 %type<Class>             Class;
 %type<int>               ClassNumber;
-%type<SetType>           SetType;
-%type<SequenceType>      SequenceType;
 %type<NamedType>         NamedType;
 %type<NamedNumber>       NamedNumber;
+%type<std::vector<NamedNumber>> NamedNumberList;
 %type<ComponentType>     ComponentType;
 %type<ComponentTypeList> ComponentTypeList;
 %type<ComponentTypeList> ComponentTypeLists;
@@ -256,17 +281,13 @@
 %type<Value>             SingleValue;
 %type<Value>             ValueWithoutTypeIdentifier;
 %type<std::vector<Value>> SequenceOfValues;
-%type<PrefixedType>      PrefixedType;
 %type<std::string>       Reference;
-%type<SetOfType>         SetOfType;
-%type<SequenceOfType>    SequenceOfType;
 %type<std::string>       Symbol;
 %type<std::vector<Import>> Imports;
 %type<std::vector<Import>> SymbolsImported;
 %type<std::vector<Import>> SymbolsFromModuleList;
 %type<Import>            SymbolsFromModule;
 %type<std::vector<std::string>> SymbolList;
-%type<ChoiceType>        ChoiceType;
 %type<TaggingMode>       TagDefault;
 %type<Tag>               Tag;
 %type<TaggedType>        TaggedType;
@@ -882,7 +903,7 @@ TypeAssignment:
 ValueAssignment:
     valuereference Type DEFINED_AS Value
     { $$ = Assignment{ $1, ValueAssignment{$2, $4}, {} }; }
-    
+
 ValueSetTypeAssignment:
     typereference Type DEFINED_AS ValueSet
     { $$ = Assignment{ $1, TypeAssignment{$2}, {} }; }
@@ -901,35 +922,35 @@ Type:
 //|   ValueSetFromObjects { std::cerr << std::string("Not handled - ValueSetFromObjects\n"); }
 
 BuiltinType:
-    BitStringType { $$ = BitStringType(); }
-|   BooleanType { $$ = BooleanType(); }
-|   CharacterStringType { $$ = CharacterStringType(); }
+    BitStringType { $$ = $1; }
+|   BooleanType { $$ = $1; }
+|   CharacterStringType { $$ = $1; }
 |   ChoiceType { $$ = $1; }
-|   DateType { $$ = DateType(); }
-|   DateTimeType { $$ = DateTimeType(); }
-|   DurationType { $$ = DurationType(); }
-|   EmbeddedPDVType { $$ = EmbeddedPDVType(); }
+|   DateType { $$ = $1; }
+|   DateTimeType { $$ = $1; }
+|   DurationType { $$ = $1; }
+|   EmbeddedPDVType { $$ = $1; }
 |   EnumeratedType { $$ = $1; }
-|   ExternalType { $$ = ExternalType(); }
+|   ExternalType { $$ = $1; }
 |   GeneralizedTime { $$ = GeneralizedTimeType(); }
-|   InstanceOfType { $$ = InstanceOfType(); }
-|   IntegerType { $$ = IntegerType(); }
-|   IRIType { $$ = IRIType(); }
-|   NullType { $$ = NullType(); }
-|   ObjectClassFieldType { $$ = ObjectClassFieldType(); }
+|   InstanceOfType { $$ = $1; }
+|   IntegerType { $$ = $1; }
+|   IRIType { $$ = $1; }
+|   NullType { $$ = $1; }
+|   ObjectClassFieldType { $$ = $1; }
 |   ObjectDescriptor { $$ = ObjectDescriptorType(); }
-|   ObjectIdentifierType { $$ = ObjectIdentifierType(); }
-|   OctetStringType { $$ = OctetStringType(); }
-|   RealType { $$ = RealType(); }
-|   RelativeIRIType { $$ = RelativeIRIType(); }
-|   RelativeOIDType { $$ = RelativeOIDType(); }
+|   ObjectIdentifierType { $$ = $1; }
+|   OctetStringType { $$ = $1; }
+|   RealType { $$ = $1; }
+|   RelativeIRIType { $$ = $1; }
+|   RelativeOIDType { $$ = $1; }
 |   SequenceType { $$ = $1; }
 |   SequenceOfType { $$ = $1; }
 |   SetType { $$ = $1; }
 |   SetOfType { $$ = $1; }
 |   PrefixedType { $$ = $1; }
-|   TimeType { $$ = TimeType(); }
-|   TimeOfDayType { $$ = TimeOfDayType(); }
+|   TimeType { $$ = $1; }
+|   TimeOfDayType { $$ = $1; }
 |   UTCTime { $$ = UTCTimeType(); }
 
 NamedType:
@@ -953,8 +974,8 @@ ValueWithoutTypeIdentifier:
     { $$.value_selection = $1; }
 |   CONTAINING Value
     { std::cerr << std::string("Unhandled field: CONTAINING\n"); }
-|   GENERIC_IDENTIFIER_LOWERCASE
-    { $$.value_selection = $1; }
+|   DefinedValue
+    { $$.defined_value = $1; }
 |   GENERIC_IDENTIFIER_LOWERCASE "(" number ")"
     { $$.value_selection = NamedNumber{$1, $3}; }
 |   ":"
@@ -1013,11 +1034,15 @@ BooleanValue:
 
 IntegerType:
     INTEGER
-|   INTEGER "{" NamedNumberList "}";
+    { $$ = IntegerType{{}}; }
+|   INTEGER "{" NamedNumberList "}"
+    { $$ = IntegerType{$3}; }
 
 NamedNumberList:
     NamedNumber
-|   NamedNumberList "," NamedNumber;
+    { $$ = {$1}; }
+|   NamedNumberList "," NamedNumber
+    { $$ = $1; $$.push_back($3); }
 
 NamedNumber:
     identifier "(" SignedNumber ")"
@@ -1766,6 +1791,7 @@ re2c:define:YYCURSOR = "context.cursor";
 "--" ([\-]?[^\r\n\-])* "--"
                         { context.location.columns(context.cursor - start); return yylex(context); }
 "--" ([\-]?[^\r\n\-])*  { context.location.columns(context.cursor - start); return yylex(context); }
+"/*" ([\*]?[^"/"])* "*/"  { context.location.columns(context.cursor - start); return yylex(context); }
 
 // Identifiers
 //[0-9]+\.[0-9]+        { context.location.columns(context.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context.cursor)), context.location); }

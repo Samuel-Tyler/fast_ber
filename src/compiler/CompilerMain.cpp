@@ -49,7 +49,8 @@ std::string create_assignment(const Assignment& assignment, TaggingMode tagging_
         const ValueAssignment& value_assign = absl::get<ValueAssignment>(assignment.specific);
         std::string result = fully_tagged_type(value_assign.type, tagging_mode) + " " + assignment.name + " = ";
 
-        if (absl::holds_alternative<std::vector<Value>>(value_assign.value.value_selection))
+        if (is_oid(value_assign.type) || (is_defined(value_assign.type) && absl::holds_alternative<std::vector<Value>>(
+                                                                               value_assign.value.value_selection)))
         {
             result += "ObjectIdentifier{";
             try
@@ -75,7 +76,9 @@ std::string create_assignment(const Assignment& assignment, TaggingMode tagging_
             }
             catch (const std::runtime_error& e)
             {
-                throw(std::runtime_error("Can't assign value to " + assignment.name + std::string(" : ") + e.what()));
+                std::cerr << "Warning: Not an object identifier : " + assignment.name + std::string(" : ") + e.what()
+                          << std::endl;
+                return "";
             }
             result += "}";
         }
@@ -98,7 +101,7 @@ std::string create_assignment(const Assignment& assignment, TaggingMode tagging_
     }
     else if (absl::holds_alternative<ObjectClassAssignment>(assignment.specific))
     {
-        std::cerr << "Parsed but ignoring class assignment: " << assignment.name << std::endl;
+        std::cerr << "Warning: Parsed but ignoring class assignment: " << assignment.name << std::endl;
         return "";
     }
     else
@@ -526,6 +529,8 @@ int main(int argc, char** argv)
 
         for (auto& module : context.asn1_tree.modules)
         {
+            module.assignments = split_definitions(module.assignments);
+            check_duplicated_names(module.assignments, module.module_reference);
             module.assignments = reorder_assignments(module.assignments, module.imports);
             module.assignments = split_nested_structures(module.assignments);
         }

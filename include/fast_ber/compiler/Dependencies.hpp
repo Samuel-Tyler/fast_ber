@@ -141,6 +141,14 @@ struct DependsOnHelper
 static DependsOnHelper   depends_on_helper;
 std::vector<std::string> depends_on(const BuiltinType& type) { return absl::visit(depends_on_helper, type); }
 std::vector<std::string> depends_on(const Type& type) { return absl::visit(depends_on_helper, type); }
+std::vector<std::string> depends_on(const Value& value)
+{
+    if (value.defined_value)
+    {
+        return {value.defined_value->reference};
+    };
+    return {};
+}
 
 std::vector<std::string> dependenies(const Type& type) { return depends_on(type); }
 std::vector<std::string> dependenies(const Assignment& assignment)
@@ -148,6 +156,14 @@ std::vector<std::string> dependenies(const Assignment& assignment)
     if (absl::holds_alternative<TypeAssignment>(assignment.specific))
     {
         return depends_on(absl::get<TypeAssignment>(assignment.specific).type);
+    }
+    else if (absl::holds_alternative<ValueAssignment>(assignment.specific))
+    {
+        auto type_depends  = depends_on(absl::get<ValueAssignment>(assignment.specific).type);
+        auto value_depends = depends_on(absl::get<ValueAssignment>(assignment.specific).value);
+
+        type_depends.insert(type_depends.end(), value_depends.begin(), value_depends.end());
+        return type_depends;
     }
     return {};
 }

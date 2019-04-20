@@ -200,6 +200,7 @@ struct InstanceOfType
 };
 struct IntegerType
 {
+    std::vector<NamedNumber> named_numbers;
 };
 struct IRIType
 {
@@ -440,7 +441,12 @@ struct ObjectIdComponents
         components.reserve(value_list.size());
         for (const Value& component : value_list)
         {
-            if (absl::holds_alternative<std::string>(component.value_selection))
+            if (component.defined_value)
+            {
+                const std::string& name = component.defined_value->reference;
+                components.push_back(ObjectIdComponentValue{name, absl::nullopt});
+            }
+            else if (absl::holds_alternative<std::string>(component.value_selection))
             {
                 const std::string& name = absl::get<std::string>(component.value_selection);
                 components.push_back(ObjectIdComponentValue{name, absl::nullopt});
@@ -538,6 +544,18 @@ bool is_prefixed(const Type& type)
 {
     return absl::holds_alternative<BuiltinType>(type) &&
            absl::holds_alternative<PrefixedType>(absl::get<BuiltinType>(type));
+}
+
+bool is_integer(const Type& type)
+{
+    return absl::holds_alternative<BuiltinType>(type) &&
+           absl::holds_alternative<IntegerType>(absl::get<BuiltinType>(type));
+}
+
+bool is_oid(const Type& type)
+{
+    return absl::holds_alternative<BuiltinType>(type) &&
+           absl::holds_alternative<ObjectIdentifierType>(absl::get<BuiltinType>(type));
 }
 
 bool is_defined(const Type& type) { return absl::holds_alternative<DefinedType>(type); }

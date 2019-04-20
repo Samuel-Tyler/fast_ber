@@ -25,6 +25,20 @@ std::string to_string(const std::vector<Assignment>& assignments)
     return str;
 }
 
+void check_duplicated_names(const std::vector<Assignment>& assignments, const std::string& module_name)
+{
+    std::unordered_set<std::string> defined_names;
+    for (const Assignment& assignment : assignments)
+    {
+        if (defined_names.count(assignment.name) > 0)
+        {
+            throw std::runtime_error("Error: Duplicated name \"" + assignment.name + "\" in module \"" + module_name +
+                                     '\"');
+        }
+        defined_names.insert(assignment.name);
+    }
+}
+
 void resolve_dependencies(const std::unordered_map<std::string, Assignment>& assignment_infos, const std::string& name,
                           std::unordered_set<std::string>& assigned_names,
                           std::unordered_set<std::string>& visited_names,
@@ -205,6 +219,37 @@ void find_nested_structs(const Type& type, std::vector<NamedType>& nested_struct
         }
         find_nested_structs(inner_type, nested_structs);
     }
+}
+
+// Statements such as integer type definitions can introduce new statements, such as value assignments
+//
+std::vector<Assignment> split_definitions(const std::vector<Assignment>& assignments)
+{
+    std::vector<Assignment> split_assignments;
+    split_assignments.reserve(assignments.size());
+
+    for (const Assignment& assignment : assignments)
+    {
+        if (absl::holds_alternative<TypeAssignment>(assignment.specific))
+        {
+            const TypeAssignment& type_assign = absl::get<TypeAssignment>(assignment.specific);
+            if (is_integer(type_assign.type))
+            {
+                const IntegerType& integer = absl::get<IntegerType>(absl::get<BuiltinType>(type_assign.type));
+                for (const NamedNumber& named_number : integer.named_numbers)
+                {
+                    split_assignments.push_back(
+                        Assignment{named_number.name,
+                                   ValueAssignment{BuiltinType{IntegerType{}}, Value{{}, named_number.number}},
+                                   {},
+                                   {}});
+                }
+            }
+        }
+        split_assignments.push_back(assignment);
+    }
+
+    return split_assignments;
 }
 
 // structs (Sequence and Sets) cannot be defined within other definitions in C++, due to this nested assignments are
