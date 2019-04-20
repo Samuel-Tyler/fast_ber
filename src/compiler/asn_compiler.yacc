@@ -1138,19 +1138,21 @@ ComponentTypeLists:
 RootComponentTypeList:
     ComponentTypeList
     { $$ = $1; }
-|   ComponentTypeList "," ELIPSIS
+|   ComponentTypeList "," ELIPSIS ExceptionSpec
     { $$ = $1; }
-|   ComponentTypeList "," ELIPSIS "," ComponentTypeList
-    { $$ = $1; $$.insert($$.end(), $5.begin(), $5.end()); }
-|   ComponentTypeList "," ELIPSIS "," ComponentTypeList "," ELIPSIS
-    { $$ = $1; $$.insert($$.end(), $5.begin(), $5.end()); }
-|   ELIPSIS "," ComponentTypeList
-    { $$ = $3; }
-|   ELIPSIS "," ComponentTypeList "," ELIPSIS
-    { $$ = $3; }
-|   ELIPSIS
+|   ComponentTypeList "," ELIPSIS ExceptionSpec "," ComponentTypeList
+    { $$ = $1; $$.insert($$.end(), $6.begin(), $6.end()); }
+|   ComponentTypeList "," ELIPSIS ExceptionSpec "," ComponentTypeList "," ELIPSIS
+    { $$ = $1; $$.insert($$.end(), $6.begin(), $6.end()); }
+|   ComponentTypeList "," ELIPSIS ExceptionSpec "," ComponentTypeList "," ELIPSIS "," ComponentTypeList
+    { $$ = $1; $$.insert($$.end(), $6.begin(), $6.end()); $$.insert($$.end(), $10.begin(), $10.end()); }
+|   ELIPSIS ExceptionSpec "," ComponentTypeList
+    { $$ = $4; }
+|   ELIPSIS ExceptionSpec "," ComponentTypeList "," ELIPSIS
+    { $$ = $4; }
+|   ELIPSIS ExceptionSpec
     { $$ = {}; }
-|   ELIPSIS "," ELIPSIS
+|   ELIPSIS ExceptionSpec "," ELIPSIS
     { $$ = {}; }
 
 ComponentTypeList:
@@ -1796,8 +1798,10 @@ re2c:define:YYCURSOR = "context.cursor";
 // Identifiers
 //[0-9]+\.[0-9]+        { context.location.columns(context.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context.cursor)), context.location); }
 [0-9]+                  { context.location.columns(context.cursor - start); return asn1_parser::make_number(std::stoll(std::string(start, context.cursor)), context.location); }
-["\""]("\\".|[^"\""])*["\""]
+['\"']('\\'.|[^'\"'])*['\"']
                         { context.location.columns(context.cursor - start); return asn1_parser::make_cstring(std::string(start, context.cursor), context.location); }
+['\'']('0'|'1')*['\'']"B"
+                        { context.location.columns(context.cursor - start); return asn1_parser::make_bstring(std::string(start, context.cursor), context.location); }
 [A-Z][A-Za-z_0-9\-]*    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(santize_name(std::string(start, context.cursor)), context.location); }
 [a-z][A-Za-z_0-9\-]*    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(santize_name(std::string(start, context.cursor)), context.location); }
 [&][A-Z][A-Za-z_0-9\-]* { context.location.columns(context.cursor - start); return asn1_parser::make_typefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
