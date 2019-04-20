@@ -662,13 +662,14 @@ namespace yy {
     /// An auxiliary type to compute the largest semantic type.
     union union_type
     {
+      // ObjectClassAssignment
+      // ObjectSetAssignment
       // ParameterizedAssignment
       // ParameterizedTypeAssignment
       // ParameterizedValueAssignment
       // ParameterizedValueSetTypeAssignment
       // ParameterizedObjectClassAssignment
       // ParameterizedObjectAssignment
-      // ParameterizedObjectSetAssignment
       // Assignment
       // TypeAssignment
       // ValueAssignment
@@ -752,7 +753,9 @@ namespace yy {
       // Type
       char dummy24[sizeof(Type)];
 
+      // ValueWithoutTypeIdentifier
       // Value
+      // SingleValue
       char dummy25[sizeof(Value)];
 
       // realnumber
@@ -777,6 +780,7 @@ namespace yy {
       // xmlcstring
       // simplestring
       // xmltstring
+      // objectreference
       // typefieldreference
       // valuefieldreference
       // GENERIC_IDENTIFIER_UPPERCASE
@@ -1237,7 +1241,7 @@ namespace yy {
 
     static inline
     symbol_type
-    make_objectreference (const location_type& l);
+    make_objectreference (const std::string& v, const location_type& l);
 
     static inline
     symbol_type
@@ -1960,7 +1964,7 @@ namespace yy {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 3127,     ///< Last index in yytable_.
+      yylast_ = 3277,     ///< Last index in yytable_.
       yynnts_ = 227,  ///< Number of nonterminal symbols.
       yyfinal_ = 6, ///< Termination state number.
       yyterror_ = 1,
@@ -2057,20 +2061,21 @@ namespace yy {
   {
       switch (other.type_get ())
     {
+      case 158: // ObjectClassAssignment
+      case 194: // ObjectSetAssignment
       case 198: // ParameterizedAssignment
       case 199: // ParameterizedTypeAssignment
       case 200: // ParameterizedValueAssignment
       case 201: // ParameterizedValueSetTypeAssignment
       case 202: // ParameterizedObjectClassAssignment
-      case 204: // ParameterizedObjectAssignment
-      case 205: // ParameterizedObjectSetAssignment
-      case 249: // Assignment
-      case 258: // TypeAssignment
-      case 259: // ValueAssignment
+      case 203: // ParameterizedObjectAssignment
+      case 248: // Assignment
+      case 257: // TypeAssignment
+      case 258: // ValueAssignment
         value.copy< Assignment > (other.value);
         break;
 
-      case 261: // BuiltinType
+      case 260: // BuiltinType
         value.copy< BuiltinType > (other.value);
         break;
 
@@ -2092,12 +2097,12 @@ namespace yy {
         value.copy< ComponentTypeList > (other.value);
         break;
 
-      case 250: // DefinedType
-      case 252: // ParameterizedType
+      case 249: // DefinedType
+      case 251: // ParameterizedType
         value.copy< DefinedType > (other.value);
         break;
 
-      case 251: // DefinedValue
+      case 250: // DefinedValue
         value.copy< DefinedValue > (other.value);
         break;
 
@@ -2111,11 +2116,11 @@ namespace yy {
         value.copy< EnumerationValue > (other.value);
         break;
 
-      case 242: // SymbolsFromModule
+      case 241: // SymbolsFromModule
         value.copy< Import > (other.value);
         break;
 
-      case 236: // ModuleBody
+      case 235: // ModuleBody
         value.copy< Module > (other.value);
         break;
 
@@ -2123,7 +2128,7 @@ namespace yy {
         value.copy< NamedNumber > (other.value);
         break;
 
-      case 262: // NamedType
+      case 261: // NamedType
         value.copy< NamedType > (other.value);
         break;
 
@@ -2162,16 +2167,18 @@ namespace yy {
         value.copy< TaggedType > (other.value);
         break;
 
-      case 234: // TagDefault
+      case 233: // TagDefault
         value.copy< TaggingMode > (other.value);
         break;
 
-      case 255: // ActualParameter
-      case 260: // Type
+      case 254: // ActualParameter
+      case 259: // Type
         value.copy< Type > (other.value);
         break;
 
+      case 262: // ValueWithoutTypeIdentifier
       case 263: // Value
+      case 347: // SingleValue
         value.copy< Value > (other.value);
         break;
 
@@ -2188,8 +2195,8 @@ namespace yy {
         value.copy< long long > (other.value);
         break;
 
-      case 203: // ParameterList
-      case 206: // ParameterSeries
+      case 204: // ParameterList
+      case 205: // ParameterSeries
         value.copy< std::set<std::string> > (other.value);
         break;
 
@@ -2201,16 +2208,17 @@ namespace yy {
       case 11: // xmlcstring
       case 12: // simplestring
       case 13: // xmltstring
+      case 21: // objectreference
       case 23: // typefieldreference
       case 24: // valuefieldreference
       case 147: // GENERIC_IDENTIFIER_UPPERCASE
       case 148: // GENERIC_IDENTIFIER_LOWERCASE
-      case 207: // Parameter
-      case 213: // SimpleDefinedType
-      case 225: // ModuleIdentifier
-      case 243: // GlobalModuleReference
-      case 246: // Symbol
-      case 247: // Reference
+      case 206: // Parameter
+      case 212: // SimpleDefinedType
+      case 224: // ModuleIdentifier
+      case 242: // GlobalModuleReference
+      case 245: // Symbol
+      case 246: // Reference
       case 372: // typereference
       case 373: // identifier
       case 374: // valuereference
@@ -2220,17 +2228,17 @@ namespace yy {
         value.copy< std::string > (other.value);
         break;
 
-      case 248: // AssignmentList
+      case 247: // AssignmentList
         value.copy< std::vector<Assignment> > (other.value);
         break;
 
-      case 237: // Exports
+      case 236: // Exports
         value.copy< std::vector<Export> > (other.value);
         break;
 
-      case 239: // Imports
-      case 240: // SymbolsImported
-      case 241: // SymbolsFromModuleList
+      case 238: // Imports
+      case 239: // SymbolsImported
+      case 240: // SymbolsFromModuleList
         value.copy< std::vector<Import> > (other.value);
         break;
 
@@ -2245,7 +2253,7 @@ namespace yy {
         value.copy< std::vector<ObjectIdComponentValue> > (other.value);
         break;
 
-      case 254: // ActualParameterList
+      case 253: // ActualParameterList
         value.copy< std::vector<Type> > (other.value);
         break;
 
@@ -2253,7 +2261,7 @@ namespace yy {
         value.copy< std::vector<Value> > (other.value);
         break;
 
-      case 245: // SymbolList
+      case 244: // SymbolList
         value.copy< std::vector<std::string> > (other.value);
         break;
 
@@ -2274,20 +2282,21 @@ namespace yy {
     (void) v;
       switch (this->type_get ())
     {
+      case 158: // ObjectClassAssignment
+      case 194: // ObjectSetAssignment
       case 198: // ParameterizedAssignment
       case 199: // ParameterizedTypeAssignment
       case 200: // ParameterizedValueAssignment
       case 201: // ParameterizedValueSetTypeAssignment
       case 202: // ParameterizedObjectClassAssignment
-      case 204: // ParameterizedObjectAssignment
-      case 205: // ParameterizedObjectSetAssignment
-      case 249: // Assignment
-      case 258: // TypeAssignment
-      case 259: // ValueAssignment
+      case 203: // ParameterizedObjectAssignment
+      case 248: // Assignment
+      case 257: // TypeAssignment
+      case 258: // ValueAssignment
         value.copy< Assignment > (v);
         break;
 
-      case 261: // BuiltinType
+      case 260: // BuiltinType
         value.copy< BuiltinType > (v);
         break;
 
@@ -2309,12 +2318,12 @@ namespace yy {
         value.copy< ComponentTypeList > (v);
         break;
 
-      case 250: // DefinedType
-      case 252: // ParameterizedType
+      case 249: // DefinedType
+      case 251: // ParameterizedType
         value.copy< DefinedType > (v);
         break;
 
-      case 251: // DefinedValue
+      case 250: // DefinedValue
         value.copy< DefinedValue > (v);
         break;
 
@@ -2328,11 +2337,11 @@ namespace yy {
         value.copy< EnumerationValue > (v);
         break;
 
-      case 242: // SymbolsFromModule
+      case 241: // SymbolsFromModule
         value.copy< Import > (v);
         break;
 
-      case 236: // ModuleBody
+      case 235: // ModuleBody
         value.copy< Module > (v);
         break;
 
@@ -2340,7 +2349,7 @@ namespace yy {
         value.copy< NamedNumber > (v);
         break;
 
-      case 262: // NamedType
+      case 261: // NamedType
         value.copy< NamedType > (v);
         break;
 
@@ -2379,16 +2388,18 @@ namespace yy {
         value.copy< TaggedType > (v);
         break;
 
-      case 234: // TagDefault
+      case 233: // TagDefault
         value.copy< TaggingMode > (v);
         break;
 
-      case 255: // ActualParameter
-      case 260: // Type
+      case 254: // ActualParameter
+      case 259: // Type
         value.copy< Type > (v);
         break;
 
+      case 262: // ValueWithoutTypeIdentifier
       case 263: // Value
+      case 347: // SingleValue
         value.copy< Value > (v);
         break;
 
@@ -2405,8 +2416,8 @@ namespace yy {
         value.copy< long long > (v);
         break;
 
-      case 203: // ParameterList
-      case 206: // ParameterSeries
+      case 204: // ParameterList
+      case 205: // ParameterSeries
         value.copy< std::set<std::string> > (v);
         break;
 
@@ -2418,16 +2429,17 @@ namespace yy {
       case 11: // xmlcstring
       case 12: // simplestring
       case 13: // xmltstring
+      case 21: // objectreference
       case 23: // typefieldreference
       case 24: // valuefieldreference
       case 147: // GENERIC_IDENTIFIER_UPPERCASE
       case 148: // GENERIC_IDENTIFIER_LOWERCASE
-      case 207: // Parameter
-      case 213: // SimpleDefinedType
-      case 225: // ModuleIdentifier
-      case 243: // GlobalModuleReference
-      case 246: // Symbol
-      case 247: // Reference
+      case 206: // Parameter
+      case 212: // SimpleDefinedType
+      case 224: // ModuleIdentifier
+      case 242: // GlobalModuleReference
+      case 245: // Symbol
+      case 246: // Reference
       case 372: // typereference
       case 373: // identifier
       case 374: // valuereference
@@ -2437,17 +2449,17 @@ namespace yy {
         value.copy< std::string > (v);
         break;
 
-      case 248: // AssignmentList
+      case 247: // AssignmentList
         value.copy< std::vector<Assignment> > (v);
         break;
 
-      case 237: // Exports
+      case 236: // Exports
         value.copy< std::vector<Export> > (v);
         break;
 
-      case 239: // Imports
-      case 240: // SymbolsImported
-      case 241: // SymbolsFromModuleList
+      case 238: // Imports
+      case 239: // SymbolsImported
+      case 240: // SymbolsFromModuleList
         value.copy< std::vector<Import> > (v);
         break;
 
@@ -2462,7 +2474,7 @@ namespace yy {
         value.copy< std::vector<ObjectIdComponentValue> > (v);
         break;
 
-      case 254: // ActualParameterList
+      case 253: // ActualParameterList
         value.copy< std::vector<Type> > (v);
         break;
 
@@ -2470,7 +2482,7 @@ namespace yy {
         value.copy< std::vector<Value> > (v);
         break;
 
-      case 245: // SymbolList
+      case 244: // SymbolList
         value.copy< std::vector<std::string> > (v);
         break;
 
@@ -2781,20 +2793,21 @@ namespace yy {
     // Type destructor.
     switch (yytype)
     {
+      case 158: // ObjectClassAssignment
+      case 194: // ObjectSetAssignment
       case 198: // ParameterizedAssignment
       case 199: // ParameterizedTypeAssignment
       case 200: // ParameterizedValueAssignment
       case 201: // ParameterizedValueSetTypeAssignment
       case 202: // ParameterizedObjectClassAssignment
-      case 204: // ParameterizedObjectAssignment
-      case 205: // ParameterizedObjectSetAssignment
-      case 249: // Assignment
-      case 258: // TypeAssignment
-      case 259: // ValueAssignment
+      case 203: // ParameterizedObjectAssignment
+      case 248: // Assignment
+      case 257: // TypeAssignment
+      case 258: // ValueAssignment
         value.template destroy< Assignment > ();
         break;
 
-      case 261: // BuiltinType
+      case 260: // BuiltinType
         value.template destroy< BuiltinType > ();
         break;
 
@@ -2816,12 +2829,12 @@ namespace yy {
         value.template destroy< ComponentTypeList > ();
         break;
 
-      case 250: // DefinedType
-      case 252: // ParameterizedType
+      case 249: // DefinedType
+      case 251: // ParameterizedType
         value.template destroy< DefinedType > ();
         break;
 
-      case 251: // DefinedValue
+      case 250: // DefinedValue
         value.template destroy< DefinedValue > ();
         break;
 
@@ -2835,11 +2848,11 @@ namespace yy {
         value.template destroy< EnumerationValue > ();
         break;
 
-      case 242: // SymbolsFromModule
+      case 241: // SymbolsFromModule
         value.template destroy< Import > ();
         break;
 
-      case 236: // ModuleBody
+      case 235: // ModuleBody
         value.template destroy< Module > ();
         break;
 
@@ -2847,7 +2860,7 @@ namespace yy {
         value.template destroy< NamedNumber > ();
         break;
 
-      case 262: // NamedType
+      case 261: // NamedType
         value.template destroy< NamedType > ();
         break;
 
@@ -2886,16 +2899,18 @@ namespace yy {
         value.template destroy< TaggedType > ();
         break;
 
-      case 234: // TagDefault
+      case 233: // TagDefault
         value.template destroy< TaggingMode > ();
         break;
 
-      case 255: // ActualParameter
-      case 260: // Type
+      case 254: // ActualParameter
+      case 259: // Type
         value.template destroy< Type > ();
         break;
 
+      case 262: // ValueWithoutTypeIdentifier
       case 263: // Value
+      case 347: // SingleValue
         value.template destroy< Value > ();
         break;
 
@@ -2912,8 +2927,8 @@ namespace yy {
         value.template destroy< long long > ();
         break;
 
-      case 203: // ParameterList
-      case 206: // ParameterSeries
+      case 204: // ParameterList
+      case 205: // ParameterSeries
         value.template destroy< std::set<std::string> > ();
         break;
 
@@ -2925,16 +2940,17 @@ namespace yy {
       case 11: // xmlcstring
       case 12: // simplestring
       case 13: // xmltstring
+      case 21: // objectreference
       case 23: // typefieldreference
       case 24: // valuefieldreference
       case 147: // GENERIC_IDENTIFIER_UPPERCASE
       case 148: // GENERIC_IDENTIFIER_LOWERCASE
-      case 207: // Parameter
-      case 213: // SimpleDefinedType
-      case 225: // ModuleIdentifier
-      case 243: // GlobalModuleReference
-      case 246: // Symbol
-      case 247: // Reference
+      case 206: // Parameter
+      case 212: // SimpleDefinedType
+      case 224: // ModuleIdentifier
+      case 242: // GlobalModuleReference
+      case 245: // Symbol
+      case 246: // Reference
       case 372: // typereference
       case 373: // identifier
       case 374: // valuereference
@@ -2944,17 +2960,17 @@ namespace yy {
         value.template destroy< std::string > ();
         break;
 
-      case 248: // AssignmentList
+      case 247: // AssignmentList
         value.template destroy< std::vector<Assignment> > ();
         break;
 
-      case 237: // Exports
+      case 236: // Exports
         value.template destroy< std::vector<Export> > ();
         break;
 
-      case 239: // Imports
-      case 240: // SymbolsImported
-      case 241: // SymbolsFromModuleList
+      case 238: // Imports
+      case 239: // SymbolsImported
+      case 240: // SymbolsFromModuleList
         value.template destroy< std::vector<Import> > ();
         break;
 
@@ -2969,7 +2985,7 @@ namespace yy {
         value.template destroy< std::vector<ObjectIdComponentValue> > ();
         break;
 
-      case 254: // ActualParameterList
+      case 253: // ActualParameterList
         value.template destroy< std::vector<Type> > ();
         break;
 
@@ -2977,7 +2993,7 @@ namespace yy {
         value.template destroy< std::vector<Value> > ();
         break;
 
-      case 245: // SymbolList
+      case 244: // SymbolList
         value.template destroy< std::vector<std::string> > ();
         break;
 
@@ -3004,20 +3020,21 @@ namespace yy {
     super_type::move(s);
       switch (this->type_get ())
     {
+      case 158: // ObjectClassAssignment
+      case 194: // ObjectSetAssignment
       case 198: // ParameterizedAssignment
       case 199: // ParameterizedTypeAssignment
       case 200: // ParameterizedValueAssignment
       case 201: // ParameterizedValueSetTypeAssignment
       case 202: // ParameterizedObjectClassAssignment
-      case 204: // ParameterizedObjectAssignment
-      case 205: // ParameterizedObjectSetAssignment
-      case 249: // Assignment
-      case 258: // TypeAssignment
-      case 259: // ValueAssignment
+      case 203: // ParameterizedObjectAssignment
+      case 248: // Assignment
+      case 257: // TypeAssignment
+      case 258: // ValueAssignment
         value.move< Assignment > (s.value);
         break;
 
-      case 261: // BuiltinType
+      case 260: // BuiltinType
         value.move< BuiltinType > (s.value);
         break;
 
@@ -3039,12 +3056,12 @@ namespace yy {
         value.move< ComponentTypeList > (s.value);
         break;
 
-      case 250: // DefinedType
-      case 252: // ParameterizedType
+      case 249: // DefinedType
+      case 251: // ParameterizedType
         value.move< DefinedType > (s.value);
         break;
 
-      case 251: // DefinedValue
+      case 250: // DefinedValue
         value.move< DefinedValue > (s.value);
         break;
 
@@ -3058,11 +3075,11 @@ namespace yy {
         value.move< EnumerationValue > (s.value);
         break;
 
-      case 242: // SymbolsFromModule
+      case 241: // SymbolsFromModule
         value.move< Import > (s.value);
         break;
 
-      case 236: // ModuleBody
+      case 235: // ModuleBody
         value.move< Module > (s.value);
         break;
 
@@ -3070,7 +3087,7 @@ namespace yy {
         value.move< NamedNumber > (s.value);
         break;
 
-      case 262: // NamedType
+      case 261: // NamedType
         value.move< NamedType > (s.value);
         break;
 
@@ -3109,16 +3126,18 @@ namespace yy {
         value.move< TaggedType > (s.value);
         break;
 
-      case 234: // TagDefault
+      case 233: // TagDefault
         value.move< TaggingMode > (s.value);
         break;
 
-      case 255: // ActualParameter
-      case 260: // Type
+      case 254: // ActualParameter
+      case 259: // Type
         value.move< Type > (s.value);
         break;
 
+      case 262: // ValueWithoutTypeIdentifier
       case 263: // Value
+      case 347: // SingleValue
         value.move< Value > (s.value);
         break;
 
@@ -3135,8 +3154,8 @@ namespace yy {
         value.move< long long > (s.value);
         break;
 
-      case 203: // ParameterList
-      case 206: // ParameterSeries
+      case 204: // ParameterList
+      case 205: // ParameterSeries
         value.move< std::set<std::string> > (s.value);
         break;
 
@@ -3148,16 +3167,17 @@ namespace yy {
       case 11: // xmlcstring
       case 12: // simplestring
       case 13: // xmltstring
+      case 21: // objectreference
       case 23: // typefieldreference
       case 24: // valuefieldreference
       case 147: // GENERIC_IDENTIFIER_UPPERCASE
       case 148: // GENERIC_IDENTIFIER_LOWERCASE
-      case 207: // Parameter
-      case 213: // SimpleDefinedType
-      case 225: // ModuleIdentifier
-      case 243: // GlobalModuleReference
-      case 246: // Symbol
-      case 247: // Reference
+      case 206: // Parameter
+      case 212: // SimpleDefinedType
+      case 224: // ModuleIdentifier
+      case 242: // GlobalModuleReference
+      case 245: // Symbol
+      case 246: // Reference
       case 372: // typereference
       case 373: // identifier
       case 374: // valuereference
@@ -3167,17 +3187,17 @@ namespace yy {
         value.move< std::string > (s.value);
         break;
 
-      case 248: // AssignmentList
+      case 247: // AssignmentList
         value.move< std::vector<Assignment> > (s.value);
         break;
 
-      case 237: // Exports
+      case 236: // Exports
         value.move< std::vector<Export> > (s.value);
         break;
 
-      case 239: // Imports
-      case 240: // SymbolsImported
-      case 241: // SymbolsFromModuleList
+      case 238: // Imports
+      case 239: // SymbolsImported
+      case 240: // SymbolsFromModuleList
         value.move< std::vector<Import> > (s.value);
         break;
 
@@ -3192,7 +3212,7 @@ namespace yy {
         value.move< std::vector<ObjectIdComponentValue> > (s.value);
         break;
 
-      case 254: // ActualParameterList
+      case 253: // ActualParameterList
         value.move< std::vector<Type> > (s.value);
         break;
 
@@ -3200,7 +3220,7 @@ namespace yy {
         value.move< std::vector<Value> > (s.value);
         break;
 
-      case 245: // SymbolList
+      case 244: // SymbolList
         value.move< std::vector<std::string> > (s.value);
         break;
 
@@ -3376,9 +3396,9 @@ namespace yy {
   }
 
   asn1_parser::symbol_type
-  asn1_parser::make_objectreference (const location_type& l)
+  asn1_parser::make_objectreference (const std::string& v, const location_type& l)
   {
-    return symbol_type (token::objectreference, l);
+    return symbol_type (token::objectreference, v, l);
   }
 
   asn1_parser::symbol_type
@@ -4158,7 +4178,7 @@ namespace yy {
 
 
 } // yy
-#line 4160 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:408
+#line 4180 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:408
 
 
 
@@ -4166,7 +4186,7 @@ namespace yy {
 
 // User implementation prologue.
 
-#line 4168 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:412
+#line 4188 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:412
 // Unqualified %code blocks.
 #line 15 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:413
 
@@ -4185,7 +4205,7 @@ namespace yy {
 
     namespace yy { asn1_parser::symbol_type yylex(Context& c); }
 
-#line 4187 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:413
+#line 4207 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:413
 
 
 #ifndef YY_
@@ -4271,7 +4291,7 @@ namespace yy {
 
 
 namespace yy {
-#line 4273 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:479
+#line 4293 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:479
 
   /* Return YYSTR after stripping away unnecessary quotes and
      backslashes, so that it's suitable for yyerror.  The heuristic is
@@ -4383,20 +4403,21 @@ namespace yy {
   {
       switch (that.type_get ())
     {
+      case 158: // ObjectClassAssignment
+      case 194: // ObjectSetAssignment
       case 198: // ParameterizedAssignment
       case 199: // ParameterizedTypeAssignment
       case 200: // ParameterizedValueAssignment
       case 201: // ParameterizedValueSetTypeAssignment
       case 202: // ParameterizedObjectClassAssignment
-      case 204: // ParameterizedObjectAssignment
-      case 205: // ParameterizedObjectSetAssignment
-      case 249: // Assignment
-      case 258: // TypeAssignment
-      case 259: // ValueAssignment
+      case 203: // ParameterizedObjectAssignment
+      case 248: // Assignment
+      case 257: // TypeAssignment
+      case 258: // ValueAssignment
         value.move< Assignment > (that.value);
         break;
 
-      case 261: // BuiltinType
+      case 260: // BuiltinType
         value.move< BuiltinType > (that.value);
         break;
 
@@ -4418,12 +4439,12 @@ namespace yy {
         value.move< ComponentTypeList > (that.value);
         break;
 
-      case 250: // DefinedType
-      case 252: // ParameterizedType
+      case 249: // DefinedType
+      case 251: // ParameterizedType
         value.move< DefinedType > (that.value);
         break;
 
-      case 251: // DefinedValue
+      case 250: // DefinedValue
         value.move< DefinedValue > (that.value);
         break;
 
@@ -4437,11 +4458,11 @@ namespace yy {
         value.move< EnumerationValue > (that.value);
         break;
 
-      case 242: // SymbolsFromModule
+      case 241: // SymbolsFromModule
         value.move< Import > (that.value);
         break;
 
-      case 236: // ModuleBody
+      case 235: // ModuleBody
         value.move< Module > (that.value);
         break;
 
@@ -4449,7 +4470,7 @@ namespace yy {
         value.move< NamedNumber > (that.value);
         break;
 
-      case 262: // NamedType
+      case 261: // NamedType
         value.move< NamedType > (that.value);
         break;
 
@@ -4488,16 +4509,18 @@ namespace yy {
         value.move< TaggedType > (that.value);
         break;
 
-      case 234: // TagDefault
+      case 233: // TagDefault
         value.move< TaggingMode > (that.value);
         break;
 
-      case 255: // ActualParameter
-      case 260: // Type
+      case 254: // ActualParameter
+      case 259: // Type
         value.move< Type > (that.value);
         break;
 
+      case 262: // ValueWithoutTypeIdentifier
       case 263: // Value
+      case 347: // SingleValue
         value.move< Value > (that.value);
         break;
 
@@ -4514,8 +4537,8 @@ namespace yy {
         value.move< long long > (that.value);
         break;
 
-      case 203: // ParameterList
-      case 206: // ParameterSeries
+      case 204: // ParameterList
+      case 205: // ParameterSeries
         value.move< std::set<std::string> > (that.value);
         break;
 
@@ -4527,16 +4550,17 @@ namespace yy {
       case 11: // xmlcstring
       case 12: // simplestring
       case 13: // xmltstring
+      case 21: // objectreference
       case 23: // typefieldreference
       case 24: // valuefieldreference
       case 147: // GENERIC_IDENTIFIER_UPPERCASE
       case 148: // GENERIC_IDENTIFIER_LOWERCASE
-      case 207: // Parameter
-      case 213: // SimpleDefinedType
-      case 225: // ModuleIdentifier
-      case 243: // GlobalModuleReference
-      case 246: // Symbol
-      case 247: // Reference
+      case 206: // Parameter
+      case 212: // SimpleDefinedType
+      case 224: // ModuleIdentifier
+      case 242: // GlobalModuleReference
+      case 245: // Symbol
+      case 246: // Reference
       case 372: // typereference
       case 373: // identifier
       case 374: // valuereference
@@ -4546,17 +4570,17 @@ namespace yy {
         value.move< std::string > (that.value);
         break;
 
-      case 248: // AssignmentList
+      case 247: // AssignmentList
         value.move< std::vector<Assignment> > (that.value);
         break;
 
-      case 237: // Exports
+      case 236: // Exports
         value.move< std::vector<Export> > (that.value);
         break;
 
-      case 239: // Imports
-      case 240: // SymbolsImported
-      case 241: // SymbolsFromModuleList
+      case 238: // Imports
+      case 239: // SymbolsImported
+      case 240: // SymbolsFromModuleList
         value.move< std::vector<Import> > (that.value);
         break;
 
@@ -4571,7 +4595,7 @@ namespace yy {
         value.move< std::vector<ObjectIdComponentValue> > (that.value);
         break;
 
-      case 254: // ActualParameterList
+      case 253: // ActualParameterList
         value.move< std::vector<Type> > (that.value);
         break;
 
@@ -4579,7 +4603,7 @@ namespace yy {
         value.move< std::vector<Value> > (that.value);
         break;
 
-      case 245: // SymbolList
+      case 244: // SymbolList
         value.move< std::vector<std::string> > (that.value);
         break;
 
@@ -4598,20 +4622,21 @@ namespace yy {
     state = that.state;
       switch (that.type_get ())
     {
+      case 158: // ObjectClassAssignment
+      case 194: // ObjectSetAssignment
       case 198: // ParameterizedAssignment
       case 199: // ParameterizedTypeAssignment
       case 200: // ParameterizedValueAssignment
       case 201: // ParameterizedValueSetTypeAssignment
       case 202: // ParameterizedObjectClassAssignment
-      case 204: // ParameterizedObjectAssignment
-      case 205: // ParameterizedObjectSetAssignment
-      case 249: // Assignment
-      case 258: // TypeAssignment
-      case 259: // ValueAssignment
+      case 203: // ParameterizedObjectAssignment
+      case 248: // Assignment
+      case 257: // TypeAssignment
+      case 258: // ValueAssignment
         value.copy< Assignment > (that.value);
         break;
 
-      case 261: // BuiltinType
+      case 260: // BuiltinType
         value.copy< BuiltinType > (that.value);
         break;
 
@@ -4633,12 +4658,12 @@ namespace yy {
         value.copy< ComponentTypeList > (that.value);
         break;
 
-      case 250: // DefinedType
-      case 252: // ParameterizedType
+      case 249: // DefinedType
+      case 251: // ParameterizedType
         value.copy< DefinedType > (that.value);
         break;
 
-      case 251: // DefinedValue
+      case 250: // DefinedValue
         value.copy< DefinedValue > (that.value);
         break;
 
@@ -4652,11 +4677,11 @@ namespace yy {
         value.copy< EnumerationValue > (that.value);
         break;
 
-      case 242: // SymbolsFromModule
+      case 241: // SymbolsFromModule
         value.copy< Import > (that.value);
         break;
 
-      case 236: // ModuleBody
+      case 235: // ModuleBody
         value.copy< Module > (that.value);
         break;
 
@@ -4664,7 +4689,7 @@ namespace yy {
         value.copy< NamedNumber > (that.value);
         break;
 
-      case 262: // NamedType
+      case 261: // NamedType
         value.copy< NamedType > (that.value);
         break;
 
@@ -4703,16 +4728,18 @@ namespace yy {
         value.copy< TaggedType > (that.value);
         break;
 
-      case 234: // TagDefault
+      case 233: // TagDefault
         value.copy< TaggingMode > (that.value);
         break;
 
-      case 255: // ActualParameter
-      case 260: // Type
+      case 254: // ActualParameter
+      case 259: // Type
         value.copy< Type > (that.value);
         break;
 
+      case 262: // ValueWithoutTypeIdentifier
       case 263: // Value
+      case 347: // SingleValue
         value.copy< Value > (that.value);
         break;
 
@@ -4729,8 +4756,8 @@ namespace yy {
         value.copy< long long > (that.value);
         break;
 
-      case 203: // ParameterList
-      case 206: // ParameterSeries
+      case 204: // ParameterList
+      case 205: // ParameterSeries
         value.copy< std::set<std::string> > (that.value);
         break;
 
@@ -4742,16 +4769,17 @@ namespace yy {
       case 11: // xmlcstring
       case 12: // simplestring
       case 13: // xmltstring
+      case 21: // objectreference
       case 23: // typefieldreference
       case 24: // valuefieldreference
       case 147: // GENERIC_IDENTIFIER_UPPERCASE
       case 148: // GENERIC_IDENTIFIER_LOWERCASE
-      case 207: // Parameter
-      case 213: // SimpleDefinedType
-      case 225: // ModuleIdentifier
-      case 243: // GlobalModuleReference
-      case 246: // Symbol
-      case 247: // Reference
+      case 206: // Parameter
+      case 212: // SimpleDefinedType
+      case 224: // ModuleIdentifier
+      case 242: // GlobalModuleReference
+      case 245: // Symbol
+      case 246: // Reference
       case 372: // typereference
       case 373: // identifier
       case 374: // valuereference
@@ -4761,17 +4789,17 @@ namespace yy {
         value.copy< std::string > (that.value);
         break;
 
-      case 248: // AssignmentList
+      case 247: // AssignmentList
         value.copy< std::vector<Assignment> > (that.value);
         break;
 
-      case 237: // Exports
+      case 236: // Exports
         value.copy< std::vector<Export> > (that.value);
         break;
 
-      case 239: // Imports
-      case 240: // SymbolsImported
-      case 241: // SymbolsFromModuleList
+      case 238: // Imports
+      case 239: // SymbolsImported
+      case 240: // SymbolsFromModuleList
         value.copy< std::vector<Import> > (that.value);
         break;
 
@@ -4786,7 +4814,7 @@ namespace yy {
         value.copy< std::vector<ObjectIdComponentValue> > (that.value);
         break;
 
-      case 254: // ActualParameterList
+      case 253: // ActualParameterList
         value.copy< std::vector<Type> > (that.value);
         break;
 
@@ -4794,7 +4822,7 @@ namespace yy {
         value.copy< std::vector<Value> > (that.value);
         break;
 
-      case 245: // SymbolList
+      case 244: // SymbolList
         value.copy< std::vector<std::string> > (that.value);
         break;
 
@@ -5026,20 +5054,21 @@ namespace yy {
          when using variants.  */
         switch (yyr1_[yyn])
     {
+      case 158: // ObjectClassAssignment
+      case 194: // ObjectSetAssignment
       case 198: // ParameterizedAssignment
       case 199: // ParameterizedTypeAssignment
       case 200: // ParameterizedValueAssignment
       case 201: // ParameterizedValueSetTypeAssignment
       case 202: // ParameterizedObjectClassAssignment
-      case 204: // ParameterizedObjectAssignment
-      case 205: // ParameterizedObjectSetAssignment
-      case 249: // Assignment
-      case 258: // TypeAssignment
-      case 259: // ValueAssignment
+      case 203: // ParameterizedObjectAssignment
+      case 248: // Assignment
+      case 257: // TypeAssignment
+      case 258: // ValueAssignment
         yylhs.value.build< Assignment > ();
         break;
 
-      case 261: // BuiltinType
+      case 260: // BuiltinType
         yylhs.value.build< BuiltinType > ();
         break;
 
@@ -5061,12 +5090,12 @@ namespace yy {
         yylhs.value.build< ComponentTypeList > ();
         break;
 
-      case 250: // DefinedType
-      case 252: // ParameterizedType
+      case 249: // DefinedType
+      case 251: // ParameterizedType
         yylhs.value.build< DefinedType > ();
         break;
 
-      case 251: // DefinedValue
+      case 250: // DefinedValue
         yylhs.value.build< DefinedValue > ();
         break;
 
@@ -5080,11 +5109,11 @@ namespace yy {
         yylhs.value.build< EnumerationValue > ();
         break;
 
-      case 242: // SymbolsFromModule
+      case 241: // SymbolsFromModule
         yylhs.value.build< Import > ();
         break;
 
-      case 236: // ModuleBody
+      case 235: // ModuleBody
         yylhs.value.build< Module > ();
         break;
 
@@ -5092,7 +5121,7 @@ namespace yy {
         yylhs.value.build< NamedNumber > ();
         break;
 
-      case 262: // NamedType
+      case 261: // NamedType
         yylhs.value.build< NamedType > ();
         break;
 
@@ -5131,16 +5160,18 @@ namespace yy {
         yylhs.value.build< TaggedType > ();
         break;
 
-      case 234: // TagDefault
+      case 233: // TagDefault
         yylhs.value.build< TaggingMode > ();
         break;
 
-      case 255: // ActualParameter
-      case 260: // Type
+      case 254: // ActualParameter
+      case 259: // Type
         yylhs.value.build< Type > ();
         break;
 
+      case 262: // ValueWithoutTypeIdentifier
       case 263: // Value
+      case 347: // SingleValue
         yylhs.value.build< Value > ();
         break;
 
@@ -5157,8 +5188,8 @@ namespace yy {
         yylhs.value.build< long long > ();
         break;
 
-      case 203: // ParameterList
-      case 206: // ParameterSeries
+      case 204: // ParameterList
+      case 205: // ParameterSeries
         yylhs.value.build< std::set<std::string> > ();
         break;
 
@@ -5170,16 +5201,17 @@ namespace yy {
       case 11: // xmlcstring
       case 12: // simplestring
       case 13: // xmltstring
+      case 21: // objectreference
       case 23: // typefieldreference
       case 24: // valuefieldreference
       case 147: // GENERIC_IDENTIFIER_UPPERCASE
       case 148: // GENERIC_IDENTIFIER_LOWERCASE
-      case 207: // Parameter
-      case 213: // SimpleDefinedType
-      case 225: // ModuleIdentifier
-      case 243: // GlobalModuleReference
-      case 246: // Symbol
-      case 247: // Reference
+      case 206: // Parameter
+      case 212: // SimpleDefinedType
+      case 224: // ModuleIdentifier
+      case 242: // GlobalModuleReference
+      case 245: // Symbol
+      case 246: // Reference
       case 372: // typereference
       case 373: // identifier
       case 374: // valuereference
@@ -5189,17 +5221,17 @@ namespace yy {
         yylhs.value.build< std::string > ();
         break;
 
-      case 248: // AssignmentList
+      case 247: // AssignmentList
         yylhs.value.build< std::vector<Assignment> > ();
         break;
 
-      case 237: // Exports
+      case 236: // Exports
         yylhs.value.build< std::vector<Export> > ();
         break;
 
-      case 239: // Imports
-      case 240: // SymbolsImported
-      case 241: // SymbolsFromModuleList
+      case 238: // Imports
+      case 239: // SymbolsImported
+      case 240: // SymbolsFromModuleList
         yylhs.value.build< std::vector<Import> > ();
         break;
 
@@ -5214,7 +5246,7 @@ namespace yy {
         yylhs.value.build< std::vector<ObjectIdComponentValue> > ();
         break;
 
-      case 254: // ActualParameterList
+      case 253: // ActualParameterList
         yylhs.value.build< std::vector<Type> > ();
         break;
 
@@ -5222,7 +5254,7 @@ namespace yy {
         yylhs.value.build< std::vector<Value> > ();
         break;
 
-      case 245: // SymbolList
+      case 244: // SymbolList
         yylhs.value.build< std::vector<std::string> > ();
         break;
 
@@ -5244,1006 +5276,1090 @@ namespace yy {
           switch (yyn)
             {
   case 4:
-#line 296 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 298 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yystack_[2].value.as< Module > ().module_reference = yystack_[9].value.as< std::string > ();
       yystack_[2].value.as< Module > ().tagging_default = yystack_[6].value.as< TaggingMode > ();
       context.asn1_tree.modules.push_back(yystack_[2].value.as< Module > ()); }
-#line 5250 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 5282 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 12:
+#line 319 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Assignment > () = Assignment{yystack_[2].value.as< std::string > (), ObjectClassAssignment{}}; }
+#line 5288 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 80:
+#line 470 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Assignment > () = Assignment{yystack_[3].value.as< std::string > (), ObjectSetAssignment{}}; }
+#line 5294 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 89:
-#line 493 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 497 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Assignment > () = yystack_[0].value.as< Assignment > (); }
-#line 5256 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 5300 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 95:
-#line 502 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { std::cout << "param assign\n"; yylhs.value.as< Assignment > () = Assignment{ yystack_[3].value.as< std::string > (), yystack_[0].value.as< Type > (), absl::nullopt, {}, yystack_[2].value.as< std::set<std::string> > () }; }
-#line 5262 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+  case 90:
+#line 499 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Assignment > () = yystack_[0].value.as< Assignment > (); }
+#line 5306 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 102:
-#line 521 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::set<std::string> > () = yystack_[1].value.as< std::set<std::string> > (); }
-#line 5268 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+  case 91:
+#line 501 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Assignment > () = yystack_[0].value.as< Assignment > (); }
+#line 5312 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 103:
-#line 525 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::set<std::string> > ().insert(yystack_[0].value.as< std::string > ()); }
-#line 5274 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 104:
-#line 527 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::set<std::string> > () = yystack_[2].value.as< std::set<std::string> > (); yystack_[2].value.as< std::set<std::string> > ().insert(yystack_[0].value.as< std::string > ()); }
-#line 5280 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 105:
-#line 531 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
-#line 5286 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 106:
-#line 533 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
-#line 5292 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 115:
-#line 586 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
-#line 5298 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 127:
-#line 610 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { std::cout << "Simple constraint\n"; }
-#line 5304 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 128:
-#line 612 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { std::cout << "Relation constraint\n"; }
-#line 5310 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 141:
-#line 654 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    {
-    yylhs.value.as< std::string > () = yystack_[1].value.as< std::string > ();
-}
+  case 92:
+#line 503 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Assignment > () = yystack_[0].value.as< Assignment > (); }
 #line 5318 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 156:
-#line 693 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< TaggingMode > () = TaggingMode::explicit_; }
+  case 93:
+#line 505 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Assignment > () = yystack_[0].value.as< Assignment > (); }
 #line 5324 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 157:
-#line 695 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< TaggingMode > () = TaggingMode::implicit; }
+  case 94:
+#line 510 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Assignment > () = Assignment{ yystack_[3].value.as< std::string > (), TypeAssignment{yystack_[0].value.as< Type > ()}, {}, yystack_[2].value.as< std::set<std::string> > () }; }
 #line 5330 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 158:
-#line 697 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< TaggingMode > () = TaggingMode::automatic; }
+  case 95:
+#line 514 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Assignment > () = Assignment{ yystack_[4].value.as< std::string > (), ValueAssignment{} }; }
 #line 5336 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 159:
-#line 699 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< TaggingMode > () = TaggingMode::explicit_; }
+  case 96:
+#line 518 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Assignment > () = Assignment{ yystack_[4].value.as< std::string > (), ValueAssignment{} }; }
 #line 5342 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 162:
-#line 707 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Module > () = Module{ {}, TaggingMode(), yystack_[2].value.as< std::vector<Export> > (), yystack_[1].value.as< std::vector<Import> > (), yystack_[0].value.as< std::vector<Assignment> > ()}; }
+  case 97:
+#line 522 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Assignment > () = Assignment{ yystack_[3].value.as< std::string > (), ObjectClassAssignment{} }; }
 #line 5348 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 163:
-#line 709 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { }
+  case 98:
+#line 526 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Assignment > () = Assignment{ yystack_[4].value.as< std::string > (), ObjectClassAssignment{} }; }
 #line 5354 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 169:
-#line 722 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::vector<Import> > () = yystack_[1].value.as< std::vector<Import> > (); }
+  case 99:
+#line 534 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::set<std::string> > () = yystack_[1].value.as< std::set<std::string> > (); }
 #line 5360 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 171:
-#line 727 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::vector<Import> > () = yystack_[0].value.as< std::vector<Import> > (); }
+  case 100:
+#line 538 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::set<std::string> > ().insert(yystack_[0].value.as< std::string > ()); }
 #line 5366 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 173:
-#line 732 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::vector<Import> > ().push_back(yystack_[0].value.as< Import > ()); }
+  case 101:
+#line 540 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::set<std::string> > () = yystack_[2].value.as< std::set<std::string> > (); yystack_[2].value.as< std::set<std::string> > ().insert(yystack_[0].value.as< std::string > ()); }
 #line 5372 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 174:
-#line 734 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::vector<Import> > () = yystack_[1].value.as< std::vector<Import> > (); yylhs.value.as< std::vector<Import> > ().push_back(yystack_[0].value.as< Import > ()); }
+  case 102:
+#line 544 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
 #line 5378 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 175:
-#line 738 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Import > () = Import{ yystack_[0].value.as< std::string > (), yystack_[2].value.as< std::vector<std::string> > () }; }
+  case 103:
+#line 546 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
 #line 5384 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 176:
-#line 742 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::string > () = yystack_[1].value.as< std::string > (); }
+  case 112:
+#line 599 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
 #line 5390 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 180:
-#line 751 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::vector<std::string> > ().push_back(yystack_[0].value.as< std::string > ()); }
+  case 124:
+#line 623 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { std::cerr << "Simple constraint\n"; }
 #line 5396 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 181:
-#line 753 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::vector<std::string> > () = yystack_[2].value.as< std::vector<std::string> > (); yylhs.value.as< std::vector<std::string> > ().push_back(yystack_[0].value.as< std::string > ()); }
+  case 125:
+#line 625 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { std::cerr << "Relation constraint\n"; }
 #line 5402 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 182:
-#line 757 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+  case 138:
+#line 667 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    {
+    yylhs.value.as< std::string > () = yystack_[1].value.as< std::string > ();
+}
+#line 5410 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 153:
+#line 706 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< TaggingMode > () = TaggingMode::explicit_; }
+#line 5416 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 154:
+#line 708 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< TaggingMode > () = TaggingMode::implicit; }
+#line 5422 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 155:
+#line 710 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< TaggingMode > () = TaggingMode::automatic; }
+#line 5428 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 156:
+#line 712 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< TaggingMode > () = TaggingMode::explicit_; }
+#line 5434 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 159:
+#line 720 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Module > () = Module{ {}, TaggingMode(), yystack_[2].value.as< std::vector<Export> > (), yystack_[1].value.as< std::vector<Import> > (), yystack_[0].value.as< std::vector<Assignment> > ()}; }
+#line 5440 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 160:
+#line 722 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { }
+#line 5446 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 166:
+#line 735 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::vector<Import> > () = yystack_[1].value.as< std::vector<Import> > (); }
+#line 5452 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 168:
+#line 740 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::vector<Import> > () = yystack_[0].value.as< std::vector<Import> > (); }
+#line 5458 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 170:
+#line 745 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::vector<Import> > ().push_back(yystack_[0].value.as< Import > ()); }
+#line 5464 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 171:
+#line 747 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::vector<Import> > () = yystack_[1].value.as< std::vector<Import> > (); yylhs.value.as< std::vector<Import> > ().push_back(yystack_[0].value.as< Import > ()); }
+#line 5470 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 172:
+#line 751 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Import > () = Import{ yystack_[0].value.as< std::string > (), yystack_[2].value.as< std::vector<std::string> > () }; }
+#line 5476 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 173:
+#line 755 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::string > () = yystack_[1].value.as< std::string > (); }
+#line 5482 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 177:
+#line 764 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::vector<std::string> > ().push_back(yystack_[0].value.as< std::string > ()); }
+#line 5488 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 178:
+#line 766 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::vector<std::string> > () = yystack_[2].value.as< std::vector<std::string> > (); yylhs.value.as< std::vector<std::string> > ().push_back(yystack_[0].value.as< std::string > ()); }
+#line 5494 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 179:
+#line 770 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
-#line 5408 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 5500 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 180:
+#line 774 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
+#line 5506 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 181:
+#line 776 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::string > () = yystack_[2].value.as< std::string > (); }
+#line 5512 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 182:
+#line 778 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
+#line 5518 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 183:
-#line 761 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
-#line 5414 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 787 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::vector<Assignment> > ().push_back(yystack_[0].value.as< Assignment > ()); }
+#line 5524 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 184:
-#line 763 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::string > () = yystack_[2].value.as< std::string > (); }
-#line 5420 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 789 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::vector<Assignment> > () = yystack_[1].value.as< std::vector<Assignment> > (); yylhs.value.as< std::vector<Assignment> > ().push_back(yystack_[0].value.as< Assignment > ()); }
+#line 5530 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 185:
-#line 765 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
-#line 5426 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 793 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Assignment > () = yystack_[0].value.as< Assignment > (); }
+#line 5536 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 186:
-#line 774 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::vector<Assignment> > ().push_back(yystack_[0].value.as< Assignment > ());}
-#line 5432 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 795 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Assignment > () = yystack_[0].value.as< Assignment > (); }
+#line 5542 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 187:
-#line 776 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::vector<Assignment> > () = yystack_[1].value.as< std::vector<Assignment> > (); yylhs.value.as< std::vector<Assignment> > ().push_back(yystack_[0].value.as< Assignment > ()); }
-#line 5438 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 797 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Assignment > () = yystack_[0].value.as< Assignment > (); }
+#line 5548 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 188:
-#line 780 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 801 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Assignment > () = yystack_[0].value.as< Assignment > (); }
-#line 5444 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 5554 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 189:
-#line 782 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 803 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Assignment > () = yystack_[0].value.as< Assignment > (); }
-#line 5450 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 5560 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 191:
+#line 808 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< DefinedType > () = DefinedType{yystack_[0].value.as< std::string > (), {}}; }
+#line 5566 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 192:
-#line 788 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Assignment > () = yystack_[0].value.as< Assignment > (); }
-#line 5456 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 810 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< DefinedType > () = yystack_[0].value.as< DefinedType > (); }
+#line 5572 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 194:
-#line 793 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< DefinedType > () = DefinedType{yystack_[0].value.as< std::string > (), {}}; }
-#line 5462 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+  case 193:
+#line 816 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< DefinedValue > () = DefinedValue{yystack_[0].value.as< std::string > ()}; }
+#line 5578 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 195:
-#line 795 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< DefinedType > () = yystack_[0].value.as< DefinedType > (); }
-#line 5468 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 821 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< DefinedType > () = DefinedType{yystack_[1].value.as< std::string > (), yystack_[0].value.as< std::vector<Type> > ()}; }
+#line 5584 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 196:
-#line 801 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< DefinedValue > () = DefinedValue{yystack_[0].value.as< std::string > ()}; }
-#line 5474 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+  case 197:
+#line 828 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::vector<Type> > ().push_back(yystack_[1].value.as< Type > ()); }
+#line 5590 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 198:
-#line 806 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< DefinedType > () = DefinedType{yystack_[1].value.as< std::string > (), yystack_[0].value.as< std::vector<Type> > ()}; }
-#line 5480 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 200:
-#line 813 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::vector<Type> > ().push_back(yystack_[1].value.as< Type > ()); }
-#line 5486 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 201:
-#line 817 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 832 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Type > () = yystack_[0].value.as< Type > (); }
-#line 5492 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 5596 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 199:
+#line 834 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { std::cerr << "Warning: Not yet dealing with value paramaters"; }
+#line 5602 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 203:
+#line 877 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Assignment > () = Assignment{ yystack_[2].value.as< std::string > (), TypeAssignment{yystack_[0].value.as< Type > ()}, {} }; }
+#line 5608 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 204:
+#line 881 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Assignment > () = Assignment{ yystack_[3].value.as< std::string > (), ValueAssignment{yystack_[2].value.as< Type > (), yystack_[0].value.as< Value > ()}, {} }; }
+#line 5614 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 205:
-#line 861 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Assignment > () = Assignment{ yystack_[2].value.as< std::string > (), yystack_[0].value.as< Type > (), absl::nullopt, {} }; }
-#line 5498 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 885 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Type > () = yystack_[0].value.as< BuiltinType > (); }
+#line 5620 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 206:
-#line 868 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Assignment > () = Assignment{ yystack_[3].value.as< std::string > (), yystack_[2].value.as< Type > (), yystack_[0].value.as< Value > (), {} }; }
-#line 5504 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 887 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Type > () = Type(); }
+#line 5626 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 207:
-#line 872 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Type > () = yystack_[0].value.as< BuiltinType > (); }
-#line 5510 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 889 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Type > () = yystack_[0].value.as< DefinedType > (); }
+#line 5632 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 208:
-#line 874 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Type > () = Type(); }
-#line 5516 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 891 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { std::cerr << "Warning: Not handled - SelectionType\n"; }
+#line 5638 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 209:
-#line 876 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Type > () = yystack_[0].value.as< DefinedType > (); }
-#line 5522 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 893 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { std::cerr << std::string("Not handled - TypeFromObject\n"); }
+#line 5644 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 210:
-#line 878 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { std::cout << "Warning: Not handled - SelectionType\n"; }
-#line 5528 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 897 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = BitStringType(); }
+#line 5650 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 211:
-#line 880 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { std::cout << std::string("Not handled - TypeFromObject\n"); }
-#line 5534 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 898 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = BooleanType(); }
+#line 5656 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 212:
-#line 884 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = BitStringType(); }
-#line 5540 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 899 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = CharacterStringType(); }
+#line 5662 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 213:
-#line 885 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = BooleanType(); }
-#line 5546 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 900 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< ChoiceType > (); }
+#line 5668 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 214:
-#line 886 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = CharacterStringType(); }
-#line 5552 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 901 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = DateType(); }
+#line 5674 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 215:
-#line 887 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< ChoiceType > (); }
-#line 5558 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 902 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = DateTimeType(); }
+#line 5680 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 216:
-#line 888 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = DateType(); }
-#line 5564 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 903 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = DurationType(); }
+#line 5686 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 217:
-#line 889 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = DateTimeType(); }
-#line 5570 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 904 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = EmbeddedPDVType(); }
+#line 5692 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 218:
-#line 890 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = DurationType(); }
-#line 5576 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 905 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< EnumeratedType > (); }
+#line 5698 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 219:
-#line 891 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = EmbeddedPDVType(); }
-#line 5582 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 906 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = ExternalType(); }
+#line 5704 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 220:
-#line 892 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< EnumeratedType > (); }
-#line 5588 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 907 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = GeneralizedTimeType(); }
+#line 5710 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 221:
-#line 893 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = ExternalType(); }
-#line 5594 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 908 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = InstanceOfType(); }
+#line 5716 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 222:
-#line 894 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = GeneralizedTimeType(); }
-#line 5600 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 909 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = IntegerType(); }
+#line 5722 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 223:
-#line 895 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = InstanceOfType(); }
-#line 5606 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 910 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = IRIType(); }
+#line 5728 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 224:
-#line 896 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = IntegerType(); }
-#line 5612 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 911 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = NullType(); }
+#line 5734 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 225:
-#line 897 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = IRIType(); }
-#line 5618 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 912 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = ObjectClassFieldType(); }
+#line 5740 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 226:
-#line 898 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = NullType(); }
-#line 5624 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 913 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = ObjectDescriptorType(); }
+#line 5746 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 227:
-#line 899 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = ObjectClassFieldType(); }
-#line 5630 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 914 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = ObjectIdentifierType(); }
+#line 5752 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 228:
-#line 900 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = ObjectDescriptorType(); }
-#line 5636 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 915 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = OctetStringType(); }
+#line 5758 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 229:
-#line 901 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = ObjectIdentifierType(); }
-#line 5642 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 916 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = RealType(); }
+#line 5764 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 230:
-#line 902 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = OctetStringType(); }
-#line 5648 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 917 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = RelativeIRIType(); }
+#line 5770 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 231:
-#line 903 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = RealType(); }
-#line 5654 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 918 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = RelativeOIDType(); }
+#line 5776 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 232:
-#line 904 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = RelativeIRIType(); }
-#line 5660 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 919 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< SequenceType > (); }
+#line 5782 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 233:
-#line 905 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = RelativeOIDType(); }
-#line 5666 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 920 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< SequenceOfType > (); }
+#line 5788 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 234:
-#line 906 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< SequenceType > (); }
-#line 5672 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 921 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< SetType > (); }
+#line 5794 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 235:
-#line 907 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< SequenceOfType > (); }
-#line 5678 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 922 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< SetOfType > (); }
+#line 5800 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 236:
-#line 908 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< SetType > (); }
-#line 5684 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 923 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< PrefixedType > (); }
+#line 5806 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 237:
-#line 909 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< SetOfType > (); }
-#line 5690 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 924 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = TimeType(); }
+#line 5812 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 238:
-#line 910 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< PrefixedType > (); }
-#line 5696 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 925 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = TimeOfDayType(); }
+#line 5818 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 239:
-#line 911 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = TimeType(); }
-#line 5702 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 926 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BuiltinType > () = UTCTimeType(); }
+#line 5824 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 240:
-#line 912 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = TimeOfDayType(); }
-#line 5708 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 930 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< NamedType > () = NamedType{ yystack_[1].value.as< std::string > (), yystack_[0].value.as< Type > () }; }
+#line 5830 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 241:
-#line 913 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BuiltinType > () = UTCTimeType(); }
-#line 5714 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 934 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { std::cerr << std::string("Unhandled field: BooleanValue\n"); }
+#line 5836 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 242:
-#line 917 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< NamedType > () = NamedType{ yystack_[1].value.as< std::string > (), yystack_[0].value.as< Type > () }; }
-#line 5720 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 936 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { std::cerr << std::string("Unhandled field: IRIValue\n"); }
+#line 5842 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 243:
-#line 921 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { std::cout << std::string("Unhandled field: BooleanValue\n"); }
-#line 5726 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 938 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { std::cerr << std::string("Unhandled field: ASN_NULL\n"); }
+#line 5848 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 244:
-#line 923 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { std::cout << std::string("Unhandled field: IRIValue\n"); }
-#line 5732 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 940 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { std::cerr << std::string("Unhandled field: TimeValue\n"); }
+#line 5854 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 245:
-#line 925 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { std::cout << std::string("Unhandled field: ASN_NULL\n"); }
-#line 5738 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 942 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { std::cerr << std::string("Unhandled field: bstring\n"); }
+#line 5860 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 246:
-#line 927 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { std::cout << std::string("Unhandled field: TimeValue\n"); }
-#line 5744 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 944 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { std::cerr << std::string("Unhandled field: hstring\n"); }
+#line 5866 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 247:
-#line 929 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { std::cout << std::string("Unhandled field: bstring\n"); }
-#line 5750 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 946 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Value > ().value_selection = yystack_[0].value.as< std::string > (); }
+#line 5872 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 248:
-#line 931 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { std::cout << std::string("Unhandled field: hstring\n"); }
-#line 5756 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 948 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { std::cerr << std::string("Unhandled field: CONTAINING\n"); }
+#line 5878 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 249:
-#line 933 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 950 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Value > ().value_selection = yystack_[0].value.as< std::string > (); }
-#line 5762 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 5884 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 250:
-#line 935 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { std::cout << std::string("Unhandled field: CONTAINING\n"); }
-#line 5768 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 251:
-#line 937 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Value > ().value_selection = yystack_[0].value.as< std::string > (); }
-#line 5774 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 252:
-#line 939 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Value > ().value_selection = yystack_[0].value.as< std::string > (); }
-#line 5780 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 253:
-#line 941 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 952 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Value > ().value_selection = NamedNumber{yystack_[3].value.as< std::string > (), yystack_[1].value.as< long long > ()}; }
-#line 5786 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 255:
-#line 944 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Value > ().value_selection = yystack_[0].value.as< long long > (); }
-#line 5792 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 256:
-#line 946 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Value > ().value_selection = yystack_[0].value.as< double > (); }
-#line 5798 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 257:
-#line 948 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { std::cout << std::string("Unhandled field: ValueCommaListChoice\n"); }
-#line 5804 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 258:
-#line 950 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { std::cout << std::string("Unhandled field: ValueCommaListChoice\n"); }
-#line 5810 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 259:
-#line 954 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Value > ().value_selection = yystack_[1].value.as< std::vector<Value> > (); }
-#line 5816 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 260:
-#line 956 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { std::cout << std::string("Unhandled field: ValueChoice\n"); }
-#line 5822 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 261:
-#line 958 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { std::cout << std::string("Unhandled field: OPTIONAL\n"); }
-#line 5828 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 262:
-#line 960 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { std::cout << std::string("Unhandled field: ValueCommaListChoice\n"); }
-#line 5834 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 267:
-#line 972 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::vector<Value> > ().push_back(yystack_[0].value.as< Value > ()); }
-#line 5840 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 268:
-#line 974 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::vector<Value> > () = yystack_[1].value.as< std::vector<Value> > (); yylhs.value.as< std::vector<Value> > ().push_back(yystack_[0].value.as< Value > ()); }
-#line 5846 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 276:
-#line 997 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< NamedNumber > () = NamedNumber{ yystack_[3].value.as< std::string > (), yystack_[1].value.as< long long > () }; }
-#line 5852 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 277:
-#line 999 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< NamedNumber > () = NamedNumber{ yystack_[3].value.as< std::string > (), 0 }; }
-#line 5858 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 278:
-#line 1003 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< long long > () = yystack_[0].value.as< long long > (); }
-#line 5864 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 279:
-#line 1005 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< long long > () = -yystack_[0].value.as< long long > (); }
-#line 5870 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 280:
-#line 1009 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< EnumeratedType > () = yystack_[1].value.as< EnumeratedType > (); }
-#line 5876 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 281:
-#line 1013 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< EnumeratedType > () = yystack_[0].value.as< EnumeratedType > ();
-      yylhs.value.as< EnumeratedType > ().accept_anything = false; }
-#line 5883 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 282:
-#line 1016 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< EnumeratedType > () = yystack_[3].value.as< EnumeratedType > ();
-      yylhs.value.as< EnumeratedType > ().accept_anything = true; }
 #line 5890 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 283:
-#line 1019 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+  case 252:
+#line 955 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Value > ().value_selection = yystack_[0].value.as< long long > (); }
+#line 5896 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 253:
+#line 957 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Value > ().value_selection = yystack_[0].value.as< double > (); }
+#line 5902 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 254:
+#line 959 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { std::cerr << std::string("Unhandled field: ValueCommaListChoice\n"); }
+#line 5908 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 255:
+#line 961 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { std::cerr << std::string("Unhandled field: ValueCommaListChoice\n"); }
+#line 5914 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 256:
+#line 965 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Value > ().value_selection = yystack_[1].value.as< std::vector<Value> > (); }
+#line 5920 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 257:
+#line 967 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { std::cerr << std::string("Unhandled field: ValueChoice\n"); }
+#line 5926 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 258:
+#line 969 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { std::cerr << std::string("Unhandled field: OPTIONAL\n"); }
+#line 5932 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 259:
+#line 971 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { std::cerr << std::string("Unhandled field: ValueCommaListChoice\n"); }
+#line 5938 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 260:
+#line 975 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Value > () = yystack_[0].value.as< Value > (); }
+#line 5944 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 261:
+#line 977 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Value > ().value_selection = yystack_[0].value.as< std::string > (); }
+#line 5950 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 266:
+#line 989 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::vector<Value> > ().push_back(yystack_[0].value.as< Value > ()); }
+#line 5956 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 267:
+#line 991 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::vector<Value> > () = yystack_[1].value.as< std::vector<Value> > (); yylhs.value.as< std::vector<Value> > ().push_back(yystack_[0].value.as< Value > ()); }
+#line 5962 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 275:
+#line 1014 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< NamedNumber > () = NamedNumber{ yystack_[3].value.as< std::string > (), yystack_[1].value.as< long long > () }; }
+#line 5968 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 276:
+#line 1016 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< NamedNumber > () = NamedNumber{ yystack_[3].value.as< std::string > (), 0 }; }
+#line 5974 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 277:
+#line 1020 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< long long > () = yystack_[0].value.as< long long > (); }
+#line 5980 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 278:
+#line 1022 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< long long > () = -yystack_[0].value.as< long long > (); }
+#line 5986 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 279:
+#line 1026 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< EnumeratedType > () = yystack_[1].value.as< EnumeratedType > (); }
+#line 5992 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 280:
+#line 1030 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< EnumeratedType > () = yystack_[0].value.as< EnumeratedType > ();
+      yylhs.value.as< EnumeratedType > ().accept_anything = false; }
+#line 5999 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 281:
+#line 1033 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< EnumeratedType > () = yystack_[3].value.as< EnumeratedType > ();
+      yylhs.value.as< EnumeratedType > ().accept_anything = true; }
+#line 6006 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 282:
+#line 1036 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< EnumeratedType > () = yystack_[5].value.as< EnumeratedType > ();
       yylhs.value.as< EnumeratedType > ().accept_anything = true;
       yylhs.value.as< EnumeratedType > ().enum_values.insert(yylhs.value.as< EnumeratedType > ().enum_values.end(), yystack_[0].value.as< EnumeratedType > ().enum_values.begin(), yystack_[0].value.as< EnumeratedType > ().enum_values.end()); }
-#line 5898 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6014 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 284:
+#line 1043 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< EnumeratedType > ().enum_values.push_back(yystack_[0].value.as< EnumerationValue > ()); }
+#line 6020 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 285:
-#line 1026 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< EnumeratedType > ().enum_values.push_back(yystack_[0].value.as< EnumerationValue > ()); }
-#line 5904 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1045 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< EnumeratedType > () = yystack_[2].value.as< EnumeratedType > (); yylhs.value.as< EnumeratedType > ().enum_values.push_back(yystack_[0].value.as< EnumerationValue > ()); }
+#line 6026 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 286:
-#line 1028 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< EnumeratedType > () = yystack_[2].value.as< EnumeratedType > (); yylhs.value.as< EnumeratedType > ().enum_values.push_back(yystack_[0].value.as< EnumerationValue > ()); }
-#line 5910 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1049 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< EnumerationValue > ().name  = yystack_[0].value.as< std::string > (); }
+#line 6032 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 287:
-#line 1032 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< EnumerationValue > ().name  = yystack_[0].value.as< std::string > (); }
-#line 5916 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 288:
-#line 1034 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1051 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< EnumerationValue > ().name  = yystack_[0].value.as< NamedNumber > ().name;
       yylhs.value.as< EnumerationValue > ().value = yystack_[0].value.as< NamedNumber > ().number; }
-#line 5923 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6039 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 297:
+#line 1091 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< SequenceType > () = SequenceType(); }
+#line 6045 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 298:
-#line 1074 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< SequenceType > () = SequenceType(); }
-#line 5929 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1093 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< SequenceType > () = SequenceType{yystack_[1].value.as< ComponentTypeList > ()}; }
+#line 6051 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 299:
-#line 1076 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< SequenceType > () = SequenceType{yystack_[1].value.as< ComponentTypeList > ()}; }
-#line 5935 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1101 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< ComponentTypeList > () = yystack_[0].value.as< ComponentTypeList > (); }
+#line 6057 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 300:
-#line 1084 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1105 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ComponentTypeList > () = yystack_[0].value.as< ComponentTypeList > (); }
-#line 5941 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6063 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 301:
-#line 1088 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< ComponentTypeList > () = yystack_[0].value.as< ComponentTypeList > (); }
-#line 5947 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1107 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< ComponentTypeList > () = yystack_[2].value.as< ComponentTypeList > (); }
+#line 6069 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 302:
-#line 1090 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< ComponentTypeList > () = yystack_[2].value.as< ComponentTypeList > (); }
-#line 5953 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1109 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< ComponentTypeList > () = yystack_[4].value.as< ComponentTypeList > (); yylhs.value.as< ComponentTypeList > ().insert(yylhs.value.as< ComponentTypeList > ().end(), yystack_[0].value.as< ComponentTypeList > ().begin(), yystack_[0].value.as< ComponentTypeList > ().end()); }
+#line 6075 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 303:
-#line 1092 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< ComponentTypeList > () = yystack_[4].value.as< ComponentTypeList > (); yylhs.value.as< ComponentTypeList > ().insert(yylhs.value.as< ComponentTypeList > ().end(), yystack_[0].value.as< ComponentTypeList > ().begin(), yystack_[0].value.as< ComponentTypeList > ().end()); }
-#line 5959 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1111 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< ComponentTypeList > () = yystack_[6].value.as< ComponentTypeList > (); yylhs.value.as< ComponentTypeList > ().insert(yylhs.value.as< ComponentTypeList > ().end(), yystack_[2].value.as< ComponentTypeList > ().begin(), yystack_[2].value.as< ComponentTypeList > ().end()); }
+#line 6081 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 304:
-#line 1094 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< ComponentTypeList > () = yystack_[6].value.as< ComponentTypeList > (); yylhs.value.as< ComponentTypeList > ().insert(yylhs.value.as< ComponentTypeList > ().end(), yystack_[2].value.as< ComponentTypeList > ().begin(), yystack_[2].value.as< ComponentTypeList > ().end()); }
-#line 5965 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1113 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< ComponentTypeList > () = yystack_[0].value.as< ComponentTypeList > (); }
+#line 6087 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 305:
-#line 1096 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< ComponentTypeList > () = yystack_[0].value.as< ComponentTypeList > (); }
-#line 5971 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1115 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< ComponentTypeList > () = yystack_[2].value.as< ComponentTypeList > (); }
+#line 6093 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 306:
-#line 1098 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< ComponentTypeList > () = yystack_[2].value.as< ComponentTypeList > (); }
-#line 5977 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1117 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< ComponentTypeList > () = {}; }
+#line 6099 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 307:
-#line 1100 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1119 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ComponentTypeList > () = {}; }
-#line 5983 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6105 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 308:
-#line 1102 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< ComponentTypeList > () = {}; }
-#line 5989 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1123 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< ComponentTypeList > () = ComponentTypeList{yystack_[0].value.as< ComponentType > ()}; }
+#line 6111 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 309:
-#line 1106 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< ComponentTypeList > () = ComponentTypeList{yystack_[0].value.as< ComponentType > ()}; }
-#line 5995 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1125 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yystack_[2].value.as< ComponentTypeList > ().push_back(yystack_[0].value.as< ComponentType > ()); yylhs.value.as< ComponentTypeList > () = yystack_[2].value.as< ComponentTypeList > (); }
+#line 6117 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 310:
-#line 1108 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yystack_[2].value.as< ComponentTypeList > ().push_back(yystack_[0].value.as< ComponentType > ()); yylhs.value.as< ComponentTypeList > () = yystack_[2].value.as< ComponentTypeList > (); }
-#line 6001 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1129 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< ComponentType > () = ComponentType{yystack_[0].value.as< NamedType > (), false, absl::nullopt}; }
+#line 6123 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 311:
-#line 1112 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< ComponentType > () = ComponentType{yystack_[0].value.as< NamedType > (), false, absl::nullopt}; }
-#line 6007 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1131 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< ComponentType > () = ComponentType{yystack_[1].value.as< NamedType > (), true, absl::nullopt}; }
+#line 6129 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 312:
-#line 1114 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< ComponentType > () = ComponentType{yystack_[1].value.as< NamedType > (), true, absl::nullopt}; }
-#line 6013 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1133 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< ComponentType > () = ComponentType{yystack_[2].value.as< NamedType > (), false, yystack_[0].value.as< Value > ()}; }
+#line 6135 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 313:
-#line 1116 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< ComponentType > () = ComponentType{yystack_[2].value.as< NamedType > (), false, yystack_[0].value.as< Value > ()}; }
-#line 6019 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+  case 314:
+#line 1146 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< SequenceOfType > () = SequenceOfType{ false, nullptr, std::make_shared<Type>(yystack_[0].value.as< Type > ()) }; }
+#line 6141 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 315:
-#line 1129 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< SequenceOfType > () = SequenceOfType{ false, nullptr, std::make_shared<Type>(yystack_[0].value.as< Type > ()) }; }
-#line 6025 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1148 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< SequenceOfType > () = SequenceOfType{ true, std::make_shared<NamedType>(yystack_[0].value.as< NamedType > ()), nullptr }; }
+#line 6147 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 316:
-#line 1131 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< SequenceOfType > () = SequenceOfType{ true, std::make_shared<NamedType>(yystack_[0].value.as< NamedType > ()), nullptr }; }
-#line 6031 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1152 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< SetType > () = SetType{}; }
+#line 6153 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 317:
-#line 1135 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< SetType > () = SetType{}; }
-#line 6037 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1154 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< SetType > () = SetType{yystack_[1].value.as< ComponentTypeList > ()}; }
+#line 6159 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 318:
-#line 1137 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< SetType > () = SetType{yystack_[1].value.as< ComponentTypeList > ()}; }
-#line 6043 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1158 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< SetOfType > () = SetOfType{ false, nullptr, std::make_shared<Type>(yystack_[0].value.as< Type > ()) }; }
+#line 6165 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 319:
-#line 1141 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< SetOfType > () = SetOfType{ false, nullptr, std::make_shared<Type>(yystack_[0].value.as< Type > ()) }; }
-#line 6049 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1160 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< SetOfType > () = SetOfType{ true, std::make_shared<NamedType>(yystack_[0].value.as< NamedType > ()), nullptr }; }
+#line 6171 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 320:
-#line 1143 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< SetOfType > () = SetOfType{ true, std::make_shared<NamedType>(yystack_[0].value.as< NamedType > ()), nullptr }; }
-#line 6055 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1164 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< ChoiceType > () = ChoiceType{ yystack_[1].value.as< std::vector<NamedType> > () }; }
+#line 6177 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 321:
-#line 1147 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< ChoiceType > () = ChoiceType{ yystack_[1].value.as< std::vector<NamedType> > () }; }
-#line 6061 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1168 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::vector<NamedType> > () = yystack_[0].value.as< std::vector<NamedType> > (); }
+#line 6183 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 322:
-#line 1151 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1172 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<NamedType> > () = yystack_[0].value.as< std::vector<NamedType> > (); }
-#line 6067 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6189 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 323:
-#line 1155 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::vector<NamedType> > () = yystack_[0].value.as< std::vector<NamedType> > (); }
-#line 6073 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1174 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::vector<NamedType> > () = yystack_[2].value.as< std::vector<NamedType> > (); }
+#line 6195 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 324:
-#line 1157 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::vector<NamedType> > () = yystack_[2].value.as< std::vector<NamedType> > (); }
-#line 6079 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1178 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::vector<NamedType> > () = std::vector<NamedType> { yystack_[0].value.as< NamedType > () }; }
+#line 6201 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 325:
-#line 1161 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::vector<NamedType> > () = std::vector<NamedType> { yystack_[0].value.as< NamedType > () }; }
-#line 6085 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1180 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yystack_[2].value.as< std::vector<NamedType> > ().push_back( yystack_[0].value.as< NamedType > () ); yylhs.value.as< std::vector<NamedType> > () = yystack_[2].value.as< std::vector<NamedType> > (); }
+#line 6207 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 326:
-#line 1163 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yystack_[2].value.as< std::vector<NamedType> > ().push_back( yystack_[0].value.as< NamedType > () ); yylhs.value.as< std::vector<NamedType> > () = yystack_[2].value.as< std::vector<NamedType> > (); }
-#line 6091 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+  case 327:
+#line 1190 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< PrefixedType > () = PrefixedType(yystack_[0].value.as< TaggedType > ()); }
+#line 6213 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 328:
-#line 1173 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< PrefixedType > () = PrefixedType(yystack_[0].value.as< TaggedType > ()); }
-#line 6097 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1194 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< TaggedType > () = TaggedType{ yystack_[1].value.as< Tag > (), TaggingMode::automatic, yystack_[0].value.as< Type > () }; }
+#line 6219 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 329:
-#line 1177 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< TaggedType > () = TaggedType{ yystack_[1].value.as< Tag > (), TaggingMode::automatic, yystack_[0].value.as< Type > () }; }
-#line 6103 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1196 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< TaggedType > () = TaggedType{ yystack_[2].value.as< Tag > (), TaggingMode::implicit, yystack_[0].value.as< Type > () }; }
+#line 6225 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 330:
-#line 1179 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< TaggedType > () = TaggedType{ yystack_[2].value.as< Tag > (), TaggingMode::implicit, yystack_[0].value.as< Type > () }; }
-#line 6109 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1198 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< TaggedType > () = TaggedType{ yystack_[2].value.as< Tag > (), TaggingMode::explicit_, yystack_[0].value.as< Type > () }; }
+#line 6231 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 331:
-#line 1181 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< TaggedType > () = TaggedType{ yystack_[2].value.as< Tag > (), TaggingMode::explicit_, yystack_[0].value.as< Type > () }; }
-#line 6115 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 332:
-#line 1185 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1202 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Tag > () = Tag{ yystack_[2].value.as< Class > (), yystack_[1].value.as< int > () }; }
-#line 6121 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6237 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 335:
-#line 1193 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+  case 334:
+#line 1210 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< int > () = yystack_[0].value.as< long long > (); }
-#line 6127 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6243 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 336:
+#line 1215 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Class > () = Class::universal; }
+#line 6249 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 337:
-#line 1198 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Class > () = Class::universal; }
-#line 6133 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1217 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Class > () = Class::application; }
+#line 6255 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 338:
-#line 1200 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Class > () = Class::application; }
-#line 6139 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1219 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Class > () = Class::private_; }
+#line 6261 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 339:
-#line 1202 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Class > () = Class::private_; }
-#line 6145 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1221 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< Class > () = Class::context_specific; }
+#line 6267 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 340:
-#line 1204 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Class > () = Class::context_specific; }
-#line 6151 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+  case 341:
+#line 1234 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::vector<ObjectIdComponentValue> > () = yystack_[1].value.as< std::vector<ObjectIdComponentValue> > (); std::reverse(yylhs.value.as< std::vector<ObjectIdComponentValue> > ().begin(), yylhs.value.as< std::vector<ObjectIdComponentValue> > ().end()); }
+#line 6273 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 342:
-#line 1217 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1236 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<ObjectIdComponentValue> > () = yystack_[1].value.as< std::vector<ObjectIdComponentValue> > (); std::reverse(yylhs.value.as< std::vector<ObjectIdComponentValue> > ().begin(), yylhs.value.as< std::vector<ObjectIdComponentValue> > ().end()); }
-#line 6157 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6279 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 343:
-#line 1219 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::vector<ObjectIdComponentValue> > () = yystack_[1].value.as< std::vector<ObjectIdComponentValue> > (); std::reverse(yylhs.value.as< std::vector<ObjectIdComponentValue> > ().begin(), yylhs.value.as< std::vector<ObjectIdComponentValue> > ().end()); }
-#line 6163 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1240 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::vector<ObjectIdComponentValue> > ().push_back(yystack_[0].value.as< ObjectIdComponentValue > ()); }
+#line 6285 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 344:
-#line 1223 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::vector<ObjectIdComponentValue> > ().push_back(yystack_[0].value.as< ObjectIdComponentValue > ()); }
-#line 6169 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1242 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::vector<ObjectIdComponentValue> > () = yystack_[0].value.as< std::vector<ObjectIdComponentValue> > (); yylhs.value.as< std::vector<ObjectIdComponentValue> > ().push_back(yystack_[1].value.as< ObjectIdComponentValue > ()); }
+#line 6291 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 345:
-#line 1225 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::vector<ObjectIdComponentValue> > () = yystack_[0].value.as< std::vector<ObjectIdComponentValue> > (); yylhs.value.as< std::vector<ObjectIdComponentValue> > ().push_back(yystack_[1].value.as< ObjectIdComponentValue > ()); }
-#line 6175 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1246 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< ObjectIdComponentValue > () = yystack_[0].value.as< ObjectIdComponentValue > (); }
+#line 6297 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 346:
-#line 1229 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1248 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ObjectIdComponentValue > () = yystack_[0].value.as< ObjectIdComponentValue > (); }
-#line 6181 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6303 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 347:
-#line 1231 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1250 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ObjectIdComponentValue > () = yystack_[0].value.as< ObjectIdComponentValue > (); }
-#line 6187 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6309 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 348:
-#line 1233 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< ObjectIdComponentValue > () = yystack_[0].value.as< ObjectIdComponentValue > (); }
-#line 6193 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 1254 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< ObjectIdComponentValue > ().name = yystack_[0].value.as< std::string > (); }
+#line 6315 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 349:
-#line 1237 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< ObjectIdComponentValue > ().name = yystack_[0].value.as< std::string > (); }
-#line 6199 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 350:
-#line 1241 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1258 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ObjectIdComponentValue > ().value = yystack_[0].value.as< long long > (); }
-#line 6205 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6321 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 352:
-#line 1246 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+  case 351:
+#line 1263 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ObjectIdComponentValue > () = yystack_[1].value.as< ObjectIdComponentValue > (); yylhs.value.as< ObjectIdComponentValue > ().name = yystack_[3].value.as< std::string > (); }
-#line 6211 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6327 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 479:
+#line 1548 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
+#line 6333 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 480:
-#line 1531 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1552 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
-#line 6217 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6339 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 481:
-#line 1535 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1556 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
-#line 6223 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6345 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 482:
-#line 1539 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1560 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
-#line 6229 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6351 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 483:
-#line 1543 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1564 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
-#line 6235 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 484:
-#line 1547 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
-#line 6241 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6357 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
 
-#line 6245 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6361 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
             default:
               break;
             }
@@ -6498,703 +6614,700 @@ namespace yy {
   }
 
 
-  const short int asn1_parser::yypact_ninf_ = -744;
+  const short int asn1_parser::yypact_ninf_ = -660;
 
-  const short int asn1_parser::yytable_ninf_ = -484;
+  const short int asn1_parser::yytable_ninf_ = -483;
 
   const short int
   asn1_parser::yypact_[] =
   {
-     -76,  -744,    82,   -76,    38,   -32,  -744,  -744,    94,    27,
-    -744,    -6,  -744,    63,    21,  -744,  -744,   156,    27,  -744,
-    -744,  -744,   186,   191,  -744,  -744,    52,   212,   220,   304,
-    -744,  -744,   375,   241,   246,  -744,  -744,  -744,   324,   282,
-     281,  -744,  -744,  -744,   241,   284,  -744,   393,  -744,   246,
-    -744,   288,  -744,     3,  -744,   360,   292,  -744,  -744,   294,
-     306,  -744,  -744,   315,  -744,   390,   200,    13,  -744,  -744,
-     200,   327,  -744,   309,   200,  -744,   -22,   178,   553,   305,
-    -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,    13,  -744,
-    -744,  -744,   204,  1900,  -744,  -744,  -744,  -744,  -744,   -76,
-    -744,   329,  -744,  2197,   317,  -744,  -744,  -744,  -744,  -744,
-     105,   318,  -744,  -744,   308,  -744,  1999,   389,   337,  -744,
-    2098,  -744,   321,  -744,  -744,   364,  -744,  -744,   365,   346,
-    -744,  -744,  -744,   380,   348,  -744,  -744,  -744,  -744,  -744,
-     386,   351,  -744,  -744,   407,  -744,   378,  -744,  -744,  -744,
-    -744,  -744,   -24,   214,  -744,  -744,  -744,  -744,  -744,  -744,
-    -744,  -744,  -744,   465,   173,  -744,  -744,  -744,  2494,   347,
-    -744,  -744,   369,  -744,  -744,   370,    33,  -744,  -744,  -744,
-    -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,
-    -744,  -744,  -744,  2296,  -744,  -744,  -744,  -744,  -744,  -744,
-    -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,
-      11,   366,   357,   359,  -744,   -37,   384,  -744,   139,  -744,
-     358,  -744,   361,   377,     6,   357,   383,   356,  -744,   371,
-    -744,   377,   388,  2494,   387,    43,   372,   394,  -744,   373,
-    -744,   108,   105,   373,  -744,  -744,  2494,   377,   101,  1111,
-     420,   433,  2494,   195,   435,   437,   391,    17,   159,   396,
-     398,  2197,  -744,   718,  -744,  2494,  2494,   377,   398,  2494,
-     398,    24,    54,  -744,  -744,  -744,   218,  1801,   105,   171,
-    -744,  -744,  -744,  -744,  -744,  -744,  -744,  2197,   200,    16,
-    -744,  -744,   305,  1234,  -744,   377,   388,   718,  -744,   373,
-    -744,   403,  -744,   392,  2494,   399,  -744,   411,   400,  -744,
-     414,  -744,   198,  -744,   414,   377,  -744,  2395,  -744,   454,
-     405,  -744,    15,   421,  -744,   408,  -744,  -744,  -744,  -744,
-    -744,  -744,  -744,   489,   271,   508,  2494,   512,  -744,   377,
-    -744,  -744,   718,   539,  -744,   326,  1357,   558,   208,   427,
-     442,  -744,  -744,  -744,  -744,   377,  -744,  -744,  -744,   399,
-    -744,  -744,   430,  -744,   -48,   -44,   -40,   -28,  -744,   489,
-     511,  -744,   275,  -744,  2494,  -744,   447,   443,  -744,  -744,
-    -744,  -744,  -744,  -744,  2494,  2494,   377,  -744,  -744,   449,
-    2494,  2494,  -744,  -744,  -744,  -744,    70,   718,    47,  -744,
-    -744,  -744,  -744,  -744,  -744,   434,  -744,   452,   377,  -744,
-    -744,  -744,  -744,  -744,   718,  -744,   718,  -744,   441,   221,
-    -744,   259,   444,   438,  -744,  -744,  -744,  -744,   448,   377,
-     377,   434,   377,   434,  -744,  -744,  -744,   369,    54,  -744,
-    -744,   455,    54,  -744,  -744,  -744,   459,   463,   450,  2494,
-    -744,    25,  -744,    36,   148,    40,   470,   384,  -744,  -744,
-     863,  -744,  -744,  -744,  -744,  -744,   453,   456,   469,   458,
-    -744,   259,   243,  -744,   471,  -744,   133,   377,  1697,  -744,
-    -744,   140,    32,  -744,   373,  2494,    -5,   718,  -744,  -744,
-       1,  1474,  -744,   474,     8,   718,  -744,   259,  -744,   377,
-     475,   477,  -744,   457,   478,   480,  -744,  -744,  1474,  -744,
-    -744,  1474,  -744,   377,   612,  -744,   377,  -744,   377,  -744,
-    -744,   377,  -744,   377,  -744,  -744,  -744,   479,   259,   398,
-    -744,   259,   259,   680,   604,   718,   718,   718,   718,   718,
-    -744,  -744,   488,  -744,  -744,    79,   466,   377,    16,  -744,
-    -744,   718,  -744,  -744,  -744,    36,  -744,  -744,  -744,   513,
-    -744,  -744,  -744,  -744,  -744,  -744,   495,  -744,  -744,   364,
-    -744,  -744,  -744,   365,   346,  -744,  -744,  -744,  -744,   718,
-    -744,  -744,  -744,  -744,  -744,   380,  -744,  -744,  -744,   348,
-    -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,
-    -744,   542,   386,  -744,   351,  -744,  -744,  -744,  -744,  -744,
-     407,   378,  -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,
-    -744,  -744,  -744,   -24,   214,  -744,  -744,  -744,  -744,  -744,
-    -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,   247,
-     226,  1591,  -744,   486,   987,  -744,  -744,   481,   377,   259,
-    -744,   602,  1357,  -744,   505,  -744,   373,    88,  -744,  -744,
-    -744,   -45,  -744,  -744,    19,   490,   399,  -744,   502,   503,
-    -744,   377,  -744,   494,   259,   497,  -744,  -744,  2197,   592,
-     259,  -744,  -744,   144,  -744,  -744,  -744,  -744,   238,   254,
-    -744,  -744,   498,   -40,  -744,  -744,  -744,    45,  -744,  -744,
-    -744,  -744,  -744,  -744,  -744,  -744,   259,   509,   259,   259,
-     259,   259,   259,  -744,   510,  -744,  -744,   259,  -744,   514,
-    -744,   495,   208,  -744,   491,  -744,  -744,  -744,  -744,   504,
-    -744,   515,   516,   718,    18,   507,  -744,  -744,   103,     0,
-     520,   499,   522,   316,   718,   524,   523,   525,   377,   521,
-     527,  -744,  -744,   457,  1357,  -744,  -744,  -744,  2980,  -744,
-     526,  1357,  -744,  -744,   259,   373,  -744,   529,   700,  -744,
-     259,   373,  -744,   373,  -744,  -744,    44,   521,   373,   373,
-    -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,
-    -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,
-    -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,
-    2980,  -744,  2740,  -744,  -744,  -744,  2620,  -744,  -744,  -744,
-     530,   211,   863,  -744,   259,   528,  -744,  -744,  -744,  -744,
-    -744,  -744,   527,  -744,  2860,  -744,  -744,  -744,  -744,   373,
-    -744,   259,  -744,  -744
+     -23,  -660,   129,   -23,    39,    41,  -660,  -660,   171,    21,
+    -660,    40,  -660,   146,   157,  -660,  -660,   151,    21,  -660,
+    -660,  -660,   152,   195,  -660,  -660,   238,   248,   259,   309,
+    -660,  -660,   341,    55,   232,  -660,  -660,  -660,   304,   274,
+     256,  -660,  -660,  -660,    55,   265,  -660,   370,  -660,   232,
+    -660,   321,  -660,   -13,  -660,   342,   273,  -660,  -660,   280,
+     294,  -660,  -660,   299,  -660,   376,   260,     3,  -660,  -660,
+     260,   310,  -660,   291,   260,  -660,   -27,   316,  -660,  -660,
+    -660,  -660,  -660,  -660,  -660,  -660,  -660,     3,  -660,  -660,
+    -660,    99,  2347,   316,  -660,  -660,  -660,  -660,   -23,  2149,
+      23,  -660,  2050,  -660,   320,  -660,  2446,  -660,   305,  -660,
+    -660,   344,  -660,  -660,   345,   325,  -660,  -660,  -660,   353,
+     326,  -660,  -660,  -660,  -660,  -660,   364,   328,  -660,  -660,
+     384,  -660,   351,  -660,  -660,  -660,  -660,  -660,   162,   168,
+    -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,   438,
+     185,  -660,  -660,  -660,  2644,   319,  -660,  -660,   335,  -660,
+    -660,   336,    -6,  -660,  -660,  -660,  -660,  -660,  -660,  -660,
+    -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,  2248,
+    -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,
+    -660,  -660,  -660,  -660,  -660,  -660,    91,   332,   327,   329,
+     343,  -660,   107,  -660,  -660,  -660,  -660,  -660,  -660,    88,
+    -660,   322,  -660,   331,   347,   159,   327,   330,  -660,   349,
+     358,   350,   359,  -660,  -660,  -660,   347,   366,  2644,   184,
+     346,   367,  -660,   324,  -660,   -50,    23,   324,  -660,  -660,
+    2644,   347,    -1,  1054,   405,   407,  2644,    10,   409,   410,
+     357,   123,   237,   401,  1534,  -660,   578,  -660,  2644,  2644,
+     347,   401,  2644,   401,    12,     5,    37,  -660,  -660,  -660,
+    -660,  2149,   260,    17,     9,   352,   365,  1177,  -660,   347,
+     578,  -660,   324,  -660,   374,  -660,   363,  2644,   371,  -660,
+     377,   368,  -660,   378,  -660,   156,  -660,   378,   347,  -660,
+    2545,  -660,   419,   375,  -660,    20,   382,  -660,   379,  -660,
+    -660,  -660,  -660,  -660,  -660,  -660,   450,   215,   471,  2644,
+     473,  -660,   347,  -660,  -660,   578,   500,  -660,   262,  1300,
+     509,   177,   381,   396,  -660,  -660,  -660,  -660,   347,  -660,
+    -660,  -660,   371,  -660,  -660,   389,  -660,   -63,   -59,    -2,
+      18,  -660,   450,   469,  -660,   218,  -660,  2644,  -660,   411,
+     398,  -660,  -660,  -660,  -660,  -660,  -660,  2644,  2644,   347,
+    -660,  -660,   408,  2644,  2644,  -660,  -660,  -660,  -660,    45,
+     578,  -660,  -660,  -660,  -660,  -660,  -660,   392,  -660,  -660,
+    -660,  -660,   406,   578,  -660,   578,  -660,   241,   190,  -660,
+     390,   412,   347,   413,   243,   403,   400,  -660,  -660,  -660,
+    -660,  -660,   416,   161,  -660,  -660,   243,   420,   347,   347,
+     392,   347,   392,  -660,  -660,  -660,  -660,   335,    37,  -660,
+    -660,   421,    37,  -660,  -660,  -660,   415,   423,   422,  -660,
+    -660,  -660,   806,  -660,  -660,  -660,  -660,  -660,   424,  -660,
+       2,  1951,    23,   196,  -660,  -660,  -660,  -660,  -660,  -660,
+     427,   434,   428,   243,   202,  -660,   435,  -660,   -28,   347,
+    1759,  -660,  -660,    -3,    28,  -660,   324,  2644,    33,  1904,
+    -660,  -660,    35,  1417,  -660,   443,    13,   578,  -660,   243,
+    -660,   347,   445,   449,  -660,   404,   451,   455,  -660,  -660,
+    1417,  -660,  -660,  1417,  -660,   347,   614,  -660,   347,  -660,
+     347,  -660,  -660,   347,  -660,   347,  -660,  -660,  -660,   452,
+     243,   401,   243,   243,   545,   574,  -660,   578,   578,   578,
+     578,   578,  -660,  -660,   458,  -660,  -660,    52,   439,  -660,
+    -660,  -660,  -660,   406,  -660,  -660,   344,  -660,  -660,  -660,
+     345,   325,  -660,  -660,  -660,  -660,   578,  -660,  -660,  -660,
+    -660,  -660,   353,  -660,  -660,  -660,   326,  -660,  -660,  -660,
+    -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,   520,   364,
+    -660,   328,  -660,  -660,  -660,  -660,  -660,   384,   351,  -660,
+    -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,
+     162,   168,  -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,
+    -660,  -660,  -660,  -660,  -660,  -660,   204,  1653,  -660,   459,
+     930,  -660,  -660,   347,   243,  -660,   572,  2644,  -660,    38,
+    -660,    49,   -34,    53,   477,   365,  1300,  -660,   476,  -660,
+     324,    56,  -660,  -660,  -660,   -43,  -660,  -660,   108,   464,
+     371,  -660,   478,   479,  -660,   347,  -660,   467,  -660,  -660,
+    -660,  -660,   470,  -660,  -660,  2149,   569,   243,  -660,  -660,
+      97,  -660,  -660,  -660,  -660,   -10,   206,  -660,  -660,   474,
+      -2,  -660,  -660,  1873,  -660,  -660,  -660,  -660,  -660,  -660,
+     243,   487,   243,   243,   243,   243,   243,  -660,   488,  -660,
+    -660,   177,  -660,   475,  -660,  -660,   347,     9,  -660,  -660,
+    1904,  -660,  -660,  -660,    49,  -660,  -660,  -660,   513,  -660,
+    -660,  -660,  -660,   481,  -660,   501,   502,   578,    61,   493,
+    -660,  -660,    57,    -4,   506,   491,   511,   286,   578,   503,
+     512,   505,   347,   507,   508,  -660,  -660,   404,  1300,  -660,
+    -660,  -660,   514,  -660,  -660,  -660,   519,  1300,  -660,  -660,
+     243,   324,  -660,   515,  1807,  -660,   243,   324,  -660,   324,
+    -660,  -660,    36,   507,   324,   324,  -660,  -660,  -660,  3130,
+    -660,  -660,   517,    67,   806,  -660,   243,   524,  -660,  -660,
+    -660,  -660,  -660,  -660,   508,  -660,  -660,  -660,  -660,  -660,
+    -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,
+    -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,
+    -660,  -660,  -660,  -660,  3130,  -660,  2890,  -660,  -660,  -660,
+    2770,  -660,   324,  -660,   243,  -660,  3010,  -660,  -660,  -660,
+    -660,  -660
   };
 
   const unsigned short int
   asn1_parser::yydefact_[] =
   {
-       0,   483,     0,     2,     0,   144,     1,     3,   155,     0,
-     141,   142,   143,     0,   159,   152,   481,     0,   147,   150,
-     151,   149,   349,     0,   146,   154,     0,     0,     0,   161,
-     145,   148,     0,     0,   358,   158,   156,   157,     0,     0,
-       0,   359,   360,   356,     0,     0,   160,     0,   153,   358,
-     355,   166,   357,   168,   140,   170,     0,   480,   482,     0,
-     167,   180,   182,   183,   185,     0,   172,     0,   165,   164,
-       0,     0,     4,     0,   171,   173,     0,     0,   484,     0,
-     191,   192,    89,    90,    91,    92,    93,    94,   162,   186,
-     188,   189,     0,     0,    98,   181,   184,   169,   174,     0,
-      11,     0,    10,     0,   484,    13,     6,     8,    99,    14,
-       0,     0,     7,   190,     0,   187,     0,   484,     0,    77,
-       0,    78,     0,    62,   297,     0,   372,   269,     0,     0,
-     366,   368,   369,     0,     0,   363,   222,   373,   374,   375,
-       0,   272,   376,   377,     0,   228,     0,   354,   378,   289,
-     353,   361,     0,     0,   380,   379,   364,   367,   381,   241,
-     382,   383,   384,   334,   481,   111,    61,   227,     0,     0,
-     211,   223,     0,   209,   195,   193,     0,   207,   213,   224,
-     220,   231,   212,   230,   226,   234,   235,   236,   237,   215,
-     210,   238,   328,     0,   229,   233,   225,   232,   219,   221,
-     239,   216,   240,   217,   218,   214,   370,   371,   208,   387,
-     194,     0,     0,     0,   175,   179,     0,   110,     0,   103,
-       0,   107,   106,   109,   183,   185,     0,     0,   480,     0,
-      12,   205,     0,     0,     0,     0,     0,   290,   385,     0,
-     362,     0,     0,     0,   341,   296,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,   340,     0,     0,
-       0,     0,   198,     0,   386,     0,     0,   329,     0,     0,
-       0,     0,     0,   176,   177,   178,    33,     0,     0,     0,
-      16,    18,    19,    20,    21,    22,   102,     0,     0,     0,
-     484,     9,     0,     0,    80,    95,     0,     0,    79,     0,
-     325,     0,   322,   323,     0,   476,   288,     0,   281,   285,
-     287,   113,     0,   274,     0,   315,   316,     0,   453,     0,
-     307,   298,   311,     0,   300,   301,   309,   278,   441,   435,
-     436,   437,   365,     0,   297,     0,     0,     0,   271,     0,
-     443,   450,     0,     0,   270,     0,     0,     0,   438,   439,
-     127,   398,   118,   119,   120,   454,   432,   440,   434,   476,
-     397,   399,   400,   403,   405,     0,   407,     0,   410,     0,
-     413,   421,   423,   424,     0,   425,     0,   445,   427,   428,
-     426,   429,   430,   431,     0,     0,   319,   320,   317,     0,
-       0,     0,   333,   338,   339,   337,     0,     0,     0,    23,
-      24,    25,    26,    27,    28,   112,   202,     0,   201,   256,
-     247,   248,   249,   245,     0,   261,     0,   254,   251,   252,
-     257,   206,   262,   260,   243,   255,   244,   246,     0,   331,
-     330,    87,   327,    88,    63,   203,   350,     0,   351,   197,
-     116,     0,   344,   346,   347,   348,   349,   196,     0,     0,
-      31,    44,    30,    39,    35,    48,    50,     0,   104,   105,
-       0,    64,   100,    65,    66,    67,     0,    84,     0,    82,
-     101,    97,     0,   292,     0,   321,     0,   242,     0,   284,
-     280,     0,     0,   273,     0,     0,     0,     0,   312,   299,
-       0,     0,   406,     0,   137,     0,   455,   473,   474,     0,
-       0,     0,   279,     0,     0,     0,   418,   417,     0,   420,
-     419,     0,   414,   442,     0,   446,   390,   394,   391,   395,
-     318,   388,   392,   389,   393,   335,   336,     0,    96,     0,
-     200,   250,   267,     0,     0,     0,     0,     0,     0,     0,
-     199,   351,     0,   342,   345,     0,     0,    32,     0,    42,
-      41,     0,    37,    40,    34,    39,    47,    46,    45,     0,
-      15,    17,   486,   487,   488,   489,   245,   491,   492,   493,
-     372,   269,   496,   497,   498,   499,   500,   501,   502,   503,
-     366,   368,   506,   507,   369,   509,   510,   511,   512,   513,
-     514,   515,   516,   517,   363,   271,   520,   521,   522,   523,
-     524,     0,   526,   527,   272,   529,   530,   531,   532,   533,
-     534,   535,   536,   354,   261,   539,   540,   541,   542,   543,
-     289,   353,   361,   547,   548,   549,   550,   551,   552,   553,
-     364,   367,   270,   557,   558,   559,   560,   561,    60,   251,
-     252,     0,    73,     0,     0,    71,    74,   227,    75,    76,
-      59,     0,     0,    81,     0,   291,     0,     0,   324,   326,
-     478,     0,   477,   475,   196,     0,   476,   286,     0,     0,
-     275,   314,   308,   305,   313,   302,   310,   416,   126,     0,
-     138,   458,   456,     0,   457,   459,   460,   422,     0,     0,
-     129,   396,   401,   408,   411,   433,   452,     0,   438,   439,
-     451,   444,   447,   332,    29,   259,   268,     0,   263,   258,
-     265,   264,   266,   343,     0,   204,    43,    38,    36,     0,
-     525,   245,   251,    69,     0,    70,    72,    85,   404,    83,
-     293,     0,     0,     0,     0,   282,   277,   276,     0,     0,
-     110,     0,     0,   109,     0,     0,     0,   463,   468,   134,
-     131,   135,   128,     0,     0,   448,   253,   352,     0,    49,
-       0,     0,   294,   295,   479,     0,   306,   303,     0,   121,
-     139,     0,   461,     0,   467,   465,   472,   134,     0,     0,
-     130,   402,   490,   493,   494,   495,   497,   498,   503,   504,
-     505,   508,   509,   513,   518,   519,   526,   528,   534,   535,
-     537,   538,   544,   545,   546,   547,   548,   554,   555,   556,
-       0,   485,     0,    51,    54,    53,     0,    57,    68,    86,
-     283,     0,     0,   123,   122,     0,   464,   470,   471,   469,
-     466,   133,   132,   136,     0,     5,    52,    56,    58,     0,
-     304,    76,   462,    55
+       0,   482,     0,     2,     0,   141,     1,     3,   152,     0,
+     138,   139,   140,     0,   156,   149,   480,     0,   144,   147,
+     148,   146,   348,     0,   143,   151,     0,     0,     0,   158,
+     142,   145,     0,     0,   357,   155,   153,   154,     0,     0,
+       0,   358,   359,   355,     0,     0,   157,     0,   150,   357,
+     354,   163,   356,   165,   137,   167,     0,   479,   481,     0,
+     164,   177,   179,   180,   182,     0,   169,     0,   162,   161,
+       0,     0,     4,     0,   168,   170,     0,     0,   479,   187,
+     188,   189,    89,    90,    91,    92,    93,   159,   183,   185,
+     186,     0,     0,     0,   178,   181,   166,   171,     0,     0,
+       0,   184,     0,   479,     0,    77,     0,    78,     0,    62,
+     296,     0,   371,   268,     0,     0,   365,   367,   368,     0,
+       0,   362,   220,   372,   373,   374,     0,   271,   375,   376,
+       0,   226,     0,   353,   377,   288,   352,   360,     0,     0,
+     379,   378,   363,   366,   380,   239,   381,   382,   383,   333,
+     480,   108,    61,   225,     0,     0,   209,   221,     0,   207,
+     192,   190,     0,   205,   211,   222,   218,   229,   210,   228,
+     224,   232,   233,   234,   235,   213,   208,   236,   327,     0,
+     227,   231,   223,   230,   217,   219,   237,   214,   238,   215,
+     216,   212,   369,   370,   206,   386,   191,     0,     0,     0,
+       0,   172,   176,    11,    10,   479,   107,     6,     8,     0,
+     100,     0,   104,   103,   106,   180,   182,     0,     7,   483,
+       0,     0,     0,    13,    12,    14,   203,     0,     0,     0,
+       0,   289,   384,     0,   361,     0,     0,     0,   340,   295,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,   339,     0,     0,     0,   195,     0,   385,     0,     0,
+     328,     0,     0,     0,     0,     0,     0,   173,   174,   175,
+      99,     0,     0,     0,     0,     0,     0,     0,    80,    94,
+       0,    79,     0,   324,     0,   321,   322,     0,   475,   287,
+       0,   280,   284,   286,   110,     0,   273,     0,   314,   315,
+       0,   452,     0,   306,   297,   310,     0,   299,   300,   308,
+     277,   440,   434,   435,   436,   364,     0,   296,     0,     0,
+       0,   270,     0,   442,   449,     0,     0,   269,     0,     0,
+       0,   437,   438,   124,   397,   115,   116,   117,   453,   431,
+     439,   433,   475,   396,   398,   399,   402,   404,     0,   406,
+       0,   409,     0,   412,   420,   422,   423,     0,   424,     0,
+     444,   426,   427,   425,   428,   429,   430,     0,     0,   318,
+     319,   316,     0,     0,     0,   332,   337,   338,   336,     0,
+       0,    23,    24,    25,    26,    27,    28,   109,   253,   245,
+     246,   247,   243,     0,   258,     0,   251,   479,   249,   200,
+     225,     0,   198,   260,     0,   259,   257,   241,   252,   242,
+     244,   243,   261,   249,   254,   260,   204,     0,   330,   329,
+      87,   326,    88,    63,   201,    97,   349,     0,   350,   194,
+     113,     0,   343,   345,   346,   347,   348,   193,     0,   101,
+     102,     9,     0,    64,    98,    65,    66,    67,     0,   483,
+      33,     0,     0,     0,    16,    18,    19,    20,    21,    22,
+      84,     0,    82,    96,     0,   291,     0,   320,     0,   240,
+       0,   283,   279,     0,     0,   272,     0,     0,     0,     0,
+     311,   298,     0,     0,   405,     0,   134,     0,   454,   472,
+     473,     0,     0,     0,   278,     0,     0,     0,   417,   416,
+       0,   419,   418,     0,   413,   441,     0,   445,   389,   393,
+     390,   394,   317,   387,   391,   388,   392,   334,   335,     0,
+      95,     0,   248,   266,     0,     0,   197,     0,     0,     0,
+       0,     0,   196,   350,     0,   341,   344,     0,     0,   485,
+     486,   487,   488,   243,   490,   491,   492,   371,   268,   495,
+     496,   497,   498,   499,   500,   501,   502,   365,   367,   505,
+     506,   368,   508,   509,   510,   511,   512,   513,   514,   515,
+     516,   362,   270,   519,   520,   521,   522,   523,     0,   525,
+     526,   271,   528,   529,   530,   531,   532,   533,   534,   535,
+     353,   258,   538,   539,   540,   541,   542,   288,   352,   360,
+     546,   547,   548,   549,   550,   551,   552,   363,   366,   269,
+     556,   557,   558,   559,   560,    60,   261,     0,    73,     0,
+       0,    71,    74,    75,    76,    59,     0,     0,    31,    44,
+      30,    39,    35,    48,    50,     0,     0,    81,     0,   290,
+       0,     0,   323,   325,   477,     0,   476,   474,   193,     0,
+     475,   285,     0,     0,   274,   313,   307,   304,   432,   437,
+     438,   312,   301,   309,   415,   123,     0,   135,   457,   455,
+       0,   456,   458,   459,   421,     0,     0,   126,   395,   400,
+     407,   410,   451,     0,   450,   443,   446,   331,    29,   256,
+     267,     0,   262,   255,   264,   263,   265,   342,     0,   202,
+     524,   261,    69,     0,    70,    72,    32,     0,    42,    41,
+       0,    37,    40,    34,    39,    47,    46,    45,     0,    15,
+      17,    85,   403,    83,   292,     0,     0,     0,     0,   281,
+     276,   275,     0,     0,   107,     0,     0,   106,     0,     0,
+       0,   462,   467,   131,   128,   132,   125,     0,     0,   447,
+     250,   351,     0,    43,    38,    36,     0,     0,   293,   294,
+     478,     0,   305,   302,     0,   118,   136,     0,   460,     0,
+     466,   464,   471,   131,     0,     0,   127,   401,    68,     0,
+      49,    86,   282,     0,     0,   120,   119,     0,   463,   469,
+     470,   468,   465,   130,   129,   133,   489,   492,   493,   494,
+     496,   497,   502,   503,   504,   507,   508,   512,   517,   518,
+     525,   527,   533,   534,   536,   537,   543,   544,   545,   546,
+     547,   553,   554,   555,     0,   484,     0,    51,    54,    53,
+       0,    57,     0,   303,    76,   461,     0,     5,    52,    56,
+      58,    55
   };
 
   const short int
   asn1_parser::yypgoto_[] =
   {
-    -744,   645,  -744,  -744,  -102,  -744,  -744,  -744,   550,  -744,
-    -744,   210,  -274,   158,  -744,  -744,  -744,  -744,   115,  -744,
-    -744,  -744,  -744,  -744,  -744,  -132,  -743,  -744,  -744,  -744,
-    -449,  -279,  -744,  -526,  -744,  -744,  -744,  -744,  -744,    37,
-      30,  -744,  -744,   601,  -179,  -744,   -75,  -744,  -744,  -744,
-    -744,  -744,   355,  -744,  -744,  -744,   404,  -744,     5,  -744,
-    -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,   -59,
-     -82,   -81,  -744,  -744,  -744,  -744,  -744,  -744,   684,  -744,
-     666,  -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,
-    -744,   629,  -744,  -744,   654,   639,   -77,  -744,   623,  -744,
-    -270,  -744,  -744,   276,  -744,  -744,  -744,  -744,  -744,   -88,
-    -744,  -187,    22,  -744,  -744,  -744,  -744,  -174,  -744,  -744,
-    -214,  -207,  -744,  -744,   -51,  -469,  -744,  -744,  -744,    59,
-    -744,  -744,  -744,   464,  -744,  -462,  -465,  -744,  -744,  -744,
-    -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,
-    -744,  -744,  -744,   -25,  -744,   302,   182,  -744,  -744,  -744,
-     705,  -744,   669,   687,  -744,  -744,  -744,  -744,  -156,  -744,
-    -744,  -744,  -744,  -744,  -744,  -744,  -744,  -744,  -139,  -744,
-    -744,  -744,   440,  -493,  -192,  -744,  -744,   227,  -744,   225,
-    -744,   374,  -744,  -744,   248,  -744,  -484,  -744,  -744,  -744,
-    -744,  -744,  -744,    41,  -136,  -744,  -744,  -744,  -744,  -744,
-    -744,  -744,  -355,  -744,  -744,  -744,  -744,  -744,  -744,  -338,
-    -744,   117,    -9,   -47,     4,   -21,  -744
+    -660,   633,  -660,  -660,   -97,  -660,  -660,  -660,   383,  -660,
+    -660,     7,  -436,   142,  -660,  -660,  -660,  -660,   -65,  -660,
+    -660,  -660,  -660,  -660,  -660,  -170,  -576,  -660,  -660,  -660,
+    -424,  -273,  -660,  -659,  -660,  -660,  -660,  -660,  -660,    43,
+      47,  -660,  -660,  -660,   414,  -660,    42,  -660,  -660,  -660,
+    -660,  -660,  -660,   308,  -660,   385,  -660,    -7,  -660,  -660,
+    -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,   -92,  -103,
+    -114,  -660,  -660,  -660,  -660,  -660,  -660,   654,  -660,   641,
+    -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,
+     600,  -660,  -660,   624,   608,   -70,  -660,   592,  -660,  -264,
+    -660,  -660,   253,  -660,  -660,  -660,  -660,  -660,   -80,  -660,
+    -179,   429,  -113,  -660,  -660,  -660,  -660,  -156,  -660,  -660,
+    -210,  -168,  -660,  -660,   -76,  -463,  -660,  -660,  -660,    48,
+    -660,  -660,  -660,   440,  -660,  -462,  -471,  -660,  -660,  -660,
+    -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,
+    -660,  -660,  -660,   -37,  -660,   225,   144,  -660,  -660,  -660,
+     678,  -660,   645,   646,  -660,  -660,  -660,  -660,  -149,  -660,
+    -660,  -660,  -660,  -660,  -660,  -660,  -660,  -660,  -125,  -660,
+    -660,  -660,   418,  -448,  -131,  -660,  -660,   197,  -660,   193,
+    -660,   354,  -660,  -660,   216,  -660,  -451,  -660,  -660,  -660,
+    -660,  -660,  -660,    19,  -118,  -660,  -660,  -660,  -660,  -660,
+    -660,  -660,  -515,  -660,  -660,  -660,  -660,  -660,  -660,  -334,
+    -660,    -8,    -9,   -30,     4,   -24,  -660
   };
 
   const short int
   asn1_parser::yydefgoto_[] =
   {
-      -1,     2,     3,   759,   105,   106,   107,    79,   108,   109,
-     279,   280,   404,   405,   281,   452,   555,   282,   553,   283,
-     284,   550,   285,   558,   560,   812,   813,   814,   815,   816,
-     817,   165,   166,   462,   463,   464,   643,   465,   644,   645,
-     646,   118,   119,    80,   294,   468,   167,    81,    82,    83,
-      84,    85,   110,    86,    87,   218,   219,   220,   221,   169,
-     170,   171,   172,   437,   351,   352,   742,   353,   689,   690,
-     778,   750,   354,    65,     4,    10,    11,    12,    17,    18,
-      19,    20,    14,    29,    39,    54,    55,    59,    67,    73,
-      74,    75,   214,   273,    76,    61,    62,    88,    89,   173,
-     541,   174,   439,   262,   407,   175,   440,    90,    91,   355,
-     177,   322,   649,   422,   423,   533,   178,   424,   179,   312,
-     306,   425,   180,   307,   308,   309,   181,   182,   472,   473,
-     183,   184,   185,   323,   324,   325,   326,   186,   187,   188,
-     189,   301,   302,   303,   190,   191,   192,   193,   257,   527,
-     396,   194,   274,   441,   442,   443,   444,   445,   195,   196,
-     426,    34,    45,    43,   197,   198,   199,   200,   427,   201,
-     202,   203,   204,   205,   206,   207,   208,   209,   264,   359,
-     360,   361,   362,   727,   728,   364,   365,   366,   367,   368,
-     369,   492,   508,   511,   370,   371,   372,   373,   374,   375,
-     376,   701,   377,   702,   378,   379,   380,   381,   682,   684,
-     685,   686,   746,   747,   775,   776,   830,   382,   383,   479,
-     663,   210,   211,   212,   259,   112,   650
+      -1,     2,     3,   780,   206,   207,   208,    79,   224,   225,
+     453,   454,   386,   387,   455,   630,   714,   456,   712,   457,
+     458,   709,   459,   717,   719,   826,   827,   828,   829,   830,
+     831,   151,   152,   444,   445,   446,   619,   447,   620,   621,
+     622,   104,   105,    80,   278,   461,   153,    81,    82,    83,
+      84,    85,    86,   100,   209,   210,   211,   212,   155,   156,
+     157,   158,   427,   334,   335,   736,   336,   676,   677,   774,
+     744,   337,    65,     4,    10,    11,    12,    17,    18,    19,
+      20,    14,    29,    39,    54,    55,    59,    67,    73,    74,
+      75,   201,   267,    76,    61,    62,    87,    88,   159,   533,
+     160,   429,   255,   401,   161,   430,    89,    90,   338,   163,
+     305,   415,   624,   405,   406,   524,   164,   407,   165,   295,
+     289,   408,   166,   290,   291,   292,   167,   168,   464,   465,
+     169,   170,   171,   306,   307,   308,   309,   172,   173,   174,
+     175,   284,   285,   286,   176,   177,   178,   179,   251,   519,
+     379,   180,   268,   431,   432,   433,   434,   435,   181,   182,
+     409,    34,    45,    43,   183,   184,   185,   186,   410,   187,
+     188,   189,   190,   191,   192,   193,   194,   195,   257,   342,
+     343,   344,   345,   721,   722,   347,   348,   349,   350,   351,
+     352,   484,   500,   503,   353,   354,   355,   356,   357,   358,
+     359,   685,   360,   686,   361,   362,   363,   364,   669,   671,
+     672,   673,   740,   741,   771,   772,   792,   365,   366,   471,
+     647,   196,   197,   198,   199,   218,   625
   };
 
   const short int
   asn1_parser::yytable_[] =
   {
-      22,   217,   438,   453,     5,   176,    64,     5,   226,    22,
-     461,   642,   667,   250,   254,   223,   251,   255,   234,    64,
-      93,   504,   716,    64,   673,   676,   222,    64,   231,   313,
-     700,    15,   235,    56,    77,  -412,   327,   123,   319,   434,
-      99,    93,   357,   319,   319,   434,    94,   509,   393,   327,
-     328,   329,   300,   330,    26,   331,   225,   363,   436,   316,
-     679,   246,  -409,   487,   332,   387,   506,    94,   434,   836,
-     350,     1,   827,   548,   525,   356,   247,   695,    27,   249,
-     258,   111,     6,   436,   551,   272,   357,     8,   556,    28,
-       9,   836,   731,   358,   733,  -409,   122,   213,   248,   507,
-     249,   363,   488,   215,  -412,   267,   338,   213,   318,    13,
-     394,    58,   549,    70,   111,   672,   510,   470,   229,   356,
-     213,   675,   696,   552,   213,    23,   526,   557,    71,   395,
-    -194,   828,   249,  -115,   100,   829,    25,   358,   460,   357,
-     311,  -117,   268,    16,   319,   295,   319,   268,    16,    16,
-      57,    58,   263,   344,   501,   270,    35,   249,   315,   406,
-      78,    58,   297,     1,   386,    57,    58,   249,   275,   347,
-      63,    78,   356,   408,   451,    16,   455,   429,   430,     1,
-      58,   432,   347,    63,    92,   217,   641,    63,   420,   454,
-     358,    63,   698,   699,    57,   642,   114,   517,   519,   223,
-     496,     1,   164,   522,   524,    92,   291,   100,   660,   121,
-     222,   459,   668,   700,   102,   291,   477,     1,    58,   101,
-     224,   320,   420,   766,   321,   447,     1,    58,   305,   477,
-     304,   121,   310,   100,   314,     1,    58,   317,   319,   304,
-     225,    64,   823,   317,   304,   101,   111,   100,   494,    16,
-     291,    16,   104,   658,   319,   704,    16,    41,    42,   554,
-     666,   781,   286,   446,   745,   213,   449,   420,   819,   461,
-     670,   662,   249,   676,   287,   669,   448,   767,   397,    30,
-     111,    16,   111,   249,   357,   421,   513,   102,    16,   659,
-     474,   213,    16,   466,   456,  -482,   516,   518,  -482,   252,
-     103,   357,   521,   523,   357,   450,   457,   357,  -482,  -482,
-      32,    21,  -482,   102,   247,   320,    36,   356,   388,   471,
-      21,   483,   420,   116,    37,   104,   103,   102,   735,    33,
-    -480,   840,  -480,   484,   356,   358,   253,   356,   249,   420,
-     356,   420,  -163,    16,  -480,   534,    53,    57,    58,   447,
-     534,   117,   358,   298,  -481,   358,   676,  -482,   358,    16,
-     681,   547,  -482,    38,   497,   104,   655,   838,   499,   500,
-     667,  -480,   648,   642,   749,   317,   317,   752,   656,    15,
-     428,   317,   317,  -480,    44,   647,    16,   732,   435,   753,
-     661,   447,  -433,    46,   535,   447,  -449,   671,   536,  -433,
-     448,    47,   537,  -449,   224,    63,    48,   276,   277,   298,
-    -480,   278,   420,   542,   428,    50,   825,   544,   826,   528,
-     420,   399,   400,   401,   402,   403,   431,    51,   433,   446,
-      66,   664,    68,   446,    69,   447,   531,    71,   532,  -124,
-     249,    70,   448,  -480,    72,   357,   448,   120,   168,    97,
-      96,   216,    57,  -483,   227,   228,   232,   236,   420,   428,
-     420,   420,   420,   420,   420,   237,   238,   304,   239,   240,
-     241,   242,   310,   243,   244,   314,   420,   304,   356,   245,
-     256,   304,   665,   260,   250,   254,   448,   251,   255,   461,
-     357,   261,  -114,   270,   269,   271,   358,   288,   447,   715,
-    -108,   249,   289,   290,   420,   384,   296,   292,  -480,   674,
-     293,  -480,  -480,  -480,   428,   435,   299,   680,   385,    78,
-     390,    16,   391,   356,  -480,  -480,   475,   476,  -480,   478,
-     392,   428,   398,   428,   480,   481,  -480,  -480,   482,   485,
-     486,   358,   837,   490,   489,   491,   493,   357,   641,   448,
-     495,   498,   466,   648,   357,   706,   648,   708,   709,   710,
-     711,   712,   502,  -482,   503,   505,   647,  -415,   514,   647,
-     529,   515,   520,   717,  -480,   530,   740,  -480,   543,   538,
-     356,   539,  -480,   545,   268,  -117,   546,   356,   559,   651,
-     743,   652,   653,   654,  -480,   657,   678,   683,   358,   688,
-     692,   531,   687,   691,   428,   358,   703,  -480,   707,   774,
-     447,   713,   428,   720,    58,   719,   327,   328,   329,  -297,
-     330,   724,   331,   434,  -257,   729,   734,   736,   737,   738,
-     744,   332,   739,   754,   756,   757,   758,   760,   768,   761,
-     762,   763,   765,  -125,   695,   769,   772,   474,     7,   818,
-     428,   842,   428,   428,   428,   428,   428,   777,   420,   771,
-     773,   448,  -480,   779,   821,   839,   230,   561,   428,   420,
-     718,   723,  -480,   338,   748,  -480,  -480,  -480,   834,   751,
-     113,   726,   213,   741,   327,   409,   410,   715,   411,   696,
-     412,   458,  -480,   420,   780,   831,   428,   832,    40,   332,
-    -480,  -480,    31,    98,   327,   409,   410,    60,   411,    95,
-     412,   115,   413,   540,   820,   730,    24,   389,    52,   332,
-     344,   123,   327,   409,   410,   414,   411,   714,   412,   304,
-     304,    49,   413,   469,   648,   693,   694,   332,   755,   677,
-     697,   338,     0,   512,     0,   414,     0,   647,     0,   347,
-     413,     0,     0,     0,     0,   764,   310,     0,     0,   698,
-     699,   338,   748,   414,   748,     0,   770,   415,     0,   751,
-     833,     0,   466,     0,     0,     0,     0,     0,     0,   338,
-       0,     0,     0,     0,     0,     0,     0,   415,   344,     0,
-     824,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,   416,   705,     0,   415,     0,     0,   344,     0,
-       0,    23,   304,     0,     0,     0,     0,   347,     0,   417,
-       0,     0,   822,     0,     0,     0,   344,   418,   419,     0,
-     310,    23,     0,     0,     0,     0,     0,   347,     0,   417,
-     416,     0,     0,     0,   841,     0,     0,   722,   419,    23,
-     428,   435,     0,     0,     0,   347,     0,   417,     0,     0,
-       0,   428,     0,     0,     0,   418,   419,   327,   409,   410,
-       0,   411,     0,   412,     0,     0,     0,     0,     0,     0,
-       0,     0,   332,     0,   123,   428,   399,   400,   401,   402,
-     403,   562,   563,   564,   565,   566,   567,   568,   569,   570,
-     571,   572,   573,   574,   575,   576,   577,   578,   579,   580,
-     581,   582,   583,   584,   585,   586,   587,   588,   589,   590,
-     591,   592,   593,   594,   595,   596,   136,   137,   138,   139,
-     597,   598,   599,   600,   601,   602,   603,   604,   605,   142,
-     606,   607,   608,   609,   143,   610,   145,   611,   612,   613,
-     614,   615,   616,   617,   618,   148,   619,   620,   621,   622,
-     623,   624,   625,   626,   627,   628,   154,   629,   155,   630,
-     631,   632,   633,   634,   635,   636,   158,   159,   160,   161,
-     162,   637,     0,     0,     0,   416,     0,     0,     0,   163,
-       0,   327,   409,   410,    23,   411,     0,   412,   638,     0,
-     347,     0,   417,     0,     0,     0,   332,     0,   123,     0,
-     639,   640,     0,     0,     0,   562,   563,   564,   565,   566,
-     567,   568,   569,   570,   571,   572,   573,   574,   575,   576,
-     577,   578,   579,   580,   581,   582,   583,   584,   585,   586,
-     587,   588,   589,   590,   591,   592,   593,   594,   595,   596,
-     136,   137,   138,   139,   597,   598,   599,   600,   601,   602,
-     603,   604,   605,   142,   606,   607,   608,   609,   143,   610,
-     145,   611,   612,   613,   614,   615,   616,   617,   618,   148,
-     619,   620,   621,   622,   623,   624,   625,   626,   627,   628,
-     154,   629,   155,   630,   631,   632,   633,   634,   635,   636,
-     158,   159,   160,   161,   162,   637,     0,     0,     0,   416,
-     725,     0,     0,   163,     0,   327,   328,   329,    23,   330,
-       0,   331,   638,     0,   347,     0,   417,     0,     0,     0,
-     332,     0,   123,     0,   639,   640,     0,     0,     0,     0,
-       0,   333,     0,   334,     0,     0,   125,   126,   127,     0,
-     128,   129,     0,     0,     0,   335,   336,   130,   131,     0,
-       0,   132,   133,   337,     0,     0,   134,     0,     0,     0,
-       0,   135,   338,   339,   136,   137,   138,   139,     0,     0,
-       0,     0,   340,   140,     0,   141,     0,   142,     0,   341,
-       0,     0,   143,   144,   145,   146,     0,   147,     0,   342,
-       0,     0,     0,   148,     0,   149,   150,   151,   152,   153,
-     343,   247,     0,     0,   154,     0,   155,   156,   157,   344,
-       0,     0,     0,     0,   158,   159,   160,   161,   162,   345,
-       0,     0,     0,   293,     0,   346,     0,   163,   327,   328,
-     329,     0,   330,     0,   331,     0,     0,     0,   347,     0,
-       0,     0,     0,   332,     0,   123,     0,     0,   348,   349,
-       0,     0,     0,     0,   333,     0,   334,     0,     0,   125,
-     126,   127,     0,   128,   129,     0,     0,     0,     0,     0,
-     130,   131,     0,     0,   132,   133,     0,     0,     0,   134,
-       0,     0,     0,     0,   135,   338,   339,   136,   137,   138,
-     139,     0,     0,     0,     0,   340,   140,     0,   141,     0,
-     142,     0,   341,     0,     0,   143,   144,   145,   146,     0,
-     147,     0,   342,     0,     0,     0,   148,     0,   149,   150,
-     151,   152,   153,   343,   247,     0,     0,   154,     0,   155,
-     156,   157,   344,     0,     0,     0,     0,   158,   159,   160,
-     161,   162,   345,     0,   467,     0,     0,     0,   346,     0,
-     163,   327,   328,   329,     0,   330,     0,   331,     0,     0,
-       0,   347,     0,     0,     0,     0,   332,     0,   123,     0,
-       0,   348,   349,     0,     0,     0,     0,   333,     0,   334,
-       0,     0,   125,   126,   127,     0,   128,   129,     0,     0,
-       0,     0,     0,   130,   131,     0,     0,   132,   133,     0,
-       0,     0,   134,     0,     0,     0,     0,   135,   338,   339,
-     136,   137,   138,   139,     0,     0,     0,     0,   340,   140,
-       0,   141,     0,   142,     0,   341,     0,     0,   143,   144,
-     145,   146,     0,   147,     0,   342,     0,     0,     0,   148,
-       0,   149,   150,   151,   152,   153,   343,   247,     0,     0,
-     154,     0,   155,   156,   157,   344,     0,     0,     0,     0,
-     158,   159,   160,   161,   162,   345,     0,     0,   327,   328,
-     329,   346,   330,   163,   331,     0,     0,     0,     0,     0,
-       0,     0,     0,   332,   347,   123,     0,     0,     0,     0,
-       0,     0,     0,     0,   348,   349,   334,     0,     0,   125,
-     126,   127,     0,   128,   129,     0,     0,     0,     0,     0,
-     130,   131,     0,     0,   132,   133,     0,     0,     0,   134,
-       0,     0,     0,     0,   135,   338,   339,   136,   137,   138,
-     139,     0,     0,     0,     0,   340,   140,     0,   141,     0,
-     142,     0,   341,     0,     0,   143,   144,   145,   146,     0,
-     147,     0,   342,     0,     0,     0,   148,     0,   149,   150,
-     151,   152,   153,   343,   247,     0,     0,   154,     0,   155,
-     156,   157,   344,     0,     0,     0,     0,   158,   159,   160,
-     161,   162,   345,     0,     0,   327,   409,   410,   346,   411,
-     163,   412,     0,     0,     0,     0,     0,     0,     0,     0,
-     332,   347,   123,     0,     0,     0,     0,     0,     0,     0,
-       0,   348,   349,   721,     0,     0,   125,   126,   127,     0,
-     128,   129,     0,     0,     0,     0,   414,   130,   131,     0,
-       0,   132,   133,     0,     0,     0,   134,     0,     0,     0,
-       0,   135,   338,     0,   136,   137,   138,   139,     0,     0,
-       0,     0,     0,   140,     0,   141,     0,   142,     0,     0,
-       0,     0,   143,   144,   145,   146,     0,   147,   415,     0,
-       0,     0,     0,   148,     0,   149,   150,   151,   152,   153,
-       0,     0,     0,     0,   154,     0,   155,   156,   157,   344,
-       0,   327,     0,     0,   158,   159,   160,   161,   162,     0,
-       0,     0,     0,   416,     0,     0,     0,   163,   123,     0,
-       0,     0,    23,     0,     0,     0,     0,     0,   347,   124,
-     417,     0,   125,   126,   127,     0,   128,   129,   722,   640,
-       0,     0,     0,   130,   131,     0,     0,   132,   133,     0,
-       0,     0,   134,     0,     0,     0,     0,   135,     0,     0,
-     136,   137,   138,   139,     0,     0,     0,     0,     0,   140,
-       0,   141,     0,   142,     0,     0,     0,     0,   143,   144,
-     145,   146,     0,   147,     0,     0,     0,     0,     0,   148,
-       0,   149,   150,   151,   152,   153,     0,     0,     0,     0,
-     154,     0,   155,   156,   157,     0,     0,     0,     0,     0,
-     158,   159,   160,   161,   162,     0,     0,     0,     0,     0,
-       0,     0,   123,   163,   399,   400,   401,   402,   403,     0,
-       0,     0,     0,   124,   347,     0,   125,   126,   127,     0,
-     128,   129,     0,     0,   228,   164,     0,   130,   131,     0,
-       0,   132,   133,     0,     0,     0,   134,     0,     0,     0,
-       0,   135,     0,     0,   136,   137,   138,   139,     0,     0,
-       0,     0,     0,   140,     0,   141,     0,   142,     0,     0,
-       0,     0,   143,   144,   145,   146,     0,   147,     0,     0,
-       0,     0,     0,   148,     0,   149,   150,   151,   152,   153,
-       0,     0,     0,     0,   154,     0,   155,   156,   157,     0,
-       0,     0,     0,     0,   158,   159,   160,   161,   162,     0,
-       0,   123,     0,     0,     0,     0,     0,   163,     0,   100,
-       0,     0,   124,     0,     0,   125,   126,   127,     0,   128,
-     129,   101,     0,     0,     0,     0,   130,   131,   228,   164,
-     132,   133,     0,     0,     0,   134,     0,     0,     0,     0,
-     135,     0,     0,   136,   137,   138,   139,     0,     0,     0,
-       0,     0,   140,     0,   141,     0,   142,     0,     0,     0,
-       0,   143,   144,   145,   146,     0,   147,     0,     0,     0,
-       0,     0,   148,     0,   149,   150,   151,   152,   153,     0,
-       0,     0,     0,   154,     0,   155,   156,   157,     0,   102,
-       0,     0,     0,   158,   159,   160,   161,   162,     0,     0,
-     123,     0,   103,     0,     0,     0,   163,     0,   100,     0,
-       0,   124,     0,     0,   125,   126,   127,     0,   128,   129,
-     101,     0,     0,     0,     0,   130,   131,   117,   164,   132,
-     133,     0,     0,     0,   134,     0,     0,     0,     0,   135,
-       0,     0,   136,   137,   138,   139,     0,     0,     0,     0,
-       0,   140,     0,   141,     0,   142,     0,     0,     0,     0,
-     143,   144,   145,   146,     0,   147,     0,     0,     0,     0,
-       0,   148,     0,   149,   150,   151,   152,   153,     0,     0,
-       0,     0,   154,     0,   155,   156,   157,     0,   102,     0,
-       0,     0,   158,   159,   160,   161,   162,     0,     0,   123,
-       0,     0,     0,     0,     0,   163,     0,   100,     0,     0,
-     124,     0,     0,   125,   126,   127,     0,   128,   129,     0,
-       0,     0,     0,     0,   130,   131,   117,   164,   132,   133,
-       0,     0,     0,   134,     0,     0,     0,     0,   135,     0,
-       0,   136,   137,   138,   139,     0,     0,     0,     0,     0,
-     140,     0,   141,     0,   142,     0,     0,     0,     0,   143,
-     144,   145,   146,     0,   147,     0,     0,     0,     0,     0,
-     148,     0,   149,   150,   151,   152,   153,     0,     0,     0,
-       0,   154,     0,   155,   156,   157,     0,   102,     0,     0,
-       0,   158,   159,   160,   161,   162,     0,   233,   123,     0,
-       0,     0,     0,     0,   163,     0,   100,     0,     0,   124,
-       0,     0,   125,   126,   127,     0,   128,   129,     0,     0,
-       0,     0,     0,   130,   131,   117,   164,   132,   133,     0,
-       0,     0,   134,     0,     0,     0,     0,   135,     0,     0,
-     136,   137,   138,   139,     0,     0,     0,     0,     0,   140,
-       0,   141,     0,   142,     0,     0,     0,     0,   143,   144,
-     145,   146,     0,   147,     0,     0,     0,     0,     0,   148,
-       0,   149,   150,   151,   152,   153,     0,     0,     0,     0,
-     154,     0,   155,   156,   157,     0,   102,     0,     0,     0,
-     158,   159,   160,   161,   162,     0,     0,   123,     0,     0,
-       0,     0,     0,   163,     0,     0,     0,     0,   124,     0,
-       0,   125,   126,   127,     0,   128,   129,     0,     0,     0,
-       0,     0,   130,   131,   117,   164,   132,   133,     0,     0,
-       0,   134,     0,   265,     0,     0,   135,     0,     0,   136,
-     137,   138,   139,     0,   266,     0,     0,     0,   140,     0,
-     141,     0,   142,     0,     0,     0,     0,   143,   144,   145,
-     146,     0,   147,     0,     0,     0,     0,     0,   148,     0,
-     149,   150,   151,   152,   153,     0,     0,     0,     0,   154,
-       0,   155,   156,   157,     0,     0,     0,     0,     0,   158,
-     159,   160,   161,   162,     0,     0,   123,     0,     0,     0,
-       0,     0,   163,     0,     0,     0,     0,   124,     0,     0,
-     125,   126,   127,     0,   128,   129,     0,     0,     0,     0,
-       0,   130,   131,   228,   164,   132,   133,     0,     0,     0,
-     134,     0,     0,     0,     0,   135,     0,     0,   136,   137,
-     138,   139,     0,     0,     0,     0,     0,   140,     0,   141,
-       0,   142,     0,     0,     0,     0,   143,   144,   145,   146,
-       0,   147,     0,     0,     0,     0,     0,   148,     0,   149,
-     150,   151,   152,   153,     0,     0,     0,     0,   154,     0,
-     155,   156,   157,     0,     0,     0,     0,     0,   158,   159,
-     160,   161,   162,     0,     0,   123,     0,     0,     0,     0,
-       0,   163,     0,   269,     0,     0,   124,     0,     0,   125,
-     126,   127,     0,   128,   129,     0,     0,     0,     0,     0,
-     130,   131,   228,   164,   132,   133,     0,     0,     0,   134,
-       0,     0,     0,     0,   135,     0,     0,   136,   137,   138,
-     139,     0,     0,     0,     0,     0,   140,     0,   141,     0,
-     142,     0,     0,     0,     0,   143,   144,   145,   146,     0,
-     147,     0,     0,     0,     0,     0,   148,     0,   149,   150,
-     151,   152,   153,     0,     0,     0,     0,   154,     0,   155,
-     156,   157,     0,     0,     0,     0,     0,   158,   159,   160,
-     161,   162,     0,     0,     0,     0,     0,     0,     0,     0,
-     163,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+      22,   443,   428,   220,     5,   223,   617,     5,   496,    22,
+     651,   663,   162,   244,   248,   631,   657,    56,   618,   214,
+     245,   249,   226,    64,    77,    15,   229,   296,   661,   213,
+     109,   203,   310,   423,   203,    98,    64,    92,   423,   302,
+      64,   426,   302,    93,    64,    63,   222,  -408,   753,   517,
+     627,   498,   203,   302,   283,   684,   426,    92,    63,    91,
+     725,   299,    63,    93,   789,   666,    63,   370,   479,   216,
+     288,    41,    42,  -411,   252,   340,   302,   713,   302,    91,
+    -408,   243,   423,   107,   499,   688,   707,   339,     8,   628,
+     243,   215,   642,   501,   341,   108,   727,   710,    16,   260,
+     302,   715,   202,   217,   221,   785,   217,   480,    70,   340,
+     302,   204,   346,   256,   204,   518,   301,   650,   243,   303,
+      16,   339,   304,   790,     1,   708,   743,   791,   341,     6,
+     303,   442,   204,   371,    57,    58,   711,   243,    16,   294,
+     716,   404,  -411,   416,    16,    16,   346,    16,   279,   219,
+      78,    58,   219,   656,   376,   662,     1,   399,    16,    57,
+     298,   340,   502,     9,    78,   330,   369,   463,   223,    16,
+     219,    23,   269,   339,   402,     1,    58,   762,   418,   419,
+     341,    16,   421,    16,     1,   150,    13,   833,   509,   511,
+      26,   214,     1,    58,   514,   516,   618,   488,   493,     1,
+      58,   213,   440,     1,    58,    16,   644,   469,    57,    58,
+     652,   270,   489,  -112,    27,    16,   377,   739,   102,    25,
+     469,    99,   281,   271,   287,    28,   293,   261,   297,   266,
+    -114,   300,   684,   287,    21,   378,   437,   300,   287,   486,
+     221,   216,    64,    21,   263,    16,   103,   240,   417,   441,
+     838,   441,   787,   246,   788,    58,   424,   436,   217,   754,
+     838,   663,   241,   215,    63,   424,   654,   520,   241,   221,
+     438,   763,   417,   466,    30,   217,    32,   505,   448,   475,
+     522,    71,   523,  -191,   242,   525,   243,   508,   510,   643,
+     247,   476,   243,   513,   515,   261,   400,  -481,   414,  -479,
+     777,  -479,   646,   280,   491,   492,   653,  -481,   243,   781,
+    -481,   340,   663,  -479,   525,   340,   729,   417,  -480,   634,
+    -481,  -481,   414,   339,  -481,   639,  -481,   339,  -479,   746,
+     341,   635,   340,    33,   341,   340,  -432,   640,   340,  -448,
+    -479,   747,    35,  -432,   339,    15,  -448,   339,   617,   437,
+     339,   341,    36,   629,   341,   633,   380,   341,   300,   300,
+     618,   243,   623,    37,   300,   300,   668,   414,    38,   651,
+      44,   632,   417,    46,   667,  -160,  -261,   726,   527,    53,
+    -261,    48,   528,   438,  -261,   417,   529,   417,   450,   451,
+     645,   534,   452,    47,   839,   536,    50,   655,   437,   106,
+     154,   200,   437,   420,    51,   422,   840,    57,    58,  -121,
+     243,   690,    66,    68,   692,   693,   694,   695,   696,   436,
+      69,    71,   414,   436,   381,   382,   383,   384,   385,    70,
+      72,    96,   438,    95,   443,   414,   438,   414,    99,   227,
+     648,   230,   234,   522,   437,   231,   232,   233,   235,   236,
+     237,   238,   239,   250,   221,   253,   221,   254,  -111,   287,
+     262,   272,   265,   263,   293,   264,   273,   297,   340,   287,
+    -105,   243,    16,   287,   649,   244,   248,   274,   438,   417,
+     339,   276,   245,   249,   400,  -482,   275,   341,   277,   282,
+     367,   443,   368,    57,   373,   374,   375,   467,   468,   449,
+     472,   470,   474,   473,   477,   481,   483,   437,   699,   485,
+     478,   487,   490,   494,   482,   340,   417,  -481,   495,   417,
+     417,   417,   417,   417,   497,  -414,   507,   339,   521,   414,
+    -296,   512,   506,  -254,   341,   526,  -199,   623,   530,   537,
+     623,   438,   340,   531,   535,  -114,   675,   706,   417,   310,
+     388,   389,  -479,   390,   339,   391,   261,   637,   538,   641,
+     626,   341,   636,   638,   315,   665,   414,   670,   734,   414,
+     414,   414,   414,   414,   674,   679,   678,   411,   691,   687,
+     340,   697,   310,   388,   389,   737,   390,    58,   391,   340,
+     393,   700,   339,   423,   703,   718,   723,   315,   414,   341,
+     728,   339,   732,   730,   731,   733,   321,   738,   341,   748,
+     411,   437,   750,   751,   760,   756,   757,   770,   310,   311,
+     312,   752,   313,   393,   314,   766,   758,   759,   761,  -122,
+     764,   466,   394,   315,   765,   768,     7,   778,   767,   321,
+     769,   779,   720,   773,   775,   438,   658,   835,   425,   755,
+     783,   786,   832,   327,   836,   776,   439,   333,   735,   400,
+     794,   742,   400,   705,   702,   394,   745,   395,   689,   217,
+     793,   834,    31,    40,    97,   321,    23,    60,    94,   101,
+     532,   698,   330,   403,   396,   782,   327,   372,   724,    24,
+      49,   682,   412,   413,    52,   462,   681,   680,   699,   664,
+     395,     0,   749,     0,   623,     0,   504,     0,     0,    23,
+       0,   448,     0,     0,     0,   330,     0,   396,     0,   417,
+     424,     0,   327,   287,   287,   412,   413,     0,     0,     0,
+     417,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,   683,     0,     0,     0,     0,     0,     0,     0,
+       0,   330,   293,     0,     0,     0,   417,     0,   742,     0,
+     742,   659,   660,     0,     0,   745,   795,     0,   448,   414,
+       0,     0,     0,     0,   287,     0,     0,     0,     0,     0,
+     414,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,   228,   164,   399,   400,   401,   402,   403,   562,   563,
-     564,   565,   782,   567,   568,   783,   784,   785,   572,   786,
-     787,   575,   576,   577,   578,   788,   789,   790,   582,   583,
-     791,   792,   586,   587,   588,   793,   590,   591,   592,   593,
-     794,   795,   596,     0,     0,     0,     0,   597,   598,   599,
-     600,   601,   796,   603,   797,   605,     0,   606,   607,   608,
-     609,     0,   798,     0,   799,   612,   800,   801,   615,   616,
-     617,   618,     0,   619,   802,   803,   804,   805,   806,   625,
-     626,   627,   628,     0,   629,     0,   807,   808,   809,   633,
-     634,   635,   636,     0,     0,     0,     0,     0,   637,     0,
+       0,     0,     0,     0,     0,     0,   414,     0,     0,     0,
+     310,   388,   389,     0,   390,     0,   391,     0,     0,     0,
+       0,     0,     0,   293,     0,   315,   400,   109,     0,   381,
+     382,   383,   384,   385,   539,   540,   541,   542,   543,   544,
+     545,   546,   547,   548,   549,   550,   551,   552,   553,   554,
+     555,   556,   557,   558,   559,   560,   561,   562,   563,   564,
+     565,   566,   567,   568,   569,   570,   571,   572,   573,   122,
+     123,   124,   125,   574,   575,   576,   577,   578,   579,   580,
+     581,   582,   128,   583,   584,   585,   586,   129,   587,   131,
+     588,   589,   590,   591,   592,   593,   594,   595,   134,   596,
+     597,   598,   599,   600,   601,   602,   603,   604,   605,   140,
+     606,   141,   607,   608,   609,   610,   611,   612,   613,   144,
+     145,   146,   147,   148,   614,     0,     0,     0,   395,     0,
+       0,     0,   149,     0,   310,   388,   389,    23,   390,     0,
+     391,   615,     0,   330,     0,   396,     0,     0,     0,   315,
+       0,   109,     0,   616,   398,     0,     0,     0,   539,   540,
+     541,   542,   543,   544,   545,   546,   547,   548,   549,   550,
+     551,   552,   553,   554,   555,   556,   557,   558,   559,   560,
+     561,   562,   563,   564,   565,   566,   567,   568,   569,   570,
+     571,   572,   573,   122,   123,   124,   125,   574,   575,   576,
+     577,   578,   579,   580,   581,   582,   128,   583,   584,   585,
+     586,   129,   587,   131,   588,   589,   590,   591,   592,   593,
+     594,   595,   134,   596,   597,   598,   599,   600,   601,   602,
+     603,   604,   605,   140,   606,   141,   607,   608,   609,   610,
+     611,   612,   613,   144,   145,   146,   147,   148,   614,     0,
+       0,     0,   395,   704,     0,     0,   149,     0,   310,   311,
+     312,    23,   313,     0,   314,   615,     0,   330,     0,   396,
+       0,     0,     0,   315,     0,   109,     0,   616,   398,     0,
+       0,     0,     0,     0,   316,     0,   317,     0,     0,   111,
+     112,   113,     0,   114,   115,     0,     0,     0,   318,   319,
+     116,   117,     0,     0,   118,   119,   320,     0,     0,   120,
+       0,     0,     0,     0,   121,   321,   322,   122,   123,   124,
+     125,     0,     0,     0,     0,   323,   126,     0,   127,     0,
+     128,     0,   324,     0,     0,   129,   130,   131,   132,     0,
+     133,     0,   325,     0,     0,     0,   134,     0,   135,   136,
+     137,   138,   139,   326,   241,     0,     0,   140,     0,   141,
+     142,   143,   327,     0,     0,     0,     0,   144,   145,   146,
+     147,   148,   328,     0,     0,     0,   277,     0,   329,     0,
+     149,   310,   311,   312,     0,   313,     0,   314,     0,     0,
+       0,   330,     0,     0,     0,     0,   315,     0,   109,     0,
+       0,   331,   332,     0,     0,     0,     0,   316,     0,   317,
+       0,     0,   111,   112,   113,     0,   114,   115,     0,     0,
+       0,     0,     0,   116,   117,     0,     0,   118,   119,     0,
+       0,     0,   120,     0,     0,     0,     0,   121,   321,   322,
+     122,   123,   124,   125,     0,     0,     0,     0,   323,   126,
+       0,   127,     0,   128,     0,   324,     0,     0,   129,   130,
+     131,   132,     0,   133,     0,   325,     0,     0,     0,   134,
+       0,   135,   136,   137,   138,   139,   326,   241,     0,     0,
+     140,     0,   141,   142,   143,   327,     0,     0,     0,     0,
+     144,   145,   146,   147,   148,   328,     0,   460,     0,     0,
+       0,   329,     0,   149,   310,   311,   312,     0,   313,     0,
+     314,     0,     0,     0,   330,     0,     0,     0,     0,   315,
+       0,   109,     0,     0,   331,   332,     0,     0,     0,     0,
+     316,     0,   317,     0,     0,   111,   112,   113,     0,   114,
+     115,     0,     0,     0,     0,     0,   116,   117,     0,     0,
+     118,   119,     0,     0,     0,   120,     0,     0,     0,     0,
+     121,   321,   322,   122,   123,   124,   125,     0,     0,     0,
+       0,   323,   126,     0,   127,     0,   128,     0,   324,     0,
+       0,   129,   130,   131,   132,     0,   133,     0,   325,     0,
+       0,     0,   134,     0,   135,   136,   137,   138,   139,   326,
+     241,     0,     0,   140,     0,   141,   142,   143,   327,     0,
+       0,     0,     0,   144,   145,   146,   147,   148,   328,     0,
+       0,   310,   311,   312,   329,   313,   149,   314,     0,     0,
+       0,     0,     0,     0,     0,     0,   315,   330,   109,     0,
+       0,     0,     0,     0,     0,     0,     0,   331,   332,   317,
+       0,     0,   111,   112,   113,     0,   114,   115,     0,     0,
+       0,     0,     0,   116,   117,     0,     0,   118,   119,     0,
+       0,     0,   120,     0,     0,     0,     0,   121,   321,   322,
+     122,   123,   124,   125,     0,     0,     0,     0,   323,   126,
+       0,   127,     0,   128,     0,   324,     0,     0,   129,   130,
+     131,   132,     0,   133,     0,   325,     0,     0,     0,   134,
+       0,   135,   136,   137,   138,   139,   326,   241,     0,     0,
+     140,     0,   141,   142,   143,   327,     0,     0,     0,     0,
+     144,   145,   146,   147,   148,   328,     0,     0,   310,   388,
+     389,   329,   390,   149,   391,     0,     0,     0,     0,     0,
+       0,     0,     0,   315,   330,   109,     0,     0,     0,     0,
+       0,     0,     0,   203,   331,   332,   392,     0,     0,   111,
+     112,   113,     0,   114,   115,     0,     0,     0,     0,   393,
+     116,   117,     0,     0,   118,   119,     0,     0,     0,   120,
+       0,     0,     0,     0,   121,   321,     0,   122,   123,   124,
+     125,     0,     0,     0,     0,     0,   126,     0,   127,     0,
+     128,     0,     0,     0,     0,   129,   130,   131,   132,     0,
+     133,   394,     0,     0,     0,     0,   134,     0,   135,   136,
+     137,   138,   139,     0,     0,     0,     0,   140,     0,   141,
+     142,   143,   327,   204,     0,     0,     0,   144,   145,   146,
+     147,   148,     0,     0,     0,     0,   395,   310,   388,   389,
+     149,   390,     0,   391,     0,    23,     0,     0,     0,     0,
+       0,   330,   315,   396,   109,     0,     0,     0,     0,     0,
+       0,   397,   398,     0,     0,   392,     0,     0,   111,   112,
+     113,     0,   114,   115,     0,     0,     0,     0,   393,   116,
+     117,     0,     0,   118,   119,     0,     0,     0,   120,     0,
+       0,     0,     0,   121,   321,     0,   122,   123,   124,   125,
+       0,     0,     0,     0,     0,   126,     0,   127,     0,   128,
+       0,     0,     0,     0,   129,   130,   131,   132,     0,   133,
+     394,     0,     0,     0,     0,   134,     0,   135,   136,   137,
+     138,   139,     0,     0,     0,     0,   140,     0,   141,   142,
+     143,   327,     0,   310,     0,     0,   144,   145,   146,   147,
+     148,     0,     0,     0,     0,   395,     0,     0,     0,   149,
+     109,     0,     0,     0,    23,     0,     0,     0,     0,     0,
+     330,   110,   396,     0,   111,   112,   113,     0,   114,   115,
+     701,   398,     0,     0,     0,   116,   117,     0,     0,   118,
+     119,   310,   388,   389,   120,   390,     0,   391,     0,   121,
+       0,     0,   122,   123,   124,   125,   315,     0,   109,     0,
+       0,   126,     0,   127,     0,   128,     0,     0,     0,   411,
+     129,   130,   131,   132,     0,   133,     0,     0,     0,     0,
+       0,   134,   393,   135,   136,   137,   138,   139,     0,     0,
+       0,     0,   140,     0,   141,   142,   143,     0,   321,     0,
+       0,     0,   144,   145,   146,   147,   148,   310,   311,   312,
+       0,   313,     0,   314,     0,   149,     0,     0,     0,     0,
+       0,     0,   315,     0,   394,     0,   330,     0,     0,     0,
+       0,     0,     0,     0,     0,   658,   103,   150,   310,   311,
+     312,     0,   313,     0,   314,   327,     0,     0,     0,     0,
+       0,     0,     0,   315,     0,     0,     0,     0,     0,   784,
+       0,     0,     0,     0,   321,     0,   658,     0,    23,     0,
+       0,     0,     0,     0,   330,     0,   396,     0,     0,     0,
+     682,     0,     0,     0,   701,   413,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,   321,     0,     0,     0,     0,
+       0,     0,   109,     0,   381,   382,   383,   384,   385,     0,
+       0,   327,     0,   110,     0,     0,   111,   112,   113,     0,
+     114,   115,     0,     0,     0,     0,     0,   116,   117,     0,
+       0,   118,   119,     0,     0,     0,   120,     0,     0,     0,
+     330,   121,   327,     0,   122,   123,   124,   125,     0,     0,
+     659,   660,     0,   126,     0,   127,     0,   128,     0,     0,
+       0,     0,   129,   130,   131,   132,     0,   133,     0,     0,
+       0,   330,     0,   134,     0,   135,   136,   137,   138,   139,
+       0,   659,   660,     0,   140,     0,   141,   142,   143,     0,
+       0,     0,     0,     0,   144,   145,   146,   147,   148,     0,
+       0,   109,     0,     0,     0,     0,     0,   149,     0,   203,
+       0,     0,   110,     0,     0,   111,   112,   113,     0,   114,
+     115,   222,     0,     0,     0,     0,   116,   117,   103,   150,
+     118,   119,     0,     0,     0,   120,     0,     0,     0,     0,
+     121,     0,     0,   122,   123,   124,   125,     0,     0,     0,
+       0,     0,   126,     0,   127,     0,   128,     0,     0,     0,
+       0,   129,   130,   131,   132,     0,   133,     0,     0,     0,
+       0,     0,   134,     0,   135,   136,   137,   138,   139,     0,
+       0,     0,     0,   140,     0,   141,   142,   143,     0,   204,
+       0,     0,     0,   144,   145,   146,   147,   148,     0,     0,
+     109,     0,     0,     0,     0,     0,   149,     0,   203,     0,
+       0,   110,     0,     0,   111,   112,   113,     0,   114,   115,
+       0,     0,     0,     0,     0,   116,   117,   205,   150,   118,
+     119,     0,     0,     0,   120,     0,     0,     0,     0,   121,
+       0,     0,   122,   123,   124,   125,     0,     0,     0,     0,
+       0,   126,     0,   127,     0,   128,     0,     0,     0,     0,
+     129,   130,   131,   132,     0,   133,     0,     0,     0,     0,
+       0,   134,     0,   135,   136,   137,   138,   139,     0,     0,
+       0,     0,   140,     0,   141,   142,   143,     0,   204,     0,
+       0,     0,   144,   145,   146,   147,   148,     0,     0,   109,
+       0,     0,     0,     0,     0,   149,     0,     0,     0,     0,
+     110,     0,     0,   111,   112,   113,     0,   114,   115,     0,
+       0,     0,     0,     0,   116,   117,   205,   150,   118,   119,
+       0,     0,     0,   120,     0,   258,     0,     0,   121,     0,
+       0,   122,   123,   124,   125,     0,   259,     0,     0,     0,
+     126,     0,   127,     0,   128,     0,     0,     0,     0,   129,
+     130,   131,   132,     0,   133,     0,     0,     0,     0,     0,
+     134,     0,   135,   136,   137,   138,   139,     0,     0,     0,
+       0,   140,     0,   141,   142,   143,     0,     0,     0,     0,
+       0,   144,   145,   146,   147,   148,     0,     0,   109,     0,
+       0,     0,     0,     0,   149,     0,     0,     0,     0,   110,
+       0,     0,   111,   112,   113,     0,   114,   115,     0,     0,
+       0,     0,     0,   116,   117,   103,   150,   118,   119,     0,
+       0,     0,   120,     0,     0,     0,     0,   121,     0,     0,
+     122,   123,   124,   125,     0,     0,     0,     0,     0,   126,
+       0,   127,     0,   128,     0,     0,     0,     0,   129,   130,
+     131,   132,     0,   133,     0,     0,     0,     0,     0,   134,
+       0,   135,   136,   137,   138,   139,     0,     0,     0,     0,
+     140,     0,   141,   142,   143,     0,     0,     0,     0,     0,
+     144,   145,   146,   147,   148,     0,     0,   109,     0,    99,
+       0,     0,     0,   149,     0,     0,     0,     0,   110,     0,
+       0,   111,   112,   113,     0,   114,   115,     0,     0,     0,
+       0,     0,   116,   117,   103,   150,   118,   119,     0,     0,
+       0,   120,     0,     0,     0,     0,   121,     0,     0,   122,
+     123,   124,   125,     0,     0,     0,     0,     0,   126,     0,
+     127,     0,   128,     0,     0,     0,     0,   129,   130,   131,
+     132,     0,   133,     0,     0,     0,     0,     0,   134,     0,
+     135,   136,   137,   138,   139,     0,     0,     0,     0,   140,
+       0,   141,   142,   143,     0,     0,     0,     0,     0,   144,
+     145,   146,   147,   148,     0,   228,   109,     0,     0,     0,
+       0,     0,   149,     0,     0,     0,     0,   110,     0,     0,
+     111,   112,   113,     0,   114,   115,     0,     0,     0,     0,
+       0,   116,   117,   103,   150,   118,   119,     0,     0,     0,
+     120,     0,     0,     0,     0,   121,     0,     0,   122,   123,
+     124,   125,     0,     0,     0,     0,     0,   126,     0,   127,
+       0,   128,     0,     0,     0,     0,   129,   130,   131,   132,
+       0,   133,     0,     0,     0,     0,     0,   134,     0,   135,
+     136,   137,   138,   139,     0,     0,     0,     0,   140,     0,
+     141,   142,   143,     0,     0,     0,     0,     0,   144,   145,
+     146,   147,   148,     0,     0,   109,     0,     0,     0,     0,
+       0,   149,     0,   262,     0,     0,   110,     0,     0,   111,
+     112,   113,     0,   114,   115,     0,     0,     0,     0,     0,
+     116,   117,   103,   150,   118,   119,     0,     0,     0,   120,
+       0,     0,     0,     0,   121,     0,     0,   122,   123,   124,
+     125,     0,     0,     0,     0,     0,   126,     0,   127,     0,
+     128,     0,     0,     0,     0,   129,   130,   131,   132,     0,
+     133,     0,     0,     0,     0,     0,   134,     0,   135,   136,
+     137,   138,   139,     0,     0,     0,     0,   140,     0,   141,
+     142,   143,     0,     0,     0,     0,     0,   144,   145,   146,
+     147,   148,     0,     0,     0,     0,     0,     0,     0,     0,
+     149,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,   638,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,   811,   562,   563,
-     564,   565,   782,   567,   568,   783,   784,   785,   572,   786,
-     787,   575,   576,   577,   578,   788,   789,   790,   582,   583,
-     791,   792,   586,   587,   588,   793,   590,   591,   592,   593,
-     794,   795,   596,     0,     0,     0,     0,   597,   598,   599,
-     600,   601,   796,   603,   797,   605,     0,   606,   607,   608,
-     609,     0,   798,     0,   799,   612,   800,   801,   615,   616,
-     617,   618,     0,   619,   802,   803,   804,   805,   806,   625,
-     626,   627,   628,     0,   629,     0,   807,   808,   809,   633,
-     634,   635,   636,     0,     0,     0,     0,     0,   637,     0,
-       0,     0,     0,   835,     0,     0,   810,     0,     0,     0,
-       0,     0,     0,     0,     0,   638,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,   811,   562,   563,
-     564,   565,   782,   567,   568,   783,   784,   785,   572,   786,
-     787,   575,   576,   577,   578,   788,   789,   790,   582,   583,
-     791,   792,   586,   587,   588,   793,   590,   591,   592,   593,
-     794,   795,   596,     0,     0,     0,     0,   597,   598,   599,
-     600,   601,   796,   603,   797,   605,     0,   606,   607,   608,
-     609,     0,   798,     0,   799,   612,   800,   801,   615,   616,
-     617,   618,     0,   619,   802,   803,   804,   805,   806,   625,
-     626,   627,   628,     0,   629,     0,   807,   808,   809,   633,
-     634,   635,   636,     0,     0,     0,     0,     0,   637,     0,
-       0,     0,     0,     0,     0,     0,   810,   843,     0,     0,
-       0,     0,     0,     0,     0,   638,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,   811,   562,   563,
-     564,   565,   782,   567,   568,   783,   784,   785,   572,   786,
-     787,   575,   576,   577,   578,   788,   789,   790,   582,   583,
-     791,   792,   586,   587,   588,   793,   590,   591,   592,   593,
-     794,   795,   596,     0,     0,     0,     0,   597,   598,   599,
-     600,   601,   796,   603,   797,   605,     0,   606,   607,   608,
-     609,     0,   798,     0,   799,   612,   800,   801,   615,   616,
-     617,   618,     0,   619,   802,   803,   804,   805,   806,   625,
-     626,   627,   628,     0,   629,     0,   807,   808,   809,   633,
-     634,   635,   636,     0,     0,     0,     0,     0,   637,     0,
-       0,     0,     0,     0,     0,     0,   810,     0,     0,     0,
-       0,     0,     0,     0,     0,   638,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,   811
+       0,   103,   150,   381,   382,   383,   384,   385,   539,   540,
+     541,   542,   796,   544,   545,   797,   798,   799,   549,   800,
+     801,   552,   553,   554,   555,   802,   803,   804,   559,   560,
+     805,   806,   563,   564,   565,   807,   567,   568,   569,   570,
+     808,   809,   573,     0,     0,     0,     0,   574,   575,   576,
+     577,   578,   810,   580,   811,   582,     0,   583,   584,   585,
+     586,     0,   812,     0,   813,   589,   814,   815,   592,   593,
+     594,   595,     0,   596,   816,   817,   818,   819,   820,   602,
+     603,   604,   605,     0,   606,     0,   821,   822,   823,   610,
+     611,   612,   613,     0,     0,     0,     0,     0,   614,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,   615,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,   825,   539,   540,
+     541,   542,   796,   544,   545,   797,   798,   799,   549,   800,
+     801,   552,   553,   554,   555,   802,   803,   804,   559,   560,
+     805,   806,   563,   564,   565,   807,   567,   568,   569,   570,
+     808,   809,   573,     0,     0,     0,     0,   574,   575,   576,
+     577,   578,   810,   580,   811,   582,     0,   583,   584,   585,
+     586,     0,   812,     0,   813,   589,   814,   815,   592,   593,
+     594,   595,     0,   596,   816,   817,   818,   819,   820,   602,
+     603,   604,   605,     0,   606,     0,   821,   822,   823,   610,
+     611,   612,   613,     0,     0,     0,     0,     0,   614,     0,
+       0,     0,     0,   837,     0,     0,   824,     0,     0,     0,
+       0,     0,     0,     0,     0,   615,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,   825,   539,   540,
+     541,   542,   796,   544,   545,   797,   798,   799,   549,   800,
+     801,   552,   553,   554,   555,   802,   803,   804,   559,   560,
+     805,   806,   563,   564,   565,   807,   567,   568,   569,   570,
+     808,   809,   573,     0,     0,     0,     0,   574,   575,   576,
+     577,   578,   810,   580,   811,   582,     0,   583,   584,   585,
+     586,     0,   812,     0,   813,   589,   814,   815,   592,   593,
+     594,   595,     0,   596,   816,   817,   818,   819,   820,   602,
+     603,   604,   605,     0,   606,     0,   821,   822,   823,   610,
+     611,   612,   613,     0,     0,     0,     0,     0,   614,     0,
+       0,     0,     0,     0,     0,     0,   824,   841,     0,     0,
+       0,     0,     0,     0,     0,   615,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,   825,   539,   540,
+     541,   542,   796,   544,   545,   797,   798,   799,   549,   800,
+     801,   552,   553,   554,   555,   802,   803,   804,   559,   560,
+     805,   806,   563,   564,   565,   807,   567,   568,   569,   570,
+     808,   809,   573,     0,     0,     0,     0,   574,   575,   576,
+     577,   578,   810,   580,   811,   582,     0,   583,   584,   585,
+     586,     0,   812,     0,   813,   589,   814,   815,   592,   593,
+     594,   595,     0,   596,   816,   817,   818,   819,   820,   602,
+     603,   604,   605,     0,   606,     0,   821,   822,   823,   610,
+     611,   612,   613,     0,     0,     0,     0,     0,   614,     0,
+       0,     0,     0,     0,     0,     0,   824,     0,     0,     0,
+       0,     0,     0,     0,     0,   615,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,   825
   };
 
   const short int
   asn1_parser::yycheck_[] =
   {
-       9,   103,   272,   277,     0,    93,    53,     3,   110,    18,
-     289,   460,   481,   152,   153,   103,   152,   153,   120,    66,
-      67,   359,   548,    70,   486,   490,   103,    74,   116,   243,
-     514,     4,   120,    30,    21,    75,     4,    21,    43,    21,
-      62,    88,   249,    43,    43,    21,    67,    75,    31,     4,
-       5,     6,   239,     8,    33,    10,   103,   249,     4,   246,
-      52,    85,   110,    48,    19,   252,   110,    88,    21,   812,
-     249,   147,    28,    48,     4,   249,   100,    32,    57,   124,
-     168,    77,     0,     4,    48,   122,   293,    49,    48,    68,
-     122,   834,     4,   249,   139,   143,    92,    93,   122,   143,
-     124,   293,    87,    99,   144,   193,    61,   103,   247,    15,
-      93,   148,    87,   135,   110,   120,   144,   296,   114,   293,
-     116,   120,    77,    87,   120,   131,   396,    87,   122,   112,
-     124,    87,   124,   122,    29,    91,    73,   293,   122,   346,
-     242,   122,   136,   148,    43,   233,    43,   136,   148,   148,
-     147,   148,   119,   108,   346,   136,   104,   124,   246,   261,
-     147,   148,   119,   147,   252,   147,   148,   124,   215,   137,
-      53,   147,   346,   261,   276,   148,   278,   265,   266,   147,
-     148,   269,   137,    66,    67,   287,   460,    70,   263,   277,
-     346,    74,   147,   148,   147,   644,    79,   384,   385,   287,
-     339,   147,   148,   390,   391,    88,   227,    29,   478,    92,
-     287,   288,   482,   697,   109,   236,   304,   147,   148,    41,
-     103,   120,   297,   120,   123,   272,   147,   148,   120,   317,
-     239,   114,   241,    29,   243,   147,   148,   246,    43,   248,
-     287,   288,   768,   252,   253,    41,   242,    29,   336,   148,
-     271,   148,   147,   120,    43,   529,   148,    16,    17,   111,
-     120,   754,   123,   272,   120,   261,    48,   342,   761,   548,
-     484,   478,   124,   738,   135,   482,   272,   739,   119,   123,
-     276,   148,   278,   124,   491,   263,   374,   109,   148,   476,
-     299,   287,   148,   289,   123,   122,   384,   385,   125,    85,
-     122,   508,   390,   391,   511,    87,   135,   514,   135,   136,
-     124,     9,   139,   109,   100,   120,   104,   491,   123,   297,
-      18,   123,   397,   119,   104,   147,   122,   109,   666,   138,
-     122,   120,   124,   135,   508,   491,   122,   511,   124,   414,
-     514,   416,    54,   148,   136,   124,    58,   147,   148,   396,
-     124,   147,   508,   236,   128,   511,   821,   136,   514,   148,
-     499,   449,   136,    59,   342,   147,   123,   816,    42,    43,
-     839,   124,   460,   822,   136,   384,   385,   123,   135,     4,
-     263,   390,   391,   136,   138,   460,   148,   657,   271,   135,
-     478,   438,   121,    69,   135,   442,   121,   485,   139,   128,
-     396,   119,   143,   128,   287,   288,   125,    23,    24,   292,
-      21,    27,   487,   438,   297,   131,   771,   442,   773,   397,
-     495,    23,    24,    25,    26,    27,   268,    34,   270,   438,
-      70,   478,   140,   442,   140,   482,   414,   122,   416,   123,
-     124,   135,   438,    54,    54,   652,   442,    92,    93,   140,
-     123,   122,   147,   136,   136,   147,   119,   136,   533,   342,
-     535,   536,   537,   538,   539,   101,   101,   476,   122,    89,
-     122,    85,   481,   122,    67,   484,   551,   486,   652,   101,
-      15,   490,   478,   136,   623,   624,   482,   623,   624,   768,
-     697,   122,   122,   136,   128,   136,   652,   139,   545,   546,
-     139,   124,   119,   147,   579,    85,   119,   136,   119,   487,
-     122,   122,   123,   124,   397,   398,   122,   495,    85,   147,
-      85,   148,    85,   697,   135,   136,   123,   135,   139,   130,
-     139,   414,   136,   416,   123,   135,   147,   148,   124,    85,
-     135,   697,   816,   135,   123,    56,    38,   754,   822,   545,
-      38,    12,   548,   641,   761,   533,   644,   535,   536,   537,
-     538,   539,     4,   136,   122,   135,   641,    56,   121,   644,
-     136,   128,   123,   551,    21,   123,   678,   136,   123,   135,
-     754,   143,    29,   124,   136,   122,   136,   761,   118,   136,
-     678,   135,   123,   135,    41,   124,   122,   122,   754,   142,
-     120,   579,   125,   125,   487,   761,   127,    54,     4,   748,
-     657,   123,   495,    71,   148,   102,     4,     5,     6,   124,
-       8,   135,    10,    21,   143,   120,   136,   125,   125,   135,
-      38,    19,   135,   135,   125,   125,   122,   146,   139,   135,
-     125,   125,   135,   123,    32,   123,   123,   656,     3,   123,
-     533,   123,   535,   536,   537,   538,   539,   136,   733,   135,
-     135,   657,   109,   136,   135,   135,   116,   457,   551,   744,
-     555,   641,   119,    61,   683,   122,   123,   124,   810,   688,
-      79,   644,   678,   678,     4,     5,     6,   734,     8,    77,
-      10,   287,   139,   768,   753,   777,   579,   778,    32,    19,
-     147,   148,    18,    74,     4,     5,     6,    53,     8,    70,
-      10,    88,    32,   437,   765,   656,    11,   253,    49,    19,
-     108,    21,     4,     5,     6,    45,     8,   545,    10,   738,
-     739,    44,    32,   293,   822,   508,   511,    19,   697,   491,
-     128,    61,    -1,   369,    -1,    45,    -1,   822,    -1,   137,
-      32,    -1,    -1,    -1,    -1,   733,   765,    -1,    -1,   147,
-     148,    61,   771,    45,   773,    -1,   744,    87,    -1,   778,
-     779,    -1,   768,    -1,    -1,    -1,    -1,    -1,    -1,    61,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    87,   108,    -1,
-     768,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,   122,   123,    -1,    87,    -1,    -1,   108,    -1,
-      -1,   131,   821,    -1,    -1,    -1,    -1,   137,    -1,   139,
-      -1,    -1,   122,    -1,    -1,    -1,   108,   147,   148,    -1,
-     839,   131,    -1,    -1,    -1,    -1,    -1,   137,    -1,   139,
-     122,    -1,    -1,    -1,   822,    -1,    -1,   147,   148,   131,
-     733,   734,    -1,    -1,    -1,   137,    -1,   139,    -1,    -1,
-      -1,   744,    -1,    -1,    -1,   147,   148,     4,     5,     6,
-      -1,     8,    -1,    10,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    19,    -1,    21,   768,    23,    24,    25,    26,
-      27,    28,    29,    30,    31,    32,    33,    34,    35,    36,
-      37,    38,    39,    40,    41,    42,    43,    44,    45,    46,
-      47,    48,    49,    50,    51,    52,    53,    54,    55,    56,
-      57,    58,    59,    60,    61,    62,    63,    64,    65,    66,
-      67,    68,    69,    70,    71,    72,    73,    74,    75,    76,
-      77,    78,    79,    80,    81,    82,    83,    84,    85,    86,
-      87,    88,    89,    90,    91,    92,    93,    94,    95,    96,
-      97,    98,    99,   100,   101,   102,   103,   104,   105,   106,
-     107,   108,   109,   110,   111,   112,   113,   114,   115,   116,
-     117,   118,    -1,    -1,    -1,   122,    -1,    -1,    -1,   126,
-      -1,     4,     5,     6,   131,     8,    -1,    10,   135,    -1,
-     137,    -1,   139,    -1,    -1,    -1,    19,    -1,    21,    -1,
-     147,   148,    -1,    -1,    -1,    28,    29,    30,    31,    32,
-      33,    34,    35,    36,    37,    38,    39,    40,    41,    42,
-      43,    44,    45,    46,    47,    48,    49,    50,    51,    52,
-      53,    54,    55,    56,    57,    58,    59,    60,    61,    62,
-      63,    64,    65,    66,    67,    68,    69,    70,    71,    72,
-      73,    74,    75,    76,    77,    78,    79,    80,    81,    82,
-      83,    84,    85,    86,    87,    88,    89,    90,    91,    92,
-      93,    94,    95,    96,    97,    98,    99,   100,   101,   102,
-     103,   104,   105,   106,   107,   108,   109,   110,   111,   112,
-     113,   114,   115,   116,   117,   118,    -1,    -1,    -1,   122,
-     123,    -1,    -1,   126,    -1,     4,     5,     6,   131,     8,
-      -1,    10,   135,    -1,   137,    -1,   139,    -1,    -1,    -1,
-      19,    -1,    21,    -1,   147,   148,    -1,    -1,    -1,    -1,
-      -1,    30,    -1,    32,    -1,    -1,    35,    36,    37,    -1,
-      39,    40,    -1,    -1,    -1,    44,    45,    46,    47,    -1,
-      -1,    50,    51,    52,    -1,    -1,    55,    -1,    -1,    -1,
-      -1,    60,    61,    62,    63,    64,    65,    66,    -1,    -1,
-      -1,    -1,    71,    72,    -1,    74,    -1,    76,    -1,    78,
-      -1,    -1,    81,    82,    83,    84,    -1,    86,    -1,    88,
-      -1,    -1,    -1,    92,    -1,    94,    95,    96,    97,    98,
-      99,   100,    -1,    -1,   103,    -1,   105,   106,   107,   108,
-      -1,    -1,    -1,    -1,   113,   114,   115,   116,   117,   118,
-      -1,    -1,    -1,   122,    -1,   124,    -1,   126,     4,     5,
-       6,    -1,     8,    -1,    10,    -1,    -1,    -1,   137,    -1,
-      -1,    -1,    -1,    19,    -1,    21,    -1,    -1,   147,   148,
+       9,   274,   266,   100,     0,   102,   442,     3,   342,    18,
+     473,   482,    92,   138,   139,   451,   478,    30,   442,    99,
+     138,   139,   102,    53,    21,     4,   106,   237,   479,    99,
+      21,    29,     4,    21,    29,    62,    66,    67,    21,    43,
+      70,     4,    43,    67,    74,    53,    41,   110,   707,     4,
+      48,   110,    29,    43,   233,   506,     4,    87,    66,    67,
+       4,   240,    70,    87,    28,    52,    74,   246,    48,    99,
+     120,    16,    17,    75,   154,   243,    43,   111,    43,    87,
+     143,   124,    21,    91,   143,   521,    48,   243,    49,    87,
+     124,    99,   120,    75,   243,    91,   139,    48,   148,   179,
+      43,    48,    98,    99,   100,   764,   102,    87,   135,   277,
+      43,   109,   243,   119,   109,   379,   241,   120,   124,   120,
+     148,   277,   123,    87,   147,    87,   136,    91,   277,     0,
+     120,   122,   109,   123,   147,   148,    87,   124,   148,   236,
+      87,   254,   144,   256,   148,   148,   277,   148,   228,   147,
+     147,   148,   147,   120,    31,   120,   147,   254,   148,   147,
+     240,   329,   144,   122,   147,   137,   246,   280,   265,   148,
+     147,   131,   202,   329,   254,   147,   148,   120,   258,   259,
+     329,   148,   262,   148,   147,   148,    15,   120,   367,   368,
+      33,   271,   147,   148,   373,   374,   620,   322,   329,   147,
+     148,   271,   272,   147,   148,   148,   470,   287,   147,   148,
+     474,   123,   325,   122,    57,   148,    93,   120,   119,    73,
+     300,   122,   230,   135,   233,    68,   235,   136,   237,   122,
+     122,   240,   683,   242,     9,   112,   266,   246,   247,   319,
+     236,   271,   272,    18,   136,   148,   147,    85,   256,   273,
+     826,   275,   767,    85,   769,   148,   264,   266,   254,   710,
+     836,   732,   100,   271,   272,   273,   476,   380,   100,   265,
+     266,   733,   280,   282,   123,   271,   124,   357,   274,   123,
+     393,   122,   395,   124,   122,   124,   124,   367,   368,   468,
+     122,   135,   124,   373,   374,   136,   254,   136,   256,   122,
+     748,   124,   470,   119,    42,    43,   474,   122,   124,   757,
+     125,   479,   783,   136,   124,   483,   650,   325,   128,   123,
+     135,   136,   280,   479,   139,   123,   136,   483,   124,   123,
+     479,   135,   500,   138,   483,   503,   121,   135,   506,   121,
+     136,   135,   104,   128,   500,     4,   128,   503,   784,   379,
+     506,   500,   104,   450,   503,   452,   119,   506,   367,   368,
+     784,   124,   442,   104,   373,   374,   491,   325,    59,   832,
+     138,   451,   380,    69,   487,    54,   135,   641,   135,    58,
+     139,   125,   139,   379,   143,   393,   143,   395,    23,    24,
+     470,   428,    27,   119,   830,   432,   131,   477,   428,    91,
+      92,    93,   432,   261,    34,   263,   830,   147,   148,   123,
+     124,   524,    70,   140,   527,   528,   529,   530,   531,   428,
+     140,   122,   380,   432,    23,    24,    25,    26,    27,   135,
+      54,   140,   428,   123,   707,   393,   432,   395,   122,   119,
+     470,   136,    89,   556,   474,   101,   101,   122,   122,    85,
+     122,    67,   101,    15,   450,   136,   452,   122,   122,   468,
+     128,   139,   119,   136,   473,   136,   136,   476,   636,   478,
+     139,   124,   148,   482,   470,   600,   601,   119,   474,   487,
+     636,   122,   600,   601,   442,   136,   136,   636,   122,   122,
+      85,   764,    85,   147,    85,    85,   139,   123,   135,   147,
+     123,   130,   124,   135,    85,   123,    56,   537,   538,    38,
+     135,    38,    12,     4,   135,   683,   524,   136,   122,   527,
+     528,   529,   530,   531,   135,    56,   128,   683,   136,   487,
+     124,   123,   121,   143,   683,   123,   123,   617,   135,   124,
+     620,   537,   710,   143,   123,   122,   142,   627,   556,     4,
+       5,     6,   136,     8,   710,    10,   136,   123,   136,   124,
+     136,   710,   135,   135,    19,   122,   524,   122,   665,   527,
+     528,   529,   530,   531,   125,   120,   125,    32,     4,   127,
+     748,   123,     4,     5,     6,   665,     8,   148,    10,   757,
+      45,    71,   748,    21,   135,   118,   120,    19,   556,   748,
+     136,   757,   135,   125,   125,   135,    61,    38,   757,   135,
+      32,   641,   125,   125,   727,   102,   135,   742,     4,     5,
+       6,   146,     8,    45,    10,   738,   125,   125,   135,   123,
+     139,   640,    87,    19,   123,   123,     3,   123,   135,    61,
+     135,   122,   635,   136,   136,   641,    32,   123,   265,   714,
+     135,   764,   135,   108,   824,   747,   271,   243,   665,   617,
+     774,   670,   620,   620,   617,    87,   675,   122,   123,   665,
+     773,   784,    18,    32,    74,    61,   131,    53,    70,    87,
+     427,   537,   137,   254,   139,   761,   108,   247,   640,    11,
+      44,    77,   147,   148,    49,   277,   503,   500,   728,   483,
+     122,    -1,   683,    -1,   784,    -1,   352,    -1,    -1,   131,
+      -1,   707,    -1,    -1,    -1,   137,    -1,   139,    -1,   727,
+     728,    -1,   108,   732,   733,   147,   148,    -1,    -1,    -1,
+     738,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,   128,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,   137,   761,    -1,    -1,    -1,   764,    -1,   767,    -1,
+     769,   147,   148,    -1,    -1,   774,   775,    -1,   764,   727,
+      -1,    -1,    -1,    -1,   783,    -1,    -1,    -1,    -1,    -1,
+     738,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,   764,    -1,    -1,    -1,
+       4,     5,     6,    -1,     8,    -1,    10,    -1,    -1,    -1,
+      -1,    -1,    -1,   832,    -1,    19,   784,    21,    -1,    23,
+      24,    25,    26,    27,    28,    29,    30,    31,    32,    33,
+      34,    35,    36,    37,    38,    39,    40,    41,    42,    43,
+      44,    45,    46,    47,    48,    49,    50,    51,    52,    53,
+      54,    55,    56,    57,    58,    59,    60,    61,    62,    63,
+      64,    65,    66,    67,    68,    69,    70,    71,    72,    73,
+      74,    75,    76,    77,    78,    79,    80,    81,    82,    83,
+      84,    85,    86,    87,    88,    89,    90,    91,    92,    93,
+      94,    95,    96,    97,    98,    99,   100,   101,   102,   103,
+     104,   105,   106,   107,   108,   109,   110,   111,   112,   113,
+     114,   115,   116,   117,   118,    -1,    -1,    -1,   122,    -1,
+      -1,    -1,   126,    -1,     4,     5,     6,   131,     8,    -1,
+      10,   135,    -1,   137,    -1,   139,    -1,    -1,    -1,    19,
+      -1,    21,    -1,   147,   148,    -1,    -1,    -1,    28,    29,
+      30,    31,    32,    33,    34,    35,    36,    37,    38,    39,
+      40,    41,    42,    43,    44,    45,    46,    47,    48,    49,
+      50,    51,    52,    53,    54,    55,    56,    57,    58,    59,
+      60,    61,    62,    63,    64,    65,    66,    67,    68,    69,
+      70,    71,    72,    73,    74,    75,    76,    77,    78,    79,
+      80,    81,    82,    83,    84,    85,    86,    87,    88,    89,
+      90,    91,    92,    93,    94,    95,    96,    97,    98,    99,
+     100,   101,   102,   103,   104,   105,   106,   107,   108,   109,
+     110,   111,   112,   113,   114,   115,   116,   117,   118,    -1,
+      -1,    -1,   122,   123,    -1,    -1,   126,    -1,     4,     5,
+       6,   131,     8,    -1,    10,   135,    -1,   137,    -1,   139,
+      -1,    -1,    -1,    19,    -1,    21,    -1,   147,   148,    -1,
       -1,    -1,    -1,    -1,    30,    -1,    32,    -1,    -1,    35,
-      36,    37,    -1,    39,    40,    -1,    -1,    -1,    -1,    -1,
-      46,    47,    -1,    -1,    50,    51,    -1,    -1,    -1,    55,
+      36,    37,    -1,    39,    40,    -1,    -1,    -1,    44,    45,
+      46,    47,    -1,    -1,    50,    51,    52,    -1,    -1,    55,
       -1,    -1,    -1,    -1,    60,    61,    62,    63,    64,    65,
       66,    -1,    -1,    -1,    -1,    71,    72,    -1,    74,    -1,
       76,    -1,    78,    -1,    -1,    81,    82,    83,    84,    -1,
       86,    -1,    88,    -1,    -1,    -1,    92,    -1,    94,    95,
       96,    97,    98,    99,   100,    -1,    -1,   103,    -1,   105,
      106,   107,   108,    -1,    -1,    -1,    -1,   113,   114,   115,
-     116,   117,   118,    -1,   120,    -1,    -1,    -1,   124,    -1,
+     116,   117,   118,    -1,    -1,    -1,   122,    -1,   124,    -1,
      126,     4,     5,     6,    -1,     8,    -1,    10,    -1,    -1,
       -1,   137,    -1,    -1,    -1,    -1,    19,    -1,    21,    -1,
       -1,   147,   148,    -1,    -1,    -1,    -1,    30,    -1,    32,
@@ -7206,50 +7319,83 @@ namespace yy {
       83,    84,    -1,    86,    -1,    88,    -1,    -1,    -1,    92,
       -1,    94,    95,    96,    97,    98,    99,   100,    -1,    -1,
      103,    -1,   105,   106,   107,   108,    -1,    -1,    -1,    -1,
+     113,   114,   115,   116,   117,   118,    -1,   120,    -1,    -1,
+      -1,   124,    -1,   126,     4,     5,     6,    -1,     8,    -1,
+      10,    -1,    -1,    -1,   137,    -1,    -1,    -1,    -1,    19,
+      -1,    21,    -1,    -1,   147,   148,    -1,    -1,    -1,    -1,
+      30,    -1,    32,    -1,    -1,    35,    36,    37,    -1,    39,
+      40,    -1,    -1,    -1,    -1,    -1,    46,    47,    -1,    -1,
+      50,    51,    -1,    -1,    -1,    55,    -1,    -1,    -1,    -1,
+      60,    61,    62,    63,    64,    65,    66,    -1,    -1,    -1,
+      -1,    71,    72,    -1,    74,    -1,    76,    -1,    78,    -1,
+      -1,    81,    82,    83,    84,    -1,    86,    -1,    88,    -1,
+      -1,    -1,    92,    -1,    94,    95,    96,    97,    98,    99,
+     100,    -1,    -1,   103,    -1,   105,   106,   107,   108,    -1,
+      -1,    -1,    -1,   113,   114,   115,   116,   117,   118,    -1,
+      -1,     4,     5,     6,   124,     8,   126,    10,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    19,   137,    21,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,   147,   148,    32,
+      -1,    -1,    35,    36,    37,    -1,    39,    40,    -1,    -1,
+      -1,    -1,    -1,    46,    47,    -1,    -1,    50,    51,    -1,
+      -1,    -1,    55,    -1,    -1,    -1,    -1,    60,    61,    62,
+      63,    64,    65,    66,    -1,    -1,    -1,    -1,    71,    72,
+      -1,    74,    -1,    76,    -1,    78,    -1,    -1,    81,    82,
+      83,    84,    -1,    86,    -1,    88,    -1,    -1,    -1,    92,
+      -1,    94,    95,    96,    97,    98,    99,   100,    -1,    -1,
+     103,    -1,   105,   106,   107,   108,    -1,    -1,    -1,    -1,
      113,   114,   115,   116,   117,   118,    -1,    -1,     4,     5,
        6,   124,     8,   126,    10,    -1,    -1,    -1,    -1,    -1,
       -1,    -1,    -1,    19,   137,    21,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,   147,   148,    32,    -1,    -1,    35,
-      36,    37,    -1,    39,    40,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    29,   147,   148,    32,    -1,    -1,    35,
+      36,    37,    -1,    39,    40,    -1,    -1,    -1,    -1,    45,
       46,    47,    -1,    -1,    50,    51,    -1,    -1,    -1,    55,
-      -1,    -1,    -1,    -1,    60,    61,    62,    63,    64,    65,
-      66,    -1,    -1,    -1,    -1,    71,    72,    -1,    74,    -1,
-      76,    -1,    78,    -1,    -1,    81,    82,    83,    84,    -1,
-      86,    -1,    88,    -1,    -1,    -1,    92,    -1,    94,    95,
-      96,    97,    98,    99,   100,    -1,    -1,   103,    -1,   105,
-     106,   107,   108,    -1,    -1,    -1,    -1,   113,   114,   115,
-     116,   117,   118,    -1,    -1,     4,     5,     6,   124,     8,
-     126,    10,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      19,   137,    21,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,   147,   148,    32,    -1,    -1,    35,    36,    37,    -1,
-      39,    40,    -1,    -1,    -1,    -1,    45,    46,    47,    -1,
+      -1,    -1,    -1,    -1,    60,    61,    -1,    63,    64,    65,
+      66,    -1,    -1,    -1,    -1,    -1,    72,    -1,    74,    -1,
+      76,    -1,    -1,    -1,    -1,    81,    82,    83,    84,    -1,
+      86,    87,    -1,    -1,    -1,    -1,    92,    -1,    94,    95,
+      96,    97,    98,    -1,    -1,    -1,    -1,   103,    -1,   105,
+     106,   107,   108,   109,    -1,    -1,    -1,   113,   114,   115,
+     116,   117,    -1,    -1,    -1,    -1,   122,     4,     5,     6,
+     126,     8,    -1,    10,    -1,   131,    -1,    -1,    -1,    -1,
+      -1,   137,    19,   139,    21,    -1,    -1,    -1,    -1,    -1,
+      -1,   147,   148,    -1,    -1,    32,    -1,    -1,    35,    36,
+      37,    -1,    39,    40,    -1,    -1,    -1,    -1,    45,    46,
+      47,    -1,    -1,    50,    51,    -1,    -1,    -1,    55,    -1,
+      -1,    -1,    -1,    60,    61,    -1,    63,    64,    65,    66,
+      -1,    -1,    -1,    -1,    -1,    72,    -1,    74,    -1,    76,
+      -1,    -1,    -1,    -1,    81,    82,    83,    84,    -1,    86,
+      87,    -1,    -1,    -1,    -1,    92,    -1,    94,    95,    96,
+      97,    98,    -1,    -1,    -1,    -1,   103,    -1,   105,   106,
+     107,   108,    -1,     4,    -1,    -1,   113,   114,   115,   116,
+     117,    -1,    -1,    -1,    -1,   122,    -1,    -1,    -1,   126,
+      21,    -1,    -1,    -1,   131,    -1,    -1,    -1,    -1,    -1,
+     137,    32,   139,    -1,    35,    36,    37,    -1,    39,    40,
+     147,   148,    -1,    -1,    -1,    46,    47,    -1,    -1,    50,
+      51,     4,     5,     6,    55,     8,    -1,    10,    -1,    60,
+      -1,    -1,    63,    64,    65,    66,    19,    -1,    21,    -1,
+      -1,    72,    -1,    74,    -1,    76,    -1,    -1,    -1,    32,
+      81,    82,    83,    84,    -1,    86,    -1,    -1,    -1,    -1,
+      -1,    92,    45,    94,    95,    96,    97,    98,    -1,    -1,
+      -1,    -1,   103,    -1,   105,   106,   107,    -1,    61,    -1,
+      -1,    -1,   113,   114,   115,   116,   117,     4,     5,     6,
+      -1,     8,    -1,    10,    -1,   126,    -1,    -1,    -1,    -1,
+      -1,    -1,    19,    -1,    87,    -1,   137,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    32,   147,   148,     4,     5,
+       6,    -1,     8,    -1,    10,   108,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    19,    -1,    -1,    -1,    -1,    -1,   122,
+      -1,    -1,    -1,    -1,    61,    -1,    32,    -1,   131,    -1,
+      -1,    -1,    -1,    -1,   137,    -1,   139,    -1,    -1,    -1,
+      77,    -1,    -1,    -1,   147,   148,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    61,    -1,    -1,    -1,    -1,
+      -1,    -1,    21,    -1,    23,    24,    25,    26,    27,    -1,
+      -1,   108,    -1,    32,    -1,    -1,    35,    36,    37,    -1,
+      39,    40,    -1,    -1,    -1,    -1,    -1,    46,    47,    -1,
       -1,    50,    51,    -1,    -1,    -1,    55,    -1,    -1,    -1,
-      -1,    60,    61,    -1,    63,    64,    65,    66,    -1,    -1,
-      -1,    -1,    -1,    72,    -1,    74,    -1,    76,    -1,    -1,
-      -1,    -1,    81,    82,    83,    84,    -1,    86,    87,    -1,
-      -1,    -1,    -1,    92,    -1,    94,    95,    96,    97,    98,
-      -1,    -1,    -1,    -1,   103,    -1,   105,   106,   107,   108,
-      -1,     4,    -1,    -1,   113,   114,   115,   116,   117,    -1,
-      -1,    -1,    -1,   122,    -1,    -1,    -1,   126,    21,    -1,
-      -1,    -1,   131,    -1,    -1,    -1,    -1,    -1,   137,    32,
-     139,    -1,    35,    36,    37,    -1,    39,    40,   147,   148,
-      -1,    -1,    -1,    46,    47,    -1,    -1,    50,    51,    -1,
-      -1,    -1,    55,    -1,    -1,    -1,    -1,    60,    -1,    -1,
-      63,    64,    65,    66,    -1,    -1,    -1,    -1,    -1,    72,
-      -1,    74,    -1,    76,    -1,    -1,    -1,    -1,    81,    82,
-      83,    84,    -1,    86,    -1,    -1,    -1,    -1,    -1,    92,
-      -1,    94,    95,    96,    97,    98,    -1,    -1,    -1,    -1,
-     103,    -1,   105,   106,   107,    -1,    -1,    -1,    -1,    -1,
-     113,   114,   115,   116,   117,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    21,   126,    23,    24,    25,    26,    27,    -1,
-      -1,    -1,    -1,    32,   137,    -1,    35,    36,    37,    -1,
-      39,    40,    -1,    -1,   147,   148,    -1,    46,    47,    -1,
-      -1,    50,    51,    -1,    -1,    -1,    55,    -1,    -1,    -1,
-      -1,    60,    -1,    -1,    63,    64,    65,    66,    -1,    -1,
-      -1,    -1,    -1,    72,    -1,    74,    -1,    76,    -1,    -1,
+     137,    60,   108,    -1,    63,    64,    65,    66,    -1,    -1,
+     147,   148,    -1,    72,    -1,    74,    -1,    76,    -1,    -1,
       -1,    -1,    81,    82,    83,    84,    -1,    86,    -1,    -1,
-      -1,    -1,    -1,    92,    -1,    94,    95,    96,    97,    98,
-      -1,    -1,    -1,    -1,   103,    -1,   105,   106,   107,    -1,
+      -1,   137,    -1,    92,    -1,    94,    95,    96,    97,    98,
+      -1,   147,   148,    -1,   103,    -1,   105,   106,   107,    -1,
       -1,    -1,    -1,    -1,   113,   114,   115,   116,   117,    -1,
       -1,    21,    -1,    -1,    -1,    -1,    -1,   126,    -1,    29,
       -1,    -1,    32,    -1,    -1,    35,    36,    37,    -1,    39,
@@ -7261,9 +7407,9 @@ namespace yy {
       -1,    -1,    92,    -1,    94,    95,    96,    97,    98,    -1,
       -1,    -1,    -1,   103,    -1,   105,   106,   107,    -1,   109,
       -1,    -1,    -1,   113,   114,   115,   116,   117,    -1,    -1,
-      21,    -1,   122,    -1,    -1,    -1,   126,    -1,    29,    -1,
+      21,    -1,    -1,    -1,    -1,    -1,   126,    -1,    29,    -1,
       -1,    32,    -1,    -1,    35,    36,    37,    -1,    39,    40,
-      41,    -1,    -1,    -1,    -1,    46,    47,   147,   148,    50,
+      -1,    -1,    -1,    -1,    -1,    46,    47,   147,   148,    50,
       51,    -1,    -1,    -1,    55,    -1,    -1,    -1,    -1,    60,
       -1,    -1,    63,    64,    65,    66,    -1,    -1,    -1,    -1,
       -1,    72,    -1,    74,    -1,    76,    -1,    -1,    -1,    -1,
@@ -7271,17 +7417,17 @@ namespace yy {
       -1,    92,    -1,    94,    95,    96,    97,    98,    -1,    -1,
       -1,    -1,   103,    -1,   105,   106,   107,    -1,   109,    -1,
       -1,    -1,   113,   114,   115,   116,   117,    -1,    -1,    21,
-      -1,    -1,    -1,    -1,    -1,   126,    -1,    29,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,   126,    -1,    -1,    -1,    -1,
       32,    -1,    -1,    35,    36,    37,    -1,    39,    40,    -1,
       -1,    -1,    -1,    -1,    46,    47,   147,   148,    50,    51,
-      -1,    -1,    -1,    55,    -1,    -1,    -1,    -1,    60,    -1,
-      -1,    63,    64,    65,    66,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    55,    -1,    57,    -1,    -1,    60,    -1,
+      -1,    63,    64,    65,    66,    -1,    68,    -1,    -1,    -1,
       72,    -1,    74,    -1,    76,    -1,    -1,    -1,    -1,    81,
       82,    83,    84,    -1,    86,    -1,    -1,    -1,    -1,    -1,
       92,    -1,    94,    95,    96,    97,    98,    -1,    -1,    -1,
-      -1,   103,    -1,   105,   106,   107,    -1,   109,    -1,    -1,
-      -1,   113,   114,   115,   116,   117,    -1,   119,    21,    -1,
-      -1,    -1,    -1,    -1,   126,    -1,    29,    -1,    -1,    32,
+      -1,   103,    -1,   105,   106,   107,    -1,    -1,    -1,    -1,
+      -1,   113,   114,   115,   116,   117,    -1,    -1,    21,    -1,
+      -1,    -1,    -1,    -1,   126,    -1,    -1,    -1,    -1,    32,
       -1,    -1,    35,    36,    37,    -1,    39,    40,    -1,    -1,
       -1,    -1,    -1,    46,    47,   147,   148,    50,    51,    -1,
       -1,    -1,    55,    -1,    -1,    -1,    -1,    60,    -1,    -1,
@@ -7289,18 +7435,18 @@ namespace yy {
       -1,    74,    -1,    76,    -1,    -1,    -1,    -1,    81,    82,
       83,    84,    -1,    86,    -1,    -1,    -1,    -1,    -1,    92,
       -1,    94,    95,    96,    97,    98,    -1,    -1,    -1,    -1,
-     103,    -1,   105,   106,   107,    -1,   109,    -1,    -1,    -1,
-     113,   114,   115,   116,   117,    -1,    -1,    21,    -1,    -1,
+     103,    -1,   105,   106,   107,    -1,    -1,    -1,    -1,    -1,
+     113,   114,   115,   116,   117,    -1,    -1,    21,    -1,   122,
       -1,    -1,    -1,   126,    -1,    -1,    -1,    -1,    32,    -1,
       -1,    35,    36,    37,    -1,    39,    40,    -1,    -1,    -1,
       -1,    -1,    46,    47,   147,   148,    50,    51,    -1,    -1,
-      -1,    55,    -1,    57,    -1,    -1,    60,    -1,    -1,    63,
-      64,    65,    66,    -1,    68,    -1,    -1,    -1,    72,    -1,
+      -1,    55,    -1,    -1,    -1,    -1,    60,    -1,    -1,    63,
+      64,    65,    66,    -1,    -1,    -1,    -1,    -1,    72,    -1,
       74,    -1,    76,    -1,    -1,    -1,    -1,    81,    82,    83,
       84,    -1,    86,    -1,    -1,    -1,    -1,    -1,    92,    -1,
       94,    95,    96,    97,    98,    -1,    -1,    -1,    -1,   103,
       -1,   105,   106,   107,    -1,    -1,    -1,    -1,    -1,   113,
-     114,   115,   116,   117,    -1,    -1,    21,    -1,    -1,    -1,
+     114,   115,   116,   117,    -1,   119,    21,    -1,    -1,    -1,
       -1,    -1,   126,    -1,    -1,    -1,    -1,    32,    -1,    -1,
       35,    36,    37,    -1,    39,    40,    -1,    -1,    -1,    -1,
       -1,    46,    47,   147,   148,    50,    51,    -1,    -1,    -1,
@@ -7377,91 +7523,91 @@ namespace yy {
   const unsigned short int
   asn1_parser::yystos_[] =
   {
-       0,   147,   152,   153,   225,   375,     0,   152,    49,   122,
-     226,   227,   228,    15,   233,     4,   148,   229,   230,   231,
-     232,   306,   373,   131,   311,    73,    33,    57,    68,   234,
-     123,   229,   124,   138,   312,   104,   104,   104,    59,   235,
-     231,    16,    17,   314,   138,   313,    69,   119,   125,   314,
-     131,    34,   313,    58,   236,   237,    30,   147,   148,   238,
-     245,   246,   247,   372,   374,   224,    70,   239,   140,   140,
-     135,   122,    54,   240,   241,   242,   245,    21,   147,   158,
-     194,   198,   199,   200,   201,   202,   204,   205,   248,   249,
-     258,   259,   372,   374,   376,   246,   123,   140,   242,    62,
-      29,    41,   109,   122,   147,   155,   156,   157,   159,   160,
-     203,   375,   376,   194,   372,   249,   119,   147,   192,   193,
-     203,   372,   375,    21,    32,    35,    36,    37,    39,    40,
-      46,    47,    50,    51,    55,    60,    63,    64,    65,    66,
-      72,    74,    76,    81,    82,    83,    84,    86,    92,    94,
-      95,    96,    97,    98,   103,   105,   106,   107,   113,   114,
-     115,   116,   117,   126,   148,   182,   183,   197,   203,   210,
-     211,   212,   213,   250,   252,   256,   260,   261,   267,   269,
-     273,   277,   278,   281,   282,   283,   288,   289,   290,   291,
-     295,   296,   297,   298,   302,   309,   310,   315,   316,   317,
-     318,   320,   321,   322,   323,   324,   325,   326,   327,   328,
-     372,   373,   374,   375,   243,   375,   122,   155,   206,   207,
-     208,   209,   247,   260,   372,   374,   155,   136,   147,   375,
-     159,   260,   119,   119,   155,   260,   136,   101,   101,   122,
-      89,   122,    85,   122,    67,   101,    85,   100,   122,   124,
-     329,   355,    85,   122,   329,   355,    15,   299,   260,   375,
-     136,   122,   254,   119,   329,    57,    68,   260,   136,   128,
-     136,   136,   122,   244,   303,   374,    23,    24,    27,   161,
-     162,   165,   168,   170,   171,   173,   123,   135,   139,   119,
-     147,   376,   136,   122,   195,   260,   119,   119,   372,   122,
-     262,   292,   293,   294,   373,   120,   271,   274,   275,   276,
-     373,   155,   270,   271,   373,   260,   262,   373,   329,    43,
-     120,   123,   262,   284,   285,   286,   287,     4,     5,     6,
-       8,    10,    19,    30,    32,    44,    45,    52,    61,    62,
-      71,    78,    88,    99,   108,   118,   124,   137,   147,   148,
-     195,   215,   216,   218,   223,   260,   268,   272,   319,   330,
-     331,   332,   333,   335,   336,   337,   338,   339,   340,   341,
-     345,   346,   347,   348,   349,   350,   351,   353,   355,   356,
-     357,   358,   368,   369,    85,    85,   260,   262,   123,   284,
-      85,    85,   139,    31,    93,   112,   301,   119,   136,    23,
-      24,    25,    26,    27,   163,   164,   155,   255,   260,     5,
-       6,     8,    10,    32,    45,    87,   122,   139,   147,   148,
-     197,   263,   264,   265,   268,   272,   311,   319,   372,   260,
-     260,   164,   260,   164,    21,   372,     4,   214,   251,   253,
-     257,   304,   305,   306,   307,   308,   373,   374,   375,    48,
-      87,   155,   166,   163,   260,   155,   123,   135,   207,   247,
-     122,   182,   184,   185,   186,   188,   375,   120,   196,   333,
-     195,   263,   279,   280,   373,   123,   135,   260,   130,   370,
-     123,   135,   124,   123,   135,    85,   135,    48,    87,   123,
-     135,    56,   342,    38,   260,    38,   329,   263,    12,    42,
-      43,   335,     4,   122,   370,   135,   110,   143,   343,    75,
-     144,   344,   342,   260,   121,   128,   260,   262,   260,   262,
-     123,   260,   262,   260,   262,     4,   251,   300,   263,   136,
-     123,   263,   263,   266,   124,   135,   139,   143,   135,   143,
-     254,   251,   304,   123,   304,   124,   136,   260,    48,    87,
-     172,    48,    87,   169,   111,   167,    48,    87,   174,   118,
-     175,   162,    28,    29,    30,    31,    32,    33,    34,    35,
-      36,    37,    38,    39,    40,    41,    42,    43,    44,    45,
-      46,    47,    48,    49,    50,    51,    52,    53,    54,    55,
-      56,    57,    58,    59,    60,    61,    62,    67,    68,    69,
-      70,    71,    72,    73,    74,    75,    77,    78,    79,    80,
-      82,    84,    85,    86,    87,    88,    89,    90,    91,    93,
-      94,    95,    96,    97,    98,    99,   100,   101,   102,   104,
-     106,   107,   108,   109,   110,   111,   112,   118,   135,   147,
-     148,   163,   181,   187,   189,   190,   191,   197,   260,   263,
-     377,   136,   135,   123,   135,   123,   135,   124,   120,   262,
-     251,   260,   272,   371,   374,   375,   120,   276,   251,   272,
-     271,   260,   120,   286,   263,   120,   287,   345,   122,    52,
-     263,   329,   359,   122,   360,   361,   362,   125,   142,   219,
-     220,   125,   120,   338,   340,    32,    77,   128,   147,   148,
-     347,   352,   354,   127,   163,   123,   263,     4,   263,   263,
-     263,   263,   263,   123,   307,   374,   184,   263,   169,   102,
-      71,    32,   147,   191,   135,   123,   190,   334,   335,   120,
-     280,     4,   251,   139,   136,   370,   125,   125,   135,   135,
-     155,   209,   217,   260,    38,   120,   363,   364,   373,   136,
-     222,   373,   123,   135,   135,   354,   125,   125,   122,   154,
-     146,   135,   125,   125,   263,   135,   120,   286,   139,   123,
-     263,   135,   123,   135,   329,   365,   366,   136,   221,   136,
-     220,   334,    32,    35,    36,    37,    39,    40,    45,    46,
-      47,    50,    51,    55,    60,    61,    72,    74,    82,    84,
-      86,    87,    94,    95,    96,    97,    98,   106,   107,   108,
-     126,   147,   176,   177,   178,   179,   180,   181,   123,   334,
-     275,   135,   122,   184,   263,   363,   363,    28,    87,    91,
-     367,   221,   222,   373,   176,   123,   177,   163,   181,   135,
-     120,   263,   123,   127
+       0,   147,   152,   153,   224,   375,     0,   152,    49,   122,
+     225,   226,   227,    15,   232,     4,   148,   228,   229,   230,
+     231,   306,   373,   131,   311,    73,    33,    57,    68,   233,
+     123,   228,   124,   138,   312,   104,   104,   104,    59,   234,
+     230,    16,    17,   314,   138,   313,    69,   119,   125,   314,
+     131,    34,   313,    58,   235,   236,    30,   147,   148,   237,
+     244,   245,   246,   372,   374,   223,    70,   238,   140,   140,
+     135,   122,    54,   239,   240,   241,   244,    21,   147,   158,
+     194,   198,   199,   200,   201,   202,   203,   247,   248,   257,
+     258,   372,   374,   376,   245,   123,   140,   241,    62,   122,
+     204,   248,   119,   147,   192,   193,   204,   372,   375,    21,
+      32,    35,    36,    37,    39,    40,    46,    47,    50,    51,
+      55,    60,    63,    64,    65,    66,    72,    74,    76,    81,
+      82,    83,    84,    86,    92,    94,    95,    96,    97,    98,
+     103,   105,   106,   107,   113,   114,   115,   116,   117,   126,
+     148,   182,   183,   197,   204,   209,   210,   211,   212,   249,
+     251,   255,   259,   260,   267,   269,   273,   277,   278,   281,
+     282,   283,   288,   289,   290,   291,   295,   296,   297,   298,
+     302,   309,   310,   315,   316,   317,   318,   320,   321,   322,
+     323,   324,   325,   326,   327,   328,   372,   373,   374,   375,
+     204,   242,   375,    29,   109,   147,   155,   156,   157,   205,
+     206,   207,   208,   246,   259,   372,   374,   375,   376,   147,
+     155,   375,    41,   155,   159,   160,   259,   119,   119,   259,
+     136,   101,   101,   122,    89,   122,    85,   122,    67,   101,
+      85,   100,   122,   124,   329,   355,    85,   122,   329,   355,
+      15,   299,   259,   136,   122,   253,   119,   329,    57,    68,
+     259,   136,   128,   136,   136,   119,   122,   243,   303,   374,
+     123,   135,   139,   136,   119,   136,   122,   122,   195,   259,
+     119,   372,   122,   261,   292,   293,   294,   373,   120,   271,
+     274,   275,   276,   373,   155,   270,   271,   373,   259,   261,
+     373,   329,    43,   120,   123,   261,   284,   285,   286,   287,
+       4,     5,     6,     8,    10,    19,    30,    32,    44,    45,
+      52,    61,    62,    71,    78,    88,    99,   108,   118,   124,
+     137,   147,   148,   195,   214,   215,   217,   222,   259,   268,
+     272,   319,   330,   331,   332,   333,   335,   336,   337,   338,
+     339,   340,   341,   345,   346,   347,   348,   349,   350,   351,
+     353,   355,   356,   357,   358,   368,   369,    85,    85,   259,
+     261,   123,   284,    85,    85,   139,    31,    93,   112,   301,
+     119,    23,    24,    25,    26,    27,   163,   164,     5,     6,
+       8,    10,    32,    45,    87,   122,   139,   147,   148,   155,
+     197,   254,   259,   262,   263,   264,   265,   268,   272,   311,
+     319,    32,   147,   148,   197,   262,   263,   372,   259,   259,
+     164,   259,   164,    21,   372,   159,     4,   213,   250,   252,
+     256,   304,   305,   306,   307,   308,   373,   374,   375,   206,
+     246,   376,   122,   182,   184,   185,   186,   188,   375,   147,
+      23,    24,    27,   161,   162,   165,   168,   170,   171,   173,
+     120,   196,   333,   263,   279,   280,   373,   123,   135,   259,
+     130,   370,   123,   135,   124,   123,   135,    85,   135,    48,
+      87,   123,   135,    56,   342,    38,   259,    38,   329,   263,
+      12,    42,    43,   335,     4,   122,   370,   135,   110,   143,
+     343,    75,   144,   344,   342,   259,   121,   128,   259,   261,
+     259,   261,   123,   259,   261,   259,   261,     4,   250,   300,
+     263,   136,   263,   263,   266,   124,   123,   135,   139,   143,
+     135,   143,   253,   250,   304,   123,   304,   124,   136,    28,
+      29,    30,    31,    32,    33,    34,    35,    36,    37,    38,
+      39,    40,    41,    42,    43,    44,    45,    46,    47,    48,
+      49,    50,    51,    52,    53,    54,    55,    56,    57,    58,
+      59,    60,    61,    62,    67,    68,    69,    70,    71,    72,
+      73,    74,    75,    77,    78,    79,    80,    82,    84,    85,
+      86,    87,    88,    89,    90,    91,    93,    94,    95,    96,
+      97,    98,    99,   100,   101,   102,   104,   106,   107,   108,
+     109,   110,   111,   112,   118,   135,   147,   163,   181,   187,
+     189,   190,   191,   259,   263,   377,   136,    48,    87,   155,
+     166,   163,   259,   155,   123,   135,   135,   123,   135,   123,
+     135,   124,   120,   261,   250,   259,   272,   371,   374,   375,
+     120,   276,   250,   272,   271,   259,   120,   286,    32,   147,
+     148,   347,   120,   287,   345,   122,    52,   263,   329,   359,
+     122,   360,   361,   362,   125,   142,   218,   219,   125,   120,
+     338,   340,    77,   128,   347,   352,   354,   127,   163,   123,
+     263,     4,   263,   263,   263,   263,   263,   123,   307,   374,
+      71,   147,   191,   135,   123,   190,   259,    48,    87,   172,
+      48,    87,   169,   111,   167,    48,    87,   174,   118,   175,
+     162,   334,   335,   120,   280,     4,   250,   139,   136,   370,
+     125,   125,   135,   135,   155,   208,   216,   259,    38,   120,
+     363,   364,   373,   136,   221,   373,   123,   135,   135,   354,
+     125,   125,   146,   184,   347,   169,   102,   135,   125,   125,
+     263,   135,   120,   286,   139,   123,   263,   135,   123,   135,
+     329,   365,   366,   136,   220,   136,   219,   334,   123,   122,
+     154,   334,   275,   135,   122,   184,   263,   363,   363,    28,
+      87,    91,   367,   220,   221,   373,    32,    35,    36,    37,
+      39,    40,    45,    46,    47,    50,    51,    55,    60,    61,
+      72,    74,    82,    84,    86,    87,    94,    95,    96,    97,
+      98,   106,   107,   108,   126,   147,   176,   177,   178,   179,
+     180,   181,   135,   120,   263,   123,   176,   123,   177,   163,
+     181,   127
   };
 
   const unsigned short int
@@ -7476,46 +7622,46 @@ namespace yy {
      181,   182,   182,   183,   184,   184,   185,   185,   186,   187,
      188,   189,   189,   190,   190,   191,   191,   192,   192,   193,
      194,   195,   196,   196,   196,   196,   196,   197,   197,   198,
-     198,   198,   198,   198,   198,   199,   200,   201,   202,   203,
-     204,   205,   203,   206,   206,   207,   207,   208,   208,   209,
-     209,   210,   211,   212,   213,   213,   214,   214,   215,   215,
-     215,   216,   217,   217,   217,   217,   217,   218,   218,   219,
-     219,   220,   220,   221,   221,   222,   222,   223,   223,   223,
-     224,   225,   226,   226,   226,   227,   228,   229,   229,   230,
-     230,   230,   231,   232,   233,   233,   234,   234,   234,   234,
-     235,   235,   236,   236,   237,   237,   237,   238,   238,   239,
-     239,   240,   240,   241,   241,   242,   243,   244,   244,   244,
-     245,   245,   246,   247,   247,   247,   248,   248,   249,   249,
-     249,   249,   249,   250,   250,   250,   251,   251,   252,   253,
-     254,   255,   255,   256,   257,   258,   259,   260,   260,   260,
-     260,   260,   261,   261,   261,   261,   261,   261,   261,   261,
-     261,   261,   261,   261,   261,   261,   261,   261,   261,   261,
-     261,   261,   261,   261,   261,   261,   261,   261,   261,   261,
-     261,   261,   262,   263,   263,   263,   263,   263,   263,   263,
-     263,   263,   263,   263,   263,   263,   263,   263,   263,   263,
-     263,   263,   263,   264,   264,   265,   265,   266,   266,   267,
-     268,   268,   269,   269,   270,   270,   271,   271,   272,   272,
-     273,   274,   274,   274,   274,   275,   275,   276,   276,   277,
-     278,   278,   279,   279,   280,   280,   281,   282,   283,   283,
-     284,   285,   285,   285,   285,   285,   285,   285,   285,   286,
-     286,   287,   287,   287,   287,   288,   288,   289,   289,   290,
-     290,   291,   292,   293,   293,   294,   294,   295,   296,   297,
-     297,   297,   298,   299,   299,   300,   300,   301,   301,   301,
-     301,   302,   303,   303,   304,   304,   305,   305,   305,   306,
-     307,   307,   308,   309,   310,   311,   312,   313,   313,   314,
-     314,   315,   316,   317,   318,   319,   320,   321,   322,   323,
-     324,   324,   325,   325,   325,   325,   325,   325,   325,   325,
-     325,   325,   325,   325,   325,   326,   327,   327,   328,   328,
-     328,   328,   328,   328,   328,   328,   329,   330,   330,   331,
-     332,   332,   332,   333,   334,   335,   335,   336,   336,   337,
-     338,   338,   339,   340,   340,   341,   342,   343,   343,   344,
-     344,   345,   345,   346,   346,   346,   346,   346,   346,   346,
-     346,   346,   347,   347,   347,   347,   347,   347,   347,   347,
-     347,   347,   348,   349,   350,   351,   351,   352,   352,   353,
-     353,   354,   354,   355,   356,   357,   358,   358,   359,   360,
-     360,   361,   362,   363,   363,   364,   365,   366,   366,   367,
-     367,   367,   367,   368,   369,   370,   370,   371,   371,   371,
-     372,   373,   374,   375,   376,   377,   377,   377,   377,   377,
+     198,   198,   198,   198,   199,   200,   201,   202,   203,   204,
+     205,   205,   206,   206,   207,   207,   208,   208,   209,   210,
+     211,   212,   212,   213,   213,   214,   214,   214,   215,   216,
+     216,   216,   216,   216,   217,   217,   218,   218,   219,   219,
+     220,   220,   221,   221,   222,   222,   222,   223,   224,   225,
+     225,   225,   226,   227,   228,   228,   229,   229,   229,   230,
+     231,   232,   232,   233,   233,   233,   233,   234,   234,   235,
+     235,   236,   236,   236,   237,   237,   238,   238,   239,   239,
+     240,   240,   241,   242,   243,   243,   243,   244,   244,   245,
+     246,   246,   246,   247,   247,   248,   248,   248,   248,   248,
+     249,   249,   249,   250,   250,   251,   252,   253,   254,   254,
+     254,   255,   256,   257,   258,   259,   259,   259,   259,   259,
+     260,   260,   260,   260,   260,   260,   260,   260,   260,   260,
+     260,   260,   260,   260,   260,   260,   260,   260,   260,   260,
+     260,   260,   260,   260,   260,   260,   260,   260,   260,   260,
+     261,   262,   262,   262,   262,   262,   262,   262,   262,   262,
+     262,   262,   262,   262,   262,   262,   262,   262,   262,   262,
+     263,   263,   264,   264,   265,   265,   266,   266,   267,   268,
+     268,   269,   269,   270,   270,   271,   271,   272,   272,   273,
+     274,   274,   274,   274,   275,   275,   276,   276,   277,   278,
+     278,   279,   279,   280,   280,   281,   282,   283,   283,   284,
+     285,   285,   285,   285,   285,   285,   285,   285,   286,   286,
+     287,   287,   287,   287,   288,   288,   289,   289,   290,   290,
+     291,   292,   293,   293,   294,   294,   295,   296,   297,   297,
+     297,   298,   299,   299,   300,   300,   301,   301,   301,   301,
+     302,   303,   303,   304,   304,   305,   305,   305,   306,   307,
+     307,   308,   309,   310,   311,   312,   313,   313,   314,   314,
+     315,   316,   317,   318,   319,   320,   321,   322,   323,   324,
+     324,   325,   325,   325,   325,   325,   325,   325,   325,   325,
+     325,   325,   325,   325,   326,   327,   327,   328,   328,   328,
+     328,   328,   328,   328,   328,   329,   330,   330,   331,   332,
+     332,   332,   333,   334,   335,   335,   336,   336,   337,   338,
+     338,   339,   340,   340,   341,   342,   343,   343,   344,   344,
+     345,   345,   346,   346,   346,   346,   346,   346,   346,   346,
+     346,   347,   347,   347,   347,   347,   347,   347,   347,   347,
+     347,   348,   349,   350,   351,   351,   352,   352,   353,   353,
+     354,   354,   355,   356,   357,   358,   358,   359,   360,   360,
+     361,   362,   363,   363,   364,   365,   366,   366,   367,   367,
+     367,   367,   368,   369,   370,   370,   371,   371,   371,   372,
+     373,   374,   375,   376,   377,   377,   377,   377,   377,   377,
      377,   377,   377,   377,   377,   377,   377,   377,   377,   377,
      377,   377,   377,   377,   377,   377,   377,   377,   377,   377,
      377,   377,   377,   377,   377,   377,   377,   377,   377,   377,
@@ -7523,7 +7669,7 @@ namespace yy {
      377,   377,   377,   377,   377,   377,   377,   377,   377,   377,
      377,   377,   377,   377,   377,   377,   377,   377,   377,   377,
      377,   377,   377,   377,   377,   377,   377,   377,   377,   377,
-     377,   377
+     377
   };
 
   const unsigned char
@@ -7538,54 +7684,54 @@ namespace yy {
        1,     1,     1,     3,     1,     1,     1,     1,     5,     2,
        3,     1,     2,     1,     1,     1,     1,     1,     1,     3,
        4,     3,     1,     3,     1,     3,     5,     3,     3,     1,
-       1,     1,     1,     1,     1,     4,     5,     5,     1,     1,
-       5,     5,     3,     1,     3,     3,     1,     1,     1,     1,
-       1,     1,     3,     3,     1,     1,     1,     1,     1,     1,
-       1,     5,     3,     3,     1,     1,     0,     1,     4,     1,
-       3,     2,     4,     2,     0,     1,     3,     2,     3,     5,
-       0,     2,     1,     1,     0,     3,     2,     1,     2,     1,
-       1,     1,     1,     4,     2,     0,     2,     2,     2,     0,
-       2,     0,     3,     0,     3,     3,     0,     1,     0,     3,
-       0,     1,     0,     1,     2,     3,     2,     1,     1,     0,
-       1,     3,     1,     1,     3,     1,     1,     2,     1,     1,
-       2,     1,     1,     1,     1,     1,     1,     1,     2,     2,
-       3,     1,     1,     3,     3,     3,     4,     1,     1,     1,
+       1,     1,     1,     1,     4,     5,     5,     4,     5,     3,
+       1,     3,     3,     1,     1,     1,     1,     1,     1,     3,
+       3,     1,     1,     1,     1,     1,     1,     1,     5,     3,
+       3,     1,     1,     0,     1,     4,     1,     3,     2,     4,
+       2,     0,     1,     3,     2,     3,     5,     0,     2,     1,
+       1,     0,     3,     2,     1,     2,     1,     1,     1,     1,
+       4,     2,     0,     2,     2,     2,     0,     2,     0,     3,
+       0,     3,     3,     0,     1,     0,     3,     0,     1,     0,
+       1,     2,     3,     2,     1,     1,     0,     1,     3,     1,
+       1,     3,     1,     1,     2,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     1,     2,     2,     3,     1,     1,
+       1,     3,     3,     3,     4,     1,     1,     1,     1,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     2,     1,     1,     1,     1,     1,     1,     1,
-       2,     1,     1,     4,     1,     1,     1,     1,     3,     3,
-       1,     1,     1,     3,     3,     3,     3,     1,     2,     1,
-       1,     1,     1,     4,     1,     3,     4,     4,     1,     2,
-       4,     1,     4,     6,     2,     1,     3,     1,     1,     1,
-       2,     5,     1,     3,     4,     4,     2,     1,     3,     4,
-       1,     1,     3,     5,     7,     3,     5,     1,     3,     1,
-       3,     1,     2,     3,     3,     3,     3,     3,     4,     3,
-       3,     4,     1,     1,     3,     1,     3,     3,     1,     2,
-       3,     3,     5,     2,     0,     1,     1,     1,     1,     1,
-       0,     2,     3,     4,     1,     2,     1,     1,     1,     1,
-       1,     1,     4,     1,     1,     4,     2,     3,     0,     1,
-       1,     1,     2,     1,     1,     1,     1,     1,     1,     1,
+       2,     1,     1,     1,     1,     1,     1,     1,     2,     1,
+       4,     1,     1,     1,     1,     3,     3,     1,     1,     1,
+       1,     1,     3,     3,     3,     3,     1,     2,     1,     1,
+       1,     1,     4,     1,     3,     4,     4,     1,     2,     4,
+       1,     4,     6,     2,     1,     3,     1,     1,     1,     2,
+       5,     1,     3,     4,     4,     2,     1,     3,     4,     1,
+       1,     3,     5,     7,     3,     5,     1,     3,     1,     3,
+       1,     2,     3,     3,     3,     3,     3,     4,     3,     3,
+       4,     1,     1,     3,     1,     3,     3,     1,     2,     3,
+       3,     5,     2,     0,     1,     1,     1,     1,     1,     0,
+       2,     3,     4,     1,     2,     1,     1,     1,     1,     1,
+       1,     4,     1,     1,     4,     2,     3,     0,     1,     1,
+       1,     2,     1,     1,     1,     1,     1,     1,     1,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     2,     2,     1,     4,     4,
-       4,     4,     4,     4,     4,     4,     4,     1,     1,     1,
-       1,     3,     5,     1,     1,     1,     2,     1,     3,     1,
-       1,     3,     1,     1,     2,     1,     2,     1,     1,     1,
-       1,     1,     3,     1,     1,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     2,     2,     1,     4,     4,     4,
+       4,     4,     4,     4,     4,     4,     1,     1,     1,     1,
+       3,     5,     1,     1,     1,     2,     1,     3,     1,     1,
+       3,     1,     1,     2,     1,     2,     1,     1,     1,     1,
+       1,     3,     1,     1,     1,     1,     1,     1,     1,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     2,     1,     3,     1,     2,     1,     2,     1,
-       1,     1,     1,     2,     1,     2,     3,     3,     1,     1,
-       1,     3,     5,     1,     3,     2,     2,     1,     0,     1,
-       1,     1,     0,     2,     2,     2,     0,     1,     1,     3,
-       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     2,     1,     1,     1,     1,
+       1,     2,     1,     3,     1,     2,     1,     2,     1,     1,
+       1,     1,     2,     1,     2,     3,     3,     1,     1,     1,
+       3,     5,     1,     3,     2,     2,     1,     0,     1,     1,
+       1,     0,     2,     2,     2,     0,     1,     1,     3,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     2,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
+       1
   };
 
 
@@ -7642,10 +7788,9 @@ namespace yy {
   "ObjectSetSpec", "ObjectClassFieldType", "ParameterizedAssignment",
   "ParameterizedTypeAssignment", "ParameterizedValueAssignment",
   "ParameterizedValueSetTypeAssignment",
-  "ParameterizedObjectClassAssignment", "ParameterList",
-  "ParameterizedObjectAssignment", "ParameterizedObjectSetAssignment",
-  "ParameterSeries", "Parameter", "ParamGovernor", "Governor",
-  "ReferencedObjects", "TypeFromObject", "InstanceOfType",
+  "ParameterizedObjectClassAssignment", "ParameterizedObjectAssignment",
+  "ParameterList", "ParameterSeries", "Parameter", "ParamGovernor",
+  "Governor", "ReferencedObjects", "TypeFromObject", "InstanceOfType",
   "SimpleDefinedType", "SimpleDefinedValue", "GeneralConstraint",
   "UserDefinedConstraint", "UserDefinedConstraintParameter",
   "TableConstraint", "AtNotationList", "AtNotation", "Level",
@@ -7661,14 +7806,14 @@ namespace yy {
   "DefinedType", "DefinedValue", "ParameterizedType", "ParameterizedValue",
   "ActualParameterList", "ActualParameter", "ExternalTypeReference",
   "ExternalValueReference", "TypeAssignment", "ValueAssignment", "Type",
-  "BuiltinType", "NamedType", "Value", "ValueCommaListChoice",
-  "ValueChoice", "SequenceOfValues", "BooleanType", "BooleanValue",
-  "IntegerType", "NamedNumberList", "NamedNumber", "SignedNumber",
-  "EnumeratedType", "Enumerations", "Enumeration", "EnumerationItem",
-  "RealType", "BitStringType", "NamedBitList", "NamedBit",
-  "OctetStringType", "NullType", "SequenceType", "ComponentTypeLists",
-  "RootComponentTypeList", "ComponentTypeList", "ComponentType",
-  "SequenceOfType", "SetType", "SetOfType", "ChoiceType",
+  "BuiltinType", "NamedType", "ValueWithoutTypeIdentifier", "Value",
+  "ValueCommaListChoice", "ValueChoice", "SequenceOfValues", "BooleanType",
+  "BooleanValue", "IntegerType", "NamedNumberList", "NamedNumber",
+  "SignedNumber", "EnumeratedType", "Enumerations", "Enumeration",
+  "EnumerationItem", "RealType", "BitStringType", "NamedBitList",
+  "NamedBit", "OctetStringType", "NullType", "SequenceType",
+  "ComponentTypeLists", "RootComponentTypeList", "ComponentTypeList",
+  "ComponentType", "SequenceOfType", "SetType", "SetOfType", "ChoiceType",
   "AlternativeTypeLists", "RootAlternativeTypeList", "AlternativeTypeList",
   "SelectionType", "PrefixedType", "TaggedType", "Tag",
   "EncodingReference", "ClassNumber", "Class", "ObjectIdentifierType",
@@ -7700,63 +7845,63 @@ namespace yy {
   const unsigned short int
   asn1_parser::yyrline_[] =
   {
-       0,   282,   282,   283,   286,   301,   304,   305,   306,   309,
-     312,   313,   316,   319,   320,   324,   327,   328,   331,   332,
-     333,   334,   335,   338,   339,   340,   341,   342,   345,   346,
-     349,   352,   353,   354,   357,   358,   361,   364,   365,   366,
-     369,   372,   375,   376,   377,   380,   383,   384,   385,   391,
-     392,   395,   396,   399,   400,   403,   406,   409,   410,   413,
-     414,   417,   418,   421,   427,   428,   433,   434,   437,   440,
-     443,   446,   447,   450,   451,   454,   455,   459,   460,   463,
-     466,   469,   472,   473,   474,   475,   476,   485,   486,   492,
-     494,   495,   496,   497,   498,   501,   505,   508,   511,   511,
-     514,   517,   520,   524,   526,   530,   532,   536,   537,   540,
-     541,   556,   568,   577,   584,   585,   589,   590,   593,   594,
-     595,   598,   601,   602,   604,   605,   606,   609,   611,   615,
-     616,   619,   620,   623,   624,   627,   628,   631,   632,   633,
-     644,   652,   659,   660,   661,   664,   667,   671,   672,   676,
-     677,   678,   681,   684,   688,   689,   692,   694,   696,   698,
-     702,   703,   706,   708,   712,   713,   714,   717,   718,   721,
-     723,   726,   728,   731,   733,   737,   741,   745,   746,   747,
-     750,   752,   756,   760,   762,   764,   773,   775,   779,   781,
-     783,   786,   787,   791,   792,   794,   800,   802,   805,   809,
-     812,   816,   820,   830,   835,   860,   864,   871,   873,   875,
-     877,   879,   884,   885,   886,   887,   888,   889,   890,   891,
-     892,   893,   894,   895,   896,   897,   898,   899,   900,   901,
-     902,   903,   904,   905,   906,   907,   908,   909,   910,   911,
-     912,   913,   916,   920,   922,   924,   926,   928,   930,   932,
-     934,   936,   938,   940,   942,   943,   945,   947,   949,   953,
-     955,   957,   959,   963,   964,   967,   968,   971,   973,   981,
-     984,   985,   988,   989,   992,   993,   996,   998,  1002,  1004,
-    1008,  1012,  1015,  1018,  1022,  1025,  1027,  1031,  1033,  1041,
-    1044,  1045,  1048,  1049,  1052,  1053,  1067,  1070,  1073,  1075,
-    1083,  1087,  1089,  1091,  1093,  1095,  1097,  1099,  1101,  1105,
-    1107,  1111,  1113,  1115,  1117,  1128,  1130,  1134,  1136,  1140,
-    1142,  1146,  1150,  1154,  1156,  1160,  1162,  1169,  1172,  1176,
-    1178,  1180,  1184,  1188,  1189,  1192,  1194,  1197,  1199,  1201,
-    1203,  1213,  1216,  1218,  1222,  1224,  1228,  1230,  1232,  1236,
-    1240,  1242,  1245,  1249,  1261,  1264,  1270,  1273,  1274,  1277,
-    1278,  1281,  1287,  1294,  1300,  1303,  1306,  1309,  1312,  1315,
-    1318,  1319,  1322,  1323,  1324,  1325,  1326,  1327,  1328,  1329,
-    1330,  1331,  1332,  1333,  1334,  1338,  1341,  1342,  1345,  1346,
-    1347,  1348,  1349,  1350,  1351,  1352,  1355,  1358,  1359,  1362,
-    1365,  1366,  1367,  1370,  1373,  1376,  1377,  1380,  1381,  1384,
-    1387,  1388,  1391,  1394,  1395,  1398,  1401,  1404,  1405,  1408,
-    1409,  1412,  1414,  1417,  1418,  1419,  1420,  1421,  1422,  1423,
-    1424,  1425,  1431,  1433,  1434,  1435,  1436,  1437,  1438,  1439,
-    1440,  1441,  1444,  1447,  1450,  1453,  1454,  1457,  1458,  1461,
-    1462,  1465,  1466,  1469,  1472,  1475,  1478,  1479,  1482,  1485,
-    1486,  1489,  1492,  1495,  1496,  1499,  1502,  1505,  1506,  1509,
-    1510,  1511,  1512,  1515,  1518,  1521,  1522,  1525,  1526,  1527,
-    1530,  1534,  1538,  1542,  1546,  1550,  1551,  1552,  1553,  1554,
-    1555,  1556,  1557,  1558,  1559,  1560,  1561,  1562,  1563,  1564,
-    1565,  1566,  1567,  1568,  1569,  1570,  1571,  1572,  1573,  1574,
-    1575,  1576,  1577,  1578,  1579,  1580,  1581,  1582,  1583,  1584,
-    1585,  1586,  1587,  1588,  1589,  1590,  1591,  1592,  1593,  1594,
-    1595,  1596,  1597,  1598,  1599,  1600,  1601,  1602,  1603,  1604,
-    1605,  1606,  1607,  1608,  1609,  1610,  1611,  1612,  1613,  1614,
-    1615,  1616,  1617,  1618,  1619,  1620,  1621,  1622,  1623,  1624,
-    1625,  1626
+       0,   284,   284,   285,   288,   303,   306,   307,   308,   311,
+     314,   315,   318,   322,   323,   327,   330,   331,   334,   335,
+     336,   337,   338,   341,   342,   343,   344,   345,   348,   349,
+     352,   355,   356,   357,   360,   361,   364,   367,   368,   369,
+     372,   375,   378,   379,   380,   383,   386,   387,   388,   394,
+     395,   398,   399,   402,   403,   406,   409,   412,   413,   416,
+     417,   420,   421,   424,   430,   431,   436,   437,   440,   443,
+     446,   449,   450,   453,   454,   457,   458,   462,   463,   466,
+     469,   473,   476,   477,   478,   479,   480,   489,   490,   496,
+     498,   500,   502,   504,   509,   513,   517,   521,   525,   533,
+     537,   539,   543,   545,   549,   550,   553,   554,   569,   581,
+     590,   597,   598,   602,   603,   606,   607,   608,   611,   614,
+     615,   617,   618,   619,   622,   624,   628,   629,   632,   633,
+     636,   637,   640,   641,   644,   645,   646,   657,   665,   672,
+     673,   674,   677,   680,   684,   685,   689,   690,   691,   694,
+     697,   701,   702,   705,   707,   709,   711,   715,   716,   719,
+     721,   725,   726,   727,   730,   731,   734,   736,   739,   741,
+     744,   746,   750,   754,   758,   759,   760,   763,   765,   769,
+     773,   775,   777,   786,   788,   792,   794,   796,   800,   802,
+     806,   807,   809,   815,   817,   820,   824,   827,   831,   833,
+     836,   846,   851,   876,   880,   884,   886,   888,   890,   892,
+     897,   898,   899,   900,   901,   902,   903,   904,   905,   906,
+     907,   908,   909,   910,   911,   912,   913,   914,   915,   916,
+     917,   918,   919,   920,   921,   922,   923,   924,   925,   926,
+     929,   933,   935,   937,   939,   941,   943,   945,   947,   949,
+     951,   953,   954,   956,   958,   960,   964,   966,   968,   970,
+     974,   976,   980,   981,   984,   985,   988,   990,   998,  1001,
+    1002,  1005,  1006,  1009,  1010,  1013,  1015,  1019,  1021,  1025,
+    1029,  1032,  1035,  1039,  1042,  1044,  1048,  1050,  1058,  1061,
+    1062,  1065,  1066,  1069,  1070,  1084,  1087,  1090,  1092,  1100,
+    1104,  1106,  1108,  1110,  1112,  1114,  1116,  1118,  1122,  1124,
+    1128,  1130,  1132,  1134,  1145,  1147,  1151,  1153,  1157,  1159,
+    1163,  1167,  1171,  1173,  1177,  1179,  1186,  1189,  1193,  1195,
+    1197,  1201,  1205,  1206,  1209,  1211,  1214,  1216,  1218,  1220,
+    1230,  1233,  1235,  1239,  1241,  1245,  1247,  1249,  1253,  1257,
+    1259,  1262,  1266,  1278,  1281,  1287,  1290,  1291,  1294,  1295,
+    1298,  1304,  1311,  1317,  1320,  1323,  1326,  1329,  1332,  1335,
+    1336,  1339,  1340,  1341,  1342,  1343,  1344,  1345,  1346,  1347,
+    1348,  1349,  1350,  1351,  1355,  1358,  1359,  1362,  1363,  1364,
+    1365,  1366,  1367,  1368,  1369,  1372,  1375,  1376,  1379,  1382,
+    1383,  1384,  1387,  1390,  1393,  1394,  1397,  1398,  1401,  1404,
+    1405,  1408,  1411,  1412,  1415,  1418,  1421,  1422,  1425,  1426,
+    1429,  1431,  1434,  1435,  1436,  1437,  1438,  1439,  1440,  1441,
+    1442,  1448,  1450,  1451,  1452,  1453,  1454,  1455,  1456,  1457,
+    1458,  1461,  1464,  1467,  1470,  1471,  1474,  1475,  1478,  1479,
+    1482,  1483,  1486,  1489,  1492,  1495,  1496,  1499,  1502,  1503,
+    1506,  1509,  1512,  1513,  1516,  1519,  1522,  1523,  1526,  1527,
+    1528,  1529,  1532,  1535,  1538,  1539,  1542,  1543,  1544,  1547,
+    1551,  1555,  1559,  1563,  1567,  1568,  1569,  1570,  1571,  1572,
+    1573,  1574,  1575,  1576,  1577,  1578,  1579,  1580,  1581,  1582,
+    1583,  1584,  1585,  1586,  1587,  1588,  1589,  1590,  1591,  1592,
+    1593,  1594,  1595,  1596,  1597,  1598,  1599,  1600,  1601,  1602,
+    1603,  1604,  1605,  1606,  1607,  1608,  1609,  1610,  1611,  1612,
+    1613,  1614,  1615,  1616,  1617,  1618,  1619,  1620,  1621,  1622,
+    1623,  1624,  1625,  1626,  1627,  1628,  1629,  1630,  1631,  1632,
+    1633,  1634,  1635,  1636,  1637,  1638,  1639,  1640,  1641,  1642,
+    1643
   };
 
   // Print the state stack on the debug stream.
@@ -7791,8 +7936,8 @@ namespace yy {
 
 
 } // yy
-#line 7793 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:1167
-#line 1628 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:1168
+#line 7938 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:1167
+#line 1645 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:1168
 
 
 
@@ -7805,7 +7950,7 @@ namespace yy {
         context.location.step();
         // Lexer
 
-#line 7809 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 7954 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 {
 	char yych;
 	unsigned int yyaccept = 0;
@@ -7902,25 +8047,25 @@ namespace yy {
 	}
 yy2:
 	++context.cursor;
-#line 7919 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8064 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_END_OF_FILE(context.location); }
-#line 7908 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8053 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy4:
 	++context.cursor;
 yy5:
-#line 7944 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8089 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ throw(std::runtime_error(std::string("Unknown symbol!") + *start)); context.location.columns(context.cursor - start); return asn1_parser::symbol_type(asn1_parser::token_type(*start), context.location); }
-#line 7914 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8059 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy6:
 	++context.cursor;
-#line 7923 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8068 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); context.location.columns(); return yylex(context); }
-#line 7919 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8064 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy8:
 	++context.cursor;
-#line 7922 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8067 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); context.location.lines();   return yylex(context); }
-#line 7924 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8069 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy10:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -7929,9 +8074,9 @@ yy10:
 	}
 yy11:
 	++context.cursor;
-#line 7941 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8086 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXCLAMATION_MARK (context.location); }
-#line 7935 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8080 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy13:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -7998,19 +8143,19 @@ yy15:
 	}
 yy16:
 	++context.cursor;
-#line 7931 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8076 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OPEN_PARENTHESIS (context.location); }
-#line 8004 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8149 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy18:
 	++context.cursor;
-#line 7932 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8077 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CLOSE_PARENTHESIS (context.location); }
-#line 8009 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8154 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy20:
 	++context.cursor;
-#line 7937 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8082 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_COMMA (context.location); }
-#line 8014 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8159 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy22:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -8018,9 +8163,9 @@ yy22:
 	default:	goto yy23;
 	}
 yy23:
-#line 7938 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8083 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_HYPHEN_MINUS (context.location); }
-#line 8024 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8169 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy24:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -8028,9 +8173,9 @@ yy24:
 	default:	goto yy25;
 	}
 yy25:
-#line 7939 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8084 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_FULL_STOP (context.location); }
-#line 8034 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8179 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy26:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -8047,9 +8192,9 @@ yy26:
 	default:	goto yy28;
 	}
 yy28:
-#line 7910 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8055 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_number(std::stoll(std::string(start, context.cursor)), context.location); }
-#line 8053 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8198 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy29:
 	yyaccept = 0;
 	yych = *(YYMARKER = ++context.cursor);
@@ -8058,24 +8203,24 @@ yy29:
 	default:	goto yy30;
 	}
 yy30:
-#line 7935 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8080 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_COLON (context.location); }
-#line 8064 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8209 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy31:
 	++context.cursor;
-#line 7936 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8081 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_SEMICOLON (context.location); }
-#line 8069 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8214 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy33:
 	++context.cursor;
-#line 7942 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8087 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_LESS_THAN (context.location); }
-#line 8074 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8219 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy35:
 	++context.cursor;
-#line 7943 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8088 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_AT (context.location); }
-#line 8079 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8224 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy37:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -8086,9 +8231,9 @@ yy37:
 	default:	goto yy46;
 	}
 yy38:
-#line 7913 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8058 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(santize_name(std::string(start, context.cursor)), context.location); }
-#line 8092 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8237 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy39:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -8301,14 +8446,14 @@ yy57:
 	}
 yy58:
 	++context.cursor;
-#line 7933 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8078 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OPEN_SQUARE_BRACKET (context.location); }
-#line 8307 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8452 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy60:
 	++context.cursor;
-#line 7934 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8079 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CLOSE_SQUARE_BRACKET (context.location); }
-#line 8312 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8457 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy62:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -8379,29 +8524,29 @@ yy62:
 	default:	goto yy64;
 	}
 yy64:
-#line 7914 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8059 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(santize_name(std::string(start, context.cursor)), context.location); }
-#line 8385 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8530 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy65:
 	++context.cursor;
-#line 7929 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8074 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OPEN_BRACE (context.location); }
-#line 8390 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8535 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy67:
 	++context.cursor;
-#line 7940 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8085 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_VERTICAL_LINE (context.location); }
-#line 8395 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8540 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy69:
 	++context.cursor;
-#line 7930 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8075 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CLOSE_BRACE (context.location); }
-#line 8400 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8545 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy71:
 	++context.cursor;
-#line 7912 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8057 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_cstring(std::string(start, context.cursor), context.location); }
-#line 8405 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8550 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy73:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -8478,9 +8623,9 @@ yy75:
 	default:	goto yy77;
 	}
 yy77:
-#line 7915 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8060 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_typefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
-#line 8484 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8629 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy78:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -8551,9 +8696,9 @@ yy78:
 	default:	goto yy80;
 	}
 yy80:
-#line 7916 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8061 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_valuefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
-#line 8557 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8702 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy81:
 	yyaccept = 1;
 	yych = *(YYMARKER = ++context.cursor);
@@ -8564,9 +8709,9 @@ yy81:
 	default:	goto yy81;
 	}
 yy83:
-#line 7906 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8051 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return yylex(context); }
-#line 8570 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8715 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy84:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -8574,9 +8719,9 @@ yy84:
 	default:	goto yy85;
 	}
 yy85:
-#line 7928 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8073 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_RANGE (context.location); }
-#line 8580 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8725 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy86:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -8708,9 +8853,9 @@ yy96:
 	default:	goto yy97;
 	}
 yy97:
-#line 7820 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7965 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_BY (context.location); }
-#line 8714 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 8859 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy98:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -8939,9 +9084,9 @@ yy123:
 	default:	goto yy124;
 	}
 yy124:
-#line 7868 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8013 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OF (context.location); }
-#line 8945 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9090 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy125:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -9101,14 +9246,14 @@ yy149:
 	}
 yy150:
 	++context.cursor;
-#line 7927 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8072 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ELIPSIS (context.location); }
-#line 9107 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9252 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy152:
 	++context.cursor;
-#line 7926 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8071 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_DEFINED_AS (context.location); }
-#line 9112 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9257 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy154:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -9186,9 +9331,9 @@ yy155:
 	default:	goto yy156;
 	}
 yy156:
-#line 7813 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7958 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ALL (context.location); }
-#line 9192 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9337 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy157:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -9277,9 +9422,9 @@ yy160:
 	default:	goto yy161;
 	}
 yy161:
-#line 7817 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7962 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_BIT (context.location); }
-#line 9283 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9428 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy162:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -9424,9 +9569,9 @@ yy174:
 	default:	goto yy175;
 	}
 yy175:
-#line 7836 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7981 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_END (context.location); }
-#line 9430 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9575 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy176:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -9589,9 +9734,9 @@ yy191:
 	default:	goto yy192;
 	}
 yy192:
-#line 7859 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8004 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_MAX (context.location); }
-#line 9595 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9740 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy193:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -9662,9 +9807,9 @@ yy193:
 	default:	goto yy194;
 	}
 yy194:
-#line 7860 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8005 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_MIN (context.location); }
-#line 9668 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9813 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy195:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -9789,9 +9934,9 @@ yy204:
 	default:	goto yy205;
 	}
 yy205:
-#line 7872 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8017 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_PDV (context.location); }
-#line 9795 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9940 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy206:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -9904,9 +10049,9 @@ yy213:
 	default:	goto yy214;
 	}
 yy214:
-#line 7881 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8026 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_SET (context.location); }
-#line 9910 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10055 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy215:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -10007,9 +10152,9 @@ yy230:
 	}
 yy231:
 	++context.cursor;
-#line 7905 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8050 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return yylex(context); }
-#line 10013 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10158 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy233:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -10158,9 +10303,9 @@ yy246:
 	default:	goto yy247;
 	}
 yy247:
-#line 7828 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7973 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_DATE (context.location); }
-#line 10164 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10309 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy248:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -10298,9 +10443,9 @@ yy259:
 	default:	goto yy260;
 	}
 yy260:
-#line 7844 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7989 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_FROM (context.location); }
-#line 10304 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10449 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy261:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -10445,9 +10590,9 @@ yy273:
 	default:	goto yy274;
 	}
 yy274:
-#line 7863 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8008 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ASN_NULL (context.location); }
-#line 10451 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10596 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy275:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -10584,9 +10729,9 @@ yy286:
 	default:	goto yy287;
 	}
 yy287:
-#line 7877 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8022 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_REAL (context.location); }
-#line 10590 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10735 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy288:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -10675,9 +10820,9 @@ yy291:
 	default:	goto yy292;
 	}
 yy292:
-#line 7883 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8028 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_SIZE (context.location); }
-#line 10681 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10826 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy293:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -10766,9 +10911,9 @@ yy296:
 	default:	goto yy297;
 	}
 yy297:
-#line 7887 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8032 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_TAGS (context.location); }
-#line 10772 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10917 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy298:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -10839,9 +10984,9 @@ yy298:
 	default:	goto yy299;
 	}
 yy299:
-#line 7889 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8034 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_TIME (context.location); }
-#line 10845 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10990 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy300:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -10912,9 +11057,9 @@ yy300:
 	default:	goto yy301;
 	}
 yy301:
-#line 7891 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8036 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_TRUE (context.location); }
-#line 10918 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11063 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy302:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -11045,9 +11190,9 @@ yy312:
 	default:	goto yy313;
 	}
 yy313:
-#line 7901 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8046 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_WITH (context.location); }
-#line 11051 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11196 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy314:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -11142,9 +11287,9 @@ yy318:
 	default:	goto yy319;
 	}
 yy319:
-#line 7816 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7961 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_BEGIN (context.location); }
-#line 11148 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11293 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy320:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -11239,9 +11384,9 @@ yy324:
 	default:	goto yy325;
 	}
 yy325:
-#line 7823 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7968 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CLASS (context.location); }
-#line 11245 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11390 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy326:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -11403,9 +11548,9 @@ yy341:
 	default:	goto yy342;
 	}
 yy342:
-#line 7843 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7988 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_FALSE (context.location); }
-#line 11409 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11554 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy343:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -11573,9 +11718,9 @@ yy359:
 	default:	goto yy360;
 	}
 yy360:
-#line 7867 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8012 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OCTET (context.location); }
-#line 11579 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11724 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy361:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -11748,9 +11893,9 @@ yy378:
 	default:	goto yy379;
 	}
 yy379:
-#line 7893 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8038 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_UNION (context.location); }
-#line 11754 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11899 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy380:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -11863,9 +12008,9 @@ yy387:
 	default:	goto yy388;
 	}
 yy388:
-#line 7811 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7956 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ABSENT (context.location); }
-#line 11869 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12014 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy389:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -11972,9 +12117,9 @@ yy395:
 	default:	goto yy396;
 	}
 yy396:
-#line 7822 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7967 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CHOICE (context.location); }
-#line 11978 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12123 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy397:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -12111,9 +12256,9 @@ yy408:
 	default:	goto yy409;
 	}
 yy409:
-#line 7838 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7983 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXCEPT (context.location); }
-#line 12117 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12262 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy410:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -12304,9 +12449,9 @@ yy430:
 	default:	goto yy431;
 	}
 yy431:
-#line 7865 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8010 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OBJECT (context.location); }
-#line 12310 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12455 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy432:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -12443,9 +12588,9 @@ yy443:
 	default:	goto yy444;
 	}
 yy444:
-#line 7884 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8029 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_STRING (context.location); }
-#line 12449 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12594 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy445:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -12516,9 +12661,9 @@ yy445:
 	default:	goto yy446;
 	}
 yy446:
-#line 7885 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8030 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_SYNTAX (context.location); }
-#line 12522 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12667 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy447:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -12613,9 +12758,9 @@ yy451:
 	default:	goto yy452;
 	}
 yy452:
-#line 7894 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8039 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_UNIQUE (context.location); }
-#line 12619 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12764 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy453:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -12746,9 +12891,9 @@ yy463:
 	default:	goto yy464;
 	}
 yy464:
-#line 7819 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7964 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_BOOLEAN (context.location); }
-#line 12752 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12897 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy465:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -12849,9 +12994,9 @@ yy470:
 	default:	goto yy471;
 	}
 yy471:
-#line 7830 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7975 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_DEFAULT (context.location); }
-#line 12855 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13000 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy472:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -12940,9 +13085,9 @@ yy475:
 	default:	goto yy476;
 	}
 yy476:
-#line 7834 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7979 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ENCODED (context.location); }
-#line 12946 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13091 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy477:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -13031,9 +13176,9 @@ yy480:
 	default:	goto yy481;
 	}
 yy481:
-#line 7840 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7985 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXPORTS (context.location); }
-#line 13037 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13182 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy482:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -13147,9 +13292,9 @@ yy489:
 	default:	goto yy490;
 	}
 yy490:
-#line 7851 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7996 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_IMPLIED (context.location); }
-#line 13153 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13298 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy491:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -13220,9 +13365,9 @@ yy491:
 	default:	goto yy492;
 	}
 yy492:
-#line 7852 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7997 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_IMPORTS (context.location); }
-#line 13226 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13371 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy493:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -13311,9 +13456,9 @@ yy496:
 	default:	goto yy497;
 	}
 yy497:
-#line 7856 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8001 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_INTEGER (context.location); }
-#line 13317 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13462 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy498:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -13414,9 +13559,9 @@ yy503:
 	default:	goto yy504;
 	}
 yy504:
-#line 7869 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8014 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OID_IRI (context.location); }
-#line 13420 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13565 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy505:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -13499,9 +13644,9 @@ yy507:
 	default:	goto yy508;
 	}
 yy508:
-#line 7871 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8016 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_PATTERN (context.location); }
-#line 13505 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13650 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy509:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -13578,9 +13723,9 @@ yy510:
 	default:	goto yy511;
 	}
 yy511:
-#line 7874 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8019 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_PRESENT (context.location); }
-#line 13584 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13729 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy512:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -13651,9 +13796,9 @@ yy512:
 	default:	goto yy513;
 	}
 yy513:
-#line 7876 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8021 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_PRIVATE (context.location); }
-#line 13657 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13802 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy514:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -13778,9 +13923,9 @@ yy523:
 	default:	goto yy524;
 	}
 yy524:
-#line 7897 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8042 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_UTCTime (context.location); }
-#line 13784 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13929 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy525:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -13935,9 +14080,9 @@ yy539:
 	default:	goto yy540;
 	}
 yy540:
-#line 7832 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7977 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_DURATION (context.location); }
-#line 13941 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14086 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy541:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -14008,9 +14153,9 @@ yy541:
 	default:	goto yy542;
 	}
 yy542:
-#line 7833 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7978 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_EMBEDDED (context.location); }
-#line 14014 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14159 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy543:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -14093,9 +14238,9 @@ yy545:
 	default:	goto yy546;
 	}
 yy546:
-#line 7839 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7984 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXPLICIT (context.location); }
-#line 14099 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14244 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy547:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -14172,9 +14317,9 @@ yy548:
 	default:	goto yy549;
 	}
 yy549:
-#line 7842 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7987 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXTERNAL (context.location); }
-#line 14178 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14323 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy550:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -14275,9 +14420,9 @@ yy555:
 	default:	goto yy556;
 	}
 yy556:
-#line 7850 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7995 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_IMPLICIT (context.location); }
-#line 14281 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14426 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy557:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -14348,9 +14493,9 @@ yy557:
 	default:	goto yy558;
 	}
 yy558:
-#line 7853 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7998 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_INCLUDES (context.location); }
-#line 14354 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14499 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy559:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -14421,9 +14566,9 @@ yy559:
 	default:	goto yy560;
 	}
 yy560:
-#line 7854 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7999 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_INSTANCE (context.location); }
-#line 14427 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14572 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy561:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -14530,9 +14675,9 @@ yy567:
 	default:	goto yy568;
 	}
 yy568:
-#line 7870 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8015 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OPTIONAL (context.location); }
-#line 14536 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14681 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy569:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -14627,9 +14772,9 @@ yy573:
 	default:	goto yy574;
 	}
 yy574:
-#line 7880 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8025 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_SEQUENCE (context.location); }
-#line 14633 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14778 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy575:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -14700,9 +14845,9 @@ yy575:
 	default:	goto yy576;
 	}
 yy576:
-#line 7882 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8027 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_SETTINGS (context.location); }
-#line 14706 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14851 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy577:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -14839,9 +14984,9 @@ yy588:
 	default:	goto yy589;
 	}
 yy589:
-#line 7815 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7960 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_AUTOMATIC (context.location); }
-#line 14845 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14990 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy590:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -14912,9 +15057,9 @@ yy590:
 	default:	goto yy591;
 	}
 yy591:
-#line 7818 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7963 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_BMPString (context.location); }
-#line 14918 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15063 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy592:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -14985,9 +15130,9 @@ yy592:
 	default:	goto yy593;
 	}
 yy593:
-#line 7821 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7966 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CHARACTER (context.location); }
-#line 14991 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15136 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy594:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -15058,9 +15203,9 @@ yy594:
 	default:	goto yy595;
 	}
 yy595:
-#line 7824 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7969 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_COMPONENT (context.location); }
-#line 15064 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15209 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy596:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -15143,9 +15288,9 @@ yy598:
 	default:	goto yy599;
 	}
 yy599:
-#line 7829 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7974 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_DATE_TIME (context.location); }
-#line 15149 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15294 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy600:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -15258,9 +15403,9 @@ yy607:
 	default:	goto yy608;
 	}
 yy608:
-#line 7848 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7993 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_IA5String (context.location); }
-#line 15264 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15409 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy609:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -15397,9 +15542,9 @@ yy620:
 	default:	goto yy621;
 	}
 yy621:
-#line 7886 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8031 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_T61String (context.location); }
-#line 15403 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15548 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy622:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -15488,9 +15633,9 @@ yy625:
 	default:	goto yy626;
 	}
 yy626:
-#line 7895 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8040 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_UNIVERSAL (context.location); }
-#line 15494 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15639 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy627:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -15597,9 +15742,9 @@ yy633:
 	default:	goto yy634;
 	}
 yy634:
-#line 7825 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7970 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_COMPONENTS (context.location); }
-#line 15603 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15748 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy635:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -15676,9 +15821,9 @@ yy636:
 	default:	goto yy637;
 	}
 yy637:
-#line 7827 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7972 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CONTAINING (context.location); }
-#line 15682 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15827 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy638:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -15761,9 +15906,9 @@ yy640:
 	default:	goto yy641;
 	}
 yy641:
-#line 7837 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7982 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ENUMERATED (context.location); }
-#line 15767 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15912 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy642:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -15858,9 +16003,9 @@ yy646:
 	default:	goto yy647;
 	}
 yy647:
-#line 7849 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7994 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_IDENTIFIER (context.location); }
-#line 15864 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16009 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy648:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -16009,9 +16154,9 @@ yy661:
 	default:	goto yy662;
 	}
 yy662:
-#line 7898 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8043 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_UTF8String (context.location); }
-#line 16015 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16160 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy663:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -16106,9 +16251,9 @@ yy667:
 	default:	goto yy668;
 	}
 yy668:
-#line 7814 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7959 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_APPLICATION (context.location); }
-#line 16112 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16257 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy669:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -16179,9 +16324,9 @@ yy669:
 	default:	goto yy670;
 	}
 yy670:
-#line 7826 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7971 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CONSTRAINED (context.location); }
-#line 16185 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16330 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy671:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -16252,9 +16397,9 @@ yy671:
 	default:	goto yy672;
 	}
 yy672:
-#line 7831 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7976 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_DEFINITIONS (context.location); }
-#line 16258 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16403 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy673:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -16415,9 +16560,9 @@ yy688:
 	default:	goto yy689;
 	}
 yy689:
-#line 7890 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8035 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_TIME_OF_DAY (context.location); }
-#line 16421 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16566 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy690:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -16554,9 +16699,9 @@ yy701:
 	default:	goto yy702;
 	}
 yy702:
-#line 7855 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8000 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_INSTRUCTIONS (context.location); }
-#line 16560 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16705 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy703:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -16627,9 +16772,9 @@ yy703:
 	default:	goto yy704;
 	}
 yy704:
-#line 7857 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8002 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_INTERSECTION (context.location); }
-#line 16633 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16778 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy705:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -16700,9 +16845,9 @@ yy705:
 	default:	goto yy706;
 	}
 yy706:
-#line 7858 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8003 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ISO646String (context.location); }
-#line 16706 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16851 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy707:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -16779,9 +16924,9 @@ yy708:
 	default:	goto yy709;
 	}
 yy709:
-#line 7862 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8007 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_NOT_A_NUMBER (context.location); }
-#line 16785 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16930 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy710:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -16876,9 +17021,9 @@ yy714:
 	default:	goto yy715;
 	}
 yy715:
-#line 7878 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8023 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_RELATIVE_OID (context.location); }
-#line 16882 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17027 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy716:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -16991,9 +17136,9 @@ yy723:
 	default:	goto yy724;
 	}
 yy724:
-#line 7841 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7986 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXTENSIBILITY (context.location); }
-#line 16997 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17142 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy725:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -17064,9 +17209,9 @@ yy725:
 	default:	goto yy726;
 	}
 yy726:
-#line 7846 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7991 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_GeneralString (context.location); }
-#line 17070 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17215 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy727:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -17143,9 +17288,9 @@ yy728:
 	default:	goto yy729;
 	}
 yy729:
-#line 7847 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7992 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_GraphicString (context.location); }
-#line 17149 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17294 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy730:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -17222,9 +17367,9 @@ yy731:
 	default:	goto yy732;
 	}
 yy732:
-#line 7864 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8009 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_NumericString (context.location); }
-#line 17228 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17373 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy733:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -17301,9 +17446,9 @@ yy734:
 	default:	goto yy735;
 	}
 yy735:
-#line 7873 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8018 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_PLUS_INFINITY (context.location); }
-#line 17307 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17452 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy736:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -17392,9 +17537,9 @@ yy739:
 	default:	goto yy740;
 	}
 yy740:
-#line 7888 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8033 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_TeletexString (context.location); }
-#line 17398 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17543 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy741:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -17477,9 +17622,9 @@ yy743:
 	default:	goto yy744;
 	}
 yy744:
-#line 7900 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8045 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_VisibleString (context.location); }
-#line 17483 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17628 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy745:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -17568,9 +17713,9 @@ yy748:
 	default:	goto yy749;
 	}
 yy749:
-#line 7861 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8006 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_MINUS_INFINITY (context.location); }
-#line 17574 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17719 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy750:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -17671,9 +17816,9 @@ yy755:
 	default:	goto yy756;
 	}
 yy756:
-#line 7899 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8044 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_VideotexString (context.location); }
-#line 17677 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17822 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy757:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -17744,9 +17889,9 @@ yy757:
 	default:	goto yy758;
 	}
 yy758:
-#line 7812 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7957 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ABSTRACT_SYNTAX (context.location); }
-#line 17750 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17895 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy759:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -17823,9 +17968,9 @@ yy760:
 	default:	goto yy761;
 	}
 yy761:
-#line 7845 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7990 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_GeneralizedTime (context.location); }
-#line 17829 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17974 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy762:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -17902,9 +18047,9 @@ yy763:
 	default:	goto yy764;
 	}
 yy764:
-#line 7875 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8020 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_PrintableString (context.location); }
-#line 17908 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18053 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy765:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -17981,9 +18126,9 @@ yy766:
 	default:	goto yy767;
 	}
 yy767:
-#line 7892 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8037 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_TYPE_IDENTIFIER (context.location); }
-#line 17987 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18132 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy768:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -18054,9 +18199,9 @@ yy768:
 	default:	goto yy769;
 	}
 yy769:
-#line 7896 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8041 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_UniversalString (context.location); }
-#line 18060 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18205 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy770:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -18127,9 +18272,9 @@ yy770:
 	default:	goto yy771;
 	}
 yy771:
-#line 7835 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 7980 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ENCODING_CONTROL (context.location); }
-#line 18133 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18278 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy772:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -18200,9 +18345,9 @@ yy772:
 	default:	goto yy773;
 	}
 yy773:
-#line 7866 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8011 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ObjectDescriptor (context.location); }
-#line 18206 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18351 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy774:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -18273,11 +18418,11 @@ yy774:
 	default:	goto yy775;
 	}
 yy775:
-#line 7879 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8024 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_RELATIVE_OID_IRI (context.location); }
-#line 18279 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18424 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 }
-#line 7945 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 8090 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 
     }
 }

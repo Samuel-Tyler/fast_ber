@@ -8,6 +8,23 @@
 #include "CompilerTypes.hpp"
 #include "Dependencies.hpp"
 
+std::string to_string(const std::vector<Assignment>& assignments)
+{
+    std::string str;
+    for (const Assignment& assignment : assignments)
+    {
+        if (assignment.name.empty())
+        {
+            str += "<missing name>\n";
+        }
+        else
+        {
+            str += assignment.name + '\n';
+        }
+    }
+    return str;
+}
+
 void resolve_dependencies(const std::unordered_map<std::string, Assignment>& assignment_infos, const std::string& name,
                           std::unordered_set<std::string>& assigned_names,
                           std::unordered_set<std::string>& visited_names,
@@ -84,7 +101,8 @@ std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments
 
     if (assignments.size() != ordered_assignments.size())
     {
-        throw std::runtime_error("Failed to re-order assignments!");
+        throw std::runtime_error("Failed to re-order assignments, Unordered assigments:\n" + to_string(assignments) +
+                                 " ordered assignments:\n" + to_string(ordered_assignments));
     }
     return ordered_assignments;
 }
@@ -198,14 +216,16 @@ std::vector<Assignment> split_nested_structures(const std::vector<Assignment>& a
 
     for (const Assignment& assignment : assignments)
     {
-        std::vector<NamedType> nested_structs;
-        find_nested_structs(assignment.type, nested_structs);
-
-        for (auto nested_iter = nested_structs.rbegin(); nested_iter != nested_structs.rend(); nested_iter++)
+        if (absl::holds_alternative<TypeAssignment>(assignment.specific))
         {
-            split_assignments.push_back(Assignment{nested_iter->name, nested_iter->type, {}, {}, {}});
-        }
+            std::vector<NamedType> nested_structs;
+            find_nested_structs(absl::get<TypeAssignment>(assignment.specific).type, nested_structs);
 
+            for (auto nested_iter = nested_structs.rbegin(); nested_iter != nested_structs.rend(); nested_iter++)
+            {
+                split_assignments.push_back(Assignment{nested_iter->name, TypeAssignment{nested_iter->type}, {}, {}});
+            }
+        }
         split_assignments.push_back(assignment);
     }
 

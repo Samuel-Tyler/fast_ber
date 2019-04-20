@@ -145,12 +145,9 @@ std::vector<std::string> depends_on(const Type& type) { return absl::visit(depen
 std::vector<std::string> dependenies(const Type& type) { return depends_on(type); }
 std::vector<std::string> dependenies(const Assignment& assignment)
 {
-    if (assignment.value)
+    if (absl::holds_alternative<TypeAssignment>(assignment.specific))
     {
-        return {};
+        return depends_on(absl::get<TypeAssignment>(assignment.specific).type);
     }
-    else
-    {
-        return depends_on(assignment.type);
-    }
+    return {};
 }

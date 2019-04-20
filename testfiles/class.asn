@@ -1,0 +1,23 @@
+Class DEFINITIONS ::= BEGIN
+
+ERROR ::= CLASS {
+  &ParameterType          OPTIONAL,
+  &parameterTypeOptional  BOOLEAN OPTIONAL,
+  &ErrorPriority          Priority OPTIONAL,
+  &errorCode              Code UNIQUE OPTIONAL
+}
+WITH SYNTAX {
+  [PARAMETER &ParameterType
+   [OPTIONAL &parameterTypeOptional]]
+  [PRIORITY &ErrorPriority]
+  [CODE &errorCode]
+}
+
+Code ::= CHOICE {
+  local   INTEGER,
+  global  OBJECT IDENTIFIER
+}
+
+Priority ::= INTEGER(0..MAX)
+
+END

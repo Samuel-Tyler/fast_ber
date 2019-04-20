@@ -348,13 +348,31 @@ struct TaggedType
     Type        type;
 };
 
+struct TypeAssignment
+{
+    Type type;
+};
+
+struct ValueAssignment
+{
+    Type  type;
+    Value value;
+};
+
+struct ObjectClassAssignment
+{
+};
+
+struct ObjectSetAssignment
+{
+};
+
 struct Assignment
 {
-    std::string              name;
-    Type                     type;
-    absl::optional<Value>    value;
-    std::vector<std::string> depends_on;
-    std::set<std::string>    parameters;
+    std::string                                                                                name;
+    absl::variant<TypeAssignment, ValueAssignment, ObjectClassAssignment, ObjectSetAssignment> specific;
+    std::vector<std::string>                                                                   depends_on;
+    std::set<std::string>                                                                      parameters;
 };
 
 struct Import
