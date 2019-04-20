@@ -239,6 +239,7 @@
 %type<Assignment>        ParameterizedObjectAssignment;
 %type<Assignment>        ParameterizedObjectSetAssignment;
 %type<Type>              Type;
+%type<Type>              ConstrainedType;
 %type<std::vector<Type>> ActualParameterList;
 %type<Type>              ActualParameter;
 %type<Class>             Class;
@@ -797,6 +798,7 @@ Assignment:
 |   ObjectClassAssignment
     { $$ = $1; }
 |   ValueSetTypeAssignment
+    { $$ = $1; }
 /*|   ObjectAssignment */
 |   ObjectSetAssignment
     { $$ = $1; }
@@ -889,7 +891,7 @@ Type:
     BuiltinType
     { $$ = $1; }
 |   ConstrainedType
-    { $$ = Type(); }
+    { $$ = $1; }
 |   DefinedType
     { $$ = $1; }
 |   SelectionType
@@ -1364,7 +1366,8 @@ UnrestrictedCharacterStringType:
 
 ConstrainedType:
     Type Constraint
-|   TypeWithConstraint;
+    { $$ = $1; };
+|   TypeWithConstraint
 
 TypeWithConstraint:
     SET Constraint OF Type
