@@ -228,6 +228,7 @@
 %type<Assignment>        Assignment;
 %type<Assignment>        TypeAssignment;
 %type<Assignment>        ValueAssignment;
+%type<Assignment>        ValueSetTypeAssignment;
 %type<Assignment>        ObjectClassAssignment;
 %type<Assignment>        ObjectSetAssignment;
 %type<Assignment>        ParameterizedAssignment
@@ -795,7 +796,7 @@ Assignment:
     { $$ = $1; }
 |   ObjectClassAssignment
     { $$ = $1; }
-//|   ValueSetTypeAssignment
+|   ValueSetTypeAssignment
 /*|   ObjectAssignment */
 |   ObjectSetAssignment
     { $$ = $1; }
@@ -879,6 +880,10 @@ TypeAssignment:
 ValueAssignment:
     valuereference Type DEFINED_AS Value
     { $$ = Assignment{ $1, ValueAssignment{$2, $4}, {} }; }
+    
+ValueSetTypeAssignment:
+    typereference Type DEFINED_AS ValueSet
+    { $$ = Assignment{ $1, TypeAssignment{$2}, {} }; }
 
 Type:
     BuiltinType
@@ -983,6 +988,9 @@ ValueCommaListChoice:
 ValueChoice:
     Value VERTICAL_LINE Value
 |   ValueChoice VERTICAL_LINE Value
+
+ValueSet:
+    "{" ElementSetSpecs "}"
 
 SequenceOfValues:
     Value
