@@ -162,6 +162,9 @@ struct EnumerationValue
     absl::optional<int64_t> value;
 };
 
+struct AnyType
+{
+};
 struct BitStringType
 {
 };
@@ -274,7 +277,7 @@ struct UTCTimeType
 struct DefinedType;
 
 using BuiltinType =
-    absl::variant<BitStringType, BooleanType, CharacterStringType, ChoiceType, DateType, DateTimeType, DurationType,
+    absl::variant<AnyType, BitStringType, BooleanType, CharacterStringType, ChoiceType, DateType, DateTimeType, DurationType,
                   EmbeddedPDVType, EnumeratedType, ExternalType, GeneralizedTimeType, InstanceOfType, IntegerType,
                   IRIType, NullType, ObjectClassFieldType, ObjectDescriptorType, ObjectIdentifierType, OctetStringType,
                   RealType, RelativeIRIType, RelativeOIDType, SequenceType, SequenceOfType, SetType, SetOfType,
@@ -470,6 +473,7 @@ struct ObjectIdComponents
     std::vector<ObjectIdComponentValue> components;
 };
 
+std::string to_string(const AnyType&);
 std::string to_string(const BitStringType&);
 std::string to_string(const BooleanType&);
 std::string to_string(const CharacterStringType&);
@@ -562,6 +566,7 @@ bool is_defined(const Type& type) { return absl::holds_alternative<DefinedType>(
 
 int unnamed_definition_reference_num = 0;
 
+std::string to_string(const AnyType&) { return "Any"; }
 std::string to_string(const BitStringType&) { return "BitString"; }
 std::string to_string(const BooleanType&) { return "Boolean"; }
 std::string to_string(const CharacterStringType&) { return "CharacterString"; }

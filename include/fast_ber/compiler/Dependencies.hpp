@@ -2,6 +2,7 @@
 
 #include "fast_ber/compiler/CompilerTypes.hpp"
 
+std::vector<std::string> depends_on(const AnyType&);
 std::vector<std::string> depends_on(const BitStringType&);
 std::vector<std::string> depends_on(const BooleanType&);
 std::vector<std::string> depends_on(const CharacterStringType&);
@@ -50,6 +51,7 @@ std::vector<std::string> depends_on(const ChoiceType choice)
     }
     return depends;
 }
+std::vector<std::string> depends_on(const AnyType&) { return{}; }
 std::vector<std::string> depends_on(const DateType&) { return {}; }
 std::vector<std::string> depends_on(const DateTimeType&) { return {}; }
 std::vector<std::string> depends_on(const DurationType&) { return {}; }

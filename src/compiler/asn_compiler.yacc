@@ -62,6 +62,7 @@
 %token ABSENT
 %token ABSTRACT_SYNTAX
 %token ALL
+%token ANY
 %token APPLICATION
 %token ASN_NULL
 %token AUTOMATIC
@@ -239,6 +240,7 @@
 %type<Assignment>        ParameterizedObjectSetAssignment;
 %type<Type>              Type;
 %type<Type>              ConstrainedType;
+%type<Type>              TypeWithConstraint;
 %type<BitStringType>     BitStringType;
 %type<BooleanType>       BooleanType;
 %type<CharacterStringType> CharacterStringType;
@@ -497,11 +499,11 @@ ObjectSet:
     "{" ObjectSetSpec "}";
 
 ObjectSetSpec:
-    RootElementSetSpec
-|   RootElementSetSpec "," ELIPSIS
+    ElementSetSpec
+|   ElementSetSpec "," ELIPSIS
 |   ELIPSIS
-|   ELIPSIS "," AdditionalElementSetSpec
-|   RootElementSetSpec "," ELIPSIS "," AdditionalElementSetSpec;
+|   ELIPSIS "," ElementSetSpec
+|   ElementSetSpec "," ELIPSIS "," ElementSetSpec;
 
 ObjectSetElements:
     Object
@@ -809,8 +811,8 @@ Reference:
 AssignmentList:
     Assignment
     { $$.push_back($1); }
-|   AssignmentList Assignment
-    { $$ = $1; $$.push_back($2); }
+|   Assignment AssignmentList
+    { $$ = $2; $$.push_back($1); }
 
 Assignment:
     TypeAssignment
@@ -921,7 +923,8 @@ Type:
 //|   ValueSetFromObjects { std::cerr << std::string("Not handled - ValueSetFromObjects\n"); }
 
 BuiltinType:
-    BitStringType { $$ = $1; }
+    ANY { $$ = AnyType(); }
+|   BitStringType { $$ = $1; }
 |   BooleanType { $$ = $1; }
 |   CharacterStringType { $$ = $1; }
 |   ChoiceType { $$ = $1; }
@@ -1210,6 +1213,8 @@ RootAlternativeTypeList:
     { $$ = $1; }
 |   AlternativeTypeList "," ELIPSIS
     { $$ = $1; }
+|   AlternativeTypeList "," ELIPSIS "," AlternativeTypeList
+    { $$ = $1; $$.insert($$.begin(), $5.begin(), $5.end()); }
 
 AlternativeTypeList:
     NamedType
@@ -1394,18 +1399,27 @@ UnrestrictedCharacterStringType:
 
 ConstrainedType:
     Type Constraint
-    { $$ = $1; };
+    { $$ = $1; }
 |   TypeWithConstraint
+    { $$ = $1; }
 
 TypeWithConstraint:
     SET Constraint OF Type
+    { $$ = SetOfType{ false, nullptr, std::make_shared<Type>($4) }; }
 |   SET SizeConstraint OF Type
+    { $$ = SetOfType{ false, nullptr, std::make_shared<Type>($4) }; }
 |   SEQUENCE Constraint OF Type
+    { $$ = SequenceOfType{ false, nullptr, std::make_shared<Type>($4) }; }
 |   SEQUENCE SizeConstraint OF Type
+    { $$ = SequenceOfType{ false, nullptr, std::make_shared<Type>($4) }; }
 |   SET Constraint OF NamedType
+    { $$ = SetOfType{ true, std::make_shared<NamedType>($4), nullptr }; }
 |   SET SizeConstraint OF NamedType
+    { $$ = SetOfType{ true, std::make_shared<NamedType>($4), nullptr }; }
 |   SEQUENCE Constraint OF NamedType
-|   SEQUENCE SizeConstraint OF NamedType;
+    { $$ = SequenceOfType{ true, std::make_shared<NamedType>($4), nullptr }; }
+|   SEQUENCE SizeConstraint OF NamedType
+    { $$ = SequenceOfType{ true, std::make_shared<NamedType>($4), nullptr }; }
 
 Constraint:
     "(" ConstraintSpec ExceptionSpec ")";
@@ -1418,15 +1432,9 @@ SubtypeConstraint:
     ElementSetSpecs;
 
 ElementSetSpecs:
-    RootElementSetSpec
-|   RootElementSetSpec "," ELIPSIS
-|   RootElementSetSpec "," ELIPSIS "," AdditionalElementSetSpec;
-
-RootElementSetSpec:
-    ElementSetSpec;
-
-AdditionalElementSetSpec:
-    ElementSetSpec;
+    ElementSetSpec
+|   ElementSetSpec "," ELIPSIS
+|   ElementSetSpec "," ELIPSIS "," ElementSetSpec;
 
 ElementSetSpec:
     Unions
@@ -1467,7 +1475,7 @@ IntersectionMark:
 Elements:
     SubtypeElements
 //|   ObjectSetElements
-|   "(" ElementSetSpec ")";
+|   "(" ElementSetSpecs ")";
 
 SubtypeElements:
     SingleValue
@@ -1701,6 +1709,7 @@ re2c:define:YYCURSOR = "context.cursor";
 "ABSENT"                { context.location.columns(context.cursor - start); return asn1_parser::make_ABSENT (context.location); }
 "ABSTRACT-SYNTAX"       { context.location.columns(context.cursor - start); return asn1_parser::make_ABSTRACT_SYNTAX (context.location); }
 "ALL"                   { context.location.columns(context.cursor - start); return asn1_parser::make_ALL (context.location); }
+"ANY"                   { context.location.columns(context.cursor - start); return asn1_parser::make_ANY (context.location); }
 "APPLICATION"           { context.location.columns(context.cursor - start); return asn1_parser::make_APPLICATION (context.location); }
 "AUTOMATIC"             { context.location.columns(context.cursor - start); return asn1_parser::make_AUTOMATIC (context.location); }
 "BEGIN"                 { context.location.columns(context.cursor - start); return asn1_parser::make_BEGIN (context.location); }
@@ -1834,6 +1843,8 @@ re2c:define:YYCURSOR = "context.cursor";
 "|"                     { context.location.columns(context.cursor - start); return asn1_parser::make_VERTICAL_LINE (context.location); }
 "!"                     { context.location.columns(context.cursor - start); return asn1_parser::make_EXCLAMATION_MARK (context.location); }
 "<"                     { context.location.columns(context.cursor - start); return asn1_parser::make_LESS_THAN (context.location); }
+"^"                     { context.location.columns(context.cursor - start); return asn1_parser::make_ACCENT (context.location); }
+
 "@"                     { context.location.columns(context.cursor - start); return asn1_parser::make_AT (context.location); }
 .                       { throw(std::runtime_error(std::string("Unknown symbol!") + *start)); context.location.columns(context.cursor - start); return asn1_parser::symbol_type(asn1_parser::token_type(*start), context.location); }
 %}

@@ -2,6 +2,7 @@
 
 #include "fast_ber/compiler/CompilerTypes.hpp"
 
+TaggingInfo identifier(const AnyType&, TaggingMode);
 TaggingInfo identifier(const BitStringType&, TaggingMode);
 TaggingInfo identifier(const BooleanType&, TaggingMode);
 TaggingInfo identifier(const CharacterStringType&, TaggingMode);
@@ -35,6 +36,10 @@ TaggingInfo identifier(const DefinedType&, TaggingMode);
 TaggingInfo identifier(const BuiltinType& type, TaggingMode);
 TaggingInfo identifier(const Type& type, TaggingMode);
 
+TaggingInfo identifier(const AnyType&, TaggingMode)
+{
+    return TaggingInfo{"ExplicitIdentifier<UniversalTag::any>", true};
+}
 TaggingInfo identifier(const BitStringType&, TaggingMode)
 {
     return TaggingInfo{"ExplicitIdentifier<UniversalTag::bit_string>", true};
