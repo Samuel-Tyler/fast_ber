@@ -434,6 +434,7 @@ RequiredToken:
 LiteralList:
     Literal
 |   LiteralList Literal
+|   %empty
 
 Literal:
     word
@@ -855,7 +856,7 @@ ActualParameter:
     Type
     { $$ = $1; }
 |   ValueWithoutTypeIdentifier
-    { std::cerr << "Warning: Not yet dealing with value paramaters"; }
+    { std::cerr << "Warning: Not yet dealing with value paramaters\n"; }
 //|   ValueSet
 |   DefinedObjectClass
 //|   Object
@@ -867,9 +868,7 @@ NonParameterizedTypeName:
 |   xmlasn1typename;
 
 ExternalTypeReference:
-    modulereference
-    "."
-    typereference;
+    typereference "." typereference; // Param one is actually modulereference, but this causes parsing clash
 
 ExternalValueReference:
     modulereference
@@ -997,7 +996,9 @@ ValueWithoutTypeIdentifier:
     { std::cerr << std::string("Unhandled field: OPTIONAL\n"); }
 |   ValueCommaListChoice
     { std::cerr << std::string("Unhandled field: ValueCommaListChoice\n"); }
-    
+|   BY
+    { std::cerr << std::string("Unhandled field: BY\n"); }
+
 Value:
     ValueWithoutTypeIdentifier
     { $$ = $1; }
@@ -1642,7 +1643,7 @@ word:
 |   IMPLICIT
 |   IMPLIED
 |   IMPORTS
-|   INCLUDES "INCLUDES"
+|   INCLUDES
 |   INSTANCE
 |   INSTRUCTIONS
 |   INTEGER
@@ -1793,12 +1794,13 @@ re2c:define:YYCURSOR = "context.cursor";
 "--" ([\-]?[^\r\n\-])* "--"
                         { context.location.columns(context.cursor - start); return yylex(context); }
 "--" ([\-]?[^\r\n\-])*  { context.location.columns(context.cursor - start); return yylex(context); }
-"/*" ([\*]?[^"/"])* "*/"  { context.location.columns(context.cursor - start); return yylex(context); }
+"/*" ([^\*]|[\*][^/])* "*/"
+                        { context.location.columns(context.cursor - start); return yylex(context); }
 
 // Identifiers
 //[0-9]+\.[0-9]+        { context.location.columns(context.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context.cursor)), context.location); }
 [0-9]+                  { context.location.columns(context.cursor - start); return asn1_parser::make_number(std::stoll(std::string(start, context.cursor)), context.location); }
-['\"']('\\'.|[^'\"'])*['\"']
+['\"']('\\'.|"\"\""|[^'\"'])*['\"']
                         { context.location.columns(context.cursor - start); return asn1_parser::make_cstring(std::string(start, context.cursor), context.location); }
 ['\'']('0'|'1')*['\'']"B"
                         { context.location.columns(context.cursor - start); return asn1_parser::make_bstring(std::string(start, context.cursor), context.location); }
