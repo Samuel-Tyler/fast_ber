@@ -278,7 +278,6 @@
 %type<ComponentType>     ComponentType;
 %type<ComponentTypeList> ComponentTypeList;
 %type<ComponentTypeList> ComponentTypeLists;
-%type<ComponentTypeList> RootComponentTypeList;
 %type<Value>             Value;
 %type<Value>             SingleValue;
 %type<Value>             ValueWithoutTypeIdentifier;
@@ -1133,15 +1132,7 @@ SequenceType:
 |   SEQUENCE "{" ComponentTypeLists "}"
     { $$ = SequenceType{$3}; }
 
-ExtensionAndException:
-    ELIPSIS
-|   ELIPSIS ExceptionSpec;
-
 ComponentTypeLists:
-    RootComponentTypeList
-    { $$ = $1; }
-
-RootComponentTypeList:
     ComponentTypeList
     { $$ = $1; }
 |   ComponentTypeList "," ELIPSIS ExceptionSpec
@@ -1548,14 +1539,9 @@ SingleTypeConstraint:
     Constraint;
 
 MultipleTypeConstraints:
-    FullSpecification
-|   PartialSpecification;
-
-FullSpecification:
-    "{" TypeConstraints "}";
-
-PartialSpecification:
-    "{" ELIPSIS "," TypeConstraints "}";
+|   "{" ELIPSIS "}"
+|   "{" ELIPSIS "," TypeConstraints "}"
+|   "{" TypeConstraints "}"
 
 TypeConstraints:
     NamedConstraint
