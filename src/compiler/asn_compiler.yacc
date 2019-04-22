@@ -358,6 +358,7 @@ FieldSpec:
     TypeFieldSpec
 |   FixedTypeValueFieldSpec
 |   VariableTypeValueFieldSpec
+|   FixedTypeValueSetFieldSpec
 |   ObjectFieldSpec
 |   ObjectSetFieldSpec;
 
@@ -392,8 +393,17 @@ ValueOptionalitySpec:
 |   DEFAULT SingleValue
 |   %empty
 
+
 VariableTypeValueFieldSpec:
     valuefieldreference FieldName ValueOptionalitySpec;
+
+FixedTypeValueSetFieldSpec:
+    typefieldreference Type ValueSetOptionalitySpec
+
+ValueSetOptionalitySpec:
+    OPTIONAL
+|   DEFAULT ValueSet
+|   %empty
 
 ObjectFieldSpec:
     typefieldreference DefinedObjectClass ObjectOptionalitySpec;
@@ -543,7 +553,7 @@ ParameterizedValueSetTypeAssignment:
     { $$ = Assignment{ $1, ValueAssignment{} }; }
  
 ParameterizedObjectClassAssignment:
-    objectclassreference ParameterList DEFINED_AS ObjectClass
+    typereference ParameterList DEFINED_AS ObjectClass
     { $$ = Assignment{ $1, ObjectClassAssignment{} }; }
 
 ParameterizedObjectAssignment:
@@ -638,9 +648,10 @@ UserDefinedConstraint:
 UserDefinedConstraintParameter:
     Governor ":" Value
 |   Governor ":" Object
-//|   DefinedObjectSet
+|   DefinedObjectSet
 |   Type
 |   DefinedObjectClass
+|   ELIPSIS
 |   %empty
 
 TableConstraint:
@@ -843,15 +854,17 @@ DefinedValue:
 |   ParameterizedValue;
 
 ParameterizedType:
-    SimpleDefinedType ActualParameterList
-    { $$ = DefinedType{$1, $2}; }
+    SimpleDefinedType "{" ActualParameterList "}"
+    { $$ = DefinedType{$1, $3}; }
 
 ParameterizedValue:
-    SimpleDefinedValue ActualParameterList 
+    SimpleDefinedValue "{" ActualParameterList "}"
 
 ActualParameterList:
-    "{" ActualParameter "}"
-    { $$.push_back($2); }
+    ActualParameter 
+    { $$.push_back($1); }
+|   ActualParameter "," ActualParameterList
+    { $$ = $3; $$.push_back($1); }
 
 ActualParameter:
     Type
@@ -1795,12 +1808,14 @@ re2c:define:YYCURSOR = "context.cursor";
                         { context.location.columns(context.cursor - start); return yylex(context); }
 
 // Identifiers
-//[0-9]+\.[0-9]+        { context.location.columns(context.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context.cursor)), context.location); }
+[0-9]+'\.'[0-9]+        { context.location.columns(context.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context.cursor)), context.location); }
 [0-9]+                  { context.location.columns(context.cursor - start); return asn1_parser::make_number(std::stoll(std::string(start, context.cursor)), context.location); }
 ['\"']('\\'.|"\"\""|[^'\"'])*['\"']
                         { context.location.columns(context.cursor - start); return asn1_parser::make_cstring(std::string(start, context.cursor), context.location); }
 ['\'']('0'|'1')*['\'']"B"
                         { context.location.columns(context.cursor - start); return asn1_parser::make_bstring(std::string(start, context.cursor), context.location); }
+['\''][0-9A-Fa-f]*['\'']"H"
+                        { context.location.columns(context.cursor - start); return asn1_parser::make_hstring(std::string(start, context.cursor), context.location); }
 [A-Z][A-Za-z_0-9\-]*    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(santize_name(std::string(start, context.cursor)), context.location); }
 [a-z][A-Za-z_0-9\-]*    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(santize_name(std::string(start, context.cursor)), context.location); }
 [&][A-Z][A-Za-z_0-9\-]* { context.location.columns(context.cursor - start); return asn1_parser::make_typefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
