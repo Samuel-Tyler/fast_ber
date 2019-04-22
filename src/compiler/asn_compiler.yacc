@@ -512,8 +512,8 @@ ObjectSetElements:
 //|   ParameterizedObjectSet;
 
 ObjectClassFieldType:
-    typereference "." FieldNameList
-|   valuereference "." FieldNameList
+    UsefulObjectClassReference "." FieldNameList
+|   typereference "." FieldNameList
 
 ObjectClassFieldValue:
     Type COLON Value;
@@ -919,7 +919,7 @@ Type:
 |   SelectionType
     { std::cerr << "Warning: Not handled - SelectionType\n"; }
 |   TypeFromObject
-    { std::cerr << std::string("Not handled - TypeFromObject\n"); }
+    { std::cerr << "Warning: Not handled - TypeFromObject\n"; }
 //|   ValueSetFromObjects { std::cerr << std::string("Not handled - ValueSetFromObjects\n"); }
 
 BuiltinType:
@@ -961,21 +961,21 @@ NamedType:
 
 ValueWithoutTypeIdentifier:
     BooleanValue
-    { std::cerr << std::string("Unhandled field: BooleanValue\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: BooleanValue\n"); }
 |   IRIValue
-    { std::cerr << std::string("Unhandled field: IRIValue\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: IRIValue\n"); }
 |   ASN_NULL
-    { std::cerr << std::string("Unhandled field: ASN_NULL\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: ASN_NULL\n"); }
 |   TimeValue
-    { std::cerr << std::string("Unhandled field: TimeValue\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: TimeValue\n"); }
 |   bstring
-    { std::cerr << std::string("Unhandled field: bstring\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: bstring\n"); }
 |   hstring
-    { std::cerr << std::string("Unhandled field: hstring\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: hstring\n"); }
 |   cstring
     { $$.value_selection = $1; }
 |   CONTAINING Value
-    { std::cerr << std::string("Unhandled field: CONTAINING\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: CONTAINING\n"); }
 |   DefinedValue
     { $$.defined_value = $1; }
 |   GENERIC_IDENTIFIER_LOWERCASE "(" number ")"
@@ -986,21 +986,23 @@ ValueWithoutTypeIdentifier:
 |   realnumber
     { $$.value_selection = $1; }
 |   ObjectClassFieldType
-    { std::cerr << std::string("Unhandled field: ValueCommaListChoice\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: ValueCommaListChoice\n"); }
 |   Value COLON Value
-    { std::cerr << std::string("Unhandled field: ValueCommaListChoice\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: ValueCommaListChoice\n"); }
 //|   ObjectClassFieldValue
-//    { std::cerr << std::string("Unhandled field: ObjectClassFieldValue\n"); }
+//    { std::cerr << std::string("Warning: Unhandled field: ObjectClassFieldValue\n"); }
 |   "{" SequenceOfValues "}"
     { $$.value_selection = $2; }
 |   ValueChoice
-    { std::cerr << std::string("Unhandled field: ValueChoice\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: ValueChoice\n"); }
 |   OPTIONAL
-    { std::cerr << std::string("Unhandled field: OPTIONAL\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: OPTIONAL\n"); }
 |   ValueCommaListChoice
-    { std::cerr << std::string("Unhandled field: ValueCommaListChoice\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: ValueCommaListChoice\n"); }
 |   BY
-    { std::cerr << std::string("Unhandled field: BY\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: BY\n"); }
+|   WITH
+    { std::cerr << std::string("Warning: Unhandled field: WITH\n"); }
 
 Value:
     ValueWithoutTypeIdentifier
