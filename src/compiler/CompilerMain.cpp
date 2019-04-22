@@ -87,6 +87,22 @@ std::string create_assignment(const Assignment& assignment, TaggingMode tagging_
             const std::string& string = absl::get<std::string>(value_assign.value.value_selection);
             result += string;
         }
+        else if (absl::holds_alternative<BitStringValue>(value_assign.value.value_selection))
+        {
+            const BitStringValue& bstring = absl::get<BitStringValue>(value_assign.value.value_selection);
+            (void)bstring; // TODO: convert bstring to cstring
+            result += "\"\"";
+        }
+        else if (absl::holds_alternative<HexStringValue>(value_assign.value.value_selection))
+        {
+            const HexStringValue& hstring = absl::get<HexStringValue>(value_assign.value.value_selection);
+            result += hstring.value;
+        }
+        else if (absl::holds_alternative<CharStringValue>(value_assign.value.value_selection))
+        {
+            const CharStringValue& cstring = absl::get<CharStringValue>(value_assign.value.value_selection);
+            result += cstring.value;
+        }
         else if (absl::holds_alternative<int64_t>(value_assign.value.value_selection))
         {
             const int64_t integer = absl::get<int64_t>(value_assign.value.value_selection);

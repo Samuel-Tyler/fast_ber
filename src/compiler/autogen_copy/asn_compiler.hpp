@@ -6748,19 +6748,19 @@ namespace yy {
 
   case 257:
 #line 984 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { std::cerr << std::string("Warning: Unhandled field: bstring\n"); }
+    { yylhs.value.as< Value > ().value_selection = BitStringValue{yystack_[0].value.as< std::string > ()}; }
 #line 6751 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 258:
 #line 986 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { std::cerr << std::string("Warning: Unhandled field: hstring\n"); }
+    { yylhs.value.as< Value > ().value_selection = HexStringValue{yystack_[0].value.as< std::string > ()}; }
 #line 6757 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 259:
 #line 988 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Value > ().value_selection = yystack_[0].value.as< std::string > (); }
+    { yylhs.value.as< Value > ().value_selection = CharStringValue{yystack_[0].value.as< std::string > ()}; }
 #line 6763 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
@@ -10482,7 +10482,7 @@ yy162:
 yy164:
 	++context.cursor;
 #line 9176 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_bstring(std::string(start, context.cursor), context.location); }
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_bstring(std::string(start + 1, context.cursor - 2), context.location); }
 #line 10487 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy166:
 	++context.cursor;

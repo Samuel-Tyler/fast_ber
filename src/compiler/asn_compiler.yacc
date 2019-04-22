@@ -981,11 +981,11 @@ ValueWithoutTypeIdentifier:
 |   TimeValue
     { std::cerr << std::string("Warning: Unhandled field: TimeValue\n"); }
 |   bstring
-    { std::cerr << std::string("Warning: Unhandled field: bstring\n"); }
+    { $$.value_selection = BitStringValue{$1}; }
 |   hstring
-    { std::cerr << std::string("Warning: Unhandled field: hstring\n"); }
+    { $$.value_selection = HexStringValue{$1}; }
 |   cstring
-    { $$.value_selection = $1; }
+    { $$.value_selection = CharStringValue{$1}; }
 |   CONTAINING Value
     { std::cerr << std::string("Warning: Unhandled field: CONTAINING\n"); }
 |   DefinedValue
@@ -1813,7 +1813,7 @@ re2c:define:YYCURSOR = "context.cursor";
 ['\"']('\\'.|"\"\""|[^'\"'])*['\"']
                         { context.location.columns(context.cursor - start); return asn1_parser::make_cstring(std::string(start, context.cursor), context.location); }
 ['\'']('0'|'1')*['\'']"B"
-                        { context.location.columns(context.cursor - start); return asn1_parser::make_bstring(std::string(start, context.cursor), context.location); }
+                        { context.location.columns(context.cursor - start); return asn1_parser::make_bstring(std::string(start + 1, context.cursor - 2), context.location); }
 ['\''][0-9A-Fa-f]*['\'']"H"
                         { context.location.columns(context.cursor - start); return asn1_parser::make_hstring(std::string(start, context.cursor), context.location); }
 [A-Z][A-Za-z_0-9\-]*    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(santize_name(std::string(start, context.cursor)), context.location); }

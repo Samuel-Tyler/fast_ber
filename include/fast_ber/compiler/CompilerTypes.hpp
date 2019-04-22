@@ -277,11 +277,11 @@ struct UTCTimeType
 struct DefinedType;
 
 using BuiltinType =
-    absl::variant<AnyType, BitStringType, BooleanType, CharacterStringType, ChoiceType, DateType, DateTimeType, DurationType,
-                  EmbeddedPDVType, EnumeratedType, ExternalType, GeneralizedTimeType, InstanceOfType, IntegerType,
-                  IRIType, NullType, ObjectClassFieldType, ObjectDescriptorType, ObjectIdentifierType, OctetStringType,
-                  RealType, RelativeIRIType, RelativeOIDType, SequenceType, SequenceOfType, SetType, SetOfType,
-                  PrefixedType, TimeType, TimeOfDayType, UTCTimeType>;
+    absl::variant<AnyType, BitStringType, BooleanType, CharacterStringType, ChoiceType, DateType, DateTimeType,
+                  DurationType, EmbeddedPDVType, EnumeratedType, ExternalType, GeneralizedTimeType, InstanceOfType,
+                  IntegerType, IRIType, NullType, ObjectClassFieldType, ObjectDescriptorType, ObjectIdentifierType,
+                  OctetStringType, RealType, RelativeIRIType, RelativeOIDType, SequenceType, SequenceOfType, SetType,
+                  SetOfType, PrefixedType, TimeType, TimeOfDayType, UTCTimeType>;
 using Type = absl::variant<BuiltinType, DefinedType>;
 
 struct DefinedType
@@ -314,10 +314,27 @@ struct DefinedValue
     std::string reference;
 };
 
+struct BitStringValue
+{
+    std::string value;
+};
+
+struct HexStringValue
+{
+    std::string value;
+};
+
+struct CharStringValue
+{
+    std::string value;
+};
+
 struct Value
 {
-    absl::optional<DefinedValue>                                         defined_value;
-    absl::variant<std::vector<Value>, std::string, int64_t, NamedNumber> value_selection;
+    absl::optional<DefinedValue> defined_value;
+    absl::variant<std::vector<Value>, int64_t, std::string, NamedNumber, BitStringValue, HexStringValue,
+                  CharStringValue>
+        value_selection;
 };
 
 struct NamedType
@@ -643,6 +660,11 @@ std::string to_string(const SequenceType& sequence)
     for (const ComponentType& component : sequence.components)
     {
         std::string component_type = to_string(component.named_type.type);
+        if (is_enumerated(component.named_type.type))
+        {
+            component_type = "UnnamedEnum" + std::to_string(unnamed_definition_reference_num++);
+        }
+
         if (is_set(component.named_type.type) || is_sequence(component.named_type.type))
         {
             res += "struct " + component.named_type.name + "_type " + component_type;
@@ -701,6 +723,11 @@ std::string to_string(const SetType& set)
     for (const ComponentType& component : set.components)
     {
         std::string component_type = to_string(component.named_type.type);
+        if (is_enumerated(component.named_type.type))
+        {
+            component_type = "UnnamedEnum" + std::to_string(unnamed_definition_reference_num++);
+        }
+
         if (is_set(component.named_type.type) || is_sequence(component.named_type.type))
         {
             res += "    struct " + component.named_type.name + "_type " + component_type;
