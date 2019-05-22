@@ -286,8 +286,9 @@ using Type = absl::variant<BuiltinType, DefinedType>;
 
 struct DefinedType
 {
-    std::string       name;
-    std::vector<Type> parameters;
+    absl::optional<std::string> module_reference;
+    std::string                 type_reference;
+    std::vector<Type>           parameters;
 };
 struct SequenceOfType
 {
@@ -331,9 +332,8 @@ struct CharStringValue
 
 struct Value
 {
-    absl::optional<DefinedValue> defined_value;
     absl::variant<std::vector<Value>, int64_t, std::string, NamedNumber, BitStringValue, HexStringValue,
-                  CharStringValue>
+                  CharStringValue, DefinedValue>
         value_selection;
 };
 
@@ -354,6 +354,7 @@ struct ComponentType
     NamedType             named_type;
     bool                  is_optional;
     absl::optional<Value> value;
+    absl::optional<Type>  components_of;
 };
 
 struct Tag
@@ -461,9 +462,9 @@ struct ObjectIdComponents
         components.reserve(value_list.size());
         for (const Value& component : value_list)
         {
-            if (component.defined_value)
+            if (absl::holds_alternative<DefinedValue>(component.value_selection))
             {
-                const std::string& name = component.defined_value->reference;
+                const std::string& name = absl::get<DefinedValue>(component.value_selection).reference;
                 components.push_back(ObjectIdComponentValue{name, absl::nullopt});
             }
             else if (absl::holds_alternative<std::string>(component.value_selection))
@@ -490,41 +491,13 @@ struct ObjectIdComponents
     std::vector<ObjectIdComponentValue> components;
 };
 
-std::string to_string(const AnyType&);
-std::string to_string(const BitStringType&);
-std::string to_string(const BooleanType&);
-std::string to_string(const CharacterStringType&);
-std::string to_string(const ChoiceType&);
-std::string to_string(const DateType&);
-std::string to_string(const DateTimeType&);
-std::string to_string(const DurationType&);
-std::string to_string(const EmbeddedPDVType&);
-std::string to_string(const EnumeratedType&);
-std::string to_string(const ExternalType&);
-std::string to_string(const GeneralizedTimeType& type);
-std::string to_string(const InstanceOfType&);
-std::string to_string(const IntegerType&);
-std::string to_string(const IRIType&);
-std::string to_string(const NullType&);
-std::string to_string(const ObjectClassFieldType&);
-std::string to_string(const ObjectDescriptorType&);
-std::string to_string(const ObjectIdentifierType&);
-std::string to_string(const OctetStringType&);
-std::string to_string(const RealType&);
-std::string to_string(const RelativeIRIType&);
-std::string to_string(const RelativeOIDType&);
-std::string to_string(const SequenceType&);
-std::string to_string(const SequenceOfType&);
-std::string to_string(const SetType&);
-std::string to_string(const SetOfType&);
-std::string to_string(const PrefixedType&);
-std::string to_string(const TimeType&);
-std::string to_string(const TimeOfDayType&);
-std::string to_string(const UTCTimeType& type);
-std::string to_string(const DefinedType&);
-std::string to_string(const BuiltinType& type);
-std::string to_string(const Type& type);
-std::string fully_tagged_type(const Type& type, TaggingMode tagging_mode);
+std::string make_type_optional(const std::string& type) { return "Optional<" + type + ">"; }
+
+bool is_bit_string(const Type& type)
+{
+    return absl::holds_alternative<BuiltinType>(type) &&
+           absl::holds_alternative<BitStringType>(absl::get<BuiltinType>(type));
+}
 
 bool is_set(const Type& type)
 {
@@ -582,249 +555,5 @@ bool is_oid(const Type& type)
 bool is_defined(const Type& type) { return absl::holds_alternative<DefinedType>(type); }
 
 int unnamed_definition_reference_num = 0;
-
-std::string to_string(const AnyType&) { return "Any"; }
-std::string to_string(const BitStringType&) { return "BitString"; }
-std::string to_string(const BooleanType&) { return "Boolean"; }
-std::string to_string(const CharacterStringType&) { return "CharacterString"; }
-std::string to_string(const ChoiceType& choice)
-{
-    bool        is_first = true;
-    std::string res      = "Choice<";
-    for (const auto& named_type : choice.choices)
-    {
-        if (!is_first)
-            res += ", ";
-
-        if (is_sequence(named_type.type))
-        {
-            res += "UnnamedSequence" + std::to_string(unnamed_definition_reference_num++);
-        }
-        else if (is_set(named_type.type))
-        {
-            res += "UnnamedSet" + std::to_string(unnamed_definition_reference_num++);
-        }
-        else if (is_enumerated(named_type.type))
-        {
-            return "UnnamedEnum" + std::to_string(unnamed_definition_reference_num++);
-        }
-        else
-        {
-            res += fully_tagged_type(named_type.type, TaggingMode::implicit);
-        }
-
-        is_first = false;
-    }
-
-    res += ">";
-    return res;
-}
-std::string to_string(const DateType&) { return "Date"; }
-std::string to_string(const DateTimeType&) { return "DateTime"; }
-std::string to_string(const DurationType&) { return "Duration"; }
-std::string to_string(const EmbeddedPDVType&) { return "EmbeddedPDV"; }
-std::string to_string(const EnumeratedType& enumerated)
-{
-    std::string res = " {\n";
-    for (const EnumerationValue& enum_value : enumerated.enum_values)
-    {
-        res += "    " + enum_value.name;
-        if (enum_value.value)
-        {
-            res += " = " + std::to_string(*enum_value.value);
-        }
-        res += ",\n";
-    }
-    res += "};\n\n";
-
-    return res;
-}
-std::string to_string(const ExternalType&) { return "External"; }
-std::string to_string(const GeneralizedTimeType&) { return "GeneralizedTime"; }
-std::string to_string(const InstanceOfType&) { return "InstanceOf"; }
-std::string to_string(const IntegerType&) { return "Integer"; }
-std::string to_string(const IRIType&) { return "IRI"; }
-std::string to_string(const NullType&) { return "Null"; }
-std::string to_string(const ObjectClassFieldType&) { return "ObjectClassField"; }
-std::string to_string(const ObjectDescriptorType&) { return "ObjectDescriptor"; }
-std::string to_string(const ObjectIdentifierType&) { return "ObjectIdentifier"; }
-std::string to_string(const OctetStringType&) { return "OctetString"; }
-std::string to_string(const RealType&) { return "Real"; }
-std::string to_string(const RelativeIRIType&) { return "RelativeIRI"; }
-std::string to_string(const RelativeOIDType&) { return "RelativeOID"; }
-std::string make_type_optional(const std::string& type) { return "Optional<" + type + ">"; }
-std::string to_string(const SequenceType& sequence)
-{
-    std::string res = " {\n";
-
-    for (const ComponentType& component : sequence.components)
-    {
-        std::string component_type = to_string(component.named_type.type);
-        if (is_enumerated(component.named_type.type))
-        {
-            component_type = "UnnamedEnum" + std::to_string(unnamed_definition_reference_num++);
-        }
-
-        if (is_set(component.named_type.type) || is_sequence(component.named_type.type))
-        {
-            res += "struct " + component.named_type.name + "_type " + component_type;
-            res += "    " + component.named_type.name + "_type " + component.named_type.name + ";\n";
-        }
-        else
-        {
-            if (component.is_optional)
-            {
-                component_type = make_type_optional(component_type);
-            }
-            res += "    " + component_type + " " + component.named_type.name + ";\n";
-        }
-    }
-    res += "};\n";
-
-    return res;
-}
-std::string to_string(const SequenceOfType& sequence)
-{
-    const Type& type = sequence.has_name ? sequence.named_type->type : *sequence.type;
-
-    if (is_sequence(type))
-    {
-        if (sequence.has_name)
-        {
-            return "SequenceOf<" + sequence.named_type->name + ">";
-        }
-        return "SequenceOf<UnnamedSequence" + std::to_string(unnamed_definition_reference_num++) + ">";
-    }
-    else if (is_set(type))
-    {
-        if (sequence.has_name)
-        {
-            return "SequenceOf<" + sequence.named_type->name + ">";
-        }
-        return "SequenceOf<UnnamedSet" + std::to_string(unnamed_definition_reference_num++) + ">";
-    }
-    else if (is_enumerated(type))
-    {
-        if (sequence.has_name)
-        {
-            return "SequenceOf<" + sequence.named_type->name + ">";
-        }
-        return "SequenceOf<UnnamedEnum" + std::to_string(unnamed_definition_reference_num++) + ">";
-    }
-    else
-    {
-        return "SequenceOf<" + to_string(type) + ">";
-    }
-}
-std::string to_string(const SetType& set)
-{
-    std::string res = " {\n";
-
-    for (const ComponentType& component : set.components)
-    {
-        std::string component_type = to_string(component.named_type.type);
-        if (is_enumerated(component.named_type.type))
-        {
-            component_type = "UnnamedEnum" + std::to_string(unnamed_definition_reference_num++);
-        }
-
-        if (is_set(component.named_type.type) || is_sequence(component.named_type.type))
-        {
-            res += "    struct " + component.named_type.name + "_type " + component_type;
-            res += component.named_type.name + "_type " + component.named_type.name + ";\n";
-        }
-        else
-        {
-            if (component.is_optional)
-            {
-                component_type = make_type_optional(component_type);
-            }
-            res += "    " + component_type + " " + component.named_type.name + ";\n";
-        }
-    }
-    res += "};\n";
-
-    return res;
-}
-std::string to_string(const SetOfType& set)
-{
-    const Type& type = set.has_name ? set.named_type->type : *set.type;
-
-    if (is_sequence(type))
-    {
-        if (set.has_name)
-        {
-            return "SequenceOf<" + set.named_type->name + ">";
-        }
-        return "SequenceOf<UnnamedSequence" + std::to_string(unnamed_definition_reference_num++) + ">";
-    }
-    else if (is_set(type))
-    {
-        if (set.has_name)
-        {
-            return "SequenceOf<" + set.named_type->name + ">";
-        }
-        return "SequenceOf<UnnamedSet" + std::to_string(unnamed_definition_reference_num++) + ">";
-    }
-    else if (is_enumerated(type))
-    {
-        if (set.has_name)
-        {
-            return "SequenceOf<" + set.named_type->name + ">";
-        }
-        return "SequenceOf<UnnamedEnum" + std::to_string(unnamed_definition_reference_num++) + ">";
-    }
-    else
-    {
-        return "SequenceOf<" + to_string(type) + ">";
-    }
-}
-std::string to_string(const PrefixedType& prefixed_type)
-{
-    if (is_sequence(prefixed_type.tagged_type->type))
-    {
-        return "UnnamedSequence" + std::to_string(unnamed_definition_reference_num++);
-    }
-    else if (is_set(prefixed_type.tagged_type->type))
-    {
-        return "UnnamedSet" + std::to_string(unnamed_definition_reference_num++);
-    }
-    else if (is_enumerated(prefixed_type.tagged_type->type))
-    {
-        return "UnnamedEnum" + std::to_string(unnamed_definition_reference_num++);
-    }
-    return to_string(prefixed_type.tagged_type->type);
-}
-std::string to_string(const TimeType&) { return "Time"; }
-std::string to_string(const TimeOfDayType&) { return "TimeOfDay"; }
-std::string to_string(const UTCTimeType&) { return "UTCTime"; }
-
-std::string to_string(const DefinedType& type)
-{
-    if (!type.parameters.empty())
-    {
-        std::set<std::string> parameter_types;
-        for (const Type& paramter : type.parameters)
-        {
-            parameter_types.insert(to_string(paramter));
-        }
-        return type.name + create_template_arguments(parameter_types);
-    }
-    return type.name;
-}
-
-struct ToStringHelper
-{
-    template <typename T>
-    std::string operator()(const T& t)
-    {
-        return to_string(t);
-    }
-};
-
-static ToStringHelper string_helper;
-
-std::string to_string(const BuiltinType& type) { return absl::visit(string_helper, type); }
-std::string to_string(const Type& type) { return absl::visit(string_helper, type); }
 
 struct Context;

@@ -1,4 +1,4 @@
-MakeAChoice DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+MakeAChoice DEFINITIONS IMPLICIT TAGS ::= BEGIN
 
 Collection ::= SEQUENCE {
     the-choice CHOICE {

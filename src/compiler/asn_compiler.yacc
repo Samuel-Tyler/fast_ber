@@ -214,6 +214,7 @@
 %type<DefinedValue>      DefinedValue
 %type<BuiltinType>       BuiltinType;
 %type<DefinedType>       DefinedType;
+%type<DefinedType>       ExternalTypeReference;
 %type<std::string>       SimpleDefinedType;
 %type<DefinedType>       ParameterizedType;
 %type<EnumeratedType>    Enumerations;
@@ -841,8 +842,9 @@ Assignment:
 
 DefinedType:
     ExternalTypeReference
+    { $$ = $1; }
 |   typereference
-    { $$ = DefinedType{$1, {}}; }
+    { $$ = DefinedType{absl::nullopt, $1, {}}; }
 |   ParameterizedType
     { $$ = $1; }
 //|   ParameterizedValueSetType;
@@ -855,7 +857,7 @@ DefinedValue:
 
 ParameterizedType:
     SimpleDefinedType "{" ActualParameterList "}"
-    { $$ = DefinedType{$1, $3}; }
+    { $$ = DefinedType{ absl::nullopt, $1, $3}; }
 
 ParameterizedValue:
     SimpleDefinedValue "{" ActualParameterList "}"
@@ -882,7 +884,8 @@ NonParameterizedTypeName:
 |   xmlasn1typename;
 
 ExternalTypeReference:
-    typereference "." typereference; // Param one is actually modulereference, but this causes parsing clash
+    typereference "." typereference // Param one is actually modulereference, but this causes parsing clash
+    { $$ = DefinedType{$1, $3, {}}; }
 
 ExternalValueReference:
     modulereference
@@ -989,7 +992,7 @@ ValueWithoutTypeIdentifier:
 |   CONTAINING Value
     { std::cerr << std::string("Warning: Unhandled field: CONTAINING\n"); }
 |   DefinedValue
-    { $$.defined_value = $1; }
+    { $$.value_selection = $1; }
 |   GENERIC_IDENTIFIER_LOWERCASE "(" number ")"
     { $$.value_selection = NamedNumber{$1, $3}; }
 |   ":"
@@ -1112,7 +1115,9 @@ RealType:
 
 BitStringType:
     BIT STRING
-|   BIT STRING "{" NamedBitList "}";
+    { $$ = BitStringType{}; }
+|   BIT STRING "{" NamedBitList "}"
+    { $$ = BitStringType{}; }
 
 NamedBitList:
     NamedBit
@@ -1173,12 +1178,13 @@ ComponentTypeList:
 
 ComponentType:
     NamedType
-    { $$ = ComponentType{$1, false, absl::nullopt}; }
+    { $$ = ComponentType{$1, false, absl::nullopt, absl::nullopt}; }
 |   NamedType OPTIONAL
-    { $$ = ComponentType{$1, true, absl::nullopt}; }
+    { $$ = ComponentType{$1, true, absl::nullopt, absl::nullopt}; }
 |   NamedType DEFAULT SingleValue
-    { $$ = ComponentType{$1, false, $3}; }
+    { $$ = ComponentType{$1, false, $3, absl::nullopt}; }
 |   COMPONENTS OF Type
+    { $$ = ComponentType{{}, false, absl::nullopt, $3}; }
 
 SequenceValue:
     "{" ComponentValueList "}"

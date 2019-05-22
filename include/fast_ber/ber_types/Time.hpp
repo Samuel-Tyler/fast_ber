@@ -1,8 +1,9 @@
 #pragma once
 
+#include "fast_ber/ber_types/GeneralizedTime.hpp"
 namespace fast_ber
 {
-class Time
-{
-};
+
+using Time = GeneralizedTime;
+
 } // namespace fast_ber

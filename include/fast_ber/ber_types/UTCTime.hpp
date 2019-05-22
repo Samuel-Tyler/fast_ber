@@ -1,8 +1,9 @@
 #pragma once
+
+#include "fast_ber/ber_types/GeneralizedTime.hpp"
 namespace fast_ber
 {
-class UTCTime
-{
-};
+
+using UTCTime = GeneralizedTime;
 
 } // namespace fast_ber

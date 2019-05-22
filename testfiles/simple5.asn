@@ -1,8 +1,12 @@
 Simple DEFINITIONS IMPLICIT TAGS ::= BEGIN
 
-Collection ::= SEQUENCE {
+Greetings ::= SEQUENCE {
     hello [0] OCTET STRING,
-    goodbye [1] OCTET STRING,
+    goodbye [1] OCTET STRING
+}
+
+Collection ::= SEQUENCE {
+    COMPONENTS OF Greetings,
     integer [2] INTEGER,
     boolean [3] BOOLEAN,
     child [4] Child,

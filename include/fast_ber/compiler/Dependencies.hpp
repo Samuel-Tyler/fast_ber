@@ -51,7 +51,7 @@ std::vector<std::string> depends_on(const ChoiceType choice)
     }
     return depends;
 }
-std::vector<std::string> depends_on(const AnyType&) { return{}; }
+std::vector<std::string> depends_on(const AnyType&) { return {}; }
 std::vector<std::string> depends_on(const DateType&) { return {}; }
 std::vector<std::string> depends_on(const DateTimeType&) { return {}; }
 std::vector<std::string> depends_on(const DurationType&) { return {}; }
@@ -121,7 +121,7 @@ std::vector<std::string> depends_on(const TimeOfDayType&) { return {}; }
 std::vector<std::string> depends_on(const UTCTimeType&) { return {}; }
 std::vector<std::string> depends_on(const DefinedType& defined)
 {
-    std::vector<std::string> depends{defined.name};
+    std::vector<std::string> depends{defined.type_reference};
 
     for (const Type& paramater : defined.parameters)
     {
@@ -145,9 +145,9 @@ std::vector<std::string> depends_on(const BuiltinType& type) { return absl::visi
 std::vector<std::string> depends_on(const Type& type) { return absl::visit(depends_on_helper, type); }
 std::vector<std::string> depends_on(const Value& value)
 {
-    if (value.defined_value)
+    if (absl::holds_alternative<DefinedValue>(value.value_selection))
     {
-        return {value.defined_value->reference};
+        return {absl::get<DefinedValue>(value.value_selection).reference};
     };
     return {};
 }

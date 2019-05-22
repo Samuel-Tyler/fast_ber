@@ -5,8 +5,9 @@
 #include <unordered_set>
 #include <vector>
 
-#include "CompilerTypes.hpp"
-#include "Dependencies.hpp"
+#include "fast_ber/compiler/CompilerTypes.hpp"
+#include "fast_ber/compiler/Dependencies.hpp"
+#include "fast_ber/compiler/ResolveType.hpp"
 
 std::string to_string(const std::vector<Assignment>& assignments)
 {
@@ -36,6 +37,71 @@ void check_duplicated_names(const std::vector<Assignment>& assignments, const st
                                      '\"');
         }
         defined_names.insert(assignment.name);
+    }
+}
+
+void resolve_components_of(Asn1Tree& tree)
+{
+    for (Module& module : tree.modules)
+    {
+        for (Assignment& assignemnt : module.assignments)
+        {
+            if (absl::holds_alternative<TypeAssignment>(assignemnt.specific))
+            {
+                TypeAssignment& type_assignment = absl::get<TypeAssignment>(assignemnt.specific);
+                if (is_sequence(type_assignment.type))
+                {
+                    SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(type_assignment.type));
+                    for (auto iter = sequence.components.begin(); iter != sequence.components.end(); iter++)
+                    {
+                        if (iter->components_of)
+                        {
+                            if (is_defined(*iter->components_of))
+                            {
+                                const DefinedType& defined    = absl::get<DefinedType>(*iter->components_of);
+                                const Type&        inheretied = resolve_type(tree, module.module_reference, defined);
+                                if (is_sequence(inheretied))
+                                {
+                                    const SequenceType& inheretied_sequence =
+                                        absl::get<SequenceType>(absl::get<BuiltinType>(inheretied));
+
+                                    iter = sequence.components.insert(iter, inheretied_sequence.components.begin(),
+                                                                      inheretied_sequence.components.end());
+                                    std::advance(iter, inheretied_sequence.components.size());
+                                }
+                            }
+                            else if (is_sequence(*iter->components_of))
+                            {
+                                const SequenceType& inheretied_sequence =
+                                    absl::get<SequenceType>(absl::get<BuiltinType>(*iter->components_of));
+
+                                iter = sequence.components.insert(iter, inheretied_sequence.components.begin(),
+                                                                  inheretied_sequence.components.end());
+                                std::advance(iter, inheretied_sequence.components.size());
+                            }
+                            else if (is_set(*iter->components_of))
+                            {
+                                const SetType& inheretied_set =
+                                    absl::get<SetType>(absl::get<BuiltinType>(*iter->components_of));
+
+                                iter = sequence.components.insert(iter, inheretied_set.components.begin(),
+                                                                  inheretied_set.components.end());
+                                std::advance(iter, inheretied_set.components.size());
+                            }
+                            else
+                            {
+                                throw std::runtime_error("Strange type when resolving SEQUENCE OF in type" +
+                                                         assignemnt.name);
+                            }
+                        }
+                    }
+                    sequence.components.erase(
+                        std::remove_if(sequence.components.begin(), sequence.components.end(),
+                                       [](ComponentType& component) { return component.components_of; }),
+                        sequence.components.end());
+                }
+            }
+        }
     }
 }
 
@@ -256,7 +322,7 @@ std::vector<Assignment> split_definitions(const std::vector<Assignment>& assignm
                 {
                     split_assignments.push_back(
                         Assignment{named_number.name,
-                                   ValueAssignment{BuiltinType{IntegerType{}}, Value{{}, named_number.number}},
+                                   ValueAssignment{BuiltinType{IntegerType{}}, Value{named_number.number}},
                                    {},
                                    {}});
                 }
