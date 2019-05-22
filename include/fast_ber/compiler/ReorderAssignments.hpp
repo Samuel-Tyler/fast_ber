@@ -65,9 +65,26 @@ void resolve_components_of(Asn1Tree& tree)
                                     const SequenceType& inheretied_sequence =
                                         absl::get<SequenceType>(absl::get<BuiltinType>(inheretied));
 
-                                    iter = sequence.components.insert(iter, inheretied_sequence.components.begin(),
-                                                                      inheretied_sequence.components.end());
+                                    const size_t offset = std::distance(sequence.components.begin(), iter);
+                                    sequence.components.insert(iter, inheretied_sequence.components.begin(),
+                                                               inheretied_sequence.components.end());
+
+                                    iter = sequence.components.begin();
+                                    std::advance(iter, offset);
                                     std::advance(iter, inheretied_sequence.components.size());
+                                }
+                                else if (is_set(inheretied))
+                                {
+                                    const SetType& inheretied_set =
+                                        absl::get<SetType>(absl::get<BuiltinType>(inheretied));
+
+                                    const size_t offset = std::distance(sequence.components.begin(), iter);
+                                    sequence.components.insert(iter, inheretied_set.components.begin(),
+                                                               inheretied_set.components.end());
+
+                                    iter = sequence.components.begin();
+                                    std::advance(iter, offset);
+                                    std::advance(iter, inheretied_set.components.size());
                                 }
                             }
                             else if (is_sequence(*iter->components_of))
@@ -75,8 +92,12 @@ void resolve_components_of(Asn1Tree& tree)
                                 const SequenceType& inheretied_sequence =
                                     absl::get<SequenceType>(absl::get<BuiltinType>(*iter->components_of));
 
-                                iter = sequence.components.insert(iter, inheretied_sequence.components.begin(),
-                                                                  inheretied_sequence.components.end());
+                                const size_t offset = std::distance(sequence.components.begin(), iter);
+                                sequence.components.insert(iter, inheretied_sequence.components.begin(),
+                                                           inheretied_sequence.components.end());
+
+                                iter = sequence.components.begin();
+                                std::advance(iter, offset);
                                 std::advance(iter, inheretied_sequence.components.size());
                             }
                             else if (is_set(*iter->components_of))
@@ -84,8 +105,12 @@ void resolve_components_of(Asn1Tree& tree)
                                 const SetType& inheretied_set =
                                     absl::get<SetType>(absl::get<BuiltinType>(*iter->components_of));
 
-                                iter = sequence.components.insert(iter, inheretied_set.components.begin(),
-                                                                  inheretied_set.components.end());
+                                const size_t offset = std::distance(sequence.components.begin(), iter);
+                                sequence.components.insert(iter, inheretied_set.components.begin(),
+                                                           inheretied_set.components.end());
+
+                                iter = sequence.components.begin();
+                                std::advance(iter, offset);
                                 std::advance(iter, inheretied_set.components.size());
                             }
                             else
