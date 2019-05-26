@@ -211,9 +211,7 @@ struct IRIType
 struct NullType
 {
 };
-struct ObjectClassFieldType
-{
-};
+struct ObjectClassFieldType;
 struct ObjectDescriptorType
 {
 };
@@ -315,6 +313,12 @@ struct DefinedValue
     std::string reference;
 };
 
+struct ObjectClassFieldType
+{
+    DefinedType              referenced_object_class;
+    std::vector<std::string> fieldnames;
+};
+
 struct BitStringValue
 {
     std::string value;
@@ -381,8 +385,24 @@ struct ValueAssignment
     Value value;
 };
 
+struct TypeField
+{
+};
+
+struct FixedTypeValueField
+{
+    Type type;
+};
+
+struct ClassField
+{
+    std::string                                   name;
+    absl::variant<TypeField, FixedTypeValueField> field;
+};
+
 struct ObjectClassAssignment
 {
+    std::vector<ClassField> fields;
 };
 
 struct ObjectSetAssignment

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "fast_ber/compiler/CompilerTypes.hpp"
+#include "fast_ber/compiler/ResolveTypeFwd.hpp"
 
 std::string type_as_string(const AnyType&, const Module&, const Asn1Tree&);
 std::string type_as_string(const BitStringType&, const Module&, const Asn1Tree&);
@@ -104,7 +105,34 @@ std::string type_as_string(const InstanceOfType&, const Module&, const Asn1Tree&
 std::string type_as_string(const IntegerType&, const Module&, const Asn1Tree&) { return "Integer"; }
 std::string type_as_string(const IRIType&, const Module&, const Asn1Tree&) { return "IRI"; }
 std::string type_as_string(const NullType&, const Module&, const Asn1Tree&) { return "Null"; }
-std::string type_as_string(const ObjectClassFieldType&, const Module&, const Asn1Tree&) { return "ObjectClassField"; }
+std::string type_as_string(const ObjectClassFieldType& object_class_field, const Module& module, const Asn1Tree& tree)
+{
+    const Assignment& assigment = resolve(tree, module.module_reference, object_class_field.referenced_object_class);
+    if (!is_object_class(assigment))
+    {
+        throw std::runtime_error("Referenced object is not an ObjectClass " +
+                                 object_class_field.referenced_object_class.type_reference);
+    }
+
+    if (object_class_field.fieldnames.size() == 1)
+    {
+        for (const ClassField& field : object_class(assigment).fields)
+        {
+            if (field.name == object_class_field.fieldnames[0])
+            {
+                if (absl::holds_alternative<FixedTypeValueField>(field.field))
+                {
+                    return type_as_string(absl::get<FixedTypeValueField>(field.field).type, module, tree);
+                }
+                throw std::runtime_error("Referenced class filed does not have a type " +
+                                         object_class_field.referenced_object_class.type_reference);
+            }
+        }
+    }
+
+    throw std::runtime_error("Failed to parse object field reference " +
+                             object_class_field.referenced_object_class.type_reference);
+}
 std::string type_as_string(const ObjectDescriptorType&, const Module&, const Asn1Tree&) { return "ObjectDescriptor"; }
 std::string type_as_string(const ObjectIdentifierType&, const Module&, const Asn1Tree&) { return "ObjectIdentifier"; }
 std::string type_as_string(const OctetStringType&, const Module&, const Asn1Tree&) { return "OctetString"; }

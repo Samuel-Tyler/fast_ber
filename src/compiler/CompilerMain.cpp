@@ -52,9 +52,18 @@ std::string create_assignment(const Asn1Tree& tree, const Module& module, const 
         const ValueAssignment& value_assign = absl::get<ValueAssignment>(assignment.specific);
         std::string result = fully_tagged_type(value_assign.type, module, tree) + " " + assignment.name + " = ";
 
+        if (is_defined(value_assign.type))
+        {
+            if (!exists(tree, module.module_reference, absl::get<DefinedType>(value_assign.type)) ||
+                !is_type(resolve(tree, module.module_reference, absl::get<DefinedType>(value_assign.type))))
+            {
+                return "";
+            }
+        }
+
         const Type& assigned_to_type =
             (is_defined(value_assign.type))
-                ? resolve_type(tree, module.module_reference, absl::get<DefinedType>(value_assign.type))
+                ? type(resolve(tree, module.module_reference, absl::get<DefinedType>(value_assign.type)))
                 : value_assign.type;
         if (is_oid(assigned_to_type))
         {
@@ -126,6 +135,10 @@ std::string create_assignment(const Asn1Tree& tree, const Module& module, const 
             const DefinedValue& defined = absl::get<DefinedValue>(value_assign.value.value_selection);
             result += defined.reference;
         }
+        else
+        {
+            return "";
+        }
 
         result += ";\n";
         return result;
@@ -137,6 +150,12 @@ std::string create_assignment(const Asn1Tree& tree, const Module& module, const 
     else if (absl::holds_alternative<ObjectClassAssignment>(assignment.specific))
     {
         std::cerr << "Warning: Parsed but ignoring class assignment: " << assignment.name << std::endl;
+
+        const ObjectClassAssignment& class_assignment = absl::get<ObjectClassAssignment>(assignment.specific);
+        for (const ClassField& field : class_assignment.fields)
+        {
+            std::cerr << "Class includes field: " << field.name << std::endl;
+        }
         return "";
     }
     else
@@ -440,7 +459,19 @@ std::string create_body(const Asn1Tree& tree, const Module& module)
     {
         for (const auto& import_name : import.imports)
         {
-            output += "using " + import_name + " = " + import.module_reference + "::" + import_name + ";\n";
+            if (exists(tree, import.module_reference, import_name))
+            {
+                if (is_type(resolve(tree, import.module_reference, import_name)) ||
+                    is_value(resolve(tree, import.module_reference, import_name)))
+                {
+                    output += "using " + import_name + " = " + import.module_reference + "::" + import_name + ";\n";
+                }
+            }
+            else
+            {
+                std::cout << "Warning: Could not find object for import: " << import.module_reference
+                          << "::" << import_name << std::endl;
+            }
         }
         if (import.imports.size() > 0)
         {

@@ -59,7 +59,7 @@ void resolve_components_of(Asn1Tree& tree)
                             if (is_defined(*iter->components_of))
                             {
                                 const DefinedType& defined    = absl::get<DefinedType>(*iter->components_of);
-                                const Type&        inheretied = resolve_type(tree, module.module_reference, defined);
+                                const Type&        inheretied = type(resolve(tree, module.module_reference, defined));
                                 if (is_sequence(inheretied))
                                 {
                                     const SequenceType& inheretied_sequence =
@@ -332,6 +332,7 @@ void find_nested_structs(const Type& type, std::vector<NamedType>& nested_struct
 //
 std::vector<Assignment> split_definitions(const std::vector<Assignment>& assignments)
 {
+    return assignments;
     std::vector<Assignment> split_assignments;
     split_assignments.reserve(assignments.size());
 

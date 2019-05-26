@@ -2,29 +2,32 @@
 
 #include "fast_ber/compiler/CompilerTypes.hpp"
 
-Type& resolve_type(std::vector<Assignment>& assignments, const std::string& type_reference)
+Assignment& resolve(Module& module, const std::string& reference)
 {
-    for (Assignment& assignemnt : assignments)
+    for (Assignment& assignemnt : module.assignments)
     {
-        if (assignemnt.name == type_reference)
+        if (assignemnt.name == reference)
         {
-            if (!absl::holds_alternative<TypeAssignment>(assignemnt.specific))
-            {
-                throw std::runtime_error("Object is not a type: " + type_reference);
-            }
-            return absl::get<TypeAssignment>(assignemnt.specific).type;
+            return assignemnt;
         }
     }
 
-    throw std::runtime_error("Reference to undefined type: " + type_reference);
+    throw std::runtime_error("Reference to undefined object: " + reference);
 }
 
-const Type& resolve_type(const std::vector<Assignment>& assignments, const std::string& type_reference)
+Assignment& resolve(Asn1Tree& tree, const std::string& module_reference, const std::string& reference)
 {
-    return resolve_type(const_cast<std::vector<Assignment>&>(assignments), type_reference);
+    for (Module& module : tree.modules)
+    {
+        if (module.module_reference == module_reference)
+        {
+            return resolve(module, reference);
+        }
+    }
+    throw std::runtime_error("Reference to undefined object: " + module_reference + "." + reference);
 }
 
-Type& resolve_type(Asn1Tree& tree, const std::string& current_module_reference, const DefinedType& defined)
+Assignment& resolve(Asn1Tree& tree, const std::string& current_module_reference, const DefinedType& defined)
 {
     const std::string& module_reference =
         (defined.module_reference) ? *defined.module_reference : current_module_reference;
@@ -33,13 +36,102 @@ Type& resolve_type(Asn1Tree& tree, const std::string& current_module_reference, 
     {
         if (module.module_reference == module_reference)
         {
-            return resolve_type(module.assignments, defined.type_reference);
+            return resolve(module, defined.type_reference);
         }
     }
-    throw std::runtime_error("Reference to undefined type: " + module_reference + "." + defined.type_reference);
+    throw std::runtime_error("Reference to undefined object: " + module_reference + "." + defined.type_reference);
 }
 
-const Type& resolve_type(const Asn1Tree& tree, const std::string& current_module_reference, const DefinedType& defined)
+const Assignment& resolve(const Module& module, const std::string& reference)
 {
-    return resolve_type(const_cast<Asn1Tree&>(tree), current_module_reference, defined);
+    for (const Assignment& assignemnt : module.assignments)
+    {
+        if (assignemnt.name == reference)
+        {
+            return assignemnt;
+        }
+    }
+
+    throw std::runtime_error("Reference to undefined object: " + reference);
+}
+
+const Assignment& resolve(const Asn1Tree& tree, const std::string& module_reference, const std::string& reference)
+{
+    for (const Module& module : tree.modules)
+    {
+        if (module.module_reference == module_reference)
+        {
+            return resolve(module, reference);
+        }
+    }
+    throw std::runtime_error("Reference to undefined object: " + module_reference + "." + reference);
+}
+
+const Assignment& resolve(const Asn1Tree& tree, const std::string& current_module_reference, const DefinedType& defined)
+{
+    const std::string& module_reference =
+        (defined.module_reference) ? *defined.module_reference : current_module_reference;
+
+    for (const Module& module : tree.modules)
+    {
+        if (module.module_reference == module_reference)
+        {
+            return resolve(module, defined.type_reference);
+        }
+    }
+    throw std::runtime_error("Reference to undefined object: " + module_reference + "." + defined.type_reference);
+}
+
+bool exists(const Module& module, const std::string& reference)
+{
+    for (const Assignment& assignemnt : module.assignments)
+    {
+        if (assignemnt.name == reference)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool exists(const Asn1Tree& tree, const std::string& module_reference, const std::string& reference)
+{
+    for (const Module& module : tree.modules)
+    {
+        if (module.module_reference == module_reference)
+        {
+            return exists(module, reference);
+        }
+    }
+    return false;
+}
+
+bool exists(const Asn1Tree& tree, const std::string& current_module_reference, const DefinedType& defined)
+{
+    const std::string& module_reference =
+        (defined.module_reference) ? *defined.module_reference : current_module_reference;
+
+    return exists(tree, module_reference, defined.type_reference);
+}
+
+bool is_type(const Assignment& assignment) { return absl::holds_alternative<TypeAssignment>(assignment.specific); }
+bool is_value(const Assignment& assignment) { return absl::holds_alternative<ValueAssignment>(assignment.specific); }
+bool is_object_class(const Assignment& assignment)
+{
+    return absl::holds_alternative<ObjectClassAssignment>(assignment.specific);
+}
+
+Type&       type(Assignment& assignemnt) { return absl::get<TypeAssignment>(assignemnt.specific).type; }
+const Type& type(const Assignment& assignemnt) { return absl::get<TypeAssignment>(assignemnt.specific).type; }
+
+ValueAssignment&       value(Assignment& assignemnt) { return absl::get<ValueAssignment>(assignemnt.specific); }
+const ValueAssignment& value(const Assignment& assignemnt) { return absl::get<ValueAssignment>(assignemnt.specific); }
+
+ObjectClassAssignment& object_class(Assignment& assignemnt)
+{
+    return absl::get<ObjectClassAssignment>(assignemnt.specific);
+}
+const ObjectClassAssignment& object_class(const Assignment& assignemnt)
+{
+    return absl::get<ObjectClassAssignment>(assignemnt.specific);
 }

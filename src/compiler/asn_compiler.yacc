@@ -221,6 +221,15 @@
 %type<EnumeratedType>    Enumeration;
 %type<EnumerationValue>  EnumerationItem;
 %type<std::vector<Export>> Exports;
+%type<std::vector<ClassField>> FieldSpecList;
+%type<std::vector<ClassField>> FieldSpec;
+%type<std::vector<ClassField>> TypeFieldSpec;
+%type<std::vector<ClassField>> FixedTypeValueFieldSpec;
+%type<std::string>       FieldName;
+%type<std::vector<std::string>> FieldNameList;
+%type<ObjectClassAssignment> ObjectClass;
+%type<ObjectClassAssignment> ObjectClassDefn;
+%type<std::vector<std::string>> OneOrManyTypeFieldReference;
 %type<Module>            ModuleBody;
 %type<std::vector<NamedType>> AlternativeTypeList;
 %type<std::vector<NamedType>> AlternativeTypeLists
@@ -341,23 +350,30 @@ UsefulObjectClassReference:
 
 ObjectClassAssignment:
     typereference DEFINED_AS ObjectClass
-    { $$ = Assignment{$1, ObjectClassAssignment{}}; }
+    { $$ = Assignment{$1, $3}; }
 
 ObjectClass:
     DefinedObjectClass
+    { std::cerr << "Warning - Unhandled DefinedObjectClass\n"; }
 |   ObjectClassDefn
+    { $$ = $1; }
 //|   ParameterizedObjectClass;
 
 ObjectClassDefn:
     CLASS "{" FieldSpecList "}" WithSyntaxSpec
+    { $$ = {$3}; }
 
 FieldSpecList:
     FieldSpec
+    { $$ = $1; }
 |   FieldSpecList "," FieldSpec
+    { $$ = $1; $$.insert($$.end(), $3.begin(), $3.end()); }
 
 FieldSpec:
     TypeFieldSpec
+    { $$ = $1; }
 |   FixedTypeValueFieldSpec
+    { $$ = $1; }
 |   VariableTypeValueFieldSpec
 |   FixedTypeValueSetFieldSpec
 |   ObjectFieldSpec
@@ -365,17 +381,29 @@ FieldSpec:
 
 FieldName:
     typefieldreference
+    { $$ = $1; }
 |   valuefieldreference
+    { $$ = $1; }
+/*  Same underlying as typefieldreference and valuefieldreference
 |   valuesetfieldreference
 |   objectfieldreference
-|   objectsetfieldreference;
+|   objectsetfieldreference */
 
 FieldNameList:
     FieldName
+    { $$.push_back($1); }
 |   FieldNameList "." FieldName
+    { $$ = $1; $$.push_back($3); }
 
 TypeFieldSpec:
-    typefieldreference TypeOptionalitySpec
+    OneOrManyTypeFieldReference TypeOptionalitySpec
+    { for (const std::string& name : $1) $$.push_back(ClassField{name, TypeField{}}); }
+    
+OneOrManyTypeFieldReference:
+    typefieldreference
+    { $$.push_back($1); }
+|   OneOrManyTypeFieldReference typefieldreference
+    { $$ = $1; $$.push_back($2); }
 
 TypeOptionalitySpec:
     OPTIONAL
@@ -383,25 +411,26 @@ TypeOptionalitySpec:
 |   %empty
 
 OptionalUnique:
-    UNIQUE
+    OPTIONAL
+|   UNIQUE
 |   %empty
 
 FixedTypeValueFieldSpec:
-    valuefieldreference Type OptionalUnique ValueOptionalitySpec;
+    valuefieldreference Type OptionalUnique ValueOptionalitySpec
+    { $$.push_back(ClassField{$1, FixedTypeValueField{$2}}); }
 
 ValueOptionalitySpec:
     OPTIONAL
 |   DEFAULT SingleValue
 |   %empty
 
-
 VariableTypeValueFieldSpec:
-    valuefieldreference FieldName ValueOptionalitySpec;
+    valuefieldreference FieldName OptionalUnique ValueOptionalitySpec;
 
 FixedTypeValueSetFieldSpec:
-    typefieldreference Type ValueSetOptionalitySpec
+    typefieldreference Type OptionalUnique ValueSetDefaultSpec
 
-ValueSetOptionalitySpec:
+ValueSetDefaultSpec:
     OPTIONAL
 |   DEFAULT ValueSet
 |   %empty
@@ -524,6 +553,7 @@ ObjectSetElements:
 ObjectClassFieldType:
     UsefulObjectClassReference "." FieldNameList
 |   typereference "." FieldNameList
+    { $$ = {DefinedType{{}, $1}, $3}; }
 
 ObjectClassFieldValue:
     Type COLON Value;
@@ -1006,6 +1036,10 @@ ValueWithoutTypeIdentifier:
     { std::cerr << std::string("Warning: Unhandled field: ValueCommaListChoice\n"); }
 //|   ObjectClassFieldValue
 //    { std::cerr << std::string("Warning: Unhandled field: ObjectClassFieldValue\n"); }
+|    valuereference "." typefieldreference
+|    valuereference "." valuefieldreference
+|    typefieldreference
+|    valuefieldreference
 |   "{" SequenceOfValues "}"
     { $$.value_selection = $2; }
 |   ValueChoice
@@ -1018,6 +1052,8 @@ ValueWithoutTypeIdentifier:
     { std::cerr << std::string("Warning: Unhandled field: BY\n"); }
 |   WITH
     { std::cerr << std::string("Warning: Unhandled field: WITH\n"); }
+|   INTEGER
+
 
 Value:
     ValueWithoutTypeIdentifier
