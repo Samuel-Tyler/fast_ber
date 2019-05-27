@@ -4,15 +4,15 @@
 
 #include <string>
 
-Assignment&       resolve(Module& module, const std::string& reference);
+Assignment&       resolve(Asn1Tree& tree, Module& module, const std::string& reference);
 Assignment&       resolve(Asn1Tree& tree, const std::string& module_reference, const std::string& reference);
 Assignment&       resolve(Asn1Tree& tree, const std::string& current_module_reference, const DefinedType& defined);
-const Assignment& resolve(const Module& module, const std::string& reference);
+const Assignment& resolve(const Asn1Tree& tree, const Module& module, const std::string& reference);
 const Assignment& resolve(const Asn1Tree& tree, const std::string& module_reference, const std::string& reference);
 const Assignment& resolve(const Asn1Tree& tree, const std::string& current_module_reference,
                           const DefinedType& defined);
 
-bool exists(const Module& module, const std::string& reference);
+bool exists(const Asn1Tree& tree, const Module& module, const std::string& reference);
 bool exists(const Asn1Tree& tree, const std::string& module_reference, const std::string& reference);
 bool exists(const Asn1Tree& tree, const std::string& current_module_reference, const DefinedType& defined);
 

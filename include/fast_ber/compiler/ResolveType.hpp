@@ -1,14 +1,26 @@
 #pragma once
 
 #include "fast_ber/compiler/CompilerTypes.hpp"
+#include "fast_ber/compiler/ResolveTypeFwd.hpp"
 
-Assignment& resolve(Module& module, const std::string& reference)
+Assignment& resolve(Asn1Tree& tree, Module& module, const std::string& reference)
 {
     for (Assignment& assignemnt : module.assignments)
     {
         if (assignemnt.name == reference)
         {
             return assignemnt;
+        }
+    }
+
+    for (const Import& import : module.imports)
+    {
+        for (const std::string& imported_reference : import.imports)
+        {
+            if (imported_reference == reference)
+            {
+                return resolve(tree, import.module_reference, reference);
+            }
         }
     }
 
@@ -21,7 +33,7 @@ Assignment& resolve(Asn1Tree& tree, const std::string& module_reference, const s
     {
         if (module.module_reference == module_reference)
         {
-            return resolve(module, reference);
+            return resolve(tree, module, reference);
         }
     }
     throw std::runtime_error("Reference to undefined object: " + module_reference + "." + reference);
@@ -36,19 +48,30 @@ Assignment& resolve(Asn1Tree& tree, const std::string& current_module_reference,
     {
         if (module.module_reference == module_reference)
         {
-            return resolve(module, defined.type_reference);
+            return resolve(tree, module, defined.type_reference);
         }
     }
     throw std::runtime_error("Reference to undefined object: " + module_reference + "." + defined.type_reference);
 }
 
-const Assignment& resolve(const Module& module, const std::string& reference)
+const Assignment& resolve(const Asn1Tree& tree, const Module& module, const std::string& reference)
 {
     for (const Assignment& assignemnt : module.assignments)
     {
         if (assignemnt.name == reference)
         {
             return assignemnt;
+        }
+    }
+
+    for (const Import& import : module.imports)
+    {
+        for (const std::string& imported_reference : import.imports)
+        {
+            if (imported_reference == reference)
+            {
+                return resolve(tree, import.module_reference, reference);
+            }
         }
     }
 
@@ -61,7 +84,7 @@ const Assignment& resolve(const Asn1Tree& tree, const std::string& module_refere
     {
         if (module.module_reference == module_reference)
         {
-            return resolve(module, reference);
+            return resolve(tree, module, reference);
         }
     }
     throw std::runtime_error("Reference to undefined object: " + module_reference + "." + reference);
@@ -76,19 +99,30 @@ const Assignment& resolve(const Asn1Tree& tree, const std::string& current_modul
     {
         if (module.module_reference == module_reference)
         {
-            return resolve(module, defined.type_reference);
+            return resolve(tree, module, defined.type_reference);
         }
     }
     throw std::runtime_error("Reference to undefined object: " + module_reference + "." + defined.type_reference);
 }
 
-bool exists(const Module& module, const std::string& reference)
+bool exists(const Asn1Tree& tree, const Module& module, const std::string& reference)
 {
     for (const Assignment& assignemnt : module.assignments)
     {
         if (assignemnt.name == reference)
         {
             return true;
+        }
+    }
+
+    for (const Import& import : module.imports)
+    {
+        for (const std::string& imported_reference : import.imports)
+        {
+            if (imported_reference == reference)
+            {
+                return exists(tree, import.module_reference, reference);
+            }
         }
     }
     return false;
@@ -100,7 +134,7 @@ bool exists(const Asn1Tree& tree, const std::string& module_reference, const std
     {
         if (module.module_reference == module_reference)
         {
-            return exists(module, reference);
+            return exists(tree, module, reference);
         }
     }
     return false;

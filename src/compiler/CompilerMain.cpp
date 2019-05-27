@@ -3,6 +3,7 @@
 #include "fast_ber/compiler/CppGeneration.hpp"
 #include "fast_ber/compiler/Dependencies.hpp"
 #include "fast_ber/compiler/Identifier.hpp"
+#include "fast_ber/compiler/ObjectClass.hpp"
 #include "fast_ber/compiler/ReorderAssignments.hpp"
 #include "fast_ber/compiler/ResolveType.hpp"
 #include "fast_ber/compiler/TypeAsString.hpp"
@@ -150,12 +151,6 @@ std::string create_assignment(const Asn1Tree& tree, const Module& module, const 
     else if (absl::holds_alternative<ObjectClassAssignment>(assignment.specific))
     {
         std::cerr << "Warning: Parsed but ignoring class assignment: " << assignment.name << std::endl;
-
-        const ObjectClassAssignment& class_assignment = absl::get<ObjectClassAssignment>(assignment.specific);
-        for (const ClassField& field : class_assignment.fields)
-        {
-            std::cerr << "Class includes field: " << field.name << std::endl;
-        }
         return "";
     }
     else
@@ -596,6 +591,7 @@ int main(int argc, char** argv)
             module.assignments = split_nested_structures(module.assignments);
         }
         resolve_components_of(context.asn1_tree);
+        resolve_object_classes(context.asn1_tree);
 
         output_file << create_output_file(context.asn1_tree, detail_filame);
         detail_output_file << create_detail_body(context.asn1_tree);

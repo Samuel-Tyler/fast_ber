@@ -200,6 +200,7 @@
 %type<std::string>       word
 %type<std::string>       ModuleIdentifier
 %type<std::string>       GlobalModuleReference
+%type<std::string>       UsefulObjectClassReference
 %type<std::string>       bstring
 %type<std::string>       xmlbstring
 %type<std::string>       hstring
@@ -346,7 +347,9 @@ ExternalObjectClassReference:
 
 UsefulObjectClassReference:
     TYPE_IDENTIFIER
-|   ABSTRACT_SYNTAX;
+    { $$ = "TYPE-IDENTIFIER"; }
+|   ABSTRACT_SYNTAX
+    { $$ = "TYPE-IDENTIFIER"; }
 
 ObjectClassAssignment:
     typereference DEFINED_AS ObjectClass
@@ -552,6 +555,7 @@ ObjectSetElements:
 
 ObjectClassFieldType:
     UsefulObjectClassReference "." FieldNameList
+    { $$ = {DefinedType{{}, }, $3}; }
 |   typereference "." FieldNameList
     { $$ = {DefinedType{{}, $1}, $3}; }
 
