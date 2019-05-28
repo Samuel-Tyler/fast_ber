@@ -152,7 +152,8 @@ bool is_type(const Assignment& assignment) { return absl::holds_alternative<Type
 bool is_value(const Assignment& assignment) { return absl::holds_alternative<ValueAssignment>(assignment.specific); }
 bool is_object_class(const Assignment& assignment)
 {
-    return absl::holds_alternative<ObjectClassAssignment>(assignment.specific);
+    return absl::holds_alternative<ObjectClassAssignment>(assignment.specific) ||
+           absl::holds_alternative<ObjectSetAssignment>(assignment.specific);
 }
 
 Type&       type(Assignment& assignemnt) { return absl::get<TypeAssignment>(assignemnt.specific).type; }
@@ -168,4 +169,11 @@ ObjectClassAssignment& object_class(Assignment& assignemnt)
 const ObjectClassAssignment& object_class(const Assignment& assignemnt)
 {
     return absl::get<ObjectClassAssignment>(assignemnt.specific);
+}
+
+bool is_a_parameter(const std::string& reference, const std::vector<Parameter>& parameters)
+{
+    auto parameter_match = [&](const Parameter& param) { return param.reference == reference; };
+
+    return std::find_if(parameters.begin(), parameters.end(), parameter_match) != parameters.end();
 }

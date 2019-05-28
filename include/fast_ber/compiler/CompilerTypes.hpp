@@ -409,12 +409,18 @@ struct ObjectSetAssignment
 {
 };
 
+struct Parameter
+{
+    absl::optional<Type> governor;
+    std::string          reference;
+};
+
 struct Assignment
 {
     std::string                                                                                name;
     absl::variant<TypeAssignment, ValueAssignment, ObjectClassAssignment, ObjectSetAssignment> specific;
     std::vector<std::string>                                                                   depends_on;
-    std::set<std::string>                                                                      parameters;
+    std::vector<Parameter>                                                                     parameters;
 };
 
 struct Import
@@ -573,6 +579,28 @@ bool is_oid(const Type& type)
 }
 
 bool is_defined(const Type& type) { return absl::holds_alternative<DefinedType>(type); }
+
+std::string create_template_definition(const std::vector<Parameter>& parameters)
+{
+    std::set<std::string> param_set;
+    for (const Parameter& parameter : parameters)
+    {
+        param_set.insert(parameter.reference);
+    }
+
+    return create_template_definition(param_set);
+}
+
+std::string create_template_arguments(const std::vector<Parameter>& parameters)
+{
+    std::set<std::string> param_set;
+    for (const Parameter& parameter : parameters)
+    {
+        param_set.insert(parameter.reference);
+    }
+
+    return create_template_arguments(param_set);
+}
 
 int unnamed_definition_reference_num = 0;
 

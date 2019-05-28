@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "fast_ber/compiler/CompilerTypes.hpp"
 #include "fast_ber/compiler/ResolveTypeFwd.hpp"
@@ -122,6 +122,27 @@ void object_class_to_concrete(Asn1Tree& tree, Module& module, Type& type)
     }
 }
 
+bool is_defined_object_class(const std::string& module_reference, const std::string& type_reference,
+                             const std::set<std::string>& object_class_names)
+{
+    return object_class_names.count(module_reference + "." + type_reference) > 0;
+}
+
+bool is_defined_object_class(const Asn1Tree&, Module& module, const Type& type,
+                             const std::set<std::string>& object_class_names)
+{
+    if (is_defined(type))
+    {
+        const DefinedType& defined = absl::get<DefinedType>(type);
+        if (defined.module_reference)
+        {
+            return is_defined_object_class(*defined.module_reference, defined.type_reference, object_class_names);
+        }
+        return is_defined_object_class(module.module_reference, defined.type_reference, object_class_names);
+    }
+    return false;
+}
+
 void remove_object_classes(Asn1Tree& tree, const std::set<std::string>& object_class_names)
 {
     for (Module& module : tree.modules)
@@ -130,27 +151,32 @@ void remove_object_classes(Asn1Tree& tree, const std::set<std::string>& object_c
             std::remove_if(
                 module.assignments.begin(), module.assignments.end(),
                 [&](const Assignment& assignment) {
-                    if (absl::holds_alternative<ObjectClassAssignment>(assignment.specific))
+                    if (is_object_class(assignment))
                     {
                         return true;
                     }
-
-                    for (const std::string& parameter : assignment.parameters)
+                    else if (is_type(assignment) && is_defined(type(assignment)))
                     {
-                        if (object_class_names.count(module.module_reference + "." + parameter) > 0)
+                        return is_defined_object_class(tree, module, type(assignment), object_class_names);
+                    }
+                    else if (absl::holds_alternative<ValueAssignment>(assignment.specific) &&
+                             absl::holds_alternative<DefinedType>(absl::get<ValueAssignment>(assignment.specific).type))
+                    {
+                        const ValueAssignment& value_assign = absl::get<ValueAssignment>(assignment.specific);
+                        return is_defined_object_class(tree, module, value_assign.type, object_class_names);
+                    }
+
+                    for (const Parameter& parameter : assignment.parameters)
+                    {
+                        if (parameter.governor)
                         {
-                            return true;
+                            if (is_defined_object_class(tree, module, *parameter.governor, object_class_names))
+                            {
+                                return true;
+                            }
                         }
                     }
 
-                    if (absl::holds_alternative<TypeAssignment>(assignment.specific) &&
-                        absl::holds_alternative<DefinedType>(absl::get<TypeAssignment>(assignment.specific).type))
-                    {
-                        if (is_object_class(
-                                resolve(tree, module.module_reference,
-                                        absl::get<DefinedType>(absl::get<TypeAssignment>(assignment.specific).type))))
-                            return true;
-                    }
                     return false;
                 }),
             module.assignments.end());
@@ -158,50 +184,106 @@ void remove_object_classes(Asn1Tree& tree, const std::set<std::string>& object_c
 
     for (Module& module : tree.modules)
     {
-        module.imports.erase(
-            std::remove_if(module.imports.begin(), module.imports.end(),
-                           [&](const Import& import) {
-                               for (const std::string& imported_name : import.imports)
-                               {
-                                   if (object_class_names.count(module.module_reference + "." + imported_name) > 0)
-                                   {
-                                       return true;
-                                   }
-                               }
-                               return false;
-                           }),
-            module.imports.end());
+        for (Import& import : module.imports)
+        {
+            import.imports.erase(std::remove_if(import.imports.begin(), import.imports.end(),
+                                                [&](const std::string& imported_name) {
+                                                    return is_defined_object_class(import.module_reference,
+                                                                                   imported_name, object_class_names);
+                                                }),
+                                 import.imports.end());
+        }
     }
 }
 
-// Convert usage of object classes to standard ASN.1 types
-void resolve_object_classes(Asn1Tree& tree)
+std::set<std::string> get_object_class_names(const Asn1Tree& tree)
 {
     std::set<std::string> object_class_names;
 
-    for (Module& module : tree.modules)
+    for (const Module& module : tree.modules)
     {
-        for (Assignment& assignment : module.assignments)
+        for (const Assignment& assignment : module.assignments)
         {
-            if (absl::holds_alternative<TypeAssignment>(assignment.specific))
+            if (is_type(assignment))
             {
-                object_class_to_concrete(tree, module, absl::get<TypeAssignment>(assignment.specific).type);
-
-                if (absl::holds_alternative<TypeAssignment>(assignment.specific) &&
-                    absl::holds_alternative<DefinedType>(absl::get<TypeAssignment>(assignment.specific).type))
+                for (const Parameter& parameter : assignment.parameters)
                 {
-                    Assignment& inner_assignment =
-                        resolve(tree, module.module_reference,
-                                absl::get<DefinedType>(absl::get<TypeAssignment>(assignment.specific).type));
+                    if (parameter.governor)
+                    {
+                        if (is_defined(*parameter.governor))
+                        {
+                            const DefinedType& defined          = absl::get<DefinedType>(*parameter.governor);
+                            const Assignment&  inner_assignment = resolve(tree, module.module_reference, defined);
+                            if (is_object_class(inner_assignment))
+                            {
+                                object_class_names.insert(module.module_reference + "." + inner_assignment.name);
+                            }
+                        }
+                    }
+                }
+            }
+            if (is_type(assignment) && is_defined(type(assignment)))
+            {
+                const DefinedType& defined = absl::get<DefinedType>(type(assignment));
+                if (!is_a_parameter(defined.type_reference, assignment.parameters))
+                {
+                    const Assignment& inner_assignment = resolve(tree, module.module_reference, defined);
                     if (is_object_class(inner_assignment))
                     {
                         object_class_names.insert(module.module_reference + "." + inner_assignment.name);
                     }
                 }
             }
-            else if (absl::holds_alternative<ObjectClassAssignment>(assignment.specific))
+            if (is_object_class(assignment))
             {
                 object_class_names.insert(module.module_reference + "." + assignment.name);
+            }
+        }
+    }
+
+    for (const Module& module : tree.modules)
+    {
+        for (const Import& import : module.imports)
+        {
+            for (const std::string& imported_name : import.imports)
+            {
+                if (is_defined_object_class(import.module_reference, imported_name, object_class_names))
+                {
+                    object_class_names.insert(module.module_reference + "." + imported_name);
+                }
+            }
+        }
+    }
+
+    for (auto s : object_class_names)
+    {
+        std::cout << "Object class names " << s << std::endl;
+    }
+    return object_class_names;
+}
+
+// Convert usage of object classes to standard ASN.1 types
+void resolve_object_classes(Asn1Tree& tree)
+{
+    std::set<std::string> object_class_names = get_object_class_names(tree);
+    for (Module& module : tree.modules)
+    {
+        for (Assignment& assignment : module.assignments)
+        {
+            if (absl::holds_alternative<TypeAssignment>(assignment.specific))
+            {
+                bool skip = false;
+                for (const Parameter& parameter : assignment.parameters)
+                {
+                    if (parameter.governor)
+                    {
+                        skip = true;
+                    }
+                }
+                if (!skip)
+                {
+                    object_class_to_concrete(tree, module, absl::get<TypeAssignment>(assignment.specific).type);
+                }
             }
         }
     }

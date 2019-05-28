@@ -19,6 +19,7 @@ bool exists(const Asn1Tree& tree, const std::string& current_module_reference, c
 bool is_type(const Assignment& assignment);
 bool is_value(const Assignment& assignment);
 bool is_object_class(const Assignment& assignment);
+bool is_a_parameter(const std::string& reference, const std::vector<Parameter>& parameters);
 
 Type&                        type(Assignment& assignemnt);
 const Type&                  type(const Assignment& assignemnt);

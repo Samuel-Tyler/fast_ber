@@ -1,7 +1,10 @@
 #pragma once
 
+#include "fast_ber/compiler/CompilerTypes.hpp"
+
 #include <set>
 #include <string>
+#include <vector>
 
 std::string create_include(const std::string& path) { return "#include \"" + path + "\"\n"; }
 

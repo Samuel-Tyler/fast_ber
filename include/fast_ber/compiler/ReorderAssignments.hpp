@@ -177,7 +177,7 @@ std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments
         // Therefore remove any names which are defined as parameters from dependancy list
         assignment.depends_on.erase(std::remove_if(assignment.depends_on.begin(), assignment.depends_on.end(),
                                                    [&assignment](const std::string& dependancy) {
-                                                       return assignment.parameters.count(dependancy) > 0;
+                                                       return is_a_parameter(dependancy, assignment.parameters);
                                                    }),
                                     assignment.depends_on.end());
 

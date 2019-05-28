@@ -309,9 +309,11 @@
 %type<ObjectIdComponentValue> NameAndNumberForm;
 %type<std::vector<ObjectIdComponentValue>> ObjIdComponentsList;
 %type<std::vector<ObjectIdComponentValue>> ObjectIdentifierValue;
-%type<std::set<std::string>> ParameterList;
-%type<std::set<std::string>> ParameterSeries;
-%type<std::string>           Parameter;
+%type<std::vector<Parameter>> ParameterList;
+%type<std::vector<Parameter>> ParameterSeries;
+%type<Parameter>         Parameter;
+%type<Type>              ParamGovernor;
+%type<Type>              Governor;
 
 %%
 
@@ -571,8 +573,8 @@ ParameterizedAssignment:
     { $$ = $1; }
 |   ParameterizedObjectClassAssignment
     { $$ = $1; }
-|   ParameterizedObjectAssignment
-    { $$ = $1; }
+//|   ParameterizedObjectAssignment
+//    { $$ = $1; }
 //|   ParameterizedObjectSetAssignment;
 
 ParameterizedTypeAssignment:
@@ -605,23 +607,27 @@ ParameterList:
 
 ParameterSeries:
     Parameter
-    { $$.insert($1); }
+    { $$.push_back($1); }
 |   ParameterSeries "," Parameter
-    { $$ = $1; $1.insert($3); }
+    { $$ = $1; $1.push_back($3); }
 
 Parameter:
     ParamGovernor ":" Reference
-    { $$ = $3; }
+    { $$ = Parameter{$1, $3}; }
 |   Reference
-    { $$ = $1; }
+    { $$ = Parameter{{}, $1}; }
 
 ParamGovernor:
     Governor
-|   Reference;
+    { $$ = $1; }
+|   Reference
+    { $$ = DefinedType{{}, $1}; }
 
 Governor:
     Type
-|   DefinedObjectClass;
+    { $$ = $1; }
+|   DefinedObjectClass
+    { }
 
 ParameterizedReference:
     Reference
@@ -1056,7 +1062,6 @@ ValueWithoutTypeIdentifier:
     { std::cerr << std::string("Warning: Unhandled field: BY\n"); }
 |   WITH
     { std::cerr << std::string("Warning: Unhandled field: WITH\n"); }
-|   INTEGER
 
 
 Value:
@@ -1064,6 +1069,7 @@ Value:
     { $$ = $1; }
 |   GENERIC_IDENTIFIER_UPPERCASE
     { $$.value_selection = $1; }
+|   INTEGER
 
 ValueCommaListChoice:
     Value "," Value
