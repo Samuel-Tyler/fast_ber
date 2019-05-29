@@ -15,7 +15,6 @@
 #include "InstanceOf.hpp"
 #include "Integer.hpp"
 #include "Null.hpp"
-#include "ObjectField.hpp"
 #include "ObjectIdentifier.hpp"
 #include "OctetString.hpp"
 #include "Optional.hpp"

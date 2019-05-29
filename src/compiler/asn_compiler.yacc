@@ -609,7 +609,7 @@ ParameterSeries:
     Parameter
     { $$.push_back($1); }
 |   ParameterSeries "," Parameter
-    { $$ = $1; $1.push_back($3); }
+    { $$ = $1; $$.push_back($3); }
 
 Parameter:
     ParamGovernor ":" Reference

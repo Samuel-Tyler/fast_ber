@@ -200,65 +200,98 @@ std::set<std::string> get_object_class_names(const Asn1Tree& tree)
 {
     std::set<std::string> object_class_names;
 
-    for (const Module& module : tree.modules)
+    size_t old_number_of_names = 0;
+    do
     {
-        for (const Assignment& assignment : module.assignments)
+        old_number_of_names = object_class_names.size();
+        for (const Module& module : tree.modules)
         {
-            if (is_type(assignment))
+            for (const Assignment& assignment : module.assignments)
             {
-                for (const Parameter& parameter : assignment.parameters)
+
+                if (is_type(assignment) || is_value(assignment))
                 {
-                    if (parameter.governor)
+                    for (const Parameter& parameter : assignment.parameters)
                     {
-                        if (is_defined(*parameter.governor))
+                        if (parameter.governor)
                         {
-                            const DefinedType& defined          = absl::get<DefinedType>(*parameter.governor);
-                            const Assignment&  inner_assignment = resolve(tree, module.module_reference, defined);
-                            if (is_object_class(inner_assignment))
+                            if (is_defined(*parameter.governor))
                             {
-                                object_class_names.insert(module.module_reference + "." + inner_assignment.name);
+                                const DefinedType& defined          = absl::get<DefinedType>(*parameter.governor);
+                                const Assignment&  inner_assignment = resolve(tree, module.module_reference, defined);
+                                if (is_object_class(inner_assignment))
+                                {
+                                    object_class_names.insert(module.module_reference + "." + assignment.name);
+                                }
+                                else if (is_defined_object_class(*defined.module_reference, defined.type_reference,
+                                                                 object_class_names))
+                                {
+                                    object_class_names.insert(module.module_reference + "." + assignment.name);
+                                }
                             }
                         }
                     }
                 }
-            }
-            if (is_type(assignment) && is_defined(type(assignment)))
-            {
-                const DefinedType& defined = absl::get<DefinedType>(type(assignment));
-                if (!is_a_parameter(defined.type_reference, assignment.parameters))
+                if (is_type(assignment) && is_defined(type(assignment)))
                 {
-                    const Assignment& inner_assignment = resolve(tree, module.module_reference, defined);
-                    if (is_object_class(inner_assignment))
+                    const DefinedType& defined = absl::get<DefinedType>(type(assignment));
+                    if (!is_a_parameter(defined.type_reference, assignment.parameters))
                     {
-                        object_class_names.insert(module.module_reference + "." + inner_assignment.name);
+                        const Assignment& inner_assignment = resolve(tree, module.module_reference, defined);
+                        if (is_object_class(inner_assignment))
+                        {
+                            object_class_names.insert(module.module_reference + "." + assignment.name);
+                        }
+                        else if (is_defined_object_class(*defined.module_reference, defined.type_reference,
+                                                         object_class_names))
+                        {
+                            object_class_names.insert(module.module_reference + "." + assignment.name);
+                        }
+                    }
+                }
+                if (is_value(assignment) && is_defined(value(assignment).type))
+                {
+                    const DefinedType& defined = absl::get<DefinedType>(value(assignment).type);
+                    if (!is_a_parameter(defined.type_reference, assignment.parameters))
+                    {
+                        const Assignment& inner_assignment = resolve(tree, module.module_reference, defined);
+                        if (is_object_class(inner_assignment))
+                        {
+                            object_class_names.insert(module.module_reference + "." + assignment.name);
+                        }
+                        else if (is_defined_object_class(*defined.module_reference, defined.type_reference,
+                                                         object_class_names))
+                        {
+                            object_class_names.insert(module.module_reference + "." + assignment.name);
+                        }
+                    }
+                }
+                if (is_object_class(assignment))
+                {
+                    object_class_names.insert(module.module_reference + "." + assignment.name);
+                }
+            }
+        }
+
+        for (const Module& module : tree.modules)
+        {
+            for (const Import& import : module.imports)
+            {
+                for (const std::string& imported_name : import.imports)
+                {
+                    if (is_defined_object_class(import.module_reference, imported_name, object_class_names))
+                    {
+                        object_class_names.insert(module.module_reference + "." + imported_name);
                     }
                 }
             }
-            if (is_object_class(assignment))
-            {
-                object_class_names.insert(module.module_reference + "." + assignment.name);
-            }
         }
-    }
 
-    for (const Module& module : tree.modules)
-    {
-        for (const Import& import : module.imports)
+        for (auto s : object_class_names)
         {
-            for (const std::string& imported_name : import.imports)
-            {
-                if (is_defined_object_class(import.module_reference, imported_name, object_class_names))
-                {
-                    object_class_names.insert(module.module_reference + "." + imported_name);
-                }
-            }
+            std::cout << "Object class names " << s << std::endl;
         }
-    }
-
-    for (auto s : object_class_names)
-    {
-        std::cout << "Object class names " << s << std::endl;
-    }
+    } while (object_class_names.size() > old_number_of_names);
     return object_class_names;
 }
 

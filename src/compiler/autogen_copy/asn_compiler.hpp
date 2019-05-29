@@ -6530,7 +6530,7 @@ namespace yy {
 
   case 105:
 #line 612 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< std::vector<Parameter> > () = yystack_[2].value.as< std::vector<Parameter> > (); yystack_[2].value.as< std::vector<Parameter> > ().push_back(yystack_[0].value.as< Parameter > ()); }
+    { yylhs.value.as< std::vector<Parameter> > () = yystack_[2].value.as< std::vector<Parameter> > (); yylhs.value.as< std::vector<Parameter> > ().push_back(yystack_[0].value.as< Parameter > ()); }
 #line 6533 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
