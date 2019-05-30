@@ -208,7 +208,6 @@ std::set<std::string> get_object_class_names(const Asn1Tree& tree)
         {
             for (const Assignment& assignment : module.assignments)
             {
-
                 if (is_type(assignment) || is_value(assignment))
                 {
                     for (const Parameter& parameter : assignment.parameters)
@@ -242,7 +241,7 @@ std::set<std::string> get_object_class_names(const Asn1Tree& tree)
                         {
                             object_class_names.insert(module.module_reference + "." + assignment.name);
                         }
-                        else if (is_defined_object_class(*defined.module_reference, defined.type_reference,
+                        else if (is_defined_object_class(module.module_reference, defined.type_reference,
                                                          object_class_names))
                         {
                             object_class_names.insert(module.module_reference + "." + assignment.name);
@@ -259,7 +258,7 @@ std::set<std::string> get_object_class_names(const Asn1Tree& tree)
                         {
                             object_class_names.insert(module.module_reference + "." + assignment.name);
                         }
-                        else if (is_defined_object_class(*defined.module_reference, defined.type_reference,
+                        else if (is_defined_object_class(module.module_reference, defined.type_reference,
                                                          object_class_names))
                         {
                             object_class_names.insert(module.module_reference + "." + assignment.name);
@@ -299,6 +298,7 @@ std::set<std::string> get_object_class_names(const Asn1Tree& tree)
 void resolve_object_classes(Asn1Tree& tree)
 {
     std::set<std::string> object_class_names = get_object_class_names(tree);
+
     for (Module& module : tree.modules)
     {
         for (Assignment& assignment : module.assignments)
