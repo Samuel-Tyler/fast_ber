@@ -55,16 +55,6 @@ std::string create_assignment(const Asn1Tree& tree, const Module& module, const 
             const ValueAssignment& value_assign = absl::get<ValueAssignment>(assignment.specific);
             std::string result = fully_tagged_type(value_assign.type, module, tree) + " " + assignment.name + " = ";
 
-            if (is_defined(value_assign.type))
-            {
-                if (!exists(tree, module.module_reference, absl::get<DefinedType>(value_assign.type)) ||
-                    !is_type(resolve(tree, module.module_reference, absl::get<DefinedType>(value_assign.type))))
-                {
-                    std::cerr << "not resolving = " << assignment.name << std::endl;
-                    return "";
-                }
-            }
-
             const Type& assigned_to_type =
                 (is_defined(value_assign.type))
                     ? type(resolve(tree, module.module_reference, absl::get<DefinedType>(value_assign.type)))
@@ -142,7 +132,7 @@ std::string create_assignment(const Asn1Tree& tree, const Module& module, const 
             }
             else
             {
-                return "";
+                throw std::runtime_error("Strange value assign");
             }
 
             result += ";\n";

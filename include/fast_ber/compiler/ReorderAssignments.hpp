@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -389,7 +390,9 @@ void resolve_module_dependencies(const std::unordered_map<std::string, Module>& 
                                  std::unordered_set<std::string>& assigned_names,
                                  std::unordered_set<std::string>& visited_names, std::vector<Module>& ordered_modules)
 {
-    const auto& module_iter = module_map.find(name);
+    const auto&   module_iter = module_map.find(name);
+    const Module& module      = module_iter->second;
+
     if (module_iter == module_map.end())
     {
         throw std::runtime_error("Reference to undefined module: " + name);
@@ -403,12 +406,14 @@ void resolve_module_dependencies(const std::unordered_map<std::string, Module>& 
 
     if (visited_names.count(name) == 1)
     {
-        throw std::runtime_error("Circular dependency when trying to resolve dependencies of " + name);
+        std::cerr << "Warning: Circular dependency when trying to resolve dependencies of " << name << std::endl;
+        ordered_modules.push_back(module);
+        assigned_names.insert(name);
+        return;
     }
 
     visited_names.insert(name);
 
-    const Module& module = module_iter->second;
     for (const Import& import : module.imports)
     {
         resolve_module_dependencies(module_map, import.module_reference, assigned_names, visited_names,
