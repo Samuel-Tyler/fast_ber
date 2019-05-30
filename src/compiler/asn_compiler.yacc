@@ -1901,7 +1901,7 @@ re2c:define:YYCURSOR = "context.cursor";
 "^"                     { context.location.columns(context.cursor - start); return asn1_parser::make_ACCENT (context.location); }
 
 "@"                     { context.location.columns(context.cursor - start); return asn1_parser::make_AT (context.location); }
-.                       { throw(std::runtime_error(std::string("Unknown symbol!") + *start)); context.location.columns(context.cursor - start); return asn1_parser::symbol_type(asn1_parser::token_type(*start), context.location); }
+.                       { std::cerr << "Ignoring unknown symbol: " <<  static_cast<int>(*start) << std::endl; return yylex(context); }
 %}
     }
 }

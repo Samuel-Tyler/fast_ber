@@ -9565,7 +9565,7 @@ yy4:
 	++context.cursor;
 yy5:
 #line 9606 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ throw(std::runtime_error(std::string("Unknown symbol!") + *start)); context.location.columns(context.cursor - start); return asn1_parser::symbol_type(asn1_parser::token_type(*start), context.location); }
+	{ std::cerr << "Ignoring unknown symbol: " <<  static_cast<int>(*start) << std::endl; return yylex(context); }
 #line 9570 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy6:
 	++context.cursor;
