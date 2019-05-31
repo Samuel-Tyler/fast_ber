@@ -46,6 +46,29 @@ std::string create_type_assignment(const Assignment& assignment, const Module& m
            "\n";
 }
 
+std::string cpp_value(const HexStringValue& hex)
+{
+    std::string res = "\"";
+    size_t      i   = 0;
+
+    if (hex.value.length() % 2 == 1)
+    {
+        const std::string& byte = std::string(hex.value.begin(), hex.value.begin() + 1);
+        res += "\\";
+        res += std::to_string(std::stoi(byte, nullptr, 16));
+        i++;
+    }
+
+    for (; i < hex.value.length(); i += 2)
+    {
+        const std::string& byte = std::string(hex.value.begin() + i, hex.value.begin() + i + 2);
+        res += "\\";
+        res += std::to_string(std::stoi(byte, nullptr, 16));
+    }
+
+    return res + "\"";
+}
+
 std::string create_assignment(const Asn1Tree& tree, const Module& module, const Assignment& assignment)
 {
     try
@@ -113,7 +136,7 @@ std::string create_assignment(const Asn1Tree& tree, const Module& module, const 
             else if (absl::holds_alternative<HexStringValue>(value_assign.value.value_selection))
             {
                 const HexStringValue& hstring = absl::get<HexStringValue>(value_assign.value.value_selection);
-                result += hstring.value;
+                result += cpp_value(hstring);
             }
             else if (absl::holds_alternative<CharStringValue>(value_assign.value.value_selection))
             {

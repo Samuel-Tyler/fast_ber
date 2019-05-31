@@ -27,4 +27,4 @@ Child ::= SEQUENCE {
     ...
 }
 
-END
+END-- Comment at end

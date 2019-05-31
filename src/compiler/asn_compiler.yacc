@@ -1867,11 +1867,11 @@ re2c:define:YYCURSOR = "context.cursor";
 ['\'']('0'|'1')*['\'']"B"
                         { context.location.columns(context.cursor - start); return asn1_parser::make_bstring(std::string(start + 1, context.cursor - 2), context.location); }
 ['\''][0-9A-Fa-f]*['\'']"H"
-                        { context.location.columns(context.cursor - start); return asn1_parser::make_hstring(std::string(start, context.cursor), context.location); }
-[A-Z][A-Za-z_0-9\-]*    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(santize_name(std::string(start, context.cursor)), context.location); }
-[a-z][A-Za-z_0-9\-]*    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(santize_name(std::string(start, context.cursor)), context.location); }
-[&][A-Z][A-Za-z_0-9\-]* { context.location.columns(context.cursor - start); return asn1_parser::make_typefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
-[&][a-z][A-Za-z_0-9\-]* { context.location.columns(context.cursor - start); return asn1_parser::make_valuefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
+                        { context.location.columns(context.cursor - start); return asn1_parser::make_hstring(std::string(start + 1, context.cursor - 2), context.location); }
+[A-Z]([\-]?[A-Za-z_0-9])*  { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(santize_name(std::string(start, context.cursor)), context.location); }
+[a-z]([\-]?[A-Za-z_0-9])*  { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(santize_name(std::string(start, context.cursor)), context.location); }
+[&][A-Z]([\-]?[A-Za-z_0-9])* { context.location.columns(context.cursor - start); return asn1_parser::make_typefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
+[&][a-z]([\-]?[A-Za-z_0-9])* { context.location.columns(context.cursor - start); return asn1_parser::make_valuefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
 
 // End of file
 "\000"                  { context.location.columns(context.cursor - start); return asn1_parser::make_END_OF_FILE(context.location); }
