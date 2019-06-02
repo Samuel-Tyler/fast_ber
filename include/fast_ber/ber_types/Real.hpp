@@ -15,7 +15,7 @@ class Real
 
     explicit Real(absl::Span<const uint8_t> ber_data) noexcept { assign_ber(ber_data); }
 
-    // Implicit conversion to int
+    // Implicit conversion to double
            operator double() const noexcept { return value(); }
     double value() const noexcept;
 
