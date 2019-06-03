@@ -229,6 +229,7 @@ create_collection_encode_functions(const std::string assignment_name, const std:
 
     res += "namespace " + tags_class + " {\n";
     int tag_counter = 0;
+
     for (const ComponentType& component : collection.components)
     {
         res += "static constexpr auto " + component.named_type.name + " = ";
@@ -275,6 +276,12 @@ create_collection_encode_functions(const std::string assignment_name, const std:
     res += "inline EncodeResult encode(absl::Span<uint8_t> output, const " + module.module_reference +
            "::" + assignment_name + create_template_arguments(parameters) +
            "& input, const ID& id = ID{}) noexcept\n{\n";
+
+    if (collection.components.size() == 0)
+    {
+        res += "    (void)input;\n";
+    }
+
     res += "    return encode_sequence_combine(output, id";
     for (const ComponentType& component : collection.components)
     {
@@ -300,6 +307,12 @@ std::string create_collection_decode_functions(const std::string             ass
     res += create_template_definition(template_args);
     res += "inline DecodeResult decode(const BerView& input, " + module.module_reference + "::" + assignment_name +
            create_template_arguments(parameters) + "& output, const ID& id = ID{}) noexcept\n{\n";
+
+    if (collection.components.size() == 0)
+    {
+        res += "    (void)output;\n";
+    }
+
     res += "    return decode_" + collection_name(collection) + "_combine(input, \"" + module.module_reference +
            "::" + assignment_name + "\", id";
     for (const ComponentType& component : collection.components)
@@ -393,6 +406,13 @@ std::string create_collection_equality_operators(const CollectionType& collectio
     res += "const " + parameterized_name + "& lhs, ";
     res += "const " + parameterized_name + "& rhs)\n";
     res += "{\n";
+
+    if (collection.components.size() == 0)
+    {
+        res += "    (void)lhs;\n";
+        res += "    (void)rhs;\n";
+    }
+
     res += "    return true";
     for (const ComponentType& component : collection.components)
     {
