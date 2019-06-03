@@ -1,4 +1,5 @@
 #include "fast_ber/compiler/Identifier.hpp"
+#include "fast_ber/compiler/ResolveType.hpp"
 
 TaggingInfo identifier(const AnyType&, const Module&, const Asn1Tree&)
 {
@@ -180,14 +181,10 @@ std::string fully_tagged_type(const Type& type, const Module& current_module, co
     return "TaggedType<" + type_as_string(type, current_module, tree) + ", " + tagging_info.tag + ">";
 }
 
-TaggingInfo identifier(const DefinedType& defined, const Module& current_module, const Asn1Tree&)
+TaggingInfo identifier(const DefinedType& defined, const Module& current_module, const Asn1Tree& tree)
 {
-    const std::string& module_ref =
-        (defined.module_reference) ? *defined.module_reference : current_module.module_reference;
-    const std::string& type_string =
-        "decltype(identifier(static_cast<" + module_ref + "::" + defined.type_reference + "*>(nullptr)))";
-
-    return {type_string, true};
+    const Type& resolved_type = type(resolve(tree, current_module.module_reference, defined));
+    return identifier(resolved_type, current_module, tree);
 }
 TaggingInfo identifier(const BuiltinType& type, const Module& current_module, const Asn1Tree& tree)
 {
