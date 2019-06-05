@@ -27,6 +27,13 @@ class Real
     size_t assign_ber(const BerView& rhs) noexcept;
     size_t assign_ber(absl::Span<const uint8_t> buffer) noexcept;
 
+    bool operator==(const Real&) const
+    {
+        // TODO: fuzzy equality here
+        return true;
+    }
+    bool operator!=(const Real& rhs) const { return !(*this == rhs); }
+
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
   private:

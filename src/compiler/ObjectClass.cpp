@@ -206,29 +206,6 @@ std::set<std::string> get_object_class_names(const Asn1Tree& tree)
         {
             for (const Assignment& assignment : module.assignments)
             {
-                if (is_type(assignment) || is_value(assignment))
-                {
-                    for (const Parameter& parameter : assignment.parameters)
-                    {
-                        if (parameter.governor)
-                        {
-                            if (is_defined(*parameter.governor))
-                            {
-                                const DefinedType& defined          = absl::get<DefinedType>(*parameter.governor);
-                                const Assignment&  inner_assignment = resolve(tree, module.module_reference, defined);
-                                if (is_object_class(inner_assignment))
-                                {
-                                    object_class_names.insert(module.module_reference + "." + assignment.name);
-                                }
-                                else if (is_defined_object_class(*defined.module_reference, defined.type_reference,
-                                                                 object_class_names))
-                                {
-                                    object_class_names.insert(module.module_reference + "." + assignment.name);
-                                }
-                            }
-                        }
-                    }
-                }
                 if (is_type(assignment) && is_defined(type(assignment)))
                 {
                     const DefinedType& defined = absl::get<DefinedType>(type(assignment));
@@ -298,18 +275,8 @@ void resolve_object_classes(Asn1Tree& tree)
         {
             if (absl::holds_alternative<TypeAssignment>(assignment.specific))
             {
-                bool skip = false;
-                for (const Parameter& parameter : assignment.parameters)
-                {
-                    if (parameter.governor)
-                    {
-                        skip = true;
-                    }
-                }
-                if (!skip)
-                {
-                    object_class_to_concrete(tree, module, absl::get<TypeAssignment>(assignment.specific).type);
-                }
+
+                object_class_to_concrete(tree, module, absl::get<TypeAssignment>(assignment.specific).type);
             }
         }
     }

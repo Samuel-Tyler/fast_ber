@@ -7413,13 +7413,13 @@ namespace yy {
 
   case 332:
 #line 1245 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< SequenceOfType > () = SequenceOfType{ false, nullptr, std::make_shared<Type>(yystack_[0].value.as< Type > ()) }; }
+    { yylhs.value.as< SequenceOfType > () = SequenceOfType{ false, nullptr, std::unique_ptr<Type>(new Type(yystack_[0].value.as< Type > ())) }; }
 #line 7416 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 333:
 #line 1247 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< SequenceOfType > () = SequenceOfType{ true, std::make_shared<NamedType>(yystack_[0].value.as< NamedType > ()), nullptr }; }
+    { yylhs.value.as< SequenceOfType > () = SequenceOfType{ true, std::unique_ptr<NamedType>(new NamedType(yystack_[0].value.as< NamedType > ())), nullptr }; }
 #line 7422 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
@@ -7437,13 +7437,13 @@ namespace yy {
 
   case 336:
 #line 1257 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< SetOfType > () = SetOfType{ false, nullptr, std::make_shared<Type>(yystack_[0].value.as< Type > ()) }; }
+    { yylhs.value.as< SetOfType > () = SetOfType{ false, nullptr, std::unique_ptr<Type>(new Type(yystack_[0].value.as< Type > ())) }; }
 #line 7440 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 337:
 #line 1259 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< SetOfType > () = SetOfType{ true, std::make_shared<NamedType>(yystack_[0].value.as< NamedType > ()), nullptr }; }
+    { yylhs.value.as< SetOfType > () = SetOfType{ true, std::unique_ptr<NamedType>(new NamedType(yystack_[0].value.as< NamedType > ())), nullptr }; }
 #line 7446 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
@@ -7623,49 +7623,49 @@ namespace yy {
 
   case 406:
 #line 1466 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Type > () = SetOfType{ false, nullptr, std::make_shared<Type>(yystack_[0].value.as< Type > ()) }; }
+    { yylhs.value.as< Type > () = SetOfType{ false, nullptr, std::unique_ptr<Type>(new Type(yystack_[0].value.as< Type > ())) }; }
 #line 7626 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 407:
 #line 1468 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Type > () = SetOfType{ false, nullptr, std::make_shared<Type>(yystack_[0].value.as< Type > ()) }; }
+    { yylhs.value.as< Type > () = SetOfType{ false, nullptr, std::unique_ptr<Type>(new Type(yystack_[0].value.as< Type > ())) }; }
 #line 7632 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 408:
 #line 1470 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Type > () = SequenceOfType{ false, nullptr, std::make_shared<Type>(yystack_[0].value.as< Type > ()) }; }
+    { yylhs.value.as< Type > () = SequenceOfType{ false, nullptr, std::unique_ptr<Type>(new Type(yystack_[0].value.as< Type > ())) }; }
 #line 7638 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 409:
 #line 1472 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Type > () = SequenceOfType{ false, nullptr, std::make_shared<Type>(yystack_[0].value.as< Type > ()) }; }
+    { yylhs.value.as< Type > () = SequenceOfType{ false, nullptr, std::unique_ptr<Type>(new Type(yystack_[0].value.as< Type > ())) }; }
 #line 7644 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 410:
 #line 1474 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Type > () = SetOfType{ true, std::make_shared<NamedType>(yystack_[0].value.as< NamedType > ()), nullptr }; }
+    { yylhs.value.as< Type > () = SetOfType{ true, std::unique_ptr<NamedType>(new NamedType(yystack_[0].value.as< NamedType > ())), nullptr }; }
 #line 7650 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 411:
 #line 1476 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Type > () = SetOfType{ true, std::make_shared<NamedType>(yystack_[0].value.as< NamedType > ()), nullptr }; }
+    { yylhs.value.as< Type > () = SetOfType{ true, std::unique_ptr<NamedType>(new NamedType(yystack_[0].value.as< NamedType > ())), nullptr }; }
 #line 7656 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 412:
 #line 1478 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Type > () = SequenceOfType{ true, std::make_shared<NamedType>(yystack_[0].value.as< NamedType > ()), nullptr }; }
+    { yylhs.value.as< Type > () = SequenceOfType{ true, std::unique_ptr<NamedType>(new NamedType(yystack_[0].value.as< NamedType > ())), nullptr }; }
 #line 7662 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 413:
 #line 1480 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< Type > () = SequenceOfType{ true, std::make_shared<NamedType>(yystack_[0].value.as< NamedType > ()), nullptr }; }
+    { yylhs.value.as< Type > () = SequenceOfType{ true, std::unique_ptr<NamedType>(new NamedType(yystack_[0].value.as< NamedType > ())), nullptr }; }
 #line 7668 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 

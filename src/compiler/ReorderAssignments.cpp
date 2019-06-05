@@ -171,15 +171,7 @@ std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments
     assignment_map.reserve(assignments.size());
     for (Assignment& assignment : assignments)
     {
-        assignment.depends_on = dependencies(assignment);
-        // Any parameterized references are already defined and do not need to be resolved,
-        // Therefore remove any names which are defined as parameters from dependancy list
-        assignment.depends_on.erase(std::remove_if(assignment.depends_on.begin(), assignment.depends_on.end(),
-                                                   [&assignment](const std::string& dependancy) {
-                                                       return is_a_parameter(dependancy, assignment.parameters);
-                                                   }),
-                                    assignment.depends_on.end());
-
+        assignment.depends_on           = dependencies(assignment);
         assignment_map[assignment.name] = assignment;
     }
 

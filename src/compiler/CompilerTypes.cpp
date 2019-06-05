@@ -1,5 +1,39 @@
 #include "fast_ber/compiler/CompilerTypes.hpp"
 
+SetOfType::SetOfType(bool a, std::unique_ptr<NamedType>&& b, std::unique_ptr<Type>&& c)
+    : has_name(a), named_type(std::move(b)), type(std::move(c))
+{
+}
+SetOfType::SetOfType(const SetOfType& rhs)
+    : has_name(rhs.has_name), named_type(rhs.named_type ? new NamedType(*rhs.named_type) : nullptr),
+      type(rhs.type ? new Type(*rhs.type) : nullptr)
+{
+}
+SetOfType& SetOfType::operator=(const SetOfType& rhs)
+{
+    has_name   = rhs.has_name;
+    named_type = rhs.named_type ? std::unique_ptr<NamedType>(new NamedType(*rhs.named_type)) : nullptr;
+    type       = rhs.type ? std::unique_ptr<Type>(new Type(*rhs.type)) : nullptr;
+    return *this;
+}
+SequenceOfType::SequenceOfType(bool a, std::unique_ptr<NamedType>&& b, std::unique_ptr<Type>&& c)
+    : has_name(a), named_type(std::move(b)), type(std::move(c))
+{
+}
+SequenceOfType::SequenceOfType(const SequenceOfType& rhs)
+    : has_name(rhs.has_name),
+      named_type(rhs.named_type ? std::unique_ptr<NamedType>(new NamedType(*rhs.named_type)) : nullptr),
+      type(rhs.type ? new Type(*rhs.type) : nullptr)
+{
+}
+SequenceOfType& SequenceOfType::operator=(const SequenceOfType& rhs)
+{
+    has_name   = rhs.has_name;
+    named_type = rhs.named_type ? std::unique_ptr<NamedType>(new NamedType(*rhs.named_type)) : nullptr;
+    type       = rhs.type ? std::unique_ptr<Type>(new Type(*rhs.type)) : nullptr;
+    return *this;
+}
+
 static const std::unordered_set<std::string> reserved_keywords = {"alignas",
                                                                   "alignof",
                                                                   "and",
@@ -192,25 +226,3 @@ bool is_oid(const Type& type)
 }
 
 bool is_defined(const Type& type) { return absl::holds_alternative<DefinedType>(type); }
-
-std::string create_template_definition(const std::vector<Parameter>& parameters)
-{
-    std::set<std::string> param_set;
-    for (const Parameter& parameter : parameters)
-    {
-        param_set.insert(parameter.reference);
-    }
-
-    return create_template_definition(param_set);
-}
-
-std::string create_template_arguments(const std::vector<Parameter>& parameters)
-{
-    std::set<std::string> param_set;
-    for (const Parameter& parameter : parameters)
-    {
-        param_set.insert(parameter.reference);
-    }
-
-    return create_template_arguments(param_set);
-}

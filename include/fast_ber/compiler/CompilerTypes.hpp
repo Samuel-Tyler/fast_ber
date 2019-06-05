@@ -177,17 +177,27 @@ struct DefinedType
 };
 struct SequenceOfType
 {
-    // Shared pointers used to prevent circular references
+    // Unique pointers used to prevent circular references
     bool                       has_name;
-    std::shared_ptr<NamedType> named_type;
-    std::shared_ptr<Type>      type;
+    std::unique_ptr<NamedType> named_type;
+    std::unique_ptr<Type>      type;
+
+    SequenceOfType() = default;
+    SequenceOfType(bool, std::unique_ptr<NamedType>&&, std::unique_ptr<Type>&&);
+    SequenceOfType(const SequenceOfType& rhs);
+    SequenceOfType& operator=(const SequenceOfType& rhs);
 };
 struct SetOfType
 {
-    // Shared pointers used to prevent circular references
+    // Unique pointers used to prevent circular references
     bool                       has_name;
-    std::shared_ptr<NamedType> named_type;
-    std::shared_ptr<Type>      type;
+    std::unique_ptr<NamedType> named_type;
+    std::unique_ptr<Type>      type;
+
+    SetOfType() = default;
+    SetOfType(bool, std::unique_ptr<NamedType>&&, std::unique_ptr<Type>&&);
+    SetOfType(const SetOfType& rhs);
+    SetOfType& operator=(const SetOfType& rhs);
 };
 
 struct ChoiceType
@@ -406,8 +416,5 @@ bool is_prefixed(const Type& type);
 bool is_integer(const Type& type);
 bool is_oid(const Type& type);
 bool is_defined(const Type& type);
-
-std::string create_template_definition(const std::vector<Parameter>& parameters);
-std::string create_template_arguments(const std::vector<Parameter>& parameters);
 
 struct Context;

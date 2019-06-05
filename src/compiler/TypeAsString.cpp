@@ -221,20 +221,7 @@ std::string type_as_string(const PrefixedType& prefixed_type, const Module& modu
 std::string type_as_string(const TimeType&, const Module&, const Asn1Tree&) { return "Time"; }
 std::string type_as_string(const TimeOfDayType&, const Module&, const Asn1Tree&) { return "TimeOfDay"; }
 std::string type_as_string(const UTCTimeType&, const Module&, const Asn1Tree&) { return "UTCTime"; }
-
-std::string type_as_string(const DefinedType& type, const Module& module, const Asn1Tree& tree)
-{
-    if (!type.parameters.empty())
-    {
-        std::set<std::string> parameter_types;
-        for (const Type& paramter : type.parameters)
-        {
-            parameter_types.insert(type_as_string(paramter, module, tree));
-        }
-        return type.type_reference + create_template_arguments(parameter_types);
-    }
-    return type.type_reference;
-}
+std::string type_as_string(const DefinedType& type, const Module&, const Asn1Tree&) { return type.type_reference; }
 
 struct ToStringHelper
 {

@@ -2,7 +2,7 @@
 
 std::string create_include(const std::string& path) { return "#include \"" + path + "\"\n"; }
 
-std::string create_template_definition(const std::set<std::string>& types)
+std::string create_template_definition(const std::vector<std::string>& types)
 {
     if (types.empty())
     {
@@ -25,7 +25,7 @@ std::string create_template_definition(const std::set<std::string>& types)
     return definition;
 }
 
-std::string create_template_arguments(const std::set<std::string>& types)
+std::string create_template_arguments(const std::vector<std::string>& types)
 {
     if (types.empty())
     {

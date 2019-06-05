@@ -1242,9 +1242,9 @@ ComponentValueList:
 
 SequenceOfType:
     SEQUENCE OF Type
-    { $$ = SequenceOfType{ false, nullptr, std::make_shared<Type>($3) }; }
+    { $$ = SequenceOfType{ false, nullptr, std::unique_ptr<Type>(new Type($3)) }; }
 |   SEQUENCE OF NamedType
-    { $$ = SequenceOfType{ true, std::make_shared<NamedType>($3), nullptr }; }
+    { $$ = SequenceOfType{ true, std::unique_ptr<NamedType>(new NamedType($3)), nullptr }; }
 
 SetType:
     SET "{" "}"
@@ -1254,9 +1254,9 @@ SetType:
 
 SetOfType:
     SET OF Type
-    { $$ = SetOfType{ false, nullptr, std::make_shared<Type>($3) }; }
+    { $$ = SetOfType{ false, nullptr, std::unique_ptr<Type>(new Type($3)) }; }
 |   SET OF NamedType
-    { $$ = SetOfType{ true, std::make_shared<NamedType>($3), nullptr }; }
+    { $$ = SetOfType{ true, std::unique_ptr<NamedType>(new NamedType($3)), nullptr }; }
 
 ChoiceType:
     CHOICE "{" AlternativeTypeLists "}"
@@ -1463,21 +1463,21 @@ ConstrainedType:
 
 TypeWithConstraint:
     SET Constraint OF Type
-    { $$ = SetOfType{ false, nullptr, std::make_shared<Type>($4) }; }
+    { $$ = SetOfType{ false, nullptr, std::unique_ptr<Type>(new Type($4)) }; }
 |   SET SizeConstraint OF Type
-    { $$ = SetOfType{ false, nullptr, std::make_shared<Type>($4) }; }
+    { $$ = SetOfType{ false, nullptr, std::unique_ptr<Type>(new Type($4)) }; }
 |   SEQUENCE Constraint OF Type
-    { $$ = SequenceOfType{ false, nullptr, std::make_shared<Type>($4) }; }
+    { $$ = SequenceOfType{ false, nullptr, std::unique_ptr<Type>(new Type($4)) }; }
 |   SEQUENCE SizeConstraint OF Type
-    { $$ = SequenceOfType{ false, nullptr, std::make_shared<Type>($4) }; }
+    { $$ = SequenceOfType{ false, nullptr, std::unique_ptr<Type>(new Type($4)) }; }
 |   SET Constraint OF NamedType
-    { $$ = SetOfType{ true, std::make_shared<NamedType>($4), nullptr }; }
+    { $$ = SetOfType{ true, std::unique_ptr<NamedType>(new NamedType($4)), nullptr }; }
 |   SET SizeConstraint OF NamedType
-    { $$ = SetOfType{ true, std::make_shared<NamedType>($4), nullptr }; }
+    { $$ = SetOfType{ true, std::unique_ptr<NamedType>(new NamedType($4)), nullptr }; }
 |   SEQUENCE Constraint OF NamedType
-    { $$ = SequenceOfType{ true, std::make_shared<NamedType>($4), nullptr }; }
+    { $$ = SequenceOfType{ true, std::unique_ptr<NamedType>(new NamedType($4)), nullptr }; }
 |   SEQUENCE SizeConstraint OF NamedType
-    { $$ = SequenceOfType{ true, std::make_shared<NamedType>($4), nullptr }; }
+    { $$ = SequenceOfType{ true, std::unique_ptr<NamedType>(new NamedType($4)), nullptr }; }
 
 Constraint:
     "(" ConstraintSpec ExceptionSpec ")";
