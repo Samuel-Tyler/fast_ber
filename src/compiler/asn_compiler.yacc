@@ -35,6 +35,7 @@
 
 %token comment
 %token number
+%token negativenumber
 %token realnumber
 %token bstring
 %token xmlbstring
@@ -211,6 +212,7 @@
 %type<std::string>       xmltstring
 %type<double>            realnumber
 %type<long long>         number
+%type<long long>         negativenumber
 %type<long long>         SignedNumber
 %type<DefinedValue>      DefinedValue
 %type<BuiltinType>       BuiltinType;
@@ -1120,8 +1122,8 @@ NamedNumber:
 SignedNumber:
     number
     { $$ = $1; }
-|   "-" number
-    { $$ = -$2; }
+|   negativenumber
+    { $$ = $1; }
 
 EnumeratedType:
     ENUMERATED "{" Enumerations "}"
@@ -1862,6 +1864,7 @@ re2c:define:YYCURSOR = "context.cursor";
 // Identifiers
 [0-9]+'\.'[0-9]+        { context.location.columns(context.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context.cursor)), context.location); }
 [0-9]+                  { context.location.columns(context.cursor - start); return asn1_parser::make_number(std::stoll(std::string(start, context.cursor)), context.location); }
+"-"[0-9]+               { context.location.columns(context.cursor - start); return asn1_parser::make_negativenumber(std::stoll(std::string(start, context.cursor)), context.location); }
 ['\"']('\\'.|"\"\""|[^'\"'])*['\"']
                         { context.location.columns(context.cursor - start); return asn1_parser::make_cstring(std::string(start, context.cursor), context.location); }
 ['\'']('0'|'1')*['\'']"B"

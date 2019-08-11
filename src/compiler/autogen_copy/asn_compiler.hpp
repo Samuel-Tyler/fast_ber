@@ -836,6 +836,7 @@ namespace yy {
       char dummy49[sizeof(int)];
 
       // number
+      // negativenumber
       // SignedNumber
       char dummy50[sizeof(long long)];
 
@@ -935,150 +936,151 @@ namespace yy {
         END_OF_FILE = 0,
         comment = 258,
         number = 259,
-        realnumber = 260,
-        bstring = 261,
-        xmlbstring = 262,
-        hstring = 263,
-        xmlhstring = 264,
-        cstring = 265,
-        xmlcstring = 266,
-        simplestring = 267,
-        xmltstring = 268,
-        psname = 269,
-        encodingreference = 270,
-        integerUnicodeLabel = 271,
-        tstring = 274,
-        objectreference = 276,
-        objectsetreference = 277,
-        typefieldreference = 278,
-        valuefieldreference = 279,
-        valuesetfieldreference = 280,
-        objectfieldreference = 281,
-        objectsetfieldreference = 282,
-        ABSENT = 283,
-        ABSTRACT_SYNTAX = 284,
-        ALL = 285,
-        ANY = 286,
-        APPLICATION = 287,
-        ASN_NULL = 288,
-        AUTOMATIC = 289,
-        BEGIN = 290,
-        BIT = 291,
-        BMPString = 292,
-        BOOLEAN = 293,
-        BY = 294,
-        CHARACTER = 295,
-        CHOICE = 296,
-        CLASS = 297,
-        COMPONENT = 298,
-        COMPONENTS = 299,
-        CONSTRAINED = 300,
-        CONTAINING = 301,
-        DATE = 302,
-        DATE_TIME = 303,
-        DEFAULT = 304,
-        DEFINITIONS = 305,
-        DURATION = 306,
-        EMBEDDED = 307,
-        ENCODED = 308,
-        ENCODING_CONTROL = 309,
-        END = 310,
-        ENUMERATED = 311,
-        EXCEPT = 312,
-        EXPLICIT = 313,
-        EXPORTS = 314,
-        EXTENSIBILITY = 315,
-        EXTERNAL = 316,
-        FALSE = 317,
-        FROM = 318,
-        GeneralizedTime = 319,
-        GeneralString = 320,
-        GraphicString = 321,
-        IA5String = 322,
-        IDENTIFIER = 323,
-        IMPLICIT = 324,
-        IMPLIED = 325,
-        IMPORTS = 326,
-        INCLUDES = 327,
-        INSTANCE = 328,
-        INSTRUCTIONS = 329,
-        INTEGER = 330,
-        INTERSECTION = 331,
-        ISO646String = 332,
-        MAX = 333,
-        MIN = 334,
-        MINUS_INFINITY = 335,
-        NOT_A_NUMBER = 336,
-        NumericString = 337,
-        OBJECT = 338,
-        ObjectDescriptor = 339,
-        OCTET = 340,
-        OF = 341,
-        OID_IRI = 342,
-        OPTIONAL = 343,
-        PATTERN = 344,
-        PDV = 345,
-        PLUS_INFINITY = 346,
-        PRESENT = 347,
-        PrintableString = 348,
-        PRIVATE = 349,
-        REAL = 350,
-        RELATIVE_OID = 351,
-        RELATIVE_OID_IRI = 352,
-        SEQUENCE = 353,
-        SET = 354,
-        SETTINGS = 355,
-        SIZE = 356,
-        STRING = 357,
-        SYNTAX = 358,
-        T61String = 359,
-        TAGS = 360,
-        TeletexString = 361,
-        TIME = 362,
-        TIME_OF_DAY = 363,
-        TRUE = 364,
-        TYPE_IDENTIFIER = 365,
-        UNION = 366,
-        UNIQUE = 367,
-        UNIVERSAL = 368,
-        UniversalString = 369,
-        UTCTime = 370,
-        UTF8String = 371,
-        VideotexString = 372,
-        VisibleString = 373,
-        WITH = 374,
-        DEFINED_AS = 375,
-        ELIPSIS = 376,
-        RANGE = 377,
-        OPEN_BRACE = 378,
-        CLOSE_BRACE = 379,
-        OPEN_PARENTHESIS = 380,
-        CLOSE_PARENTHESIS = 381,
-        OPEN_SQUARE_BRACKET = 382,
-        CLOSE_SQUARE_BRACKET = 383,
-        LESS_THAN = 384,
-        GREATER_THAN = 385,
-        EXCLAMATION_MARK = 386,
-        QUOTATION_MARK = 387,
-        AMPERSAND = 388,
-        APOSTROPHE = 389,
-        ASTERISK = 390,
-        COMMA = 391,
-        FULL_STOP = 392,
-        HYPHEN_MINUS = 393,
-        SOLIDUS = 394,
-        COLON = 395,
-        SEMICOLON = 396,
-        EQUALS_SIGN = 397,
-        AT = 398,
-        VERTICAL_LINE = 399,
-        ACCENT = 400,
-        PLUS = 401,
-        STAR = 402,
-        GENERIC_IDENTIFIER_UPPERCASE = 403,
-        GENERIC_IDENTIFIER_LOWERCASE = 404,
-        GENERIC_INTEGER = 405,
-        xmlasn1typename = 406
+        negativenumber = 260,
+        realnumber = 261,
+        bstring = 262,
+        xmlbstring = 263,
+        hstring = 264,
+        xmlhstring = 265,
+        cstring = 266,
+        xmlcstring = 267,
+        simplestring = 268,
+        xmltstring = 269,
+        psname = 270,
+        encodingreference = 271,
+        integerUnicodeLabel = 272,
+        tstring = 275,
+        objectreference = 277,
+        objectsetreference = 278,
+        typefieldreference = 279,
+        valuefieldreference = 280,
+        valuesetfieldreference = 281,
+        objectfieldreference = 282,
+        objectsetfieldreference = 283,
+        ABSENT = 284,
+        ABSTRACT_SYNTAX = 285,
+        ALL = 286,
+        ANY = 287,
+        APPLICATION = 288,
+        ASN_NULL = 289,
+        AUTOMATIC = 290,
+        BEGIN = 291,
+        BIT = 292,
+        BMPString = 293,
+        BOOLEAN = 294,
+        BY = 295,
+        CHARACTER = 296,
+        CHOICE = 297,
+        CLASS = 298,
+        COMPONENT = 299,
+        COMPONENTS = 300,
+        CONSTRAINED = 301,
+        CONTAINING = 302,
+        DATE = 303,
+        DATE_TIME = 304,
+        DEFAULT = 305,
+        DEFINITIONS = 306,
+        DURATION = 307,
+        EMBEDDED = 308,
+        ENCODED = 309,
+        ENCODING_CONTROL = 310,
+        END = 311,
+        ENUMERATED = 312,
+        EXCEPT = 313,
+        EXPLICIT = 314,
+        EXPORTS = 315,
+        EXTENSIBILITY = 316,
+        EXTERNAL = 317,
+        FALSE = 318,
+        FROM = 319,
+        GeneralizedTime = 320,
+        GeneralString = 321,
+        GraphicString = 322,
+        IA5String = 323,
+        IDENTIFIER = 324,
+        IMPLICIT = 325,
+        IMPLIED = 326,
+        IMPORTS = 327,
+        INCLUDES = 328,
+        INSTANCE = 329,
+        INSTRUCTIONS = 330,
+        INTEGER = 331,
+        INTERSECTION = 332,
+        ISO646String = 333,
+        MAX = 334,
+        MIN = 335,
+        MINUS_INFINITY = 336,
+        NOT_A_NUMBER = 337,
+        NumericString = 338,
+        OBJECT = 339,
+        ObjectDescriptor = 340,
+        OCTET = 341,
+        OF = 342,
+        OID_IRI = 343,
+        OPTIONAL = 344,
+        PATTERN = 345,
+        PDV = 346,
+        PLUS_INFINITY = 347,
+        PRESENT = 348,
+        PrintableString = 349,
+        PRIVATE = 350,
+        REAL = 351,
+        RELATIVE_OID = 352,
+        RELATIVE_OID_IRI = 353,
+        SEQUENCE = 354,
+        SET = 355,
+        SETTINGS = 356,
+        SIZE = 357,
+        STRING = 358,
+        SYNTAX = 359,
+        T61String = 360,
+        TAGS = 361,
+        TeletexString = 362,
+        TIME = 363,
+        TIME_OF_DAY = 364,
+        TRUE = 365,
+        TYPE_IDENTIFIER = 366,
+        UNION = 367,
+        UNIQUE = 368,
+        UNIVERSAL = 369,
+        UniversalString = 370,
+        UTCTime = 371,
+        UTF8String = 372,
+        VideotexString = 373,
+        VisibleString = 374,
+        WITH = 375,
+        DEFINED_AS = 376,
+        ELIPSIS = 377,
+        RANGE = 378,
+        OPEN_BRACE = 379,
+        CLOSE_BRACE = 380,
+        OPEN_PARENTHESIS = 381,
+        CLOSE_PARENTHESIS = 382,
+        OPEN_SQUARE_BRACKET = 383,
+        CLOSE_SQUARE_BRACKET = 384,
+        LESS_THAN = 385,
+        GREATER_THAN = 386,
+        EXCLAMATION_MARK = 387,
+        QUOTATION_MARK = 388,
+        AMPERSAND = 389,
+        APOSTROPHE = 390,
+        ASTERISK = 391,
+        COMMA = 392,
+        FULL_STOP = 393,
+        HYPHEN_MINUS = 394,
+        SOLIDUS = 395,
+        COLON = 396,
+        SEMICOLON = 397,
+        EQUALS_SIGN = 398,
+        AT = 399,
+        VERTICAL_LINE = 400,
+        ACCENT = 401,
+        PLUS = 402,
+        STAR = 403,
+        GENERIC_IDENTIFIER_UPPERCASE = 404,
+        GENERIC_IDENTIFIER_LOWERCASE = 405,
+        GENERIC_INTEGER = 406,
+        xmlasn1typename = 407
       };
     };
 
@@ -1318,6 +1320,10 @@ namespace yy {
     static inline
     symbol_type
     make_number (const long long& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_negativenumber (const long long& v, const location_type& l);
 
     static inline
     symbol_type
@@ -2100,12 +2106,12 @@ namespace yy {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 4056,     ///< Last index in yytable_.
+      yylast_ = 3992,     ///< Last index in yytable_.
       yynnts_ = 226,  ///< Number of nonterminal symbols.
       yyfinal_ = 6, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
-      yyntokens_ = 152  ///< Number of tokens.
+      yyntokens_ = 153  ///< Number of tokens.
     };
 
 
@@ -2162,9 +2168,9 @@ namespace yy {
      115,   116,   117,   118,   119,   120,   121,   122,   123,   124,
      125,   126,   127,   128,   129,   130,   131,   132,   133,   134,
      135,   136,   137,   138,   139,   140,   141,   142,   143,   144,
-     145,   146,   147,   148,   149,   150,   151
+     145,   146,   147,   148,   149,   150,   151,   152
     };
-    const unsigned int user_token_number_max_ = 406;
+    const unsigned int user_token_number_max_ = 407;
     const token_number_type undef_token_ = 2;
 
     if (static_cast<int>(t) <= yyeof_)
@@ -2197,314 +2203,315 @@ namespace yy {
   {
       switch (other.type_get ())
     {
-      case 159: // ObjectClassAssignment
-      case 198: // ObjectSetAssignment
-      case 202: // ParameterizedAssignment
-      case 203: // ParameterizedTypeAssignment
-      case 204: // ParameterizedValueAssignment
-      case 205: // ParameterizedValueSetTypeAssignment
-      case 206: // ParameterizedObjectClassAssignment
-      case 251: // Assignment
-      case 260: // TypeAssignment
-      case 261: // ValueAssignment
-      case 262: // ValueSetTypeAssignment
+      case 160: // ObjectClassAssignment
+      case 199: // ObjectSetAssignment
+      case 203: // ParameterizedAssignment
+      case 204: // ParameterizedTypeAssignment
+      case 205: // ParameterizedValueAssignment
+      case 206: // ParameterizedValueSetTypeAssignment
+      case 207: // ParameterizedObjectClassAssignment
+      case 252: // Assignment
+      case 261: // TypeAssignment
+      case 262: // ValueAssignment
+      case 263: // ValueSetTypeAssignment
         value.copy< Assignment > (other.value);
         break;
 
-      case 283: // BitStringType
+      case 284: // BitStringType
         value.copy< BitStringType > (other.value);
         break;
 
-      case 272: // BooleanType
+      case 273: // BooleanType
         value.copy< BooleanType > (other.value);
         break;
 
-      case 264: // BuiltinType
+      case 265: // BuiltinType
         value.copy< BuiltinType > (other.value);
         break;
 
-      case 328: // CharacterStringType
+      case 329: // CharacterStringType
         value.copy< CharacterStringType > (other.value);
         break;
 
-      case 295: // ChoiceType
+      case 296: // ChoiceType
         value.copy< ChoiceType > (other.value);
         break;
 
-      case 305: // Class
+      case 306: // Class
         value.copy< Class > (other.value);
         break;
 
-      case 291: // ComponentType
+      case 292: // ComponentType
         value.copy< ComponentType > (other.value);
         break;
 
-      case 289: // ComponentTypeLists
-      case 290: // ComponentTypeList
+      case 290: // ComponentTypeLists
+      case 291: // ComponentTypeList
         value.copy< ComponentTypeList > (other.value);
         break;
 
-      case 326: // DateTimeType
+      case 327: // DateTimeType
         value.copy< DateTimeType > (other.value);
         break;
 
-      case 324: // DateType
+      case 325: // DateType
         value.copy< DateType > (other.value);
         break;
 
-      case 252: // DefinedType
-      case 254: // ParameterizedType
-      case 258: // ExternalTypeReference
+      case 253: // DefinedType
+      case 255: // ParameterizedType
+      case 259: // ExternalTypeReference
         value.copy< DefinedType > (other.value);
         break;
 
-      case 253: // DefinedValue
+      case 254: // DefinedValue
         value.copy< DefinedValue > (other.value);
         break;
 
-      case 327: // DurationType
+      case 328: // DurationType
         value.copy< DurationType > (other.value);
         break;
 
-      case 320: // EmbeddedPDVType
+      case 321: // EmbeddedPDVType
         value.copy< EmbeddedPDVType > (other.value);
         break;
 
-      case 278: // EnumeratedType
-      case 279: // Enumerations
-      case 280: // Enumeration
+      case 279: // EnumeratedType
+      case 280: // Enumerations
+      case 281: // Enumeration
         value.copy< EnumeratedType > (other.value);
         break;
 
-      case 281: // EnumerationItem
+      case 282: // EnumerationItem
         value.copy< EnumerationValue > (other.value);
         break;
 
-      case 321: // ExternalType
+      case 322: // ExternalType
         value.copy< ExternalType > (other.value);
         break;
 
-      case 314: // IRIType
+      case 315: // IRIType
         value.copy< IRIType > (other.value);
         break;
 
-      case 244: // SymbolsFromModule
+      case 245: // SymbolsFromModule
         value.copy< Import > (other.value);
         break;
 
-      case 214: // InstanceOfType
+      case 215: // InstanceOfType
         value.copy< InstanceOfType > (other.value);
         break;
 
-      case 274: // IntegerType
+      case 275: // IntegerType
         value.copy< IntegerType > (other.value);
         break;
 
-      case 238: // ModuleBody
+      case 239: // ModuleBody
         value.copy< Module > (other.value);
         break;
 
-      case 276: // NamedNumber
+      case 277: // NamedNumber
         value.copy< NamedNumber > (other.value);
         break;
 
-      case 265: // NamedType
+      case 266: // NamedType
         value.copy< NamedType > (other.value);
         break;
 
-      case 287: // NullType
+      case 288: // NullType
         value.copy< NullType > (other.value);
         break;
 
-      case 160: // ObjectClass
-      case 161: // ObjectClassDefn
+      case 161: // ObjectClass
+      case 162: // ObjectClassDefn
         value.copy< ObjectClassAssignment > (other.value);
         break;
 
-      case 201: // ObjectClassFieldType
+      case 202: // ObjectClassFieldType
         value.copy< ObjectClassFieldType > (other.value);
         break;
 
-      case 309: // ObjIdComponents
-      case 310: // NameForm
-      case 311: // NumberForm
-      case 312: // NameAndNumberForm
+      case 310: // ObjIdComponents
+      case 311: // NameForm
+      case 312: // NumberForm
+      case 313: // NameAndNumberForm
         value.copy< ObjectIdComponentValue > (other.value);
         break;
 
-      case 306: // ObjectIdentifierType
+      case 307: // ObjectIdentifierType
         value.copy< ObjectIdentifierType > (other.value);
         break;
 
-      case 286: // OctetStringType
+      case 287: // OctetStringType
         value.copy< OctetStringType > (other.value);
         break;
 
-      case 209: // Parameter
+      case 210: // Parameter
         value.copy< Parameter > (other.value);
         break;
 
-      case 300: // PrefixedType
+      case 301: // PrefixedType
         value.copy< PrefixedType > (other.value);
         break;
 
-      case 282: // RealType
+      case 283: // RealType
         value.copy< RealType > (other.value);
         break;
 
-      case 319: // RelativeIRIType
+      case 320: // RelativeIRIType
         value.copy< RelativeIRIType > (other.value);
         break;
 
-      case 313: // RelativeOIDType
+      case 314: // RelativeOIDType
         value.copy< RelativeOIDType > (other.value);
         break;
 
-      case 292: // SequenceOfType
+      case 293: // SequenceOfType
         value.copy< SequenceOfType > (other.value);
         break;
 
-      case 288: // SequenceType
+      case 289: // SequenceType
         value.copy< SequenceType > (other.value);
         break;
 
-      case 294: // SetOfType
+      case 295: // SetOfType
         value.copy< SetOfType > (other.value);
         break;
 
-      case 293: // SetType
+      case 294: // SetType
         value.copy< SetType > (other.value);
         break;
 
-      case 302: // Tag
+      case 303: // Tag
         value.copy< Tag > (other.value);
         break;
 
-      case 301: // TaggedType
+      case 302: // TaggedType
         value.copy< TaggedType > (other.value);
         break;
 
-      case 236: // TagDefault
+      case 237: // TagDefault
         value.copy< TaggingMode > (other.value);
         break;
 
-      case 325: // TimeOfDayType
+      case 326: // TimeOfDayType
         value.copy< TimeOfDayType > (other.value);
         break;
 
-      case 322: // TimeType
+      case 323: // TimeType
         value.copy< TimeType > (other.value);
         break;
 
-      case 210: // ParamGovernor
-      case 211: // Governor
-      case 257: // ActualParameter
-      case 263: // Type
-      case 331: // ConstrainedType
-      case 332: // TypeWithConstraint
+      case 211: // ParamGovernor
+      case 212: // Governor
+      case 258: // ActualParameter
+      case 264: // Type
+      case 332: // ConstrainedType
+      case 333: // TypeWithConstraint
         value.copy< Type > (other.value);
         break;
 
-      case 266: // ValueWithoutTypeIdentifier
-      case 267: // Value
-      case 349: // SingleValue
+      case 267: // ValueWithoutTypeIdentifier
+      case 268: // Value
+      case 350: // SingleValue
         value.copy< Value > (other.value);
         break;
 
-      case 5: // realnumber
+      case 6: // realnumber
         value.copy< double > (other.value);
         break;
 
-      case 304: // ClassNumber
+      case 305: // ClassNumber
         value.copy< int > (other.value);
         break;
 
       case 4: // number
-      case 277: // SignedNumber
+      case 5: // negativenumber
+      case 278: // SignedNumber
         value.copy< long long > (other.value);
         break;
 
-      case 6: // bstring
-      case 7: // xmlbstring
-      case 8: // hstring
-      case 9: // xmlhstring
-      case 10: // cstring
-      case 11: // xmlcstring
-      case 12: // simplestring
-      case 13: // xmltstring
-      case 21: // objectreference
-      case 23: // typefieldreference
-      case 24: // valuefieldreference
-      case 148: // GENERIC_IDENTIFIER_UPPERCASE
-      case 149: // GENERIC_IDENTIFIER_LOWERCASE
-      case 158: // UsefulObjectClassReference
-      case 164: // FieldName
-      case 215: // SimpleDefinedType
-      case 227: // ModuleIdentifier
-      case 245: // GlobalModuleReference
-      case 248: // Symbol
-      case 249: // Reference
-      case 372: // typereference
-      case 373: // identifier
-      case 374: // valuereference
-      case 375: // modulereference
-      case 376: // objectclassreference
-      case 377: // word
+      case 7: // bstring
+      case 8: // xmlbstring
+      case 9: // hstring
+      case 10: // xmlhstring
+      case 11: // cstring
+      case 12: // xmlcstring
+      case 13: // simplestring
+      case 14: // xmltstring
+      case 22: // objectreference
+      case 24: // typefieldreference
+      case 25: // valuefieldreference
+      case 149: // GENERIC_IDENTIFIER_UPPERCASE
+      case 150: // GENERIC_IDENTIFIER_LOWERCASE
+      case 159: // UsefulObjectClassReference
+      case 165: // FieldName
+      case 216: // SimpleDefinedType
+      case 228: // ModuleIdentifier
+      case 246: // GlobalModuleReference
+      case 249: // Symbol
+      case 250: // Reference
+      case 373: // typereference
+      case 374: // identifier
+      case 375: // valuereference
+      case 376: // modulereference
+      case 377: // objectclassreference
+      case 378: // word
         value.copy< std::string > (other.value);
         break;
 
-      case 250: // AssignmentList
+      case 251: // AssignmentList
         value.copy< std::vector<Assignment> > (other.value);
         break;
 
-      case 162: // FieldSpecList
-      case 163: // FieldSpec
-      case 166: // TypeFieldSpec
-      case 170: // FixedTypeValueFieldSpec
+      case 163: // FieldSpecList
+      case 164: // FieldSpec
+      case 167: // TypeFieldSpec
+      case 171: // FixedTypeValueFieldSpec
         value.copy< std::vector<ClassField> > (other.value);
         break;
 
-      case 239: // Exports
+      case 240: // Exports
         value.copy< std::vector<Export> > (other.value);
         break;
 
-      case 241: // Imports
-      case 242: // SymbolsImported
-      case 243: // SymbolsFromModuleList
+      case 242: // Imports
+      case 243: // SymbolsImported
+      case 244: // SymbolsFromModuleList
         value.copy< std::vector<Import> > (other.value);
         break;
 
-      case 275: // NamedNumberList
+      case 276: // NamedNumberList
         value.copy< std::vector<NamedNumber> > (other.value);
         break;
 
-      case 296: // AlternativeTypeLists
-      case 297: // RootAlternativeTypeList
-      case 298: // AlternativeTypeList
+      case 297: // AlternativeTypeLists
+      case 298: // RootAlternativeTypeList
+      case 299: // AlternativeTypeList
         value.copy< std::vector<NamedType> > (other.value);
         break;
 
-      case 307: // ObjectIdentifierValue
-      case 308: // ObjIdComponentsList
+      case 308: // ObjectIdentifierValue
+      case 309: // ObjIdComponentsList
         value.copy< std::vector<ObjectIdComponentValue> > (other.value);
         break;
 
-      case 207: // ParameterList
-      case 208: // ParameterSeries
+      case 208: // ParameterList
+      case 209: // ParameterSeries
         value.copy< std::vector<Parameter> > (other.value);
         break;
 
-      case 256: // ActualParameterList
+      case 257: // ActualParameterList
         value.copy< std::vector<Type> > (other.value);
         break;
 
-      case 271: // SequenceOfValues
+      case 272: // SequenceOfValues
         value.copy< std::vector<Value> > (other.value);
         break;
 
-      case 165: // FieldNameList
-      case 167: // OneOrManyTypeFieldReference
-      case 247: // SymbolList
+      case 166: // FieldNameList
+      case 168: // OneOrManyTypeFieldReference
+      case 248: // SymbolList
         value.copy< std::vector<std::string> > (other.value);
         break;
 
@@ -2525,314 +2532,315 @@ namespace yy {
     (void) v;
       switch (this->type_get ())
     {
-      case 159: // ObjectClassAssignment
-      case 198: // ObjectSetAssignment
-      case 202: // ParameterizedAssignment
-      case 203: // ParameterizedTypeAssignment
-      case 204: // ParameterizedValueAssignment
-      case 205: // ParameterizedValueSetTypeAssignment
-      case 206: // ParameterizedObjectClassAssignment
-      case 251: // Assignment
-      case 260: // TypeAssignment
-      case 261: // ValueAssignment
-      case 262: // ValueSetTypeAssignment
+      case 160: // ObjectClassAssignment
+      case 199: // ObjectSetAssignment
+      case 203: // ParameterizedAssignment
+      case 204: // ParameterizedTypeAssignment
+      case 205: // ParameterizedValueAssignment
+      case 206: // ParameterizedValueSetTypeAssignment
+      case 207: // ParameterizedObjectClassAssignment
+      case 252: // Assignment
+      case 261: // TypeAssignment
+      case 262: // ValueAssignment
+      case 263: // ValueSetTypeAssignment
         value.copy< Assignment > (v);
         break;
 
-      case 283: // BitStringType
+      case 284: // BitStringType
         value.copy< BitStringType > (v);
         break;
 
-      case 272: // BooleanType
+      case 273: // BooleanType
         value.copy< BooleanType > (v);
         break;
 
-      case 264: // BuiltinType
+      case 265: // BuiltinType
         value.copy< BuiltinType > (v);
         break;
 
-      case 328: // CharacterStringType
+      case 329: // CharacterStringType
         value.copy< CharacterStringType > (v);
         break;
 
-      case 295: // ChoiceType
+      case 296: // ChoiceType
         value.copy< ChoiceType > (v);
         break;
 
-      case 305: // Class
+      case 306: // Class
         value.copy< Class > (v);
         break;
 
-      case 291: // ComponentType
+      case 292: // ComponentType
         value.copy< ComponentType > (v);
         break;
 
-      case 289: // ComponentTypeLists
-      case 290: // ComponentTypeList
+      case 290: // ComponentTypeLists
+      case 291: // ComponentTypeList
         value.copy< ComponentTypeList > (v);
         break;
 
-      case 326: // DateTimeType
+      case 327: // DateTimeType
         value.copy< DateTimeType > (v);
         break;
 
-      case 324: // DateType
+      case 325: // DateType
         value.copy< DateType > (v);
         break;
 
-      case 252: // DefinedType
-      case 254: // ParameterizedType
-      case 258: // ExternalTypeReference
+      case 253: // DefinedType
+      case 255: // ParameterizedType
+      case 259: // ExternalTypeReference
         value.copy< DefinedType > (v);
         break;
 
-      case 253: // DefinedValue
+      case 254: // DefinedValue
         value.copy< DefinedValue > (v);
         break;
 
-      case 327: // DurationType
+      case 328: // DurationType
         value.copy< DurationType > (v);
         break;
 
-      case 320: // EmbeddedPDVType
+      case 321: // EmbeddedPDVType
         value.copy< EmbeddedPDVType > (v);
         break;
 
-      case 278: // EnumeratedType
-      case 279: // Enumerations
-      case 280: // Enumeration
+      case 279: // EnumeratedType
+      case 280: // Enumerations
+      case 281: // Enumeration
         value.copy< EnumeratedType > (v);
         break;
 
-      case 281: // EnumerationItem
+      case 282: // EnumerationItem
         value.copy< EnumerationValue > (v);
         break;
 
-      case 321: // ExternalType
+      case 322: // ExternalType
         value.copy< ExternalType > (v);
         break;
 
-      case 314: // IRIType
+      case 315: // IRIType
         value.copy< IRIType > (v);
         break;
 
-      case 244: // SymbolsFromModule
+      case 245: // SymbolsFromModule
         value.copy< Import > (v);
         break;
 
-      case 214: // InstanceOfType
+      case 215: // InstanceOfType
         value.copy< InstanceOfType > (v);
         break;
 
-      case 274: // IntegerType
+      case 275: // IntegerType
         value.copy< IntegerType > (v);
         break;
 
-      case 238: // ModuleBody
+      case 239: // ModuleBody
         value.copy< Module > (v);
         break;
 
-      case 276: // NamedNumber
+      case 277: // NamedNumber
         value.copy< NamedNumber > (v);
         break;
 
-      case 265: // NamedType
+      case 266: // NamedType
         value.copy< NamedType > (v);
         break;
 
-      case 287: // NullType
+      case 288: // NullType
         value.copy< NullType > (v);
         break;
 
-      case 160: // ObjectClass
-      case 161: // ObjectClassDefn
+      case 161: // ObjectClass
+      case 162: // ObjectClassDefn
         value.copy< ObjectClassAssignment > (v);
         break;
 
-      case 201: // ObjectClassFieldType
+      case 202: // ObjectClassFieldType
         value.copy< ObjectClassFieldType > (v);
         break;
 
-      case 309: // ObjIdComponents
-      case 310: // NameForm
-      case 311: // NumberForm
-      case 312: // NameAndNumberForm
+      case 310: // ObjIdComponents
+      case 311: // NameForm
+      case 312: // NumberForm
+      case 313: // NameAndNumberForm
         value.copy< ObjectIdComponentValue > (v);
         break;
 
-      case 306: // ObjectIdentifierType
+      case 307: // ObjectIdentifierType
         value.copy< ObjectIdentifierType > (v);
         break;
 
-      case 286: // OctetStringType
+      case 287: // OctetStringType
         value.copy< OctetStringType > (v);
         break;
 
-      case 209: // Parameter
+      case 210: // Parameter
         value.copy< Parameter > (v);
         break;
 
-      case 300: // PrefixedType
+      case 301: // PrefixedType
         value.copy< PrefixedType > (v);
         break;
 
-      case 282: // RealType
+      case 283: // RealType
         value.copy< RealType > (v);
         break;
 
-      case 319: // RelativeIRIType
+      case 320: // RelativeIRIType
         value.copy< RelativeIRIType > (v);
         break;
 
-      case 313: // RelativeOIDType
+      case 314: // RelativeOIDType
         value.copy< RelativeOIDType > (v);
         break;
 
-      case 292: // SequenceOfType
+      case 293: // SequenceOfType
         value.copy< SequenceOfType > (v);
         break;
 
-      case 288: // SequenceType
+      case 289: // SequenceType
         value.copy< SequenceType > (v);
         break;
 
-      case 294: // SetOfType
+      case 295: // SetOfType
         value.copy< SetOfType > (v);
         break;
 
-      case 293: // SetType
+      case 294: // SetType
         value.copy< SetType > (v);
         break;
 
-      case 302: // Tag
+      case 303: // Tag
         value.copy< Tag > (v);
         break;
 
-      case 301: // TaggedType
+      case 302: // TaggedType
         value.copy< TaggedType > (v);
         break;
 
-      case 236: // TagDefault
+      case 237: // TagDefault
         value.copy< TaggingMode > (v);
         break;
 
-      case 325: // TimeOfDayType
+      case 326: // TimeOfDayType
         value.copy< TimeOfDayType > (v);
         break;
 
-      case 322: // TimeType
+      case 323: // TimeType
         value.copy< TimeType > (v);
         break;
 
-      case 210: // ParamGovernor
-      case 211: // Governor
-      case 257: // ActualParameter
-      case 263: // Type
-      case 331: // ConstrainedType
-      case 332: // TypeWithConstraint
+      case 211: // ParamGovernor
+      case 212: // Governor
+      case 258: // ActualParameter
+      case 264: // Type
+      case 332: // ConstrainedType
+      case 333: // TypeWithConstraint
         value.copy< Type > (v);
         break;
 
-      case 266: // ValueWithoutTypeIdentifier
-      case 267: // Value
-      case 349: // SingleValue
+      case 267: // ValueWithoutTypeIdentifier
+      case 268: // Value
+      case 350: // SingleValue
         value.copy< Value > (v);
         break;
 
-      case 5: // realnumber
+      case 6: // realnumber
         value.copy< double > (v);
         break;
 
-      case 304: // ClassNumber
+      case 305: // ClassNumber
         value.copy< int > (v);
         break;
 
       case 4: // number
-      case 277: // SignedNumber
+      case 5: // negativenumber
+      case 278: // SignedNumber
         value.copy< long long > (v);
         break;
 
-      case 6: // bstring
-      case 7: // xmlbstring
-      case 8: // hstring
-      case 9: // xmlhstring
-      case 10: // cstring
-      case 11: // xmlcstring
-      case 12: // simplestring
-      case 13: // xmltstring
-      case 21: // objectreference
-      case 23: // typefieldreference
-      case 24: // valuefieldreference
-      case 148: // GENERIC_IDENTIFIER_UPPERCASE
-      case 149: // GENERIC_IDENTIFIER_LOWERCASE
-      case 158: // UsefulObjectClassReference
-      case 164: // FieldName
-      case 215: // SimpleDefinedType
-      case 227: // ModuleIdentifier
-      case 245: // GlobalModuleReference
-      case 248: // Symbol
-      case 249: // Reference
-      case 372: // typereference
-      case 373: // identifier
-      case 374: // valuereference
-      case 375: // modulereference
-      case 376: // objectclassreference
-      case 377: // word
+      case 7: // bstring
+      case 8: // xmlbstring
+      case 9: // hstring
+      case 10: // xmlhstring
+      case 11: // cstring
+      case 12: // xmlcstring
+      case 13: // simplestring
+      case 14: // xmltstring
+      case 22: // objectreference
+      case 24: // typefieldreference
+      case 25: // valuefieldreference
+      case 149: // GENERIC_IDENTIFIER_UPPERCASE
+      case 150: // GENERIC_IDENTIFIER_LOWERCASE
+      case 159: // UsefulObjectClassReference
+      case 165: // FieldName
+      case 216: // SimpleDefinedType
+      case 228: // ModuleIdentifier
+      case 246: // GlobalModuleReference
+      case 249: // Symbol
+      case 250: // Reference
+      case 373: // typereference
+      case 374: // identifier
+      case 375: // valuereference
+      case 376: // modulereference
+      case 377: // objectclassreference
+      case 378: // word
         value.copy< std::string > (v);
         break;
 
-      case 250: // AssignmentList
+      case 251: // AssignmentList
         value.copy< std::vector<Assignment> > (v);
         break;
 
-      case 162: // FieldSpecList
-      case 163: // FieldSpec
-      case 166: // TypeFieldSpec
-      case 170: // FixedTypeValueFieldSpec
+      case 163: // FieldSpecList
+      case 164: // FieldSpec
+      case 167: // TypeFieldSpec
+      case 171: // FixedTypeValueFieldSpec
         value.copy< std::vector<ClassField> > (v);
         break;
 
-      case 239: // Exports
+      case 240: // Exports
         value.copy< std::vector<Export> > (v);
         break;
 
-      case 241: // Imports
-      case 242: // SymbolsImported
-      case 243: // SymbolsFromModuleList
+      case 242: // Imports
+      case 243: // SymbolsImported
+      case 244: // SymbolsFromModuleList
         value.copy< std::vector<Import> > (v);
         break;
 
-      case 275: // NamedNumberList
+      case 276: // NamedNumberList
         value.copy< std::vector<NamedNumber> > (v);
         break;
 
-      case 296: // AlternativeTypeLists
-      case 297: // RootAlternativeTypeList
-      case 298: // AlternativeTypeList
+      case 297: // AlternativeTypeLists
+      case 298: // RootAlternativeTypeList
+      case 299: // AlternativeTypeList
         value.copy< std::vector<NamedType> > (v);
         break;
 
-      case 307: // ObjectIdentifierValue
-      case 308: // ObjIdComponentsList
+      case 308: // ObjectIdentifierValue
+      case 309: // ObjIdComponentsList
         value.copy< std::vector<ObjectIdComponentValue> > (v);
         break;
 
-      case 207: // ParameterList
-      case 208: // ParameterSeries
+      case 208: // ParameterList
+      case 209: // ParameterSeries
         value.copy< std::vector<Parameter> > (v);
         break;
 
-      case 256: // ActualParameterList
+      case 257: // ActualParameterList
         value.copy< std::vector<Type> > (v);
         break;
 
-      case 271: // SequenceOfValues
+      case 272: // SequenceOfValues
         value.copy< std::vector<Value> > (v);
         break;
 
-      case 165: // FieldNameList
-      case 167: // OneOrManyTypeFieldReference
-      case 247: // SymbolList
+      case 166: // FieldNameList
+      case 168: // OneOrManyTypeFieldReference
+      case 248: // SymbolList
         value.copy< std::vector<std::string> > (v);
         break;
 
@@ -3311,314 +3319,315 @@ namespace yy {
     // Type destructor.
     switch (yytype)
     {
-      case 159: // ObjectClassAssignment
-      case 198: // ObjectSetAssignment
-      case 202: // ParameterizedAssignment
-      case 203: // ParameterizedTypeAssignment
-      case 204: // ParameterizedValueAssignment
-      case 205: // ParameterizedValueSetTypeAssignment
-      case 206: // ParameterizedObjectClassAssignment
-      case 251: // Assignment
-      case 260: // TypeAssignment
-      case 261: // ValueAssignment
-      case 262: // ValueSetTypeAssignment
+      case 160: // ObjectClassAssignment
+      case 199: // ObjectSetAssignment
+      case 203: // ParameterizedAssignment
+      case 204: // ParameterizedTypeAssignment
+      case 205: // ParameterizedValueAssignment
+      case 206: // ParameterizedValueSetTypeAssignment
+      case 207: // ParameterizedObjectClassAssignment
+      case 252: // Assignment
+      case 261: // TypeAssignment
+      case 262: // ValueAssignment
+      case 263: // ValueSetTypeAssignment
         value.template destroy< Assignment > ();
         break;
 
-      case 283: // BitStringType
+      case 284: // BitStringType
         value.template destroy< BitStringType > ();
         break;
 
-      case 272: // BooleanType
+      case 273: // BooleanType
         value.template destroy< BooleanType > ();
         break;
 
-      case 264: // BuiltinType
+      case 265: // BuiltinType
         value.template destroy< BuiltinType > ();
         break;
 
-      case 328: // CharacterStringType
+      case 329: // CharacterStringType
         value.template destroy< CharacterStringType > ();
         break;
 
-      case 295: // ChoiceType
+      case 296: // ChoiceType
         value.template destroy< ChoiceType > ();
         break;
 
-      case 305: // Class
+      case 306: // Class
         value.template destroy< Class > ();
         break;
 
-      case 291: // ComponentType
+      case 292: // ComponentType
         value.template destroy< ComponentType > ();
         break;
 
-      case 289: // ComponentTypeLists
-      case 290: // ComponentTypeList
+      case 290: // ComponentTypeLists
+      case 291: // ComponentTypeList
         value.template destroy< ComponentTypeList > ();
         break;
 
-      case 326: // DateTimeType
+      case 327: // DateTimeType
         value.template destroy< DateTimeType > ();
         break;
 
-      case 324: // DateType
+      case 325: // DateType
         value.template destroy< DateType > ();
         break;
 
-      case 252: // DefinedType
-      case 254: // ParameterizedType
-      case 258: // ExternalTypeReference
+      case 253: // DefinedType
+      case 255: // ParameterizedType
+      case 259: // ExternalTypeReference
         value.template destroy< DefinedType > ();
         break;
 
-      case 253: // DefinedValue
+      case 254: // DefinedValue
         value.template destroy< DefinedValue > ();
         break;
 
-      case 327: // DurationType
+      case 328: // DurationType
         value.template destroy< DurationType > ();
         break;
 
-      case 320: // EmbeddedPDVType
+      case 321: // EmbeddedPDVType
         value.template destroy< EmbeddedPDVType > ();
         break;
 
-      case 278: // EnumeratedType
-      case 279: // Enumerations
-      case 280: // Enumeration
+      case 279: // EnumeratedType
+      case 280: // Enumerations
+      case 281: // Enumeration
         value.template destroy< EnumeratedType > ();
         break;
 
-      case 281: // EnumerationItem
+      case 282: // EnumerationItem
         value.template destroy< EnumerationValue > ();
         break;
 
-      case 321: // ExternalType
+      case 322: // ExternalType
         value.template destroy< ExternalType > ();
         break;
 
-      case 314: // IRIType
+      case 315: // IRIType
         value.template destroy< IRIType > ();
         break;
 
-      case 244: // SymbolsFromModule
+      case 245: // SymbolsFromModule
         value.template destroy< Import > ();
         break;
 
-      case 214: // InstanceOfType
+      case 215: // InstanceOfType
         value.template destroy< InstanceOfType > ();
         break;
 
-      case 274: // IntegerType
+      case 275: // IntegerType
         value.template destroy< IntegerType > ();
         break;
 
-      case 238: // ModuleBody
+      case 239: // ModuleBody
         value.template destroy< Module > ();
         break;
 
-      case 276: // NamedNumber
+      case 277: // NamedNumber
         value.template destroy< NamedNumber > ();
         break;
 
-      case 265: // NamedType
+      case 266: // NamedType
         value.template destroy< NamedType > ();
         break;
 
-      case 287: // NullType
+      case 288: // NullType
         value.template destroy< NullType > ();
         break;
 
-      case 160: // ObjectClass
-      case 161: // ObjectClassDefn
+      case 161: // ObjectClass
+      case 162: // ObjectClassDefn
         value.template destroy< ObjectClassAssignment > ();
         break;
 
-      case 201: // ObjectClassFieldType
+      case 202: // ObjectClassFieldType
         value.template destroy< ObjectClassFieldType > ();
         break;
 
-      case 309: // ObjIdComponents
-      case 310: // NameForm
-      case 311: // NumberForm
-      case 312: // NameAndNumberForm
+      case 310: // ObjIdComponents
+      case 311: // NameForm
+      case 312: // NumberForm
+      case 313: // NameAndNumberForm
         value.template destroy< ObjectIdComponentValue > ();
         break;
 
-      case 306: // ObjectIdentifierType
+      case 307: // ObjectIdentifierType
         value.template destroy< ObjectIdentifierType > ();
         break;
 
-      case 286: // OctetStringType
+      case 287: // OctetStringType
         value.template destroy< OctetStringType > ();
         break;
 
-      case 209: // Parameter
+      case 210: // Parameter
         value.template destroy< Parameter > ();
         break;
 
-      case 300: // PrefixedType
+      case 301: // PrefixedType
         value.template destroy< PrefixedType > ();
         break;
 
-      case 282: // RealType
+      case 283: // RealType
         value.template destroy< RealType > ();
         break;
 
-      case 319: // RelativeIRIType
+      case 320: // RelativeIRIType
         value.template destroy< RelativeIRIType > ();
         break;
 
-      case 313: // RelativeOIDType
+      case 314: // RelativeOIDType
         value.template destroy< RelativeOIDType > ();
         break;
 
-      case 292: // SequenceOfType
+      case 293: // SequenceOfType
         value.template destroy< SequenceOfType > ();
         break;
 
-      case 288: // SequenceType
+      case 289: // SequenceType
         value.template destroy< SequenceType > ();
         break;
 
-      case 294: // SetOfType
+      case 295: // SetOfType
         value.template destroy< SetOfType > ();
         break;
 
-      case 293: // SetType
+      case 294: // SetType
         value.template destroy< SetType > ();
         break;
 
-      case 302: // Tag
+      case 303: // Tag
         value.template destroy< Tag > ();
         break;
 
-      case 301: // TaggedType
+      case 302: // TaggedType
         value.template destroy< TaggedType > ();
         break;
 
-      case 236: // TagDefault
+      case 237: // TagDefault
         value.template destroy< TaggingMode > ();
         break;
 
-      case 325: // TimeOfDayType
+      case 326: // TimeOfDayType
         value.template destroy< TimeOfDayType > ();
         break;
 
-      case 322: // TimeType
+      case 323: // TimeType
         value.template destroy< TimeType > ();
         break;
 
-      case 210: // ParamGovernor
-      case 211: // Governor
-      case 257: // ActualParameter
-      case 263: // Type
-      case 331: // ConstrainedType
-      case 332: // TypeWithConstraint
+      case 211: // ParamGovernor
+      case 212: // Governor
+      case 258: // ActualParameter
+      case 264: // Type
+      case 332: // ConstrainedType
+      case 333: // TypeWithConstraint
         value.template destroy< Type > ();
         break;
 
-      case 266: // ValueWithoutTypeIdentifier
-      case 267: // Value
-      case 349: // SingleValue
+      case 267: // ValueWithoutTypeIdentifier
+      case 268: // Value
+      case 350: // SingleValue
         value.template destroy< Value > ();
         break;
 
-      case 5: // realnumber
+      case 6: // realnumber
         value.template destroy< double > ();
         break;
 
-      case 304: // ClassNumber
+      case 305: // ClassNumber
         value.template destroy< int > ();
         break;
 
       case 4: // number
-      case 277: // SignedNumber
+      case 5: // negativenumber
+      case 278: // SignedNumber
         value.template destroy< long long > ();
         break;
 
-      case 6: // bstring
-      case 7: // xmlbstring
-      case 8: // hstring
-      case 9: // xmlhstring
-      case 10: // cstring
-      case 11: // xmlcstring
-      case 12: // simplestring
-      case 13: // xmltstring
-      case 21: // objectreference
-      case 23: // typefieldreference
-      case 24: // valuefieldreference
-      case 148: // GENERIC_IDENTIFIER_UPPERCASE
-      case 149: // GENERIC_IDENTIFIER_LOWERCASE
-      case 158: // UsefulObjectClassReference
-      case 164: // FieldName
-      case 215: // SimpleDefinedType
-      case 227: // ModuleIdentifier
-      case 245: // GlobalModuleReference
-      case 248: // Symbol
-      case 249: // Reference
-      case 372: // typereference
-      case 373: // identifier
-      case 374: // valuereference
-      case 375: // modulereference
-      case 376: // objectclassreference
-      case 377: // word
+      case 7: // bstring
+      case 8: // xmlbstring
+      case 9: // hstring
+      case 10: // xmlhstring
+      case 11: // cstring
+      case 12: // xmlcstring
+      case 13: // simplestring
+      case 14: // xmltstring
+      case 22: // objectreference
+      case 24: // typefieldreference
+      case 25: // valuefieldreference
+      case 149: // GENERIC_IDENTIFIER_UPPERCASE
+      case 150: // GENERIC_IDENTIFIER_LOWERCASE
+      case 159: // UsefulObjectClassReference
+      case 165: // FieldName
+      case 216: // SimpleDefinedType
+      case 228: // ModuleIdentifier
+      case 246: // GlobalModuleReference
+      case 249: // Symbol
+      case 250: // Reference
+      case 373: // typereference
+      case 374: // identifier
+      case 375: // valuereference
+      case 376: // modulereference
+      case 377: // objectclassreference
+      case 378: // word
         value.template destroy< std::string > ();
         break;
 
-      case 250: // AssignmentList
+      case 251: // AssignmentList
         value.template destroy< std::vector<Assignment> > ();
         break;
 
-      case 162: // FieldSpecList
-      case 163: // FieldSpec
-      case 166: // TypeFieldSpec
-      case 170: // FixedTypeValueFieldSpec
+      case 163: // FieldSpecList
+      case 164: // FieldSpec
+      case 167: // TypeFieldSpec
+      case 171: // FixedTypeValueFieldSpec
         value.template destroy< std::vector<ClassField> > ();
         break;
 
-      case 239: // Exports
+      case 240: // Exports
         value.template destroy< std::vector<Export> > ();
         break;
 
-      case 241: // Imports
-      case 242: // SymbolsImported
-      case 243: // SymbolsFromModuleList
+      case 242: // Imports
+      case 243: // SymbolsImported
+      case 244: // SymbolsFromModuleList
         value.template destroy< std::vector<Import> > ();
         break;
 
-      case 275: // NamedNumberList
+      case 276: // NamedNumberList
         value.template destroy< std::vector<NamedNumber> > ();
         break;
 
-      case 296: // AlternativeTypeLists
-      case 297: // RootAlternativeTypeList
-      case 298: // AlternativeTypeList
+      case 297: // AlternativeTypeLists
+      case 298: // RootAlternativeTypeList
+      case 299: // AlternativeTypeList
         value.template destroy< std::vector<NamedType> > ();
         break;
 
-      case 307: // ObjectIdentifierValue
-      case 308: // ObjIdComponentsList
+      case 308: // ObjectIdentifierValue
+      case 309: // ObjIdComponentsList
         value.template destroy< std::vector<ObjectIdComponentValue> > ();
         break;
 
-      case 207: // ParameterList
-      case 208: // ParameterSeries
+      case 208: // ParameterList
+      case 209: // ParameterSeries
         value.template destroy< std::vector<Parameter> > ();
         break;
 
-      case 256: // ActualParameterList
+      case 257: // ActualParameterList
         value.template destroy< std::vector<Type> > ();
         break;
 
-      case 271: // SequenceOfValues
+      case 272: // SequenceOfValues
         value.template destroy< std::vector<Value> > ();
         break;
 
-      case 165: // FieldNameList
-      case 167: // OneOrManyTypeFieldReference
-      case 247: // SymbolList
+      case 166: // FieldNameList
+      case 168: // OneOrManyTypeFieldReference
+      case 248: // SymbolList
         value.template destroy< std::vector<std::string> > ();
         break;
 
@@ -3645,314 +3654,315 @@ namespace yy {
     super_type::move(s);
       switch (this->type_get ())
     {
-      case 159: // ObjectClassAssignment
-      case 198: // ObjectSetAssignment
-      case 202: // ParameterizedAssignment
-      case 203: // ParameterizedTypeAssignment
-      case 204: // ParameterizedValueAssignment
-      case 205: // ParameterizedValueSetTypeAssignment
-      case 206: // ParameterizedObjectClassAssignment
-      case 251: // Assignment
-      case 260: // TypeAssignment
-      case 261: // ValueAssignment
-      case 262: // ValueSetTypeAssignment
+      case 160: // ObjectClassAssignment
+      case 199: // ObjectSetAssignment
+      case 203: // ParameterizedAssignment
+      case 204: // ParameterizedTypeAssignment
+      case 205: // ParameterizedValueAssignment
+      case 206: // ParameterizedValueSetTypeAssignment
+      case 207: // ParameterizedObjectClassAssignment
+      case 252: // Assignment
+      case 261: // TypeAssignment
+      case 262: // ValueAssignment
+      case 263: // ValueSetTypeAssignment
         value.move< Assignment > (s.value);
         break;
 
-      case 283: // BitStringType
+      case 284: // BitStringType
         value.move< BitStringType > (s.value);
         break;
 
-      case 272: // BooleanType
+      case 273: // BooleanType
         value.move< BooleanType > (s.value);
         break;
 
-      case 264: // BuiltinType
+      case 265: // BuiltinType
         value.move< BuiltinType > (s.value);
         break;
 
-      case 328: // CharacterStringType
+      case 329: // CharacterStringType
         value.move< CharacterStringType > (s.value);
         break;
 
-      case 295: // ChoiceType
+      case 296: // ChoiceType
         value.move< ChoiceType > (s.value);
         break;
 
-      case 305: // Class
+      case 306: // Class
         value.move< Class > (s.value);
         break;
 
-      case 291: // ComponentType
+      case 292: // ComponentType
         value.move< ComponentType > (s.value);
         break;
 
-      case 289: // ComponentTypeLists
-      case 290: // ComponentTypeList
+      case 290: // ComponentTypeLists
+      case 291: // ComponentTypeList
         value.move< ComponentTypeList > (s.value);
         break;
 
-      case 326: // DateTimeType
+      case 327: // DateTimeType
         value.move< DateTimeType > (s.value);
         break;
 
-      case 324: // DateType
+      case 325: // DateType
         value.move< DateType > (s.value);
         break;
 
-      case 252: // DefinedType
-      case 254: // ParameterizedType
-      case 258: // ExternalTypeReference
+      case 253: // DefinedType
+      case 255: // ParameterizedType
+      case 259: // ExternalTypeReference
         value.move< DefinedType > (s.value);
         break;
 
-      case 253: // DefinedValue
+      case 254: // DefinedValue
         value.move< DefinedValue > (s.value);
         break;
 
-      case 327: // DurationType
+      case 328: // DurationType
         value.move< DurationType > (s.value);
         break;
 
-      case 320: // EmbeddedPDVType
+      case 321: // EmbeddedPDVType
         value.move< EmbeddedPDVType > (s.value);
         break;
 
-      case 278: // EnumeratedType
-      case 279: // Enumerations
-      case 280: // Enumeration
+      case 279: // EnumeratedType
+      case 280: // Enumerations
+      case 281: // Enumeration
         value.move< EnumeratedType > (s.value);
         break;
 
-      case 281: // EnumerationItem
+      case 282: // EnumerationItem
         value.move< EnumerationValue > (s.value);
         break;
 
-      case 321: // ExternalType
+      case 322: // ExternalType
         value.move< ExternalType > (s.value);
         break;
 
-      case 314: // IRIType
+      case 315: // IRIType
         value.move< IRIType > (s.value);
         break;
 
-      case 244: // SymbolsFromModule
+      case 245: // SymbolsFromModule
         value.move< Import > (s.value);
         break;
 
-      case 214: // InstanceOfType
+      case 215: // InstanceOfType
         value.move< InstanceOfType > (s.value);
         break;
 
-      case 274: // IntegerType
+      case 275: // IntegerType
         value.move< IntegerType > (s.value);
         break;
 
-      case 238: // ModuleBody
+      case 239: // ModuleBody
         value.move< Module > (s.value);
         break;
 
-      case 276: // NamedNumber
+      case 277: // NamedNumber
         value.move< NamedNumber > (s.value);
         break;
 
-      case 265: // NamedType
+      case 266: // NamedType
         value.move< NamedType > (s.value);
         break;
 
-      case 287: // NullType
+      case 288: // NullType
         value.move< NullType > (s.value);
         break;
 
-      case 160: // ObjectClass
-      case 161: // ObjectClassDefn
+      case 161: // ObjectClass
+      case 162: // ObjectClassDefn
         value.move< ObjectClassAssignment > (s.value);
         break;
 
-      case 201: // ObjectClassFieldType
+      case 202: // ObjectClassFieldType
         value.move< ObjectClassFieldType > (s.value);
         break;
 
-      case 309: // ObjIdComponents
-      case 310: // NameForm
-      case 311: // NumberForm
-      case 312: // NameAndNumberForm
+      case 310: // ObjIdComponents
+      case 311: // NameForm
+      case 312: // NumberForm
+      case 313: // NameAndNumberForm
         value.move< ObjectIdComponentValue > (s.value);
         break;
 
-      case 306: // ObjectIdentifierType
+      case 307: // ObjectIdentifierType
         value.move< ObjectIdentifierType > (s.value);
         break;
 
-      case 286: // OctetStringType
+      case 287: // OctetStringType
         value.move< OctetStringType > (s.value);
         break;
 
-      case 209: // Parameter
+      case 210: // Parameter
         value.move< Parameter > (s.value);
         break;
 
-      case 300: // PrefixedType
+      case 301: // PrefixedType
         value.move< PrefixedType > (s.value);
         break;
 
-      case 282: // RealType
+      case 283: // RealType
         value.move< RealType > (s.value);
         break;
 
-      case 319: // RelativeIRIType
+      case 320: // RelativeIRIType
         value.move< RelativeIRIType > (s.value);
         break;
 
-      case 313: // RelativeOIDType
+      case 314: // RelativeOIDType
         value.move< RelativeOIDType > (s.value);
         break;
 
-      case 292: // SequenceOfType
+      case 293: // SequenceOfType
         value.move< SequenceOfType > (s.value);
         break;
 
-      case 288: // SequenceType
+      case 289: // SequenceType
         value.move< SequenceType > (s.value);
         break;
 
-      case 294: // SetOfType
+      case 295: // SetOfType
         value.move< SetOfType > (s.value);
         break;
 
-      case 293: // SetType
+      case 294: // SetType
         value.move< SetType > (s.value);
         break;
 
-      case 302: // Tag
+      case 303: // Tag
         value.move< Tag > (s.value);
         break;
 
-      case 301: // TaggedType
+      case 302: // TaggedType
         value.move< TaggedType > (s.value);
         break;
 
-      case 236: // TagDefault
+      case 237: // TagDefault
         value.move< TaggingMode > (s.value);
         break;
 
-      case 325: // TimeOfDayType
+      case 326: // TimeOfDayType
         value.move< TimeOfDayType > (s.value);
         break;
 
-      case 322: // TimeType
+      case 323: // TimeType
         value.move< TimeType > (s.value);
         break;
 
-      case 210: // ParamGovernor
-      case 211: // Governor
-      case 257: // ActualParameter
-      case 263: // Type
-      case 331: // ConstrainedType
-      case 332: // TypeWithConstraint
+      case 211: // ParamGovernor
+      case 212: // Governor
+      case 258: // ActualParameter
+      case 264: // Type
+      case 332: // ConstrainedType
+      case 333: // TypeWithConstraint
         value.move< Type > (s.value);
         break;
 
-      case 266: // ValueWithoutTypeIdentifier
-      case 267: // Value
-      case 349: // SingleValue
+      case 267: // ValueWithoutTypeIdentifier
+      case 268: // Value
+      case 350: // SingleValue
         value.move< Value > (s.value);
         break;
 
-      case 5: // realnumber
+      case 6: // realnumber
         value.move< double > (s.value);
         break;
 
-      case 304: // ClassNumber
+      case 305: // ClassNumber
         value.move< int > (s.value);
         break;
 
       case 4: // number
-      case 277: // SignedNumber
+      case 5: // negativenumber
+      case 278: // SignedNumber
         value.move< long long > (s.value);
         break;
 
-      case 6: // bstring
-      case 7: // xmlbstring
-      case 8: // hstring
-      case 9: // xmlhstring
-      case 10: // cstring
-      case 11: // xmlcstring
-      case 12: // simplestring
-      case 13: // xmltstring
-      case 21: // objectreference
-      case 23: // typefieldreference
-      case 24: // valuefieldreference
-      case 148: // GENERIC_IDENTIFIER_UPPERCASE
-      case 149: // GENERIC_IDENTIFIER_LOWERCASE
-      case 158: // UsefulObjectClassReference
-      case 164: // FieldName
-      case 215: // SimpleDefinedType
-      case 227: // ModuleIdentifier
-      case 245: // GlobalModuleReference
-      case 248: // Symbol
-      case 249: // Reference
-      case 372: // typereference
-      case 373: // identifier
-      case 374: // valuereference
-      case 375: // modulereference
-      case 376: // objectclassreference
-      case 377: // word
+      case 7: // bstring
+      case 8: // xmlbstring
+      case 9: // hstring
+      case 10: // xmlhstring
+      case 11: // cstring
+      case 12: // xmlcstring
+      case 13: // simplestring
+      case 14: // xmltstring
+      case 22: // objectreference
+      case 24: // typefieldreference
+      case 25: // valuefieldreference
+      case 149: // GENERIC_IDENTIFIER_UPPERCASE
+      case 150: // GENERIC_IDENTIFIER_LOWERCASE
+      case 159: // UsefulObjectClassReference
+      case 165: // FieldName
+      case 216: // SimpleDefinedType
+      case 228: // ModuleIdentifier
+      case 246: // GlobalModuleReference
+      case 249: // Symbol
+      case 250: // Reference
+      case 373: // typereference
+      case 374: // identifier
+      case 375: // valuereference
+      case 376: // modulereference
+      case 377: // objectclassreference
+      case 378: // word
         value.move< std::string > (s.value);
         break;
 
-      case 250: // AssignmentList
+      case 251: // AssignmentList
         value.move< std::vector<Assignment> > (s.value);
         break;
 
-      case 162: // FieldSpecList
-      case 163: // FieldSpec
-      case 166: // TypeFieldSpec
-      case 170: // FixedTypeValueFieldSpec
+      case 163: // FieldSpecList
+      case 164: // FieldSpec
+      case 167: // TypeFieldSpec
+      case 171: // FixedTypeValueFieldSpec
         value.move< std::vector<ClassField> > (s.value);
         break;
 
-      case 239: // Exports
+      case 240: // Exports
         value.move< std::vector<Export> > (s.value);
         break;
 
-      case 241: // Imports
-      case 242: // SymbolsImported
-      case 243: // SymbolsFromModuleList
+      case 242: // Imports
+      case 243: // SymbolsImported
+      case 244: // SymbolsFromModuleList
         value.move< std::vector<Import> > (s.value);
         break;
 
-      case 275: // NamedNumberList
+      case 276: // NamedNumberList
         value.move< std::vector<NamedNumber> > (s.value);
         break;
 
-      case 296: // AlternativeTypeLists
-      case 297: // RootAlternativeTypeList
-      case 298: // AlternativeTypeList
+      case 297: // AlternativeTypeLists
+      case 298: // RootAlternativeTypeList
+      case 299: // AlternativeTypeList
         value.move< std::vector<NamedType> > (s.value);
         break;
 
-      case 307: // ObjectIdentifierValue
-      case 308: // ObjIdComponentsList
+      case 308: // ObjectIdentifierValue
+      case 309: // ObjIdComponentsList
         value.move< std::vector<ObjectIdComponentValue> > (s.value);
         break;
 
-      case 207: // ParameterList
-      case 208: // ParameterSeries
+      case 208: // ParameterList
+      case 209: // ParameterSeries
         value.move< std::vector<Parameter> > (s.value);
         break;
 
-      case 256: // ActualParameterList
+      case 257: // ActualParameterList
         value.move< std::vector<Type> > (s.value);
         break;
 
-      case 271: // SequenceOfValues
+      case 272: // SequenceOfValues
         value.move< std::vector<Value> > (s.value);
         break;
 
-      case 165: // FieldNameList
-      case 167: // OneOrManyTypeFieldReference
-      case 247: // SymbolList
+      case 166: // FieldNameList
+      case 168: // OneOrManyTypeFieldReference
+      case 248: // SymbolList
         value.move< std::vector<std::string> > (s.value);
         break;
 
@@ -4026,7 +4036,7 @@ namespace yy {
      375,   376,   377,   378,   379,   380,   381,   382,   383,   384,
      385,   386,   387,   388,   389,   390,   391,   392,   393,   394,
      395,   396,   397,   398,   399,   400,   401,   402,   403,   404,
-     405,   406
+     405,   406,   407
     };
     return static_cast<token_type> (yytoken_number_[type]);
   }
@@ -4047,6 +4057,12 @@ namespace yy {
   asn1_parser::make_number (const long long& v, const location_type& l)
   {
     return symbol_type (token::number, v, l);
+  }
+
+  asn1_parser::symbol_type
+  asn1_parser::make_negativenumber (const long long& v, const location_type& l)
+  {
+    return symbol_type (token::negativenumber, v, l);
   }
 
   asn1_parser::symbol_type
@@ -4916,7 +4932,7 @@ namespace yy {
 
 
 } // yy
-#line 4918 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:408
+#line 4934 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:408
 
 
 
@@ -4924,7 +4940,7 @@ namespace yy {
 
 // User implementation prologue.
 
-#line 4926 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:412
+#line 4942 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:412
 // Unqualified %code blocks.
 #line 15 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:413
 
@@ -4943,7 +4959,7 @@ namespace yy {
 
     namespace yy { asn1_parser::symbol_type yylex(Context& c); }
 
-#line 4945 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:413
+#line 4961 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:413
 
 
 #ifndef YY_
@@ -5029,7 +5045,7 @@ namespace yy {
 
 
 namespace yy {
-#line 5031 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:479
+#line 5047 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:479
 
   /* Return YYSTR after stripping away unnecessary quotes and
      backslashes, so that it's suitable for yyerror.  The heuristic is
@@ -5141,314 +5157,315 @@ namespace yy {
   {
       switch (that.type_get ())
     {
-      case 159: // ObjectClassAssignment
-      case 198: // ObjectSetAssignment
-      case 202: // ParameterizedAssignment
-      case 203: // ParameterizedTypeAssignment
-      case 204: // ParameterizedValueAssignment
-      case 205: // ParameterizedValueSetTypeAssignment
-      case 206: // ParameterizedObjectClassAssignment
-      case 251: // Assignment
-      case 260: // TypeAssignment
-      case 261: // ValueAssignment
-      case 262: // ValueSetTypeAssignment
+      case 160: // ObjectClassAssignment
+      case 199: // ObjectSetAssignment
+      case 203: // ParameterizedAssignment
+      case 204: // ParameterizedTypeAssignment
+      case 205: // ParameterizedValueAssignment
+      case 206: // ParameterizedValueSetTypeAssignment
+      case 207: // ParameterizedObjectClassAssignment
+      case 252: // Assignment
+      case 261: // TypeAssignment
+      case 262: // ValueAssignment
+      case 263: // ValueSetTypeAssignment
         value.move< Assignment > (that.value);
         break;
 
-      case 283: // BitStringType
+      case 284: // BitStringType
         value.move< BitStringType > (that.value);
         break;
 
-      case 272: // BooleanType
+      case 273: // BooleanType
         value.move< BooleanType > (that.value);
         break;
 
-      case 264: // BuiltinType
+      case 265: // BuiltinType
         value.move< BuiltinType > (that.value);
         break;
 
-      case 328: // CharacterStringType
+      case 329: // CharacterStringType
         value.move< CharacterStringType > (that.value);
         break;
 
-      case 295: // ChoiceType
+      case 296: // ChoiceType
         value.move< ChoiceType > (that.value);
         break;
 
-      case 305: // Class
+      case 306: // Class
         value.move< Class > (that.value);
         break;
 
-      case 291: // ComponentType
+      case 292: // ComponentType
         value.move< ComponentType > (that.value);
         break;
 
-      case 289: // ComponentTypeLists
-      case 290: // ComponentTypeList
+      case 290: // ComponentTypeLists
+      case 291: // ComponentTypeList
         value.move< ComponentTypeList > (that.value);
         break;
 
-      case 326: // DateTimeType
+      case 327: // DateTimeType
         value.move< DateTimeType > (that.value);
         break;
 
-      case 324: // DateType
+      case 325: // DateType
         value.move< DateType > (that.value);
         break;
 
-      case 252: // DefinedType
-      case 254: // ParameterizedType
-      case 258: // ExternalTypeReference
+      case 253: // DefinedType
+      case 255: // ParameterizedType
+      case 259: // ExternalTypeReference
         value.move< DefinedType > (that.value);
         break;
 
-      case 253: // DefinedValue
+      case 254: // DefinedValue
         value.move< DefinedValue > (that.value);
         break;
 
-      case 327: // DurationType
+      case 328: // DurationType
         value.move< DurationType > (that.value);
         break;
 
-      case 320: // EmbeddedPDVType
+      case 321: // EmbeddedPDVType
         value.move< EmbeddedPDVType > (that.value);
         break;
 
-      case 278: // EnumeratedType
-      case 279: // Enumerations
-      case 280: // Enumeration
+      case 279: // EnumeratedType
+      case 280: // Enumerations
+      case 281: // Enumeration
         value.move< EnumeratedType > (that.value);
         break;
 
-      case 281: // EnumerationItem
+      case 282: // EnumerationItem
         value.move< EnumerationValue > (that.value);
         break;
 
-      case 321: // ExternalType
+      case 322: // ExternalType
         value.move< ExternalType > (that.value);
         break;
 
-      case 314: // IRIType
+      case 315: // IRIType
         value.move< IRIType > (that.value);
         break;
 
-      case 244: // SymbolsFromModule
+      case 245: // SymbolsFromModule
         value.move< Import > (that.value);
         break;
 
-      case 214: // InstanceOfType
+      case 215: // InstanceOfType
         value.move< InstanceOfType > (that.value);
         break;
 
-      case 274: // IntegerType
+      case 275: // IntegerType
         value.move< IntegerType > (that.value);
         break;
 
-      case 238: // ModuleBody
+      case 239: // ModuleBody
         value.move< Module > (that.value);
         break;
 
-      case 276: // NamedNumber
+      case 277: // NamedNumber
         value.move< NamedNumber > (that.value);
         break;
 
-      case 265: // NamedType
+      case 266: // NamedType
         value.move< NamedType > (that.value);
         break;
 
-      case 287: // NullType
+      case 288: // NullType
         value.move< NullType > (that.value);
         break;
 
-      case 160: // ObjectClass
-      case 161: // ObjectClassDefn
+      case 161: // ObjectClass
+      case 162: // ObjectClassDefn
         value.move< ObjectClassAssignment > (that.value);
         break;
 
-      case 201: // ObjectClassFieldType
+      case 202: // ObjectClassFieldType
         value.move< ObjectClassFieldType > (that.value);
         break;
 
-      case 309: // ObjIdComponents
-      case 310: // NameForm
-      case 311: // NumberForm
-      case 312: // NameAndNumberForm
+      case 310: // ObjIdComponents
+      case 311: // NameForm
+      case 312: // NumberForm
+      case 313: // NameAndNumberForm
         value.move< ObjectIdComponentValue > (that.value);
         break;
 
-      case 306: // ObjectIdentifierType
+      case 307: // ObjectIdentifierType
         value.move< ObjectIdentifierType > (that.value);
         break;
 
-      case 286: // OctetStringType
+      case 287: // OctetStringType
         value.move< OctetStringType > (that.value);
         break;
 
-      case 209: // Parameter
+      case 210: // Parameter
         value.move< Parameter > (that.value);
         break;
 
-      case 300: // PrefixedType
+      case 301: // PrefixedType
         value.move< PrefixedType > (that.value);
         break;
 
-      case 282: // RealType
+      case 283: // RealType
         value.move< RealType > (that.value);
         break;
 
-      case 319: // RelativeIRIType
+      case 320: // RelativeIRIType
         value.move< RelativeIRIType > (that.value);
         break;
 
-      case 313: // RelativeOIDType
+      case 314: // RelativeOIDType
         value.move< RelativeOIDType > (that.value);
         break;
 
-      case 292: // SequenceOfType
+      case 293: // SequenceOfType
         value.move< SequenceOfType > (that.value);
         break;
 
-      case 288: // SequenceType
+      case 289: // SequenceType
         value.move< SequenceType > (that.value);
         break;
 
-      case 294: // SetOfType
+      case 295: // SetOfType
         value.move< SetOfType > (that.value);
         break;
 
-      case 293: // SetType
+      case 294: // SetType
         value.move< SetType > (that.value);
         break;
 
-      case 302: // Tag
+      case 303: // Tag
         value.move< Tag > (that.value);
         break;
 
-      case 301: // TaggedType
+      case 302: // TaggedType
         value.move< TaggedType > (that.value);
         break;
 
-      case 236: // TagDefault
+      case 237: // TagDefault
         value.move< TaggingMode > (that.value);
         break;
 
-      case 325: // TimeOfDayType
+      case 326: // TimeOfDayType
         value.move< TimeOfDayType > (that.value);
         break;
 
-      case 322: // TimeType
+      case 323: // TimeType
         value.move< TimeType > (that.value);
         break;
 
-      case 210: // ParamGovernor
-      case 211: // Governor
-      case 257: // ActualParameter
-      case 263: // Type
-      case 331: // ConstrainedType
-      case 332: // TypeWithConstraint
+      case 211: // ParamGovernor
+      case 212: // Governor
+      case 258: // ActualParameter
+      case 264: // Type
+      case 332: // ConstrainedType
+      case 333: // TypeWithConstraint
         value.move< Type > (that.value);
         break;
 
-      case 266: // ValueWithoutTypeIdentifier
-      case 267: // Value
-      case 349: // SingleValue
+      case 267: // ValueWithoutTypeIdentifier
+      case 268: // Value
+      case 350: // SingleValue
         value.move< Value > (that.value);
         break;
 
-      case 5: // realnumber
+      case 6: // realnumber
         value.move< double > (that.value);
         break;
 
-      case 304: // ClassNumber
+      case 305: // ClassNumber
         value.move< int > (that.value);
         break;
 
       case 4: // number
-      case 277: // SignedNumber
+      case 5: // negativenumber
+      case 278: // SignedNumber
         value.move< long long > (that.value);
         break;
 
-      case 6: // bstring
-      case 7: // xmlbstring
-      case 8: // hstring
-      case 9: // xmlhstring
-      case 10: // cstring
-      case 11: // xmlcstring
-      case 12: // simplestring
-      case 13: // xmltstring
-      case 21: // objectreference
-      case 23: // typefieldreference
-      case 24: // valuefieldreference
-      case 148: // GENERIC_IDENTIFIER_UPPERCASE
-      case 149: // GENERIC_IDENTIFIER_LOWERCASE
-      case 158: // UsefulObjectClassReference
-      case 164: // FieldName
-      case 215: // SimpleDefinedType
-      case 227: // ModuleIdentifier
-      case 245: // GlobalModuleReference
-      case 248: // Symbol
-      case 249: // Reference
-      case 372: // typereference
-      case 373: // identifier
-      case 374: // valuereference
-      case 375: // modulereference
-      case 376: // objectclassreference
-      case 377: // word
+      case 7: // bstring
+      case 8: // xmlbstring
+      case 9: // hstring
+      case 10: // xmlhstring
+      case 11: // cstring
+      case 12: // xmlcstring
+      case 13: // simplestring
+      case 14: // xmltstring
+      case 22: // objectreference
+      case 24: // typefieldreference
+      case 25: // valuefieldreference
+      case 149: // GENERIC_IDENTIFIER_UPPERCASE
+      case 150: // GENERIC_IDENTIFIER_LOWERCASE
+      case 159: // UsefulObjectClassReference
+      case 165: // FieldName
+      case 216: // SimpleDefinedType
+      case 228: // ModuleIdentifier
+      case 246: // GlobalModuleReference
+      case 249: // Symbol
+      case 250: // Reference
+      case 373: // typereference
+      case 374: // identifier
+      case 375: // valuereference
+      case 376: // modulereference
+      case 377: // objectclassreference
+      case 378: // word
         value.move< std::string > (that.value);
         break;
 
-      case 250: // AssignmentList
+      case 251: // AssignmentList
         value.move< std::vector<Assignment> > (that.value);
         break;
 
-      case 162: // FieldSpecList
-      case 163: // FieldSpec
-      case 166: // TypeFieldSpec
-      case 170: // FixedTypeValueFieldSpec
+      case 163: // FieldSpecList
+      case 164: // FieldSpec
+      case 167: // TypeFieldSpec
+      case 171: // FixedTypeValueFieldSpec
         value.move< std::vector<ClassField> > (that.value);
         break;
 
-      case 239: // Exports
+      case 240: // Exports
         value.move< std::vector<Export> > (that.value);
         break;
 
-      case 241: // Imports
-      case 242: // SymbolsImported
-      case 243: // SymbolsFromModuleList
+      case 242: // Imports
+      case 243: // SymbolsImported
+      case 244: // SymbolsFromModuleList
         value.move< std::vector<Import> > (that.value);
         break;
 
-      case 275: // NamedNumberList
+      case 276: // NamedNumberList
         value.move< std::vector<NamedNumber> > (that.value);
         break;
 
-      case 296: // AlternativeTypeLists
-      case 297: // RootAlternativeTypeList
-      case 298: // AlternativeTypeList
+      case 297: // AlternativeTypeLists
+      case 298: // RootAlternativeTypeList
+      case 299: // AlternativeTypeList
         value.move< std::vector<NamedType> > (that.value);
         break;
 
-      case 307: // ObjectIdentifierValue
-      case 308: // ObjIdComponentsList
+      case 308: // ObjectIdentifierValue
+      case 309: // ObjIdComponentsList
         value.move< std::vector<ObjectIdComponentValue> > (that.value);
         break;
 
-      case 207: // ParameterList
-      case 208: // ParameterSeries
+      case 208: // ParameterList
+      case 209: // ParameterSeries
         value.move< std::vector<Parameter> > (that.value);
         break;
 
-      case 256: // ActualParameterList
+      case 257: // ActualParameterList
         value.move< std::vector<Type> > (that.value);
         break;
 
-      case 271: // SequenceOfValues
+      case 272: // SequenceOfValues
         value.move< std::vector<Value> > (that.value);
         break;
 
-      case 165: // FieldNameList
-      case 167: // OneOrManyTypeFieldReference
-      case 247: // SymbolList
+      case 166: // FieldNameList
+      case 168: // OneOrManyTypeFieldReference
+      case 248: // SymbolList
         value.move< std::vector<std::string> > (that.value);
         break;
 
@@ -5467,314 +5484,315 @@ namespace yy {
     state = that.state;
       switch (that.type_get ())
     {
-      case 159: // ObjectClassAssignment
-      case 198: // ObjectSetAssignment
-      case 202: // ParameterizedAssignment
-      case 203: // ParameterizedTypeAssignment
-      case 204: // ParameterizedValueAssignment
-      case 205: // ParameterizedValueSetTypeAssignment
-      case 206: // ParameterizedObjectClassAssignment
-      case 251: // Assignment
-      case 260: // TypeAssignment
-      case 261: // ValueAssignment
-      case 262: // ValueSetTypeAssignment
+      case 160: // ObjectClassAssignment
+      case 199: // ObjectSetAssignment
+      case 203: // ParameterizedAssignment
+      case 204: // ParameterizedTypeAssignment
+      case 205: // ParameterizedValueAssignment
+      case 206: // ParameterizedValueSetTypeAssignment
+      case 207: // ParameterizedObjectClassAssignment
+      case 252: // Assignment
+      case 261: // TypeAssignment
+      case 262: // ValueAssignment
+      case 263: // ValueSetTypeAssignment
         value.copy< Assignment > (that.value);
         break;
 
-      case 283: // BitStringType
+      case 284: // BitStringType
         value.copy< BitStringType > (that.value);
         break;
 
-      case 272: // BooleanType
+      case 273: // BooleanType
         value.copy< BooleanType > (that.value);
         break;
 
-      case 264: // BuiltinType
+      case 265: // BuiltinType
         value.copy< BuiltinType > (that.value);
         break;
 
-      case 328: // CharacterStringType
+      case 329: // CharacterStringType
         value.copy< CharacterStringType > (that.value);
         break;
 
-      case 295: // ChoiceType
+      case 296: // ChoiceType
         value.copy< ChoiceType > (that.value);
         break;
 
-      case 305: // Class
+      case 306: // Class
         value.copy< Class > (that.value);
         break;
 
-      case 291: // ComponentType
+      case 292: // ComponentType
         value.copy< ComponentType > (that.value);
         break;
 
-      case 289: // ComponentTypeLists
-      case 290: // ComponentTypeList
+      case 290: // ComponentTypeLists
+      case 291: // ComponentTypeList
         value.copy< ComponentTypeList > (that.value);
         break;
 
-      case 326: // DateTimeType
+      case 327: // DateTimeType
         value.copy< DateTimeType > (that.value);
         break;
 
-      case 324: // DateType
+      case 325: // DateType
         value.copy< DateType > (that.value);
         break;
 
-      case 252: // DefinedType
-      case 254: // ParameterizedType
-      case 258: // ExternalTypeReference
+      case 253: // DefinedType
+      case 255: // ParameterizedType
+      case 259: // ExternalTypeReference
         value.copy< DefinedType > (that.value);
         break;
 
-      case 253: // DefinedValue
+      case 254: // DefinedValue
         value.copy< DefinedValue > (that.value);
         break;
 
-      case 327: // DurationType
+      case 328: // DurationType
         value.copy< DurationType > (that.value);
         break;
 
-      case 320: // EmbeddedPDVType
+      case 321: // EmbeddedPDVType
         value.copy< EmbeddedPDVType > (that.value);
         break;
 
-      case 278: // EnumeratedType
-      case 279: // Enumerations
-      case 280: // Enumeration
+      case 279: // EnumeratedType
+      case 280: // Enumerations
+      case 281: // Enumeration
         value.copy< EnumeratedType > (that.value);
         break;
 
-      case 281: // EnumerationItem
+      case 282: // EnumerationItem
         value.copy< EnumerationValue > (that.value);
         break;
 
-      case 321: // ExternalType
+      case 322: // ExternalType
         value.copy< ExternalType > (that.value);
         break;
 
-      case 314: // IRIType
+      case 315: // IRIType
         value.copy< IRIType > (that.value);
         break;
 
-      case 244: // SymbolsFromModule
+      case 245: // SymbolsFromModule
         value.copy< Import > (that.value);
         break;
 
-      case 214: // InstanceOfType
+      case 215: // InstanceOfType
         value.copy< InstanceOfType > (that.value);
         break;
 
-      case 274: // IntegerType
+      case 275: // IntegerType
         value.copy< IntegerType > (that.value);
         break;
 
-      case 238: // ModuleBody
+      case 239: // ModuleBody
         value.copy< Module > (that.value);
         break;
 
-      case 276: // NamedNumber
+      case 277: // NamedNumber
         value.copy< NamedNumber > (that.value);
         break;
 
-      case 265: // NamedType
+      case 266: // NamedType
         value.copy< NamedType > (that.value);
         break;
 
-      case 287: // NullType
+      case 288: // NullType
         value.copy< NullType > (that.value);
         break;
 
-      case 160: // ObjectClass
-      case 161: // ObjectClassDefn
+      case 161: // ObjectClass
+      case 162: // ObjectClassDefn
         value.copy< ObjectClassAssignment > (that.value);
         break;
 
-      case 201: // ObjectClassFieldType
+      case 202: // ObjectClassFieldType
         value.copy< ObjectClassFieldType > (that.value);
         break;
 
-      case 309: // ObjIdComponents
-      case 310: // NameForm
-      case 311: // NumberForm
-      case 312: // NameAndNumberForm
+      case 310: // ObjIdComponents
+      case 311: // NameForm
+      case 312: // NumberForm
+      case 313: // NameAndNumberForm
         value.copy< ObjectIdComponentValue > (that.value);
         break;
 
-      case 306: // ObjectIdentifierType
+      case 307: // ObjectIdentifierType
         value.copy< ObjectIdentifierType > (that.value);
         break;
 
-      case 286: // OctetStringType
+      case 287: // OctetStringType
         value.copy< OctetStringType > (that.value);
         break;
 
-      case 209: // Parameter
+      case 210: // Parameter
         value.copy< Parameter > (that.value);
         break;
 
-      case 300: // PrefixedType
+      case 301: // PrefixedType
         value.copy< PrefixedType > (that.value);
         break;
 
-      case 282: // RealType
+      case 283: // RealType
         value.copy< RealType > (that.value);
         break;
 
-      case 319: // RelativeIRIType
+      case 320: // RelativeIRIType
         value.copy< RelativeIRIType > (that.value);
         break;
 
-      case 313: // RelativeOIDType
+      case 314: // RelativeOIDType
         value.copy< RelativeOIDType > (that.value);
         break;
 
-      case 292: // SequenceOfType
+      case 293: // SequenceOfType
         value.copy< SequenceOfType > (that.value);
         break;
 
-      case 288: // SequenceType
+      case 289: // SequenceType
         value.copy< SequenceType > (that.value);
         break;
 
-      case 294: // SetOfType
+      case 295: // SetOfType
         value.copy< SetOfType > (that.value);
         break;
 
-      case 293: // SetType
+      case 294: // SetType
         value.copy< SetType > (that.value);
         break;
 
-      case 302: // Tag
+      case 303: // Tag
         value.copy< Tag > (that.value);
         break;
 
-      case 301: // TaggedType
+      case 302: // TaggedType
         value.copy< TaggedType > (that.value);
         break;
 
-      case 236: // TagDefault
+      case 237: // TagDefault
         value.copy< TaggingMode > (that.value);
         break;
 
-      case 325: // TimeOfDayType
+      case 326: // TimeOfDayType
         value.copy< TimeOfDayType > (that.value);
         break;
 
-      case 322: // TimeType
+      case 323: // TimeType
         value.copy< TimeType > (that.value);
         break;
 
-      case 210: // ParamGovernor
-      case 211: // Governor
-      case 257: // ActualParameter
-      case 263: // Type
-      case 331: // ConstrainedType
-      case 332: // TypeWithConstraint
+      case 211: // ParamGovernor
+      case 212: // Governor
+      case 258: // ActualParameter
+      case 264: // Type
+      case 332: // ConstrainedType
+      case 333: // TypeWithConstraint
         value.copy< Type > (that.value);
         break;
 
-      case 266: // ValueWithoutTypeIdentifier
-      case 267: // Value
-      case 349: // SingleValue
+      case 267: // ValueWithoutTypeIdentifier
+      case 268: // Value
+      case 350: // SingleValue
         value.copy< Value > (that.value);
         break;
 
-      case 5: // realnumber
+      case 6: // realnumber
         value.copy< double > (that.value);
         break;
 
-      case 304: // ClassNumber
+      case 305: // ClassNumber
         value.copy< int > (that.value);
         break;
 
       case 4: // number
-      case 277: // SignedNumber
+      case 5: // negativenumber
+      case 278: // SignedNumber
         value.copy< long long > (that.value);
         break;
 
-      case 6: // bstring
-      case 7: // xmlbstring
-      case 8: // hstring
-      case 9: // xmlhstring
-      case 10: // cstring
-      case 11: // xmlcstring
-      case 12: // simplestring
-      case 13: // xmltstring
-      case 21: // objectreference
-      case 23: // typefieldreference
-      case 24: // valuefieldreference
-      case 148: // GENERIC_IDENTIFIER_UPPERCASE
-      case 149: // GENERIC_IDENTIFIER_LOWERCASE
-      case 158: // UsefulObjectClassReference
-      case 164: // FieldName
-      case 215: // SimpleDefinedType
-      case 227: // ModuleIdentifier
-      case 245: // GlobalModuleReference
-      case 248: // Symbol
-      case 249: // Reference
-      case 372: // typereference
-      case 373: // identifier
-      case 374: // valuereference
-      case 375: // modulereference
-      case 376: // objectclassreference
-      case 377: // word
+      case 7: // bstring
+      case 8: // xmlbstring
+      case 9: // hstring
+      case 10: // xmlhstring
+      case 11: // cstring
+      case 12: // xmlcstring
+      case 13: // simplestring
+      case 14: // xmltstring
+      case 22: // objectreference
+      case 24: // typefieldreference
+      case 25: // valuefieldreference
+      case 149: // GENERIC_IDENTIFIER_UPPERCASE
+      case 150: // GENERIC_IDENTIFIER_LOWERCASE
+      case 159: // UsefulObjectClassReference
+      case 165: // FieldName
+      case 216: // SimpleDefinedType
+      case 228: // ModuleIdentifier
+      case 246: // GlobalModuleReference
+      case 249: // Symbol
+      case 250: // Reference
+      case 373: // typereference
+      case 374: // identifier
+      case 375: // valuereference
+      case 376: // modulereference
+      case 377: // objectclassreference
+      case 378: // word
         value.copy< std::string > (that.value);
         break;
 
-      case 250: // AssignmentList
+      case 251: // AssignmentList
         value.copy< std::vector<Assignment> > (that.value);
         break;
 
-      case 162: // FieldSpecList
-      case 163: // FieldSpec
-      case 166: // TypeFieldSpec
-      case 170: // FixedTypeValueFieldSpec
+      case 163: // FieldSpecList
+      case 164: // FieldSpec
+      case 167: // TypeFieldSpec
+      case 171: // FixedTypeValueFieldSpec
         value.copy< std::vector<ClassField> > (that.value);
         break;
 
-      case 239: // Exports
+      case 240: // Exports
         value.copy< std::vector<Export> > (that.value);
         break;
 
-      case 241: // Imports
-      case 242: // SymbolsImported
-      case 243: // SymbolsFromModuleList
+      case 242: // Imports
+      case 243: // SymbolsImported
+      case 244: // SymbolsFromModuleList
         value.copy< std::vector<Import> > (that.value);
         break;
 
-      case 275: // NamedNumberList
+      case 276: // NamedNumberList
         value.copy< std::vector<NamedNumber> > (that.value);
         break;
 
-      case 296: // AlternativeTypeLists
-      case 297: // RootAlternativeTypeList
-      case 298: // AlternativeTypeList
+      case 297: // AlternativeTypeLists
+      case 298: // RootAlternativeTypeList
+      case 299: // AlternativeTypeList
         value.copy< std::vector<NamedType> > (that.value);
         break;
 
-      case 307: // ObjectIdentifierValue
-      case 308: // ObjIdComponentsList
+      case 308: // ObjectIdentifierValue
+      case 309: // ObjIdComponentsList
         value.copy< std::vector<ObjectIdComponentValue> > (that.value);
         break;
 
-      case 207: // ParameterList
-      case 208: // ParameterSeries
+      case 208: // ParameterList
+      case 209: // ParameterSeries
         value.copy< std::vector<Parameter> > (that.value);
         break;
 
-      case 256: // ActualParameterList
+      case 257: // ActualParameterList
         value.copy< std::vector<Type> > (that.value);
         break;
 
-      case 271: // SequenceOfValues
+      case 272: // SequenceOfValues
         value.copy< std::vector<Value> > (that.value);
         break;
 
-      case 165: // FieldNameList
-      case 167: // OneOrManyTypeFieldReference
-      case 247: // SymbolList
+      case 166: // FieldNameList
+      case 168: // OneOrManyTypeFieldReference
+      case 248: // SymbolList
         value.copy< std::vector<std::string> > (that.value);
         break;
 
@@ -6006,314 +6024,315 @@ namespace yy {
          when using variants.  */
         switch (yyr1_[yyn])
     {
-      case 159: // ObjectClassAssignment
-      case 198: // ObjectSetAssignment
-      case 202: // ParameterizedAssignment
-      case 203: // ParameterizedTypeAssignment
-      case 204: // ParameterizedValueAssignment
-      case 205: // ParameterizedValueSetTypeAssignment
-      case 206: // ParameterizedObjectClassAssignment
-      case 251: // Assignment
-      case 260: // TypeAssignment
-      case 261: // ValueAssignment
-      case 262: // ValueSetTypeAssignment
+      case 160: // ObjectClassAssignment
+      case 199: // ObjectSetAssignment
+      case 203: // ParameterizedAssignment
+      case 204: // ParameterizedTypeAssignment
+      case 205: // ParameterizedValueAssignment
+      case 206: // ParameterizedValueSetTypeAssignment
+      case 207: // ParameterizedObjectClassAssignment
+      case 252: // Assignment
+      case 261: // TypeAssignment
+      case 262: // ValueAssignment
+      case 263: // ValueSetTypeAssignment
         yylhs.value.build< Assignment > ();
         break;
 
-      case 283: // BitStringType
+      case 284: // BitStringType
         yylhs.value.build< BitStringType > ();
         break;
 
-      case 272: // BooleanType
+      case 273: // BooleanType
         yylhs.value.build< BooleanType > ();
         break;
 
-      case 264: // BuiltinType
+      case 265: // BuiltinType
         yylhs.value.build< BuiltinType > ();
         break;
 
-      case 328: // CharacterStringType
+      case 329: // CharacterStringType
         yylhs.value.build< CharacterStringType > ();
         break;
 
-      case 295: // ChoiceType
+      case 296: // ChoiceType
         yylhs.value.build< ChoiceType > ();
         break;
 
-      case 305: // Class
+      case 306: // Class
         yylhs.value.build< Class > ();
         break;
 
-      case 291: // ComponentType
+      case 292: // ComponentType
         yylhs.value.build< ComponentType > ();
         break;
 
-      case 289: // ComponentTypeLists
-      case 290: // ComponentTypeList
+      case 290: // ComponentTypeLists
+      case 291: // ComponentTypeList
         yylhs.value.build< ComponentTypeList > ();
         break;
 
-      case 326: // DateTimeType
+      case 327: // DateTimeType
         yylhs.value.build< DateTimeType > ();
         break;
 
-      case 324: // DateType
+      case 325: // DateType
         yylhs.value.build< DateType > ();
         break;
 
-      case 252: // DefinedType
-      case 254: // ParameterizedType
-      case 258: // ExternalTypeReference
+      case 253: // DefinedType
+      case 255: // ParameterizedType
+      case 259: // ExternalTypeReference
         yylhs.value.build< DefinedType > ();
         break;
 
-      case 253: // DefinedValue
+      case 254: // DefinedValue
         yylhs.value.build< DefinedValue > ();
         break;
 
-      case 327: // DurationType
+      case 328: // DurationType
         yylhs.value.build< DurationType > ();
         break;
 
-      case 320: // EmbeddedPDVType
+      case 321: // EmbeddedPDVType
         yylhs.value.build< EmbeddedPDVType > ();
         break;
 
-      case 278: // EnumeratedType
-      case 279: // Enumerations
-      case 280: // Enumeration
+      case 279: // EnumeratedType
+      case 280: // Enumerations
+      case 281: // Enumeration
         yylhs.value.build< EnumeratedType > ();
         break;
 
-      case 281: // EnumerationItem
+      case 282: // EnumerationItem
         yylhs.value.build< EnumerationValue > ();
         break;
 
-      case 321: // ExternalType
+      case 322: // ExternalType
         yylhs.value.build< ExternalType > ();
         break;
 
-      case 314: // IRIType
+      case 315: // IRIType
         yylhs.value.build< IRIType > ();
         break;
 
-      case 244: // SymbolsFromModule
+      case 245: // SymbolsFromModule
         yylhs.value.build< Import > ();
         break;
 
-      case 214: // InstanceOfType
+      case 215: // InstanceOfType
         yylhs.value.build< InstanceOfType > ();
         break;
 
-      case 274: // IntegerType
+      case 275: // IntegerType
         yylhs.value.build< IntegerType > ();
         break;
 
-      case 238: // ModuleBody
+      case 239: // ModuleBody
         yylhs.value.build< Module > ();
         break;
 
-      case 276: // NamedNumber
+      case 277: // NamedNumber
         yylhs.value.build< NamedNumber > ();
         break;
 
-      case 265: // NamedType
+      case 266: // NamedType
         yylhs.value.build< NamedType > ();
         break;
 
-      case 287: // NullType
+      case 288: // NullType
         yylhs.value.build< NullType > ();
         break;
 
-      case 160: // ObjectClass
-      case 161: // ObjectClassDefn
+      case 161: // ObjectClass
+      case 162: // ObjectClassDefn
         yylhs.value.build< ObjectClassAssignment > ();
         break;
 
-      case 201: // ObjectClassFieldType
+      case 202: // ObjectClassFieldType
         yylhs.value.build< ObjectClassFieldType > ();
         break;
 
-      case 309: // ObjIdComponents
-      case 310: // NameForm
-      case 311: // NumberForm
-      case 312: // NameAndNumberForm
+      case 310: // ObjIdComponents
+      case 311: // NameForm
+      case 312: // NumberForm
+      case 313: // NameAndNumberForm
         yylhs.value.build< ObjectIdComponentValue > ();
         break;
 
-      case 306: // ObjectIdentifierType
+      case 307: // ObjectIdentifierType
         yylhs.value.build< ObjectIdentifierType > ();
         break;
 
-      case 286: // OctetStringType
+      case 287: // OctetStringType
         yylhs.value.build< OctetStringType > ();
         break;
 
-      case 209: // Parameter
+      case 210: // Parameter
         yylhs.value.build< Parameter > ();
         break;
 
-      case 300: // PrefixedType
+      case 301: // PrefixedType
         yylhs.value.build< PrefixedType > ();
         break;
 
-      case 282: // RealType
+      case 283: // RealType
         yylhs.value.build< RealType > ();
         break;
 
-      case 319: // RelativeIRIType
+      case 320: // RelativeIRIType
         yylhs.value.build< RelativeIRIType > ();
         break;
 
-      case 313: // RelativeOIDType
+      case 314: // RelativeOIDType
         yylhs.value.build< RelativeOIDType > ();
         break;
 
-      case 292: // SequenceOfType
+      case 293: // SequenceOfType
         yylhs.value.build< SequenceOfType > ();
         break;
 
-      case 288: // SequenceType
+      case 289: // SequenceType
         yylhs.value.build< SequenceType > ();
         break;
 
-      case 294: // SetOfType
+      case 295: // SetOfType
         yylhs.value.build< SetOfType > ();
         break;
 
-      case 293: // SetType
+      case 294: // SetType
         yylhs.value.build< SetType > ();
         break;
 
-      case 302: // Tag
+      case 303: // Tag
         yylhs.value.build< Tag > ();
         break;
 
-      case 301: // TaggedType
+      case 302: // TaggedType
         yylhs.value.build< TaggedType > ();
         break;
 
-      case 236: // TagDefault
+      case 237: // TagDefault
         yylhs.value.build< TaggingMode > ();
         break;
 
-      case 325: // TimeOfDayType
+      case 326: // TimeOfDayType
         yylhs.value.build< TimeOfDayType > ();
         break;
 
-      case 322: // TimeType
+      case 323: // TimeType
         yylhs.value.build< TimeType > ();
         break;
 
-      case 210: // ParamGovernor
-      case 211: // Governor
-      case 257: // ActualParameter
-      case 263: // Type
-      case 331: // ConstrainedType
-      case 332: // TypeWithConstraint
+      case 211: // ParamGovernor
+      case 212: // Governor
+      case 258: // ActualParameter
+      case 264: // Type
+      case 332: // ConstrainedType
+      case 333: // TypeWithConstraint
         yylhs.value.build< Type > ();
         break;
 
-      case 266: // ValueWithoutTypeIdentifier
-      case 267: // Value
-      case 349: // SingleValue
+      case 267: // ValueWithoutTypeIdentifier
+      case 268: // Value
+      case 350: // SingleValue
         yylhs.value.build< Value > ();
         break;
 
-      case 5: // realnumber
+      case 6: // realnumber
         yylhs.value.build< double > ();
         break;
 
-      case 304: // ClassNumber
+      case 305: // ClassNumber
         yylhs.value.build< int > ();
         break;
 
       case 4: // number
-      case 277: // SignedNumber
+      case 5: // negativenumber
+      case 278: // SignedNumber
         yylhs.value.build< long long > ();
         break;
 
-      case 6: // bstring
-      case 7: // xmlbstring
-      case 8: // hstring
-      case 9: // xmlhstring
-      case 10: // cstring
-      case 11: // xmlcstring
-      case 12: // simplestring
-      case 13: // xmltstring
-      case 21: // objectreference
-      case 23: // typefieldreference
-      case 24: // valuefieldreference
-      case 148: // GENERIC_IDENTIFIER_UPPERCASE
-      case 149: // GENERIC_IDENTIFIER_LOWERCASE
-      case 158: // UsefulObjectClassReference
-      case 164: // FieldName
-      case 215: // SimpleDefinedType
-      case 227: // ModuleIdentifier
-      case 245: // GlobalModuleReference
-      case 248: // Symbol
-      case 249: // Reference
-      case 372: // typereference
-      case 373: // identifier
-      case 374: // valuereference
-      case 375: // modulereference
-      case 376: // objectclassreference
-      case 377: // word
+      case 7: // bstring
+      case 8: // xmlbstring
+      case 9: // hstring
+      case 10: // xmlhstring
+      case 11: // cstring
+      case 12: // xmlcstring
+      case 13: // simplestring
+      case 14: // xmltstring
+      case 22: // objectreference
+      case 24: // typefieldreference
+      case 25: // valuefieldreference
+      case 149: // GENERIC_IDENTIFIER_UPPERCASE
+      case 150: // GENERIC_IDENTIFIER_LOWERCASE
+      case 159: // UsefulObjectClassReference
+      case 165: // FieldName
+      case 216: // SimpleDefinedType
+      case 228: // ModuleIdentifier
+      case 246: // GlobalModuleReference
+      case 249: // Symbol
+      case 250: // Reference
+      case 373: // typereference
+      case 374: // identifier
+      case 375: // valuereference
+      case 376: // modulereference
+      case 377: // objectclassreference
+      case 378: // word
         yylhs.value.build< std::string > ();
         break;
 
-      case 250: // AssignmentList
+      case 251: // AssignmentList
         yylhs.value.build< std::vector<Assignment> > ();
         break;
 
-      case 162: // FieldSpecList
-      case 163: // FieldSpec
-      case 166: // TypeFieldSpec
-      case 170: // FixedTypeValueFieldSpec
+      case 163: // FieldSpecList
+      case 164: // FieldSpec
+      case 167: // TypeFieldSpec
+      case 171: // FixedTypeValueFieldSpec
         yylhs.value.build< std::vector<ClassField> > ();
         break;
 
-      case 239: // Exports
+      case 240: // Exports
         yylhs.value.build< std::vector<Export> > ();
         break;
 
-      case 241: // Imports
-      case 242: // SymbolsImported
-      case 243: // SymbolsFromModuleList
+      case 242: // Imports
+      case 243: // SymbolsImported
+      case 244: // SymbolsFromModuleList
         yylhs.value.build< std::vector<Import> > ();
         break;
 
-      case 275: // NamedNumberList
+      case 276: // NamedNumberList
         yylhs.value.build< std::vector<NamedNumber> > ();
         break;
 
-      case 296: // AlternativeTypeLists
-      case 297: // RootAlternativeTypeList
-      case 298: // AlternativeTypeList
+      case 297: // AlternativeTypeLists
+      case 298: // RootAlternativeTypeList
+      case 299: // AlternativeTypeList
         yylhs.value.build< std::vector<NamedType> > ();
         break;
 
-      case 307: // ObjectIdentifierValue
-      case 308: // ObjIdComponentsList
+      case 308: // ObjectIdentifierValue
+      case 309: // ObjIdComponentsList
         yylhs.value.build< std::vector<ObjectIdComponentValue> > ();
         break;
 
-      case 207: // ParameterList
-      case 208: // ParameterSeries
+      case 208: // ParameterList
+      case 209: // ParameterSeries
         yylhs.value.build< std::vector<Parameter> > ();
         break;
 
-      case 256: // ActualParameterList
+      case 257: // ActualParameterList
         yylhs.value.build< std::vector<Type> > ();
         break;
 
-      case 271: // SequenceOfValues
+      case 272: // SequenceOfValues
         yylhs.value.build< std::vector<Value> > ();
         break;
 
-      case 165: // FieldNameList
-      case 167: // OneOrManyTypeFieldReference
-      case 247: // SymbolList
+      case 166: // FieldNameList
+      case 168: // OneOrManyTypeFieldReference
+      case 248: // SymbolList
         yylhs.value.build< std::vector<std::string> > ();
         break;
 
@@ -6335,1372 +6354,1372 @@ namespace yy {
           switch (yyn)
             {
   case 4:
-#line 335 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 337 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yystack_[2].value.as< Module > ().module_reference = yystack_[9].value.as< std::string > ();
       yystack_[2].value.as< Module > ().tagging_default = yystack_[6].value.as< TaggingMode > ();
       context.asn1_tree.modules.push_back(yystack_[2].value.as< Module > ()); }
-#line 6341 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6360 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 10:
-#line 352 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 354 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::string > () = "TYPE-IDENTIFIER"; }
-#line 6347 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6366 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 11:
-#line 354 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 356 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::string > () = "TYPE-IDENTIFIER"; }
-#line 6353 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6372 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 12:
-#line 358 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 360 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Assignment > () = Assignment{yystack_[2].value.as< std::string > (), yystack_[0].value.as< ObjectClassAssignment > ()}; }
-#line 6359 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6378 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 13:
-#line 362 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 364 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { std::cerr << "Warning - Unhandled DefinedObjectClass\n"; }
-#line 6365 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6384 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 14:
-#line 364 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 366 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ObjectClassAssignment > () = yystack_[0].value.as< ObjectClassAssignment > (); }
-#line 6371 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6390 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 15:
-#line 369 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 371 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ObjectClassAssignment > () = {yystack_[2].value.as< std::vector<ClassField> > ()}; }
-#line 6377 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6396 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 16:
-#line 373 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 375 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<ClassField> > () = yystack_[0].value.as< std::vector<ClassField> > (); }
-#line 6383 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6402 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 17:
-#line 375 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 377 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<ClassField> > () = yystack_[2].value.as< std::vector<ClassField> > (); yylhs.value.as< std::vector<ClassField> > ().insert(yylhs.value.as< std::vector<ClassField> > ().end(), yystack_[0].value.as< std::vector<ClassField> > ().begin(), yystack_[0].value.as< std::vector<ClassField> > ().end()); }
-#line 6389 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6408 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 18:
-#line 379 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 381 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<ClassField> > () = yystack_[0].value.as< std::vector<ClassField> > (); }
-#line 6395 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6414 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 19:
-#line 381 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 383 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<ClassField> > () = yystack_[0].value.as< std::vector<ClassField> > (); }
-#line 6401 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6420 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 24:
-#line 389 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 391 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
-#line 6407 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6426 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 25:
-#line 391 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 393 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
-#line 6413 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6432 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 26:
-#line 399 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 401 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<std::string> > ().push_back(yystack_[0].value.as< std::string > ()); }
-#line 6419 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6438 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 27:
-#line 401 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 403 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<std::string> > () = yystack_[2].value.as< std::vector<std::string> > (); yylhs.value.as< std::vector<std::string> > ().push_back(yystack_[0].value.as< std::string > ()); }
-#line 6425 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6444 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 28:
-#line 405 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 407 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { for (const std::string& name : yystack_[1].value.as< std::vector<std::string> > ()) yylhs.value.as< std::vector<ClassField> > ().push_back(ClassField{name, TypeField{}}); }
-#line 6431 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6450 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 29:
-#line 409 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 411 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<std::string> > ().push_back(yystack_[0].value.as< std::string > ()); }
-#line 6437 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6456 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 30:
-#line 411 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 413 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<std::string> > () = yystack_[1].value.as< std::vector<std::string> > (); yylhs.value.as< std::vector<std::string> > ().push_back(yystack_[0].value.as< std::string > ()); }
-#line 6443 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6462 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 37:
-#line 425 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 427 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<ClassField> > ().push_back(ClassField{yystack_[3].value.as< std::string > (), FixedTypeValueField{yystack_[2].value.as< Type > ()}}); }
-#line 6449 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6468 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 86:
-#line 540 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 542 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Assignment > () = Assignment{yystack_[3].value.as< std::string > (), ObjectSetAssignment{}}; }
-#line 6455 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6474 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 93:
-#line 560 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 562 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ObjectClassFieldType > () = {DefinedType{{}, }, yystack_[0].value.as< std::vector<std::string> > ()}; }
-#line 6461 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6480 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 94:
-#line 562 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 564 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ObjectClassFieldType > () = {DefinedType{{}, yystack_[2].value.as< std::string > ()}, yystack_[0].value.as< std::vector<std::string> > ()}; }
-#line 6467 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6486 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 95:
-#line 569 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 571 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Assignment > () = yystack_[0].value.as< Assignment > (); }
-#line 6473 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6492 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 96:
-#line 571 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 573 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Assignment > () = yystack_[0].value.as< Assignment > (); }
-#line 6479 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6498 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 97:
-#line 573 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 575 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Assignment > () = yystack_[0].value.as< Assignment > (); }
-#line 6485 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6504 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 98:
-#line 575 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 577 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Assignment > () = yystack_[0].value.as< Assignment > (); }
-#line 6491 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6510 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 99:
-#line 582 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 584 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Assignment > () = Assignment{ yystack_[3].value.as< std::string > (), TypeAssignment{yystack_[0].value.as< Type > ()}, {}, yystack_[2].value.as< std::vector<Parameter> > () }; }
-#line 6497 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6516 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 100:
-#line 586 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 588 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Assignment > () = Assignment{ yystack_[4].value.as< std::string > (), ValueAssignment{} }; }
-#line 6503 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6522 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 101:
-#line 590 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 592 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Assignment > () = Assignment{ yystack_[4].value.as< std::string > (), ValueAssignment{} }; }
-#line 6509 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6528 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 102:
-#line 594 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 596 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Assignment > () = Assignment{ yystack_[3].value.as< std::string > (), ObjectClassAssignment{} }; }
-#line 6515 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6534 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 103:
-#line 606 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 608 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<Parameter> > () = yystack_[1].value.as< std::vector<Parameter> > (); }
-#line 6521 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6540 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 104:
-#line 610 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 612 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<Parameter> > ().push_back(yystack_[0].value.as< Parameter > ()); }
-#line 6527 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6546 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 105:
-#line 612 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 614 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<Parameter> > () = yystack_[2].value.as< std::vector<Parameter> > (); yylhs.value.as< std::vector<Parameter> > ().push_back(yystack_[0].value.as< Parameter > ()); }
-#line 6533 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6552 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 106:
-#line 616 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 618 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Parameter > () = Parameter{yystack_[2].value.as< Type > (), yystack_[0].value.as< std::string > ()}; }
-#line 6539 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6558 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 107:
-#line 618 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 620 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Parameter > () = Parameter{{}, yystack_[0].value.as< std::string > ()}; }
-#line 6545 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6564 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 108:
-#line 622 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 624 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Type > () = yystack_[0].value.as< Type > (); }
-#line 6551 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6570 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 109:
-#line 624 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 626 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Type > () = DefinedType{{}, yystack_[0].value.as< std::string > ()}; }
-#line 6557 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6576 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 110:
-#line 628 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 630 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Type > () = yystack_[0].value.as< Type > (); }
-#line 6563 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6582 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 111:
-#line 630 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 632 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { }
-#line 6569 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6588 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 116:
-#line 675 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 677 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
-#line 6575 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6594 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 130:
-#line 700 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 702 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { std::cerr << "Simple constraint\n"; }
-#line 6581 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6600 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 131:
-#line 702 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 704 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { std::cerr << "Relation constraint\n"; }
-#line 6587 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6606 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 144:
-#line 744 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 746 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     {
     yylhs.value.as< std::string > () = yystack_[1].value.as< std::string > ();
 }
-#line 6595 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6614 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 159:
-#line 783 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 785 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< TaggingMode > () = TaggingMode::explicit_; }
-#line 6601 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6620 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 160:
-#line 785 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 787 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< TaggingMode > () = TaggingMode::implicit; }
-#line 6607 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6626 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 161:
-#line 787 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 789 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< TaggingMode > () = TaggingMode::automatic; }
-#line 6613 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6632 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 162:
-#line 789 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 791 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< TaggingMode > () = TaggingMode::explicit_; }
-#line 6619 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6638 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 165:
-#line 797 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 799 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Module > () = Module{ {}, TaggingMode(), yystack_[2].value.as< std::vector<Export> > (), yystack_[1].value.as< std::vector<Import> > (), yystack_[0].value.as< std::vector<Assignment> > ()}; }
-#line 6625 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6644 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 166:
-#line 799 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 801 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { }
-#line 6631 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6650 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 172:
-#line 812 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 814 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<Import> > () = yystack_[1].value.as< std::vector<Import> > (); }
-#line 6637 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6656 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 174:
-#line 817 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 819 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<Import> > () = yystack_[0].value.as< std::vector<Import> > (); }
-#line 6643 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6662 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 176:
-#line 822 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 824 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<Import> > ().push_back(yystack_[0].value.as< Import > ()); }
-#line 6649 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6668 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 177:
-#line 824 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 826 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<Import> > () = yystack_[1].value.as< std::vector<Import> > (); yylhs.value.as< std::vector<Import> > ().push_back(yystack_[0].value.as< Import > ()); }
-#line 6655 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6674 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 178:
-#line 828 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 830 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Import > () = Import{ yystack_[0].value.as< std::string > (), yystack_[2].value.as< std::vector<std::string> > () }; }
-#line 6661 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6680 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 179:
-#line 832 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 834 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::string > () = yystack_[1].value.as< std::string > (); }
-#line 6667 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6686 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 183:
-#line 841 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 843 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<std::string> > ().push_back(yystack_[0].value.as< std::string > ()); }
-#line 6673 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6692 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 184:
-#line 843 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 845 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<std::string> > () = yystack_[2].value.as< std::vector<std::string> > (); yylhs.value.as< std::vector<std::string> > ().push_back(yystack_[0].value.as< std::string > ()); }
-#line 6679 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6698 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 185:
-#line 847 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 849 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
-#line 6685 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6704 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 186:
-#line 851 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 853 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
-#line 6691 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6710 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 187:
-#line 853 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 855 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::string > () = yystack_[2].value.as< std::string > (); }
-#line 6697 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6716 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 188:
-#line 855 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 857 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
-#line 6703 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6722 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 189:
-#line 864 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 866 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<Assignment> > ().push_back(yystack_[0].value.as< Assignment > ()); }
-#line 6709 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6728 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 190:
-#line 866 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 868 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<Assignment> > () = yystack_[0].value.as< std::vector<Assignment> > (); yylhs.value.as< std::vector<Assignment> > ().push_back(yystack_[1].value.as< Assignment > ()); }
-#line 6715 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6734 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 191:
-#line 870 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 872 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Assignment > () = yystack_[0].value.as< Assignment > (); }
-#line 6721 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6740 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 192:
-#line 872 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 874 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Assignment > () = yystack_[0].value.as< Assignment > (); }
-#line 6727 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6746 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 193:
-#line 874 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 876 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Assignment > () = yystack_[0].value.as< Assignment > (); }
-#line 6733 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6752 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 194:
-#line 876 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 878 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Assignment > () = yystack_[0].value.as< Assignment > (); }
-#line 6739 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6758 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 195:
-#line 879 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 881 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Assignment > () = yystack_[0].value.as< Assignment > (); }
-#line 6745 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6764 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 196:
-#line 881 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 883 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Assignment > () = yystack_[0].value.as< Assignment > (); }
-#line 6751 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6770 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 197:
-#line 885 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 887 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< DefinedType > () = yystack_[0].value.as< DefinedType > (); }
-#line 6757 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6776 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 198:
-#line 887 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 889 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< DefinedType > () = DefinedType{absl::nullopt, yystack_[0].value.as< std::string > (), {}}; }
-#line 6763 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6782 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 199:
-#line 889 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 891 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< DefinedType > () = yystack_[0].value.as< DefinedType > (); }
-#line 6769 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6788 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 200:
-#line 895 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 897 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< DefinedValue > () = DefinedValue{yystack_[0].value.as< std::string > ()}; }
-#line 6775 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6794 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 202:
-#line 900 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 902 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< DefinedType > () = DefinedType{ absl::nullopt, yystack_[3].value.as< std::string > (), yystack_[1].value.as< std::vector<Type> > ()}; }
-#line 6781 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6800 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 204:
-#line 907 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 909 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<Type> > ().push_back(yystack_[0].value.as< Type > ()); }
-#line 6787 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6806 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 205:
-#line 909 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 911 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<Type> > () = yystack_[0].value.as< std::vector<Type> > (); yylhs.value.as< std::vector<Type> > ().push_back(yystack_[2].value.as< Type > ()); }
-#line 6793 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6812 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 206:
-#line 913 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 915 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Type > () = yystack_[0].value.as< Type > (); }
-#line 6799 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6818 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 207:
-#line 915 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 917 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { std::cerr << "Warning: Not yet dealing with value paramaters\n"; }
-#line 6805 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6824 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 209:
-#line 928 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 930 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< DefinedType > () = DefinedType{yystack_[2].value.as< std::string > (), yystack_[0].value.as< std::string > (), {}}; }
-#line 6811 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6830 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 211:
-#line 957 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 959 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Assignment > () = Assignment{ yystack_[2].value.as< std::string > (), TypeAssignment{yystack_[0].value.as< Type > ()}, {} }; }
-#line 6817 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6836 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 212:
-#line 961 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 963 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Assignment > () = Assignment{ yystack_[3].value.as< std::string > (), ValueAssignment{yystack_[2].value.as< Type > (), yystack_[0].value.as< Value > ()}, {} }; }
-#line 6823 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6842 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 213:
-#line 965 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 967 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Assignment > () = Assignment{ yystack_[3].value.as< std::string > (), TypeAssignment{yystack_[2].value.as< Type > ()}, {} }; }
-#line 6829 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6848 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 214:
-#line 969 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 971 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Type > () = yystack_[0].value.as< BuiltinType > (); }
-#line 6835 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6854 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 215:
-#line 971 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 973 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Type > () = yystack_[0].value.as< Type > (); }
-#line 6841 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6860 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 216:
-#line 973 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 975 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Type > () = yystack_[0].value.as< DefinedType > (); }
-#line 6847 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6866 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 217:
-#line 975 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 977 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { std::cerr << "Warning: Not handled - SelectionType\n"; }
-#line 6853 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6872 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 218:
-#line 977 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 979 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { std::cerr << "Warning: Not handled - TypeFromObject\n"; }
-#line 6859 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6878 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 219:
-#line 981 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 983 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = AnyType(); }
-#line 6865 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6884 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 220:
-#line 982 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 984 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< BitStringType > (); }
-#line 6871 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6890 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 221:
-#line 983 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 985 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< BooleanType > (); }
-#line 6877 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6896 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 222:
-#line 984 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 986 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< CharacterStringType > (); }
-#line 6883 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6902 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 223:
-#line 985 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 987 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< ChoiceType > (); }
-#line 6889 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6908 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 224:
-#line 986 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 988 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< DateType > (); }
-#line 6895 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6914 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 225:
-#line 987 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 989 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< DateTimeType > (); }
-#line 6901 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6920 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 226:
-#line 988 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 990 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< DurationType > (); }
-#line 6907 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6926 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 227:
-#line 989 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 991 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< EmbeddedPDVType > (); }
-#line 6913 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6932 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 228:
-#line 990 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 992 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< EnumeratedType > (); }
-#line 6919 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6938 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 229:
-#line 991 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 993 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< ExternalType > (); }
-#line 6925 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6944 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 230:
-#line 992 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 994 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = GeneralizedTimeType(); }
-#line 6931 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6950 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 231:
-#line 993 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 995 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< InstanceOfType > (); }
-#line 6937 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6956 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 232:
-#line 994 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 996 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< IntegerType > (); }
-#line 6943 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6962 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 233:
-#line 995 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 997 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< IRIType > (); }
-#line 6949 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6968 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 234:
-#line 996 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 998 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< NullType > (); }
-#line 6955 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6974 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 235:
-#line 997 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 999 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< ObjectClassFieldType > (); }
-#line 6961 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6980 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 236:
-#line 998 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1000 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = ObjectDescriptorType(); }
-#line 6967 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6986 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 237:
-#line 999 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1001 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< ObjectIdentifierType > (); }
-#line 6973 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6992 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 238:
-#line 1000 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1002 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< OctetStringType > (); }
-#line 6979 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 6998 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 239:
-#line 1001 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1003 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< RealType > (); }
-#line 6985 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7004 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 240:
-#line 1002 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1004 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< RelativeIRIType > (); }
-#line 6991 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7010 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 241:
-#line 1003 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1005 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< RelativeOIDType > (); }
-#line 6997 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7016 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 242:
-#line 1004 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1006 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< SequenceType > (); }
-#line 7003 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7022 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 243:
-#line 1005 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1007 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< SequenceOfType > (); }
-#line 7009 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7028 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 244:
-#line 1006 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1008 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< SetType > (); }
-#line 7015 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7034 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 245:
-#line 1007 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1009 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< SetOfType > (); }
-#line 7021 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7040 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 246:
-#line 1008 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1010 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< PrefixedType > (); }
-#line 7027 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7046 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 247:
-#line 1009 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1011 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< TimeType > (); }
-#line 7033 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7052 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 248:
-#line 1010 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1012 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = yystack_[0].value.as< TimeOfDayType > (); }
-#line 7039 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7058 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 249:
-#line 1011 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1013 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< BuiltinType > () = UTCTimeType(); }
-#line 7045 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7064 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 250:
-#line 1015 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1017 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< NamedType > () = NamedType{ yystack_[1].value.as< std::string > (), yystack_[0].value.as< Type > () }; }
-#line 7051 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7070 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 251:
-#line 1019 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1021 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { std::cerr << std::string("Warning: Unhandled field: BooleanValue\n"); }
-#line 7057 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7076 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 252:
-#line 1021 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1023 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { std::cerr << std::string("Warning: Unhandled field: IRIValue\n"); }
-#line 7063 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7082 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 253:
-#line 1023 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1025 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { std::cerr << std::string("Warning: Unhandled field: ASN_NULL\n"); }
-#line 7069 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7088 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 254:
-#line 1025 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1027 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { std::cerr << std::string("Warning: Unhandled field: TimeValue\n"); }
-#line 7075 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7094 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 255:
-#line 1027 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1029 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Value > ().value_selection = BitStringValue{yystack_[0].value.as< std::string > ()}; }
-#line 7081 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7100 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 256:
-#line 1029 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1031 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Value > ().value_selection = HexStringValue{yystack_[0].value.as< std::string > ()}; }
-#line 7087 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7106 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 257:
-#line 1031 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1033 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Value > ().value_selection = CharStringValue{yystack_[0].value.as< std::string > ()}; }
-#line 7093 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7112 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 258:
-#line 1033 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1035 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { std::cerr << std::string("Warning: Unhandled field: CONTAINING\n"); }
-#line 7099 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7118 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 259:
-#line 1035 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1037 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Value > ().value_selection = yystack_[0].value.as< DefinedValue > (); }
-#line 7105 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7124 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 260:
-#line 1037 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1039 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Value > ().value_selection = NamedNumber{yystack_[3].value.as< std::string > (), yystack_[1].value.as< long long > ()}; }
-#line 7111 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7130 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 262:
-#line 1040 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1042 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Value > ().value_selection = yystack_[0].value.as< long long > (); }
-#line 7117 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7136 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 263:
-#line 1042 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1044 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Value > ().value_selection = yystack_[0].value.as< double > (); }
-#line 7123 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7142 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 264:
-#line 1044 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1046 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { std::cerr << std::string("Warning: Unhandled field: ValueCommaListChoice\n"); }
-#line 7129 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7148 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 265:
-#line 1046 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1048 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { std::cerr << std::string("Warning: Unhandled field: ValueCommaListChoice\n"); }
-#line 7135 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7154 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 270:
-#line 1054 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1056 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Value > ().value_selection = yystack_[1].value.as< std::vector<Value> > (); }
-#line 7141 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7160 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 271:
-#line 1056 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1058 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { std::cerr << std::string("Warning: Unhandled field: ValueChoice\n"); }
-#line 7147 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7166 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 272:
-#line 1058 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1060 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { std::cerr << std::string("Warning: Unhandled field: OPTIONAL\n"); }
-#line 7153 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7172 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 273:
-#line 1060 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1062 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { std::cerr << std::string("Warning: Unhandled field: ValueCommaListChoice\n"); }
-#line 7159 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7178 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 274:
-#line 1062 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1064 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { std::cerr << std::string("Warning: Unhandled field: BY\n"); }
-#line 7165 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7184 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 275:
-#line 1064 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1066 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { std::cerr << std::string("Warning: Unhandled field: WITH\n"); }
-#line 7171 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7190 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 276:
-#line 1069 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1071 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Value > () = yystack_[0].value.as< Value > (); }
-#line 7177 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7196 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 277:
-#line 1071 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1073 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Value > ().value_selection = yystack_[0].value.as< std::string > (); }
-#line 7183 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7202 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 284:
-#line 1087 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1089 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<Value> > ().push_back(yystack_[0].value.as< Value > ()); }
-#line 7189 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7208 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 285:
-#line 1089 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1091 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<Value> > () = yystack_[1].value.as< std::vector<Value> > (); yylhs.value.as< std::vector<Value> > ().push_back(yystack_[0].value.as< Value > ()); }
-#line 7195 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7214 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 289:
-#line 1104 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1106 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< IntegerType > () = IntegerType{{}}; }
-#line 7201 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7220 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 290:
-#line 1106 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1108 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< IntegerType > () = IntegerType{yystack_[1].value.as< std::vector<NamedNumber> > ()}; }
-#line 7207 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7226 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 291:
-#line 1110 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1112 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<NamedNumber> > () = {yystack_[0].value.as< NamedNumber > ()}; }
-#line 7213 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7232 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 292:
-#line 1112 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1114 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<NamedNumber> > () = yystack_[2].value.as< std::vector<NamedNumber> > (); yylhs.value.as< std::vector<NamedNumber> > ().push_back(yystack_[0].value.as< NamedNumber > ()); }
-#line 7219 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7238 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 293:
-#line 1116 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1118 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< NamedNumber > () = NamedNumber{ yystack_[3].value.as< std::string > (), yystack_[1].value.as< long long > () }; }
-#line 7225 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7244 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 294:
-#line 1118 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1120 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< NamedNumber > () = NamedNumber{ yystack_[3].value.as< std::string > (), 0 }; }
-#line 7231 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7250 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 295:
-#line 1122 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< long long > () = yystack_[0].value.as< long long > (); }
-#line 7237 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 296:
 #line 1124 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< long long > () = -yystack_[0].value.as< long long > (); }
-#line 7243 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 297:
-#line 1128 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< EnumeratedType > () = yystack_[1].value.as< EnumeratedType > (); }
-#line 7249 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 298:
-#line 1132 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< EnumeratedType > () = yystack_[0].value.as< EnumeratedType > ();
-      yylhs.value.as< EnumeratedType > ().accept_anything = false; }
+    { yylhs.value.as< long long > () = yystack_[0].value.as< long long > (); }
 #line 7256 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
+  case 296:
+#line 1126 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< long long > () = yystack_[0].value.as< long long > (); }
+#line 7262 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 297:
+#line 1130 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< EnumeratedType > () = yystack_[1].value.as< EnumeratedType > (); }
+#line 7268 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 298:
+#line 1134 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< EnumeratedType > () = yystack_[0].value.as< EnumeratedType > ();
+      yylhs.value.as< EnumeratedType > ().accept_anything = false; }
+#line 7275 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
   case 299:
-#line 1135 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1137 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< EnumeratedType > () = yystack_[3].value.as< EnumeratedType > ();
       yylhs.value.as< EnumeratedType > ().accept_anything = true; }
-#line 7263 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7282 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 300:
-#line 1138 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1140 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< EnumeratedType > () = yystack_[5].value.as< EnumeratedType > ();
       yylhs.value.as< EnumeratedType > ().accept_anything = true;
       yylhs.value.as< EnumeratedType > ().enum_values.insert(yylhs.value.as< EnumeratedType > ().enum_values.end(), yystack_[0].value.as< EnumeratedType > ().enum_values.begin(), yystack_[0].value.as< EnumeratedType > ().enum_values.end()); }
-#line 7271 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7290 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 302:
-#line 1145 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< EnumeratedType > ().enum_values.push_back(yystack_[0].value.as< EnumerationValue > ()); }
-#line 7277 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 303:
 #line 1147 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< EnumeratedType > () = yystack_[2].value.as< EnumeratedType > (); yylhs.value.as< EnumeratedType > ().enum_values.push_back(yystack_[0].value.as< EnumerationValue > ()); }
-#line 7283 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 304:
-#line 1151 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< EnumerationValue > ().name  = yystack_[0].value.as< std::string > (); }
-#line 7289 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
-    break;
-
-  case 305:
-#line 1153 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< EnumerationValue > ().name  = yystack_[0].value.as< NamedNumber > ().name;
-      yylhs.value.as< EnumerationValue > ().value = yystack_[0].value.as< NamedNumber > ().number; }
+    { yylhs.value.as< EnumeratedType > ().enum_values.push_back(yystack_[0].value.as< EnumerationValue > ()); }
 #line 7296 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 307:
-#line 1164 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BitStringType > () = BitStringType{}; }
+  case 303:
+#line 1149 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< EnumeratedType > () = yystack_[2].value.as< EnumeratedType > (); yylhs.value.as< EnumeratedType > ().enum_values.push_back(yystack_[0].value.as< EnumerationValue > ()); }
 #line 7302 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
-  case 308:
-#line 1166 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
-    { yylhs.value.as< BitStringType > () = BitStringType{}; }
+  case 304:
+#line 1153 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< EnumerationValue > ().name  = yystack_[0].value.as< std::string > (); }
 #line 7308 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
+  case 305:
+#line 1155 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< EnumerationValue > ().name  = yystack_[0].value.as< NamedNumber > ().name;
+      yylhs.value.as< EnumerationValue > ().value = yystack_[0].value.as< NamedNumber > ().number; }
+#line 7315 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 307:
+#line 1166 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BitStringType > () = BitStringType{}; }
+#line 7321 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
+  case 308:
+#line 1168 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+    { yylhs.value.as< BitStringType > () = BitStringType{}; }
+#line 7327 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+    break;
+
   case 315:
-#line 1195 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1197 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< SequenceType > () = SequenceType(); }
-#line 7314 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7333 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 316:
-#line 1197 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1199 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< SequenceType > () = SequenceType{yystack_[1].value.as< ComponentTypeList > ()}; }
-#line 7320 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7339 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 317:
-#line 1201 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1203 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ComponentTypeList > () = yystack_[0].value.as< ComponentTypeList > (); }
-#line 7326 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7345 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 318:
-#line 1203 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1205 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ComponentTypeList > () = yystack_[3].value.as< ComponentTypeList > (); }
-#line 7332 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7351 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 319:
-#line 1205 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1207 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ComponentTypeList > () = yystack_[5].value.as< ComponentTypeList > (); yylhs.value.as< ComponentTypeList > ().insert(yylhs.value.as< ComponentTypeList > ().end(), yystack_[0].value.as< ComponentTypeList > ().begin(), yystack_[0].value.as< ComponentTypeList > ().end()); }
-#line 7338 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7357 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 320:
-#line 1207 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1209 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ComponentTypeList > () = yystack_[7].value.as< ComponentTypeList > (); yylhs.value.as< ComponentTypeList > ().insert(yylhs.value.as< ComponentTypeList > ().end(), yystack_[2].value.as< ComponentTypeList > ().begin(), yystack_[2].value.as< ComponentTypeList > ().end()); }
-#line 7344 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7363 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 321:
-#line 1209 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1211 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ComponentTypeList > () = yystack_[9].value.as< ComponentTypeList > (); yylhs.value.as< ComponentTypeList > ().insert(yylhs.value.as< ComponentTypeList > ().end(), yystack_[4].value.as< ComponentTypeList > ().begin(), yystack_[4].value.as< ComponentTypeList > ().end()); yylhs.value.as< ComponentTypeList > ().insert(yylhs.value.as< ComponentTypeList > ().end(), yystack_[0].value.as< ComponentTypeList > ().begin(), yystack_[0].value.as< ComponentTypeList > ().end()); }
-#line 7350 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7369 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 322:
-#line 1211 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1213 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ComponentTypeList > () = yystack_[0].value.as< ComponentTypeList > (); }
-#line 7356 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7375 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 323:
-#line 1213 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1215 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ComponentTypeList > () = yystack_[2].value.as< ComponentTypeList > (); }
-#line 7362 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7381 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 324:
-#line 1215 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1217 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ComponentTypeList > () = {}; }
-#line 7368 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7387 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 325:
-#line 1217 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1219 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ComponentTypeList > () = {}; }
-#line 7374 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7393 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 326:
-#line 1221 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1223 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ComponentTypeList > () = ComponentTypeList{yystack_[0].value.as< ComponentType > ()}; }
-#line 7380 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7399 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 327:
-#line 1223 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1225 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yystack_[2].value.as< ComponentTypeList > ().push_back(yystack_[0].value.as< ComponentType > ()); yylhs.value.as< ComponentTypeList > () = yystack_[2].value.as< ComponentTypeList > (); }
-#line 7386 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7405 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 328:
-#line 1227 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1229 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ComponentType > () = ComponentType{yystack_[0].value.as< NamedType > (), false, absl::nullopt, absl::nullopt}; }
-#line 7392 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7411 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 329:
-#line 1229 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1231 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ComponentType > () = ComponentType{yystack_[1].value.as< NamedType > (), true, absl::nullopt, absl::nullopt}; }
-#line 7398 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7417 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 330:
-#line 1231 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1233 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ComponentType > () = ComponentType{yystack_[2].value.as< NamedType > (), false, yystack_[0].value.as< Value > (), absl::nullopt}; }
-#line 7404 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7423 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 331:
-#line 1233 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1235 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ComponentType > () = ComponentType{{}, false, absl::nullopt, yystack_[0].value.as< Type > ()}; }
-#line 7410 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7429 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 332:
-#line 1245 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1247 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< SequenceOfType > () = SequenceOfType{ false, nullptr, std::unique_ptr<Type>(new Type(yystack_[0].value.as< Type > ())) }; }
-#line 7416 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7435 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 333:
-#line 1247 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1249 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< SequenceOfType > () = SequenceOfType{ true, std::unique_ptr<NamedType>(new NamedType(yystack_[0].value.as< NamedType > ())), nullptr }; }
-#line 7422 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7441 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 334:
-#line 1251 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1253 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< SetType > () = SetType{}; }
-#line 7428 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7447 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 335:
-#line 1253 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1255 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< SetType > () = SetType{yystack_[1].value.as< ComponentTypeList > ()}; }
-#line 7434 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7453 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 336:
-#line 1257 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1259 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< SetOfType > () = SetOfType{ false, nullptr, std::unique_ptr<Type>(new Type(yystack_[0].value.as< Type > ())) }; }
-#line 7440 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7459 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 337:
-#line 1259 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1261 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< SetOfType > () = SetOfType{ true, std::unique_ptr<NamedType>(new NamedType(yystack_[0].value.as< NamedType > ())), nullptr }; }
-#line 7446 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7465 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 338:
-#line 1263 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1265 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ChoiceType > () = ChoiceType{ yystack_[1].value.as< std::vector<NamedType> > () }; }
-#line 7452 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7471 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 339:
-#line 1267 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1269 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<NamedType> > () = yystack_[0].value.as< std::vector<NamedType> > (); }
-#line 7458 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7477 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 340:
-#line 1271 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1273 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<NamedType> > () = yystack_[0].value.as< std::vector<NamedType> > (); }
-#line 7464 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7483 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 341:
-#line 1273 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1275 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<NamedType> > () = yystack_[2].value.as< std::vector<NamedType> > (); }
-#line 7470 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7489 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 342:
-#line 1275 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1277 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<NamedType> > () = yystack_[4].value.as< std::vector<NamedType> > (); yylhs.value.as< std::vector<NamedType> > ().insert(yylhs.value.as< std::vector<NamedType> > ().begin(), yystack_[0].value.as< std::vector<NamedType> > ().begin(), yystack_[0].value.as< std::vector<NamedType> > ().end()); }
-#line 7476 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7495 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 343:
-#line 1279 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1281 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<NamedType> > () = std::vector<NamedType> { yystack_[0].value.as< NamedType > () }; }
-#line 7482 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7501 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 344:
-#line 1281 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1283 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yystack_[2].value.as< std::vector<NamedType> > ().push_back( yystack_[0].value.as< NamedType > () ); yylhs.value.as< std::vector<NamedType> > () = yystack_[2].value.as< std::vector<NamedType> > (); }
-#line 7488 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7507 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 346:
-#line 1291 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1293 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< PrefixedType > () = PrefixedType(yystack_[0].value.as< TaggedType > ()); }
-#line 7494 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7513 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 347:
-#line 1295 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1297 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< TaggedType > () = TaggedType{ yystack_[1].value.as< Tag > (), TaggingMode::automatic, yystack_[0].value.as< Type > () }; }
-#line 7500 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7519 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 348:
-#line 1297 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1299 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< TaggedType > () = TaggedType{ yystack_[2].value.as< Tag > (), TaggingMode::implicit, yystack_[0].value.as< Type > () }; }
-#line 7506 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7525 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 349:
-#line 1299 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1301 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< TaggedType > () = TaggedType{ yystack_[2].value.as< Tag > (), TaggingMode::explicit_, yystack_[0].value.as< Type > () }; }
-#line 7512 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7531 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 350:
-#line 1303 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1305 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Tag > () = Tag{ yystack_[2].value.as< Class > (), yystack_[1].value.as< int > () }; }
-#line 7518 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7537 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 353:
-#line 1311 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1313 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< int > () = yystack_[0].value.as< long long > (); }
-#line 7524 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7543 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 355:
-#line 1316 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1318 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Class > () = Class::universal; }
-#line 7530 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7549 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 356:
-#line 1318 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1320 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Class > () = Class::application; }
-#line 7536 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7555 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 357:
-#line 1320 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1322 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Class > () = Class::private_; }
-#line 7542 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7561 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 358:
-#line 1322 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1324 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Class > () = Class::context_specific; }
-#line 7548 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7567 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 360:
-#line 1335 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1337 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<ObjectIdComponentValue> > () = yystack_[1].value.as< std::vector<ObjectIdComponentValue> > (); std::reverse(yylhs.value.as< std::vector<ObjectIdComponentValue> > ().begin(), yylhs.value.as< std::vector<ObjectIdComponentValue> > ().end()); }
-#line 7554 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7573 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 361:
-#line 1337 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1339 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<ObjectIdComponentValue> > () = yystack_[1].value.as< std::vector<ObjectIdComponentValue> > (); std::reverse(yylhs.value.as< std::vector<ObjectIdComponentValue> > ().begin(), yylhs.value.as< std::vector<ObjectIdComponentValue> > ().end()); }
-#line 7560 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7579 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 362:
-#line 1341 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1343 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<ObjectIdComponentValue> > ().push_back(yystack_[0].value.as< ObjectIdComponentValue > ()); }
-#line 7566 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7585 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 363:
-#line 1343 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1345 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::vector<ObjectIdComponentValue> > () = yystack_[0].value.as< std::vector<ObjectIdComponentValue> > (); yylhs.value.as< std::vector<ObjectIdComponentValue> > ().push_back(yystack_[1].value.as< ObjectIdComponentValue > ()); }
-#line 7572 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7591 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 364:
-#line 1347 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1349 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ObjectIdComponentValue > () = yystack_[0].value.as< ObjectIdComponentValue > (); }
-#line 7578 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7597 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 365:
-#line 1349 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1351 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ObjectIdComponentValue > () = yystack_[0].value.as< ObjectIdComponentValue > (); }
-#line 7584 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7603 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 366:
-#line 1351 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1353 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ObjectIdComponentValue > () = yystack_[0].value.as< ObjectIdComponentValue > (); }
-#line 7590 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7609 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 367:
-#line 1355 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1357 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ObjectIdComponentValue > ().name = yystack_[0].value.as< std::string > (); }
-#line 7596 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7615 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 368:
-#line 1359 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1361 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ObjectIdComponentValue > ().value = yystack_[0].value.as< long long > (); }
-#line 7602 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7621 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 370:
-#line 1364 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1366 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< ObjectIdComponentValue > () = yystack_[1].value.as< ObjectIdComponentValue > (); yylhs.value.as< ObjectIdComponentValue > ().name = yystack_[3].value.as< std::string > (); }
-#line 7608 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7627 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 404:
-#line 1460 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1462 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Type > () = yystack_[1].value.as< Type > (); }
-#line 7614 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7633 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 405:
-#line 1462 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1464 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Type > () = yystack_[0].value.as< Type > (); }
-#line 7620 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7639 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 406:
-#line 1466 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1468 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Type > () = SetOfType{ false, nullptr, std::unique_ptr<Type>(new Type(yystack_[0].value.as< Type > ())) }; }
-#line 7626 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7645 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 407:
-#line 1468 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1470 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Type > () = SetOfType{ false, nullptr, std::unique_ptr<Type>(new Type(yystack_[0].value.as< Type > ())) }; }
-#line 7632 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7651 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 408:
-#line 1470 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1472 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Type > () = SequenceOfType{ false, nullptr, std::unique_ptr<Type>(new Type(yystack_[0].value.as< Type > ())) }; }
-#line 7638 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7657 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 409:
-#line 1472 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1474 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Type > () = SequenceOfType{ false, nullptr, std::unique_ptr<Type>(new Type(yystack_[0].value.as< Type > ())) }; }
-#line 7644 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7663 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 410:
-#line 1474 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1476 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Type > () = SetOfType{ true, std::unique_ptr<NamedType>(new NamedType(yystack_[0].value.as< NamedType > ())), nullptr }; }
-#line 7650 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7669 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 411:
-#line 1476 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1478 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Type > () = SetOfType{ true, std::unique_ptr<NamedType>(new NamedType(yystack_[0].value.as< NamedType > ())), nullptr }; }
-#line 7656 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7675 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 412:
-#line 1478 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1480 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Type > () = SequenceOfType{ true, std::unique_ptr<NamedType>(new NamedType(yystack_[0].value.as< NamedType > ())), nullptr }; }
-#line 7662 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7681 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 413:
-#line 1480 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1482 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< Type > () = SequenceOfType{ true, std::unique_ptr<NamedType>(new NamedType(yystack_[0].value.as< NamedType > ())), nullptr }; }
-#line 7668 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7687 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 496:
-#line 1648 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1650 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
-#line 7674 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7693 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 497:
-#line 1652 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1654 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
-#line 7680 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7699 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 498:
-#line 1656 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1658 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
-#line 7686 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7705 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 499:
-#line 1660 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1662 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
-#line 7692 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7711 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
   case 500:
-#line 1664 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
+#line 1666 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:859
     { yylhs.value.as< std::string > () = yystack_[0].value.as< std::string > (); }
-#line 7698 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7717 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
     break;
 
 
-#line 7702 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
+#line 7721 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:859
             default:
               break;
             }
@@ -7955,101 +7974,101 @@ namespace yy {
   }
 
 
-  const short int asn1_parser::yypact_ninf_ = -778;
+  const short int asn1_parser::yypact_ninf_ = -658;
 
   const short int asn1_parser::yytable_ninf_ = -501;
 
   const short int
   asn1_parser::yypact_[] =
   {
-     -73,  -778,    92,   -73,    67,    25,  -778,  -778,   111,    24,
-    -778,    70,  -778,   159,   177,  -778,  -778,    40,    24,  -778,
-    -778,  -778,   183,   124,  -778,  -778,   212,   230,   246,   305,
-    -778,  -778,   398,   371,   268,  -778,  -778,  -778,   346,   299,
-     292,  -778,  -778,  -778,   371,   289,  -778,   391,  -778,   268,
-    -778,    82,  -778,    71,  -778,   357,   290,  -778,  -778,   291,
-     302,  -778,  -778,   318,  -778,   389,   245,   245,  -778,  -778,
-     245,   321,  -778,   306,   245,  -778,   -23,  -778,  -778,  -778,
-    -778,  -778,  -778,  -778,  -778,   245,  -778,  -778,  -778,  2257,
-    2558,  -778,  -778,  -778,  -778,   -73,  -778,  -778,  -778,  -778,
-    -778,   348,  -778,  -778,   349,   329,  -778,  -778,  -778,   363,
-     332,  -778,  -778,  -778,  -778,  -778,   375,   334,  -778,  -778,
-     394,  -778,   361,  -778,  -778,  -778,  -778,  -778,   -30,   -14,
-    -778,  -778,  -778,  -778,  -778,  -778,  -778,  -778,  -778,  -778,
-    2657,  3057,   450,  -778,   343,  -778,  -778,   351,  -778,  -778,
-    2756,   344,  -778,  -778,   359,  -778,  -778,   362,   135,  -778,
-    -778,  -778,  -778,  -778,  -778,  -778,  -778,  -778,  -778,  -778,
-    -778,  -778,  -778,  -778,  -778,  2360,  -778,  -778,  -778,  -778,
-    -778,  -778,  -778,  -778,  -778,  -778,  -778,  -778,  -778,  -778,
-    -778,  -778,   122,   337,   347,  3156,   218,   128,   353,  -778,
-      95,   365,  -778,   342,  -778,   108,    29,   342,  -778,  -778,
-    3156,   367,    -3,  1266,   400,   408,  3156,     3,   413,   416,
-     380,  -778,  -778,  -778,   343,  -778,  -778,   367,   368,  -778,
-     154,  -778,   102,  -778,   364,  -778,   374,   367,   172,   376,
-      38,   372,   385,  2657,   219,   372,  1521,   392,  -778,  3156,
-    3156,   367,    22,  3156,    30,   225,  2151,   496,    23,  -778,
-    -778,  -778,   342,  -778,   395,  -778,   382,  3156,   390,  -778,
-     396,   386,  -778,   399,   388,  -778,  -778,   407,   145,  -778,
-     399,   367,  -778,  2859,  -778,   437,   390,  -778,     6,   402,
-     393,  -778,  -778,  -778,  -778,  -778,  -778,  -778,   474,   162,
-     494,  3156,   498,  -778,   367,  -778,  -778,  2151,   523,  -778,
-     354,  1390,  1646,   541,   173,  -778,   423,  -778,  -778,  -778,
-    -778,   367,  -778,  -778,  -778,   390,  -778,  -778,   412,   -48,
-     -32,   -12,   -10,  -778,   474,   492,  -778,   184,  -778,  3156,
-    -778,   428,   422,  -778,  -778,  -778,  -778,  -778,  -778,  3156,
-    3156,   367,  -778,  -778,   429,  3156,  3156,   325,    36,  -778,
-    3057,   245,  -778,  -778,  -778,  -778,    26,  -778,  -778,  -778,
-     415,  -778,  -778,   367,  2151,   415,  -778,  -778,  -778,  -778,
-    -778,  -778,   430,  -778,  2151,   247,  -778,  -778,  2151,  -778,
-     190,   228,  -778,   417,   433,  -778,  -778,   435,   426,  -778,
-     367,   214,   192,   427,   420,  -778,  -778,  -778,  -778,   131,
-     434,  1646,  -778,   367,   367,   415,  -778,   367,  -778,  -778,
-    2151,  -778,  -778,   -49,   440,  -778,  -778,   192,   441,   444,
-    -778,    23,   443,    23,  -778,  -778,  -778,   445,   449,   168,
-    -778,   457,  -778,   118,   367,  2001,  -778,  -778,   121,    20,
-     439,  -778,   342,  3156,   447,   795,  -778,  -778,     8,  1902,
-    -778,   462,   -11,  2151,  -778,   192,  -778,   367,   465,   453,
-     466,   455,   469,  -778,   456,   472,   479,  -778,  -778,  1902,
-    -778,  -778,  1902,  -778,   367,   358,  -778,   367,  -778,   367,
-    -778,  -778,   367,  -778,   367,  -778,  3255,  2459,    29,   175,
-    -778,  -778,    54,  -778,  -778,  -778,  -778,  -778,  -778,  -778,
-    -778,  -778,  -778,  -778,   473,   372,   192,   192,   192,   831,
-     599,  1521,  -778,  1521,  2151,  2151,  2151,  2151,  2151,   377,
-      18,   480,   192,   372,   459,  -778,   481,  -778,  -778,    32,
-    -778,   342,    39,   476,  -778,  -778,   -58,  -778,  -778,   477,
-     390,  -778,   489,   490,  -778,   367,    42,  -778,  -778,  -778,
-    -778,   390,  -778,  -778,  2958,   578,   192,  -778,  -778,   129,
-    -778,  1646,  -778,   497,  -778,   163,   178,  -778,  -778,   483,
-     -12,  -778,  -778,   778,  -778,  -778,  -778,    19,   -27,   -34,
-     -27,   105,   501,   325,  -778,  3156,  -778,  -778,  -778,  -778,
-    -778,   192,   495,   503,  -778,   192,   192,   192,   192,   192,
-    -778,  -778,  -778,  -778,  -778,   499,  -778,   502,   504,   342,
-    2151,    11,   486,  -778,  -778,  -778,   500,   505,  -778,   507,
-    -778,   493,   510,   281,   508,  2151,   191,   513,   511,   367,
-    -778,   512,   509,   514,  -778,  -778,   456,  1646,  -778,    13,
-    -778,  -778,  -778,  -778,   155,   160,   160,  -778,  -778,  -778,
-     535,  -778,  -778,   367,  -778,  -778,  -778,  -778,  -778,   516,
-     192,   342,    76,     4,  2119,  -778,    41,   192,  -778,   342,
-    -778,   342,  -778,  -778,    52,  1646,   509,   342,   342,  -778,
-    -778,  1141,  -778,  -778,  -778,  -778,  -778,   392,  -778,  -778,
-     795,  -778,  -778,  -778,   521,   342,   518,  -778,   519,  1141,
-    -778,   192,   525,   515,  -778,  -778,  -778,  -778,  -778,  -778,
-    -778,   514,  -778,  3824,  3912,  -778,   524,  -778,  -778,   430,
-    -778,  -778,   348,  -778,  -778,  -778,   349,   329,  -778,  -778,
-    -778,  -778,  2151,  -778,  -778,  -778,  -778,  -778,   363,  -778,
-    -778,  -778,   332,  -778,  -778,  -778,  -778,  -778,  -778,  -778,
-    -778,  -778,  -778,  -778,  -778,   375,  -778,    90,  -778,  -778,
-    -778,  -778,  -778,   394,   361,  -778,  -778,  -778,  -778,  -778,
-    -778,  -778,  -778,  -778,  -778,  -778,   -30,   -14,  -778,  -778,
-    -778,  -778,  -778,  -778,  -778,  -778,   529,  -778,  -778,  -778,
-    -778,  -778,   -49,  1777,  -778,   520,  1004,  -778,  -778,   367,
-     192,  -778,  -778,  -778,  3728,  -778,   342,    78,   192,  -778,
-    -778,   526,  -778,  -778,  -778,  -778,  -778,  -778,  -778,  -778,
-    -778,  -778,  -778,  -778,  -778,  -778,  -778,  -778,  -778,  -778,
-    -778,  -778,  -778,  -778,  -778,  -778,  -778,  -778,  -778,  -778,
-    -778,  -778,  -778,  -778,  -778,  -778,  3728,  -778,  3494,  -778,
-    -778,  -778,  3377,  -778,   531,   544,  3611,  -778,  -778,  -778,
-    -778,     4,  -778,  -778,   540,     4
+     -46,  -658,   169,   -46,   133,    85,  -658,  -658,   249,    38,
+    -658,   153,  -658,   230,   197,  -658,  -658,   268,    38,  -658,
+    -658,  -658,   185,   231,  -658,  -658,   262,   270,   276,   351,
+    -658,  -658,   411,    70,   293,  -658,  -658,  -658,   383,   326,
+     335,  -658,  -658,  -658,    70,   341,  -658,   446,  -658,   293,
+    -658,   244,  -658,    25,  -658,   412,   343,  -658,  -658,   344,
+     346,  -658,  -658,   364,  -658,   433,    95,    95,  -658,  -658,
+      95,   365,  -658,   350,    95,  -658,    -5,  -658,  -658,  -658,
+    -658,  -658,  -658,  -658,  -658,    95,  -658,  -658,  -658,  2192,
+    2493,  -658,  -658,  -658,  -658,   -46,  -658,  -658,  -658,  -658,
+    -658,   391,  -658,  -658,   392,   375,  -658,  -658,  -658,   409,
+     379,  -658,  -658,  -658,  -658,  -658,   419,   384,  -658,  -658,
+     440,  -658,   408,  -658,  -658,  -658,  -658,  -658,   -25,    13,
+    -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,
+    2592,  2992,   499,  -658,   378,  -658,  -658,   396,  -658,  -658,
+    2691,   380,  -658,  -658,   397,  -658,  -658,   398,    -1,  -658,
+    -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,
+    -658,  -658,  -658,  -658,  -658,  2295,  -658,  -658,  -658,  -658,
+    -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,
+    -658,  -658,   228,   394,   387,  3091,   121,   156,   388,  -658,
+     126,   404,  -658,   382,  -658,   -58,    46,   382,  -658,  -658,
+    3091,   403,    -4,  1180,   443,   447,  3091,    40,   449,   456,
+     423,  -658,  -658,  -658,   378,  -658,  -658,   403,   410,  -658,
+     243,  -658,   -35,  -658,   414,  -658,   416,   403,   136,   420,
+      19,   413,   425,  2592,   180,   413,  1436,   426,  -658,  3091,
+    3091,   403,    21,  3091,    14,   227,  2132,   529,    23,  -658,
+    -658,  -658,   382,  -658,   427,  -658,   421,  3091,   422,  -658,
+     435,   430,  -658,   437,   431,  -658,  -658,   432,   159,  -658,
+     437,   403,  -658,  2794,  -658,   477,   422,  -658,     7,   448,
+     434,  -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,   510,
+     172,   532,  3091,   535,  -658,   403,  -658,  -658,  2132,   563,
+    -658,   106,  1305,  1561,   218,  -658,   461,  -658,  -658,  -658,
+    -658,   403,  -658,  -658,  -658,   422,  -658,  -658,   450,   -34,
+     -32,   -27,    -2,  -658,   510,   528,  -658,   205,  -658,  3091,
+    -658,   465,   459,  -658,  -658,  -658,  -658,  -658,  -658,  3091,
+    3091,   403,  -658,  -658,   466,  3091,  3091,   376,    31,  -658,
+    2992,    95,  -658,  -658,  -658,  -658,    28,  -658,  -658,  -658,
+     454,  -658,  -658,   403,  2132,   454,  -658,  -658,  -658,  -658,
+    -658,  -658,   467,  -658,  2132,   347,  -658,  -658,  2132,  -658,
+     251,   225,  -658,   451,   470,  -658,  -658,   472,   458,  -658,
+     403,   246,   257,   462,   453,  -658,  -658,  -658,  -658,   161,
+     463,  1561,  -658,   403,   403,   454,  -658,   403,  -658,  -658,
+    2132,  -658,  -658,   165,   474,  -658,  -658,   257,   468,   469,
+    -658,    23,   478,    23,  -658,  -658,  -658,   479,   480,   184,
+    -658,   482,  -658,   -33,   403,  1916,  -658,  -658,    93,    43,
+     464,  -658,   382,  3091,   473,   309,  -658,  -658,    84,  1817,
+    -658,   487,     1,  2132,  -658,   257,  -658,   403,   490,   481,
+     492,   483,   488,   491,   495,   502,  -658,  -658,  1817,  -658,
+    -658,  1817,  -658,   403,   721,  -658,   403,  -658,   403,  -658,
+    -658,   403,  -658,   403,  -658,  3190,  2394,    46,   213,  -658,
+    -658,   181,  -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,
+    -658,  -658,  -658,   496,   413,   257,   257,   257,  2034,   627,
+    1436,  -658,  1436,  2132,  2132,  2132,  2132,  2132,   417,    18,
+     507,   257,   413,   486,  -658,   512,  -658,  -658,    75,  -658,
+     382,    78,   501,  -658,  -658,   -55,  -658,  -658,   504,   422,
+    -658,   513,   517,  -658,   403,    91,  -658,  -658,  -658,  -658,
+     422,  -658,  -658,  2893,   599,   257,  -658,  -658,   147,  -658,
+    1561,  -658,   523,  -658,   207,   236,  -658,  -658,   511,   -27,
+    -658,  -658,    61,  -658,  -658,  -658,   168,   -29,   151,   -29,
+     179,   527,   376,  -658,  3091,  -658,  -658,  -658,  -658,  -658,
+     257,   525,   530,  -658,   257,   257,   257,   257,   257,  -658,
+    -658,  -658,  -658,  -658,   526,  -658,   537,   538,   382,  2132,
+       4,   520,  -658,  -658,  -658,   533,   536,  -658,   547,  -658,
+     539,   549,   331,   516,  2132,   237,   551,   544,   403,  -658,
+     546,   548,   554,  -658,  -658,   491,  1561,  -658,    36,  -658,
+    -658,  -658,  -658,   186,   189,   189,  -658,  -658,  -658,   585,
+    -658,  -658,   403,  -658,  -658,  -658,  -658,  -658,   556,   257,
+     382,   116,    16,  2066,  -658,    32,   257,  -658,   382,  -658,
+     382,  -658,  -658,   188,  1561,   548,   382,   382,  -658,  -658,
+    1055,  -658,  -658,  -658,  -658,  -658,   426,  -658,  -658,   309,
+    -658,  -658,  -658,   570,   382,   559,  -658,   560,  1055,  -658,
+     257,   557,   574,  -658,  -658,  -658,  -658,  -658,  -658,  -658,
+     554,  -658,  3759,  3847,  -658,   562,  -658,  -658,   467,  -658,
+    -658,   391,  -658,  -658,  -658,   392,   375,  -658,  -658,  -658,
+    -658,  2132,  -658,  -658,  -658,  -658,  -658,   409,  -658,  -658,
+    -658,   379,  -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,
+    -658,  -658,  -658,  -658,   419,  -658,   281,  -658,  -658,  -658,
+    -658,  -658,   440,   408,  -658,  -658,  -658,  -658,  -658,  -658,
+    -658,  -658,  -658,  -658,  -658,   -25,    13,  -658,  -658,  -658,
+    -658,  -658,  -658,  -658,  -658,   564,  -658,  -658,  -658,  -658,
+    -658,   165,  1692,  -658,   566,   908,  -658,  -658,   403,   257,
+    -658,  -658,  -658,  3663,  -658,   382,   157,   257,  -658,  -658,
+     553,  -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,
+    -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,
+    -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,
+    -658,  -658,  -658,  -658,  -658,  3663,  -658,  3429,  -658,  -658,
+    -658,  3312,  -658,   569,   582,  3546,  -658,  -658,  -658,  -658,
+      16,  -658,  -658,   571,    16
   };
 
   const unsigned short int
@@ -8084,9 +8103,9 @@ namespace yy {
      180,   181,     0,   343,     0,   339,   340,     0,   492,   305,
        0,   298,   302,   304,   500,   114,     8,     0,     0,   291,
        0,   332,   333,     0,   469,     0,   492,   315,   328,     0,
-     317,   326,   295,   457,   451,   452,   453,   383,     0,   314,
-       0,     0,     0,   288,     0,   459,   466,     0,     0,   287,
-       0,     0,     0,     0,   454,   455,   130,   416,   119,   120,
+     317,   326,   295,   296,   457,   451,   452,   453,   383,     0,
+     314,     0,     0,     0,   288,     0,   459,   466,     0,     0,
+     287,     0,     0,     0,   454,   455,   130,   416,   119,   120,
      121,   470,   448,   456,   450,   492,   415,   417,   418,   421,
        0,   423,     0,   426,     0,   429,   437,   439,   440,     0,
      441,     0,   461,   443,   444,   442,   445,   446,   447,     0,
@@ -8102,436 +8121,350 @@ namespace yy {
      309,     0,   338,     0,   250,     0,   301,   297,     0,     0,
        0,   290,     0,     0,   324,     0,   329,   316,     0,     0,
      422,     0,   140,     0,   471,   489,   490,     0,   475,    90,
-       0,    88,     0,   296,     0,     0,     0,   434,   433,     0,
-     436,   435,     0,   430,   458,     0,   462,   408,   412,   409,
-     413,   335,   406,   410,   407,   411,    29,     0,     0,     0,
-      16,    18,    33,    19,    20,    21,    22,    23,   500,     9,
-     105,   106,   353,   354,     0,     0,   101,   258,   284,     0,
-       0,     0,   202,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,   100,     0,     0,   369,     0,   360,   363,     0,
-     308,     0,     0,   341,   344,   494,     0,   493,   491,     0,
-     492,   303,     0,     0,   292,   331,     0,   449,   454,   455,
-     330,   492,   327,   432,   129,     0,   141,   474,   472,     0,
-     473,     0,    87,     0,   438,     0,     0,   132,   414,   419,
-     424,   427,   468,     0,   467,   460,   463,    49,    36,    36,
-      36,    53,    55,     0,    30,     0,    31,    28,   350,    27,
-     270,   285,     0,     0,   205,   279,   265,   281,   280,   282,
-     266,   267,   210,   283,   361,     0,   310,     0,     0,     0,
-       0,     0,   299,   294,   293,   325,   322,   318,   128,   111,
-     125,     0,     0,   110,     0,     0,     0,     0,   479,   484,
-      91,    89,   137,   134,   138,   131,     0,     0,   464,     0,
-      47,    46,    34,    35,    45,    40,    40,    52,    51,    50,
-       0,    15,    17,    32,   260,   203,   370,   311,   312,   342,
-     495,     0,     0,     0,     0,   122,     0,   142,   476,     0,
-     478,     0,   483,   481,   488,     0,   137,     0,     0,   133,
-     420,     0,    70,    48,    71,    72,    73,     0,    43,    42,
-       0,    38,    41,    37,     0,     0,   300,   323,   319,     0,
-     124,   123,   496,     0,   480,   486,   487,   485,   482,    92,
-     136,   135,   139,    24,    25,   502,   503,   504,   505,   253,
-     507,   508,   509,   390,   286,   274,   513,   514,   515,   516,
-     517,   518,   519,   384,   386,   522,   523,   387,   525,   526,
-     527,   528,   529,   530,   531,   532,   533,   381,   288,   536,
-     537,   538,   539,   540,   541,   542,   543,   278,   545,   546,
-     547,   548,   549,   550,   551,   552,   372,   272,   555,   556,
-     557,   558,   559,   306,   371,   379,   563,   564,   565,   566,
-     567,   568,   569,   382,   385,   287,   573,   574,   575,   576,
-     275,    66,   277,     0,    79,     0,     0,    77,    80,    81,
-      82,    65,    44,    39,    64,    54,     0,     0,    82,   477,
-      75,     0,    76,    78,   503,   506,   509,   510,   511,   512,
-     513,   514,   519,   520,   521,   524,   525,   529,   534,   535,
-     542,   544,   550,   551,   553,   554,   560,   561,   562,   563,
-     564,   570,   571,   572,   573,   577,    64,   501,    64,    56,
-      59,    58,     0,    62,   320,     0,    64,     5,    57,    61,
-      63,     0,    74,    60,   321,     0
+       0,    88,     0,     0,     0,     0,   434,   433,     0,   436,
+     435,     0,   430,   458,     0,   462,   408,   412,   409,   413,
+     335,   406,   410,   407,   411,    29,     0,     0,     0,    16,
+      18,    33,    19,    20,    21,    22,    23,   500,     9,   105,
+     106,   353,   354,     0,     0,   101,   258,   284,     0,     0,
+       0,   202,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,   100,     0,     0,   369,     0,   360,   363,     0,   308,
+       0,     0,   341,   344,   494,     0,   493,   491,     0,   492,
+     303,     0,     0,   292,   331,     0,   449,   454,   455,   330,
+     492,   327,   432,   129,     0,   141,   474,   472,     0,   473,
+       0,    87,     0,   438,     0,     0,   132,   414,   419,   424,
+     427,   468,     0,   467,   460,   463,    49,    36,    36,    36,
+      53,    55,     0,    30,     0,    31,    28,   350,    27,   270,
+     285,     0,     0,   205,   279,   265,   281,   280,   282,   266,
+     267,   210,   283,   361,     0,   310,     0,     0,     0,     0,
+       0,   299,   294,   293,   325,   322,   318,   128,   111,   125,
+       0,     0,   110,     0,     0,     0,     0,   479,   484,    91,
+      89,   137,   134,   138,   131,     0,     0,   464,     0,    47,
+      46,    34,    35,    45,    40,    40,    52,    51,    50,     0,
+      15,    17,    32,   260,   203,   370,   311,   312,   342,   495,
+       0,     0,     0,     0,   122,     0,   142,   476,     0,   478,
+       0,   483,   481,   488,     0,   137,     0,     0,   133,   420,
+       0,    70,    48,    71,    72,    73,     0,    43,    42,     0,
+      38,    41,    37,     0,     0,   300,   323,   319,     0,   124,
+     123,   496,     0,   480,   486,   487,   485,   482,    92,   136,
+     135,   139,    24,    25,   502,   503,   504,   505,   253,   507,
+     508,   509,   390,   286,   274,   513,   514,   515,   516,   517,
+     518,   519,   384,   386,   522,   523,   387,   525,   526,   527,
+     528,   529,   530,   531,   532,   533,   381,   288,   536,   537,
+     538,   539,   540,   541,   542,   543,   278,   545,   546,   547,
+     548,   549,   550,   551,   552,   372,   272,   555,   556,   557,
+     558,   559,   306,   371,   379,   563,   564,   565,   566,   567,
+     568,   569,   382,   385,   287,   573,   574,   575,   576,   275,
+      66,   277,     0,    79,     0,     0,    77,    80,    81,    82,
+      65,    44,    39,    64,    54,     0,     0,    82,   477,    75,
+       0,    76,    78,   503,   506,   509,   510,   511,   512,   513,
+     514,   519,   520,   521,   524,   525,   529,   534,   535,   542,
+     544,   550,   551,   553,   554,   560,   561,   562,   563,   564,
+     570,   571,   572,   573,   577,    64,   501,    64,    56,    59,
+      58,     0,    62,   320,     0,    64,     5,    57,    61,    63,
+       0,    74,    60,   321,     0
   };
 
   const short int
   asn1_parser::yypgoto_[] =
   {
-    -778,   646,  -778,  -778,  -137,  -778,   -81,  -778,   438,  -778,
-    -778,    89,  -477,   138,  -778,  -778,  -778,  -176,  -778,    31,
-    -778,  -778,  -778,  -778,  -778,  -778,  -778,  -778,  -185,  -777,
-    -778,  -778,  -778,  -656,  -584,  -778,    14,  -778,  -778,  -778,
-    -778,  -778,  -121,  -113,   130,  -778,  -778,   458,  -778,   -51,
-    -778,  -778,  -778,  -778,  -778,   602,  -778,   335,  -778,   133,
-    -778,  -778,  -778,  -778,  -778,  -778,  -778,  -778,  -778,  -778,
-      53,    12,    16,  -778,  -778,  -778,  -778,  -778,  -778,   683,
-    -778,   670,  -778,  -778,  -778,  -778,  -778,  -778,  -778,  -778,
-    -778,  -778,   630,  -778,  -778,   652,   637,  -120,   623,  -778,
-    -778,  -221,  -778,  -778,  -247,  -778,  -778,  -778,  -778,  -778,
-    -778,   -67,  -778,  -119,  -236,   223,  -778,  -778,    17,  -778,
-    -778,   198,  -778,  -778,  -200,   147,  -778,  -778,    44,  -443,
-    -778,  -778,  -778,   169,  -778,  -778,  -778,   517,  -542,  -450,
-    -778,  -778,  -778,  -778,  -778,  -778,    93,  -778,  -778,  -778,
-    -778,  -778,  -778,  -778,  -778,  -778,   -57,  -778,   298,   170,
-    -778,  -778,  -778,   700,  -778,   664,   672,  -778,  -778,  -778,
-    -778,   282,  -778,  -778,  -778,  -778,  -778,  -778,  -778,  -778,
-    -778,  -112,  -778,  -778,  -281,  -305,  -778,  -778,   238,  -778,
-     237,  -778,   387,  -778,  -778,   261,  -778,  -436,  -778,  -778,
-    -778,  -778,  -778,  -778,   139,  -127,  -778,  -778,  -778,  -778,
-    -778,  -297,  -778,  -778,  -778,  -778,  -778,  -778,  -275,  -778,
-      49,    -9,   -41,    15,  -345,  -778
+    -658,   706,  -658,  -658,  -137,  -658,  -112,  -658,   471,  -658,
+    -658,   119,  -471,   191,  -658,  -658,  -658,  -108,  -658,    57,
+    -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,  -140,  -531,
+    -658,  -658,  -658,  -657,  -557,  -658,    44,  -658,  -658,  -658,
+    -658,  -658,   -87,   -82,   158,  -658,  -658,   494,  -658,   -57,
+    -658,  -658,  -658,  -658,  -658,   634,  -658,   373,  -658,   171,
+    -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,
+      94,    55,    58,  -658,  -658,  -658,  -658,  -658,  -658,   724,
+    -658,   711,  -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,
+    -658,  -658,   672,  -658,  -658,   694,   679,  -106,   665,  -658,
+    -658,  -219,  -658,  -658,  -102,  -658,  -658,  -658,  -658,  -658,
+    -658,   -67,  -658,  -197,  -230,   103,  -658,  -658,    62,  -658,
+    -658,    20,  -658,  -658,  -193,   201,  -658,  -658,    81,  -436,
+    -658,  -658,  -658,   212,  -658,  -658,  -658,   540,  -534,  -451,
+    -658,  -658,  -658,  -658,  -658,  -658,   135,  -658,  -658,  -658,
+    -658,  -658,  -658,  -658,  -658,  -658,    -6,  -658,    89,   216,
+    -658,  -658,  -658,   748,  -658,   712,   716,  -658,  -658,  -658,
+    -658,   232,  -658,  -658,  -658,  -658,  -658,  -658,  -658,  -658,
+    -658,  -118,  -658,  -658,  -269,  -307,  -658,  -658,   284,  -658,
+     282,  -658,   436,  -658,  -658,   305,  -658,  -447,  -658,  -658,
+    -658,  -658,  -658,  -658,   183,  -127,  -658,  -658,  -658,  -658,
+    -658,  -228,  -658,  -658,  -658,  -658,  -658,  -658,  -262,  -658,
+      56,    -9,   -36,    15,  -338,  -658
   };
 
   const short int
   asn1_parser::yydefgoto_[] =
   {
-      -1,     2,     3,   815,   392,   223,   144,    77,   225,   226,
-     499,   500,   369,   415,   501,   502,   597,   654,   503,   702,
-     504,   505,   699,   506,   651,   507,   659,   661,   858,   859,
-     860,   861,   862,   863,   145,   146,   693,   694,   695,   805,
-     696,   806,   807,   808,   147,   148,    78,   316,   470,   149,
+      -1,     2,     3,   814,   392,   223,   144,    77,   225,   226,
+     498,   499,   369,   415,   500,   501,   596,   653,   502,   701,
+     503,   504,   698,   505,   650,   506,   658,   660,   857,   858,
+     859,   860,   861,   862,   145,   146,   692,   693,   694,   804,
+     695,   805,   806,   807,   147,   148,    78,   316,   470,   149,
       79,    80,    81,    82,    83,   150,   232,   233,   234,   235,
-     151,   152,   153,   154,   394,   317,   318,   632,   319,   576,
-     577,   687,   643,   320,    65,     4,    10,    11,    12,    17,
+     151,   152,   153,   154,   394,   317,   318,   631,   319,   575,
+     576,   686,   642,   320,    65,     4,    10,    11,    12,    17,
       18,    19,    20,    14,    29,    39,    54,    55,    59,    67,
       73,    74,    75,   199,   259,    76,    61,    62,    84,    85,
      155,   395,   156,   396,   397,   398,   157,   399,    86,    87,
-      88,   321,   159,   288,   426,   402,   403,   404,   412,   519,
+      88,   321,   159,   288,   426,   402,   403,   404,   412,   518,
      160,   405,   161,   278,   269,   406,   162,   270,   271,   272,
      163,   164,   439,   440,   165,   166,   167,   289,   290,   291,
      168,   169,   170,   171,   264,   265,   266,   172,   173,   174,
-     175,   240,   514,   366,   176,   260,   432,   433,   434,   435,
+     175,   240,   513,   366,   176,   260,   432,   433,   434,   435,
      436,   177,   178,   407,    34,    45,    43,   179,   180,   181,
      182,   408,   183,   184,   185,   186,   187,   188,   189,   190,
      191,   248,   325,   326,   327,   328,   329,   330,   331,   332,
-     333,   334,   460,   479,   482,   335,   336,   337,   338,   339,
-     340,   341,   585,   342,   586,   343,   344,   345,   346,   568,
-     570,   637,   638,   683,   684,   718,   347,   348,   446,   548,
-     197,   193,   409,   198,   229,   811
+     333,   334,   460,   478,   481,   335,   336,   337,   338,   339,
+     340,   341,   584,   342,   585,   343,   344,   345,   346,   567,
+     569,   636,   637,   682,   683,   717,   347,   348,   446,   547,
+     197,   193,   409,   198,   229,   810
   };
 
   const short int
   asn1_parser::yytable_[] =
   {
-      22,   215,   219,   222,   231,   551,   471,   279,   562,    22,
-     401,   454,    64,   509,   626,     5,   214,   218,     5,   560,
-     589,   236,   158,   196,   292,    64,    90,   430,    15,    64,
-     512,   472,   418,    64,    97,   804,   430,   431,   599,   418,
-      95,   285,   565,   617,    90,   367,   368,   285,   285,   584,
-     475,   418,   285,   804,   652,   455,   210,   418,    98,   224,
-     224,   652,   418,  -425,  -428,   692,   480,   213,   649,   275,
-     363,   211,   216,   227,   237,     1,  -496,   594,   653,   477,
-     715,   868,   620,   244,   263,   653,   285,   211,  -496,   868,
-     692,   282,     6,   212,   456,   213,  -425,   352,   213,   284,
-      64,    56,    63,   595,   194,   509,   222,   650,   251,   217,
-     200,   213,   478,    70,   213,    63,    89,     8,   286,    63,
-     285,   287,   285,    63,   286,   276,    13,   353,   255,   561,
-     531,   708,   364,  -428,    89,   481,   691,  -166,   192,   134,
-     716,    53,   596,   281,   717,   513,    16,   584,     9,   351,
-     804,   365,    16,    16,   657,   228,   228,    16,   313,   261,
-      58,     1,   224,   625,    30,   224,   508,    58,     1,    58,
-      57,     1,   230,    16,     1,    58,   373,   274,    57,   400,
-       1,    58,   413,   414,   508,   509,   417,     1,    58,   712,
-     238,    16,   464,   658,   267,   393,   273,   707,   280,   864,
-     444,   283,    23,   267,   697,   425,   870,   283,   267,   700,
-     535,    26,   535,   207,   803,  -289,   444,   438,   258,    57,
-      58,   277,   562,   231,   545,    16,   359,    16,   552,   268,
-     488,   490,   803,    25,   462,    27,   493,   495,   360,   543,
-     236,   511,   550,   698,    58,  -116,    28,  -198,   701,   437,
-     636,  -116,   554,   441,  -118,   247,   425,    16,   228,   252,
-     213,   410,  -198,    33,   813,   252,   640,    16,   529,   451,
-      16,   429,   484,   429,   603,   622,   604,  -498,    16,   224,
-    -498,   452,   487,   489,  -449,   401,   627,   401,   492,   494,
-    -498,  -449,   540,   237,  -498,    71,  -496,  -198,  -496,   592,
-     642,   416,   645,   419,   541,   428,  -465,    21,    32,   252,
-    -496,   593,    16,  -465,   646,   678,    21,    35,   535,    64,
-      64,   618,   429,   425,   544,   438,  -277,   679,   524,   874,
-    -277,   509,   525,   425,  -277,    36,   526,   425,   256,   374,
-     283,   283,   690,   213,   213,   420,   283,   283,   496,   497,
-     213,    37,   498,   520,  -276,   567,   428,  -497,  -276,   587,
-     323,   591,   292,   293,   294,    38,   295,   562,   296,   425,
-     207,  -289,  -289,   551,   536,   228,   538,   297,   546,   370,
-     719,   429,   713,   375,   714,   869,   555,    41,    42,   429,
-     438,   557,   438,    57,    58,   367,   368,   467,   468,   429,
-     610,   611,    15,   429,   438,  -126,   213,    44,   438,   238,
-      63,   322,   425,   655,   656,   224,    46,   276,    48,    47,
-     303,    50,   437,   428,   437,   562,    51,   629,    66,   588,
-     590,    68,    69,   428,   267,   429,   582,   428,    70,   273,
-     224,    71,   224,   280,    72,    92,   429,    93,   429,   267,
-     201,   202,   203,   204,   400,   205,   400,   207,   323,   323,
-     549,   206,   208,   209,   429,   239,   253,   309,   425,   428,
-     393,   242,   393,   425,   425,   425,   425,   425,   429,   427,
-     241,   245,   246,   224,   254,  -115,   349,   583,   262,   612,
-     257,    16,   213,   612,   350,   324,   313,   633,   438,   355,
-     263,   438,   356,   357,   361,   358,   558,   559,   311,   322,
-     322,   228,   428,   277,  -109,   411,   362,   418,   443,   442,
-     447,   445,   448,   453,   449,  -499,   457,   682,   663,   458,
-     465,   459,   441,   461,   429,   466,   410,   463,   410,   429,
-     429,   429,   429,   429,   450,   473,   474,   267,   476,  -431,
-     485,   486,   515,   491,   429,  -314,   521,   429,   323,   522,
-     639,  -264,   523,   527,   528,   520,   644,   537,   428,   425,
-     539,   530,  -118,   428,   428,   428,   428,   428,   533,   634,
-     612,   534,   542,   556,   425,   564,   544,   508,   569,   571,
-     572,   573,   547,   324,   324,   574,   553,   516,   578,   575,
-     579,   598,   323,   602,   613,   614,   323,   517,    58,   322,
-     267,   518,   619,   192,   621,   623,   624,   635,   641,   647,
-     660,   664,   671,   425,   809,   666,   323,   665,   667,   323,
-     668,  -127,   323,   674,   675,   429,   672,   680,   704,   819,
-     393,   673,   809,   532,   814,   676,   686,   681,   685,     7,
-     429,   688,   705,   322,   816,   817,   821,   322,   393,   215,
-     219,   -11,   273,   267,   267,  -500,   -10,   871,   872,   428,
-     639,   866,   639,   865,   214,   218,   875,   322,   644,   722,
-     322,   372,   662,   322,   428,   823,   566,   703,   710,   549,
-     820,   425,   195,   324,   630,   510,   267,   631,   720,   689,
-     371,    31,    40,   721,    94,    60,   549,    91,    96,   615,
-     616,    24,   669,    52,   812,   706,    49,   580,   323,   581,
-     563,   483,   648,   428,   549,   419,     0,     0,     0,     0,
-     323,     0,     0,     0,   354,     0,   809,   324,     0,   809,
-       0,   324,   601,     0,     0,     0,     0,   605,   606,   607,
-     608,   609,   393,     0,     0,   393,     0,   429,     0,     0,
-       0,   324,     0,     0,   324,     0,     0,   324,     0,   322,
+      22,   215,   219,   222,   231,   471,   263,   561,   559,    22,
+     214,   218,   550,   282,   279,     5,   401,    64,     5,   352,
+     508,   625,   158,   196,   454,   588,   418,   430,   224,   224,
+      64,    90,   511,   803,    64,   236,   418,   583,    64,   431,
+     418,   285,    15,   598,   472,   367,   368,   292,   293,    90,
+    -428,   803,   363,   418,   418,   564,    56,   455,    97,    95,
+     651,   285,   210,   474,   268,   292,   293,   294,   295,   275,
+     296,   213,   297,   227,   237,   479,    98,   211,  -425,   430,
+     476,   298,   616,   244,   652,   285,   619,    41,    42,   542,
+     359,   691,    16,   284,   276,   556,   456,   213,    21,   212,
+     216,   213,   360,     1,   194,    64,   222,    21,   251,    63,
+     200,  -425,   508,   477,   364,   211,   691,    16,   286,  -428,
+     247,   287,    63,    89,   304,   213,    63,   213,   255,   285,
+      63,   224,    70,   365,   224,   583,   285,   217,   707,   213,
+     581,    89,   530,   281,   480,   192,    16,   512,   803,   351,
+     467,   468,   487,   489,    58,   228,   228,   134,   492,   494,
+     690,   285,   286,    57,   261,   353,    16,   507,    58,     6,
+      57,   310,     1,   230,    57,    58,   373,     1,    58,   400,
+     507,   711,   413,   414,     8,     1,   417,   464,    16,   393,
+      16,   508,     1,    58,   267,   274,   273,   238,   280,   425,
+     444,   283,   285,   267,   869,   593,   560,   283,   267,     9,
+     557,   558,   534,   624,   534,   549,   444,   714,   648,   802,
+     561,   277,   438,   231,     1,    58,   544,     1,    58,   656,
+     551,   594,    26,   322,    16,   462,   696,   802,   706,   699,
+     651,    16,   256,    16,    57,    58,   543,   213,   224,   437,
+     258,   425,   812,   441,   236,   510,    27,   649,   228,   553,
+      71,   410,  -198,   639,   652,    13,    16,    28,   657,   635,
+     595,   429,   483,   429,   252,   697,    58,   715,   700,   863,
+    -116,   716,   486,   488,   451,  -118,    23,   621,   491,   493,
+     401,  -496,   401,   237,   252,  -449,   452,    16,   626,   528,
+    -166,   374,  -449,  -496,    53,    25,   213,    16,   416,   539,
+     419,    32,   428,   292,   293,   294,   295,   425,   296,   534,
+     297,   540,   617,   429,    64,    64,   867,   425,  -465,   298,
+     438,   425,   322,   322,   867,  -465,   873,   508,   591,   689,
+     283,   283,  -496,   556,  -496,   641,   283,   283,   420,   566,
+     592,   519,  -116,   213,  -198,  -497,  -496,    16,   586,   427,
+     590,   644,   677,   425,   428,   561,   252,  -498,    35,  -198,
+    -498,    33,   304,   645,   678,   228,    36,   718,   545,   550,
+    -498,   429,    37,   224,  -498,   276,   554,  -276,  -277,   429,
+     868,  -276,  -277,    30,   523,   438,  -277,   438,   524,   429,
+     495,   496,   525,   429,   497,   207,   425,  -289,   224,   438,
+     224,   465,    38,   438,   323,    15,   238,    63,   602,   310,
+     603,   263,   437,   561,   437,   535,   628,   537,   587,   589,
+     428,   322,   370,    44,   267,   429,   375,   367,   368,   273,
+     428,   609,   610,   280,   428,   324,   429,    47,   429,   267,
+     712,   224,   713,   400,    46,   400,  -126,   213,   557,   558,
+     548,   425,    48,   393,   429,   393,   425,   425,   425,   425,
+     425,   207,  -289,  -289,    50,   322,   428,   515,   429,   322,
+     654,   655,    51,    70,    66,    68,    69,   516,    71,    72,
+      92,   517,    93,   611,   201,   202,   632,   611,   322,   203,
+     204,   322,   438,   205,   322,   438,   206,   543,   207,   208,
+     228,   209,   277,   323,   323,   239,   241,   242,   245,   428,
+     681,   246,  -115,   531,   253,   254,   257,   662,   262,   213,
+     349,   441,    16,   429,   350,   410,   355,   410,   429,   429,
+     429,   429,   429,   356,   324,   324,   267,   357,   358,   312,
+     411,   418,   442,   429,   445,   361,   429,  -109,   443,   638,
+     447,   362,   425,   449,   453,   643,   565,   448,   459,  -499,
+     450,   458,   461,   457,   428,   463,   466,   425,   633,   428,
+     428,   428,   428,   428,   611,   473,  -431,   475,   484,   485,
+     322,   490,   514,  -314,   520,   522,  -264,   521,   527,   526,
+     519,   529,   322,   536,  -118,   538,   532,   533,   541,   267,
+     555,   563,   323,   507,   568,   573,   425,   571,   570,   192,
+     572,   600,   577,   808,   578,   597,   604,   605,   606,   607,
+     608,   601,   612,   393,   429,   574,    58,   613,   618,   634,
+     622,   808,   620,   324,   623,   640,   546,   659,   646,   429,
+     552,   393,   663,   665,   675,   664,   323,   670,   215,   219,
+     323,   273,   267,   267,   666,   667,   322,   214,   218,   638,
+     671,   638,  -127,   672,   674,   428,   679,   643,   721,   323,
+     673,   680,   323,   684,   425,   323,   685,   324,   548,   703,
+     428,   324,   687,   704,   813,   267,   815,   816,  -500,   818,
+     -11,   864,   -10,   820,   322,   548,   870,   871,   874,     7,
+     324,   661,   702,   324,   372,   865,   324,   709,   822,   322,
+     819,   629,   669,   548,   195,   292,   293,   294,   295,   428,
+     296,   419,   297,   509,   630,   808,   371,   676,   808,   688,
+     719,   298,    31,    40,   720,   393,    94,    60,   393,    91,
+      96,   705,   615,   668,   614,   556,   429,   354,   811,    24,
+      49,    52,   579,   580,   562,   647,     0,     0,     0,     0,
+     482,   323,     0,     0,     0,     0,   710,     0,     0,     0,
+       0,     0,     0,   323,   304,     0,     0,     0,     0,     0,
+       0,     0,     0,   809,     0,     0,     0,   428,     0,     0,
+     581,     0,   324,     0,     0,     0,   273,   267,     0,     0,
+       0,   817,     0,     0,   324,     0,     0,   548,     0,     0,
+     548,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,   310,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,   516,     0,     0,   323,     0,     0,
+       0,   582,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,   267,     0,     0,     0,   267,     0,     0,     0,     0,
+     557,   558,     0,     0,     0,     0,     0,     0,   324,     0,
+       0,     0,     0,     0,     0,   323,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,   322,   292,   293,   294,     0,   295,     0,   296,     0,
-       0,   428,     0,     0,   323,     0,     0,   297,     0,   292,
-     293,   294,     0,   295,     0,   296,     0,   273,   267,     0,
-       0,   557,     0,     0,   297,     0,     0,     0,   549,     0,
-       0,   549,     0,     0,     0,     0,     0,     0,   557,     0,
-       0,     0,   323,     0,     0,   292,   376,   377,     0,   378,
-     303,   379,     0,   670,     0,   322,     0,   323,     0,     0,
-     297,     0,     0,   324,   380,   381,   582,   303,   677,     0,
-      98,     0,   267,     0,   421,   324,   267,     0,     0,     0,
-     383,     0,     0,     0,     0,     0,     0,   384,     0,     0,
-       0,     0,     0,   322,     0,     0,     0,   309,     0,     0,
-       0,     0,     0,   303,     0,     0,     0,   711,   322,     0,
-       0,     0,     0,     0,   309,     0,   422,     0,     0,     0,
-       0,     0,     0,     0,   810,     0,   313,     0,     0,   386,
-       0,     0,     0,     0,     0,     0,   558,   559,     0,   324,
-       0,     0,   818,   313,     0,     0,     0,     0,     0,     0,
-     309,   134,     0,   558,   559,     0,     0,     0,     0,     0,
-     387,     0,     0,     0,   388,   600,     0,     0,     0,     0,
-       0,     0,     0,    23,     0,   517,     0,   324,     0,   313,
-       0,   389,     0,     0,     0,     0,     0,     0,     0,   423,
-     424,     0,   324,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,   292,   376,
-     377,     0,   378,     0,   379,     0,     0,     0,     0,     0,
-       0,     0,     0,   297,     0,    97,   810,   380,   381,   810,
-       0,     0,   725,   726,   727,    99,   728,   729,   730,   731,
-     732,   733,   734,   735,   736,   737,   738,   739,   740,   741,
-     742,   743,   744,   745,   746,   747,   748,   749,   750,   751,
-     752,   753,   754,   755,   756,   757,   758,   759,   112,   113,
-     114,   115,   760,   761,   762,   763,   764,   765,   766,   767,
-     768,   118,   769,   770,   771,   772,   119,   773,   121,   774,
-     775,   776,   777,   778,   779,   780,   781,   124,   782,   783,
-     784,   785,   786,   787,   788,   789,   790,   791,   130,   792,
-     131,   793,   794,   795,   796,   797,   798,   799,   135,   136,
-     137,   138,   139,   800,     0,     0,     0,   388,   822,     0,
-       0,   142,     0,     0,     0,     0,    23,     0,     0,     0,
-     801,     0,   313,     0,   389,   292,   376,   377,     0,   378,
-       0,   379,   802,   391,     0,     0,     0,     0,     0,     0,
-     297,     0,    97,     0,   723,   724,     0,     0,     0,   725,
-     726,   727,    99,   728,   729,   730,   731,   732,   733,   734,
-     735,   736,   737,   738,   739,   740,   741,   742,   743,   744,
-     745,   746,   747,   748,   749,   750,   751,   752,   753,   754,
-     755,   756,   757,   758,   759,   112,   113,   114,   115,   760,
-     761,   762,   763,   764,   765,   766,   767,   768,   118,   769,
-     770,   771,   772,   119,   773,   121,   774,   775,   776,   777,
-     778,   779,   780,   781,   124,   782,   783,   784,   785,   786,
-     787,   788,   789,   790,   791,   130,   792,   131,   793,   794,
-     795,   796,   797,   798,   799,   135,   136,   137,   138,   139,
-     800,     0,     0,     0,   388,     0,     0,     0,   142,     0,
-     292,   293,   294,    23,   295,     0,   296,   801,     0,   313,
-       0,   389,     0,     0,     0,   297,     0,    97,     0,   802,
-     391,     0,     0,     0,     0,    98,   298,    99,     0,   299,
-       0,     0,   101,   102,   103,     0,   104,   105,     0,     0,
-       0,   300,   301,   106,   107,     0,     0,   108,   109,   302,
-       0,     0,   110,     0,     0,     0,     0,   111,   303,   304,
-     112,   113,   114,   115,     0,     0,     0,     0,   305,   116,
-       0,   117,     0,   118,     0,   306,     0,     0,   119,   120,
-     121,   122,     0,   123,     0,   307,     0,     0,     0,   124,
-       0,   125,   126,   127,   128,   129,   308,   211,     0,     0,
-     130,     0,   131,   132,   133,   309,   134,     0,     0,     0,
-     135,   136,   137,   138,   139,   310,     0,     0,     0,   311,
-       0,   312,     0,   142,   292,   293,   294,     0,   295,     0,
-     296,     0,     0,     0,   313,     0,     0,     0,     0,   297,
-       0,    97,     0,     0,   314,   315,     0,     0,     0,    98,
-     298,    99,     0,   299,     0,     0,   101,   102,   103,     0,
-     104,   105,     0,     0,     0,     0,     0,   106,   107,     0,
-       0,   108,   109,     0,     0,     0,   110,     0,     0,     0,
-       0,   111,   303,   304,   112,   113,   114,   115,     0,     0,
-       0,     0,   305,   116,     0,   117,     0,   118,     0,   306,
-       0,     0,   119,   120,   121,   122,     0,   123,     0,   307,
-       0,     0,     0,   124,     0,   125,   126,   127,   128,   129,
-     308,   211,     0,     0,   130,     0,   131,   132,   133,   309,
-     134,     0,     0,     0,   135,   136,   137,   138,   139,   310,
-       0,   469,     0,     0,     0,   312,     0,   142,     0,     0,
-       0,     0,     0,     0,     0,   292,   376,   377,   313,   378,
-       0,   379,     0,     0,     0,     0,     0,     0,   314,   315,
-     297,     0,    97,     0,   380,   381,     0,     0,     0,     0,
-      98,     0,    99,     0,   382,     0,     0,   101,   102,   103,
-     383,   104,   105,     0,     0,     0,     0,   384,   106,   107,
-       0,     0,   108,   109,     0,     0,     0,   110,     0,     0,
-       0,     0,   111,   303,     0,   112,   113,   114,   115,     0,
-       0,     0,     0,     0,   116,     0,   385,     0,   118,     0,
-       0,     0,     0,   119,   120,   121,   122,     0,   123,   386,
-       0,     0,     0,     0,   124,     0,   125,   126,   127,   128,
-     129,     0,     0,     0,     0,   130,     0,   131,   132,   133,
-     309,   134,     0,     0,     0,   135,   136,   137,   138,   139,
-     387,     0,     0,     0,   388,     0,     0,     0,   142,     0,
-     292,   293,   294,    23,   295,     0,   296,     0,     0,   313,
-       0,   389,     0,     0,     0,   297,     0,    97,     0,   390,
-     391,     0,     0,     0,     0,    98,   298,    99,     0,   299,
+     323,     0,     0,     0,     0,   809,     0,     0,   809,     0,
+       0,     0,   292,   293,   376,   377,   324,   378,     0,   379,
+       0,     0,     0,     0,     0,     0,     0,     0,   298,     0,
+      97,   324,   380,   381,     0,     0,     0,   724,   725,   726,
+      99,   727,   728,   729,   730,   731,   732,   733,   734,   735,
+     736,   737,   738,   739,   740,   741,   742,   743,   744,   745,
+     746,   747,   748,   749,   750,   751,   752,   753,   754,   755,
+     756,   757,   758,   112,   113,   114,   115,   759,   760,   761,
+     762,   763,   764,   765,   766,   767,   118,   768,   769,   770,
+     771,   119,   772,   121,   773,   774,   775,   776,   777,   778,
+     779,   780,   124,   781,   782,   783,   784,   785,   786,   787,
+     788,   789,   790,   130,   791,   131,   792,   793,   794,   795,
+     796,   797,   798,   135,   136,   137,   138,   139,   799,     0,
+       0,     0,   388,   821,     0,     0,   142,     0,     0,     0,
+       0,    23,     0,     0,     0,   800,     0,     0,     0,   389,
+       0,     0,     0,     0,     0,     0,     0,   801,   391,   292,
+     293,   376,   377,     0,   378,     0,   379,     0,     0,     0,
+       0,     0,     0,     0,     0,   298,     0,    97,     0,   722,
+     723,     0,     0,     0,   724,   725,   726,    99,   727,   728,
+     729,   730,   731,   732,   733,   734,   735,   736,   737,   738,
+     739,   740,   741,   742,   743,   744,   745,   746,   747,   748,
+     749,   750,   751,   752,   753,   754,   755,   756,   757,   758,
+     112,   113,   114,   115,   759,   760,   761,   762,   763,   764,
+     765,   766,   767,   118,   768,   769,   770,   771,   119,   772,
+     121,   773,   774,   775,   776,   777,   778,   779,   780,   124,
+     781,   782,   783,   784,   785,   786,   787,   788,   789,   790,
+     130,   791,   131,   792,   793,   794,   795,   796,   797,   798,
+     135,   136,   137,   138,   139,   799,     0,     0,     0,   388,
+       0,     0,     0,   142,   292,   293,   294,   295,    23,   296,
+       0,   297,   800,     0,     0,     0,   389,     0,     0,     0,
+     298,     0,    97,     0,   801,   391,     0,     0,     0,     0,
+      98,   299,    99,     0,   300,     0,     0,   101,   102,   103,
+       0,   104,   105,     0,     0,     0,   301,   302,   106,   107,
+       0,     0,   108,   109,   303,     0,     0,   110,     0,     0,
+       0,     0,   111,   304,   305,   112,   113,   114,   115,     0,
+       0,     0,     0,   306,   116,     0,   117,     0,   118,     0,
+     307,     0,     0,   119,   120,   121,   122,     0,   123,     0,
+     308,     0,     0,     0,   124,     0,   125,   126,   127,   128,
+     129,   309,   211,     0,     0,   130,     0,   131,   132,   133,
+     310,   134,     0,     0,     0,   135,   136,   137,   138,   139,
+     311,     0,     0,     0,   312,     0,   313,     0,   142,   292,
+     293,   294,   295,     0,   296,     0,   297,     0,     0,     0,
+       0,     0,     0,     0,     0,   298,     0,    97,     0,   314,
+     315,     0,     0,     0,     0,    98,   299,    99,     0,   300,
        0,     0,   101,   102,   103,     0,   104,   105,     0,     0,
        0,     0,     0,   106,   107,     0,     0,   108,   109,     0,
-       0,     0,   110,     0,     0,     0,     0,   111,   303,   304,
-     112,   113,   114,   115,     0,     0,     0,     0,   305,   116,
-       0,   117,     0,   118,     0,   306,     0,     0,   119,   120,
-     121,   122,     0,   123,     0,   307,     0,     0,     0,   124,
-       0,   125,   126,   127,   128,   129,   308,   211,     0,     0,
-     130,     0,   131,   132,   133,   309,   134,     0,     0,     0,
-     135,   136,   137,   138,   139,   310,     0,     0,     0,     0,
-       0,   312,     0,   142,     0,     0,     0,     0,     0,     0,
-       0,   292,   376,   377,   313,   378,     0,   379,     0,     0,
-       0,     0,     0,     0,   314,   315,   297,     0,    97,     0,
+       0,     0,   110,     0,     0,     0,     0,   111,   304,   305,
+     112,   113,   114,   115,     0,     0,     0,     0,   306,   116,
+       0,   117,     0,   118,     0,   307,     0,     0,   119,   120,
+     121,   122,     0,   123,     0,   308,     0,     0,     0,   124,
+       0,   125,   126,   127,   128,   129,   309,   211,     0,     0,
+     130,     0,   131,   132,   133,   310,   134,     0,     0,     0,
+     135,   136,   137,   138,   139,   311,     0,   469,     0,     0,
+       0,   313,     0,   142,     0,     0,     0,     0,     0,     0,
+     292,   293,   376,   377,     0,   378,     0,   379,     0,     0,
+       0,     0,     0,     0,   314,   315,   298,     0,    97,     0,
      380,   381,     0,     0,     0,     0,    98,     0,    99,     0,
      382,     0,     0,   101,   102,   103,   383,   104,   105,     0,
        0,     0,     0,   384,   106,   107,     0,     0,   108,   109,
-       0,     0,     0,   110,     0,     0,     0,     0,   111,   303,
+       0,     0,     0,   110,     0,     0,     0,     0,   111,   304,
        0,   112,   113,   114,   115,     0,     0,     0,     0,     0,
      116,     0,   385,     0,   118,     0,     0,     0,     0,   119,
      120,   121,   122,     0,   123,   386,     0,     0,     0,     0,
      124,     0,   125,   126,   127,   128,   129,     0,     0,     0,
-       0,   130,     0,   131,   132,   133,   309,   134,     0,     0,
+       0,   130,     0,   131,   132,   133,   310,   134,     0,     0,
        0,   135,   136,   137,   138,   139,   387,     0,     0,     0,
-     388,     0,     0,     0,   142,     0,   292,   293,   294,    23,
-     295,     0,   296,     0,     0,   313,     0,   389,     0,     0,
-       0,   297,     0,    97,     0,   423,   391,     0,     0,     0,
-       0,    98,     0,    99,     0,   299,     0,     0,   101,   102,
+     388,     0,     0,     0,   142,   292,   293,   294,   295,    23,
+     296,     0,   297,     0,     0,     0,     0,   389,     0,     0,
+       0,   298,     0,    97,     0,   390,   391,     0,     0,     0,
+       0,    98,   299,    99,     0,   300,     0,     0,   101,   102,
      103,     0,   104,   105,     0,     0,     0,     0,     0,   106,
      107,     0,     0,   108,   109,     0,     0,     0,   110,     0,
-       0,     0,     0,   111,   303,   304,   112,   113,   114,   115,
-       0,     0,     0,     0,   305,   116,     0,   117,     0,   118,
-       0,   306,     0,     0,   119,   120,   121,   122,     0,   123,
-       0,   307,     0,     0,     0,   124,     0,   125,   126,   127,
-     128,   129,   308,   211,     0,   292,   130,     0,   131,   132,
-     133,   309,   134,     0,     0,     0,   135,   136,   137,   138,
-     139,   310,    97,     0,     0,     0,     0,   312,     0,   142,
-      98,     0,    99,     0,   100,     0,     0,   101,   102,   103,
-     313,   104,   105,     0,     0,     0,     0,     0,   106,   107,
-     314,   315,   108,   109,     0,     0,     0,   110,     0,     0,
-       0,     0,   111,     0,     0,   112,   113,   114,   115,     0,
-       0,     0,     0,     0,   116,     0,   117,     0,   118,     0,
-       0,     0,     0,   119,   120,   121,   122,     0,   123,     0,
-       0,     0,     0,     0,   124,     0,   125,   126,   127,   128,
-     129,     0,     0,     0,     0,   130,     0,   131,   132,   133,
-       0,   134,     0,     0,     0,   135,   136,   137,   138,   139,
-       0,     0,     0,   292,   376,   377,     0,   378,   142,   379,
-       0,     0,     0,     0,     0,     0,     0,     0,   297,   313,
-      97,     0,   380,   381,     0,     0,     0,     0,    98,   143,
-     230,     0,   421,     0,     0,   292,   376,   377,   383,   378,
-       0,   379,     0,     0,     0,   384,     0,     0,     0,     0,
-     297,     0,     0,     0,   380,   381,     0,     0,     0,     0,
-      98,   303,     0,     0,   421,     0,     0,     0,     0,     0,
-     383,     0,     0,     0,   422,     0,     0,   384,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,   386,     0,     0,
-       0,     0,     0,   303,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,   422,     0,   309,   134,
-       0,     0,     0,     0,     0,     0,     0,     0,   387,   386,
-       0,     0,   709,     0,     0,     0,     0,     0,     0,     0,
-       0,    23,     0,     0,     0,     0,     0,   313,     0,   389,
-     309,   134,     0,     0,     0,     0,     0,   423,   424,     0,
-     387,     0,     0,     0,   388,     0,     0,     0,    97,     0,
-       0,     0,     0,    23,     0,     0,    98,     0,    99,   313,
-     100,   389,     0,   101,   102,   103,     0,   104,   105,   423,
-     424,     0,     0,     0,   106,   107,     0,     0,   108,   109,
-       0,     0,     0,   110,     0,     0,     0,     0,   111,     0,
-       0,   112,   113,   114,   115,     0,     0,     0,     0,     0,
-     116,     0,   117,     0,   118,     0,     0,     0,     0,   119,
-     120,   121,   122,     0,   123,     0,     0,     0,     0,     0,
-     124,     0,   125,   126,   127,   128,   129,     0,     0,     0,
-       0,   130,     0,   131,   132,   133,     0,   134,     0,     0,
-       0,   135,   136,   137,   138,   139,     0,   140,     0,     0,
-     141,    97,     0,     0,   142,     0,     0,     0,     0,    98,
-       0,    99,     0,   100,     0,     0,   101,   102,   103,     0,
-     104,   105,     0,     0,     0,   143,    16,   106,   107,     0,
-       0,   108,   109,     0,     0,     0,   110,     0,   249,     0,
-       0,   111,     0,     0,   112,   113,   114,   115,     0,   250,
-       0,     0,     0,   116,     0,   117,     0,   118,     0,     0,
-       0,     0,   119,   120,   121,   122,     0,   123,     0,     0,
-       0,     0,     0,   124,     0,   125,   126,   127,   128,   129,
-       0,     0,     0,     0,   130,     0,   131,   132,   133,     0,
-     134,     0,     0,     0,   135,   136,   137,   138,   139,     0,
-      97,     0,   367,   368,     0,     0,     0,   142,    98,     0,
-      99,     0,   100,     0,     0,   101,   102,   103,     0,   104,
-     105,     0,     0,     0,     0,     0,   106,   107,   143,    16,
-     108,   109,     0,     0,     0,   110,     0,     0,     0,     0,
-     111,     0,     0,   112,   113,   114,   115,     0,     0,     0,
-       0,     0,   116,     0,   117,     0,   118,     0,     0,     0,
-       0,   119,   120,   121,   122,     0,   123,     0,     0,     0,
-       0,     0,   124,     0,   125,   126,   127,   128,   129,     0,
-       0,     0,     0,   130,     0,   131,   132,   133,     0,   134,
-       0,     0,     0,   135,   136,   137,   138,   139,     0,    97,
-       0,     0,     0,     0,     0,     0,   142,    98,     0,    99,
-       0,   100,     0,     0,   101,   102,   103,     0,   104,   105,
-       0,     0,     0,     0,     0,   106,   107,   143,    16,   108,
+       0,     0,     0,   111,   304,   305,   112,   113,   114,   115,
+       0,     0,     0,     0,   306,   116,     0,   117,     0,   118,
+       0,   307,     0,     0,   119,   120,   121,   122,     0,   123,
+       0,   308,     0,     0,     0,   124,     0,   125,   126,   127,
+     128,   129,   309,   211,     0,     0,   130,     0,   131,   132,
+     133,   310,   134,     0,     0,     0,   135,   136,   137,   138,
+     139,   311,     0,     0,     0,     0,     0,   313,     0,   142,
+       0,     0,     0,     0,     0,     0,   292,   293,   376,   377,
+       0,   378,     0,   379,     0,     0,     0,     0,     0,     0,
+     314,   315,   298,     0,    97,     0,   380,   381,     0,     0,
+       0,     0,    98,     0,    99,     0,   382,     0,     0,   101,
+     102,   103,   383,   104,   105,     0,     0,     0,     0,   384,
+     106,   107,     0,     0,   108,   109,     0,     0,     0,   110,
+       0,     0,     0,     0,   111,   304,     0,   112,   113,   114,
+     115,     0,     0,     0,     0,     0,   116,     0,   385,     0,
+     118,     0,     0,     0,     0,   119,   120,   121,   122,     0,
+     123,   386,     0,     0,     0,     0,   124,     0,   125,   126,
+     127,   128,   129,     0,     0,     0,     0,   130,     0,   131,
+     132,   133,   310,   134,     0,     0,     0,   135,   136,   137,
+     138,   139,   387,     0,     0,     0,   388,     0,     0,     0,
+     142,   292,   293,   294,   295,    23,   296,     0,   297,     0,
+       0,     0,     0,   389,     0,     0,     0,   298,     0,    97,
+       0,   423,   391,     0,     0,     0,     0,    98,     0,    99,
+       0,   300,     0,     0,   101,   102,   103,     0,   104,   105,
+       0,     0,     0,     0,     0,   106,   107,     0,     0,   108,
      109,     0,     0,     0,   110,     0,     0,     0,     0,   111,
-       0,     0,   112,   113,   114,   115,     0,     0,     0,     0,
-       0,   116,     0,   117,     0,   118,     0,     0,     0,     0,
-     119,   120,   121,   122,     0,   123,     0,     0,     0,     0,
-       0,   124,     0,   125,   126,   127,   128,   129,     0,     0,
-       0,     0,   130,     0,   131,   132,   133,     0,   134,     0,
-       0,     0,   135,   136,   137,   138,   139,     0,    97,     0,
-       0,   141,     0,     0,     0,   142,    98,     0,    99,     0,
-     100,     0,     0,   101,   102,   103,     0,   104,   105,   220,
-       0,     0,     0,     0,   106,   107,   143,    16,   108,   109,
-       0,     0,     0,   110,     0,     0,     0,     0,   111,     0,
-       0,   112,   113,   114,   115,     0,     0,     0,     0,     0,
-     116,     0,   117,     0,   118,     0,     0,     0,     0,   119,
-     120,   121,   122,     0,   123,     0,     0,     0,     0,     0,
-     124,     0,   125,   126,   127,   128,   129,     0,     0,     0,
-       0,   130,     0,   131,   132,   133,     0,   134,     0,     0,
-       0,   135,   136,   137,   138,   139,     0,    97,     0,     0,
-       0,     0,     0,     0,   142,    98,     0,    99,     0,   100,
-       0,     0,   101,   102,   103,     0,   104,   105,     0,     0,
-       0,     0,     0,   106,   107,   221,    16,   108,   109,     0,
-       0,     0,   110,     0,     0,     0,     0,   111,     0,     0,
-     112,   113,   114,   115,     0,     0,     0,     0,     0,   116,
-       0,   117,     0,   118,     0,     0,     0,     0,   119,   120,
-     121,   122,     0,   123,     0,     0,     0,     0,     0,   124,
-       0,   125,   126,   127,   128,   129,     0,     0,     0,     0,
-     130,     0,   131,   132,   133,     0,   134,     0,     0,     0,
-     135,   136,   137,   138,   139,     0,   243,     0,     0,     0,
-      97,     0,     0,   142,     0,     0,     0,     0,    98,     0,
-      99,     0,   100,     0,     0,   101,   102,   103,     0,   104,
-     105,     0,     0,     0,   143,    16,   106,   107,     0,     0,
-     108,   109,     0,     0,     0,   110,     0,     0,     0,     0,
-     111,     0,     0,   112,   113,   114,   115,     0,     0,     0,
-       0,     0,   116,     0,   117,     0,   118,     0,     0,     0,
-       0,   119,   120,   121,   122,     0,   123,     0,     0,     0,
-       0,     0,   124,     0,   125,   126,   127,   128,   129,     0,
-       0,     0,     0,   130,     0,   131,   132,   133,     0,   134,
-       0,     0,     0,   135,   136,   137,   138,   139,     0,    97,
-       0,     0,     0,     0,     0,     0,   142,    98,   253,    99,
-       0,   100,     0,     0,   101,   102,   103,     0,   104,   105,
-       0,     0,     0,     0,     0,   106,   107,   143,    16,   108,
-     109,     0,     0,     0,   110,     0,     0,     0,     0,   111,
-       0,     0,   112,   113,   114,   115,     0,     0,     0,     0,
-       0,   116,     0,   117,     0,   118,     0,     0,     0,     0,
-     119,   120,   121,   122,     0,   123,     0,     0,     0,     0,
-       0,   124,     0,   125,   126,   127,   128,   129,     0,     0,
-       0,     0,   130,     0,   131,   132,   133,     0,   134,     0,
-       0,     0,   135,   136,   137,   138,   139,     0,    97,   628,
-       0,     0,     0,     0,     0,   142,    98,     0,    99,     0,
+     304,   305,   112,   113,   114,   115,     0,     0,     0,     0,
+     306,   116,     0,   117,     0,   118,     0,   307,     0,     0,
+     119,   120,   121,   122,     0,   123,     0,   308,     0,     0,
+       0,   124,     0,   125,   126,   127,   128,   129,   309,   211,
+     292,   293,   130,     0,   131,   132,   133,   310,   134,     0,
+       0,     0,   135,   136,   137,   138,   139,   311,    97,     0,
+       0,     0,     0,   313,     0,   142,    98,     0,    99,     0,
      100,     0,     0,   101,   102,   103,     0,   104,   105,     0,
-       0,     0,     0,     0,   106,   107,   221,    16,   108,   109,
+       0,     0,     0,     0,   106,   107,   314,   315,   108,   109,
        0,     0,     0,   110,     0,     0,     0,     0,   111,     0,
        0,   112,   113,   114,   115,     0,     0,     0,     0,     0,
      116,     0,   117,     0,   118,     0,     0,     0,     0,   119,
      120,   121,   122,     0,   123,     0,     0,     0,     0,     0,
      124,     0,   125,   126,   127,   128,   129,     0,     0,     0,
        0,   130,     0,   131,   132,   133,     0,   134,     0,     0,
-       0,   135,   136,   137,   138,   139,     0,    97,     0,     0,
-       0,     0,     0,     0,   142,    98,     0,    99,     0,   100,
+       0,   135,   136,   137,   138,   139,     0,     0,   292,   293,
+     376,   377,     0,   378,   142,   379,     0,     0,     0,     0,
+       0,     0,     0,     0,   298,     0,     0,     0,   380,   381,
+       0,     0,     0,     0,    98,   143,   230,     0,   421,     0,
+     292,   293,   376,   377,   383,   378,     0,   379,     0,     0,
+       0,   384,     0,     0,     0,     0,   298,     0,    97,     0,
+     380,   381,     0,     0,     0,     0,    98,   304,     0,     0,
+     421,     0,     0,     0,     0,     0,   383,     0,     0,     0,
+     422,     0,     0,   384,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,   386,     0,     0,     0,     0,     0,   304,
+       0,     0,     0,     0,     0,     0,   292,   293,   376,   377,
+       0,   378,   422,   379,   310,   134,     0,     0,     0,     0,
+       0,     0,   298,     0,   387,   386,   380,   381,   388,   599,
+       0,     0,    98,     0,     0,     0,   421,    23,     0,     0,
+       0,     0,   383,     0,     0,   389,   310,   134,     0,   384,
+       0,     0,     0,   423,   424,     0,   387,     0,     0,     0,
+     708,     0,     0,     0,     0,   304,     0,     0,     0,    23,
+       0,     0,     0,     0,     0,     0,     0,   389,   422,     0,
+       0,     0,     0,     0,    97,   423,   424,     0,     0,     0,
+       0,   386,    98,     0,    99,     0,   100,     0,     0,   101,
+     102,   103,     0,   104,   105,     0,     0,     0,     0,     0,
+     106,   107,   310,   134,   108,   109,     0,     0,     0,   110,
+       0,     0,   387,     0,   111,     0,   388,   112,   113,   114,
+     115,     0,     0,     0,     0,    23,   116,     0,   117,     0,
+     118,     0,     0,   389,     0,   119,   120,   121,   122,     0,
+     123,   423,   424,     0,     0,     0,   124,     0,   125,   126,
+     127,   128,   129,     0,     0,     0,     0,   130,     0,   131,
+     132,   133,     0,   134,     0,     0,     0,   135,   136,   137,
+     138,   139,     0,   140,     0,     0,   141,    97,     0,     0,
+     142,     0,     0,     0,     0,    98,     0,    99,     0,   100,
        0,     0,   101,   102,   103,     0,   104,   105,     0,     0,
-       0,     0,     0,   106,   107,   221,   230,   108,   109,     0,
-       0,     0,   110,     0,     0,     0,     0,   111,     0,     0,
-     112,   113,   114,   115,     0,     0,     0,     0,     0,   116,
+       0,   143,    16,   106,   107,     0,     0,   108,   109,     0,
+       0,     0,   110,     0,   249,     0,     0,   111,     0,     0,
+     112,   113,   114,   115,     0,   250,     0,     0,     0,   116,
        0,   117,     0,   118,     0,     0,     0,     0,   119,   120,
      121,   122,     0,   123,     0,     0,     0,     0,     0,   124,
        0,   125,   126,   127,   128,   129,     0,     0,     0,     0,
      130,     0,   131,   132,   133,     0,   134,     0,     0,     0,
-     135,   136,   137,   138,   139,     0,    97,     0,     0,     0,
+     135,   136,   137,   138,   139,     0,    97,     0,   367,   368,
        0,     0,     0,   142,    98,     0,    99,     0,   100,     0,
        0,   101,   102,   103,     0,   104,   105,     0,     0,     0,
        0,     0,   106,   107,   143,    16,   108,   109,     0,     0,
@@ -8541,642 +8474,716 @@ namespace yy {
      122,     0,   123,     0,     0,     0,     0,     0,   124,     0,
      125,   126,   127,   128,   129,     0,     0,     0,     0,   130,
        0,   131,   132,   133,     0,   134,     0,     0,     0,   135,
-     136,   137,   138,   139,     0,     0,     0,     0,     0,     0,
-       0,     0,   142,     0,     0,     0,     0,     0,     0,     0,
+     136,   137,   138,   139,     0,    97,     0,     0,     0,     0,
+       0,     0,   142,    98,     0,    99,     0,   100,     0,     0,
+     101,   102,   103,     0,   104,   105,     0,     0,     0,     0,
+       0,   106,   107,   143,    16,   108,   109,     0,     0,     0,
+     110,     0,     0,     0,     0,   111,     0,     0,   112,   113,
+     114,   115,     0,     0,     0,     0,     0,   116,     0,   117,
+       0,   118,     0,     0,     0,     0,   119,   120,   121,   122,
+       0,   123,     0,     0,     0,     0,     0,   124,     0,   125,
+     126,   127,   128,   129,     0,     0,     0,     0,   130,     0,
+     131,   132,   133,     0,   134,     0,     0,     0,   135,   136,
+     137,   138,   139,     0,    97,     0,     0,   141,     0,     0,
+       0,   142,    98,     0,    99,     0,   100,     0,     0,   101,
+     102,   103,     0,   104,   105,   220,     0,     0,     0,     0,
+     106,   107,   143,    16,   108,   109,     0,     0,     0,   110,
+       0,     0,     0,     0,   111,     0,     0,   112,   113,   114,
+     115,     0,     0,     0,     0,     0,   116,     0,   117,     0,
+     118,     0,     0,     0,     0,   119,   120,   121,   122,     0,
+     123,     0,     0,     0,     0,     0,   124,     0,   125,   126,
+     127,   128,   129,     0,     0,     0,     0,   130,     0,   131,
+     132,   133,     0,   134,     0,     0,     0,   135,   136,   137,
+     138,   139,     0,    97,     0,     0,     0,     0,     0,     0,
+     142,    98,     0,    99,     0,   100,     0,     0,   101,   102,
+     103,     0,   104,   105,     0,     0,     0,     0,     0,   106,
+     107,   221,    16,   108,   109,     0,     0,     0,   110,     0,
+       0,     0,     0,   111,     0,     0,   112,   113,   114,   115,
+       0,     0,     0,     0,     0,   116,     0,   117,     0,   118,
+       0,     0,     0,     0,   119,   120,   121,   122,     0,   123,
+       0,     0,     0,     0,     0,   124,     0,   125,   126,   127,
+     128,   129,     0,     0,     0,     0,   130,     0,   131,   132,
+     133,     0,   134,     0,     0,     0,   135,   136,   137,   138,
+     139,     0,   243,     0,     0,     0,    97,     0,     0,   142,
+       0,     0,     0,     0,    98,     0,    99,     0,   100,     0,
+       0,   101,   102,   103,     0,   104,   105,     0,     0,     0,
+     143,    16,   106,   107,     0,     0,   108,   109,     0,     0,
+       0,   110,     0,     0,     0,     0,   111,     0,     0,   112,
+     113,   114,   115,     0,     0,     0,     0,     0,   116,     0,
+     117,     0,   118,     0,     0,     0,     0,   119,   120,   121,
+     122,     0,   123,     0,     0,     0,     0,     0,   124,     0,
+     125,   126,   127,   128,   129,     0,     0,     0,     0,   130,
+       0,   131,   132,   133,     0,   134,     0,     0,     0,   135,
+     136,   137,   138,   139,     0,    97,     0,     0,     0,     0,
+       0,     0,   142,    98,   253,    99,     0,   100,     0,     0,
+     101,   102,   103,     0,   104,   105,     0,     0,     0,     0,
+       0,   106,   107,   143,    16,   108,   109,     0,     0,     0,
+     110,     0,     0,     0,     0,   111,     0,     0,   112,   113,
+     114,   115,     0,     0,     0,     0,     0,   116,     0,   117,
+       0,   118,     0,     0,     0,     0,   119,   120,   121,   122,
+       0,   123,     0,     0,     0,     0,     0,   124,     0,   125,
+     126,   127,   128,   129,     0,     0,     0,     0,   130,     0,
+     131,   132,   133,     0,   134,     0,     0,     0,   135,   136,
+     137,   138,   139,     0,    97,   627,     0,     0,     0,     0,
+       0,   142,    98,     0,    99,     0,   100,     0,     0,   101,
+     102,   103,     0,   104,   105,     0,     0,     0,     0,     0,
+     106,   107,   221,    16,   108,   109,     0,     0,     0,   110,
+       0,     0,     0,     0,   111,     0,     0,   112,   113,   114,
+     115,     0,     0,     0,     0,     0,   116,     0,   117,     0,
+     118,     0,     0,     0,     0,   119,   120,   121,   122,     0,
+     123,     0,     0,     0,     0,     0,   124,     0,   125,   126,
+     127,   128,   129,     0,     0,     0,     0,   130,     0,   131,
+     132,   133,     0,   134,     0,     0,     0,   135,   136,   137,
+     138,   139,     0,    97,     0,     0,     0,     0,     0,     0,
+     142,    98,     0,    99,     0,   100,     0,     0,   101,   102,
+     103,     0,   104,   105,     0,     0,     0,     0,     0,   106,
+     107,   221,   230,   108,   109,     0,     0,     0,   110,     0,
+       0,     0,     0,   111,     0,     0,   112,   113,   114,   115,
+       0,     0,     0,     0,     0,   116,     0,   117,     0,   118,
+       0,     0,     0,     0,   119,   120,   121,   122,     0,   123,
+       0,     0,     0,     0,     0,   124,     0,   125,   126,   127,
+     128,   129,     0,     0,     0,     0,   130,     0,   131,   132,
+     133,     0,   134,     0,     0,     0,   135,   136,   137,   138,
+     139,     0,    97,     0,     0,     0,     0,     0,     0,   142,
+      98,     0,    99,     0,   100,     0,     0,   101,   102,   103,
+       0,   104,   105,     0,     0,     0,     0,     0,   106,   107,
+     143,    16,   108,   109,     0,     0,     0,   110,     0,     0,
+       0,     0,   111,     0,     0,   112,   113,   114,   115,     0,
+       0,     0,     0,     0,   116,     0,   117,     0,   118,     0,
+       0,     0,     0,   119,   120,   121,   122,     0,   123,     0,
+       0,     0,     0,     0,   124,     0,   125,   126,   127,   128,
+     129,     0,     0,     0,     0,   130,     0,   131,   132,   133,
+       0,   134,     0,     0,     0,   135,   136,   137,   138,   139,
+       0,     0,     0,     0,     0,     0,     0,     0,   142,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-     367,   368,     0,   221,    16,   725,   824,   727,     0,   728,
-     825,   730,   731,   826,   827,   828,   829,   830,   831,   738,
-     739,   740,   741,   832,   833,   834,   745,   746,   835,   836,
-     749,   750,   751,   837,   753,   754,   755,   756,   838,   839,
-     759,     0,     0,     0,     0,   760,   761,   762,   763,   764,
-     840,   766,   841,   768,     0,   769,   770,   771,   772,     0,
-     842,     0,   843,   775,   844,   845,   778,   779,   780,   781,
-       0,   782,   846,   847,   848,   849,   850,   788,   789,   790,
-     791,     0,   792,     0,   851,   852,   853,   854,   797,   798,
-     799,     0,     0,     0,     0,     0,   855,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,   801,     0,     0,     0,     0,     0,     0,
-       0,     0,   725,   824,   727,   857,   728,   825,   730,   731,
-     826,   827,   828,   829,   830,   831,   738,   739,   740,   741,
-     832,   833,   834,   745,   746,   835,   836,   749,   750,   751,
-     837,   753,   754,   755,   756,   838,   839,   759,     0,     0,
-       0,     0,   760,   761,   762,   763,   764,   840,   766,   841,
-     768,     0,   769,   770,   771,   772,     0,   842,     0,   843,
-     775,   844,   845,   778,   779,   780,   781,     0,   782,   846,
-     847,   848,   849,   850,   788,   789,   790,   791,     0,   792,
-       0,   851,   852,   853,   854,   797,   798,   799,     0,     0,
-       0,     0,     0,   855,     0,     0,     0,     0,   867,     0,
-       0,   856,     0,     0,     0,     0,     0,     0,     0,     0,
-     801,     0,     0,     0,     0,     0,     0,     0,     0,   725,
-     824,   727,   857,   728,   825,   730,   731,   826,   827,   828,
-     829,   830,   831,   738,   739,   740,   741,   832,   833,   834,
-     745,   746,   835,   836,   749,   750,   751,   837,   753,   754,
-     755,   756,   838,   839,   759,     0,     0,     0,     0,   760,
-     761,   762,   763,   764,   840,   766,   841,   768,     0,   769,
-     770,   771,   772,     0,   842,     0,   843,   775,   844,   845,
-     778,   779,   780,   781,     0,   782,   846,   847,   848,   849,
-     850,   788,   789,   790,   791,     0,   792,     0,   851,   852,
-     853,   854,   797,   798,   799,     0,     0,     0,     0,     0,
-     855,     0,     0,     0,     0,     0,     0,     0,   856,   873,
-       0,     0,     0,     0,     0,     0,     0,   801,     0,     0,
-       0,     0,     0,     0,     0,     0,   725,   824,   727,   857,
-     728,   825,   730,   731,   826,   827,   828,   829,   830,   831,
-     738,   739,   740,   741,   832,   833,   834,   745,   746,   835,
-     836,   749,   750,   751,   837,   753,   754,   755,   756,   838,
-     839,   759,     0,     0,     0,     0,   760,   761,   762,   763,
-     764,   840,   766,   841,   768,     0,   769,   770,   771,   772,
-       0,   842,     0,   843,   775,   844,   845,   778,   779,   780,
-     781,     0,   782,   846,   847,   848,   849,   850,   788,   789,
-     790,   791,     0,   792,     0,   851,   852,   853,   854,   797,
-     798,   799,     0,     0,     0,     0,     0,   855,     0,     0,
-       0,     0,  -268,     0,  -268,   856,  -268,     0,  -268,  -268,
-       0,     0,     0,     0,   801,     0,  -268,  -268,  -268,  -268,
-       0,     0,     0,  -268,  -268,     0,   857,  -268,  -268,  -268,
-       0,  -268,  -268,  -268,  -268,     0,     0,  -268,     0,     0,
-       0,     0,  -268,  -268,  -268,  -268,  -268,     0,  -268,     0,
-    -268,     0,  -268,  -268,  -268,  -268,     0,     0,     0,     0,
-    -268,     0,     0,  -268,  -268,  -268,  -268,     0,  -268,     0,
-       0,     0,     0,     0,  -268,  -268,  -268,  -268,     0,  -268,
-       0,     0,     0,     0,     0,  -268,  -268,  -268,     0,     0,
-    -269,     0,  -269,     0,  -269,     0,  -269,  -269,  -268,     0,
-       0,     0,     0,     0,  -269,  -269,  -269,  -269,     0,     0,
-    -268,  -269,  -269,     0,     0,  -269,  -269,  -269,  -268,  -269,
-    -269,  -269,  -269,     0,     0,  -269,     0,     0,     0,     0,
-    -269,  -269,  -269,  -269,  -269,     0,  -269,     0,  -269,     0,
-    -269,  -269,  -269,  -269,     0,     0,     0,     0,  -269,     0,
-       0,  -269,  -269,  -269,  -269,     0,  -269,     0,     0,     0,
-       0,     0,  -269,  -269,  -269,  -269,     0,  -269,     0,     0,
-       0,     0,     0,  -269,  -269,  -269,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,  -269,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,  -269,     0,
-       0,     0,     0,     0,     0,     0,  -269
+       0,     0,     0,     0,     0,     0,   367,   368,     0,   221,
+      16,   724,   823,   726,     0,   727,   824,   729,   730,   825,
+     826,   827,   828,   829,   830,   737,   738,   739,   740,   831,
+     832,   833,   744,   745,   834,   835,   748,   749,   750,   836,
+     752,   753,   754,   755,   837,   838,   758,     0,     0,     0,
+       0,   759,   760,   761,   762,   763,   839,   765,   840,   767,
+       0,   768,   769,   770,   771,     0,   841,     0,   842,   774,
+     843,   844,   777,   778,   779,   780,     0,   781,   845,   846,
+     847,   848,   849,   787,   788,   789,   790,     0,   791,     0,
+     850,   851,   852,   853,   796,   797,   798,     0,     0,     0,
+       0,     0,   854,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,   800,
+       0,     0,     0,     0,     0,     0,     0,     0,   724,   823,
+     726,   856,   727,   824,   729,   730,   825,   826,   827,   828,
+     829,   830,   737,   738,   739,   740,   831,   832,   833,   744,
+     745,   834,   835,   748,   749,   750,   836,   752,   753,   754,
+     755,   837,   838,   758,     0,     0,     0,     0,   759,   760,
+     761,   762,   763,   839,   765,   840,   767,     0,   768,   769,
+     770,   771,     0,   841,     0,   842,   774,   843,   844,   777,
+     778,   779,   780,     0,   781,   845,   846,   847,   848,   849,
+     787,   788,   789,   790,     0,   791,     0,   850,   851,   852,
+     853,   796,   797,   798,     0,     0,     0,     0,     0,   854,
+       0,     0,     0,     0,   866,     0,     0,   855,     0,     0,
+       0,     0,     0,     0,     0,     0,   800,     0,     0,     0,
+       0,     0,     0,     0,     0,   724,   823,   726,   856,   727,
+     824,   729,   730,   825,   826,   827,   828,   829,   830,   737,
+     738,   739,   740,   831,   832,   833,   744,   745,   834,   835,
+     748,   749,   750,   836,   752,   753,   754,   755,   837,   838,
+     758,     0,     0,     0,     0,   759,   760,   761,   762,   763,
+     839,   765,   840,   767,     0,   768,   769,   770,   771,     0,
+     841,     0,   842,   774,   843,   844,   777,   778,   779,   780,
+       0,   781,   845,   846,   847,   848,   849,   787,   788,   789,
+     790,     0,   791,     0,   850,   851,   852,   853,   796,   797,
+     798,     0,     0,     0,     0,     0,   854,     0,     0,     0,
+       0,     0,     0,     0,   855,   872,     0,     0,     0,     0,
+       0,     0,     0,   800,     0,     0,     0,     0,     0,     0,
+       0,     0,   724,   823,   726,   856,   727,   824,   729,   730,
+     825,   826,   827,   828,   829,   830,   737,   738,   739,   740,
+     831,   832,   833,   744,   745,   834,   835,   748,   749,   750,
+     836,   752,   753,   754,   755,   837,   838,   758,     0,     0,
+       0,     0,   759,   760,   761,   762,   763,   839,   765,   840,
+     767,     0,   768,   769,   770,   771,     0,   841,     0,   842,
+     774,   843,   844,   777,   778,   779,   780,     0,   781,   845,
+     846,   847,   848,   849,   787,   788,   789,   790,     0,   791,
+       0,   850,   851,   852,   853,   796,   797,   798,     0,     0,
+       0,     0,     0,   854,     0,     0,     0,     0,  -268,     0,
+    -268,   855,  -268,     0,  -268,  -268,     0,     0,     0,     0,
+     800,     0,  -268,  -268,  -268,  -268,     0,     0,     0,  -268,
+    -268,     0,   856,  -268,  -268,  -268,     0,  -268,  -268,  -268,
+    -268,     0,     0,  -268,     0,     0,     0,     0,  -268,  -268,
+    -268,  -268,  -268,     0,  -268,     0,  -268,     0,  -268,  -268,
+    -268,  -268,     0,     0,     0,     0,  -268,     0,     0,  -268,
+    -268,  -268,  -268,     0,  -268,     0,     0,     0,     0,     0,
+    -268,  -268,  -268,  -268,     0,  -268,     0,     0,     0,     0,
+       0,  -268,  -268,  -268,     0,     0,  -269,     0,  -269,     0,
+    -269,     0,  -269,  -269,  -268,     0,     0,     0,     0,     0,
+    -269,  -269,  -269,  -269,     0,     0,  -268,  -269,  -269,     0,
+       0,  -269,  -269,  -269,  -268,  -269,  -269,  -269,  -269,     0,
+       0,  -269,     0,     0,     0,     0,  -269,  -269,  -269,  -269,
+    -269,     0,  -269,     0,  -269,     0,  -269,  -269,  -269,  -269,
+       0,     0,     0,     0,  -269,     0,     0,  -269,  -269,  -269,
+    -269,     0,  -269,     0,     0,     0,     0,     0,  -269,  -269,
+    -269,  -269,     0,  -269,     0,     0,     0,     0,     0,  -269,
+    -269,  -269,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,  -269,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,  -269,     0,     0,     0,     0,     0,
+       0,     0,  -269
   };
 
   const short int
   asn1_parser::yycheck_[] =
   {
-       9,   128,   129,   140,   141,   448,   311,   207,   458,    18,
-     246,   286,    53,   358,   556,     0,   128,   129,     3,   455,
-     497,   141,    89,    90,     4,    66,    67,     4,     4,    70,
-       4,   312,    21,    74,    21,   691,     4,   258,   515,    21,
-      63,    44,    53,     4,    85,    23,    24,    44,    44,   485,
-     325,    21,    44,   709,    88,    49,    86,    21,    29,   140,
-     141,    88,    21,   111,    76,   649,    76,   125,    49,   206,
-      32,   101,    86,   140,   141,   148,   125,    23,   112,   111,
-      28,   858,   140,   150,   203,   112,    44,   101,   137,   866,
-     674,   210,     0,   123,    88,   125,   144,   216,   125,   211,
-     141,    30,    53,    49,    89,   450,   243,    88,   175,   123,
-      95,   125,   144,   136,   125,    66,    67,    50,   121,    70,
-      44,   124,    44,    74,   121,   206,    15,   124,   195,   121,
-     411,   673,    94,   145,    85,   145,   123,    55,    89,   110,
-      88,    59,    88,   210,    92,   366,   149,   583,   123,   216,
-     806,   113,   149,   149,    49,   140,   141,   149,   138,   200,
-     149,   148,   243,   121,   124,   246,   148,   149,   148,   149,
-     148,   148,   149,   149,   148,   149,   243,   148,   148,   246,
-     148,   149,   249,   250,   148,   530,   253,   148,   149,   148,
-     141,   149,   304,    88,   203,   246,   205,   121,   207,   121,
-     267,   210,   132,   212,    49,   256,   862,   216,   217,    49,
-     431,    34,   433,   123,   691,   125,   283,   258,   123,   148,
-     149,   206,   672,   360,   445,   149,   124,   149,   449,   121,
-     349,   350,   709,    74,   301,    58,   355,   356,   136,   121,
-     360,   361,   121,    88,   149,   123,    69,   125,    88,   258,
-     121,   123,   452,   262,   123,   120,   307,   149,   243,   137,
-     125,   246,   140,   139,   700,   137,   571,   149,   137,   124,
-     149,   256,   339,   258,   521,   550,   523,   123,   149,   360,
-     126,   136,   349,   350,   122,   521,   561,   523,   355,   356,
-     136,   129,   124,   360,   140,   123,   123,   125,   125,   124,
-     137,   252,   124,   254,   136,   256,   122,     9,   125,   137,
-     137,   136,   149,   129,   136,   124,    18,   105,   539,   360,
-     361,   542,   307,   374,   443,   366,   136,   136,   136,   871,
-     140,   676,   140,   384,   144,   105,   144,   388,   120,   120,
-     349,   350,   647,   125,   125,   120,   355,   356,    23,    24,
-     125,   105,    27,   125,   140,   467,   307,   129,   144,   496,
-     213,   498,     4,     5,     6,    60,     8,   817,    10,   420,
-     123,   124,   125,   816,   431,   360,   433,    19,   445,   241,
-     685,   366,   679,   245,   681,   862,   453,    16,    17,   374,
-     431,    33,   433,   148,   149,    23,    24,    43,    44,   384,
-      23,    24,     4,   388,   445,   124,   125,   139,   449,   360,
-     361,   213,   463,   589,   590,   496,    70,   498,   126,   120,
-      62,   132,   431,   374,   433,   875,    35,   564,    71,   496,
-     497,   141,   141,   384,   443,   420,    78,   388,   136,   448,
-     521,   123,   523,   452,    55,   124,   431,   141,   433,   458,
-     102,   102,   123,    90,   521,   123,   523,   123,   311,   312,
-     445,    86,    68,   102,   449,    15,   129,   109,   519,   420,
-     521,   120,   523,   524,   525,   526,   527,   528,   463,   256,
-     137,   137,   123,   564,   137,   123,    86,   129,   123,   530,
-     137,   149,   125,   534,    86,   213,   138,   564,   539,    86,
-     619,   542,    86,   123,   140,   137,   148,   149,   123,   311,
-     312,   496,   463,   498,   140,   123,   140,    21,   136,   124,
-     124,   131,   136,    86,   125,   137,   124,   639,   595,   136,
-     307,    57,   541,    39,   519,    12,   521,    39,   523,   524,
-     525,   526,   527,   528,   137,     4,   123,   556,   136,    57,
-     122,   129,   137,   124,   539,   125,   123,   542,   411,   124,
-     569,   144,   136,   136,   144,   125,   575,   124,   519,   620,
-     125,   137,   123,   524,   525,   526,   527,   528,   137,   564,
-     621,   137,   125,   136,   635,   123,   705,   148,   123,   136,
-     124,   136,   445,   311,   312,   126,   449,   374,   126,   143,
-     121,   128,   455,     4,   124,   124,   459,   384,   149,   411,
-     619,   388,   136,   564,   137,   126,   126,    39,   121,   136,
-     119,   126,   136,   674,   691,   126,   479,   124,   126,   482,
-     126,   124,   485,   140,   124,   620,   136,   124,   103,   124,
-     691,   136,   709,   420,   123,   137,   137,   136,   136,     3,
-     635,   137,   136,   455,   136,   136,   136,   459,   709,   786,
-     787,   137,   671,   672,   673,   140,   137,   136,   124,   620,
-     679,   856,   681,   147,   786,   787,   136,   479,   687,   688,
-     482,   243,   593,   485,   635,   806,   463,   656,   674,   674,
-     803,   742,    90,   411,   564,   360,   705,   564,   686,   646,
-     242,    18,    32,   687,    74,    53,   691,    70,    85,   539,
-     541,    11,   619,    49,   697,   671,    44,   479,   571,   482,
-     459,   334,   583,   674,   709,   676,    -1,    -1,    -1,    -1,
-     583,    -1,    -1,    -1,   217,    -1,   803,   455,    -1,   806,
-      -1,   459,   519,    -1,    -1,    -1,    -1,   524,   525,   526,
-     527,   528,   803,    -1,    -1,   806,    -1,   742,    -1,    -1,
-      -1,   479,    -1,    -1,   482,    -1,    -1,   485,    -1,   571,
+       9,   128,   129,   140,   141,   312,   203,   458,   455,    18,
+     128,   129,   448,   210,   207,     0,   246,    53,     3,   216,
+     358,   555,    89,    90,   286,   496,    22,     4,   140,   141,
+      66,    67,     4,   690,    70,   141,    22,   484,    74,   258,
+      22,    45,     4,   514,   313,    24,    25,     4,     5,    85,
+      77,   708,    33,    22,    22,    54,    31,    50,    22,    64,
+      89,    45,    87,   325,   122,     4,     5,     6,     7,   206,
+       9,   126,    11,   140,   141,    77,    30,   102,   112,     4,
+     112,    20,     4,   150,   113,    45,   141,    17,    18,   122,
+     125,   648,   150,   211,   206,    34,    89,   126,     9,   124,
+      87,   126,   137,   149,    89,   141,   243,    18,   175,    53,
+      95,   145,   450,   145,    95,   102,   673,   150,   122,   146,
+     121,   125,    66,    67,    63,   126,    70,   126,   195,    45,
+      74,   243,   137,   114,   246,   582,    45,   124,   672,   126,
+      79,    85,   411,   210,   146,    89,   150,   366,   805,   216,
+      44,    45,   349,   350,   150,   140,   141,   111,   355,   356,
+     124,    45,   122,   149,   200,   125,   150,   149,   150,     0,
+     149,   110,   149,   150,   149,   150,   243,   149,   150,   246,
+     149,   149,   249,   250,    51,   149,   253,   305,   150,   246,
+     150,   529,   149,   150,   203,   149,   205,   141,   207,   256,
+     267,   210,    45,   212,   861,    24,   122,   216,   217,   124,
+     149,   150,   431,   122,   433,   122,   283,    29,    50,   690,
+     671,   206,   258,   360,   149,   150,   445,   149,   150,    50,
+     449,    50,    35,   213,   150,   302,    50,   708,   122,    50,
+      89,   150,   121,   150,   149,   150,   443,   126,   360,   258,
+     124,   308,   699,   262,   360,   361,    59,    89,   243,   452,
+     124,   246,   126,   570,   113,    16,   150,    70,    89,   122,
+      89,   256,   339,   258,   138,    89,   150,    89,    89,   122,
+     124,    93,   349,   350,   125,   124,   133,   549,   355,   356,
+     520,   126,   522,   360,   138,   123,   137,   150,   560,   138,
+      56,   121,   130,   138,    60,    75,   126,   150,   252,   125,
+     254,   126,   256,     4,     5,     6,     7,   374,     9,   538,
+      11,   137,   541,   308,   360,   361,   857,   384,   123,    20,
+     366,   388,   312,   313,   865,   130,   870,   675,   125,   646,
+     349,   350,   124,    34,   126,   138,   355,   356,   121,   467,
+     137,   126,   124,   126,   126,   130,   138,   150,   495,   256,
+     497,   125,   125,   420,   308,   816,   138,   124,   106,   141,
+     127,   140,    63,   137,   137,   360,   106,   684,   445,   815,
+     137,   366,   106,   495,   141,   497,   453,   141,   137,   374,
+     861,   145,   141,   125,   137,   431,   145,   433,   141,   384,
+      24,    25,   145,   388,    28,   124,   463,   126,   520,   445,
+     522,   308,    61,   449,   213,     4,   360,   361,   520,   110,
+     522,   618,   431,   874,   433,   431,   563,   433,   495,   496,
+     374,   411,   241,   140,   443,   420,   245,    24,    25,   448,
+     384,    24,    25,   452,   388,   213,   431,   121,   433,   458,
+     678,   563,   680,   520,    71,   522,   125,   126,   149,   150,
+     445,   518,   127,   520,   449,   522,   523,   524,   525,   526,
+     527,   124,   125,   126,   133,   455,   420,   374,   463,   459,
+     588,   589,    36,   137,    72,   142,   142,   384,   124,    56,
+     125,   388,   142,   529,   103,   103,   563,   533,   478,   124,
+      91,   481,   538,   124,   484,   541,    87,   704,   124,    69,
+     495,   103,   497,   312,   313,    16,   138,   121,   138,   463,
+     638,   124,   124,   420,   130,   138,   138,   594,   124,   126,
+      87,   540,   150,   518,    87,   520,    87,   522,   523,   524,
+     525,   526,   527,    87,   312,   313,   555,   124,   138,   124,
+     124,    22,   125,   538,   132,   141,   541,   141,   137,   568,
+     125,   141,   619,   126,    87,   574,   463,   137,    58,   138,
+     138,   137,    40,   125,   518,    40,    13,   634,   563,   523,
+     524,   525,   526,   527,   620,   124,    58,   137,   123,   130,
+     570,   125,   138,   126,   124,   137,   145,   125,   145,   137,
+     126,   138,   582,   125,   124,   126,   138,   138,   126,   618,
+     137,   124,   411,   149,   124,   127,   673,   125,   137,   563,
+     137,   518,   127,   690,   122,   129,   523,   524,   525,   526,
+     527,     4,   125,   690,   619,   144,   150,   125,   137,    40,
+     127,   708,   138,   411,   127,   122,   445,   120,   137,   634,
+     449,   708,   127,   127,   138,   125,   455,   137,   785,   786,
+     459,   670,   671,   672,   127,   127,   646,   785,   786,   678,
+     137,   680,   125,   137,   125,   619,   125,   686,   687,   478,
+     141,   137,   481,   137,   741,   484,   138,   455,   673,   104,
+     634,   459,   138,   137,   124,   704,   137,   137,   141,   125,
+     138,   148,   138,   137,   684,   690,   137,   125,   137,     3,
+     478,   592,   655,   481,   243,   855,   484,   673,   805,   699,
+     802,   563,   619,   708,    90,     4,     5,     6,     7,   673,
+       9,   675,    11,   360,   563,   802,   242,   634,   805,   645,
+     685,    20,    18,    32,   686,   802,    74,    53,   805,    70,
+      85,   670,   540,   618,   538,    34,   741,   217,   696,    11,
+      44,    49,   478,   481,   459,   582,    -1,    -1,    -1,    -1,
+     334,   570,    -1,    -1,    -1,    -1,   673,    -1,    -1,    -1,
+      -1,    -1,    -1,   582,    63,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,   690,    -1,    -1,    -1,   741,    -1,    -1,
+      79,    -1,   570,    -1,    -1,    -1,   815,   816,    -1,    -1,
+      -1,   708,    -1,    -1,   582,    -1,    -1,   802,    -1,    -1,
+     805,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,   110,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,   741,    -1,    -1,   646,    -1,    -1,
+      -1,   130,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,   870,    -1,    -1,    -1,   874,    -1,    -1,    -1,    -1,
+     149,   150,    -1,    -1,    -1,    -1,    -1,    -1,   646,    -1,
+      -1,    -1,    -1,    -1,    -1,   684,    -1,    -1,    -1,    -1,
       -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,   583,     4,     5,     6,    -1,     8,    -1,    10,    -1,
-      -1,   742,    -1,    -1,   647,    -1,    -1,    19,    -1,     4,
-       5,     6,    -1,     8,    -1,    10,    -1,   816,   817,    -1,
-      -1,    33,    -1,    -1,    19,    -1,    -1,    -1,   803,    -1,
-      -1,   806,    -1,    -1,    -1,    -1,    -1,    -1,    33,    -1,
-      -1,    -1,   685,    -1,    -1,     4,     5,     6,    -1,     8,
-      62,    10,    -1,   620,    -1,   647,    -1,   700,    -1,    -1,
-      19,    -1,    -1,   571,    23,    24,    78,    62,   635,    -1,
-      29,    -1,   871,    -1,    33,   583,   875,    -1,    -1,    -1,
-      39,    -1,    -1,    -1,    -1,    -1,    -1,    46,    -1,    -1,
-      -1,    -1,    -1,   685,    -1,    -1,    -1,   109,    -1,    -1,
-      -1,    -1,    -1,    62,    -1,    -1,    -1,   674,   700,    -1,
-      -1,    -1,    -1,    -1,   109,    -1,    75,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,   691,    -1,   138,    -1,    -1,    88,
-      -1,    -1,    -1,    -1,    -1,    -1,   148,   149,    -1,   647,
-      -1,    -1,   709,   138,    -1,    -1,    -1,    -1,    -1,    -1,
-     109,   110,    -1,   148,   149,    -1,    -1,    -1,    -1,    -1,
-     119,    -1,    -1,    -1,   123,   124,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,   132,    -1,   742,    -1,   685,    -1,   138,
-      -1,   140,    -1,    -1,    -1,    -1,    -1,    -1,    -1,   148,
-     149,    -1,   700,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,     4,     5,
-       6,    -1,     8,    -1,    10,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    19,    -1,    21,   803,    23,    24,   806,
-      -1,    -1,    28,    29,    30,    31,    32,    33,    34,    35,
-      36,    37,    38,    39,    40,    41,    42,    43,    44,    45,
-      46,    47,    48,    49,    50,    51,    52,    53,    54,    55,
-      56,    57,    58,    59,    60,    61,    62,    63,    64,    65,
-      66,    67,    68,    69,    70,    71,    72,    73,    74,    75,
-      76,    77,    78,    79,    80,    81,    82,    83,    84,    85,
-      86,    87,    88,    89,    90,    91,    92,    93,    94,    95,
-      96,    97,    98,    99,   100,   101,   102,   103,   104,   105,
-     106,   107,   108,   109,   110,   111,   112,   113,   114,   115,
-     116,   117,   118,   119,    -1,    -1,    -1,   123,   124,    -1,
-      -1,   127,    -1,    -1,    -1,    -1,   132,    -1,    -1,    -1,
-     136,    -1,   138,    -1,   140,     4,     5,     6,    -1,     8,
-      -1,    10,   148,   149,    -1,    -1,    -1,    -1,    -1,    -1,
-      19,    -1,    21,    -1,    23,    24,    -1,    -1,    -1,    28,
-      29,    30,    31,    32,    33,    34,    35,    36,    37,    38,
-      39,    40,    41,    42,    43,    44,    45,    46,    47,    48,
-      49,    50,    51,    52,    53,    54,    55,    56,    57,    58,
-      59,    60,    61,    62,    63,    64,    65,    66,    67,    68,
-      69,    70,    71,    72,    73,    74,    75,    76,    77,    78,
-      79,    80,    81,    82,    83,    84,    85,    86,    87,    88,
-      89,    90,    91,    92,    93,    94,    95,    96,    97,    98,
-      99,   100,   101,   102,   103,   104,   105,   106,   107,   108,
-     109,   110,   111,   112,   113,   114,   115,   116,   117,   118,
-     119,    -1,    -1,    -1,   123,    -1,    -1,    -1,   127,    -1,
-       4,     5,     6,   132,     8,    -1,    10,   136,    -1,   138,
-      -1,   140,    -1,    -1,    -1,    19,    -1,    21,    -1,   148,
-     149,    -1,    -1,    -1,    -1,    29,    30,    31,    -1,    33,
-      -1,    -1,    36,    37,    38,    -1,    40,    41,    -1,    -1,
-      -1,    45,    46,    47,    48,    -1,    -1,    51,    52,    53,
-      -1,    -1,    56,    -1,    -1,    -1,    -1,    61,    62,    63,
-      64,    65,    66,    67,    -1,    -1,    -1,    -1,    72,    73,
-      -1,    75,    -1,    77,    -1,    79,    -1,    -1,    82,    83,
-      84,    85,    -1,    87,    -1,    89,    -1,    -1,    -1,    93,
-      -1,    95,    96,    97,    98,    99,   100,   101,    -1,    -1,
-     104,    -1,   106,   107,   108,   109,   110,    -1,    -1,    -1,
-     114,   115,   116,   117,   118,   119,    -1,    -1,    -1,   123,
-      -1,   125,    -1,   127,     4,     5,     6,    -1,     8,    -1,
-      10,    -1,    -1,    -1,   138,    -1,    -1,    -1,    -1,    19,
-      -1,    21,    -1,    -1,   148,   149,    -1,    -1,    -1,    29,
-      30,    31,    -1,    33,    -1,    -1,    36,    37,    38,    -1,
-      40,    41,    -1,    -1,    -1,    -1,    -1,    47,    48,    -1,
-      -1,    51,    52,    -1,    -1,    -1,    56,    -1,    -1,    -1,
-      -1,    61,    62,    63,    64,    65,    66,    67,    -1,    -1,
-      -1,    -1,    72,    73,    -1,    75,    -1,    77,    -1,    79,
-      -1,    -1,    82,    83,    84,    85,    -1,    87,    -1,    89,
-      -1,    -1,    -1,    93,    -1,    95,    96,    97,    98,    99,
-     100,   101,    -1,    -1,   104,    -1,   106,   107,   108,   109,
-     110,    -1,    -1,    -1,   114,   115,   116,   117,   118,   119,
-      -1,   121,    -1,    -1,    -1,   125,    -1,   127,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,     4,     5,     6,   138,     8,
-      -1,    10,    -1,    -1,    -1,    -1,    -1,    -1,   148,   149,
-      19,    -1,    21,    -1,    23,    24,    -1,    -1,    -1,    -1,
-      29,    -1,    31,    -1,    33,    -1,    -1,    36,    37,    38,
-      39,    40,    41,    -1,    -1,    -1,    -1,    46,    47,    48,
-      -1,    -1,    51,    52,    -1,    -1,    -1,    56,    -1,    -1,
-      -1,    -1,    61,    62,    -1,    64,    65,    66,    67,    -1,
-      -1,    -1,    -1,    -1,    73,    -1,    75,    -1,    77,    -1,
-      -1,    -1,    -1,    82,    83,    84,    85,    -1,    87,    88,
-      -1,    -1,    -1,    -1,    93,    -1,    95,    96,    97,    98,
-      99,    -1,    -1,    -1,    -1,   104,    -1,   106,   107,   108,
-     109,   110,    -1,    -1,    -1,   114,   115,   116,   117,   118,
-     119,    -1,    -1,    -1,   123,    -1,    -1,    -1,   127,    -1,
-       4,     5,     6,   132,     8,    -1,    10,    -1,    -1,   138,
-      -1,   140,    -1,    -1,    -1,    19,    -1,    21,    -1,   148,
-     149,    -1,    -1,    -1,    -1,    29,    30,    31,    -1,    33,
-      -1,    -1,    36,    37,    38,    -1,    40,    41,    -1,    -1,
-      -1,    -1,    -1,    47,    48,    -1,    -1,    51,    52,    -1,
-      -1,    -1,    56,    -1,    -1,    -1,    -1,    61,    62,    63,
-      64,    65,    66,    67,    -1,    -1,    -1,    -1,    72,    73,
-      -1,    75,    -1,    77,    -1,    79,    -1,    -1,    82,    83,
-      84,    85,    -1,    87,    -1,    89,    -1,    -1,    -1,    93,
-      -1,    95,    96,    97,    98,    99,   100,   101,    -1,    -1,
-     104,    -1,   106,   107,   108,   109,   110,    -1,    -1,    -1,
-     114,   115,   116,   117,   118,   119,    -1,    -1,    -1,    -1,
-      -1,   125,    -1,   127,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,     4,     5,     6,   138,     8,    -1,    10,    -1,    -1,
-      -1,    -1,    -1,    -1,   148,   149,    19,    -1,    21,    -1,
-      23,    24,    -1,    -1,    -1,    -1,    29,    -1,    31,    -1,
-      33,    -1,    -1,    36,    37,    38,    39,    40,    41,    -1,
-      -1,    -1,    -1,    46,    47,    48,    -1,    -1,    51,    52,
-      -1,    -1,    -1,    56,    -1,    -1,    -1,    -1,    61,    62,
-      -1,    64,    65,    66,    67,    -1,    -1,    -1,    -1,    -1,
-      73,    -1,    75,    -1,    77,    -1,    -1,    -1,    -1,    82,
-      83,    84,    85,    -1,    87,    88,    -1,    -1,    -1,    -1,
-      93,    -1,    95,    96,    97,    98,    99,    -1,    -1,    -1,
-      -1,   104,    -1,   106,   107,   108,   109,   110,    -1,    -1,
-      -1,   114,   115,   116,   117,   118,   119,    -1,    -1,    -1,
-     123,    -1,    -1,    -1,   127,    -1,     4,     5,     6,   132,
-       8,    -1,    10,    -1,    -1,   138,    -1,   140,    -1,    -1,
-      -1,    19,    -1,    21,    -1,   148,   149,    -1,    -1,    -1,
-      -1,    29,    -1,    31,    -1,    33,    -1,    -1,    36,    37,
-      38,    -1,    40,    41,    -1,    -1,    -1,    -1,    -1,    47,
-      48,    -1,    -1,    51,    52,    -1,    -1,    -1,    56,    -1,
-      -1,    -1,    -1,    61,    62,    63,    64,    65,    66,    67,
-      -1,    -1,    -1,    -1,    72,    73,    -1,    75,    -1,    77,
-      -1,    79,    -1,    -1,    82,    83,    84,    85,    -1,    87,
-      -1,    89,    -1,    -1,    -1,    93,    -1,    95,    96,    97,
-      98,    99,   100,   101,    -1,     4,   104,    -1,   106,   107,
-     108,   109,   110,    -1,    -1,    -1,   114,   115,   116,   117,
-     118,   119,    21,    -1,    -1,    -1,    -1,   125,    -1,   127,
-      29,    -1,    31,    -1,    33,    -1,    -1,    36,    37,    38,
-     138,    40,    41,    -1,    -1,    -1,    -1,    -1,    47,    48,
-     148,   149,    51,    52,    -1,    -1,    -1,    56,    -1,    -1,
-      -1,    -1,    61,    -1,    -1,    64,    65,    66,    67,    -1,
-      -1,    -1,    -1,    -1,    73,    -1,    75,    -1,    77,    -1,
-      -1,    -1,    -1,    82,    83,    84,    85,    -1,    87,    -1,
-      -1,    -1,    -1,    -1,    93,    -1,    95,    96,    97,    98,
-      99,    -1,    -1,    -1,    -1,   104,    -1,   106,   107,   108,
-      -1,   110,    -1,    -1,    -1,   114,   115,   116,   117,   118,
-      -1,    -1,    -1,     4,     5,     6,    -1,     8,   127,    10,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    19,   138,
-      21,    -1,    23,    24,    -1,    -1,    -1,    -1,    29,   148,
-     149,    -1,    33,    -1,    -1,     4,     5,     6,    39,     8,
-      -1,    10,    -1,    -1,    -1,    46,    -1,    -1,    -1,    -1,
-      19,    -1,    -1,    -1,    23,    24,    -1,    -1,    -1,    -1,
-      29,    62,    -1,    -1,    33,    -1,    -1,    -1,    -1,    -1,
-      39,    -1,    -1,    -1,    75,    -1,    -1,    46,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    88,    -1,    -1,
-      -1,    -1,    -1,    62,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    75,    -1,   109,   110,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,   119,    88,
-      -1,    -1,   123,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,   132,    -1,    -1,    -1,    -1,    -1,   138,    -1,   140,
-     109,   110,    -1,    -1,    -1,    -1,    -1,   148,   149,    -1,
-     119,    -1,    -1,    -1,   123,    -1,    -1,    -1,    21,    -1,
-      -1,    -1,    -1,   132,    -1,    -1,    29,    -1,    31,   138,
-      33,   140,    -1,    36,    37,    38,    -1,    40,    41,   148,
-     149,    -1,    -1,    -1,    47,    48,    -1,    -1,    51,    52,
-      -1,    -1,    -1,    56,    -1,    -1,    -1,    -1,    61,    -1,
-      -1,    64,    65,    66,    67,    -1,    -1,    -1,    -1,    -1,
-      73,    -1,    75,    -1,    77,    -1,    -1,    -1,    -1,    82,
-      83,    84,    85,    -1,    87,    -1,    -1,    -1,    -1,    -1,
-      93,    -1,    95,    96,    97,    98,    99,    -1,    -1,    -1,
-      -1,   104,    -1,   106,   107,   108,    -1,   110,    -1,    -1,
-      -1,   114,   115,   116,   117,   118,    -1,   120,    -1,    -1,
-     123,    21,    -1,    -1,   127,    -1,    -1,    -1,    -1,    29,
-      -1,    31,    -1,    33,    -1,    -1,    36,    37,    38,    -1,
-      40,    41,    -1,    -1,    -1,   148,   149,    47,    48,    -1,
-      -1,    51,    52,    -1,    -1,    -1,    56,    -1,    58,    -1,
-      -1,    61,    -1,    -1,    64,    65,    66,    67,    -1,    69,
-      -1,    -1,    -1,    73,    -1,    75,    -1,    77,    -1,    -1,
-      -1,    -1,    82,    83,    84,    85,    -1,    87,    -1,    -1,
-      -1,    -1,    -1,    93,    -1,    95,    96,    97,    98,    99,
-      -1,    -1,    -1,    -1,   104,    -1,   106,   107,   108,    -1,
-     110,    -1,    -1,    -1,   114,   115,   116,   117,   118,    -1,
-      21,    -1,    23,    24,    -1,    -1,    -1,   127,    29,    -1,
-      31,    -1,    33,    -1,    -1,    36,    37,    38,    -1,    40,
-      41,    -1,    -1,    -1,    -1,    -1,    47,    48,   148,   149,
-      51,    52,    -1,    -1,    -1,    56,    -1,    -1,    -1,    -1,
-      61,    -1,    -1,    64,    65,    66,    67,    -1,    -1,    -1,
-      -1,    -1,    73,    -1,    75,    -1,    77,    -1,    -1,    -1,
-      -1,    82,    83,    84,    85,    -1,    87,    -1,    -1,    -1,
-      -1,    -1,    93,    -1,    95,    96,    97,    98,    99,    -1,
-      -1,    -1,    -1,   104,    -1,   106,   107,   108,    -1,   110,
-      -1,    -1,    -1,   114,   115,   116,   117,   118,    -1,    21,
-      -1,    -1,    -1,    -1,    -1,    -1,   127,    29,    -1,    31,
-      -1,    33,    -1,    -1,    36,    37,    38,    -1,    40,    41,
-      -1,    -1,    -1,    -1,    -1,    47,    48,   148,   149,    51,
-      52,    -1,    -1,    -1,    56,    -1,    -1,    -1,    -1,    61,
-      -1,    -1,    64,    65,    66,    67,    -1,    -1,    -1,    -1,
-      -1,    73,    -1,    75,    -1,    77,    -1,    -1,    -1,    -1,
-      82,    83,    84,    85,    -1,    87,    -1,    -1,    -1,    -1,
-      -1,    93,    -1,    95,    96,    97,    98,    99,    -1,    -1,
-      -1,    -1,   104,    -1,   106,   107,   108,    -1,   110,    -1,
-      -1,    -1,   114,   115,   116,   117,   118,    -1,    21,    -1,
-      -1,   123,    -1,    -1,    -1,   127,    29,    -1,    31,    -1,
-      33,    -1,    -1,    36,    37,    38,    -1,    40,    41,    42,
-      -1,    -1,    -1,    -1,    47,    48,   148,   149,    51,    52,
-      -1,    -1,    -1,    56,    -1,    -1,    -1,    -1,    61,    -1,
-      -1,    64,    65,    66,    67,    -1,    -1,    -1,    -1,    -1,
-      73,    -1,    75,    -1,    77,    -1,    -1,    -1,    -1,    82,
-      83,    84,    85,    -1,    87,    -1,    -1,    -1,    -1,    -1,
-      93,    -1,    95,    96,    97,    98,    99,    -1,    -1,    -1,
-      -1,   104,    -1,   106,   107,   108,    -1,   110,    -1,    -1,
-      -1,   114,   115,   116,   117,   118,    -1,    21,    -1,    -1,
-      -1,    -1,    -1,    -1,   127,    29,    -1,    31,    -1,    33,
-      -1,    -1,    36,    37,    38,    -1,    40,    41,    -1,    -1,
-      -1,    -1,    -1,    47,    48,   148,   149,    51,    52,    -1,
-      -1,    -1,    56,    -1,    -1,    -1,    -1,    61,    -1,    -1,
-      64,    65,    66,    67,    -1,    -1,    -1,    -1,    -1,    73,
-      -1,    75,    -1,    77,    -1,    -1,    -1,    -1,    82,    83,
-      84,    85,    -1,    87,    -1,    -1,    -1,    -1,    -1,    93,
-      -1,    95,    96,    97,    98,    99,    -1,    -1,    -1,    -1,
-     104,    -1,   106,   107,   108,    -1,   110,    -1,    -1,    -1,
-     114,   115,   116,   117,   118,    -1,   120,    -1,    -1,    -1,
-      21,    -1,    -1,   127,    -1,    -1,    -1,    -1,    29,    -1,
-      31,    -1,    33,    -1,    -1,    36,    37,    38,    -1,    40,
-      41,    -1,    -1,    -1,   148,   149,    47,    48,    -1,    -1,
-      51,    52,    -1,    -1,    -1,    56,    -1,    -1,    -1,    -1,
-      61,    -1,    -1,    64,    65,    66,    67,    -1,    -1,    -1,
-      -1,    -1,    73,    -1,    75,    -1,    77,    -1,    -1,    -1,
-      -1,    82,    83,    84,    85,    -1,    87,    -1,    -1,    -1,
-      -1,    -1,    93,    -1,    95,    96,    97,    98,    99,    -1,
-      -1,    -1,    -1,   104,    -1,   106,   107,   108,    -1,   110,
-      -1,    -1,    -1,   114,   115,   116,   117,   118,    -1,    21,
-      -1,    -1,    -1,    -1,    -1,    -1,   127,    29,   129,    31,
-      -1,    33,    -1,    -1,    36,    37,    38,    -1,    40,    41,
-      -1,    -1,    -1,    -1,    -1,    47,    48,   148,   149,    51,
-      52,    -1,    -1,    -1,    56,    -1,    -1,    -1,    -1,    61,
-      -1,    -1,    64,    65,    66,    67,    -1,    -1,    -1,    -1,
-      -1,    73,    -1,    75,    -1,    77,    -1,    -1,    -1,    -1,
-      82,    83,    84,    85,    -1,    87,    -1,    -1,    -1,    -1,
-      -1,    93,    -1,    95,    96,    97,    98,    99,    -1,    -1,
-      -1,    -1,   104,    -1,   106,   107,   108,    -1,   110,    -1,
-      -1,    -1,   114,   115,   116,   117,   118,    -1,    21,   121,
-      -1,    -1,    -1,    -1,    -1,   127,    29,    -1,    31,    -1,
-      33,    -1,    -1,    36,    37,    38,    -1,    40,    41,    -1,
-      -1,    -1,    -1,    -1,    47,    48,   148,   149,    51,    52,
-      -1,    -1,    -1,    56,    -1,    -1,    -1,    -1,    61,    -1,
-      -1,    64,    65,    66,    67,    -1,    -1,    -1,    -1,    -1,
-      73,    -1,    75,    -1,    77,    -1,    -1,    -1,    -1,    82,
-      83,    84,    85,    -1,    87,    -1,    -1,    -1,    -1,    -1,
-      93,    -1,    95,    96,    97,    98,    99,    -1,    -1,    -1,
-      -1,   104,    -1,   106,   107,   108,    -1,   110,    -1,    -1,
-      -1,   114,   115,   116,   117,   118,    -1,    21,    -1,    -1,
-      -1,    -1,    -1,    -1,   127,    29,    -1,    31,    -1,    33,
-      -1,    -1,    36,    37,    38,    -1,    40,    41,    -1,    -1,
-      -1,    -1,    -1,    47,    48,   148,   149,    51,    52,    -1,
-      -1,    -1,    56,    -1,    -1,    -1,    -1,    61,    -1,    -1,
-      64,    65,    66,    67,    -1,    -1,    -1,    -1,    -1,    73,
-      -1,    75,    -1,    77,    -1,    -1,    -1,    -1,    82,    83,
-      84,    85,    -1,    87,    -1,    -1,    -1,    -1,    -1,    93,
-      -1,    95,    96,    97,    98,    99,    -1,    -1,    -1,    -1,
-     104,    -1,   106,   107,   108,    -1,   110,    -1,    -1,    -1,
-     114,   115,   116,   117,   118,    -1,    21,    -1,    -1,    -1,
-      -1,    -1,    -1,   127,    29,    -1,    31,    -1,    33,    -1,
-      -1,    36,    37,    38,    -1,    40,    41,    -1,    -1,    -1,
-      -1,    -1,    47,    48,   148,   149,    51,    52,    -1,    -1,
-      -1,    56,    -1,    -1,    -1,    -1,    61,    -1,    -1,    64,
-      65,    66,    67,    -1,    -1,    -1,    -1,    -1,    73,    -1,
-      75,    -1,    77,    -1,    -1,    -1,    -1,    82,    83,    84,
-      85,    -1,    87,    -1,    -1,    -1,    -1,    -1,    93,    -1,
-      95,    96,    97,    98,    99,    -1,    -1,    -1,    -1,   104,
-      -1,   106,   107,   108,    -1,   110,    -1,    -1,    -1,   114,
-     115,   116,   117,   118,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,   127,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      23,    24,    -1,   148,   149,    28,    29,    30,    -1,    32,
-      33,    34,    35,    36,    37,    38,    39,    40,    41,    42,
-      43,    44,    45,    46,    47,    48,    49,    50,    51,    52,
-      53,    54,    55,    56,    57,    58,    59,    60,    61,    62,
-      63,    -1,    -1,    -1,    -1,    68,    69,    70,    71,    72,
-      73,    74,    75,    76,    -1,    78,    79,    80,    81,    -1,
-      83,    -1,    85,    86,    87,    88,    89,    90,    91,    92,
-      -1,    94,    95,    96,    97,    98,    99,   100,   101,   102,
-     103,    -1,   105,    -1,   107,   108,   109,   110,   111,   112,
-     113,    -1,    -1,    -1,    -1,    -1,   119,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,   136,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    28,    29,    30,   148,    32,    33,    34,    35,
-      36,    37,    38,    39,    40,    41,    42,    43,    44,    45,
-      46,    47,    48,    49,    50,    51,    52,    53,    54,    55,
-      56,    57,    58,    59,    60,    61,    62,    63,    -1,    -1,
-      -1,    -1,    68,    69,    70,    71,    72,    73,    74,    75,
-      76,    -1,    78,    79,    80,    81,    -1,    83,    -1,    85,
-      86,    87,    88,    89,    90,    91,    92,    -1,    94,    95,
-      96,    97,    98,    99,   100,   101,   102,   103,    -1,   105,
-      -1,   107,   108,   109,   110,   111,   112,   113,    -1,    -1,
-      -1,    -1,    -1,   119,    -1,    -1,    -1,    -1,   124,    -1,
-      -1,   127,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-     136,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    28,
-      29,    30,   148,    32,    33,    34,    35,    36,    37,    38,
-      39,    40,    41,    42,    43,    44,    45,    46,    47,    48,
-      49,    50,    51,    52,    53,    54,    55,    56,    57,    58,
-      59,    60,    61,    62,    63,    -1,    -1,    -1,    -1,    68,
-      69,    70,    71,    72,    73,    74,    75,    76,    -1,    78,
-      79,    80,    81,    -1,    83,    -1,    85,    86,    87,    88,
-      89,    90,    91,    92,    -1,    94,    95,    96,    97,    98,
-      99,   100,   101,   102,   103,    -1,   105,    -1,   107,   108,
-     109,   110,   111,   112,   113,    -1,    -1,    -1,    -1,    -1,
-     119,    -1,    -1,    -1,    -1,    -1,    -1,    -1,   127,   128,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,   136,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    28,    29,    30,   148,
+     699,    -1,    -1,    -1,    -1,   802,    -1,    -1,   805,    -1,
+      -1,    -1,     4,     5,     6,     7,   684,     9,    -1,    11,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    20,    -1,
+      22,   699,    24,    25,    -1,    -1,    -1,    29,    30,    31,
       32,    33,    34,    35,    36,    37,    38,    39,    40,    41,
       42,    43,    44,    45,    46,    47,    48,    49,    50,    51,
       52,    53,    54,    55,    56,    57,    58,    59,    60,    61,
-      62,    63,    -1,    -1,    -1,    -1,    68,    69,    70,    71,
-      72,    73,    74,    75,    76,    -1,    78,    79,    80,    81,
-      -1,    83,    -1,    85,    86,    87,    88,    89,    90,    91,
-      92,    -1,    94,    95,    96,    97,    98,    99,   100,   101,
-     102,   103,    -1,   105,    -1,   107,   108,   109,   110,   111,
-     112,   113,    -1,    -1,    -1,    -1,    -1,   119,    -1,    -1,
-      -1,    -1,    28,    -1,    30,   127,    32,    -1,    34,    35,
-      -1,    -1,    -1,    -1,   136,    -1,    42,    43,    44,    45,
-      -1,    -1,    -1,    49,    50,    -1,   148,    53,    54,    55,
-      -1,    57,    58,    59,    60,    -1,    -1,    63,    -1,    -1,
-      -1,    -1,    68,    69,    70,    71,    72,    -1,    74,    -1,
-      76,    -1,    78,    79,    80,    81,    -1,    -1,    -1,    -1,
-      86,    -1,    -1,    89,    90,    91,    92,    -1,    94,    -1,
-      -1,    -1,    -1,    -1,   100,   101,   102,   103,    -1,   105,
-      -1,    -1,    -1,    -1,    -1,   111,   112,   113,    -1,    -1,
-      28,    -1,    30,    -1,    32,    -1,    34,    35,   124,    -1,
-      -1,    -1,    -1,    -1,    42,    43,    44,    45,    -1,    -1,
-     136,    49,    50,    -1,    -1,    53,    54,    55,   144,    57,
-      58,    59,    60,    -1,    -1,    63,    -1,    -1,    -1,    -1,
-      68,    69,    70,    71,    72,    -1,    74,    -1,    76,    -1,
-      78,    79,    80,    81,    -1,    -1,    -1,    -1,    86,    -1,
-      -1,    89,    90,    91,    92,    -1,    94,    -1,    -1,    -1,
-      -1,    -1,   100,   101,   102,   103,    -1,   105,    -1,    -1,
-      -1,    -1,    -1,   111,   112,   113,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,   124,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,   136,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,   144
+      62,    63,    64,    65,    66,    67,    68,    69,    70,    71,
+      72,    73,    74,    75,    76,    77,    78,    79,    80,    81,
+      82,    83,    84,    85,    86,    87,    88,    89,    90,    91,
+      92,    93,    94,    95,    96,    97,    98,    99,   100,   101,
+     102,   103,   104,   105,   106,   107,   108,   109,   110,   111,
+     112,   113,   114,   115,   116,   117,   118,   119,   120,    -1,
+      -1,    -1,   124,   125,    -1,    -1,   128,    -1,    -1,    -1,
+      -1,   133,    -1,    -1,    -1,   137,    -1,    -1,    -1,   141,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,   149,   150,     4,
+       5,     6,     7,    -1,     9,    -1,    11,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    20,    -1,    22,    -1,    24,
+      25,    -1,    -1,    -1,    29,    30,    31,    32,    33,    34,
+      35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
+      45,    46,    47,    48,    49,    50,    51,    52,    53,    54,
+      55,    56,    57,    58,    59,    60,    61,    62,    63,    64,
+      65,    66,    67,    68,    69,    70,    71,    72,    73,    74,
+      75,    76,    77,    78,    79,    80,    81,    82,    83,    84,
+      85,    86,    87,    88,    89,    90,    91,    92,    93,    94,
+      95,    96,    97,    98,    99,   100,   101,   102,   103,   104,
+     105,   106,   107,   108,   109,   110,   111,   112,   113,   114,
+     115,   116,   117,   118,   119,   120,    -1,    -1,    -1,   124,
+      -1,    -1,    -1,   128,     4,     5,     6,     7,   133,     9,
+      -1,    11,   137,    -1,    -1,    -1,   141,    -1,    -1,    -1,
+      20,    -1,    22,    -1,   149,   150,    -1,    -1,    -1,    -1,
+      30,    31,    32,    -1,    34,    -1,    -1,    37,    38,    39,
+      -1,    41,    42,    -1,    -1,    -1,    46,    47,    48,    49,
+      -1,    -1,    52,    53,    54,    -1,    -1,    57,    -1,    -1,
+      -1,    -1,    62,    63,    64,    65,    66,    67,    68,    -1,
+      -1,    -1,    -1,    73,    74,    -1,    76,    -1,    78,    -1,
+      80,    -1,    -1,    83,    84,    85,    86,    -1,    88,    -1,
+      90,    -1,    -1,    -1,    94,    -1,    96,    97,    98,    99,
+     100,   101,   102,    -1,    -1,   105,    -1,   107,   108,   109,
+     110,   111,    -1,    -1,    -1,   115,   116,   117,   118,   119,
+     120,    -1,    -1,    -1,   124,    -1,   126,    -1,   128,     4,
+       5,     6,     7,    -1,     9,    -1,    11,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    20,    -1,    22,    -1,   149,
+     150,    -1,    -1,    -1,    -1,    30,    31,    32,    -1,    34,
+      -1,    -1,    37,    38,    39,    -1,    41,    42,    -1,    -1,
+      -1,    -1,    -1,    48,    49,    -1,    -1,    52,    53,    -1,
+      -1,    -1,    57,    -1,    -1,    -1,    -1,    62,    63,    64,
+      65,    66,    67,    68,    -1,    -1,    -1,    -1,    73,    74,
+      -1,    76,    -1,    78,    -1,    80,    -1,    -1,    83,    84,
+      85,    86,    -1,    88,    -1,    90,    -1,    -1,    -1,    94,
+      -1,    96,    97,    98,    99,   100,   101,   102,    -1,    -1,
+     105,    -1,   107,   108,   109,   110,   111,    -1,    -1,    -1,
+     115,   116,   117,   118,   119,   120,    -1,   122,    -1,    -1,
+      -1,   126,    -1,   128,    -1,    -1,    -1,    -1,    -1,    -1,
+       4,     5,     6,     7,    -1,     9,    -1,    11,    -1,    -1,
+      -1,    -1,    -1,    -1,   149,   150,    20,    -1,    22,    -1,
+      24,    25,    -1,    -1,    -1,    -1,    30,    -1,    32,    -1,
+      34,    -1,    -1,    37,    38,    39,    40,    41,    42,    -1,
+      -1,    -1,    -1,    47,    48,    49,    -1,    -1,    52,    53,
+      -1,    -1,    -1,    57,    -1,    -1,    -1,    -1,    62,    63,
+      -1,    65,    66,    67,    68,    -1,    -1,    -1,    -1,    -1,
+      74,    -1,    76,    -1,    78,    -1,    -1,    -1,    -1,    83,
+      84,    85,    86,    -1,    88,    89,    -1,    -1,    -1,    -1,
+      94,    -1,    96,    97,    98,    99,   100,    -1,    -1,    -1,
+      -1,   105,    -1,   107,   108,   109,   110,   111,    -1,    -1,
+      -1,   115,   116,   117,   118,   119,   120,    -1,    -1,    -1,
+     124,    -1,    -1,    -1,   128,     4,     5,     6,     7,   133,
+       9,    -1,    11,    -1,    -1,    -1,    -1,   141,    -1,    -1,
+      -1,    20,    -1,    22,    -1,   149,   150,    -1,    -1,    -1,
+      -1,    30,    31,    32,    -1,    34,    -1,    -1,    37,    38,
+      39,    -1,    41,    42,    -1,    -1,    -1,    -1,    -1,    48,
+      49,    -1,    -1,    52,    53,    -1,    -1,    -1,    57,    -1,
+      -1,    -1,    -1,    62,    63,    64,    65,    66,    67,    68,
+      -1,    -1,    -1,    -1,    73,    74,    -1,    76,    -1,    78,
+      -1,    80,    -1,    -1,    83,    84,    85,    86,    -1,    88,
+      -1,    90,    -1,    -1,    -1,    94,    -1,    96,    97,    98,
+      99,   100,   101,   102,    -1,    -1,   105,    -1,   107,   108,
+     109,   110,   111,    -1,    -1,    -1,   115,   116,   117,   118,
+     119,   120,    -1,    -1,    -1,    -1,    -1,   126,    -1,   128,
+      -1,    -1,    -1,    -1,    -1,    -1,     4,     5,     6,     7,
+      -1,     9,    -1,    11,    -1,    -1,    -1,    -1,    -1,    -1,
+     149,   150,    20,    -1,    22,    -1,    24,    25,    -1,    -1,
+      -1,    -1,    30,    -1,    32,    -1,    34,    -1,    -1,    37,
+      38,    39,    40,    41,    42,    -1,    -1,    -1,    -1,    47,
+      48,    49,    -1,    -1,    52,    53,    -1,    -1,    -1,    57,
+      -1,    -1,    -1,    -1,    62,    63,    -1,    65,    66,    67,
+      68,    -1,    -1,    -1,    -1,    -1,    74,    -1,    76,    -1,
+      78,    -1,    -1,    -1,    -1,    83,    84,    85,    86,    -1,
+      88,    89,    -1,    -1,    -1,    -1,    94,    -1,    96,    97,
+      98,    99,   100,    -1,    -1,    -1,    -1,   105,    -1,   107,
+     108,   109,   110,   111,    -1,    -1,    -1,   115,   116,   117,
+     118,   119,   120,    -1,    -1,    -1,   124,    -1,    -1,    -1,
+     128,     4,     5,     6,     7,   133,     9,    -1,    11,    -1,
+      -1,    -1,    -1,   141,    -1,    -1,    -1,    20,    -1,    22,
+      -1,   149,   150,    -1,    -1,    -1,    -1,    30,    -1,    32,
+      -1,    34,    -1,    -1,    37,    38,    39,    -1,    41,    42,
+      -1,    -1,    -1,    -1,    -1,    48,    49,    -1,    -1,    52,
+      53,    -1,    -1,    -1,    57,    -1,    -1,    -1,    -1,    62,
+      63,    64,    65,    66,    67,    68,    -1,    -1,    -1,    -1,
+      73,    74,    -1,    76,    -1,    78,    -1,    80,    -1,    -1,
+      83,    84,    85,    86,    -1,    88,    -1,    90,    -1,    -1,
+      -1,    94,    -1,    96,    97,    98,    99,   100,   101,   102,
+       4,     5,   105,    -1,   107,   108,   109,   110,   111,    -1,
+      -1,    -1,   115,   116,   117,   118,   119,   120,    22,    -1,
+      -1,    -1,    -1,   126,    -1,   128,    30,    -1,    32,    -1,
+      34,    -1,    -1,    37,    38,    39,    -1,    41,    42,    -1,
+      -1,    -1,    -1,    -1,    48,    49,   149,   150,    52,    53,
+      -1,    -1,    -1,    57,    -1,    -1,    -1,    -1,    62,    -1,
+      -1,    65,    66,    67,    68,    -1,    -1,    -1,    -1,    -1,
+      74,    -1,    76,    -1,    78,    -1,    -1,    -1,    -1,    83,
+      84,    85,    86,    -1,    88,    -1,    -1,    -1,    -1,    -1,
+      94,    -1,    96,    97,    98,    99,   100,    -1,    -1,    -1,
+      -1,   105,    -1,   107,   108,   109,    -1,   111,    -1,    -1,
+      -1,   115,   116,   117,   118,   119,    -1,    -1,     4,     5,
+       6,     7,    -1,     9,   128,    11,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    20,    -1,    -1,    -1,    24,    25,
+      -1,    -1,    -1,    -1,    30,   149,   150,    -1,    34,    -1,
+       4,     5,     6,     7,    40,     9,    -1,    11,    -1,    -1,
+      -1,    47,    -1,    -1,    -1,    -1,    20,    -1,    22,    -1,
+      24,    25,    -1,    -1,    -1,    -1,    30,    63,    -1,    -1,
+      34,    -1,    -1,    -1,    -1,    -1,    40,    -1,    -1,    -1,
+      76,    -1,    -1,    47,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    89,    -1,    -1,    -1,    -1,    -1,    63,
+      -1,    -1,    -1,    -1,    -1,    -1,     4,     5,     6,     7,
+      -1,     9,    76,    11,   110,   111,    -1,    -1,    -1,    -1,
+      -1,    -1,    20,    -1,   120,    89,    24,    25,   124,   125,
+      -1,    -1,    30,    -1,    -1,    -1,    34,   133,    -1,    -1,
+      -1,    -1,    40,    -1,    -1,   141,   110,   111,    -1,    47,
+      -1,    -1,    -1,   149,   150,    -1,   120,    -1,    -1,    -1,
+     124,    -1,    -1,    -1,    -1,    63,    -1,    -1,    -1,   133,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,   141,    76,    -1,
+      -1,    -1,    -1,    -1,    22,   149,   150,    -1,    -1,    -1,
+      -1,    89,    30,    -1,    32,    -1,    34,    -1,    -1,    37,
+      38,    39,    -1,    41,    42,    -1,    -1,    -1,    -1,    -1,
+      48,    49,   110,   111,    52,    53,    -1,    -1,    -1,    57,
+      -1,    -1,   120,    -1,    62,    -1,   124,    65,    66,    67,
+      68,    -1,    -1,    -1,    -1,   133,    74,    -1,    76,    -1,
+      78,    -1,    -1,   141,    -1,    83,    84,    85,    86,    -1,
+      88,   149,   150,    -1,    -1,    -1,    94,    -1,    96,    97,
+      98,    99,   100,    -1,    -1,    -1,    -1,   105,    -1,   107,
+     108,   109,    -1,   111,    -1,    -1,    -1,   115,   116,   117,
+     118,   119,    -1,   121,    -1,    -1,   124,    22,    -1,    -1,
+     128,    -1,    -1,    -1,    -1,    30,    -1,    32,    -1,    34,
+      -1,    -1,    37,    38,    39,    -1,    41,    42,    -1,    -1,
+      -1,   149,   150,    48,    49,    -1,    -1,    52,    53,    -1,
+      -1,    -1,    57,    -1,    59,    -1,    -1,    62,    -1,    -1,
+      65,    66,    67,    68,    -1,    70,    -1,    -1,    -1,    74,
+      -1,    76,    -1,    78,    -1,    -1,    -1,    -1,    83,    84,
+      85,    86,    -1,    88,    -1,    -1,    -1,    -1,    -1,    94,
+      -1,    96,    97,    98,    99,   100,    -1,    -1,    -1,    -1,
+     105,    -1,   107,   108,   109,    -1,   111,    -1,    -1,    -1,
+     115,   116,   117,   118,   119,    -1,    22,    -1,    24,    25,
+      -1,    -1,    -1,   128,    30,    -1,    32,    -1,    34,    -1,
+      -1,    37,    38,    39,    -1,    41,    42,    -1,    -1,    -1,
+      -1,    -1,    48,    49,   149,   150,    52,    53,    -1,    -1,
+      -1,    57,    -1,    -1,    -1,    -1,    62,    -1,    -1,    65,
+      66,    67,    68,    -1,    -1,    -1,    -1,    -1,    74,    -1,
+      76,    -1,    78,    -1,    -1,    -1,    -1,    83,    84,    85,
+      86,    -1,    88,    -1,    -1,    -1,    -1,    -1,    94,    -1,
+      96,    97,    98,    99,   100,    -1,    -1,    -1,    -1,   105,
+      -1,   107,   108,   109,    -1,   111,    -1,    -1,    -1,   115,
+     116,   117,   118,   119,    -1,    22,    -1,    -1,    -1,    -1,
+      -1,    -1,   128,    30,    -1,    32,    -1,    34,    -1,    -1,
+      37,    38,    39,    -1,    41,    42,    -1,    -1,    -1,    -1,
+      -1,    48,    49,   149,   150,    52,    53,    -1,    -1,    -1,
+      57,    -1,    -1,    -1,    -1,    62,    -1,    -1,    65,    66,
+      67,    68,    -1,    -1,    -1,    -1,    -1,    74,    -1,    76,
+      -1,    78,    -1,    -1,    -1,    -1,    83,    84,    85,    86,
+      -1,    88,    -1,    -1,    -1,    -1,    -1,    94,    -1,    96,
+      97,    98,    99,   100,    -1,    -1,    -1,    -1,   105,    -1,
+     107,   108,   109,    -1,   111,    -1,    -1,    -1,   115,   116,
+     117,   118,   119,    -1,    22,    -1,    -1,   124,    -1,    -1,
+      -1,   128,    30,    -1,    32,    -1,    34,    -1,    -1,    37,
+      38,    39,    -1,    41,    42,    43,    -1,    -1,    -1,    -1,
+      48,    49,   149,   150,    52,    53,    -1,    -1,    -1,    57,
+      -1,    -1,    -1,    -1,    62,    -1,    -1,    65,    66,    67,
+      68,    -1,    -1,    -1,    -1,    -1,    74,    -1,    76,    -1,
+      78,    -1,    -1,    -1,    -1,    83,    84,    85,    86,    -1,
+      88,    -1,    -1,    -1,    -1,    -1,    94,    -1,    96,    97,
+      98,    99,   100,    -1,    -1,    -1,    -1,   105,    -1,   107,
+     108,   109,    -1,   111,    -1,    -1,    -1,   115,   116,   117,
+     118,   119,    -1,    22,    -1,    -1,    -1,    -1,    -1,    -1,
+     128,    30,    -1,    32,    -1,    34,    -1,    -1,    37,    38,
+      39,    -1,    41,    42,    -1,    -1,    -1,    -1,    -1,    48,
+      49,   149,   150,    52,    53,    -1,    -1,    -1,    57,    -1,
+      -1,    -1,    -1,    62,    -1,    -1,    65,    66,    67,    68,
+      -1,    -1,    -1,    -1,    -1,    74,    -1,    76,    -1,    78,
+      -1,    -1,    -1,    -1,    83,    84,    85,    86,    -1,    88,
+      -1,    -1,    -1,    -1,    -1,    94,    -1,    96,    97,    98,
+      99,   100,    -1,    -1,    -1,    -1,   105,    -1,   107,   108,
+     109,    -1,   111,    -1,    -1,    -1,   115,   116,   117,   118,
+     119,    -1,   121,    -1,    -1,    -1,    22,    -1,    -1,   128,
+      -1,    -1,    -1,    -1,    30,    -1,    32,    -1,    34,    -1,
+      -1,    37,    38,    39,    -1,    41,    42,    -1,    -1,    -1,
+     149,   150,    48,    49,    -1,    -1,    52,    53,    -1,    -1,
+      -1,    57,    -1,    -1,    -1,    -1,    62,    -1,    -1,    65,
+      66,    67,    68,    -1,    -1,    -1,    -1,    -1,    74,    -1,
+      76,    -1,    78,    -1,    -1,    -1,    -1,    83,    84,    85,
+      86,    -1,    88,    -1,    -1,    -1,    -1,    -1,    94,    -1,
+      96,    97,    98,    99,   100,    -1,    -1,    -1,    -1,   105,
+      -1,   107,   108,   109,    -1,   111,    -1,    -1,    -1,   115,
+     116,   117,   118,   119,    -1,    22,    -1,    -1,    -1,    -1,
+      -1,    -1,   128,    30,   130,    32,    -1,    34,    -1,    -1,
+      37,    38,    39,    -1,    41,    42,    -1,    -1,    -1,    -1,
+      -1,    48,    49,   149,   150,    52,    53,    -1,    -1,    -1,
+      57,    -1,    -1,    -1,    -1,    62,    -1,    -1,    65,    66,
+      67,    68,    -1,    -1,    -1,    -1,    -1,    74,    -1,    76,
+      -1,    78,    -1,    -1,    -1,    -1,    83,    84,    85,    86,
+      -1,    88,    -1,    -1,    -1,    -1,    -1,    94,    -1,    96,
+      97,    98,    99,   100,    -1,    -1,    -1,    -1,   105,    -1,
+     107,   108,   109,    -1,   111,    -1,    -1,    -1,   115,   116,
+     117,   118,   119,    -1,    22,   122,    -1,    -1,    -1,    -1,
+      -1,   128,    30,    -1,    32,    -1,    34,    -1,    -1,    37,
+      38,    39,    -1,    41,    42,    -1,    -1,    -1,    -1,    -1,
+      48,    49,   149,   150,    52,    53,    -1,    -1,    -1,    57,
+      -1,    -1,    -1,    -1,    62,    -1,    -1,    65,    66,    67,
+      68,    -1,    -1,    -1,    -1,    -1,    74,    -1,    76,    -1,
+      78,    -1,    -1,    -1,    -1,    83,    84,    85,    86,    -1,
+      88,    -1,    -1,    -1,    -1,    -1,    94,    -1,    96,    97,
+      98,    99,   100,    -1,    -1,    -1,    -1,   105,    -1,   107,
+     108,   109,    -1,   111,    -1,    -1,    -1,   115,   116,   117,
+     118,   119,    -1,    22,    -1,    -1,    -1,    -1,    -1,    -1,
+     128,    30,    -1,    32,    -1,    34,    -1,    -1,    37,    38,
+      39,    -1,    41,    42,    -1,    -1,    -1,    -1,    -1,    48,
+      49,   149,   150,    52,    53,    -1,    -1,    -1,    57,    -1,
+      -1,    -1,    -1,    62,    -1,    -1,    65,    66,    67,    68,
+      -1,    -1,    -1,    -1,    -1,    74,    -1,    76,    -1,    78,
+      -1,    -1,    -1,    -1,    83,    84,    85,    86,    -1,    88,
+      -1,    -1,    -1,    -1,    -1,    94,    -1,    96,    97,    98,
+      99,   100,    -1,    -1,    -1,    -1,   105,    -1,   107,   108,
+     109,    -1,   111,    -1,    -1,    -1,   115,   116,   117,   118,
+     119,    -1,    22,    -1,    -1,    -1,    -1,    -1,    -1,   128,
+      30,    -1,    32,    -1,    34,    -1,    -1,    37,    38,    39,
+      -1,    41,    42,    -1,    -1,    -1,    -1,    -1,    48,    49,
+     149,   150,    52,    53,    -1,    -1,    -1,    57,    -1,    -1,
+      -1,    -1,    62,    -1,    -1,    65,    66,    67,    68,    -1,
+      -1,    -1,    -1,    -1,    74,    -1,    76,    -1,    78,    -1,
+      -1,    -1,    -1,    83,    84,    85,    86,    -1,    88,    -1,
+      -1,    -1,    -1,    -1,    94,    -1,    96,    97,    98,    99,
+     100,    -1,    -1,    -1,    -1,   105,    -1,   107,   108,   109,
+      -1,   111,    -1,    -1,    -1,   115,   116,   117,   118,   119,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,   128,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    24,    25,    -1,   149,
+     150,    29,    30,    31,    -1,    33,    34,    35,    36,    37,
+      38,    39,    40,    41,    42,    43,    44,    45,    46,    47,
+      48,    49,    50,    51,    52,    53,    54,    55,    56,    57,
+      58,    59,    60,    61,    62,    63,    64,    -1,    -1,    -1,
+      -1,    69,    70,    71,    72,    73,    74,    75,    76,    77,
+      -1,    79,    80,    81,    82,    -1,    84,    -1,    86,    87,
+      88,    89,    90,    91,    92,    93,    -1,    95,    96,    97,
+      98,    99,   100,   101,   102,   103,   104,    -1,   106,    -1,
+     108,   109,   110,   111,   112,   113,   114,    -1,    -1,    -1,
+      -1,    -1,   120,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,   137,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    29,    30,
+      31,   149,    33,    34,    35,    36,    37,    38,    39,    40,
+      41,    42,    43,    44,    45,    46,    47,    48,    49,    50,
+      51,    52,    53,    54,    55,    56,    57,    58,    59,    60,
+      61,    62,    63,    64,    -1,    -1,    -1,    -1,    69,    70,
+      71,    72,    73,    74,    75,    76,    77,    -1,    79,    80,
+      81,    82,    -1,    84,    -1,    86,    87,    88,    89,    90,
+      91,    92,    93,    -1,    95,    96,    97,    98,    99,   100,
+     101,   102,   103,   104,    -1,   106,    -1,   108,   109,   110,
+     111,   112,   113,   114,    -1,    -1,    -1,    -1,    -1,   120,
+      -1,    -1,    -1,    -1,   125,    -1,    -1,   128,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,   137,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    29,    30,    31,   149,    33,
+      34,    35,    36,    37,    38,    39,    40,    41,    42,    43,
+      44,    45,    46,    47,    48,    49,    50,    51,    52,    53,
+      54,    55,    56,    57,    58,    59,    60,    61,    62,    63,
+      64,    -1,    -1,    -1,    -1,    69,    70,    71,    72,    73,
+      74,    75,    76,    77,    -1,    79,    80,    81,    82,    -1,
+      84,    -1,    86,    87,    88,    89,    90,    91,    92,    93,
+      -1,    95,    96,    97,    98,    99,   100,   101,   102,   103,
+     104,    -1,   106,    -1,   108,   109,   110,   111,   112,   113,
+     114,    -1,    -1,    -1,    -1,    -1,   120,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,   128,   129,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,   137,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    29,    30,    31,   149,    33,    34,    35,    36,
+      37,    38,    39,    40,    41,    42,    43,    44,    45,    46,
+      47,    48,    49,    50,    51,    52,    53,    54,    55,    56,
+      57,    58,    59,    60,    61,    62,    63,    64,    -1,    -1,
+      -1,    -1,    69,    70,    71,    72,    73,    74,    75,    76,
+      77,    -1,    79,    80,    81,    82,    -1,    84,    -1,    86,
+      87,    88,    89,    90,    91,    92,    93,    -1,    95,    96,
+      97,    98,    99,   100,   101,   102,   103,   104,    -1,   106,
+      -1,   108,   109,   110,   111,   112,   113,   114,    -1,    -1,
+      -1,    -1,    -1,   120,    -1,    -1,    -1,    -1,    29,    -1,
+      31,   128,    33,    -1,    35,    36,    -1,    -1,    -1,    -1,
+     137,    -1,    43,    44,    45,    46,    -1,    -1,    -1,    50,
+      51,    -1,   149,    54,    55,    56,    -1,    58,    59,    60,
+      61,    -1,    -1,    64,    -1,    -1,    -1,    -1,    69,    70,
+      71,    72,    73,    -1,    75,    -1,    77,    -1,    79,    80,
+      81,    82,    -1,    -1,    -1,    -1,    87,    -1,    -1,    90,
+      91,    92,    93,    -1,    95,    -1,    -1,    -1,    -1,    -1,
+     101,   102,   103,   104,    -1,   106,    -1,    -1,    -1,    -1,
+      -1,   112,   113,   114,    -1,    -1,    29,    -1,    31,    -1,
+      33,    -1,    35,    36,   125,    -1,    -1,    -1,    -1,    -1,
+      43,    44,    45,    46,    -1,    -1,   137,    50,    51,    -1,
+      -1,    54,    55,    56,   145,    58,    59,    60,    61,    -1,
+      -1,    64,    -1,    -1,    -1,    -1,    69,    70,    71,    72,
+      73,    -1,    75,    -1,    77,    -1,    79,    80,    81,    82,
+      -1,    -1,    -1,    -1,    87,    -1,    -1,    90,    91,    92,
+      93,    -1,    95,    -1,    -1,    -1,    -1,    -1,   101,   102,
+     103,   104,    -1,   106,    -1,    -1,    -1,    -1,    -1,   112,
+     113,   114,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,   125,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,   137,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,   145
   };
 
   const unsigned short int
   asn1_parser::yystos_[] =
   {
-       0,   148,   153,   154,   227,   375,     0,   153,    50,   123,
-     228,   229,   230,    15,   235,     4,   149,   231,   232,   233,
-     234,   310,   373,   132,   315,    74,    34,    58,    69,   236,
-     124,   231,   125,   139,   316,   105,   105,   105,    60,   237,
-     233,    16,    17,   318,   139,   317,    70,   120,   126,   318,
-     132,    35,   317,    59,   238,   239,    30,   148,   149,   240,
-     247,   248,   249,   372,   374,   226,    71,   241,   141,   141,
-     136,   123,    55,   242,   243,   244,   247,   159,   198,   202,
-     203,   204,   205,   206,   250,   251,   260,   261,   262,   372,
-     374,   248,   124,   141,   244,    63,   250,    21,    29,    31,
-      33,    36,    37,    38,    40,    41,    47,    48,    51,    52,
-      56,    61,    64,    65,    66,    67,    73,    75,    77,    82,
-      83,    84,    85,    87,    93,    95,    96,    97,    98,    99,
-     104,   106,   107,   108,   110,   114,   115,   116,   117,   118,
-     120,   123,   127,   148,   158,   186,   187,   196,   197,   201,
-     207,   212,   213,   214,   215,   252,   254,   258,   263,   264,
-     272,   274,   278,   282,   283,   286,   287,   288,   292,   293,
-     294,   295,   299,   300,   301,   302,   306,   313,   314,   319,
-     320,   321,   322,   324,   325,   326,   327,   328,   329,   330,
-     331,   332,   372,   373,   375,   207,   263,   372,   375,   245,
-     375,   102,   102,   123,    90,   123,    86,   123,    68,   102,
-      86,   101,   123,   125,   333,   357,    86,   123,   333,   357,
-      42,   148,   156,   157,   158,   160,   161,   263,   375,   376,
-     149,   156,   208,   209,   210,   211,   249,   263,   372,    15,
-     303,   137,   120,   120,   263,   137,   123,   120,   333,    58,
-      69,   263,   137,   129,   137,   263,   120,   137,   123,   246,
-     307,   374,   123,   265,   296,   297,   298,   373,   121,   276,
-     279,   280,   281,   373,   148,   156,   158,   375,   275,   276,
-     373,   263,   265,   373,   333,    44,   121,   124,   265,   289,
-     290,   291,     4,     5,     6,     8,    10,    19,    30,    33,
-      45,    46,    53,    62,    63,    72,    79,    89,   100,   109,
-     119,   123,   125,   138,   148,   149,   199,   217,   218,   220,
-     225,   263,   273,   277,   323,   334,   335,   336,   337,   338,
-     339,   340,   341,   342,   343,   347,   348,   349,   350,   351,
-     352,   353,   355,   357,   358,   359,   360,   368,   369,    86,
-      86,   263,   265,   124,   289,    86,    86,   123,   137,   124,
-     136,   140,   140,    32,    94,   113,   305,    23,    24,   164,
-     165,   199,   160,   263,   120,   165,     5,     6,     8,    10,
-      23,    24,    33,    39,    46,    75,    88,   119,   123,   140,
-     148,   149,   156,   201,   216,   253,   255,   256,   257,   259,
-     263,   266,   267,   268,   269,   273,   277,   315,   323,   374,
-     375,   123,   270,   263,   263,   165,   372,   263,    21,   372,
-     120,    33,    75,   148,   149,   201,   266,   267,   372,   375,
-       4,   253,   308,   309,   310,   311,   312,   373,   374,   284,
-     285,   373,   124,   136,   263,   131,   370,   124,   136,   125,
-     137,   124,   136,    86,   370,    49,    88,   124,   136,    57,
-     344,    39,   263,    39,   333,   267,    12,    43,    44,   121,
-     200,   337,   336,     4,   123,   370,   136,   111,   144,   345,
-      76,   145,   346,   344,   263,   122,   129,   263,   265,   263,
-     265,   124,   263,   265,   263,   265,    23,    24,    27,   162,
-     163,   166,   167,   170,   172,   173,   175,   177,   148,   376,
-     209,   249,     4,   253,   304,   137,   267,   267,   267,   271,
-     125,   123,   124,   136,   136,   140,   144,   136,   144,   137,
-     137,   336,   267,   137,   137,   253,   308,   124,   308,   125,
-     124,   136,   125,   121,   265,   253,   263,   277,   371,   375,
-     121,   281,   253,   277,   276,   263,   136,    33,   148,   149,
-     349,   121,   291,   347,   123,    53,   267,   333,   361,   123,
-     362,   136,   124,   136,   126,   143,   221,   222,   126,   121,
-     340,   342,    78,   129,   349,   354,   356,   156,   263,   164,
-     263,   156,   124,   136,    23,    49,    88,   168,   128,   164,
-     124,   267,     4,   256,   256,   267,   267,   267,   267,   267,
-      23,    24,   374,   124,   124,   311,   285,     4,   253,   136,
-     140,   137,   370,   126,   126,   121,   290,   370,   121,   156,
-     196,   211,   219,   263,   375,    39,   121,   363,   364,   373,
-     337,   121,   137,   224,   373,   124,   136,   136,   356,    49,
-      88,   176,    88,   112,   169,   169,   169,    49,    88,   178,
-     119,   179,   163,   263,   126,   124,   126,   126,   126,   298,
-     267,   136,   136,   136,   140,   124,   137,   267,   124,   136,
-     124,   136,   333,   365,   366,   136,   137,   223,   137,   222,
-     337,   123,   186,   188,   189,   190,   192,    49,    88,   174,
-      49,    88,   171,   171,   103,   136,   280,   121,   290,   123,
-     188,   267,   148,   363,   363,    28,    88,    92,   367,   337,
-     223,   224,   373,    23,    24,    28,    29,    30,    32,    33,
-      34,    35,    36,    37,    38,    39,    40,    41,    42,    43,
-      44,    45,    46,    47,    48,    49,    50,    51,    52,    53,
-      54,    55,    56,    57,    58,    59,    60,    61,    62,    63,
-      68,    69,    70,    71,    72,    73,    74,    75,    76,    78,
-      79,    80,    81,    83,    85,    86,    87,    88,    89,    90,
-      91,    92,    94,    95,    96,    97,    98,    99,   100,   101,
-     102,   103,   105,   107,   108,   109,   110,   111,   112,   113,
-     119,   136,   148,   164,   185,   191,   193,   194,   195,   263,
-     267,   377,   270,   349,   123,   155,   136,   136,   267,   124,
-     195,   136,   124,   194,    29,    33,    36,    37,    38,    39,
-      40,    41,    46,    47,    48,    51,    52,    56,    61,    62,
-      73,    75,    83,    85,    87,    88,    95,    96,    97,    98,
-      99,   107,   108,   109,   110,   119,   127,   148,   180,   181,
-     182,   183,   184,   185,   121,   147,   180,   124,   181,   164,
-     185,   136,   124,   128,   290,   136
+       0,   149,   154,   155,   228,   376,     0,   154,    51,   124,
+     229,   230,   231,    16,   236,     4,   150,   232,   233,   234,
+     235,   311,   374,   133,   316,    75,    35,    59,    70,   237,
+     125,   232,   126,   140,   317,   106,   106,   106,    61,   238,
+     234,    17,    18,   319,   140,   318,    71,   121,   127,   319,
+     133,    36,   318,    60,   239,   240,    31,   149,   150,   241,
+     248,   249,   250,   373,   375,   227,    72,   242,   142,   142,
+     137,   124,    56,   243,   244,   245,   248,   160,   199,   203,
+     204,   205,   206,   207,   251,   252,   261,   262,   263,   373,
+     375,   249,   125,   142,   245,    64,   251,    22,    30,    32,
+      34,    37,    38,    39,    41,    42,    48,    49,    52,    53,
+      57,    62,    65,    66,    67,    68,    74,    76,    78,    83,
+      84,    85,    86,    88,    94,    96,    97,    98,    99,   100,
+     105,   107,   108,   109,   111,   115,   116,   117,   118,   119,
+     121,   124,   128,   149,   159,   187,   188,   197,   198,   202,
+     208,   213,   214,   215,   216,   253,   255,   259,   264,   265,
+     273,   275,   279,   283,   284,   287,   288,   289,   293,   294,
+     295,   296,   300,   301,   302,   303,   307,   314,   315,   320,
+     321,   322,   323,   325,   326,   327,   328,   329,   330,   331,
+     332,   333,   373,   374,   376,   208,   264,   373,   376,   246,
+     376,   103,   103,   124,    91,   124,    87,   124,    69,   103,
+      87,   102,   124,   126,   334,   358,    87,   124,   334,   358,
+      43,   149,   157,   158,   159,   161,   162,   264,   376,   377,
+     150,   157,   209,   210,   211,   212,   250,   264,   373,    16,
+     304,   138,   121,   121,   264,   138,   124,   121,   334,    59,
+      70,   264,   138,   130,   138,   264,   121,   138,   124,   247,
+     308,   375,   124,   266,   297,   298,   299,   374,   122,   277,
+     280,   281,   282,   374,   149,   157,   159,   376,   276,   277,
+     374,   264,   266,   374,   334,    45,   122,   125,   266,   290,
+     291,   292,     4,     5,     6,     7,     9,    11,    20,    31,
+      34,    46,    47,    54,    63,    64,    73,    80,    90,   101,
+     110,   120,   124,   126,   149,   150,   200,   218,   219,   221,
+     226,   264,   274,   278,   324,   335,   336,   337,   338,   339,
+     340,   341,   342,   343,   344,   348,   349,   350,   351,   352,
+     353,   354,   356,   358,   359,   360,   361,   369,   370,    87,
+      87,   264,   266,   125,   290,    87,    87,   124,   138,   125,
+     137,   141,   141,    33,    95,   114,   306,    24,    25,   165,
+     166,   200,   161,   264,   121,   166,     6,     7,     9,    11,
+      24,    25,    34,    40,    47,    76,    89,   120,   124,   141,
+     149,   150,   157,   202,   217,   254,   256,   257,   258,   260,
+     264,   267,   268,   269,   270,   274,   278,   316,   324,   375,
+     376,   124,   271,   264,   264,   166,   373,   264,    22,   373,
+     121,    34,    76,   149,   150,   202,   267,   268,   373,   376,
+       4,   254,   309,   310,   311,   312,   313,   374,   375,   285,
+     286,   374,   125,   137,   264,   132,   371,   125,   137,   126,
+     138,   125,   137,    87,   371,    50,    89,   125,   137,    58,
+     345,    40,   264,    40,   334,   268,    13,    44,    45,   122,
+     201,   338,   337,   124,   371,   137,   112,   145,   346,    77,
+     146,   347,   345,   264,   123,   130,   264,   266,   264,   266,
+     125,   264,   266,   264,   266,    24,    25,    28,   163,   164,
+     167,   168,   171,   173,   174,   176,   178,   149,   377,   210,
+     250,     4,   254,   305,   138,   268,   268,   268,   272,   126,
+     124,   125,   137,   137,   141,   145,   137,   145,   138,   138,
+     337,   268,   138,   138,   254,   309,   125,   309,   126,   125,
+     137,   126,   122,   266,   254,   264,   278,   372,   376,   122,
+     282,   254,   278,   277,   264,   137,    34,   149,   150,   350,
+     122,   292,   348,   124,    54,   268,   334,   362,   124,   363,
+     137,   125,   137,   127,   144,   222,   223,   127,   122,   341,
+     343,    79,   130,   350,   355,   357,   157,   264,   165,   264,
+     157,   125,   137,    24,    50,    89,   169,   129,   165,   125,
+     268,     4,   257,   257,   268,   268,   268,   268,   268,    24,
+      25,   375,   125,   125,   312,   286,     4,   254,   137,   141,
+     138,   371,   127,   127,   122,   291,   371,   122,   157,   197,
+     212,   220,   264,   376,    40,   122,   364,   365,   374,   338,
+     122,   138,   225,   374,   125,   137,   137,   357,    50,    89,
+     177,    89,   113,   170,   170,   170,    50,    89,   179,   120,
+     180,   164,   264,   127,   125,   127,   127,   127,   299,   268,
+     137,   137,   137,   141,   125,   138,   268,   125,   137,   125,
+     137,   334,   366,   367,   137,   138,   224,   138,   223,   338,
+     124,   187,   189,   190,   191,   193,    50,    89,   175,    50,
+      89,   172,   172,   104,   137,   281,   122,   291,   124,   189,
+     268,   149,   364,   364,    29,    89,    93,   368,   338,   224,
+     225,   374,    24,    25,    29,    30,    31,    33,    34,    35,
+      36,    37,    38,    39,    40,    41,    42,    43,    44,    45,
+      46,    47,    48,    49,    50,    51,    52,    53,    54,    55,
+      56,    57,    58,    59,    60,    61,    62,    63,    64,    69,
+      70,    71,    72,    73,    74,    75,    76,    77,    79,    80,
+      81,    82,    84,    86,    87,    88,    89,    90,    91,    92,
+      93,    95,    96,    97,    98,    99,   100,   101,   102,   103,
+     104,   106,   108,   109,   110,   111,   112,   113,   114,   120,
+     137,   149,   165,   186,   192,   194,   195,   196,   264,   268,
+     378,   271,   350,   124,   156,   137,   137,   268,   125,   196,
+     137,   125,   195,    30,    34,    37,    38,    39,    40,    41,
+      42,    47,    48,    49,    52,    53,    57,    62,    63,    74,
+      76,    84,    86,    88,    89,    96,    97,    98,    99,   100,
+     108,   109,   110,   111,   120,   128,   149,   181,   182,   183,
+     184,   185,   186,   122,   148,   181,   125,   182,   165,   186,
+     137,   125,   129,   291,   137
   };
 
   const unsigned short int
   asn1_parser::yyr1_[] =
   {
-       0,   152,   153,   153,   154,   155,   156,   156,   156,   157,
-     158,   158,   159,   160,   160,   161,   162,   162,   163,   163,
-     163,   163,   163,   163,   164,   164,   165,   165,   166,   167,
-     167,   168,   168,   168,   169,   169,   169,   170,   171,   171,
-     171,   172,   173,   174,   174,   174,   175,   176,   176,   176,
-     177,   178,   178,   178,   179,   179,   180,   180,   181,   181,
-     182,   183,   184,   184,   184,   185,   185,   186,   186,   187,
-     188,   188,   189,   189,   190,   191,   192,   193,   193,   194,
-     194,   195,   195,   196,   196,   197,   198,   199,   200,   200,
-     200,   200,   200,   201,   201,   202,   202,   202,   202,   203,
-     204,   205,   206,   207,   208,   208,   209,   209,   210,   210,
-     211,   211,   212,   213,   214,   215,   215,   216,   216,   217,
-     217,   217,   218,   219,   219,   219,   219,   219,   219,   219,
-     220,   220,   221,   221,   222,   222,   223,   223,   224,   224,
-     225,   225,   225,   226,   227,   228,   228,   228,   229,   230,
-     231,   231,   232,   232,   232,   233,   234,   235,   235,   236,
-     236,   236,   236,   237,   237,   238,   238,   239,   239,   239,
-     240,   240,   241,   241,   242,   242,   243,   243,   244,   245,
-     246,   246,   246,   247,   247,   248,   249,   249,   249,   250,
-     250,   251,   251,   251,   251,   251,   251,   252,   252,   252,
-     253,   253,   254,   255,   256,   256,   257,   257,   257,   258,
-     259,   260,   261,   262,   263,   263,   263,   263,   263,   264,
-     264,   264,   264,   264,   264,   264,   264,   264,   264,   264,
-     264,   264,   264,   264,   264,   264,   264,   264,   264,   264,
-     264,   264,   264,   264,   264,   264,   264,   264,   264,   264,
-     265,   266,   266,   266,   266,   266,   266,   266,   266,   266,
-     266,   266,   266,   266,   266,   266,   266,   266,   266,   266,
-     266,   266,   266,   266,   266,   266,   267,   267,   267,   268,
-     268,   269,   269,   270,   271,   271,   272,   273,   273,   274,
-     274,   275,   275,   276,   276,   277,   277,   278,   279,   279,
-     279,   279,   280,   280,   281,   281,   282,   283,   283,   284,
-     284,   285,   285,   286,   287,   288,   288,   289,   289,   289,
-     289,   289,   289,   289,   289,   289,   290,   290,   291,   291,
-     291,   291,   292,   292,   293,   293,   294,   294,   295,   296,
-     297,   297,   297,   298,   298,   299,   300,   301,   301,   301,
-     302,   303,   303,   304,   304,   305,   305,   305,   305,   306,
-     307,   307,   308,   308,   309,   309,   309,   310,   311,   311,
-     312,   313,   314,   315,   316,   317,   317,   318,   318,   319,
-     320,   321,   322,   323,   324,   325,   326,   327,   328,   328,
-     329,   329,   329,   329,   329,   329,   329,   329,   329,   329,
-     329,   329,   329,   330,   331,   331,   332,   332,   332,   332,
-     332,   332,   332,   332,   333,   334,   334,   335,   336,   336,
-     336,   337,   337,   338,   338,   339,   340,   340,   341,   342,
-     342,   343,   344,   345,   345,   346,   346,   347,   347,   348,
-     348,   348,   348,   348,   348,   348,   348,   348,   349,   349,
-     349,   349,   349,   349,   349,   349,   349,   349,   350,   351,
-     352,   353,   353,   354,   354,   355,   355,   356,   356,   357,
-     358,   359,   360,   360,   361,   362,   362,   362,   362,   363,
-     363,   364,   365,   366,   366,   367,   367,   367,   367,   368,
-     369,   370,   370,   371,   371,   371,   372,   373,   374,   375,
-     376,   377,   377,   377,   377,   377,   377,   377,   377,   377,
-     377,   377,   377,   377,   377,   377,   377,   377,   377,   377,
-     377,   377,   377,   377,   377,   377,   377,   377,   377,   377,
-     377,   377,   377,   377,   377,   377,   377,   377,   377,   377,
-     377,   377,   377,   377,   377,   377,   377,   377,   377,   377,
-     377,   377,   377,   377,   377,   377,   377,   377,   377,   377,
-     377,   377,   377,   377,   377,   377,   377,   377,   377,   377,
-     377,   377,   377,   377,   377,   377,   377,   377
+       0,   153,   154,   154,   155,   156,   157,   157,   157,   158,
+     159,   159,   160,   161,   161,   162,   163,   163,   164,   164,
+     164,   164,   164,   164,   165,   165,   166,   166,   167,   168,
+     168,   169,   169,   169,   170,   170,   170,   171,   172,   172,
+     172,   173,   174,   175,   175,   175,   176,   177,   177,   177,
+     178,   179,   179,   179,   180,   180,   181,   181,   182,   182,
+     183,   184,   185,   185,   185,   186,   186,   187,   187,   188,
+     189,   189,   190,   190,   191,   192,   193,   194,   194,   195,
+     195,   196,   196,   197,   197,   198,   199,   200,   201,   201,
+     201,   201,   201,   202,   202,   203,   203,   203,   203,   204,
+     205,   206,   207,   208,   209,   209,   210,   210,   211,   211,
+     212,   212,   213,   214,   215,   216,   216,   217,   217,   218,
+     218,   218,   219,   220,   220,   220,   220,   220,   220,   220,
+     221,   221,   222,   222,   223,   223,   224,   224,   225,   225,
+     226,   226,   226,   227,   228,   229,   229,   229,   230,   231,
+     232,   232,   233,   233,   233,   234,   235,   236,   236,   237,
+     237,   237,   237,   238,   238,   239,   239,   240,   240,   240,
+     241,   241,   242,   242,   243,   243,   244,   244,   245,   246,
+     247,   247,   247,   248,   248,   249,   250,   250,   250,   251,
+     251,   252,   252,   252,   252,   252,   252,   253,   253,   253,
+     254,   254,   255,   256,   257,   257,   258,   258,   258,   259,
+     260,   261,   262,   263,   264,   264,   264,   264,   264,   265,
+     265,   265,   265,   265,   265,   265,   265,   265,   265,   265,
+     265,   265,   265,   265,   265,   265,   265,   265,   265,   265,
+     265,   265,   265,   265,   265,   265,   265,   265,   265,   265,
+     266,   267,   267,   267,   267,   267,   267,   267,   267,   267,
+     267,   267,   267,   267,   267,   267,   267,   267,   267,   267,
+     267,   267,   267,   267,   267,   267,   268,   268,   268,   269,
+     269,   270,   270,   271,   272,   272,   273,   274,   274,   275,
+     275,   276,   276,   277,   277,   278,   278,   279,   280,   280,
+     280,   280,   281,   281,   282,   282,   283,   284,   284,   285,
+     285,   286,   286,   287,   288,   289,   289,   290,   290,   290,
+     290,   290,   290,   290,   290,   290,   291,   291,   292,   292,
+     292,   292,   293,   293,   294,   294,   295,   295,   296,   297,
+     298,   298,   298,   299,   299,   300,   301,   302,   302,   302,
+     303,   304,   304,   305,   305,   306,   306,   306,   306,   307,
+     308,   308,   309,   309,   310,   310,   310,   311,   312,   312,
+     313,   314,   315,   316,   317,   318,   318,   319,   319,   320,
+     321,   322,   323,   324,   325,   326,   327,   328,   329,   329,
+     330,   330,   330,   330,   330,   330,   330,   330,   330,   330,
+     330,   330,   330,   331,   332,   332,   333,   333,   333,   333,
+     333,   333,   333,   333,   334,   335,   335,   336,   337,   337,
+     337,   338,   338,   339,   339,   340,   341,   341,   342,   343,
+     343,   344,   345,   346,   346,   347,   347,   348,   348,   349,
+     349,   349,   349,   349,   349,   349,   349,   349,   350,   350,
+     350,   350,   350,   350,   350,   350,   350,   350,   351,   352,
+     353,   354,   354,   355,   355,   356,   356,   357,   357,   358,
+     359,   360,   361,   361,   362,   363,   363,   363,   363,   364,
+     364,   365,   366,   367,   367,   368,   368,   368,   368,   369,
+     370,   371,   371,   372,   372,   372,   373,   374,   375,   376,
+     377,   378,   378,   378,   378,   378,   378,   378,   378,   378,
+     378,   378,   378,   378,   378,   378,   378,   378,   378,   378,
+     378,   378,   378,   378,   378,   378,   378,   378,   378,   378,
+     378,   378,   378,   378,   378,   378,   378,   378,   378,   378,
+     378,   378,   378,   378,   378,   378,   378,   378,   378,   378,
+     378,   378,   378,   378,   378,   378,   378,   378,   378,   378,
+     378,   378,   378,   378,   378,   378,   378,   378,   378,   378,
+     378,   378,   378,   378,   378,   378,   378,   378
   };
 
   const unsigned char
@@ -9211,7 +9218,7 @@ namespace yy {
        4,     1,     1,     1,     1,     3,     3,     3,     1,     1,
        3,     1,     1,     1,     1,     1,     1,     1,     1,     3,
        3,     3,     3,     3,     1,     2,     1,     1,     1,     1,
-       4,     1,     3,     4,     4,     1,     2,     4,     1,     4,
+       4,     1,     3,     4,     4,     1,     1,     4,     1,     4,
        6,     2,     1,     3,     1,     1,     1,     2,     5,     1,
        3,     4,     4,     2,     1,     3,     4,     1,     4,     6,
        8,    10,     4,     6,     2,     4,     1,     3,     1,     2,
@@ -9249,13 +9256,13 @@ namespace yy {
   const char*
   const asn1_parser::yytname_[] =
   {
-  "END_OF_FILE", "error", "$undefined", "comment", "number", "realnumber",
-  "bstring", "xmlbstring", "hstring", "xmlhstring", "cstring",
-  "xmlcstring", "simplestring", "xmltstring", "psname",
-  "encodingreference", "integerUnicodeLabel", "non-integerUnicodeLabel",
-  "extended-true", "tstring", "extended-false", "objectreference",
-  "objectsetreference", "typefieldreference", "valuefieldreference",
-  "valuesetfieldreference", "objectfieldreference",
+  "END_OF_FILE", "error", "$undefined", "comment", "number",
+  "negativenumber", "realnumber", "bstring", "xmlbstring", "hstring",
+  "xmlhstring", "cstring", "xmlcstring", "simplestring", "xmltstring",
+  "psname", "encodingreference", "integerUnicodeLabel",
+  "non-integerUnicodeLabel", "extended-true", "tstring", "extended-false",
+  "objectreference", "objectsetreference", "typefieldreference",
+  "valuefieldreference", "valuesetfieldreference", "objectfieldreference",
   "objectsetfieldreference", "ABSENT", "ABSTRACT_SYNTAX", "ALL", "ANY",
   "APPLICATION", "ASN_NULL", "AUTOMATIC", "BEGIN", "BIT", "BMPString",
   "BOOLEAN", "BY", "CHARACTER", "CHOICE", "CLASS", "COMPONENT",
@@ -9352,64 +9359,64 @@ namespace yy {
   const unsigned short int
   asn1_parser::yyrline_[] =
   {
-       0,   321,   321,   322,   325,   340,   343,   344,   345,   348,
-     351,   353,   357,   361,   363,   368,   372,   374,   378,   380,
-     382,   383,   384,   385,   388,   390,   398,   400,   404,   408,
-     410,   414,   415,   416,   419,   420,   421,   424,   428,   429,
-     430,   433,   436,   439,   440,   441,   444,   447,   448,   449,
-     452,   455,   456,   457,   463,   464,   467,   468,   471,   472,
-     475,   478,   481,   482,   483,   486,   487,   490,   491,   494,
-     500,   501,   506,   507,   510,   513,   516,   519,   520,   523,
-     524,   527,   528,   532,   533,   536,   539,   543,   546,   547,
-     548,   549,   550,   559,   561,   568,   570,   572,   574,   581,
-     585,   589,   593,   605,   609,   611,   615,   617,   621,   623,
-     627,   629,   645,   657,   666,   673,   674,   678,   679,   682,
-     683,   684,   687,   690,   691,   692,   693,   694,   695,   696,
-     699,   701,   705,   706,   709,   710,   713,   714,   717,   718,
-     721,   722,   723,   734,   742,   749,   750,   751,   754,   757,
-     761,   762,   766,   767,   768,   771,   774,   778,   779,   782,
-     784,   786,   788,   792,   793,   796,   798,   802,   803,   804,
-     807,   808,   811,   813,   816,   818,   821,   823,   827,   831,
-     835,   836,   837,   840,   842,   846,   850,   852,   854,   863,
-     865,   869,   871,   873,   875,   878,   880,   884,   886,   888,
-     894,   896,   899,   903,   906,   908,   912,   914,   917,   927,
-     931,   956,   960,   964,   968,   970,   972,   974,   976,   981,
-     982,   983,   984,   985,   986,   987,   988,   989,   990,   991,
-     992,   993,   994,   995,   996,   997,   998,   999,  1000,  1001,
-    1002,  1003,  1004,  1005,  1006,  1007,  1008,  1009,  1010,  1011,
-    1014,  1018,  1020,  1022,  1024,  1026,  1028,  1030,  1032,  1034,
-    1036,  1038,  1039,  1041,  1043,  1045,  1049,  1050,  1051,  1052,
-    1053,  1055,  1057,  1059,  1061,  1063,  1068,  1070,  1072,  1075,
-    1076,  1079,  1080,  1083,  1086,  1088,  1096,  1099,  1100,  1103,
-    1105,  1109,  1111,  1115,  1117,  1121,  1123,  1127,  1131,  1134,
-    1137,  1141,  1144,  1146,  1150,  1152,  1160,  1163,  1165,  1169,
-    1170,  1173,  1174,  1188,  1191,  1194,  1196,  1200,  1202,  1204,
-    1206,  1208,  1210,  1212,  1214,  1216,  1220,  1222,  1226,  1228,
-    1230,  1232,  1244,  1246,  1250,  1252,  1256,  1258,  1262,  1266,
-    1270,  1272,  1274,  1278,  1280,  1287,  1290,  1294,  1296,  1298,
-    1302,  1306,  1307,  1310,  1312,  1315,  1317,  1319,  1321,  1331,
-    1334,  1336,  1340,  1342,  1346,  1348,  1350,  1354,  1358,  1360,
-    1363,  1367,  1379,  1382,  1388,  1391,  1392,  1395,  1396,  1399,
-    1405,  1412,  1418,  1421,  1424,  1427,  1430,  1433,  1436,  1437,
-    1440,  1441,  1442,  1443,  1444,  1445,  1446,  1447,  1448,  1449,
-    1450,  1451,  1452,  1456,  1459,  1461,  1465,  1467,  1469,  1471,
-    1473,  1475,  1477,  1479,  1483,  1486,  1487,  1490,  1493,  1494,
-    1495,  1498,  1499,  1502,  1503,  1506,  1509,  1510,  1513,  1516,
-    1517,  1520,  1523,  1526,  1527,  1530,  1531,  1534,  1536,  1539,
-    1540,  1541,  1542,  1543,  1544,  1545,  1546,  1547,  1553,  1555,
-    1556,  1557,  1558,  1559,  1560,  1561,  1562,  1563,  1566,  1569,
-    1572,  1575,  1576,  1579,  1580,  1583,  1584,  1587,  1588,  1591,
-    1594,  1597,  1600,  1601,  1604,  1606,  1607,  1608,  1609,  1612,
-    1613,  1616,  1619,  1622,  1623,  1626,  1627,  1628,  1629,  1632,
-    1635,  1638,  1639,  1642,  1643,  1644,  1647,  1651,  1655,  1659,
-    1663,  1667,  1668,  1669,  1670,  1671,  1672,  1673,  1674,  1675,
-    1676,  1677,  1678,  1679,  1680,  1681,  1682,  1683,  1684,  1685,
-    1686,  1687,  1688,  1689,  1690,  1691,  1692,  1693,  1694,  1695,
-    1696,  1697,  1698,  1699,  1700,  1701,  1702,  1703,  1704,  1705,
-    1706,  1707,  1708,  1709,  1710,  1711,  1712,  1713,  1714,  1715,
-    1716,  1717,  1718,  1719,  1720,  1721,  1722,  1723,  1724,  1725,
-    1726,  1727,  1728,  1729,  1730,  1731,  1732,  1733,  1734,  1735,
-    1736,  1737,  1738,  1739,  1740,  1741,  1742,  1743
+       0,   323,   323,   324,   327,   342,   345,   346,   347,   350,
+     353,   355,   359,   363,   365,   370,   374,   376,   380,   382,
+     384,   385,   386,   387,   390,   392,   400,   402,   406,   410,
+     412,   416,   417,   418,   421,   422,   423,   426,   430,   431,
+     432,   435,   438,   441,   442,   443,   446,   449,   450,   451,
+     454,   457,   458,   459,   465,   466,   469,   470,   473,   474,
+     477,   480,   483,   484,   485,   488,   489,   492,   493,   496,
+     502,   503,   508,   509,   512,   515,   518,   521,   522,   525,
+     526,   529,   530,   534,   535,   538,   541,   545,   548,   549,
+     550,   551,   552,   561,   563,   570,   572,   574,   576,   583,
+     587,   591,   595,   607,   611,   613,   617,   619,   623,   625,
+     629,   631,   647,   659,   668,   675,   676,   680,   681,   684,
+     685,   686,   689,   692,   693,   694,   695,   696,   697,   698,
+     701,   703,   707,   708,   711,   712,   715,   716,   719,   720,
+     723,   724,   725,   736,   744,   751,   752,   753,   756,   759,
+     763,   764,   768,   769,   770,   773,   776,   780,   781,   784,
+     786,   788,   790,   794,   795,   798,   800,   804,   805,   806,
+     809,   810,   813,   815,   818,   820,   823,   825,   829,   833,
+     837,   838,   839,   842,   844,   848,   852,   854,   856,   865,
+     867,   871,   873,   875,   877,   880,   882,   886,   888,   890,
+     896,   898,   901,   905,   908,   910,   914,   916,   919,   929,
+     933,   958,   962,   966,   970,   972,   974,   976,   978,   983,
+     984,   985,   986,   987,   988,   989,   990,   991,   992,   993,
+     994,   995,   996,   997,   998,   999,  1000,  1001,  1002,  1003,
+    1004,  1005,  1006,  1007,  1008,  1009,  1010,  1011,  1012,  1013,
+    1016,  1020,  1022,  1024,  1026,  1028,  1030,  1032,  1034,  1036,
+    1038,  1040,  1041,  1043,  1045,  1047,  1051,  1052,  1053,  1054,
+    1055,  1057,  1059,  1061,  1063,  1065,  1070,  1072,  1074,  1077,
+    1078,  1081,  1082,  1085,  1088,  1090,  1098,  1101,  1102,  1105,
+    1107,  1111,  1113,  1117,  1119,  1123,  1125,  1129,  1133,  1136,
+    1139,  1143,  1146,  1148,  1152,  1154,  1162,  1165,  1167,  1171,
+    1172,  1175,  1176,  1190,  1193,  1196,  1198,  1202,  1204,  1206,
+    1208,  1210,  1212,  1214,  1216,  1218,  1222,  1224,  1228,  1230,
+    1232,  1234,  1246,  1248,  1252,  1254,  1258,  1260,  1264,  1268,
+    1272,  1274,  1276,  1280,  1282,  1289,  1292,  1296,  1298,  1300,
+    1304,  1308,  1309,  1312,  1314,  1317,  1319,  1321,  1323,  1333,
+    1336,  1338,  1342,  1344,  1348,  1350,  1352,  1356,  1360,  1362,
+    1365,  1369,  1381,  1384,  1390,  1393,  1394,  1397,  1398,  1401,
+    1407,  1414,  1420,  1423,  1426,  1429,  1432,  1435,  1438,  1439,
+    1442,  1443,  1444,  1445,  1446,  1447,  1448,  1449,  1450,  1451,
+    1452,  1453,  1454,  1458,  1461,  1463,  1467,  1469,  1471,  1473,
+    1475,  1477,  1479,  1481,  1485,  1488,  1489,  1492,  1495,  1496,
+    1497,  1500,  1501,  1504,  1505,  1508,  1511,  1512,  1515,  1518,
+    1519,  1522,  1525,  1528,  1529,  1532,  1533,  1536,  1538,  1541,
+    1542,  1543,  1544,  1545,  1546,  1547,  1548,  1549,  1555,  1557,
+    1558,  1559,  1560,  1561,  1562,  1563,  1564,  1565,  1568,  1571,
+    1574,  1577,  1578,  1581,  1582,  1585,  1586,  1589,  1590,  1593,
+    1596,  1599,  1602,  1603,  1606,  1608,  1609,  1610,  1611,  1614,
+    1615,  1618,  1621,  1624,  1625,  1628,  1629,  1630,  1631,  1634,
+    1637,  1640,  1641,  1644,  1645,  1646,  1649,  1653,  1657,  1661,
+    1665,  1669,  1670,  1671,  1672,  1673,  1674,  1675,  1676,  1677,
+    1678,  1679,  1680,  1681,  1682,  1683,  1684,  1685,  1686,  1687,
+    1688,  1689,  1690,  1691,  1692,  1693,  1694,  1695,  1696,  1697,
+    1698,  1699,  1700,  1701,  1702,  1703,  1704,  1705,  1706,  1707,
+    1708,  1709,  1710,  1711,  1712,  1713,  1714,  1715,  1716,  1717,
+    1718,  1719,  1720,  1721,  1722,  1723,  1724,  1725,  1726,  1727,
+    1728,  1729,  1730,  1731,  1732,  1733,  1734,  1735,  1736,  1737,
+    1738,  1739,  1740,  1741,  1742,  1743,  1744,  1745
   };
 
   // Print the state stack on the debug stream.
@@ -9444,8 +9451,8 @@ namespace yy {
 
 
 } // yy
-#line 9446 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:1167
-#line 1745 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:1168
+#line 9453 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:1167
+#line 1747 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:1168
 
 
 
@@ -9458,7 +9465,7 @@ namespace yy {
         context.location.step();
         // Lexer
 
-#line 9462 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9469 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 {
 	char yych;
 	unsigned int yyaccept = 0;
@@ -9558,25 +9565,25 @@ namespace yy {
 	}
 yy2:
 	++context.cursor;
-#line 9579 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9587 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_END_OF_FILE(context.location); }
-#line 9564 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9571 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy4:
 	++context.cursor;
 yy5:
-#line 9606 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9614 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ std::cerr << "Ignoring unknown symbol: " <<  static_cast<int>(*start) << std::endl; return yylex(context); }
-#line 9570 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9577 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy6:
 	++context.cursor;
-#line 9583 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9591 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); context.location.columns(); return yylex(context); }
-#line 9575 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9582 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy8:
 	++context.cursor;
-#line 9582 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9590 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); context.location.lines();   return yylex(context); }
-#line 9580 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9587 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy10:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -9585,9 +9592,9 @@ yy10:
 	}
 yy11:
 	++context.cursor;
-#line 9601 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9609 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXCLAMATION_MARK (context.location); }
-#line 9591 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9598 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy13:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -9685,50 +9692,60 @@ yy16:
 	}
 yy18:
 	++context.cursor;
-#line 9591 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9599 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OPEN_PARENTHESIS (context.location); }
-#line 9691 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9698 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy20:
 	++context.cursor;
-#line 9592 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9600 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CLOSE_PARENTHESIS (context.location); }
-#line 9696 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9703 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy22:
 	++context.cursor;
-#line 9597 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9605 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_COMMA (context.location); }
-#line 9701 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9708 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy24:
 	yych = *++context.cursor;
 	switch (yych) {
 	case '-':	goto yy90;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':	goto yy93;
 	default:	goto yy25;
 	}
 yy25:
-#line 9598 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9606 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_HYPHEN_MINUS (context.location); }
-#line 9711 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9728 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy26:
 	yych = *++context.cursor;
 	switch (yych) {
-	case '.':	goto yy93;
+	case '.':	goto yy96;
 	default:	goto yy27;
 	}
 yy27:
-#line 9599 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9607 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_FULL_STOP (context.location); }
-#line 9721 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9738 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy28:
 	yych = *++context.cursor;
 	switch (yych) {
-	case '*':	goto yy95;
+	case '*':	goto yy98;
 	default:	goto yy5;
 	}
 yy29:
 	yyaccept = 0;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '.':	goto yy97;
+	case '.':	goto yy100;
 	case '0':
 	case '1':
 	case '2':
@@ -9742,102 +9759,102 @@ yy29:
 	default:	goto yy31;
 	}
 yy31:
-#line 9566 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9573 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_number(std::stoll(std::string(start, context.cursor)), context.location); }
-#line 9748 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9765 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy32:
 	yyaccept = 1;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case ':':	goto yy99;
+	case ':':	goto yy102;
 	default:	goto yy33;
 	}
 yy33:
-#line 9595 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9603 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_COLON (context.location); }
-#line 9759 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9776 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy34:
 	++context.cursor;
-#line 9596 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9604 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_SEMICOLON (context.location); }
-#line 9764 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9781 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy36:
 	++context.cursor;
-#line 9602 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9610 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_LESS_THAN (context.location); }
-#line 9769 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9786 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy38:
 	++context.cursor;
-#line 9605 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9613 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_AT (context.location); }
-#line 9774 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9791 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy40:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'B':	goto yy101;
-	case 'L':	goto yy102;
-	case 'N':	goto yy103;
-	case 'P':	goto yy104;
-	case 'U':	goto yy105;
+	case 'B':	goto yy104;
+	case 'L':	goto yy105;
+	case 'N':	goto yy106;
+	case 'P':	goto yy107;
+	case 'U':	goto yy108;
 	default:	goto yy49;
 	}
 yy41:
-#line 9573 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9581 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(santize_name(std::string(start, context.cursor)), context.location); }
-#line 9789 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9806 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy42:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy106;
-	case 'I':	goto yy107;
-	case 'M':	goto yy108;
-	case 'O':	goto yy109;
-	case 'Y':	goto yy110;
+	case 'E':	goto yy109;
+	case 'I':	goto yy110;
+	case 'M':	goto yy111;
+	case 'O':	goto yy112;
+	case 'Y':	goto yy113;
 	default:	goto yy49;
 	}
 yy43:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'H':	goto yy112;
-	case 'L':	goto yy113;
-	case 'O':	goto yy114;
+	case 'H':	goto yy115;
+	case 'L':	goto yy116;
+	case 'O':	goto yy117;
 	default:	goto yy49;
 	}
 yy44:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'A':	goto yy115;
-	case 'E':	goto yy116;
-	case 'U':	goto yy117;
+	case 'A':	goto yy118;
+	case 'E':	goto yy119;
+	case 'U':	goto yy120;
 	default:	goto yy49;
 	}
 yy45:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'M':	goto yy118;
-	case 'N':	goto yy119;
-	case 'X':	goto yy120;
+	case 'M':	goto yy121;
+	case 'N':	goto yy122;
+	case 'X':	goto yy123;
 	default:	goto yy49;
 	}
 yy46:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'A':	goto yy121;
-	case 'R':	goto yy122;
+	case 'A':	goto yy124;
+	case 'R':	goto yy125;
 	default:	goto yy49;
 	}
 yy47:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'e':	goto yy123;
-	case 'r':	goto yy124;
+	case 'e':	goto yy126;
+	case 'r':	goto yy127;
 	default:	goto yy49;
 	}
 yy48:
@@ -9845,7 +9862,7 @@ yy48:
 	yych = *(YYMARKER = ++context.cursor);
 yy49:
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -9915,125 +9932,125 @@ yy50:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'A':	goto yy125;
-	case 'D':	goto yy126;
-	case 'M':	goto yy127;
-	case 'N':	goto yy128;
-	case 'S':	goto yy129;
+	case 'A':	goto yy128;
+	case 'D':	goto yy129;
+	case 'M':	goto yy130;
+	case 'N':	goto yy131;
+	case 'S':	goto yy132;
 	default:	goto yy49;
 	}
 yy51:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'A':	goto yy130;
-	case 'I':	goto yy131;
+	case 'A':	goto yy133;
+	case 'I':	goto yy134;
 	default:	goto yy49;
 	}
 yy52:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'O':	goto yy132;
-	case 'U':	goto yy133;
-	case 'u':	goto yy134;
+	case 'O':	goto yy135;
+	case 'U':	goto yy136;
+	case 'u':	goto yy137;
 	default:	goto yy49;
 	}
 yy53:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'B':	goto yy135;
-	case 'C':	goto yy136;
-	case 'F':	goto yy137;
-	case 'I':	goto yy139;
-	case 'P':	goto yy140;
-	case 'b':	goto yy141;
+	case 'B':	goto yy138;
+	case 'C':	goto yy139;
+	case 'F':	goto yy140;
+	case 'I':	goto yy142;
+	case 'P':	goto yy143;
+	case 'b':	goto yy144;
 	default:	goto yy49;
 	}
 yy54:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'A':	goto yy142;
-	case 'D':	goto yy143;
-	case 'L':	goto yy144;
-	case 'R':	goto yy145;
-	case 'r':	goto yy146;
+	case 'A':	goto yy145;
+	case 'D':	goto yy146;
+	case 'L':	goto yy147;
+	case 'R':	goto yy148;
+	case 'r':	goto yy149;
 	default:	goto yy49;
 	}
 yy55:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy147;
+	case 'E':	goto yy150;
 	default:	goto yy49;
 	}
 yy56:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy148;
-	case 'I':	goto yy149;
-	case 'T':	goto yy150;
-	case 'Y':	goto yy151;
+	case 'E':	goto yy151;
+	case 'I':	goto yy152;
+	case 'T':	goto yy153;
+	case 'Y':	goto yy154;
 	default:	goto yy49;
 	}
 yy57:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '6':	goto yy152;
-	case 'A':	goto yy153;
-	case 'I':	goto yy154;
-	case 'R':	goto yy155;
-	case 'Y':	goto yy156;
-	case 'e':	goto yy157;
+	case '6':	goto yy155;
+	case 'A':	goto yy156;
+	case 'I':	goto yy157;
+	case 'R':	goto yy158;
+	case 'Y':	goto yy159;
+	case 'e':	goto yy160;
 	default:	goto yy49;
 	}
 yy58:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy158;
-	case 'T':	goto yy159;
-	case 'n':	goto yy160;
+	case 'N':	goto yy161;
+	case 'T':	goto yy162;
+	case 'n':	goto yy163;
 	default:	goto yy49;
 	}
 yy59:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'i':	goto yy161;
+	case 'i':	goto yy164;
 	default:	goto yy49;
 	}
 yy60:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy162;
+	case 'I':	goto yy165;
 	default:	goto yy49;
 	}
 yy61:
 	++context.cursor;
-#line 9593 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9601 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OPEN_SQUARE_BRACKET (context.location); }
-#line 10022 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10039 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy63:
 	++context.cursor;
-#line 9594 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9602 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CLOSE_SQUARE_BRACKET (context.location); }
-#line 10027 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10044 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy65:
 	++context.cursor;
-#line 9603 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9611 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ACCENT (context.location); }
-#line 10032 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10049 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy67:
 	yyaccept = 3;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy163;
+	case '-':	goto yy166;
 	case '0':
 	case '1':
 	case '2':
@@ -10100,24 +10117,24 @@ yy67:
 	default:	goto yy69;
 	}
 yy69:
-#line 9574 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9582 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(santize_name(std::string(start, context.cursor)), context.location); }
-#line 10106 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10123 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy70:
 	++context.cursor;
-#line 9589 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9597 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OPEN_BRACE (context.location); }
-#line 10111 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10128 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy72:
 	++context.cursor;
-#line 9600 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9608 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_VERTICAL_LINE (context.location); }
-#line 10116 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10133 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy74:
 	++context.cursor;
-#line 9590 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9598 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CLOSE_BRACE (context.location); }
-#line 10121 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10138 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy76:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -10125,16 +10142,16 @@ yy76:
 	default:	goto yy77;
 	}
 yy77:
-#line 9568 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9576 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_cstring(std::string(start, context.cursor), context.location); }
-#line 10131 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10148 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy78:
 	++context.cursor;
 	goto yy77;
 yy79:
 	yych = *++context.cursor;
 	switch (yych) {
-	case '"':	goto yy164;
+	case '"':	goto yy167;
 	case '\\':	goto yy79;
 	default:	goto yy13;
 	}
@@ -10142,7 +10159,7 @@ yy81:
 	yyaccept = 4;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy166;
+	case '-':	goto yy169;
 	case '0':
 	case '1':
 	case '2':
@@ -10209,14 +10226,14 @@ yy81:
 	default:	goto yy83;
 	}
 yy83:
-#line 9575 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9583 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_typefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
-#line 10215 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10232 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy84:
 	yyaccept = 5;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy167;
+	case '-':	goto yy170;
 	case '0':
 	case '1':
 	case '2':
@@ -10283,21 +10300,21 @@ yy84:
 	default:	goto yy86;
 	}
 yy86:
-#line 9576 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9584 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_valuefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
-#line 10289 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10306 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy87:
 	yych = *++context.cursor;
 	switch (yych) {
-	case 'B':	goto yy168;
-	case 'H':	goto yy170;
+	case 'B':	goto yy171;
+	case 'H':	goto yy173;
 	default:	goto yy77;
 	}
 yy88:
 	yych = *++context.cursor;
 	switch (yych) {
 	case '"':	goto yy76;
-	case '\'':	goto yy172;
+	case '\'':	goto yy175;
 	case '0':
 	case '1':
 	case '2':
@@ -10329,30 +10346,14 @@ yy90:
 	switch (yych) {
 	case '\n':
 	case '\r':	goto yy92;
-	case '-':	goto yy173;
+	case '-':	goto yy176;
 	default:	goto yy90;
 	}
 yy92:
-#line 9560 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9567 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return yylex(context); }
-#line 10339 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10356 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy93:
-	yych = *++context.cursor;
-	switch (yych) {
-	case '.':	goto yy174;
-	default:	goto yy94;
-	}
-yy94:
-#line 9588 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_RANGE (context.location); }
-#line 10349 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy95:
-	yych = *++context.cursor;
-	switch (yych) {
-	case '*':	goto yy176;
-	default:	goto yy95;
-	}
-yy97:
 	yych = *++context.cursor;
 	switch (yych) {
 	case '0':
@@ -10364,116 +10365,27 @@ yy97:
 	case '6':
 	case '7':
 	case '8':
-	case '9':	goto yy177;
-	default:	goto yy98;
+	case '9':	goto yy93;
+	default:	goto yy95;
 	}
-yy98:
-	context.cursor = YYMARKER;
-	switch (yyaccept) {
-	case 0: 	goto yy31;
-	case 1: 	goto yy33;
-	case 2: 	goto yy41;
-	case 3: 	goto yy69;
-	case 4: 	goto yy83;
-	case 5: 	goto yy86;
-	case 6: 	goto yy92;
-	case 7: 	goto yy111;
-	case 8: 	goto yy138;
-	case 9: 	goto yy184;
-	case 10: 	goto yy186;
-	case 11: 	goto yy191;
-	case 12: 	goto yy205;
-	case 13: 	goto yy222;
-	case 14: 	goto yy224;
-	case 15: 	goto yy235;
-	case 16: 	goto yy244;
-	case 17: 	goto yy279;
-	case 18: 	goto yy292;
-	case 19: 	goto yy306;
-	case 20: 	goto yy319;
-	case 21: 	goto yy324;
-	case 22: 	goto yy329;
-	case 23: 	goto yy331;
-	case 24: 	goto yy333;
-	case 25: 	goto yy345;
-	case 26: 	goto yy351;
-	case 27: 	goto yy357;
-	case 28: 	goto yy374;
-	case 29: 	goto yy392;
-	case 30: 	goto yy411;
-	case 31: 	goto yy420;
-	case 32: 	goto yy428;
-	case 33: 	goto yy441;
-	case 34: 	goto yy463;
-	case 35: 	goto yy476;
-	case 36: 	goto yy478;
-	case 37: 	goto yy484;
-	case 38: 	goto yy496;
-	case 39: 	goto yy503;
-	case 40: 	goto yy508;
-	case 41: 	goto yy513;
-	case 42: 	goto yy522;
-	case 43: 	goto yy524;
-	case 44: 	goto yy529;
-	case 45: 	goto yy536;
-	case 46: 	goto yy540;
-	case 47: 	goto yy543;
-	case 48: 	goto yy545;
-	case 49: 	goto yy556;
-	case 50: 	goto yy572;
-	case 51: 	goto yy574;
-	case 52: 	goto yy578;
-	case 53: 	goto yy581;
-	case 54: 	goto yy588;
-	case 55: 	goto yy590;
-	case 56: 	goto yy592;
-	case 57: 	goto yy600;
-	case 58: 	goto yy606;
-	case 59: 	goto yy608;
-	case 60: 	goto yy621;
-	case 61: 	goto yy623;
-	case 62: 	goto yy625;
-	case 63: 	goto yy627;
-	case 64: 	goto yy631;
-	case 65: 	goto yy640;
-	case 66: 	goto yy653;
-	case 67: 	goto yy658;
-	case 68: 	goto yy666;
-	case 69: 	goto yy669;
-	case 70: 	goto yy673;
-	case 71: 	goto yy679;
-	case 72: 	goto yy694;
-	case 73: 	goto yy700;
-	case 74: 	goto yy702;
-	case 75: 	goto yy704;
-	case 76: 	goto yy721;
-	case 77: 	goto yy734;
-	case 78: 	goto yy736;
-	case 79: 	goto yy738;
-	case 80: 	goto yy741;
-	case 81: 	goto yy747;
-	case 82: 	goto yy756;
-	case 83: 	goto yy758;
-	case 84: 	goto yy761;
-	case 85: 	goto yy764;
-	case 86: 	goto yy767;
-	case 87: 	goto yy772;
-	case 88: 	goto yy776;
-	case 89: 	goto yy781;
-	case 90: 	goto yy788;
-	case 91: 	goto yy790;
-	case 92: 	goto yy793;
-	case 93: 	goto yy796;
-	case 94: 	goto yy799;
-	case 95: 	goto yy801;
-	case 96: 	goto yy803;
-	case 97: 	goto yy805;
-	default:	goto yy807;
-	}
-yy99:
+yy95:
+#line 9574 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_negativenumber(std::stoll(std::string(start, context.cursor)), context.location); }
+#line 10375 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy96:
 	yych = *++context.cursor;
 	switch (yych) {
-	case '=':	goto yy180;
+	case '.':	goto yy177;
+	default:	goto yy97;
+	}
+yy97:
+#line 9596 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_RANGE (context.location); }
+#line 10385 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy98:
+	yych = *++context.cursor;
+	switch (yych) {
+	case '*':	goto yy179;
 	default:	goto yy98;
 	}
 yy100:
@@ -10488,6 +10400,130 @@ yy100:
 	case '6':
 	case '7':
 	case '8':
+	case '9':	goto yy180;
+	default:	goto yy101;
+	}
+yy101:
+	context.cursor = YYMARKER;
+	switch (yyaccept) {
+	case 0: 	goto yy31;
+	case 1: 	goto yy33;
+	case 2: 	goto yy41;
+	case 3: 	goto yy69;
+	case 4: 	goto yy83;
+	case 5: 	goto yy86;
+	case 6: 	goto yy92;
+	case 7: 	goto yy114;
+	case 8: 	goto yy141;
+	case 9: 	goto yy187;
+	case 10: 	goto yy189;
+	case 11: 	goto yy194;
+	case 12: 	goto yy208;
+	case 13: 	goto yy225;
+	case 14: 	goto yy227;
+	case 15: 	goto yy238;
+	case 16: 	goto yy247;
+	case 17: 	goto yy282;
+	case 18: 	goto yy295;
+	case 19: 	goto yy309;
+	case 20: 	goto yy322;
+	case 21: 	goto yy327;
+	case 22: 	goto yy332;
+	case 23: 	goto yy334;
+	case 24: 	goto yy336;
+	case 25: 	goto yy348;
+	case 26: 	goto yy354;
+	case 27: 	goto yy360;
+	case 28: 	goto yy377;
+	case 29: 	goto yy395;
+	case 30: 	goto yy414;
+	case 31: 	goto yy423;
+	case 32: 	goto yy431;
+	case 33: 	goto yy444;
+	case 34: 	goto yy466;
+	case 35: 	goto yy479;
+	case 36: 	goto yy481;
+	case 37: 	goto yy487;
+	case 38: 	goto yy499;
+	case 39: 	goto yy506;
+	case 40: 	goto yy511;
+	case 41: 	goto yy516;
+	case 42: 	goto yy525;
+	case 43: 	goto yy527;
+	case 44: 	goto yy532;
+	case 45: 	goto yy539;
+	case 46: 	goto yy543;
+	case 47: 	goto yy546;
+	case 48: 	goto yy548;
+	case 49: 	goto yy559;
+	case 50: 	goto yy575;
+	case 51: 	goto yy577;
+	case 52: 	goto yy581;
+	case 53: 	goto yy584;
+	case 54: 	goto yy591;
+	case 55: 	goto yy593;
+	case 56: 	goto yy595;
+	case 57: 	goto yy603;
+	case 58: 	goto yy609;
+	case 59: 	goto yy611;
+	case 60: 	goto yy624;
+	case 61: 	goto yy626;
+	case 62: 	goto yy628;
+	case 63: 	goto yy630;
+	case 64: 	goto yy634;
+	case 65: 	goto yy643;
+	case 66: 	goto yy656;
+	case 67: 	goto yy661;
+	case 68: 	goto yy669;
+	case 69: 	goto yy672;
+	case 70: 	goto yy676;
+	case 71: 	goto yy682;
+	case 72: 	goto yy697;
+	case 73: 	goto yy703;
+	case 74: 	goto yy705;
+	case 75: 	goto yy707;
+	case 76: 	goto yy724;
+	case 77: 	goto yy737;
+	case 78: 	goto yy739;
+	case 79: 	goto yy741;
+	case 80: 	goto yy744;
+	case 81: 	goto yy750;
+	case 82: 	goto yy759;
+	case 83: 	goto yy761;
+	case 84: 	goto yy764;
+	case 85: 	goto yy767;
+	case 86: 	goto yy770;
+	case 87: 	goto yy775;
+	case 88: 	goto yy779;
+	case 89: 	goto yy784;
+	case 90: 	goto yy791;
+	case 91: 	goto yy793;
+	case 92: 	goto yy796;
+	case 93: 	goto yy799;
+	case 94: 	goto yy802;
+	case 95: 	goto yy804;
+	case 96: 	goto yy806;
+	case 97: 	goto yy808;
+	default:	goto yy810;
+	}
+yy102:
+	yych = *++context.cursor;
+	switch (yych) {
+	case '=':	goto yy183;
+	default:	goto yy101;
+	}
+yy103:
+	yych = *++context.cursor;
+	switch (yych) {
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
 	case '9':
 	case 'A':
 	case 'B':
@@ -10542,76 +10578,76 @@ yy100:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy98;
-	}
-yy101:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'S':	goto yy182;
-	default:	goto yy49;
-	}
-yy102:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'L':	goto yy183;
-	default:	goto yy49;
-	}
-yy103:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'Y':	goto yy185;
-	default:	goto yy49;
+	default:	goto yy101;
 	}
 yy104:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'P':	goto yy187;
+	case 'S':	goto yy185;
 	default:	goto yy49;
 	}
 yy105:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy188;
+	case 'L':	goto yy186;
 	default:	goto yy49;
 	}
 yy106:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'G':	goto yy189;
+	case 'Y':	goto yy188;
 	default:	goto yy49;
 	}
 yy107:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy190;
+	case 'P':	goto yy190;
 	default:	goto yy49;
 	}
 yy108:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'P':	goto yy192;
+	case 'T':	goto yy191;
 	default:	goto yy49;
 	}
 yy109:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'O':	goto yy193;
+	case 'G':	goto yy192;
 	default:	goto yy49;
 	}
 yy110:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'T':	goto yy193;
+	default:	goto yy49;
+	}
+yy111:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'P':	goto yy195;
+	default:	goto yy49;
+	}
+yy112:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'O':	goto yy196;
+	default:	goto yy49;
+	}
+yy113:
 	yyaccept = 7;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -10675,200 +10711,200 @@ yy110:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy111;
-	}
-yy111:
-#line 9474 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_BY (context.location); }
-#line 10684 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy112:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'A':	goto yy194;
-	case 'O':	goto yy195;
-	default:	goto yy49;
-	}
-yy113:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'A':	goto yy196;
-	default:	goto yy49;
+	default:	goto yy114;
 	}
 yy114:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'M':	goto yy197;
-	case 'N':	goto yy198;
-	default:	goto yy49;
-	}
+#line 9481 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_BY (context.location); }
+#line 10720 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy115:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy199;
+	case 'A':	goto yy197;
+	case 'O':	goto yy198;
 	default:	goto yy49;
 	}
 yy116:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'F':	goto yy200;
+	case 'A':	goto yy199;
 	default:	goto yy49;
 	}
 yy117:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'R':	goto yy201;
+	case 'M':	goto yy200;
+	case 'N':	goto yy201;
 	default:	goto yy49;
 	}
 yy118:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'B':	goto yy202;
+	case 'T':	goto yy202;
 	default:	goto yy49;
 	}
 yy119:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'C':	goto yy203;
-	case 'D':	goto yy204;
-	case 'U':	goto yy206;
+	case 'F':	goto yy203;
 	default:	goto yy49;
 	}
 yy120:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'C':	goto yy207;
-	case 'P':	goto yy208;
-	case 'T':	goto yy209;
+	case 'R':	goto yy204;
 	default:	goto yy49;
 	}
 yy121:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'L':	goto yy210;
+	case 'B':	goto yy205;
 	default:	goto yy49;
 	}
 yy122:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'O':	goto yy211;
+	case 'C':	goto yy206;
+	case 'D':	goto yy207;
+	case 'U':	goto yy209;
 	default:	goto yy49;
 	}
 yy123:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'n':	goto yy212;
+	case 'C':	goto yy210;
+	case 'P':	goto yy211;
+	case 'T':	goto yy212;
 	default:	goto yy49;
 	}
 yy124:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'a':	goto yy213;
+	case 'L':	goto yy213;
 	default:	goto yy49;
 	}
 yy125:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '5':	goto yy214;
+	case 'O':	goto yy214;
 	default:	goto yy49;
 	}
 yy126:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy215;
+	case 'n':	goto yy215;
 	default:	goto yy49;
 	}
 yy127:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'P':	goto yy216;
+	case 'a':	goto yy216;
 	default:	goto yy49;
 	}
 yy128:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'C':	goto yy217;
-	case 'S':	goto yy218;
-	case 'T':	goto yy219;
+	case '5':	goto yy217;
 	default:	goto yy49;
 	}
 yy129:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'O':	goto yy220;
+	case 'E':	goto yy218;
 	default:	goto yy49;
 	}
 yy130:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'X':	goto yy221;
+	case 'P':	goto yy219;
 	default:	goto yy49;
 	}
 yy131:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy223;
+	case 'C':	goto yy220;
+	case 'S':	goto yy221;
+	case 'T':	goto yy222;
 	default:	goto yy49;
 	}
 yy132:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy225;
+	case 'O':	goto yy223;
 	default:	goto yy49;
 	}
 yy133:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'L':	goto yy226;
+	case 'X':	goto yy224;
 	default:	goto yy49;
 	}
 yy134:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'm':	goto yy227;
+	case 'N':	goto yy226;
 	default:	goto yy49;
 	}
 yy135:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'J':	goto yy228;
+	case 'T':	goto yy228;
 	default:	goto yy49;
 	}
 yy136:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy229;
+	case 'L':	goto yy229;
 	default:	goto yy49;
 	}
 yy137:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'm':	goto yy230;
+	default:	goto yy49;
+	}
+yy138:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'J':	goto yy231;
+	default:	goto yy49;
+	}
+yy139:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'T':	goto yy232;
+	default:	goto yy49;
+	}
+yy140:
 	yyaccept = 8;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -10932,260 +10968,184 @@ yy137:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy138;
-	}
-yy138:
-#line 9522 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_OF (context.location); }
-#line 10941 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy139:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'D':	goto yy230;
-	default:	goto yy49;
-	}
-yy140:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'T':	goto yy231;
-	default:	goto yy49;
+	default:	goto yy141;
 	}
 yy141:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'j':	goto yy232;
-	default:	goto yy49;
-	}
+#line 9529 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_OF (context.location); }
+#line 10977 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy142:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy233;
+	case 'D':	goto yy233;
 	default:	goto yy49;
 	}
 yy143:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'V':	goto yy234;
+	case 'T':	goto yy234;
 	default:	goto yy49;
 	}
 yy144:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'U':	goto yy236;
+	case 'j':	goto yy235;
 	default:	goto yy49;
 	}
 yy145:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy237;
-	case 'I':	goto yy238;
+	case 'T':	goto yy236;
 	default:	goto yy49;
 	}
 yy146:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'i':	goto yy239;
+	case 'V':	goto yy237;
 	default:	goto yy49;
 	}
 yy147:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'A':	goto yy240;
-	case 'L':	goto yy241;
+	case 'U':	goto yy239;
 	default:	goto yy49;
 	}
 yy148:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'Q':	goto yy242;
-	case 'T':	goto yy243;
+	case 'E':	goto yy240;
+	case 'I':	goto yy241;
 	default:	goto yy49;
 	}
 yy149:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'Z':	goto yy245;
+	case 'i':	goto yy242;
 	default:	goto yy49;
 	}
 yy150:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'R':	goto yy246;
+	case 'A':	goto yy243;
+	case 'L':	goto yy244;
 	default:	goto yy49;
 	}
 yy151:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy247;
+	case 'Q':	goto yy245;
+	case 'T':	goto yy246;
 	default:	goto yy49;
 	}
 yy152:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '1':	goto yy248;
+	case 'Z':	goto yy248;
 	default:	goto yy49;
 	}
 yy153:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'G':	goto yy249;
+	case 'R':	goto yy249;
 	default:	goto yy49;
 	}
 yy154:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'M':	goto yy250;
+	case 'N':	goto yy250;
 	default:	goto yy49;
 	}
 yy155:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'U':	goto yy251;
+	case '1':	goto yy251;
 	default:	goto yy49;
 	}
 yy156:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'P':	goto yy252;
+	case 'G':	goto yy252;
 	default:	goto yy49;
 	}
 yy157:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'l':	goto yy253;
+	case 'M':	goto yy253;
 	default:	goto yy49;
 	}
 yy158:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy254;
+	case 'U':	goto yy254;
 	default:	goto yy49;
 	}
 yy159:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'C':	goto yy255;
-	case 'F':	goto yy256;
+	case 'P':	goto yy255;
 	default:	goto yy49;
 	}
 yy160:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'i':	goto yy257;
+	case 'l':	goto yy256;
 	default:	goto yy49;
 	}
 yy161:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'd':	goto yy258;
-	case 's':	goto yy259;
+	case 'I':	goto yy257;
 	default:	goto yy49;
 	}
 yy162:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy260;
+	case 'C':	goto yy258;
+	case 'F':	goto yy259;
 	default:	goto yy49;
 	}
 yy163:
-	yych = *++context.cursor;
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy67;
-	default:	goto yy98;
+	case 'i':	goto yy260;
+	default:	goto yy49;
 	}
 yy164:
-	yych = *++context.cursor;
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '"':	goto yy164;
-	case '\'':	goto yy78;
-	case '\\':	goto yy79;
-	default:	goto yy13;
+	case 'd':	goto yy261;
+	case 's':	goto yy262;
+	default:	goto yy49;
+	}
+yy165:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'T':	goto yy263;
+	default:	goto yy49;
 	}
 yy166:
 	yych = *++context.cursor;
@@ -11252,10 +11212,86 @@ yy166:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy81;
-	default:	goto yy98;
+	case 'z':	goto yy67;
+	default:	goto yy101;
 	}
 yy167:
+	yych = *++context.cursor;
+	switch (yych) {
+	case '"':	goto yy167;
+	case '\'':	goto yy78;
+	case '\\':	goto yy79;
+	default:	goto yy13;
+	}
+yy169:
+	yych = *++context.cursor;
+	switch (yych) {
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy81;
+	default:	goto yy101;
+	}
+yy170:
 	yych = *++context.cursor;
 	switch (yych) {
 	case '0':
@@ -11321,44 +11357,44 @@ yy167:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy84;
-	default:	goto yy98;
+	default:	goto yy101;
 	}
-yy168:
+yy171:
 	++context.cursor;
-#line 9570 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9578 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_bstring(std::string(start + 1, context.cursor - 2), context.location); }
-#line 11331 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy170:
+#line 11367 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy173:
 	++context.cursor;
-#line 9572 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9580 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_hstring(std::string(start + 1, context.cursor - 2), context.location); }
-#line 11336 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy172:
+#line 11372 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy175:
 	yych = *++context.cursor;
 	switch (yych) {
-	case 'H':	goto yy170;
+	case 'H':	goto yy173;
 	default:	goto yy77;
 	}
-yy173:
-	yych = *++context.cursor;
-	switch (yych) {
-	case '\n':
-	case '\r':	goto yy98;
-	case '-':	goto yy261;
-	default:	goto yy90;
-	}
-yy174:
-	++context.cursor;
-#line 9587 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_ELIPSIS (context.location); }
-#line 11355 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy176:
 	yych = *++context.cursor;
 	switch (yych) {
-	case '/':	goto yy263;
-	default:	goto yy95;
+	case '\n':
+	case '\r':	goto yy101;
+	case '-':	goto yy264;
+	default:	goto yy90;
 	}
 yy177:
+	++context.cursor;
+#line 9595 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_ELIPSIS (context.location); }
+#line 11391 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy179:
+	yych = *++context.cursor;
+	switch (yych) {
+	case '/':	goto yy266;
+	default:	goto yy98;
+	}
+yy180:
 	yych = *++context.cursor;
 	switch (yych) {
 	case '0':
@@ -11370,31 +11406,31 @@ yy177:
 	case '6':
 	case '7':
 	case '8':
-	case '9':	goto yy177;
-	default:	goto yy179;
+	case '9':	goto yy180;
+	default:	goto yy182;
 	}
-yy179:
-#line 9565 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context.cursor)), context.location); }
-#line 11380 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy180:
-	++context.cursor;
-#line 9586 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_DEFINED_AS (context.location); }
-#line 11385 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy182:
+#line 9572 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context.cursor)), context.location); }
+#line 11416 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy183:
+	++context.cursor;
+#line 9594 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_DEFINED_AS (context.location); }
+#line 11421 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy185:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy265;
-	case 'T':	goto yy266;
+	case 'E':	goto yy268;
+	case 'T':	goto yy269;
 	default:	goto yy49;
 	}
-yy183:
+yy186:
 	yyaccept = 9;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -11458,17 +11494,17 @@ yy183:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy184;
+	default:	goto yy187;
 	}
-yy184:
-#line 9466 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+yy187:
+#line 9473 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ALL (context.location); }
-#line 11467 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy185:
+#line 11503 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy188:
 	yyaccept = 10;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -11532,379 +11568,379 @@ yy185:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy186;
-	}
-yy186:
-#line 9467 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_ANY (context.location); }
-#line 11541 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy187:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'L':	goto yy267;
-	default:	goto yy49;
-	}
-yy188:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'O':	goto yy268;
-	default:	goto yy49;
+	default:	goto yy189;
 	}
 yy189:
+#line 9474 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_ANY (context.location); }
+#line 11577 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy190:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy269;
+	case 'L':	goto yy270;
 	default:	goto yy49;
 	}
-yy190:
-	yyaccept = 11;
+yy191:
+	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy191;
+	case 'O':	goto yy271;
+	default:	goto yy49;
 	}
-yy191:
-#line 9471 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_BIT (context.location); }
-#line 11636 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy192:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy270;
+	case 'I':	goto yy272;
 	default:	goto yy49;
 	}
 yy193:
-	yyaccept = 2;
+	yyaccept = 11;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'L':	goto yy271;
-	default:	goto yy49;
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy194;
 	}
 yy194:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'R':	goto yy272;
-	default:	goto yy49;
-	}
+#line 9478 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_BIT (context.location); }
+#line 11672 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy195:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy273;
+	case 'S':	goto yy273;
 	default:	goto yy49;
 	}
 yy196:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy274;
+	case 'L':	goto yy274;
 	default:	goto yy49;
 	}
 yy197:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'P':	goto yy275;
+	case 'R':	goto yy275;
 	default:	goto yy49;
 	}
 yy198:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy276;
-	case 'T':	goto yy277;
+	case 'I':	goto yy276;
 	default:	goto yy49;
 	}
 yy199:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy278;
+	case 'S':	goto yy277;
 	default:	goto yy49;
 	}
 yy200:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'A':	goto yy280;
-	case 'I':	goto yy281;
+	case 'P':	goto yy278;
 	default:	goto yy49;
 	}
 yy201:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'A':	goto yy282;
+	case 'S':	goto yy279;
+	case 'T':	goto yy280;
 	default:	goto yy49;
 	}
 yy202:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy283;
+	case 'E':	goto yy281;
 	default:	goto yy49;
 	}
 yy203:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'O':	goto yy284;
+	case 'A':	goto yy283;
+	case 'I':	goto yy284;
 	default:	goto yy49;
 	}
 yy204:
-	yyaccept = 12;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy205;
-	}
-yy205:
-#line 9490 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_END (context.location); }
-#line 11796 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy206:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'M':	goto yy285;
+	case 'A':	goto yy285;
 	default:	goto yy49;
 	}
-yy207:
+yy205:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case 'E':	goto yy286;
 	default:	goto yy49;
 	}
-yy208:
+yy206:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'L':	goto yy287;
-	case 'O':	goto yy288;
+	case 'O':	goto yy287;
 	default:	goto yy49;
 	}
+yy207:
+	yyaccept = 12;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy208;
+	}
+yy208:
+#line 9497 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_END (context.location); }
+#line 11832 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy209:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy289;
+	case 'M':	goto yy288;
 	default:	goto yy49;
 	}
 yy210:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy290;
+	case 'E':	goto yy289;
 	default:	goto yy49;
 	}
 yy211:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'M':	goto yy291;
+	case 'L':	goto yy290;
+	case 'O':	goto yy291;
 	default:	goto yy49;
 	}
 yy212:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'e':	goto yy293;
+	case 'E':	goto yy292;
 	default:	goto yy49;
 	}
 yy213:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'p':	goto yy294;
+	case 'S':	goto yy293;
 	default:	goto yy49;
 	}
 yy214:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy295;
+	case 'M':	goto yy294;
 	default:	goto yy49;
 	}
 yy215:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy296;
+	case 'e':	goto yy296;
 	default:	goto yy49;
 	}
 yy216:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'L':	goto yy297;
-	case 'O':	goto yy298;
+	case 'p':	goto yy297;
 	default:	goto yy49;
 	}
 yy217:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'L':	goto yy299;
+	case 'S':	goto yy298;
 	default:	goto yy49;
 	}
 yy218:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy300;
+	case 'N':	goto yy299;
 	default:	goto yy49;
 	}
 yy219:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy301;
+	case 'L':	goto yy300;
+	case 'O':	goto yy301;
 	default:	goto yy49;
 	}
 yy220:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '6':	goto yy302;
+	case 'L':	goto yy302;
 	default:	goto yy49;
 	}
 yy221:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'T':	goto yy303;
+	default:	goto yy49;
+	}
+yy222:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'E':	goto yy304;
+	default:	goto yy49;
+	}
+yy223:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case '6':	goto yy305;
+	default:	goto yy49;
+	}
+yy224:
 	yyaccept = 13;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -11968,17 +12004,17 @@ yy221:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy222;
+	default:	goto yy225;
 	}
-yy222:
-#line 9513 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+yy225:
+#line 9520 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_MAX (context.location); }
-#line 11977 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy223:
+#line 12013 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy226:
 	yyaccept = 14;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -12041,81 +12077,81 @@ yy223:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	case 'U':	goto yy303;
-	default:	goto yy224;
-	}
-yy224:
-#line 9514 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_MIN (context.location); }
-#line 12051 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy225:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy304;
-	default:	goto yy49;
-	}
-yy226:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'L':	goto yy305;
-	default:	goto yy49;
+	case 'U':	goto yy306;
+	default:	goto yy227;
 	}
 yy227:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'e':	goto yy307;
-	default:	goto yy49;
-	}
+#line 9521 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_MIN (context.location); }
+#line 12087 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy228:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy308;
+	case '-':	goto yy307;
 	default:	goto yy49;
 	}
 yy229:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy309;
+	case 'L':	goto yy308;
 	default:	goto yy49;
 	}
 yy230:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '_':	goto yy310;
+	case 'e':	goto yy310;
 	default:	goto yy49;
 	}
 yy231:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy311;
+	case 'E':	goto yy311;
 	default:	goto yy49;
 	}
 yy232:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'e':	goto yy312;
+	case 'E':	goto yy312;
 	default:	goto yy49;
 	}
 yy233:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy313;
+	case '_':	goto yy313;
 	default:	goto yy49;
 	}
 yy234:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'I':	goto yy314;
+	default:	goto yy49;
+	}
+yy235:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'e':	goto yy315;
+	default:	goto yy49;
+	}
+yy236:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'T':	goto yy316;
+	default:	goto yy49;
+	}
+yy237:
 	yyaccept = 15;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -12179,66 +12215,66 @@ yy234:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy235;
-	}
-yy235:
-#line 9526 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_PDV (context.location); }
-#line 12188 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy236:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'S':	goto yy314;
-	default:	goto yy49;
-	}
-yy237:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'S':	goto yy315;
-	default:	goto yy49;
+	default:	goto yy238;
 	}
 yy238:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'V':	goto yy316;
-	default:	goto yy49;
-	}
+#line 9533 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_PDV (context.location); }
+#line 12224 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy239:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'n':	goto yy317;
+	case 'S':	goto yy317;
 	default:	goto yy49;
 	}
 yy240:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'L':	goto yy318;
+	case 'S':	goto yy318;
 	default:	goto yy49;
 	}
 yy241:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'A':	goto yy320;
+	case 'V':	goto yy319;
 	default:	goto yy49;
 	}
 yy242:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'U':	goto yy321;
+	case 'n':	goto yy320;
 	default:	goto yy49;
 	}
 yy243:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'L':	goto yy321;
+	default:	goto yy49;
+	}
+yy244:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'A':	goto yy323;
+	default:	goto yy49;
+	}
+yy245:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'U':	goto yy324;
+	default:	goto yy49;
+	}
+yy246:
 	yyaccept = 16;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -12301,233 +12337,233 @@ yy243:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	case 'T':	goto yy322;
-	default:	goto yy244;
-	}
-yy244:
-#line 9535 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_SET (context.location); }
-#line 12311 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy245:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'E':	goto yy323;
-	default:	goto yy49;
-	}
-yy246:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'I':	goto yy325;
-	default:	goto yy49;
+	case 'T':	goto yy325;
+	default:	goto yy247;
 	}
 yy247:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'T':	goto yy326;
-	default:	goto yy49;
-	}
+#line 9542 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_SET (context.location); }
+#line 12347 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy248:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy327;
+	case 'E':	goto yy326;
 	default:	goto yy49;
 	}
 yy249:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy328;
+	case 'I':	goto yy328;
 	default:	goto yy49;
 	}
 yy250:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy330;
+	case 'T':	goto yy329;
 	default:	goto yy49;
 	}
 yy251:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy332;
+	case 'S':	goto yy330;
 	default:	goto yy49;
 	}
 yy252:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy334;
+	case 'S':	goto yy331;
 	default:	goto yy49;
 	}
 yy253:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'e':	goto yy335;
+	case 'E':	goto yy333;
 	default:	goto yy49;
 	}
 yy254:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'O':	goto yy336;
-	case 'Q':	goto yy337;
-	case 'V':	goto yy338;
+	case 'E':	goto yy335;
 	default:	goto yy49;
 	}
 yy255:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy339;
+	case 'E':	goto yy337;
 	default:	goto yy49;
 	}
 yy256:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '8':	goto yy340;
+	case 'e':	goto yy338;
 	default:	goto yy49;
 	}
 yy257:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'v':	goto yy341;
+	case 'O':	goto yy339;
+	case 'Q':	goto yy340;
+	case 'V':	goto yy341;
 	default:	goto yy49;
 	}
 yy258:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'e':	goto yy342;
+	case 'T':	goto yy342;
 	default:	goto yy49;
 	}
 yy259:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'i':	goto yy343;
+	case '8':	goto yy343;
 	default:	goto yy49;
 	}
 yy260:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'H':	goto yy344;
+	case 'v':	goto yy344;
 	default:	goto yy49;
 	}
 yy261:
-	++context.cursor;
-#line 9559 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return yylex(context); }
-#line 12430 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'e':	goto yy345;
+	default:	goto yy49;
+	}
+yy262:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'i':	goto yy346;
+	default:	goto yy49;
+	}
 yy263:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'H':	goto yy347;
+	default:	goto yy49;
+	}
+yy264:
 	++context.cursor;
-#line 9562 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9566 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return yylex(context); }
-#line 12435 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy265:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'N':	goto yy346;
-	default:	goto yy49;
-	}
+#line 12466 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy266:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'R':	goto yy347;
-	default:	goto yy49;
-	}
-yy267:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'I':	goto yy348;
-	default:	goto yy49;
-	}
+	++context.cursor;
+#line 9569 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return yylex(context); }
+#line 12471 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy268:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'M':	goto yy349;
+	case 'N':	goto yy349;
 	default:	goto yy49;
 	}
 yy269:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy350;
+	case 'R':	goto yy350;
 	default:	goto yy49;
 	}
 yy270:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 't':	goto yy352;
+	case 'I':	goto yy351;
 	default:	goto yy49;
 	}
 yy271:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy353;
+	case 'M':	goto yy352;
 	default:	goto yy49;
 	}
 yy272:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'A':	goto yy354;
+	case 'N':	goto yy353;
 	default:	goto yy49;
 	}
 yy273:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'C':	goto yy355;
+	case 't':	goto yy355;
 	default:	goto yy49;
 	}
 yy274:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy356;
+	case 'E':	goto yy356;
 	default:	goto yy49;
 	}
 yy275:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'O':	goto yy358;
+	case 'A':	goto yy357;
 	default:	goto yy49;
 	}
 yy276:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy359;
+	case 'C':	goto yy358;
 	default:	goto yy49;
 	}
 yy277:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'A':	goto yy360;
+	case 'S':	goto yy359;
 	default:	goto yy49;
 	}
 yy278:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'O':	goto yy361;
+	default:	goto yy49;
+	}
+yy279:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'T':	goto yy362;
+	default:	goto yy49;
+	}
+yy280:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'A':	goto yy363;
+	default:	goto yy49;
+	}
+yy281:
 	yyaccept = 17;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy361;
+	case '-':	goto yy364;
 	case '0':
 	case '1':
 	case '2':
@@ -12591,95 +12627,95 @@ yy278:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy279;
-	}
-yy279:
-#line 9482 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_DATE (context.location); }
-#line 12600 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy280:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'U':	goto yy362;
-	default:	goto yy49;
-	}
-yy281:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'N':	goto yy363;
-	default:	goto yy49;
+	default:	goto yy282;
 	}
 yy282:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'T':	goto yy364;
-	default:	goto yy49;
-	}
+#line 9489 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_DATE (context.location); }
+#line 12636 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy283:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'D':	goto yy365;
+	case 'U':	goto yy365;
 	default:	goto yy49;
 	}
 yy284:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'D':	goto yy366;
+	case 'N':	goto yy366;
 	default:	goto yy49;
 	}
 yy285:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy367;
+	case 'T':	goto yy367;
 	default:	goto yy49;
 	}
 yy286:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'P':	goto yy368;
+	case 'D':	goto yy368;
 	default:	goto yy49;
 	}
 yy287:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy369;
+	case 'D':	goto yy369;
 	default:	goto yy49;
 	}
 yy288:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'R':	goto yy370;
+	case 'E':	goto yy370;
 	default:	goto yy49;
 	}
 yy289:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy371;
-	case 'R':	goto yy372;
+	case 'P':	goto yy371;
 	default:	goto yy49;
 	}
 yy290:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy373;
+	case 'I':	goto yy372;
 	default:	goto yy49;
 	}
 yy291:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'R':	goto yy373;
+	default:	goto yy49;
+	}
+yy292:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'N':	goto yy374;
+	case 'R':	goto yy375;
+	default:	goto yy49;
+	}
+yy293:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'E':	goto yy376;
+	default:	goto yy49;
+	}
+yy294:
 	yyaccept = 18;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -12743,92 +12779,92 @@ yy291:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy292;
-	}
-yy292:
-#line 9498 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_FROM (context.location); }
-#line 12752 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy293:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'r':	goto yy375;
-	default:	goto yy49;
-	}
-yy294:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'h':	goto yy376;
-	default:	goto yy49;
+	default:	goto yy295;
 	}
 yy295:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 't':	goto yy377;
-	default:	goto yy49;
-	}
+#line 9505 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_FROM (context.location); }
+#line 12788 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy296:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy378;
+	case 'r':	goto yy378;
 	default:	goto yy49;
 	}
 yy297:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy379;
+	case 'h':	goto yy379;
 	default:	goto yy49;
 	}
 yy298:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'R':	goto yy380;
+	case 't':	goto yy380;
 	default:	goto yy49;
 	}
 yy299:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'U':	goto yy381;
+	case 'T':	goto yy381;
 	default:	goto yy49;
 	}
 yy300:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'A':	goto yy382;
-	case 'R':	goto yy383;
+	case 'I':	goto yy382;
 	default:	goto yy49;
 	}
 yy301:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'G':	goto yy384;
-	case 'R':	goto yy385;
+	case 'R':	goto yy383;
 	default:	goto yy49;
 	}
 yy302:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '4':	goto yy386;
+	case 'U':	goto yy384;
 	default:	goto yy49;
 	}
 yy303:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy387;
+	case 'A':	goto yy385;
+	case 'R':	goto yy386;
 	default:	goto yy49;
 	}
 yy304:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'G':	goto yy387;
+	case 'R':	goto yy388;
+	default:	goto yy49;
+	}
+yy305:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case '4':	goto yy389;
+	default:	goto yy49;
+	}
+yy306:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'S':	goto yy390;
+	default:	goto yy49;
+	}
+yy307:
 	yych = *++context.cursor;
 	switch (yych) {
 	case '0':
@@ -12893,14 +12929,14 @@ yy304:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	case 'A':	goto yy388;
-	default:	goto yy98;
+	case 'A':	goto yy391;
+	default:	goto yy101;
 	}
-yy305:
+yy308:
 	yyaccept = 19;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -12964,189 +13000,94 @@ yy305:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy306;
-	}
-yy306:
-#line 9517 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_ASN_NULL (context.location); }
-#line 12973 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy307:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'r':	goto yy389;
-	default:	goto yy49;
-	}
-yy308:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'C':	goto yy390;
-	default:	goto yy49;
+	default:	goto yy309;
 	}
 yy309:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'T':	goto yy391;
-	default:	goto yy49;
-	}
+#line 9524 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_ASN_NULL (context.location); }
+#line 13009 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy310:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy393;
+	case 'r':	goto yy392;
 	default:	goto yy49;
 	}
 yy311:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'O':	goto yy394;
+	case 'C':	goto yy393;
 	default:	goto yy49;
 	}
 yy312:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'c':	goto yy395;
+	case 'T':	goto yy394;
 	default:	goto yy49;
 	}
 yy313:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy396;
+	case 'I':	goto yy396;
 	default:	goto yy49;
 	}
 yy314:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '_':	goto yy397;
+	case 'O':	goto yy397;
 	default:	goto yy49;
 	}
 yy315:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy398;
+	case 'c':	goto yy398;
 	default:	goto yy49;
 	}
 yy316:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'A':	goto yy399;
+	case 'E':	goto yy399;
 	default:	goto yy49;
 	}
 yy317:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 't':	goto yy400;
+	case '_':	goto yy400;
 	default:	goto yy49;
 	}
 yy318:
-	yyaccept = 20;
+	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy319;
+	case 'E':	goto yy401;
+	default:	goto yy49;
 	}
 yy319:
-#line 9531 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_REAL (context.location); }
-#line 13124 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'A':	goto yy402;
+	default:	goto yy49;
+	}
 yy320:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy401;
+	case 't':	goto yy403;
 	default:	goto yy49;
 	}
 yy321:
-	yyaccept = 2;
+	yyaccept = 20;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy402;
-	default:	goto yy49;
-	}
-yy322:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'I':	goto yy403;
-	default:	goto yy49;
-	}
-yy323:
-	yyaccept = 21;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -13210,534 +13151,527 @@ yy323:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy324;
+	default:	goto yy322;
+	}
+yy322:
+#line 9538 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_REAL (context.location); }
+#line 13160 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy323:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'T':	goto yy404;
+	default:	goto yy49;
 	}
 yy324:
-#line 9537 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_SIZE (context.location); }
-#line 13219 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'E':	goto yy405;
+	default:	goto yy49;
+	}
 yy325:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy404;
+	case 'I':	goto yy406;
 	default:	goto yy49;
 	}
 yy326:
-	yyaccept = 2;
+	yyaccept = 21;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'A':	goto yy405;
-	default:	goto yy49;
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy327;
 	}
 yy327:
+#line 9544 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_SIZE (context.location); }
+#line 13255 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy328:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 't':	goto yy406;
+	case 'N':	goto yy407;
 	default:	goto yy49;
-	}
-yy328:
-	yyaccept = 22;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy329;
 	}
 yy329:
-#line 9541 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_TAGS (context.location); }
-#line 13314 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy330:
-	yyaccept = 23;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy407;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy331;
-	}
-yy331:
-#line 9543 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_TIME (context.location); }
-#line 13388 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy332:
-	yyaccept = 24;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy333;
-	}
-yy333:
-#line 9545 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_TRUE (context.location); }
-#line 13462 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy334:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy408;
+	case 'A':	goto yy408;
 	default:	goto yy49;
 	}
-yy335:
+yy330:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case 't':	goto yy409;
 	default:	goto yy49;
 	}
-yy336:
-	yyaccept = 2;
+yy331:
+	yyaccept = 22;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy410;
-	default:	goto yy49;
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy332;
 	}
+yy332:
+#line 9548 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_TAGS (context.location); }
+#line 13350 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy333:
+	yyaccept = 23;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case '-':	goto yy410;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy334;
+	}
+yy334:
+#line 9550 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_TIME (context.location); }
+#line 13424 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy335:
+	yyaccept = 24;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy336;
+	}
+yy336:
+#line 9552 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_TRUE (context.location); }
+#line 13498 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy337:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'U':	goto yy412;
+	case '-':	goto yy411;
 	default:	goto yy49;
 	}
 yy338:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy413;
+	case 't':	goto yy412;
 	default:	goto yy49;
 	}
 yy339:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'i':	goto yy414;
+	case 'N':	goto yy413;
 	default:	goto yy49;
 	}
 yy340:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy415;
+	case 'U':	goto yy415;
 	default:	goto yy49;
 	}
 yy341:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'e':	goto yy416;
+	case 'E':	goto yy416;
 	default:	goto yy49;
 	}
 yy342:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'o':	goto yy417;
+	case 'i':	goto yy417;
 	default:	goto yy49;
 	}
 yy343:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'b':	goto yy418;
+	case 'S':	goto yy418;
 	default:	goto yy49;
 	}
 yy344:
-	yyaccept = 25;
+	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy345;
+	case 'e':	goto yy419;
+	default:	goto yy49;
 	}
 yy345:
-#line 9555 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_WITH (context.location); }
-#line 13606 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'o':	goto yy420;
+	default:	goto yy49;
+	}
 yy346:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy419;
+	case 'b':	goto yy421;
 	default:	goto yy49;
 	}
 yy347:
-	yyaccept = 2;
+	yyaccept = 25;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'A':	goto yy421;
-	default:	goto yy49;
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy348;
 	}
 yy348:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'C':	goto yy422;
-	default:	goto yy49;
-	}
+#line 9562 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_WITH (context.location); }
+#line 13642 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy349:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'A':	goto yy423;
+	case 'T':	goto yy422;
 	default:	goto yy49;
 	}
 yy350:
-	yyaccept = 26;
+	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy351;
+	case 'A':	goto yy424;
+	default:	goto yy49;
 	}
 yy351:
-#line 9470 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_BEGIN (context.location); }
-#line 13708 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'C':	goto yy425;
+	default:	goto yy49;
+	}
 yy352:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'r':	goto yy424;
+	case 'A':	goto yy426;
 	default:	goto yy49;
 	}
 yy353:
-	yyaccept = 2;
+	yyaccept = 26;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'A':	goto yy425;
-	default:	goto yy49;
-	}
-yy354:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'C':	goto yy426;
-	default:	goto yy49;
-	}
-yy355:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'E':	goto yy427;
-	default:	goto yy49;
-	}
-yy356:
-	yyaccept = 27;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -13801,36 +13735,45 @@ yy356:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy357;
+	default:	goto yy354;
+	}
+yy354:
+#line 9477 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_BEGIN (context.location); }
+#line 13744 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy355:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'r':	goto yy427;
+	default:	goto yy49;
+	}
+yy356:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'A':	goto yy428;
+	default:	goto yy49;
 	}
 yy357:
-#line 9477 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_CLASS (context.location); }
-#line 13810 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'C':	goto yy429;
+	default:	goto yy49;
+	}
 yy358:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy429;
+	case 'E':	goto yy430;
 	default:	goto yy49;
 	}
 yy359:
-	yyaccept = 2;
+	yyaccept = 27;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'R':	goto yy430;
-	default:	goto yy49;
-	}
-yy360:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'I':	goto yy431;
-	default:	goto yy49;
-	}
-yy361:
-	yych = *++context.cursor;
-	switch (yych) {
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -13860,6 +13803,7 @@ yy361:
 	case 'Q':
 	case 'R':
 	case 'S':
+	case 'T':
 	case 'U':
 	case 'V':
 	case 'W':
@@ -13893,14 +13837,24 @@ yy361:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	case 'T':	goto yy432;
-	default:	goto yy98;
+	default:	goto yy360;
+	}
+yy360:
+#line 9484 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_CLASS (context.location); }
+#line 13846 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy361:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'N':	goto yy432;
+	default:	goto yy49;
 	}
 yy362:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'L':	goto yy433;
+	case 'R':	goto yy433;
 	default:	goto yy49;
 	}
 yy363:
@@ -13911,74 +13865,156 @@ yy363:
 	default:	goto yy49;
 	}
 yy364:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
+	yych = *++context.cursor;
 	switch (yych) {
-	case 'I':	goto yy435;
-	default:	goto yy49;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	case 'T':	goto yy435;
+	default:	goto yy101;
 	}
 yy365:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'D':	goto yy436;
+	case 'L':	goto yy436;
 	default:	goto yy49;
 	}
 yy366:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy437;
-	case 'I':	goto yy438;
+	case 'I':	goto yy437;
 	default:	goto yy49;
 	}
 yy367:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'R':	goto yy439;
+	case 'I':	goto yy438;
 	default:	goto yy49;
 	}
 yy368:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy440;
+	case 'D':	goto yy439;
 	default:	goto yy49;
 	}
 yy369:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'C':	goto yy442;
+	case 'E':	goto yy440;
+	case 'I':	goto yy441;
 	default:	goto yy49;
 	}
 yy370:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy443;
+	case 'R':	goto yy442;
 	default:	goto yy49;
 	}
 yy371:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy444;
+	case 'T':	goto yy443;
 	default:	goto yy49;
 	}
 yy372:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy445;
+	case 'C':	goto yy445;
 	default:	goto yy49;
 	}
 yy373:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'T':	goto yy446;
+	default:	goto yy49;
+	}
+yy374:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'S':	goto yy447;
+	default:	goto yy49;
+	}
+yy375:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'N':	goto yy448;
+	default:	goto yy49;
+	}
+yy376:
 	yyaccept = 28;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -14042,130 +14078,130 @@ yy373:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy374;
-	}
-yy374:
-#line 9497 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_FALSE (context.location); }
-#line 14051 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy375:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'a':	goto yy446;
-	default:	goto yy49;
-	}
-yy376:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'i':	goto yy447;
-	default:	goto yy49;
+	default:	goto yy377;
 	}
 yy377:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'r':	goto yy448;
-	default:	goto yy49;
-	}
+#line 9504 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_FALSE (context.location); }
+#line 14087 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy378:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy449;
+	case 'a':	goto yy449;
 	default:	goto yy49;
 	}
 yy379:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'C':	goto yy450;
-	case 'E':	goto yy451;
+	case 'i':	goto yy450;
 	default:	goto yy49;
 	}
 yy380:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy452;
+	case 'r':	goto yy451;
 	default:	goto yy49;
 	}
 yy381:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'D':	goto yy453;
+	case 'I':	goto yy452;
 	default:	goto yy49;
 	}
 yy382:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy454;
+	case 'C':	goto yy453;
+	case 'E':	goto yy454;
 	default:	goto yy49;
 	}
 yy383:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'U':	goto yy455;
+	case 'T':	goto yy455;
 	default:	goto yy49;
 	}
 yy384:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy456;
+	case 'D':	goto yy456;
 	default:	goto yy49;
 	}
 yy385:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy457;
+	case 'N':	goto yy457;
 	default:	goto yy49;
 	}
 yy386:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '6':	goto yy458;
+	case 'U':	goto yy458;
 	default:	goto yy49;
 	}
 yy387:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy459;
+	case 'E':	goto yy459;
 	default:	goto yy49;
 	}
 yy388:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy460;
+	case 'S':	goto yy460;
 	default:	goto yy49;
 	}
 yy389:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'i':	goto yy461;
+	case '6':	goto yy461;
 	default:	goto yy49;
 	}
 yy390:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy462;
+	case '-':	goto yy462;
 	default:	goto yy49;
 	}
 yy391:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case '-':	goto yy463;
+	default:	goto yy49;
+	}
+yy392:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'i':	goto yy464;
+	default:	goto yy49;
+	}
+yy393:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'T':	goto yy465;
+	default:	goto yy49;
+	}
+yy394:
 	yyaccept = 29;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -14229,33 +14265,12 @@ yy391:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy392;
-	}
-yy392:
-#line 9521 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_OCTET (context.location); }
-#line 14238 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy393:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'R':	goto yy464;
-	default:	goto yy49;
-	}
-yy394:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'N':	goto yy465;
-	default:	goto yy49;
+	default:	goto yy395;
 	}
 yy395:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 't':	goto yy466;
-	default:	goto yy49;
-	}
+#line 9528 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_OCTET (context.location); }
+#line 14274 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy396:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -14267,220 +14282,241 @@ yy397:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy468;
+	case 'N':	goto yy468;
 	default:	goto yy49;
 	}
 yy398:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy469;
+	case 't':	goto yy469;
 	default:	goto yy49;
 	}
 yy399:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy470;
+	case 'R':	goto yy470;
 	default:	goto yy49;
 	}
 yy400:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'a':	goto yy471;
+	case 'I':	goto yy471;
 	default:	goto yy49;
 	}
 yy401:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy472;
+	case 'N':	goto yy472;
 	default:	goto yy49;
 	}
 yy402:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy473;
+	case 'T':	goto yy473;
 	default:	goto yy49;
 	}
 yy403:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy474;
+	case 'a':	goto yy474;
 	default:	goto yy49;
 	}
 yy404:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'G':	goto yy475;
+	case 'I':	goto yy475;
 	default:	goto yy49;
 	}
 yy405:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'X':	goto yy477;
+	case 'N':	goto yy476;
 	default:	goto yy49;
 	}
 yy406:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'r':	goto yy479;
+	case 'N':	goto yy477;
 	default:	goto yy49;
 	}
 yy407:
-	yych = *++context.cursor;
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	case 'O':	goto yy480;
-	default:	goto yy98;
+	case 'G':	goto yy478;
+	default:	goto yy49;
 	}
 yy408:
-	yych = *++context.cursor;
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	case 'I':	goto yy481;
-	default:	goto yy98;
+	case 'X':	goto yy480;
+	default:	goto yy49;
 	}
 yy409:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'e':	goto yy482;
+	case 'r':	goto yy482;
 	default:	goto yy49;
 	}
 yy410:
+	yych = *++context.cursor;
+	switch (yych) {
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	case 'O':	goto yy483;
+	default:	goto yy101;
+	}
+yy411:
+	yych = *++context.cursor;
+	switch (yych) {
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	case 'I':	goto yy484;
+	default:	goto yy101;
+	}
+yy412:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'e':	goto yy485;
+	default:	goto yy49;
+	}
+yy413:
 	yyaccept = 30;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -14544,66 +14580,66 @@ yy410:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy411;
-	}
-yy411:
-#line 9547 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_UNION (context.location); }
-#line 14553 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy412:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'E':	goto yy483;
-	default:	goto yy49;
-	}
-yy413:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'R':	goto yy485;
-	default:	goto yy49;
+	default:	goto yy414;
 	}
 yy414:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'm':	goto yy486;
-	default:	goto yy49;
-	}
+#line 9554 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_UNION (context.location); }
+#line 14589 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy415:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 't':	goto yy487;
+	case 'E':	goto yy486;
 	default:	goto yy49;
 	}
 yy416:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'r':	goto yy488;
+	case 'R':	goto yy488;
 	default:	goto yy49;
 	}
 yy417:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 't':	goto yy489;
+	case 'm':	goto yy489;
 	default:	goto yy49;
 	}
 yy418:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'l':	goto yy490;
+	case 't':	goto yy490;
 	default:	goto yy49;
 	}
 yy419:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'r':	goto yy491;
+	default:	goto yy49;
+	}
+yy420:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 't':	goto yy492;
+	default:	goto yy49;
+	}
+yy421:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'l':	goto yy493;
+	default:	goto yy49;
+	}
+yy422:
 	yyaccept = 31;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -14667,59 +14703,59 @@ yy419:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy420;
-	}
-yy420:
-#line 9464 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_ABSENT (context.location); }
-#line 14676 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy421:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'C':	goto yy491;
-	default:	goto yy49;
-	}
-yy422:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'A':	goto yy492;
-	default:	goto yy49;
+	default:	goto yy423;
 	}
 yy423:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'T':	goto yy493;
-	default:	goto yy49;
-	}
+#line 9471 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_ABSENT (context.location); }
+#line 14712 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy424:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'i':	goto yy494;
+	case 'C':	goto yy494;
 	default:	goto yy49;
 	}
 yy425:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy495;
+	case 'A':	goto yy495;
 	default:	goto yy49;
 	}
 yy426:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy497;
+	case 'T':	goto yy496;
 	default:	goto yy49;
 	}
 yy427:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'i':	goto yy497;
+	default:	goto yy49;
+	}
+yy428:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'N':	goto yy498;
+	default:	goto yy49;
+	}
+yy429:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'T':	goto yy500;
+	default:	goto yy49;
+	}
+yy430:
 	yyaccept = 32;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -14783,94 +14819,94 @@ yy427:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy428;
-	}
-yy428:
-#line 9476 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_CHOICE (context.location); }
-#line 14792 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy429:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'E':	goto yy498;
-	default:	goto yy49;
-	}
-yy430:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'A':	goto yy499;
-	default:	goto yy49;
+	default:	goto yy431;
 	}
 yy431:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'N':	goto yy500;
-	default:	goto yy49;
-	}
+#line 9483 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_CHOICE (context.location); }
+#line 14828 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy432:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy501;
+	case 'E':	goto yy501;
 	default:	goto yy49;
 	}
 yy433:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy502;
+	case 'A':	goto yy502;
 	default:	goto yy49;
 	}
 yy434:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy504;
+	case 'N':	goto yy503;
 	default:	goto yy49;
 	}
 yy435:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'O':	goto yy505;
+	case 'I':	goto yy504;
 	default:	goto yy49;
 	}
 yy436:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy506;
+	case 'T':	goto yy505;
 	default:	goto yy49;
 	}
 yy437:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'D':	goto yy507;
+	case 'T':	goto yy507;
 	default:	goto yy49;
 	}
 yy438:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy509;
+	case 'O':	goto yy508;
 	default:	goto yy49;
 	}
 yy439:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'A':	goto yy510;
+	case 'E':	goto yy509;
 	default:	goto yy49;
 	}
 yy440:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'D':	goto yy510;
+	default:	goto yy49;
+	}
+yy441:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'N':	goto yy512;
+	default:	goto yy49;
+	}
+yy442:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'A':	goto yy513;
+	default:	goto yy49;
+	}
+yy443:
 	yyaccept = 33;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -14934,279 +14970,279 @@ yy440:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy441;
-	}
-yy441:
-#line 9492 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXCEPT (context.location); }
-#line 14943 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy442:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'I':	goto yy511;
-	default:	goto yy49;
-	}
-yy443:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'S':	goto yy512;
-	default:	goto yy49;
+	default:	goto yy444;
 	}
 yy444:
+#line 9499 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXCEPT (context.location); }
+#line 14979 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy445:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case 'I':	goto yy514;
 	default:	goto yy49;
 	}
-yy445:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'A':	goto yy515;
-	default:	goto yy49;
-	}
 yy446:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'l':	goto yy516;
+	case 'S':	goto yy515;
 	default:	goto yy49;
 	}
 yy447:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'c':	goto yy517;
+	case 'I':	goto yy517;
 	default:	goto yy49;
 	}
 yy448:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'i':	goto yy518;
+	case 'A':	goto yy518;
 	default:	goto yy49;
 	}
 yy449:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'F':	goto yy519;
+	case 'l':	goto yy519;
 	default:	goto yy49;
 	}
 yy450:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy520;
+	case 'c':	goto yy520;
 	default:	goto yy49;
 	}
 yy451:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'D':	goto yy521;
+	case 'i':	goto yy521;
 	default:	goto yy49;
 	}
 yy452:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy523;
+	case 'F':	goto yy522;
 	default:	goto yy49;
 	}
 yy453:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy525;
+	case 'I':	goto yy523;
 	default:	goto yy49;
 	}
 yy454:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'C':	goto yy526;
+	case 'D':	goto yy524;
 	default:	goto yy49;
 	}
 yy455:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'C':	goto yy527;
+	case 'S':	goto yy526;
 	default:	goto yy49;
 	}
 yy456:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'R':	goto yy528;
+	case 'E':	goto yy528;
 	default:	goto yy49;
 	}
 yy457:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy530;
+	case 'C':	goto yy529;
 	default:	goto yy49;
 	}
 yy458:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy531;
+	case 'C':	goto yy530;
 	default:	goto yy49;
 	}
 yy459:
-	yych = *++context.cursor;
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	case 'I':	goto yy532;
-	default:	goto yy98;
+	case 'R':	goto yy531;
+	default:	goto yy49;
 	}
 yy460:
-	yych = *++context.cursor;
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	case 'N':	goto yy533;
-	default:	goto yy98;
+	case 'E':	goto yy533;
+	default:	goto yy49;
 	}
 yy461:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'c':	goto yy534;
+	case 'S':	goto yy534;
 	default:	goto yy49;
 	}
 yy462:
+	yych = *++context.cursor;
+	switch (yych) {
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	case 'I':	goto yy535;
+	default:	goto yy101;
+	}
+yy463:
+	yych = *++context.cursor;
+	switch (yych) {
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	case 'N':	goto yy536;
+	default:	goto yy101;
+	}
+yy464:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'c':	goto yy537;
+	default:	goto yy49;
+	}
+yy465:
 	yyaccept = 34;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -15270,94 +15306,94 @@ yy462:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy463;
-	}
-yy463:
-#line 9519 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_OBJECT (context.location); }
-#line 15279 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy464:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'I':	goto yy535;
-	default:	goto yy49;
-	}
-yy465:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'A':	goto yy537;
-	default:	goto yy49;
+	default:	goto yy466;
 	}
 yy466:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'D':	goto yy538;
-	default:	goto yy49;
-	}
+#line 9526 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_OBJECT (context.location); }
+#line 15315 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy467:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy539;
+	case 'I':	goto yy538;
 	default:	goto yy49;
 	}
 yy468:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy541;
+	case 'A':	goto yy540;
 	default:	goto yy49;
 	}
 yy469:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy542;
+	case 'D':	goto yy541;
 	default:	goto yy49;
 	}
 yy470:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy544;
+	case 'N':	goto yy542;
 	default:	goto yy49;
 	}
 yy471:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'b':	goto yy546;
+	case 'N':	goto yy544;
 	default:	goto yy49;
 	}
 yy472:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'V':	goto yy547;
+	case 'T':	goto yy545;
 	default:	goto yy49;
 	}
 yy473:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'C':	goto yy548;
+	case 'E':	goto yy547;
 	default:	goto yy49;
 	}
 yy474:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'G':	goto yy549;
+	case 'b':	goto yy549;
 	default:	goto yy49;
 	}
 yy475:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'V':	goto yy550;
+	default:	goto yy49;
+	}
+yy476:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'C':	goto yy551;
+	default:	goto yy49;
+	}
+yy477:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'G':	goto yy552;
+	default:	goto yy49;
+	}
+yy478:
 	yyaccept = 35;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -15421,17 +15457,17 @@ yy475:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy476;
+	default:	goto yy479;
 	}
-yy476:
-#line 9538 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+yy479:
+#line 9545 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_STRING (context.location); }
-#line 15430 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy477:
+#line 15466 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy480:
 	yyaccept = 36;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -15495,45 +15531,45 @@ yy477:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy478;
-	}
-yy478:
-#line 9539 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_SYNTAX (context.location); }
-#line 15504 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy479:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'i':	goto yy550;
-	default:	goto yy49;
-	}
-yy480:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'F':	goto yy551;
-	default:	goto yy49;
+	default:	goto yy481;
 	}
 yy481:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'D':	goto yy552;
-	default:	goto yy49;
-	}
+#line 9546 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_SYNTAX (context.location); }
+#line 15540 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy482:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'x':	goto yy553;
+	case 'i':	goto yy553;
 	default:	goto yy49;
 	}
 yy483:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'F':	goto yy554;
+	default:	goto yy49;
+	}
+yy484:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'D':	goto yy555;
+	default:	goto yy49;
+	}
+yy485:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'x':	goto yy556;
+	default:	goto yy49;
+	}
+yy486:
 	yyaccept = 37;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -15597,87 +15633,87 @@ yy483:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy484;
-	}
-yy484:
-#line 9548 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_UNIQUE (context.location); }
-#line 15606 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy485:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'S':	goto yy554;
-	default:	goto yy49;
-	}
-yy486:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'e':	goto yy555;
-	default:	goto yy49;
+	default:	goto yy487;
 	}
 yy487:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'r':	goto yy557;
-	default:	goto yy49;
-	}
+#line 9555 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_UNIQUE (context.location); }
+#line 15642 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy488:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 's':	goto yy558;
+	case 'S':	goto yy557;
 	default:	goto yy49;
 	}
 yy489:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'e':	goto yy559;
+	case 'e':	goto yy558;
 	default:	goto yy49;
 	}
 yy490:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'e':	goto yy560;
+	case 'r':	goto yy560;
 	default:	goto yy49;
 	}
 yy491:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy561;
+	case 's':	goto yy561;
 	default:	goto yy49;
 	}
 yy492:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy562;
+	case 'e':	goto yy562;
 	default:	goto yy49;
 	}
 yy493:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy563;
+	case 'e':	goto yy563;
 	default:	goto yy49;
 	}
 yy494:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'n':	goto yy564;
+	case 'T':	goto yy564;
 	default:	goto yy49;
 	}
 yy495:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'T':	goto yy565;
+	default:	goto yy49;
+	}
+yy496:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'I':	goto yy566;
+	default:	goto yy49;
+	}
+yy497:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'n':	goto yy567;
+	default:	goto yy49;
+	}
+yy498:
 	yyaccept = 38;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -15741,147 +15777,52 @@ yy495:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy496;
-	}
-yy496:
-#line 9473 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_BOOLEAN (context.location); }
-#line 15750 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy497:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'E':	goto yy565;
-	default:	goto yy49;
-	}
-yy498:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'N':	goto yy566;
-	default:	goto yy49;
+	default:	goto yy499;
 	}
 yy499:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'I':	goto yy567;
-	default:	goto yy49;
-	}
+#line 9480 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_BOOLEAN (context.location); }
+#line 15786 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy500:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy568;
+	case 'E':	goto yy568;
 	default:	goto yy49;
 	}
 yy501:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'M':	goto yy569;
+	case 'N':	goto yy569;
 	default:	goto yy49;
 	}
 yy502:
-	yyaccept = 39;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy503;
-	}
-yy503:
-#line 9484 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_DEFAULT (context.location); }
-#line 15859 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy504:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case 'I':	goto yy570;
 	default:	goto yy49;
 	}
+yy503:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'I':	goto yy571;
+	default:	goto yy49;
+	}
+yy504:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'M':	goto yy572;
+	default:	goto yy49;
+	}
 yy505:
-	yyaccept = 2;
+	yyaccept = 39;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy571;
-	default:	goto yy49;
-	}
-yy506:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'D':	goto yy573;
-	default:	goto yy49;
-	}
-yy507:
-	yyaccept = 40;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -15945,38 +15886,38 @@ yy507:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy508;
+	default:	goto yy506;
+	}
+yy506:
+#line 9491 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_DEFAULT (context.location); }
+#line 15895 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy507:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'I':	goto yy573;
+	default:	goto yy49;
 	}
 yy508:
-#line 9488 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_ENCODED (context.location); }
-#line 15954 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'N':	goto yy574;
+	default:	goto yy49;
+	}
 yy509:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'G':	goto yy575;
+	case 'D':	goto yy576;
 	default:	goto yy49;
 	}
 yy510:
-	yyaccept = 2;
+	yyaccept = 40;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy576;
-	default:	goto yy49;
-	}
-yy511:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'T':	goto yy577;
-	default:	goto yy49;
-	}
-yy512:
-	yyaccept = 41;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -16040,67 +15981,162 @@ yy512:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy513;
+	default:	goto yy511;
+	}
+yy511:
+#line 9495 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_ENCODED (context.location); }
+#line 15990 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy512:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'G':	goto yy578;
+	default:	goto yy49;
 	}
 yy513:
-#line 9494 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXPORTS (context.location); }
-#line 16049 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'T':	goto yy579;
+	default:	goto yy49;
+	}
 yy514:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'B':	goto yy579;
+	case 'T':	goto yy580;
 	default:	goto yy49;
 	}
 yy515:
-	yyaccept = 2;
+	yyaccept = 41;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'L':	goto yy580;
-	default:	goto yy49;
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy516;
 	}
 yy516:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'S':	goto yy582;
-	case 'i':	goto yy583;
-	default:	goto yy49;
-	}
+#line 9501 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXPORTS (context.location); }
+#line 16085 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy517:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy584;
+	case 'B':	goto yy582;
 	default:	goto yy49;
 	}
 yy518:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'n':	goto yy585;
+	case 'L':	goto yy583;
 	default:	goto yy49;
 	}
 yy519:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy586;
+	case 'S':	goto yy585;
+	case 'i':	goto yy586;
 	default:	goto yy49;
 	}
 yy520:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy587;
+	case 'S':	goto yy587;
 	default:	goto yy49;
 	}
 yy521:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'n':	goto yy588;
+	default:	goto yy49;
+	}
+yy522:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'I':	goto yy589;
+	default:	goto yy49;
+	}
+yy523:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'T':	goto yy590;
+	default:	goto yy49;
+	}
+yy524:
 	yyaccept = 42;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -16164,17 +16200,17 @@ yy521:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy522;
+	default:	goto yy525;
 	}
-yy522:
-#line 9505 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+yy525:
+#line 9512 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_IMPLIED (context.location); }
-#line 16173 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy523:
+#line 16209 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy526:
 	yyaccept = 43;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -16238,235 +16274,147 @@ yy523:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy524;
-	}
-yy524:
-#line 9506 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_IMPORTS (context.location); }
-#line 16247 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy525:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'S':	goto yy589;
-	default:	goto yy49;
-	}
-yy526:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'E':	goto yy591;
-	default:	goto yy49;
+	default:	goto yy527;
 	}
 yy527:
+#line 9513 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_IMPORTS (context.location); }
+#line 16283 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy528:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy593;
+	case 'S':	goto yy592;
 	default:	goto yy49;
 	}
-yy528:
-	yyaccept = 44;
+yy529:
+	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy529;
+	case 'E':	goto yy594;
+	default:	goto yy49;
 	}
-yy529:
-#line 9510 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_INTEGER (context.location); }
-#line 16342 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy530:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'C':	goto yy594;
+	case 'T':	goto yy596;
 	default:	goto yy49;
 	}
 yy531:
-	yyaccept = 2;
+	yyaccept = 44;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 't':	goto yy595;
-	default:	goto yy49;
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy532;
 	}
 yy532:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'N':	goto yy596;
-	default:	goto yy49;
-	}
+#line 9517 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_INTEGER (context.location); }
+#line 16378 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy533:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'U':	goto yy597;
+	case 'C':	goto yy597;
 	default:	goto yy49;
 	}
 yy534:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy598;
+	case 't':	goto yy598;
 	default:	goto yy49;
 	}
 yy535:
-	yyaccept = 45;
+	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy536;
+	case 'N':	goto yy599;
+	default:	goto yy49;
 	}
 yy536:
-#line 9523 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_OID_IRI (context.location); }
-#line 16451 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'U':	goto yy600;
+	default:	goto yy49;
+	}
 yy537:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'L':	goto yy599;
+	case 'S':	goto yy601;
 	default:	goto yy49;
 	}
 yy538:
-	yyaccept = 2;
+	yyaccept = 45;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'e':	goto yy601;
-	default:	goto yy49;
-	}
-yy539:
-	yyaccept = 46;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -16530,24 +16478,31 @@ yy539:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy540;
+	default:	goto yy539;
 	}
+yy539:
+#line 9530 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_OID_IRI (context.location); }
+#line 16487 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy540:
-#line 9525 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_PATTERN (context.location); }
-#line 16539 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'L':	goto yy602;
+	default:	goto yy49;
+	}
 yy541:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'F':	goto yy602;
+	case 'e':	goto yy604;
 	default:	goto yy49;
 	}
 yy542:
-	yyaccept = 47;
+	yyaccept = 46;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -16614,14 +16569,21 @@ yy542:
 	default:	goto yy543;
 	}
 yy543:
-#line 9528 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_PRESENT (context.location); }
-#line 16620 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9532 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_PATTERN (context.location); }
+#line 16575 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy544:
-	yyaccept = 48;
+	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case 'F':	goto yy605;
+	default:	goto yy49;
+	}
+yy545:
+	yyaccept = 47;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -16685,80 +16647,154 @@ yy544:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy545;
+	default:	goto yy546;
 	}
-yy545:
-#line 9530 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_PRIVATE (context.location); }
-#line 16694 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy546:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'l':	goto yy603;
-	default:	goto yy49;
-	}
+#line 9535 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_PRESENT (context.location); }
+#line 16656 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy547:
-	yyaccept = 2;
+	yyaccept = 48;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy604;
-	default:	goto yy49;
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy548;
 	}
 yy548:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'E':	goto yy605;
-	default:	goto yy49;
-	}
+#line 9537 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_PRIVATE (context.location); }
+#line 16730 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy549:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy607;
+	case 'l':	goto yy606;
 	default:	goto yy49;
 	}
 yy550:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'n':	goto yy609;
+	case 'E':	goto yy607;
 	default:	goto yy49;
 	}
 yy551:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy610;
+	case 'E':	goto yy608;
 	default:	goto yy49;
 	}
 yy552:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy611;
+	case 'S':	goto yy610;
 	default:	goto yy49;
 	}
 yy553:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy612;
+	case 'n':	goto yy612;
 	default:	goto yy49;
 	}
 yy554:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'A':	goto yy613;
+	case '-':	goto yy613;
 	default:	goto yy49;
 	}
 yy555:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'E':	goto yy614;
+	default:	goto yy49;
+	}
+yy556:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'S':	goto yy615;
+	default:	goto yy49;
+	}
+yy557:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'A':	goto yy616;
+	default:	goto yy49;
+	}
+yy558:
 	yyaccept = 49;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -16822,115 +16858,115 @@ yy555:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy556;
-	}
-yy556:
-#line 9551 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_UTCTime (context.location); }
-#line 16831 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy557:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'i':	goto yy614;
-	default:	goto yy49;
-	}
-yy558:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'a':	goto yy615;
-	default:	goto yy49;
+	default:	goto yy559;
 	}
 yy559:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'x':	goto yy616;
-	default:	goto yy49;
-	}
+#line 9558 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_UTCTime (context.location); }
+#line 16867 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy560:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy617;
+	case 'i':	goto yy617;
 	default:	goto yy49;
 	}
 yy561:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy618;
+	case 'a':	goto yy618;
 	default:	goto yy49;
 	}
 yy562:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy619;
+	case 'x':	goto yy619;
 	default:	goto yy49;
 	}
 yy563:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'C':	goto yy620;
+	case 'S':	goto yy620;
 	default:	goto yy49;
 	}
 yy564:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'g':	goto yy622;
+	case '-':	goto yy621;
 	default:	goto yy49;
 	}
 yy565:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'R':	goto yy624;
+	case 'I':	goto yy622;
 	default:	goto yy49;
 	}
 yy566:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy626;
+	case 'C':	goto yy623;
 	default:	goto yy49;
 	}
 yy567:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy628;
+	case 'g':	goto yy625;
 	default:	goto yy49;
 	}
 yy568:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy629;
+	case 'R':	goto yy627;
 	default:	goto yy49;
 	}
 yy569:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy630;
+	case 'T':	goto yy629;
 	default:	goto yy49;
 	}
 yy570:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'O':	goto yy632;
+	case 'N':	goto yy631;
 	default:	goto yy49;
 	}
 yy571:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'N':	goto yy632;
+	default:	goto yy49;
+	}
+yy572:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'E':	goto yy633;
+	default:	goto yy49;
+	}
+yy573:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'O':	goto yy635;
+	default:	goto yy49;
+	}
+yy574:
 	yyaccept = 50;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -16994,17 +17030,17 @@ yy571:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy572;
+	default:	goto yy575;
 	}
-yy572:
-#line 9486 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+yy575:
+#line 9493 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_DURATION (context.location); }
-#line 17003 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy573:
+#line 17039 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy576:
 	yyaccept = 51;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -17068,112 +17104,31 @@ yy573:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy574;
-	}
-yy574:
-#line 9487 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_EMBEDDED (context.location); }
-#line 17077 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy575:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '_':	goto yy633;
-	default:	goto yy49;
-	}
-yy576:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'E':	goto yy634;
-	default:	goto yy49;
+	default:	goto yy577;
 	}
 yy577:
-	yyaccept = 52;
+#line 9494 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_EMBEDDED (context.location); }
+#line 17113 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy578:
+	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy578;
+	case '_':	goto yy636;
+	default:	goto yy49;
 	}
-yy578:
-#line 9493 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXPLICIT (context.location); }
-#line 17165 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy579:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy635;
+	case 'E':	goto yy637;
 	default:	goto yy49;
 	}
 yy580:
-	yyaccept = 53;
+	yyaccept = 52;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -17240,49 +17195,130 @@ yy580:
 	default:	goto yy581;
 	}
 yy581:
-#line 9496 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXTERNAL (context.location); }
-#line 17246 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9500 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXPLICIT (context.location); }
+#line 17201 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy582:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 't':	goto yy636;
+	case 'I':	goto yy638;
 	default:	goto yy49;
 	}
 yy583:
-	yyaccept = 2;
+	yyaccept = 53;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'z':	goto yy637;
-	default:	goto yy49;
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy584;
 	}
 yy584:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 't':	goto yy638;
-	default:	goto yy49;
-	}
+#line 9503 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXTERNAL (context.location); }
+#line 17282 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy585:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'g':	goto yy639;
+	case 't':	goto yy639;
 	default:	goto yy49;
 	}
 yy586:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy641;
+	case 'z':	goto yy640;
 	default:	goto yy49;
 	}
 yy587:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 't':	goto yy641;
+	default:	goto yy49;
+	}
+yy588:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'g':	goto yy642;
+	default:	goto yy49;
+	}
+yy589:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'E':	goto yy644;
+	default:	goto yy49;
+	}
+yy590:
 	yyaccept = 54;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -17346,17 +17382,17 @@ yy587:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy588;
+	default:	goto yy591;
 	}
-yy588:
-#line 9504 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+yy591:
+#line 9511 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_IMPLICIT (context.location); }
-#line 17355 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy589:
+#line 17391 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy592:
 	yyaccept = 55;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -17420,17 +17456,17 @@ yy589:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy590;
+	default:	goto yy593;
 	}
-yy590:
-#line 9507 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+yy593:
+#line 9514 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_INCLUDES (context.location); }
-#line 17429 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy591:
+#line 17465 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy594:
 	yyaccept = 56;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -17494,312 +17530,312 @@ yy591:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy592;
-	}
-yy592:
-#line 9508 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_INSTANCE (context.location); }
-#line 17503 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy593:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'I':	goto yy642;
-	default:	goto yy49;
-	}
-yy594:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'T':	goto yy643;
-	default:	goto yy49;
+	default:	goto yy595;
 	}
 yy595:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'r':	goto yy644;
-	default:	goto yy49;
-	}
+#line 9515 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_INSTANCE (context.location); }
+#line 17539 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy596:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'F':	goto yy645;
+	case 'I':	goto yy645;
 	default:	goto yy49;
 	}
 yy597:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'M':	goto yy646;
+	case 'T':	goto yy646;
 	default:	goto yy49;
 	}
 yy598:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 't':	goto yy647;
+	case 'r':	goto yy647;
 	default:	goto yy49;
 	}
 yy599:
-	yyaccept = 57;
+	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy600;
+	case 'F':	goto yy648;
+	default:	goto yy49;
 	}
 yy600:
-#line 9524 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_OPTIONAL (context.location); }
-#line 17619 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'M':	goto yy649;
+	default:	goto yy49;
+	}
 yy601:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 's':	goto yy648;
+	case 't':	goto yy650;
 	default:	goto yy49;
 	}
 yy602:
-	yyaccept = 2;
+	yyaccept = 57;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy649;
-	default:	goto yy49;
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy603;
 	}
 yy603:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'e':	goto yy650;
-	default:	goto yy49;
-	}
+#line 9531 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_OPTIONAL (context.location); }
+#line 17655 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy604:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy651;
+	case 's':	goto yy651;
 	default:	goto yy49;
 	}
 yy605:
-	yyaccept = 58;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy606;
-	}
-yy606:
-#line 9534 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_SEQUENCE (context.location); }
-#line 17721 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy607:
-	yyaccept = 59;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy608;
-	}
-yy608:
-#line 9536 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_SETTINGS (context.location); }
-#line 17795 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy609:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'g':	goto yy652;
+	case 'I':	goto yy652;
 	default:	goto yy49;
 	}
+yy606:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'e':	goto yy653;
+	default:	goto yy49;
+	}
+yy607:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case '-':	goto yy654;
+	default:	goto yy49;
+	}
+yy608:
+	yyaccept = 58;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy609;
+	}
+yy609:
+#line 9541 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_SEQUENCE (context.location); }
+#line 17757 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy610:
+	yyaccept = 59;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy611;
+	}
+yy611:
+#line 9543 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_SETTINGS (context.location); }
+#line 17831 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy612:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'g':	goto yy655;
+	default:	goto yy49;
+	}
+yy613:
 	yych = *++context.cursor;
 	switch (yych) {
 	case '0':
@@ -17864,59 +17900,59 @@ yy610:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	case 'D':	goto yy654;
-	default:	goto yy98;
-	}
-yy611:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'N':	goto yy655;
-	default:	goto yy49;
-	}
-yy612:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 't':	goto yy656;
-	default:	goto yy49;
-	}
-yy613:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'L':	goto yy657;
-	default:	goto yy49;
+	case 'D':	goto yy657;
+	default:	goto yy101;
 	}
 yy614:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'n':	goto yy659;
+	case 'N':	goto yy658;
 	default:	goto yy49;
 	}
 yy615:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'l':	goto yy660;
+	case 't':	goto yy659;
 	default:	goto yy49;
 	}
 yy616:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy661;
+	case 'L':	goto yy660;
 	default:	goto yy49;
 	}
 yy617:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 't':	goto yy662;
+	case 'n':	goto yy662;
 	default:	goto yy49;
 	}
 yy618:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'l':	goto yy663;
+	default:	goto yy49;
+	}
+yy619:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'S':	goto yy664;
+	default:	goto yy49;
+	}
+yy620:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 't':	goto yy665;
+	default:	goto yy49;
+	}
+yy621:
 	yych = *++context.cursor;
 	switch (yych) {
 	case '0':
@@ -17981,21 +18017,21 @@ yy618:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	case 'S':	goto yy663;
-	default:	goto yy98;
+	case 'S':	goto yy666;
+	default:	goto yy101;
 	}
-yy619:
+yy622:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'O':	goto yy664;
+	case 'O':	goto yy667;
 	default:	goto yy49;
 	}
-yy620:
+yy623:
 	yyaccept = 60;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -18059,17 +18095,17 @@ yy620:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy621;
+	default:	goto yy624;
 	}
-yy621:
-#line 9469 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+yy624:
+#line 9476 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_AUTOMATIC (context.location); }
-#line 18068 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy622:
+#line 18104 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy625:
 	yyaccept = 61;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -18133,17 +18169,17 @@ yy622:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy623;
+	default:	goto yy626;
 	}
-yy623:
-#line 9472 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+yy626:
+#line 9479 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_BMPString (context.location); }
-#line 18142 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy624:
+#line 18178 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy627:
 	yyaccept = 62;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -18207,17 +18243,17 @@ yy624:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy625;
+	default:	goto yy628;
 	}
-yy625:
-#line 9475 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+yy628:
+#line 9482 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CHARACTER (context.location); }
-#line 18216 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy626:
+#line 18252 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy629:
 	yyaccept = 63;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -18280,155 +18316,155 @@ yy626:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	case 'S':	goto yy665;
-	default:	goto yy627;
-	}
-yy627:
-#line 9478 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_COMPONENT (context.location); }
-#line 18290 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy628:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'E':	goto yy667;
-	default:	goto yy49;
-	}
-yy629:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'G':	goto yy668;
-	default:	goto yy49;
+	case 'S':	goto yy668;
+	default:	goto yy630;
 	}
 yy630:
-	yyaccept = 64;
+#line 9485 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_COMPONENT (context.location); }
+#line 18326 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy631:
+	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy631;
+	case 'E':	goto yy670;
+	default:	goto yy49;
 	}
-yy631:
-#line 9483 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_DATE_TIME (context.location); }
-#line 18378 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy632:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy670;
+	case 'G':	goto yy671;
 	default:	goto yy49;
 	}
 yy633:
-	yyaccept = 2;
+	yyaccept = 64;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'C':	goto yy671;
-	default:	goto yy49;
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy634;
 	}
 yy634:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'D':	goto yy672;
-	default:	goto yy49;
-	}
+#line 9490 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_DATE_TIME (context.location); }
+#line 18414 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy635:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'L':	goto yy674;
+	case 'N':	goto yy673;
 	default:	goto yy49;
 	}
 yy636:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'r':	goto yy675;
+	case 'C':	goto yy674;
 	default:	goto yy49;
 	}
 yy637:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'e':	goto yy676;
+	case 'D':	goto yy675;
 	default:	goto yy49;
 	}
 yy638:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'r':	goto yy677;
+	case 'L':	goto yy677;
 	default:	goto yy49;
 	}
 yy639:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'r':	goto yy678;
+	default:	goto yy49;
+	}
+yy640:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'e':	goto yy679;
+	default:	goto yy49;
+	}
+yy641:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'r':	goto yy680;
+	default:	goto yy49;
+	}
+yy642:
 	yyaccept = 65;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -18492,83 +18528,83 @@ yy639:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy640;
-	}
-yy640:
-#line 9502 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_IA5String (context.location); }
-#line 18501 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy641:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'R':	goto yy678;
-	default:	goto yy49;
-	}
-yy642:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'O':	goto yy680;
-	default:	goto yy49;
+	default:	goto yy643;
 	}
 yy643:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'I':	goto yy681;
-	default:	goto yy49;
-	}
+#line 9509 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_IA5String (context.location); }
+#line 18537 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy644:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'i':	goto yy682;
+	case 'R':	goto yy681;
 	default:	goto yy49;
 	}
 yy645:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy683;
+	case 'O':	goto yy683;
 	default:	goto yy49;
 	}
 yy646:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'B':	goto yy684;
+	case 'I':	goto yy684;
 	default:	goto yy49;
 	}
 yy647:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'r':	goto yy685;
+	case 'i':	goto yy685;
 	default:	goto yy49;
 	}
 yy648:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'c':	goto yy686;
+	case 'I':	goto yy686;
 	default:	goto yy49;
 	}
 yy649:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy687;
+	case 'B':	goto yy687;
 	default:	goto yy49;
 	}
 yy650:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy688;
+	case 'r':	goto yy688;
 	default:	goto yy49;
 	}
 yy651:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'c':	goto yy689;
+	default:	goto yy49;
+	}
+yy652:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'N':	goto yy690;
+	default:	goto yy49;
+	}
+yy653:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'S':	goto yy691;
+	default:	goto yy49;
+	}
+yy654:
 	yych = *++context.cursor;
 	switch (yych) {
 	case '0':
@@ -18633,14 +18669,14 @@ yy651:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	case 'O':	goto yy689;
-	default:	goto yy98;
+	case 'O':	goto yy692;
+	default:	goto yy101;
 	}
-yy652:
+yy655:
 	yyaccept = 66;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -18704,235 +18740,154 @@ yy652:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy653;
-	}
-yy653:
-#line 9540 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_T61String (context.location); }
-#line 18713 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy654:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'A':	goto yy690;
-	default:	goto yy49;
-	}
-yy655:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'T':	goto yy691;
-	default:	goto yy49;
+	default:	goto yy656;
 	}
 yy656:
+#line 9547 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_T61String (context.location); }
+#line 18749 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy657:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'r':	goto yy692;
+	case 'A':	goto yy693;
 	default:	goto yy49;
 	}
-yy657:
-	yyaccept = 67;
+yy658:
+	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy658;
+	case 'T':	goto yy694;
+	default:	goto yy49;
 	}
-yy658:
-#line 9549 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_UNIVERSAL (context.location); }
-#line 18808 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy659:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'g':	goto yy693;
+	case 'r':	goto yy695;
 	default:	goto yy49;
 	}
 yy660:
-	yyaccept = 2;
+	yyaccept = 67;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy695;
-	default:	goto yy49;
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy661;
 	}
 yy661:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 't':	goto yy696;
-	default:	goto yy49;
-	}
+#line 9556 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_UNIVERSAL (context.location); }
+#line 18844 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy662:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'r':	goto yy697;
+	case 'g':	goto yy696;
 	default:	goto yy49;
 	}
 yy663:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'Y':	goto yy698;
+	case 'S':	goto yy698;
 	default:	goto yy49;
 	}
 yy664:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy699;
+	case 't':	goto yy699;
 	default:	goto yy49;
 	}
 yy665:
-	yyaccept = 68;
+	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy666;
+	case 'r':	goto yy700;
+	default:	goto yy49;
 	}
 yy666:
-#line 9479 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_COMPONENTS (context.location); }
-#line 18924 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'Y':	goto yy701;
+	default:	goto yy49;
+	}
 yy667:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'D':	goto yy701;
+	case 'N':	goto yy702;
 	default:	goto yy49;
 	}
 yy668:
-	yyaccept = 69;
+	yyaccept = 68;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -18999,28 +18954,21 @@ yy668:
 	default:	goto yy669;
 	}
 yy669:
-#line 9481 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_CONTAINING (context.location); }
-#line 19005 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9486 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_COMPONENTS (context.location); }
+#line 18960 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy670:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy703;
+	case 'D':	goto yy704;
 	default:	goto yy49;
 	}
 yy671:
-	yyaccept = 2;
+	yyaccept = 69;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'O':	goto yy705;
-	default:	goto yy49;
-	}
-yy672:
-	yyaccept = 70;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -19084,45 +19032,31 @@ yy672:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy673;
+	default:	goto yy672;
 	}
+yy672:
+#line 9488 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_CONTAINING (context.location); }
+#line 19041 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy673:
-#line 9491 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_ENUMERATED (context.location); }
-#line 19093 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'S':	goto yy706;
+	default:	goto yy49;
+	}
 yy674:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy706;
+	case 'O':	goto yy708;
 	default:	goto yy49;
 	}
 yy675:
-	yyaccept = 2;
+	yyaccept = 70;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'i':	goto yy707;
-	default:	goto yy49;
-	}
-yy676:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'd':	goto yy708;
-	default:	goto yy49;
-	}
-yy677:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'i':	goto yy709;
-	default:	goto yy49;
-	}
-yy678:
-	yyaccept = 71;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -19186,33 +19120,114 @@ yy678:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy679;
+	default:	goto yy676;
+	}
+yy676:
+#line 9498 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_ENUMERATED (context.location); }
+#line 19129 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy677:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'I':	goto yy709;
+	default:	goto yy49;
+	}
+yy678:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'i':	goto yy710;
+	default:	goto yy49;
 	}
 yy679:
-#line 9503 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_IDENTIFIER (context.location); }
-#line 19195 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'd':	goto yy711;
+	default:	goto yy49;
+	}
 yy680:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy710;
+	case 'i':	goto yy712;
 	default:	goto yy49;
 	}
 yy681:
-	yyaccept = 2;
+	yyaccept = 71;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'O':	goto yy711;
-	default:	goto yy49;
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy682;
 	}
 yy682:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'n':	goto yy712;
-	default:	goto yy49;
-	}
+#line 9510 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_IDENTIFIER (context.location); }
+#line 19231 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy683:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -19224,172 +19239,193 @@ yy684:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'E':	goto yy714;
+	case 'O':	goto yy714;
 	default:	goto yy49;
 	}
 yy685:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'i':	goto yy715;
+	case 'n':	goto yy715;
 	default:	goto yy49;
 	}
 yy686:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'r':	goto yy716;
+	case 'N':	goto yy716;
 	default:	goto yy49;
 	}
 yy687:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy717;
+	case 'E':	goto yy717;
 	default:	goto yy49;
 	}
 yy688:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 't':	goto yy718;
+	case 'i':	goto yy718;
 	default:	goto yy49;
 	}
 yy689:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy719;
+	case 'r':	goto yy719;
 	default:	goto yy49;
 	}
 yy690:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'Y':	goto yy720;
+	case 'I':	goto yy720;
 	default:	goto yy49;
 	}
 yy691:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy722;
+	case 't':	goto yy721;
 	default:	goto yy49;
 	}
 yy692:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'i':	goto yy723;
+	case 'I':	goto yy722;
 	default:	goto yy49;
 	}
 yy693:
-	yyaccept = 72;
+	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy694;
+	case 'Y':	goto yy723;
+	default:	goto yy49;
 	}
 yy694:
-#line 9552 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_UTF8String (context.location); }
-#line 19360 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'I':	goto yy725;
+	default:	goto yy49;
+	}
 yy695:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 't':	goto yy724;
-	default:	goto yy49;
-	}
-yy696:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'r':	goto yy725;
-	default:	goto yy49;
-	}
-yy697:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case 'i':	goto yy726;
 	default:	goto yy49;
 	}
+yy696:
+	yyaccept = 72;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy697;
+	}
+yy697:
+#line 9559 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_UTF8String (context.location); }
+#line 19396 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy698:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy727;
+	case 't':	goto yy727;
 	default:	goto yy49;
 	}
 yy699:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'r':	goto yy728;
+	default:	goto yy49;
+	}
+yy700:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'i':	goto yy729;
+	default:	goto yy49;
+	}
+yy701:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'N':	goto yy730;
+	default:	goto yy49;
+	}
+yy702:
 	yyaccept = 73;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -19453,17 +19489,17 @@ yy699:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy700;
+	default:	goto yy703;
 	}
-yy700:
-#line 9468 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+yy703:
+#line 9475 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_APPLICATION (context.location); }
-#line 19462 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy701:
+#line 19498 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy704:
 	yyaccept = 74;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -19527,17 +19563,17 @@ yy701:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy702;
+	default:	goto yy705;
 	}
-yy702:
-#line 9480 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+yy705:
+#line 9487 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CONSTRAINED (context.location); }
-#line 19536 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy703:
+#line 19572 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy706:
 	yyaccept = 75;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -19601,122 +19637,122 @@ yy703:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy704;
-	}
-yy704:
-#line 9485 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_DEFINITIONS (context.location); }
-#line 19610 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy705:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'N':	goto yy728;
-	default:	goto yy49;
-	}
-yy706:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'T':	goto yy729;
-	default:	goto yy49;
+	default:	goto yy707;
 	}
 yy707:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'n':	goto yy730;
-	default:	goto yy49;
-	}
+#line 9492 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_DEFINITIONS (context.location); }
+#line 19646 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy708:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy731;
+	case 'N':	goto yy731;
 	default:	goto yy49;
 	}
 yy709:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'n':	goto yy732;
+	case 'T':	goto yy732;
 	default:	goto yy49;
 	}
 yy710:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'S':	goto yy733;
+	case 'n':	goto yy733;
 	default:	goto yy49;
 	}
 yy711:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'N':	goto yy735;
+	case 'T':	goto yy734;
 	default:	goto yy49;
 	}
 yy712:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'g':	goto yy737;
+	case 'n':	goto yy735;
 	default:	goto yy49;
 	}
 yy713:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy739;
+	case 'S':	goto yy736;
 	default:	goto yy49;
 	}
 yy714:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'R':	goto yy740;
+	case 'N':	goto yy738;
 	default:	goto yy49;
 	}
 yy715:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'n':	goto yy742;
+	case 'g':	goto yy740;
 	default:	goto yy49;
 	}
 yy716:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'i':	goto yy743;
+	case 'I':	goto yy742;
 	default:	goto yy49;
 	}
 yy717:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy744;
+	case 'R':	goto yy743;
 	default:	goto yy49;
 	}
 yy718:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'r':	goto yy745;
+	case 'n':	goto yy745;
 	default:	goto yy49;
 	}
 yy719:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'D':	goto yy746;
+	case 'i':	goto yy746;
 	default:	goto yy49;
 	}
 yy720:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'T':	goto yy747;
+	default:	goto yy49;
+	}
+yy721:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'r':	goto yy748;
+	default:	goto yy49;
+	}
+yy722:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'D':	goto yy749;
+	default:	goto yy49;
+	}
+yy723:
 	yyaccept = 76;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -19780,38 +19816,17 @@ yy720:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy721;
-	}
-yy721:
-#line 9544 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_TIME_OF_DAY (context.location); }
-#line 19789 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy722:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'F':	goto yy748;
-	default:	goto yy49;
-	}
-yy723:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'n':	goto yy749;
-	default:	goto yy49;
+	default:	goto yy724;
 	}
 yy724:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'r':	goto yy750;
-	default:	goto yy49;
-	}
+#line 9551 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_TIME_OF_DAY (context.location); }
+#line 19825 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy725:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'i':	goto yy751;
+	case 'F':	goto yy751;
 	default:	goto yy49;
 	}
 yy726:
@@ -19825,278 +19840,218 @@ yy727:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy753;
+	case 'r':	goto yy753;
 	default:	goto yy49;
 	}
 yy728:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy754;
+	case 'i':	goto yy754;
 	default:	goto yy49;
 	}
 yy729:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'Y':	goto yy755;
+	case 'n':	goto yy755;
 	default:	goto yy49;
 	}
 yy730:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'g':	goto yy757;
+	case 'T':	goto yy756;
 	default:	goto yy49;
 	}
 yy731:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'i':	goto yy759;
+	case 'T':	goto yy757;
 	default:	goto yy49;
 	}
 yy732:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'g':	goto yy760;
+	case 'Y':	goto yy758;
 	default:	goto yy49;
 	}
 yy733:
-	yyaccept = 77;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy734;
-	}
-yy734:
-#line 9509 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_INSTRUCTIONS (context.location); }
-#line 19940 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy735:
-	yyaccept = 78;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy736;
-	}
-yy736:
-#line 9511 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_INTERSECTION (context.location); }
-#line 20014 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy737:
-	yyaccept = 79;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy738;
-	}
-yy738:
-#line 9512 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_ISO646String (context.location); }
-#line 20088 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy739:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'T':	goto yy762;
+	case 'g':	goto yy760;
 	default:	goto yy49;
 	}
-yy740:
-	yyaccept = 80;
+yy734:
+	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case 'i':	goto yy762;
+	default:	goto yy49;
+	}
+yy735:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'g':	goto yy763;
+	default:	goto yy49;
+	}
+yy736:
+	yyaccept = 77;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy737;
+	}
+yy737:
+#line 9516 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_INSTRUCTIONS (context.location); }
+#line 19976 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy738:
+	yyaccept = 78;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy739;
+	}
+yy739:
+#line 9518 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_INTERSECTION (context.location); }
+#line 20050 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy740:
+	yyaccept = 79;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -20163,42 +20118,21 @@ yy740:
 	default:	goto yy741;
 	}
 yy741:
-#line 9516 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_NOT_A_NUMBER (context.location); }
-#line 20169 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9519 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_ISO646String (context.location); }
+#line 20124 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy742:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'g':	goto yy763;
+	case 'T':	goto yy765;
 	default:	goto yy49;
 	}
 yy743:
-	yyaccept = 2;
+	yyaccept = 80;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'p':	goto yy765;
-	default:	goto yy49;
-	}
-yy744:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'Y':	goto yy766;
-	default:	goto yy49;
-	}
-yy745:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'i':	goto yy768;
-	default:	goto yy49;
-	}
-yy746:
-	yyaccept = 81;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy769;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -20262,221 +20196,242 @@ yy746:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy747;
+	default:	goto yy744;
+	}
+yy744:
+#line 9523 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_NOT_A_NUMBER (context.location); }
+#line 20205 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy745:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'g':	goto yy766;
+	default:	goto yy49;
+	}
+yy746:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'p':	goto yy768;
+	default:	goto yy49;
 	}
 yy747:
-#line 9532 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_RELATIVE_OID (context.location); }
-#line 20271 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'Y':	goto yy769;
+	default:	goto yy49;
+	}
 yy748:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy770;
+	case 'i':	goto yy771;
 	default:	goto yy49;
 	}
 yy749:
-	yyaccept = 2;
+	yyaccept = 81;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'g':	goto yy771;
-	default:	goto yy49;
+	case '-':	goto yy772;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy750;
 	}
 yy750:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'i':	goto yy773;
-	default:	goto yy49;
-	}
+#line 9539 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_RELATIVE_OID (context.location); }
+#line 20307 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy751:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'n':	goto yy774;
+	case 'I':	goto yy773;
 	default:	goto yy49;
 	}
 yy752:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'g':	goto yy775;
+	case 'g':	goto yy774;
 	default:	goto yy49;
 	}
 yy753:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'A':	goto yy777;
+	case 'i':	goto yy776;
 	default:	goto yy49;
 	}
 yy754:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'R':	goto yy778;
+	case 'n':	goto yy777;
 	default:	goto yy49;
 	}
 yy755:
-	yyaccept = 82;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy756;
-	}
-yy756:
-#line 9495 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXTENSIBILITY (context.location); }
-#line 20394 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy757:
-	yyaccept = 83;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy758;
-	}
-yy758:
-#line 9500 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_GeneralString (context.location); }
-#line 20468 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy759:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'm':	goto yy779;
+	case 'g':	goto yy778;
 	default:	goto yy49;
 	}
-yy760:
-	yyaccept = 84;
+yy756:
+	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case 'A':	goto yy780;
+	default:	goto yy49;
+	}
+yy757:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'R':	goto yy781;
+	default:	goto yy49;
+	}
+yy758:
+	yyaccept = 82;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy759;
+	}
+yy759:
+#line 9502 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXTENSIBILITY (context.location); }
+#line 20430 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy760:
+	yyaccept = 83;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -20543,21 +20498,21 @@ yy760:
 	default:	goto yy761;
 	}
 yy761:
-#line 9501 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_GraphicString (context.location); }
-#line 20549 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9507 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_GeneralString (context.location); }
+#line 20504 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy762:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'Y':	goto yy780;
+	case 'm':	goto yy782;
 	default:	goto yy49;
 	}
 yy763:
-	yyaccept = 85;
+	yyaccept = 84;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -20624,21 +20579,21 @@ yy763:
 	default:	goto yy764;
 	}
 yy764:
-#line 9518 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_NumericString (context.location); }
-#line 20630 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9508 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_GraphicString (context.location); }
+#line 20585 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy765:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 't':	goto yy782;
+	case 'Y':	goto yy783;
 	default:	goto yy49;
 	}
 yy766:
-	yyaccept = 86;
+	yyaccept = 85;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -20705,17 +20660,98 @@ yy766:
 	default:	goto yy767;
 	}
 yy767:
-#line 9527 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_PLUS_INFINITY (context.location); }
-#line 20711 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9525 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_NumericString (context.location); }
+#line 20666 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy768:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'n':	goto yy783;
+	case 't':	goto yy785;
 	default:	goto yy49;
 	}
 yy769:
+	yyaccept = 86;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy770;
+	}
+yy770:
+#line 9534 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_PLUS_INFINITY (context.location); }
+#line 20747 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy771:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'n':	goto yy786;
+	default:	goto yy49;
+	}
+yy772:
 	yych = *++context.cursor;
 	switch (yych) {
 	case '0':
@@ -20780,109 +20816,21 @@ yy769:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	case 'I':	goto yy784;
-	default:	goto yy98;
+	case 'I':	goto yy787;
+	default:	goto yy101;
 	}
-yy770:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'E':	goto yy785;
-	default:	goto yy49;
-	}
-yy771:
-	yyaccept = 87;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy772;
-	}
-yy772:
-#line 9542 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_TeletexString (context.location); }
-#line 20867 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy773:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'n':	goto yy786;
+	case 'E':	goto yy788;
 	default:	goto yy49;
 	}
 yy774:
-	yyaccept = 2;
+	yyaccept = 87;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'g':	goto yy787;
-	default:	goto yy49;
-	}
-yy775:
-	yyaccept = 88;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -20946,38 +20894,31 @@ yy775:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy776;
+	default:	goto yy775;
 	}
+yy775:
+#line 9549 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_TeletexString (context.location); }
+#line 20903 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy776:
-#line 9554 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_VisibleString (context.location); }
-#line 20955 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'n':	goto yy789;
+	default:	goto yy49;
+	}
 yy777:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'X':	goto yy789;
+	case 'g':	goto yy790;
 	default:	goto yy49;
 	}
 yy778:
-	yyaccept = 2;
+	yyaccept = 88;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'O':	goto yy791;
-	default:	goto yy49;
-	}
-yy779:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'e':	goto yy792;
-	default:	goto yy49;
-	}
-yy780:
-	yyaccept = 89;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -21041,207 +20982,221 @@ yy780:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy781;
+	default:	goto yy779;
+	}
+yy779:
+#line 9561 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_VisibleString (context.location); }
+#line 20991 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy780:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'X':	goto yy792;
+	default:	goto yy49;
 	}
 yy781:
-#line 9515 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_MINUS_INFINITY (context.location); }
-#line 21050 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'O':	goto yy794;
+	default:	goto yy49;
+	}
 yy782:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'o':	goto yy794;
+	case 'e':	goto yy795;
 	default:	goto yy49;
 	}
 yy783:
-	yyaccept = 2;
+	yyaccept = 89;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'g':	goto yy795;
-	default:	goto yy49;
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy784;
 	}
 yy784:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case 'R':	goto yy797;
-	default:	goto yy49;
-	}
+#line 9522 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_MINUS_INFINITY (context.location); }
+#line 21086 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy785:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'R':	goto yy798;
+	case 'o':	goto yy797;
 	default:	goto yy49;
 	}
 yy786:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'g':	goto yy800;
+	case 'g':	goto yy798;
 	default:	goto yy49;
 	}
 yy787:
-	yyaccept = 90;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy788;
-	}
-yy788:
-#line 9553 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_VideotexString (context.location); }
-#line 21159 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy789:
-	yyaccept = 91;
-	yych = *(YYMARKER = ++context.cursor);
-	switch (yych) {
-	case '-':	goto yy100;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy790;
-	}
-yy790:
-#line 9465 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_ABSTRACT_SYNTAX (context.location); }
-#line 21233 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy791:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'L':	goto yy802;
+	case 'R':	goto yy800;
 	default:	goto yy49;
 	}
-yy792:
-	yyaccept = 92;
+yy788:
+	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case 'R':	goto yy801;
+	default:	goto yy49;
+	}
+yy789:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'g':	goto yy803;
+	default:	goto yy49;
+	}
+yy790:
+	yyaccept = 90;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy791;
+	}
+yy791:
+#line 9560 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_VideotexString (context.location); }
+#line 21195 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy792:
+	yyaccept = 91;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -21308,21 +21263,21 @@ yy792:
 	default:	goto yy793;
 	}
 yy793:
-#line 9499 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_GeneralizedTime (context.location); }
-#line 21314 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9472 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_ABSTRACT_SYNTAX (context.location); }
+#line 21269 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy794:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'r':	goto yy804;
+	case 'L':	goto yy805;
 	default:	goto yy49;
 	}
 yy795:
-	yyaccept = 93;
+	yyaccept = 92;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -21389,21 +21344,21 @@ yy795:
 	default:	goto yy796;
 	}
 yy796:
-#line 9529 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_PrintableString (context.location); }
-#line 21395 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9506 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_GeneralizedTime (context.location); }
+#line 21350 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy797:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case 'I':	goto yy806;
+	case 'r':	goto yy807;
 	default:	goto yy49;
 	}
 yy798:
-	yyaccept = 94;
+	yyaccept = 93;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -21470,14 +21425,95 @@ yy798:
 	default:	goto yy799;
 	}
 yy799:
-#line 9546 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return asn1_parser::make_TYPE_IDENTIFIER (context.location); }
-#line 21476 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 9536 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_PrintableString (context.location); }
+#line 21431 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy800:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case 'I':	goto yy809;
+	default:	goto yy49;
+	}
+yy801:
+	yyaccept = 94;
+	yych = *(YYMARKER = ++context.cursor);
+	switch (yych) {
+	case '-':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy48;
+	default:	goto yy802;
+	}
+yy802:
+#line 9553 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+	{ context.location.columns(context.cursor - start); return asn1_parser::make_TYPE_IDENTIFIER (context.location); }
+#line 21512 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy803:
 	yyaccept = 95;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -21541,17 +21577,17 @@ yy800:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy801;
+	default:	goto yy804;
 	}
-yy801:
-#line 9550 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+yy804:
+#line 9557 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_UniversalString (context.location); }
-#line 21550 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy802:
+#line 21586 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy805:
 	yyaccept = 96;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -21615,17 +21651,17 @@ yy802:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy803;
+	default:	goto yy806;
 	}
-yy803:
-#line 9489 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+yy806:
+#line 9496 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ENCODING_CONTROL (context.location); }
-#line 21624 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy804:
+#line 21660 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy807:
 	yyaccept = 97;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -21689,17 +21725,17 @@ yy804:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy805;
+	default:	goto yy808;
 	}
-yy805:
-#line 9520 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+yy808:
+#line 9527 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ObjectDescriptor (context.location); }
-#line 21698 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy806:
+#line 21734 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy809:
 	yyaccept = 98;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
-	case '-':	goto yy100;
+	case '-':	goto yy103;
 	case '0':
 	case '1':
 	case '2':
@@ -21763,14 +21799,14 @@ yy806:
 	case 'x':
 	case 'y':
 	case 'z':	goto yy48;
-	default:	goto yy807;
+	default:	goto yy810;
 	}
-yy807:
-#line 9533 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+yy810:
+#line 9540 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_RELATIVE_OID_IRI (context.location); }
-#line 21772 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 21808 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 }
-#line 9607 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9615 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 
     }
 }
