@@ -15,9 +15,10 @@ build_script:
     
     cd build
     
-    cmake .. -DCMAKE_BUILD_TYPE=Release
+    cmake .. -DCMAKE_BUILD_TYPE=Release -g "NMake Makefiles"
    
     cmake --build . --config Release
 
 test_script:
-  - ctest -C Release
+  - ctest -C Release -j 8
+  
