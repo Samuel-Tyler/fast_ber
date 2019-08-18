@@ -173,7 +173,7 @@ void parameterized_to_concrete(const Asn1Tree& tree, const Module& module, Type&
             if (parameter_template.parameters.size() != defined.parameters.size())
             {
                 throw std::runtime_error("Invalid number of parameters for parameterized assignment, expected " +
-                                         std::to_string(defined.parameters.size()) + " got " +
+                                         std::to_string(parameter_template.parameters.size()) + " got " +
                                          std::to_string(defined.parameters.size()));
             }
 
