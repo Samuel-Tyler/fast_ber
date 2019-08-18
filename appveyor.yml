@@ -15,7 +15,7 @@ build_script:
     
     cd build
     
-    cmake .. -DCMAKE_BUILD_TYPE=Release -g "NMake Makefiles"
+    cmake .. -DCMAKE_BUILD_TYPE=Release -G "NMake Makefiles"
    
     cmake --build . --config Release
 
