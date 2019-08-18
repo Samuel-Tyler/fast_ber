@@ -35,6 +35,7 @@
 
 %token comment
 %token number
+%token negativenumber
 %token realnumber
 %token bstring
 %token xmlbstring
@@ -62,6 +63,7 @@
 %token ABSENT
 %token ABSTRACT_SYNTAX
 %token ALL
+%token ANY
 %token APPLICATION
 %token ASN_NULL
 %token AUTOMATIC
@@ -199,6 +201,7 @@
 %type<std::string>       word
 %type<std::string>       ModuleIdentifier
 %type<std::string>       GlobalModuleReference
+%type<std::string>       UsefulObjectClassReference
 %type<std::string>       bstring
 %type<std::string>       xmlbstring
 %type<std::string>       hstring
@@ -209,16 +212,27 @@
 %type<std::string>       xmltstring
 %type<double>            realnumber
 %type<long long>         number
+%type<long long>         negativenumber
 %type<long long>         SignedNumber
 %type<DefinedValue>      DefinedValue
 %type<BuiltinType>       BuiltinType;
 %type<DefinedType>       DefinedType;
+%type<DefinedType>       ExternalTypeReference;
 %type<std::string>       SimpleDefinedType;
 %type<DefinedType>       ParameterizedType;
 %type<EnumeratedType>    Enumerations;
 %type<EnumeratedType>    Enumeration;
 %type<EnumerationValue>  EnumerationItem;
 %type<std::vector<Export>> Exports;
+%type<std::vector<ClassField>> FieldSpecList;
+%type<std::vector<ClassField>> FieldSpec;
+%type<std::vector<ClassField>> TypeFieldSpec;
+%type<std::vector<ClassField>> FixedTypeValueFieldSpec;
+%type<std::string>       FieldName;
+%type<std::vector<std::string>> FieldNameList;
+%type<ObjectClassAssignment> ObjectClass;
+%type<ObjectClassAssignment> ObjectClassDefn;
+%type<std::vector<std::string>> OneOrManyTypeFieldReference;
 %type<Module>            ModuleBody;
 %type<std::vector<NamedType>> AlternativeTypeList;
 %type<std::vector<NamedType>> AlternativeTypeLists
@@ -239,6 +253,7 @@
 %type<Assignment>        ParameterizedObjectSetAssignment;
 %type<Type>              Type;
 %type<Type>              ConstrainedType;
+%type<Type>              TypeWithConstraint;
 %type<BitStringType>     BitStringType;
 %type<BooleanType>       BooleanType;
 %type<CharacterStringType> CharacterStringType;
@@ -276,7 +291,6 @@
 %type<ComponentType>     ComponentType;
 %type<ComponentTypeList> ComponentTypeList;
 %type<ComponentTypeList> ComponentTypeLists;
-%type<ComponentTypeList> RootComponentTypeList;
 %type<Value>             Value;
 %type<Value>             SingleValue;
 %type<Value>             ValueWithoutTypeIdentifier;
@@ -297,9 +311,11 @@
 %type<ObjectIdComponentValue> NameAndNumberForm;
 %type<std::vector<ObjectIdComponentValue>> ObjIdComponentsList;
 %type<std::vector<ObjectIdComponentValue>> ObjectIdentifierValue;
-%type<std::set<std::string>> ParameterList;
-%type<std::set<std::string>> ParameterSeries;
-%type<std::string>           Parameter;
+%type<std::vector<Parameter>> ParameterList;
+%type<std::vector<Parameter>> ParameterSeries;
+%type<Parameter>         Parameter;
+%type<Type>              ParamGovernor;
+%type<Type>              Governor;
 
 %%
 
@@ -335,44 +351,66 @@ ExternalObjectClassReference:
 
 UsefulObjectClassReference:
     TYPE_IDENTIFIER
-|   ABSTRACT_SYNTAX;
+    { $$ = "TYPE-IDENTIFIER"; }
+|   ABSTRACT_SYNTAX
+    { $$ = "TYPE-IDENTIFIER"; }
 
 ObjectClassAssignment:
     typereference DEFINED_AS ObjectClass
-    { $$ = Assignment{$1, ObjectClassAssignment{}}; }
+    { $$ = Assignment{$1, $3}; }
 
 ObjectClass:
     DefinedObjectClass
+    { std::cerr << "Warning - Unhandled DefinedObjectClass\n"; }
 |   ObjectClassDefn
+    { $$ = $1; }
 //|   ParameterizedObjectClass;
 
 ObjectClassDefn:
     CLASS "{" FieldSpecList "}" WithSyntaxSpec
+    { $$ = {$3}; }
 
 FieldSpecList:
     FieldSpec
+    { $$ = $1; }
 |   FieldSpecList "," FieldSpec
+    { $$ = $1; $$.insert($$.end(), $3.begin(), $3.end()); }
 
 FieldSpec:
     TypeFieldSpec
+    { $$ = $1; }
 |   FixedTypeValueFieldSpec
+    { $$ = $1; }
 |   VariableTypeValueFieldSpec
+|   FixedTypeValueSetFieldSpec
 |   ObjectFieldSpec
 |   ObjectSetFieldSpec;
 
 FieldName:
     typefieldreference
+    { $$ = $1; }
 |   valuefieldreference
+    { $$ = $1; }
+/*  Same underlying as typefieldreference and valuefieldreference
 |   valuesetfieldreference
 |   objectfieldreference
-|   objectsetfieldreference;
+|   objectsetfieldreference */
 
 FieldNameList:
     FieldName
+    { $$.push_back($1); }
 |   FieldNameList "." FieldName
+    { $$ = $1; $$.push_back($3); }
 
 TypeFieldSpec:
-    typefieldreference TypeOptionalitySpec
+    OneOrManyTypeFieldReference TypeOptionalitySpec
+    { for (const std::string& name : $1) $$.push_back(ClassField{name, TypeField{}}); }
+    
+OneOrManyTypeFieldReference:
+    typefieldreference
+    { $$.push_back($1); }
+|   OneOrManyTypeFieldReference typefieldreference
+    { $$ = $1; $$.push_back($2); }
 
 TypeOptionalitySpec:
     OPTIONAL
@@ -380,11 +418,13 @@ TypeOptionalitySpec:
 |   %empty
 
 OptionalUnique:
-    UNIQUE
+    OPTIONAL
+|   UNIQUE
 |   %empty
 
 FixedTypeValueFieldSpec:
-    valuefieldreference Type OptionalUnique ValueOptionalitySpec;
+    valuefieldreference Type OptionalUnique ValueOptionalitySpec
+    { $$.push_back(ClassField{$1, FixedTypeValueField{$2}}); }
 
 ValueOptionalitySpec:
     OPTIONAL
@@ -392,7 +432,15 @@ ValueOptionalitySpec:
 |   %empty
 
 VariableTypeValueFieldSpec:
-    valuefieldreference FieldName ValueOptionalitySpec;
+    valuefieldreference FieldName OptionalUnique ValueOptionalitySpec;
+
+FixedTypeValueSetFieldSpec:
+    typefieldreference Type OptionalUnique ValueSetDefaultSpec
+
+ValueSetDefaultSpec:
+    OPTIONAL
+|   DEFAULT ValueSet
+|   %empty
 
 ObjectFieldSpec:
     typefieldreference DefinedObjectClass ObjectOptionalitySpec;
@@ -497,11 +545,11 @@ ObjectSet:
     "{" ObjectSetSpec "}";
 
 ObjectSetSpec:
-    RootElementSetSpec
-|   RootElementSetSpec "," ELIPSIS
+    ElementSetSpec
+|   ElementSetSpec "," ELIPSIS
 |   ELIPSIS
-|   ELIPSIS "," AdditionalElementSetSpec
-|   RootElementSetSpec "," ELIPSIS "," AdditionalElementSetSpec;
+|   ELIPSIS "," ElementSetSpec
+|   ElementSetSpec "," ELIPSIS "," ElementSetSpec;
 
 ObjectSetElements:
     Object
@@ -510,8 +558,10 @@ ObjectSetElements:
 //|   ParameterizedObjectSet;
 
 ObjectClassFieldType:
-    typereference "." FieldNameList
-|   valuereference "." FieldNameList
+    UsefulObjectClassReference "." FieldNameList
+    { $$ = {DefinedType{{}, }, $3}; }
+|   typereference "." FieldNameList
+    { $$ = {DefinedType{{}, $1}, $3}; }
 
 ObjectClassFieldValue:
     Type COLON Value;
@@ -525,8 +575,8 @@ ParameterizedAssignment:
     { $$ = $1; }
 |   ParameterizedObjectClassAssignment
     { $$ = $1; }
-|   ParameterizedObjectAssignment
-    { $$ = $1; }
+//|   ParameterizedObjectAssignment
+//    { $$ = $1; }
 //|   ParameterizedObjectSetAssignment;
 
 ParameterizedTypeAssignment:
@@ -542,7 +592,7 @@ ParameterizedValueSetTypeAssignment:
     { $$ = Assignment{ $1, ValueAssignment{} }; }
  
 ParameterizedObjectClassAssignment:
-    objectclassreference ParameterList DEFINED_AS ObjectClass
+    typereference ParameterList DEFINED_AS ObjectClass
     { $$ = Assignment{ $1, ObjectClassAssignment{} }; }
 
 ParameterizedObjectAssignment:
@@ -559,23 +609,27 @@ ParameterList:
 
 ParameterSeries:
     Parameter
-    { $$.insert($1); }
+    { $$.push_back($1); }
 |   ParameterSeries "," Parameter
-    { $$ = $1; $1.insert($3); }
+    { $$ = $1; $$.push_back($3); }
 
 Parameter:
     ParamGovernor ":" Reference
-    { $$ = $3; }
+    { $$ = Parameter{$1, $3}; }
 |   Reference
-    { $$ = $1; }
+    { $$ = Parameter{{}, $1}; }
 
 ParamGovernor:
     Governor
-|   Reference;
+    { $$ = $1; }
+|   Reference
+    { $$ = DefinedType{{}, $1}; }
 
 Governor:
     Type
-|   DefinedObjectClass;
+    { $$ = $1; }
+|   DefinedObjectClass
+    { }
 
 ParameterizedReference:
     Reference
@@ -637,9 +691,10 @@ UserDefinedConstraint:
 UserDefinedConstraintParameter:
     Governor ":" Value
 |   Governor ":" Object
-//|   DefinedObjectSet
+|   DefinedObjectSet
 |   Type
 |   DefinedObjectClass
+|   ELIPSIS
 |   %empty
 
 TableConstraint:
@@ -809,8 +864,8 @@ Reference:
 AssignmentList:
     Assignment
     { $$.push_back($1); }
-|   AssignmentList Assignment
-    { $$ = $1; $$.push_back($2); }
+|   Assignment AssignmentList
+    { $$ = $2; $$.push_back($1); }
 
 Assignment:
     TypeAssignment
@@ -829,8 +884,9 @@ Assignment:
 
 DefinedType:
     ExternalTypeReference
+    { $$ = $1; }
 |   typereference
-    { $$ = DefinedType{$1, {}}; }
+    { $$ = DefinedType{absl::nullopt, $1, {}}; }
 |   ParameterizedType
     { $$ = $1; }
 //|   ParameterizedValueSetType;
@@ -842,15 +898,17 @@ DefinedValue:
 |   ParameterizedValue;
 
 ParameterizedType:
-    SimpleDefinedType ActualParameterList
-    { $$ = DefinedType{$1, $2}; }
+    SimpleDefinedType "{" ActualParameterList "}"
+    { $$ = DefinedType{ absl::nullopt, $1, $3}; }
 
 ParameterizedValue:
-    SimpleDefinedValue ActualParameterList 
+    SimpleDefinedValue "{" ActualParameterList "}"
 
 ActualParameterList:
-    "{" ActualParameter "}"
-    { $$.push_back($2); }
+    ActualParameter 
+    { $$.push_back($1); }
+|   ActualParameter "," ActualParameterList
+    { $$ = $3; $$.push_back($1); }
 
 ActualParameter:
     Type
@@ -868,7 +926,8 @@ NonParameterizedTypeName:
 |   xmlasn1typename;
 
 ExternalTypeReference:
-    typereference "." typereference; // Param one is actually modulereference, but this causes parsing clash
+    typereference "." typereference // Param one is actually modulereference, but this causes parsing clash
+    { $$ = DefinedType{$1, $3, {}}; }
 
 ExternalValueReference:
     modulereference
@@ -917,11 +976,12 @@ Type:
 |   SelectionType
     { std::cerr << "Warning: Not handled - SelectionType\n"; }
 |   TypeFromObject
-    { std::cerr << std::string("Not handled - TypeFromObject\n"); }
+    { std::cerr << "Warning: Not handled - TypeFromObject\n"; }
 //|   ValueSetFromObjects { std::cerr << std::string("Not handled - ValueSetFromObjects\n"); }
 
 BuiltinType:
-    BitStringType { $$ = $1; }
+    ANY { $$ = AnyType(); }
+|   BitStringType { $$ = $1; }
 |   BooleanType { $$ = $1; }
 |   CharacterStringType { $$ = $1; }
 |   ChoiceType { $$ = $1; }
@@ -958,23 +1018,23 @@ NamedType:
 
 ValueWithoutTypeIdentifier:
     BooleanValue
-    { std::cerr << std::string("Unhandled field: BooleanValue\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: BooleanValue\n"); }
 |   IRIValue
-    { std::cerr << std::string("Unhandled field: IRIValue\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: IRIValue\n"); }
 |   ASN_NULL
-    { std::cerr << std::string("Unhandled field: ASN_NULL\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: ASN_NULL\n"); }
 |   TimeValue
-    { std::cerr << std::string("Unhandled field: TimeValue\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: TimeValue\n"); }
 |   bstring
-    { std::cerr << std::string("Unhandled field: bstring\n"); }
+    { $$.value_selection = BitStringValue{$1}; }
 |   hstring
-    { std::cerr << std::string("Unhandled field: hstring\n"); }
+    { $$.value_selection = HexStringValue{$1}; }
 |   cstring
-    { $$.value_selection = $1; }
+    { $$.value_selection = CharStringValue{$1}; }
 |   CONTAINING Value
-    { std::cerr << std::string("Unhandled field: CONTAINING\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: CONTAINING\n"); }
 |   DefinedValue
-    { $$.defined_value = $1; }
+    { $$.value_selection = $1; }
 |   GENERIC_IDENTIFIER_LOWERCASE "(" number ")"
     { $$.value_selection = NamedNumber{$1, $3}; }
 |   ":"
@@ -983,27 +1043,35 @@ ValueWithoutTypeIdentifier:
 |   realnumber
     { $$.value_selection = $1; }
 |   ObjectClassFieldType
-    { std::cerr << std::string("Unhandled field: ValueCommaListChoice\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: ValueCommaListChoice\n"); }
 |   Value COLON Value
-    { std::cerr << std::string("Unhandled field: ValueCommaListChoice\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: ValueCommaListChoice\n"); }
 //|   ObjectClassFieldValue
-//    { std::cerr << std::string("Unhandled field: ObjectClassFieldValue\n"); }
+//    { std::cerr << std::string("Warning: Unhandled field: ObjectClassFieldValue\n"); }
+|    valuereference "." typefieldreference
+|    valuereference "." valuefieldreference
+|    typefieldreference
+|    valuefieldreference
 |   "{" SequenceOfValues "}"
     { $$.value_selection = $2; }
 |   ValueChoice
-    { std::cerr << std::string("Unhandled field: ValueChoice\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: ValueChoice\n"); }
 |   OPTIONAL
-    { std::cerr << std::string("Unhandled field: OPTIONAL\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: OPTIONAL\n"); }
 |   ValueCommaListChoice
-    { std::cerr << std::string("Unhandled field: ValueCommaListChoice\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: ValueCommaListChoice\n"); }
 |   BY
-    { std::cerr << std::string("Unhandled field: BY\n"); }
+    { std::cerr << std::string("Warning: Unhandled field: BY\n"); }
+|   WITH
+    { std::cerr << std::string("Warning: Unhandled field: WITH\n"); }
+
 
 Value:
     ValueWithoutTypeIdentifier
     { $$ = $1; }
 |   GENERIC_IDENTIFIER_UPPERCASE
     { $$.value_selection = $1; }
+|   INTEGER
 
 ValueCommaListChoice:
     Value "," Value
@@ -1054,8 +1122,8 @@ NamedNumber:
 SignedNumber:
     number
     { $$ = $1; }
-|   "-" number
-    { $$ = -$2; }
+|   negativenumber
+    { $$ = $1; }
 
 EnumeratedType:
     ENUMERATED "{" Enumerations "}"
@@ -1095,7 +1163,9 @@ RealType:
 
 BitStringType:
     BIT STRING
-|   BIT STRING "{" NamedBitList "}";
+    { $$ = BitStringType{}; }
+|   BIT STRING "{" NamedBitList "}"
+    { $$ = BitStringType{}; }
 
 NamedBitList:
     NamedBit
@@ -1128,15 +1198,7 @@ SequenceType:
 |   SEQUENCE "{" ComponentTypeLists "}"
     { $$ = SequenceType{$3}; }
 
-ExtensionAndException:
-    ELIPSIS
-|   ELIPSIS ExceptionSpec;
-
 ComponentTypeLists:
-    RootComponentTypeList
-    { $$ = $1; }
-
-RootComponentTypeList:
     ComponentTypeList
     { $$ = $1; }
 |   ComponentTypeList "," ELIPSIS ExceptionSpec
@@ -1164,12 +1226,13 @@ ComponentTypeList:
 
 ComponentType:
     NamedType
-    { $$ = ComponentType{$1, false, absl::nullopt}; }
+    { $$ = ComponentType{$1, false, absl::nullopt, absl::nullopt}; }
 |   NamedType OPTIONAL
-    { $$ = ComponentType{$1, true, absl::nullopt}; }
+    { $$ = ComponentType{$1, true, absl::nullopt, absl::nullopt}; }
 |   NamedType DEFAULT SingleValue
-    { $$ = ComponentType{$1, false, $3}; }
+    { $$ = ComponentType{$1, false, $3, absl::nullopt}; }
 |   COMPONENTS OF Type
+    { $$ = ComponentType{{}, false, absl::nullopt, $3}; }
 
 SequenceValue:
     "{" ComponentValueList "}"
@@ -1181,9 +1244,9 @@ ComponentValueList:
 
 SequenceOfType:
     SEQUENCE OF Type
-    { $$ = SequenceOfType{ false, nullptr, std::make_shared<Type>($3) }; }
+    { $$ = SequenceOfType{ false, nullptr, std::unique_ptr<Type>(new Type($3)) }; }
 |   SEQUENCE OF NamedType
-    { $$ = SequenceOfType{ true, std::make_shared<NamedType>($3), nullptr }; }
+    { $$ = SequenceOfType{ true, std::unique_ptr<NamedType>(new NamedType($3)), nullptr }; }
 
 SetType:
     SET "{" "}"
@@ -1193,9 +1256,9 @@ SetType:
 
 SetOfType:
     SET OF Type
-    { $$ = SetOfType{ false, nullptr, std::make_shared<Type>($3) }; }
+    { $$ = SetOfType{ false, nullptr, std::unique_ptr<Type>(new Type($3)) }; }
 |   SET OF NamedType
-    { $$ = SetOfType{ true, std::make_shared<NamedType>($3), nullptr }; }
+    { $$ = SetOfType{ true, std::unique_ptr<NamedType>(new NamedType($3)), nullptr }; }
 
 ChoiceType:
     CHOICE "{" AlternativeTypeLists "}"
@@ -1210,6 +1273,8 @@ RootAlternativeTypeList:
     { $$ = $1; }
 |   AlternativeTypeList "," ELIPSIS
     { $$ = $1; }
+|   AlternativeTypeList "," ELIPSIS "," AlternativeTypeList
+    { $$ = $1; $$.insert($$.begin(), $5.begin(), $5.end()); }
 
 AlternativeTypeList:
     NamedType
@@ -1394,18 +1459,27 @@ UnrestrictedCharacterStringType:
 
 ConstrainedType:
     Type Constraint
-    { $$ = $1; };
+    { $$ = $1; }
 |   TypeWithConstraint
+    { $$ = $1; }
 
 TypeWithConstraint:
     SET Constraint OF Type
+    { $$ = SetOfType{ false, nullptr, std::unique_ptr<Type>(new Type($4)) }; }
 |   SET SizeConstraint OF Type
+    { $$ = SetOfType{ false, nullptr, std::unique_ptr<Type>(new Type($4)) }; }
 |   SEQUENCE Constraint OF Type
+    { $$ = SequenceOfType{ false, nullptr, std::unique_ptr<Type>(new Type($4)) }; }
 |   SEQUENCE SizeConstraint OF Type
+    { $$ = SequenceOfType{ false, nullptr, std::unique_ptr<Type>(new Type($4)) }; }
 |   SET Constraint OF NamedType
+    { $$ = SetOfType{ true, std::unique_ptr<NamedType>(new NamedType($4)), nullptr }; }
 |   SET SizeConstraint OF NamedType
+    { $$ = SetOfType{ true, std::unique_ptr<NamedType>(new NamedType($4)), nullptr }; }
 |   SEQUENCE Constraint OF NamedType
-|   SEQUENCE SizeConstraint OF NamedType;
+    { $$ = SequenceOfType{ true, std::unique_ptr<NamedType>(new NamedType($4)), nullptr }; }
+|   SEQUENCE SizeConstraint OF NamedType
+    { $$ = SequenceOfType{ true, std::unique_ptr<NamedType>(new NamedType($4)), nullptr }; }
 
 Constraint:
     "(" ConstraintSpec ExceptionSpec ")";
@@ -1418,15 +1492,9 @@ SubtypeConstraint:
     ElementSetSpecs;
 
 ElementSetSpecs:
-    RootElementSetSpec
-|   RootElementSetSpec "," ELIPSIS
-|   RootElementSetSpec "," ELIPSIS "," AdditionalElementSetSpec;
-
-RootElementSetSpec:
-    ElementSetSpec;
-
-AdditionalElementSetSpec:
-    ElementSetSpec;
+    ElementSetSpec
+|   ElementSetSpec "," ELIPSIS
+|   ElementSetSpec "," ELIPSIS "," ElementSetSpec;
 
 ElementSetSpec:
     Unions
@@ -1467,7 +1535,7 @@ IntersectionMark:
 Elements:
     SubtypeElements
 //|   ObjectSetElements
-|   "(" ElementSetSpec ")";
+|   "(" ElementSetSpecs ")";
 
 SubtypeElements:
     SingleValue
@@ -1538,14 +1606,9 @@ SingleTypeConstraint:
     Constraint;
 
 MultipleTypeConstraints:
-    FullSpecification
-|   PartialSpecification;
-
-FullSpecification:
-    "{" TypeConstraints "}";
-
-PartialSpecification:
-    "{" ELIPSIS "," TypeConstraints "}";
+|   "{" ELIPSIS "}"
+|   "{" ELIPSIS "," TypeConstraints "}"
+|   "{" TypeConstraints "}"
 
 TypeConstraints:
     NamedConstraint
@@ -1701,6 +1764,7 @@ re2c:define:YYCURSOR = "context.cursor";
 "ABSENT"                { context.location.columns(context.cursor - start); return asn1_parser::make_ABSENT (context.location); }
 "ABSTRACT-SYNTAX"       { context.location.columns(context.cursor - start); return asn1_parser::make_ABSTRACT_SYNTAX (context.location); }
 "ALL"                   { context.location.columns(context.cursor - start); return asn1_parser::make_ALL (context.location); }
+"ANY"                   { context.location.columns(context.cursor - start); return asn1_parser::make_ANY (context.location); }
 "APPLICATION"           { context.location.columns(context.cursor - start); return asn1_parser::make_APPLICATION (context.location); }
 "AUTOMATIC"             { context.location.columns(context.cursor - start); return asn1_parser::make_AUTOMATIC (context.location); }
 "BEGIN"                 { context.location.columns(context.cursor - start); return asn1_parser::make_BEGIN (context.location); }
@@ -1798,16 +1862,19 @@ re2c:define:YYCURSOR = "context.cursor";
                         { context.location.columns(context.cursor - start); return yylex(context); }
 
 // Identifiers
-//[0-9]+\.[0-9]+        { context.location.columns(context.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context.cursor)), context.location); }
+[0-9]+'\.'[0-9]+        { context.location.columns(context.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context.cursor)), context.location); }
 [0-9]+                  { context.location.columns(context.cursor - start); return asn1_parser::make_number(std::stoll(std::string(start, context.cursor)), context.location); }
+"-"[0-9]+               { context.location.columns(context.cursor - start); return asn1_parser::make_negativenumber(std::stoll(std::string(start, context.cursor)), context.location); }
 ['\"']('\\'.|"\"\""|[^'\"'])*['\"']
                         { context.location.columns(context.cursor - start); return asn1_parser::make_cstring(std::string(start, context.cursor), context.location); }
 ['\'']('0'|'1')*['\'']"B"
-                        { context.location.columns(context.cursor - start); return asn1_parser::make_bstring(std::string(start, context.cursor), context.location); }
-[A-Z][A-Za-z_0-9\-]*    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(santize_name(std::string(start, context.cursor)), context.location); }
-[a-z][A-Za-z_0-9\-]*    { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(santize_name(std::string(start, context.cursor)), context.location); }
-[&][A-Z][A-Za-z_0-9\-]* { context.location.columns(context.cursor - start); return asn1_parser::make_typefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
-[&][a-z][A-Za-z_0-9\-]* { context.location.columns(context.cursor - start); return asn1_parser::make_valuefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
+                        { context.location.columns(context.cursor - start); return asn1_parser::make_bstring(std::string(start + 1, context.cursor - 2), context.location); }
+['\''][0-9A-Fa-f]*['\'']"H"
+                        { context.location.columns(context.cursor - start); return asn1_parser::make_hstring(std::string(start + 1, context.cursor - 2), context.location); }
+[A-Z]([\-]?[A-Za-z_0-9])*  { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(santize_name(std::string(start, context.cursor)), context.location); }
+[a-z]([\-]?[A-Za-z_0-9])*  { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(santize_name(std::string(start, context.cursor)), context.location); }
+[&][A-Z]([\-]?[A-Za-z_0-9])* { context.location.columns(context.cursor - start); return asn1_parser::make_typefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
+[&][a-z]([\-]?[A-Za-z_0-9])* { context.location.columns(context.cursor - start); return asn1_parser::make_valuefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
 
 // End of file
 "\000"                  { context.location.columns(context.cursor - start); return asn1_parser::make_END_OF_FILE(context.location); }
@@ -1834,8 +1901,10 @@ re2c:define:YYCURSOR = "context.cursor";
 "|"                     { context.location.columns(context.cursor - start); return asn1_parser::make_VERTICAL_LINE (context.location); }
 "!"                     { context.location.columns(context.cursor - start); return asn1_parser::make_EXCLAMATION_MARK (context.location); }
 "<"                     { context.location.columns(context.cursor - start); return asn1_parser::make_LESS_THAN (context.location); }
+"^"                     { context.location.columns(context.cursor - start); return asn1_parser::make_ACCENT (context.location); }
+
 "@"                     { context.location.columns(context.cursor - start); return asn1_parser::make_AT (context.location); }
-.                       { throw(std::runtime_error(std::string("Unknown symbol!") + *start)); context.location.columns(context.cursor - start); return asn1_parser::symbol_type(asn1_parser::token_type(*start), context.location); }
+.                       { std::cerr << "Ignoring unknown symbol: " <<  static_cast<int>(*start) << std::endl; return yylex(context); }
 %}
     }
 }

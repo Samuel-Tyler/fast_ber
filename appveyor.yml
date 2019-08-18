@@ -1,14 +1,15 @@
 platform:
-  - x86
   - x64
 
 configuration:
-  - Debug
   - Release
 
 image:
   - Visual Studio 2017
-  
+
+init:
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+
 build_script:
 - cmd: >-
     git submodule update --init
@@ -17,9 +18,10 @@ build_script:
     
     cd build
     
-    cmake .. -DCMAKE_BUILD_TYPE=Release
+    cmake .. -DCMAKE_BUILD_TYPE=Release -G "NMake Makefiles"
    
     cmake --build . --config Release
 
 test_script:
-  - ctest -C Release
+  - ctest -C Release -j 8
+  

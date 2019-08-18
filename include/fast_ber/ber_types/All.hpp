@@ -15,7 +15,6 @@
 #include "InstanceOf.hpp"
 #include "Integer.hpp"
 #include "Null.hpp"
-#include "ObjectField.hpp"
 #include "ObjectIdentifier.hpp"
 #include "OctetString.hpp"
 #include "Optional.hpp"
@@ -32,3 +31,9 @@
 #include "TimeOfDay.hpp"
 #include "UTCTime.hpp"
 #include "VisibleString.hpp"
+
+namespace fast_ber
+{
+using Any = fast_ber::Choice<BitString, Boolean, CharacterString, Date, DateTime, Duration, GeneralizedTime, Integer,
+                             Null, ObjectIdentifier, OctetString, Real, Time, TimeOfDay, UTCTime, VisibleString>;
+}
