@@ -6,6 +6,7 @@
 namespace fast_ber
 {
 
+template <typename Identifier = ExplicitIdentifier<UniversalTag::real>>
 class Real
 {
   public:
@@ -48,5 +49,10 @@ class Real
     std::array<uint8_t, sizeof(int64_t) + sizeof(uint8_t)> m_data;
 };
 
-constexpr inline ExplicitIdentifier<UniversalTag::real> identifier(const Real*) noexcept { return {}; }
+template <typename Identifier>
+constexpr inline ExplicitIdentifier<UniversalTag::real> identifier(const Real<Identifier>*) noexcept
+{
+    return {};
+}
+
 } // namespace fast_ber

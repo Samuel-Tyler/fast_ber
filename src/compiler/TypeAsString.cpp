@@ -5,9 +5,9 @@
 static int unnamed_definition_reference_num = 0;
 
 std::string type_as_string(const AnyType&, const Module&, const Asn1Tree&) { return "Any"; }
-std::string type_as_string(const BitStringType&, const Module&, const Asn1Tree&) { return "BitString"; }
-std::string type_as_string(const BooleanType&, const Module&, const Asn1Tree&) { return "Boolean"; }
-std::string type_as_string(const CharacterStringType&, const Module&, const Asn1Tree&) { return "CharacterString"; }
+std::string type_as_string(const BitStringType&, const Module&, const Asn1Tree&) { return "BitString<>"; }
+std::string type_as_string(const BooleanType&, const Module&, const Asn1Tree&) { return "Boolean<>"; }
+std::string type_as_string(const CharacterStringType&, const Module&, const Asn1Tree&) { return "CharacterString<>"; }
 std::string type_as_string(const ChoiceType& choice, const Module& module, const Asn1Tree& tree)
 {
     bool        is_first = true;
@@ -40,10 +40,10 @@ std::string type_as_string(const ChoiceType& choice, const Module& module, const
     res += ">";
     return res;
 }
-std::string type_as_string(const DateType&, const Module&, const Asn1Tree&) { return "Date"; }
-std::string type_as_string(const DateTimeType&, const Module&, const Asn1Tree&) { return "DateTime"; }
-std::string type_as_string(const DurationType&, const Module&, const Asn1Tree&) { return "Duration"; }
-std::string type_as_string(const EmbeddedPDVType&, const Module&, const Asn1Tree&) { return "EmbeddedPDV"; }
+std::string type_as_string(const DateType&, const Module&, const Asn1Tree&) { return "Date<>"; }
+std::string type_as_string(const DateTimeType&, const Module&, const Asn1Tree&) { return "DateTime<>"; }
+std::string type_as_string(const DurationType&, const Module&, const Asn1Tree&) { return "Duration<>"; }
+std::string type_as_string(const EmbeddedPDVType&, const Module&, const Asn1Tree&) { return "EmbeddedPDV<>"; }
 std::string type_as_string(const EnumeratedType& enumerated, const Module&, const Asn1Tree&)
 {
     std::string res = " {\n";
@@ -60,22 +60,22 @@ std::string type_as_string(const EnumeratedType& enumerated, const Module&, cons
 
     return res;
 }
-std::string type_as_string(const ExternalType&, const Module&, const Asn1Tree&) { return "External"; }
-std::string type_as_string(const GeneralizedTimeType&, const Module&, const Asn1Tree&) { return "GeneralizedTime"; }
-std::string type_as_string(const InstanceOfType&, const Module&, const Asn1Tree&) { return "InstanceOf"; }
+std::string type_as_string(const ExternalType&, const Module&, const Asn1Tree&) { return "External<>"; }
+std::string type_as_string(const GeneralizedTimeType&, const Module&, const Asn1Tree&) { return "GeneralizedTime<>"; }
+std::string type_as_string(const InstanceOfType&, const Module&, const Asn1Tree&) { return "InstanceOf<>"; }
 std::string type_as_string(const IntegerType&, const Module&, const Asn1Tree&) { return "Integer<>"; }
-std::string type_as_string(const IRIType&, const Module&, const Asn1Tree&) { return "IRI"; }
-std::string type_as_string(const NullType&, const Module&, const Asn1Tree&) { return "Null"; }
+std::string type_as_string(const IRIType&, const Module&, const Asn1Tree&) { return "IRI<>"; }
+std::string type_as_string(const NullType&, const Module&, const Asn1Tree&) { return "Null<>"; }
 std::string type_as_string(const ObjectClassFieldType&, const Module&, const Asn1Tree&)
 {
     throw std::runtime_error("ObjectClassFieldType is not serializable!");
 }
-std::string type_as_string(const ObjectDescriptorType&, const Module&, const Asn1Tree&) { return "ObjectDescriptor"; }
-std::string type_as_string(const ObjectIdentifierType&, const Module&, const Asn1Tree&) { return "ObjectIdentifier"; }
+std::string type_as_string(const ObjectDescriptorType&, const Module&, const Asn1Tree&) { return "ObjectDescriptor<>"; }
+std::string type_as_string(const ObjectIdentifierType&, const Module&, const Asn1Tree&) { return "ObjectIdentifier<>"; }
 std::string type_as_string(const OctetStringType&, const Module&, const Asn1Tree&) { return "OctetString<>"; }
-std::string type_as_string(const RealType&, const Module&, const Asn1Tree&) { return "Real"; }
-std::string type_as_string(const RelativeIRIType&, const Module&, const Asn1Tree&) { return "RelativeIRI"; }
-std::string type_as_string(const RelativeOIDType&, const Module&, const Asn1Tree&) { return "RelativeOID"; }
+std::string type_as_string(const RealType&, const Module&, const Asn1Tree&) { return "Real<>"; }
+std::string type_as_string(const RelativeIRIType&, const Module&, const Asn1Tree&) { return "RelativeIRI<>"; }
+std::string type_as_string(const RelativeOIDType&, const Module&, const Asn1Tree&) { return "RelativeOID<>"; }
 std::string type_as_string(const SequenceType& sequence, const Module& module, const Asn1Tree& tree)
 {
     std::string res = " {\n";
@@ -218,9 +218,9 @@ std::string type_as_string(const PrefixedType& prefixed_type, const Module& modu
     }
     return type_as_string(prefixed_type.tagged_type->type, module, tree);
 }
-std::string type_as_string(const TimeType&, const Module&, const Asn1Tree&) { return "Time"; }
-std::string type_as_string(const TimeOfDayType&, const Module&, const Asn1Tree&) { return "TimeOfDay"; }
-std::string type_as_string(const UTCTimeType&, const Module&, const Asn1Tree&) { return "UTCTime"; }
+std::string type_as_string(const TimeType&, const Module&, const Asn1Tree&) { return "Time<>"; }
+std::string type_as_string(const TimeOfDayType&, const Module&, const Asn1Tree&) { return "TimeOfDay<>"; }
+std::string type_as_string(const UTCTimeType&, const Module&, const Asn1Tree&) { return "UTCTime<>"; }
 std::string type_as_string(const DefinedType& type, const Module&, const Asn1Tree&) { return type.type_reference; }
 
 struct ToStringHelper

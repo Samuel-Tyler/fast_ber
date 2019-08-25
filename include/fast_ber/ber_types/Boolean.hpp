@@ -18,6 +18,7 @@
 namespace fast_ber
 {
 
+template <typename Identifier = ExplicitIdentifier<UniversalTag::boolean>>
 class Boolean
 {
   public:
@@ -44,27 +45,43 @@ class Boolean
     std::array<uint8_t, 2> m_data;
 }; // namespace fast_ber
 
-constexpr inline ExplicitIdentifier<UniversalTag::boolean> identifier(const Boolean*) noexcept { return {}; }
+constexpr inline ExplicitIdentifier<UniversalTag::boolean> identifier(const Boolean<>*) noexcept { return {}; }
 
-inline Boolean& Boolean::operator=(bool rhs) noexcept
+template <typename Identifier>
+inline Boolean<Identifier>& Boolean<Identifier>::operator=(bool rhs) noexcept
 {
     assign(rhs);
     return *this;
 }
-inline Boolean& Boolean::operator=(const Boolean& rhs) noexcept
+
+template <typename Identifier>
+inline Boolean<Identifier>& Boolean<Identifier>::operator=(const Boolean<Identifier>& rhs) noexcept
 {
     assign(rhs);
     return *this;
 }
-inline Boolean& Boolean::operator=(const BerView& rhs) noexcept
+
+template <typename Identifier>
+inline Boolean<Identifier>& Boolean<Identifier>::operator=(const BerView& rhs) noexcept
 {
     assign_ber(rhs);
     return *this;
 }
 
-inline void   Boolean::assign(bool val) noexcept { m_data = {0x1, static_cast<uint8_t>(val ? 0xFF : 0x00)}; }
-inline void   Boolean::assign(const Boolean& rhs) noexcept { m_data = rhs.m_data; }
-inline size_t Boolean::assign_ber(const BerView& rhs) noexcept
+template <typename Identifier>
+inline void Boolean<Identifier>::assign(bool val) noexcept
+{
+    m_data = {0x1, static_cast<uint8_t>(val ? 0xFF : 0x00)};
+}
+
+template <typename Identifier>
+inline void Boolean<Identifier>::assign(const Boolean& rhs) noexcept
+{
+    m_data = rhs.m_data;
+}
+
+template <typename Identifier>
+inline size_t Boolean<Identifier>::assign_ber(const BerView& rhs) noexcept
 {
     if (!rhs.is_valid() || rhs.construction() != Construction::primitive || rhs.content_length() != 1)
     {
@@ -75,9 +92,14 @@ inline size_t Boolean::assign_ber(const BerView& rhs) noexcept
     return 2 + rhs.identifier_length();
 }
 
-inline size_t Boolean::assign_ber(absl::Span<const uint8_t> buffer) noexcept { return assign_ber(BerView(buffer)); }
+template <typename Identifier>
+inline size_t Boolean<Identifier>::assign_ber(absl::Span<const uint8_t> buffer) noexcept
+{
+    return assign_ber(BerView(buffer));
+}
 
-inline EncodeResult Boolean::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
+template <typename Identifier>
+inline EncodeResult Boolean<Identifier>::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
 {
     if (buffer.size() < m_data.size())
     {
@@ -89,14 +111,14 @@ inline EncodeResult Boolean::encode_content_and_length(absl::Span<uint8_t> buffe
     return EncodeResult{true, m_data.size()};
 }
 
-template <typename ID = ExplicitIdentifier<UniversalTag::boolean>>
-EncodeResult encode(absl::Span<uint8_t> output, const Boolean& object, const ID& id = ID{})
+template <typename DefaultIdentifier, typename ID = ExplicitIdentifier<UniversalTag::boolean>>
+EncodeResult encode(absl::Span<uint8_t> output, const Boolean<DefaultIdentifier>& object, const ID& id = ID{})
 {
     return encode_impl(output, object, id);
 }
 
-template <typename ID = ExplicitIdentifier<UniversalTag::boolean>>
-DecodeResult decode(BerViewIterator& input, Boolean& output, const ID& id = {}) noexcept
+template <typename DefaultIdentifier, typename ID = ExplicitIdentifier<UniversalTag::boolean>>
+DecodeResult decode(BerViewIterator& input, Boolean<DefaultIdentifier>& output, const ID& id = {}) noexcept
 {
     return decode_impl(input, output, id);
 }

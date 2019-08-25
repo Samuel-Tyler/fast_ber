@@ -47,26 +47,26 @@ void test_type(const T& a)
 
 TEST_CASE("AllTypes: Check all types share a unified interface")
 {
-    test_type(fast_ber::BitString("TestString"));
-    test_type(fast_ber::Boolean(true));
-    test_type(fast_ber::CharacterString("TestString"));
+    test_type(fast_ber::BitString<>("TestString"));
+    test_type(fast_ber::Boolean<>(true));
+    test_type(fast_ber::CharacterString<>("TestString"));
     test_type(
-        fast_ber::Choice<fast_ber::Boolean, fast_ber::Integer<>, fast_ber::OctetString<>>(fast_ber::Boolean(true)));
-    // test_type(fast_ber::Date);
-    // test_type(fast_ber::DateTime);
-    // test_type(fast_ber::Duration);
+        fast_ber::Choice<fast_ber::Boolean<>, fast_ber::Integer<>, fast_ber::OctetString<>>(fast_ber::Boolean<>(true)));
+    // test_type(fast_ber::Date<>);
+    // test_type(fast_ber::DateTime<>);
+    // test_type(fast_ber::Duration<>);
     // test_type(fast_ber::EmbeddedPDV);
     test_type(fast_ber::All::The_Enum(fast_ber::All::The_Enum::pear));
     // test_type(fast_ber::External);
-    test_type(fast_ber::GeneralizedTime(absl::Now()));
+    test_type(fast_ber::GeneralizedTime<>(absl::Now()));
     // test_type(fast_ber::IRI);
     // test_type(fast_ber::InstanceOf);
     test_type(fast_ber::Integer<>(5));
-    test_type(fast_ber::Null());
+    test_type(fast_ber::Null<>());
     // test_type(fast_ber::ObjectField);
-    test_type(fast_ber::ObjectIdentifier(fast_ber::ObjectIdentifierComponents{1, 2, 500, 9999}));
+    test_type(fast_ber::ObjectIdentifier<>(fast_ber::ObjectIdentifierComponents{1, 2, 500, 9999}));
     test_type(fast_ber::OctetString<>("TestString"));
-    test_type(fast_ber::Optional<fast_ber::Null>(fast_ber::Null()));
+    test_type(fast_ber::Optional<fast_ber::Null<>>(fast_ber::Null<>()));
     // test_type(fast_ber::Prefixed);
     // test_type(fast_ber::Real);
     // test_type(fast_ber::RelativeIRI);
@@ -80,5 +80,5 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
             500));
     // test_type(fast_ber::Time);
     // test_type(fast_ber::TimeOfDay);
-    test_type(fast_ber::VisibleString("TestString"));
+    test_type(fast_ber::VisibleString<>("TestString"));
 }

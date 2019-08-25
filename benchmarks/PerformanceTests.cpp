@@ -207,7 +207,7 @@ TEST_CASE("Benchmark: Encode Performance")
         hello,
         goodbye,
         5,
-        fast_ber::Boolean(true),
+        fast_ber::Boolean<>(true),
         {-42, {}},
         fast_ber::Simple::Child{999999999, {the, second, child, long_string}},
         decltype(collection.the_choice){absl::in_place_index_t<1>(), "I chose a string!"}};
@@ -292,7 +292,7 @@ TEST_CASE("Benchmark: Object Construction Performance")
                 hello,
                 goodbye,
                 5,
-                fast_ber::Boolean(true),
+                fast_ber::Boolean<>(true),
                 {-42, {}},
                 fast_ber::Simple::Child{999999999, {the, second, child, long_string}},
                 decltype(collection.the_choice){absl::in_place_index_t<1>(), "I chose a string!"}};

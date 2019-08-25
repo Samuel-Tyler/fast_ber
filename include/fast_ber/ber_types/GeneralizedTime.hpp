@@ -16,6 +16,7 @@ const std::string g_local_time_format                    = "%E4Y%m%d%H%M%S";
 const std::string g_universal_time_format                = "%E4Y%m%d%H%M%SZ";
 const std::string g_universal_time_with_time_zone_format = "%E4Y%m%d%H%M%S";
 
+template <typename Identifier = ExplicitIdentifier<UniversalTag::generalized_time>>
 class GeneralizedTime
 {
   public:
@@ -44,15 +45,26 @@ class GeneralizedTime
     BerLengthAndContentContainer m_contents;
 };
 
-constexpr inline ExplicitIdentifier<UniversalTag::generalized_time> identifier(const GeneralizedTime*) noexcept
+template <typename Identifier>
+constexpr Identifier identifier(const GeneralizedTime<Identifier>*) noexcept
 {
     return {};
 }
 
-inline bool operator==(const GeneralizedTime& lhs, const GeneralizedTime& rhs) { return lhs.time() == rhs.time(); }
-inline bool operator!=(const GeneralizedTime& lhs, const GeneralizedTime& rhs) { return !(lhs == rhs); }
+template <typename Identifier>
+bool operator==(const GeneralizedTime<Identifier>& lhs, const GeneralizedTime<Identifier>& rhs)
+{
+    return lhs.time() == rhs.time();
+}
 
-inline void GeneralizedTime::set_time(const absl::Time& time)
+template <typename Identifier>
+bool operator!=(const GeneralizedTime<Identifier>& lhs, const GeneralizedTime<Identifier>& rhs)
+{
+    return !(lhs == rhs);
+}
+
+template <typename Identifier>
+void GeneralizedTime<Identifier>::set_time(const absl::Time& time)
 {
     std::string time_str = absl::FormatTime(g_universal_time_format, time, absl::UTCTimeZone());
 
@@ -60,7 +72,8 @@ inline void GeneralizedTime::set_time(const absl::Time& time)
         absl::Span<const uint8_t>(reinterpret_cast<const uint8_t*>(time_str.data()), time_str.length()));
 }
 
-inline void GeneralizedTime::set_time(const absl::CivilSecond& cs)
+template <typename Identifier>
+void GeneralizedTime<Identifier>::set_time(const absl::CivilSecond& cs)
 {
     std::string time_str =
         absl::FormatTime(g_local_time_format, absl::FromCivil(cs, absl::LocalTimeZone()), absl::LocalTimeZone());
@@ -69,7 +82,8 @@ inline void GeneralizedTime::set_time(const absl::CivilSecond& cs)
         absl::Span<const uint8_t>(reinterpret_cast<const uint8_t*>(time_str.data()), time_str.length()));
 }
 
-inline void GeneralizedTime::set_time(const absl::Time& time, int timezone_offset_minutes)
+template <typename Identifier>
+void GeneralizedTime<Identifier>::set_time(const absl::Time& time, int timezone_offset_minutes)
 {
     std::string time_str = absl::FormatTime(g_universal_time_with_time_zone_format, time, absl::UTCTimeZone());
 
@@ -83,7 +97,8 @@ inline void GeneralizedTime::set_time(const absl::Time& time, int timezone_offse
         absl::Span<const uint8_t>(reinterpret_cast<const uint8_t*>(time_str.data()), time_str.length()));
 }
 
-inline GeneralizedTime::TimeFormat GeneralizedTime::format() const
+template <typename Identifier>
+typename GeneralizedTime<Identifier>::TimeFormat GeneralizedTime<Identifier>::format() const
 {
     if (m_contents.content().back() == 'Z')
     {
@@ -100,7 +115,8 @@ inline GeneralizedTime::TimeFormat GeneralizedTime::format() const
     }
 }
 
-inline absl::Time GeneralizedTime::time() const
+template <typename Identifier>
+absl::Time GeneralizedTime<Identifier>::time() const
 {
     thread_local std::string s_error_string;
     absl::Time               time;
@@ -132,12 +148,14 @@ inline absl::Time GeneralizedTime::time() const
     return time;
 }
 
-inline std::string GeneralizedTime::string() const
+template <typename Identifier>
+std::string GeneralizedTime<Identifier>::string() const
 {
     return std::string(reinterpret_cast<const char*>(m_contents.content_data()), m_contents.content_length());
 }
 
-inline size_t GeneralizedTime::assign_ber(const BerView& view) noexcept
+template <typename Identifier>
+size_t GeneralizedTime<Identifier>::assign_ber(const BerView& view) noexcept
 {
     if (!view.is_valid() || view.construction() != Construction::primitive)
     {
@@ -150,19 +168,20 @@ inline size_t GeneralizedTime::assign_ber(const BerView& view) noexcept
     return m_contents.assign_ber(view);
 }
 
-inline EncodeResult GeneralizedTime::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
+template <typename Identifier>
+EncodeResult GeneralizedTime<Identifier>::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
 {
     return m_contents.encode_content_and_length(buffer);
 }
 
-template <typename ID = ExplicitIdentifier<UniversalTag::generalized_time>>
-EncodeResult encode(absl::Span<uint8_t> output, const GeneralizedTime& object, const ID& id = ID{})
+template <typename DefaultIdentifier, typename ID = ExplicitIdentifier<UniversalTag::generalized_time>>
+EncodeResult encode(absl::Span<uint8_t> output, const GeneralizedTime<DefaultIdentifier>& object, const ID& id = ID{})
 {
     return encode_impl(output, object, id);
 }
 
-template <typename ID = ExplicitIdentifier<UniversalTag::generalized_time>>
-DecodeResult decode(BerViewIterator& input, GeneralizedTime& output, const ID& id = {}) noexcept
+template <typename DefaultIdentifier, typename ID = ExplicitIdentifier<UniversalTag::generalized_time>>
+DecodeResult decode(BerViewIterator& input, GeneralizedTime<DefaultIdentifier>& output, const ID& id = {}) noexcept
 {
     return decode_impl(input, output, id);
 }

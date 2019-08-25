@@ -200,14 +200,14 @@ inline EncodeResult Integer<Identifier>::encode_content_and_length(absl::Span<ui
     return EncodeResult{true, encoded_length()};
 }
 
-template <typename ID = ExplicitIdentifier<UniversalTag::integer>>
-EncodeResult encode(absl::Span<uint8_t> output, const Integer<>& object, const ID& id = ID{})
+template <typename DefaultIdentifier, typename ID = ExplicitIdentifier<UniversalTag::integer>>
+EncodeResult encode(absl::Span<uint8_t> output, const Integer<DefaultIdentifier>& object, const ID& id = ID{})
 {
     return encode_impl(output, object, id);
 }
 
-template <typename ID = ExplicitIdentifier<UniversalTag::integer>>
-DecodeResult decode(BerViewIterator& input, Integer<>& output, const ID& id = {}) noexcept
+template <typename DefaultIdentifier, typename ID = ExplicitIdentifier<UniversalTag::integer>>
+DecodeResult decode(BerViewIterator& input, Integer<DefaultIdentifier>& output, const ID& id = {}) noexcept
 {
     return decode_impl(input, output, id);
 }

@@ -83,7 +83,7 @@ std::string create_assignment(const Asn1Tree& tree, const Module& module, const 
                     : value_assign.type;
             if (is_oid(assigned_to_type))
             {
-                result += "ObjectIdentifier{";
+                result += "ObjectIdentifier<>{";
                 try
                 {
                     const ObjectIdComponents& object_id = ObjectIdComponents(value_assign.value);

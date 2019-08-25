@@ -1,9 +1,9 @@
 #pragma once
 
 #include "fast_ber/ber_types/GeneralizedTime.hpp"
+
 namespace fast_ber
 {
-
-using Date = GeneralizedTime;
-
+template <typename Identifier = ExplicitIdentifier<UniversalTag::utc_time>>
+using Date = GeneralizedTime<Identifier>;
 } // namespace fast_ber

@@ -13,6 +13,7 @@
 namespace fast_ber
 {
 
+template <typename Identifier = ExplicitIdentifier<UniversalTag::null>>
 class Null
 {
   public:
@@ -30,9 +31,14 @@ class Null
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 };
 
-constexpr inline ExplicitIdentifier<UniversalTag::null> identifier(const Null*) noexcept { return {}; }
+template <typename Identifier>
+constexpr ExplicitIdentifier<UniversalTag::null> identifier(const Null<Identifier>*) noexcept
+{
+    return {};
+}
 
-inline size_t Null::assign_ber(const BerView& rhs) noexcept
+template <typename Identifier>
+size_t Null<Identifier>::assign_ber(const BerView& rhs) noexcept
 {
     if (rhs.is_valid())
     {
@@ -44,7 +50,8 @@ inline size_t Null::assign_ber(const BerView& rhs) noexcept
     }
 }
 
-inline EncodeResult Null::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
+template <typename Identifier>
+EncodeResult Null<Identifier>::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
 {
     if (buffer.length() > 0)
     {
@@ -57,14 +64,14 @@ inline EncodeResult Null::encode_content_and_length(absl::Span<uint8_t> buffer) 
     }
 }
 
-template <typename ID = ExplicitIdentifier<UniversalTag::null>>
-EncodeResult encode(absl::Span<uint8_t> output, const Null& object, const ID& id = ID{})
+template <typename DefaultIdentifier, typename ID = ExplicitIdentifier<UniversalTag::null>>
+EncodeResult encode(absl::Span<uint8_t> output, const Null<DefaultIdentifier>& object, const ID& id = ID{})
 {
     return encode_impl(output, object, id);
 }
 
-template <typename ID = ExplicitIdentifier<UniversalTag::null>>
-DecodeResult decode(BerViewIterator& input, Null& output, const ID& id = {}) noexcept
+template <typename DefaultIdentifier, typename ID = ExplicitIdentifier<UniversalTag::null>>
+DecodeResult decode(BerViewIterator& input, Null<DefaultIdentifier>& output, const ID& id = {}) noexcept
 {
     return decode_impl(input, output, id);
 }
