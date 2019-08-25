@@ -63,7 +63,7 @@ std::string type_as_string(const EnumeratedType& enumerated, const Module&, cons
 std::string type_as_string(const ExternalType&, const Module&, const Asn1Tree&) { return "External"; }
 std::string type_as_string(const GeneralizedTimeType&, const Module&, const Asn1Tree&) { return "GeneralizedTime"; }
 std::string type_as_string(const InstanceOfType&, const Module&, const Asn1Tree&) { return "InstanceOf"; }
-std::string type_as_string(const IntegerType&, const Module&, const Asn1Tree&) { return "Integer"; }
+std::string type_as_string(const IntegerType&, const Module&, const Asn1Tree&) { return "Integer<>"; }
 std::string type_as_string(const IRIType&, const Module&, const Asn1Tree&) { return "IRI"; }
 std::string type_as_string(const NullType&, const Module&, const Asn1Tree&) { return "Null"; }
 std::string type_as_string(const ObjectClassFieldType&, const Module&, const Asn1Tree&)

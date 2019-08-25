@@ -25,10 +25,10 @@ void test_sequences(const std::initializer_list<fast_ber::SequenceOf<T>>& sequen
 }
 TEST_CASE("SequenceOf: Encode decode integer")
 {
-    std::initializer_list<fast_ber::SequenceOf<fast_ber::Integer>> sequences{
-        fast_ber::SequenceOf<fast_ber::Integer>{}, fast_ber::SequenceOf<fast_ber::Integer>{5},
-        fast_ber::SequenceOf<fast_ber::Integer>{1, 2, 3},
-        fast_ber::SequenceOf<fast_ber::Integer>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, -999, 999}};
+    std::initializer_list<fast_ber::SequenceOf<fast_ber::Integer<>>> sequences{
+        fast_ber::SequenceOf<fast_ber::Integer<>>{}, fast_ber::SequenceOf<fast_ber::Integer<>>{5},
+        fast_ber::SequenceOf<fast_ber::Integer<>>{1, 2, 3},
+        fast_ber::SequenceOf<fast_ber::Integer<>>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, -999, 999}};
 
     test_sequences(sequences);
 }

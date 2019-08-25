@@ -8,7 +8,6 @@ namespace fast_ber
 {
 
 class Boolean;
-class Integer;
 class Null;
 class OctetString;
 class ObjectIdentifier;
@@ -67,12 +66,6 @@ DecodeResult primitive_decode_impl(BerViewIterator& input, T& output, const Impl
 
 template <typename ID = ExplicitIdentifier<UniversalTag::boolean>>
 DecodeResult decode(BerViewIterator& input, Boolean& output, const ID& id = {}) noexcept
-{
-    return primitive_decode_impl(input, output, id);
-}
-
-template <typename ID = ExplicitIdentifier<UniversalTag::integer>>
-DecodeResult decode(BerViewIterator& input, Integer& output, const ID& id = {}) noexcept
 {
     return primitive_decode_impl(input, output, id);
 }

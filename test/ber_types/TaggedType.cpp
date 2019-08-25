@@ -8,8 +8,9 @@
 
 TEST_CASE("TaggedType: Assign")
 {
-    fast_ber::Integer a(4);
-    fast_ber::TaggedType<fast_ber::Integer, fast_ber::ImplicitIdentifier<fast_ber::Class::universal, fast_ber::Tag(5)>>
+    fast_ber::Integer<> a(4);
+    fast_ber::TaggedType<fast_ber::Integer<>,
+                         fast_ber::ImplicitIdentifier<fast_ber::Class::universal, fast_ber::Tag(5)>>
         b = a;
 
     REQUIRE(b == 4);
@@ -18,9 +19,9 @@ TEST_CASE("TaggedType: Assign")
 
 TEST_CASE("TaggedType: Double Tagged")
 {
-    fast_ber::Integer a(4);
-    fast_ber::TaggedType<fast_ber::TaggedType<fast_ber::Integer, fast_ber::ImplicitIdentifier<
-                                                                     fast_ber::Class::universal, fast_ber::Tag(5)>>,
+    fast_ber::Integer<> a(4);
+    fast_ber::TaggedType<fast_ber::TaggedType<fast_ber::Integer<>, fast_ber::ImplicitIdentifier<
+                                                                       fast_ber::Class::universal, fast_ber::Tag(5)>>,
                          fast_ber::ImplicitIdentifier<fast_ber::Class::universal, fast_ber::Tag(10)>>
         b = a;
 
@@ -30,9 +31,11 @@ TEST_CASE("TaggedType: Double Tagged")
 
 TEST_CASE("TaggedType: Encode Decode")
 {
-    fast_ber::TaggedType<fast_ber::Integer, fast_ber::ImplicitIdentifier<fast_ber::Class::universal, fast_ber::Tag(5)>>
+    fast_ber::TaggedType<fast_ber::Integer<>,
+                         fast_ber::ImplicitIdentifier<fast_ber::Class::universal, fast_ber::Tag(5)>>
         a = 10;
-    fast_ber::TaggedType<fast_ber::Integer, fast_ber::ImplicitIdentifier<fast_ber::Class::universal, fast_ber::Tag(5)>>
+    fast_ber::TaggedType<fast_ber::Integer<>,
+                         fast_ber::ImplicitIdentifier<fast_ber::Class::universal, fast_ber::Tag(5)>>
                              b      = 20;
     std::array<uint8_t, 100> buffer = {};
 

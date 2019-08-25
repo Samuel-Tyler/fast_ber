@@ -11,7 +11,6 @@ namespace fast_ber
 {
 
 class Boolean;
-class Integer;
 class Null;
 class OctetString;
 class ObjectIdentifier;
@@ -153,12 +152,6 @@ EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const Impl
     EncodeResult encode_res = object.encode_content_and_length(output);
     encode_res.length += id_length;
     return encode_res;
-}
-
-template <typename ID = ExplicitIdentifier<UniversalTag::integer>>
-EncodeResult encode(absl::Span<uint8_t> output, const Integer& object, const ID& id = ID{})
-{
-    return encode_impl(output, object, id);
 }
 
 template <typename ID = ExplicitIdentifier<UniversalTag::octet_string>>

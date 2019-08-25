@@ -9,7 +9,7 @@
 
 TEST_CASE("Choice: Check string choice matches simple string type")
 {
-    const auto choice = fast_ber::Choice<fast_ber::Integer, fast_ber::OctetString>("Test string");
+    const auto choice = fast_ber::Choice<fast_ber::Integer<>, fast_ber::OctetString>("Test string");
 
     std::vector<uint8_t> choice_encoded(100, 0x00);
     std::vector<uint8_t> string_encoded(100, 0x00);
@@ -27,14 +27,14 @@ TEST_CASE("Choice: Check string choice matches simple string type")
 
 TEST_CASE("Choice: Basic choice")
 {
-    fast_ber::Choice<fast_ber::Integer, fast_ber::OctetString> choice_1;
-    fast_ber::Choice<fast_ber::Integer, fast_ber::OctetString> choice_2;
+    fast_ber::Choice<fast_ber::Integer<>, fast_ber::OctetString> choice_1;
+    fast_ber::Choice<fast_ber::Integer<>, fast_ber::OctetString> choice_2;
 
     choice_1 = "Test string";
     choice_2 = 10;
 
     REQUIRE(absl::holds_alternative<fast_ber::OctetString>(choice_1));
-    REQUIRE(absl::holds_alternative<fast_ber::Integer>(choice_2));
+    REQUIRE(absl::holds_alternative<fast_ber::Integer<>>(choice_2));
 
     std::vector<uint8_t> choice_encoded(100, 0x00);
     bool enc_success = fast_ber::encode(absl::MakeSpan(choice_encoded.data(), choice_encoded.size()), choice_1).success;
@@ -50,7 +50,7 @@ TEST_CASE("Choice: Basic choice")
 TEST_CASE("Choice: Clashing type")
 {
     using choice_type =
-        fast_ber::Choice<fast_ber::Integer,
+        fast_ber::Choice<fast_ber::Integer<>,
                          fast_ber::TaggedType<fast_ber::OctetString,
                                               fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 99>>,
                          fast_ber::TaggedType<fast_ber::OctetString,
@@ -76,7 +76,8 @@ TEST_CASE("Choice: Generated choice")
 {
     fast_ber::MakeAChoice::Collection collection;
     collection.the_choice =
-        fast_ber::TaggedType<fast_ber::Integer, fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 2>>(5);
+        fast_ber::TaggedType<fast_ber::Integer<>, fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 2>>(
+            5);
 
     std::vector<uint8_t> buffer(1000, 0x00);
     size_t               length = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), collection).length;

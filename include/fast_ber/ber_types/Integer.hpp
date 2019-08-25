@@ -4,15 +4,16 @@
 #include "fast_ber/ber_types/Class.hpp"
 #include "fast_ber/ber_types/Construction.hpp"
 #include "fast_ber/util/BerView.hpp"
+#include "fast_ber/util/DecodeHelpers.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
 #include "fast_ber/util/EncodeIdentifiers.hpp"
 #include "fast_ber/util/Extract.hpp"
 
 #include <algorithm>
+#include <array>
 #include <cstdint>
 #include <cstring>
 #include <limits>
-#include <array>
 
 namespace fast_ber
 {
@@ -20,6 +21,7 @@ namespace fast_ber
 inline bool   decode_integer(absl::Span<const uint8_t> input, int64_t& output) noexcept;
 inline size_t encode_integer(absl::Span<uint8_t> output, int64_t input) noexcept;
 
+template <typename Identifier = ExplicitIdentifier<UniversalTag::integer>>
 class Integer
 {
   public:
@@ -33,13 +35,13 @@ class Integer
             operator int64_t() const noexcept { return value(); }
     int64_t value() const noexcept;
 
-    Integer& operator=(int64_t rhs) noexcept;
-    Integer& operator=(const Integer& rhs) noexcept;
-    Integer& operator=(const BerView& rhs) noexcept;
-    void     assign(int64_t val) noexcept;
-    void     assign(const Integer& rhs) noexcept;
-    size_t   assign_ber(const BerView& rhs) noexcept;
-    size_t   assign_ber(absl::Span<const uint8_t> buffer) noexcept;
+    Integer<Identifier>& operator=(int64_t rhs) noexcept;
+    Integer<Identifier>& operator=(const Integer<Identifier>& rhs) noexcept;
+    Integer<Identifier>& operator=(const BerView& rhs) noexcept;
+    void                 assign(int64_t val) noexcept;
+    void                 assign(const Integer<Identifier>& rhs) noexcept;
+    size_t               assign_ber(const BerView& rhs) noexcept;
+    size_t               assign_ber(absl::Span<const uint8_t> buffer) noexcept;
 
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
@@ -55,7 +57,11 @@ class Integer
     std::array<uint8_t, sizeof(int64_t) + sizeof(uint8_t)> m_data;
 };
 
-constexpr inline ExplicitIdentifier<UniversalTag::integer> identifier(const Integer*) noexcept { return {}; }
+template <typename Identifier>
+constexpr inline ExplicitIdentifier<UniversalTag::integer> identifier(const Integer<Identifier>*) noexcept
+{
+    return {};
+}
 
 inline bool decode_integer(absl::Span<const uint8_t> input, int64_t& output) noexcept
 {
@@ -126,33 +132,42 @@ inline size_t encode_integer(absl::Span<uint8_t> output, int64_t input) noexcept
     return encoded_length;
 }
 
-inline int64_t Integer::value() const noexcept
+template <typename Identifier>
+inline int64_t Integer<Identifier>::value() const noexcept
 {
     int64_t ret = 0;
     decode_integer(absl::MakeSpan(m_data.data() + 1, content_length()), ret);
     return ret;
 }
 
-inline Integer& Integer::operator=(int64_t rhs) noexcept
+template <typename Identifier>
+inline Integer<Identifier>& Integer<Identifier>::operator=(int64_t rhs) noexcept
 {
     assign(rhs);
     return *this;
 }
 
-inline Integer& Integer::operator=(const Integer& rhs) noexcept
+template <typename Identifier>
+inline Integer<Identifier>& Integer<Identifier>::operator=(const Integer<Identifier>& rhs) noexcept
 {
     assign(rhs);
     return *this;
 }
 
-inline void Integer::assign(int64_t val) noexcept
+template <typename Identifier>
+inline void Integer<Identifier>::assign(int64_t val) noexcept
 {
     set_content_length(encode_integer(absl::Span<uint8_t>(m_data.data() + 1, m_data.size() - 1), val));
 }
 
-inline void Integer::assign(const Integer& rhs) noexcept { m_data = rhs.m_data; }
+template <typename Identifier>
+inline void Integer<Identifier>::assign(const Integer<Identifier>& rhs) noexcept
+{
+    m_data = rhs.m_data;
+}
 
-inline size_t Integer::assign_ber(const BerView& view) noexcept
+template <typename Identifier>
+inline size_t Integer<Identifier>::assign_ber(const BerView& view) noexcept
 {
     if (!view.is_valid() || view.construction() != Construction::primitive)
     {
@@ -167,9 +182,14 @@ inline size_t Integer::assign_ber(const BerView& view) noexcept
     return view.ber_length();
 }
 
-inline size_t Integer::assign_ber(absl::Span<const uint8_t> buffer) noexcept { return assign_ber(BerView(buffer)); }
+template <typename Identifier>
+inline size_t Integer<Identifier>::assign_ber(absl::Span<const uint8_t> buffer) noexcept
+{
+    return assign_ber(BerView(buffer));
+}
 
-inline EncodeResult Integer::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
+template <typename Identifier>
+inline EncodeResult Integer<Identifier>::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
 {
     if (buffer.size() < encoded_length())
     {
@@ -178,6 +198,18 @@ inline EncodeResult Integer::encode_content_and_length(absl::Span<uint8_t> buffe
 
     std::copy(m_data.begin(), m_data.begin() + encoded_length(), buffer.data());
     return EncodeResult{true, encoded_length()};
+}
+
+template <typename ID = ExplicitIdentifier<UniversalTag::integer>>
+EncodeResult encode(absl::Span<uint8_t> output, const Integer<>& object, const ID& id = ID{})
+{
+    return encode_impl(output, object, id);
+}
+
+template <typename ID = ExplicitIdentifier<UniversalTag::integer>>
+DecodeResult decode(BerViewIterator& input, Integer<>& output, const ID& id = {}) noexcept
+{
+    return primitive_decode_impl(input, output, id);
 }
 
 } // namespace fast_ber
