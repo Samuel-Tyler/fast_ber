@@ -72,7 +72,7 @@ std::string type_as_string(const ObjectClassFieldType&, const Module&, const Asn
 }
 std::string type_as_string(const ObjectDescriptorType&, const Module&, const Asn1Tree&) { return "ObjectDescriptor"; }
 std::string type_as_string(const ObjectIdentifierType&, const Module&, const Asn1Tree&) { return "ObjectIdentifier"; }
-std::string type_as_string(const OctetStringType&, const Module&, const Asn1Tree&) { return "OctetString"; }
+std::string type_as_string(const OctetStringType&, const Module&, const Asn1Tree&) { return "OctetString<>"; }
 std::string type_as_string(const RealType&, const Module&, const Asn1Tree&) { return "Real"; }
 std::string type_as_string(const RelativeIRIType&, const Module&, const Asn1Tree&) { return "RelativeIRI"; }
 std::string type_as_string(const RelativeOIDType&, const Module&, const Asn1Tree&) { return "RelativeOID"; }

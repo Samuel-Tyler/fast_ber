@@ -35,7 +35,7 @@ TEST_CASE("SequenceOf: Encode decode integer")
 
 TEST_CASE("SequenceOf: Encode decode string")
 {
-    std::initializer_list<fast_ber::SequenceOf<fast_ber::OctetString>> sequences = {
+    std::initializer_list<fast_ber::SequenceOf<fast_ber::OctetString<>>> sequences = {
         {}, {"single"}, {"a series of strings"}};
 
     test_sequences(sequences);

@@ -38,7 +38,7 @@ TEST_CASE("SimpleCompilerOutput: Testing a generated ber container")
     REQUIRE(*new_collection.child.meaning_of_life == -42);
     REQUIRE(new_collection.child.list.empty());
     REQUIRE(new_collection.optional_child->list ==
-            fast_ber::SequenceOf<fast_ber::OctetString>{"The", "second", "child", std::string(2000, 'x')});
+            fast_ber::SequenceOf<fast_ber::OctetString<>>{"The", "second", "child", std::string(2000, 'x')});
     REQUIRE(*new_collection.optional_child->meaning_of_life == 999999999);
     REQUIRE(absl::get<1>(new_collection.the_choice) == "I chose a string!");
 

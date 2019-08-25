@@ -35,5 +35,5 @@
 namespace fast_ber
 {
 using Any = fast_ber::Choice<BitString, Boolean, CharacterString, Date, DateTime, Duration, GeneralizedTime, Integer<>,
-                             Null, ObjectIdentifier, OctetString, Real, Time, TimeOfDay, UTCTime, VisibleString>;
+                             Null, ObjectIdentifier, fast_ber::OctetString<>, Real, Time, TimeOfDay, UTCTime, VisibleString>;
 }

@@ -6,5 +6,5 @@
 
 namespace fast_ber
 {
-using CharacterString = TaggedType<OctetString, ExplicitIdentifier<UniversalTag::character_string>>;
+using CharacterString = TaggedType<fast_ber::OctetString<>, ExplicitIdentifier<UniversalTag::character_string>>;
 }

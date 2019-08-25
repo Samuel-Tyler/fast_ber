@@ -6,5 +6,5 @@
 
 namespace fast_ber
 {
-using VisibleString = TaggedType<OctetString, ExplicitIdentifier<UniversalTag::t161_string>>;
+using VisibleString = TaggedType<fast_ber::OctetString<>, ExplicitIdentifier<UniversalTag::t161_string>>;
 }

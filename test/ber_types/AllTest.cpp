@@ -50,7 +50,8 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
     test_type(fast_ber::BitString("TestString"));
     test_type(fast_ber::Boolean(true));
     test_type(fast_ber::CharacterString("TestString"));
-    test_type(fast_ber::Choice<fast_ber::Boolean, fast_ber::Integer<>, fast_ber::OctetString>(fast_ber::Boolean(true)));
+    test_type(
+        fast_ber::Choice<fast_ber::Boolean, fast_ber::Integer<>, fast_ber::OctetString<>>(fast_ber::Boolean(true)));
     // test_type(fast_ber::Date);
     // test_type(fast_ber::DateTime);
     // test_type(fast_ber::Duration);
@@ -64,7 +65,7 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
     test_type(fast_ber::Null());
     // test_type(fast_ber::ObjectField);
     test_type(fast_ber::ObjectIdentifier(fast_ber::ObjectIdentifierComponents{1, 2, 500, 9999}));
-    test_type(fast_ber::OctetString("TestString"));
+    test_type(fast_ber::OctetString<>("TestString"));
     test_type(fast_ber::Optional<fast_ber::Null>(fast_ber::Null()));
     // test_type(fast_ber::Prefixed);
     // test_type(fast_ber::Real);
@@ -73,7 +74,7 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
     test_type(fast_ber::All::The_Sequence{"Hello", 42});
     test_type(fast_ber::SequenceOf<fast_ber::Integer<>>({1, 4, 6, 100, 2555}));
     test_type(fast_ber::All::The_Set{"Hello", 42});
-    test_type(fast_ber::SetOf<fast_ber::OctetString>({"A", "list", "of", "strings"}));
+    test_type(fast_ber::SetOf<fast_ber::OctetString<>>({"A", "list", "of", "strings"}));
     test_type(
         fast_ber::TaggedType<fast_ber::Integer<>, fast_ber::ImplicitIdentifier<fast_ber::Class::application, 500>>(
             500));

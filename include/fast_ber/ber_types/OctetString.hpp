@@ -14,6 +14,7 @@ namespace fast_ber
 {
 
 // A string with data stored with ber encoding. Interface mimics std::string
+template <typename Identifier = ExplicitIdentifier<UniversalTag::integer>>
 class OctetString
 {
   public:
@@ -33,19 +34,18 @@ class OctetString
     OctetString& operator=(const char* rhs) noexcept;
     OctetString& operator=(const std::string& rhs) noexcept;
 
-    OctetString&         operator=(absl::Span<const uint8_t> buffer) noexcept;
-    bool                 operator==(absl::string_view view) const noexcept { return absl::string_view(*this) == view; }
-    bool                 operator==(const OctetString& rhs) const noexcept;
-    bool                 operator==(const std::string& rhs) const noexcept;
-    bool                 operator==(const char* rhs) const noexcept;
-    bool                 operator!=(absl::string_view view) const noexcept { return !((*this) == view); }
-    bool                 operator!=(const OctetString& rhs) const noexcept { return !((*this) == rhs); }
-    bool                 operator!=(const std::string& rhs) const noexcept { return !((*this) == rhs); }
-    bool                 operator!=(const char* rhs) const noexcept { return !((*this) == rhs); }
-    uint8_t&             operator[](size_t n) noexcept { return data()[n]; }
-    const uint8_t&       operator[](size_t n) const noexcept { return data()[n]; }
-    friend std::ostream& operator<<(std::ostream& os, const OctetString& str) noexcept;
-    explicit             operator absl::string_view() const noexcept { return {c_str(), length()}; }
+    OctetString&   operator=(absl::Span<const uint8_t> buffer) noexcept;
+    bool           operator==(absl::string_view view) const noexcept { return absl::string_view(*this) == view; }
+    bool           operator==(const OctetString& rhs) const noexcept;
+    bool           operator==(const std::string& rhs) const noexcept;
+    bool           operator==(const char* rhs) const noexcept;
+    bool           operator!=(absl::string_view view) const noexcept { return !((*this) == view); }
+    bool           operator!=(const OctetString& rhs) const noexcept { return !((*this) == rhs); }
+    bool           operator!=(const std::string& rhs) const noexcept { return !((*this) == rhs); }
+    bool           operator!=(const char* rhs) const noexcept { return !((*this) == rhs); }
+    uint8_t&       operator[](size_t n) noexcept { return data()[n]; }
+    const uint8_t& operator[](size_t n) const noexcept { return data()[n]; }
+    explicit       operator absl::string_view() const noexcept { return {c_str(), length()}; }
 
     uint8_t*                  data() noexcept { return m_contents.content_data(); }
     const uint8_t*            data() const noexcept { return m_contents.content_data(); }
@@ -75,54 +75,84 @@ class OctetString
     BerLengthAndContentContainer m_contents;
 }; // namespace fast_ber
 
-constexpr inline ExplicitIdentifier<UniversalTag::octet_string> identifier(const OctetString*) noexcept { return {}; }
+template <typename Identifier>
+constexpr inline ExplicitIdentifier<UniversalTag::octet_string> identifier(const OctetString<Identifier>*) noexcept
+{
+    return {};
+}
 
-inline OctetString& OctetString::operator=(absl::Span<const uint8_t> rhs) noexcept
+template <typename Identifier>
+inline OctetString<Identifier>& OctetString<Identifier>::operator=(absl::Span<const uint8_t> rhs) noexcept
 {
     assign(rhs);
     return *this;
 }
-inline OctetString& OctetString::operator=(const char* rhs) noexcept
+
+template <typename Identifier>
+inline OctetString<Identifier>& OctetString<Identifier>::operator=(const char* rhs) noexcept
 {
     assign(absl::string_view(rhs));
     return *this;
 }
-inline OctetString& OctetString::operator=(const std::string& rhs) noexcept
+
+template <typename Identifier>
+inline OctetString<Identifier>& OctetString<Identifier>::operator=(const std::string& rhs) noexcept
 {
     assign(absl::string_view(rhs));
     return *this;
 }
-inline OctetString& OctetString::operator=(const OctetString& rhs) noexcept
+
+template <typename Identifier>
+inline OctetString<Identifier>& OctetString<Identifier>::operator=(const OctetString<Identifier>& rhs) noexcept
 {
     assign(rhs);
     return *this;
 }
-inline bool OctetString::operator==(const OctetString& rhs) const noexcept
-{
-    return absl::string_view(*this) == absl::string_view(rhs);
-}
-inline bool OctetString::operator==(const std::string& rhs) const noexcept
-{
-    return absl::string_view(*this) == absl::string_view(rhs);
-}
-inline bool OctetString::operator==(const char* rhs) const noexcept
+
+template <typename Identifier>
+inline bool OctetString<Identifier>::operator==(const OctetString<Identifier>& rhs) const noexcept
 {
     return absl::string_view(*this) == absl::string_view(rhs);
 }
 
-inline std::ostream& operator<<(std::ostream& os, const OctetString& str) noexcept
+template <typename Identifier>
+inline bool OctetString<Identifier>::operator==(const std::string& rhs) const noexcept
+{
+    return absl::string_view(*this) == absl::string_view(rhs);
+}
+
+template <typename Identifier>
+inline bool OctetString<Identifier>::operator==(const char* rhs) const noexcept
+{
+    return absl::string_view(*this) == absl::string_view(rhs);
+}
+
+template <typename Identifier>
+inline std::ostream& operator<<(std::ostream& os, const OctetString<Identifier>& str) noexcept
 {
     return os << absl::string_view(str);
 }
 
-inline void OctetString::assign(absl::string_view buffer) noexcept
+template <typename Identifier>
+inline void OctetString<Identifier>::assign(absl::string_view buffer) noexcept
 {
     m_contents.assign_content(absl::MakeSpan(reinterpret_cast<const uint8_t*>(buffer.data()), buffer.length()));
 }
-inline void OctetString::assign(absl::Span<const uint8_t> buffer) noexcept { m_contents.assign_content(buffer); }
-inline void OctetString::assign(const OctetString& rhs) noexcept { m_contents = rhs.m_contents; }
 
-inline size_t OctetString::assign_ber(const BerView& view) noexcept
+template <typename Identifier>
+inline void OctetString<Identifier>::assign(absl::Span<const uint8_t> buffer) noexcept
+{
+    m_contents.assign_content(buffer);
+}
+
+template <typename Identifier>
+inline void OctetString<Identifier>::assign(const OctetString& rhs) noexcept
+{
+    m_contents = rhs.m_contents;
+}
+
+template <typename Identifier>
+inline size_t OctetString<Identifier>::assign_ber(const BerView& view) noexcept
 {
     if (!view.is_valid() || view.construction() != Construction::primitive)
     {
@@ -130,7 +160,9 @@ inline size_t OctetString::assign_ber(const BerView& view) noexcept
     }
     return m_contents.assign_ber(view);
 }
-inline size_t OctetString::assign_ber(const BerContainer& container) noexcept
+
+template <typename Identifier>
+inline size_t OctetString<Identifier>::assign_ber(const BerContainer& container) noexcept
 {
     if (!container.is_valid() || container.construction() != Construction::primitive)
     {
@@ -138,24 +170,27 @@ inline size_t OctetString::assign_ber(const BerContainer& container) noexcept
     }
     return m_contents.assign_ber(container);
 }
-inline size_t OctetString::assign_ber(absl::Span<const uint8_t> buffer) noexcept
+
+template <typename Identifier>
+inline size_t OctetString<Identifier>::assign_ber(absl::Span<const uint8_t> buffer) noexcept
 {
     return m_contents.assign_ber(buffer);
 }
 
-inline EncodeResult OctetString::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
+template <typename Identifier>
+inline EncodeResult OctetString<Identifier>::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
 {
     return m_contents.encode_content_and_length(buffer);
 }
 
 template <typename ID = ExplicitIdentifier<UniversalTag::octet_string>>
-EncodeResult encode(absl::Span<uint8_t> output, const OctetString& object, const ID& id = ID{})
+EncodeResult encode(absl::Span<uint8_t> output, const OctetString<>& object, const ID& id = ID{})
 {
     return encode_impl(output, object, id);
 }
 
 template <typename ID = ExplicitIdentifier<UniversalTag::octet_string>>
-DecodeResult decode(BerViewIterator& input, OctetString& output, const ID& id = {}) noexcept
+DecodeResult decode(BerViewIterator& input, OctetString<>& output, const ID& id = {}) noexcept
 {
     return decode_impl(input, output, id);
 }

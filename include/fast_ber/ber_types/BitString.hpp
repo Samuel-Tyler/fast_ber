@@ -5,6 +5,5 @@
 
 namespace fast_ber
 {
-
-using BitString = TaggedType<OctetString, ExplicitIdentifier<UniversalTag::bit_string>>;
+using BitString = TaggedType<fast_ber::OctetString<>, ExplicitIdentifier<UniversalTag::bit_string>>;
 }
