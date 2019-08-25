@@ -1,6 +1,8 @@
 #pragma once
 
 #include "fast_ber/util/BerLengthAndContentContainer.hpp"
+#include "fast_ber/util/DecodeHelpers.hpp"
+#include "fast_ber/util/EncodeHelpers.hpp"
 
 #include "absl/strings/string_view.h"
 #include "absl/time/time.h"
@@ -151,6 +153,18 @@ inline size_t GeneralizedTime::assign_ber(const BerView& view) noexcept
 inline EncodeResult GeneralizedTime::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
 {
     return m_contents.encode_content_and_length(buffer);
+}
+
+template <typename ID = ExplicitIdentifier<UniversalTag::generalized_time>>
+EncodeResult encode(absl::Span<uint8_t> output, const GeneralizedTime& object, const ID& id = ID{})
+{
+    return encode_impl(output, object, id);
+}
+
+template <typename ID = ExplicitIdentifier<UniversalTag::generalized_time>>
+DecodeResult decode(BerViewIterator& input, GeneralizedTime& output, const ID& id = {}) noexcept
+{
+    return decode_impl(input, output, id);
 }
 
 } // namespace fast_ber

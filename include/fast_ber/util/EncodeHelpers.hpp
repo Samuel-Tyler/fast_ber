@@ -10,12 +10,6 @@
 namespace fast_ber
 {
 
-class Boolean;
-class Null;
-class OctetString;
-class ObjectIdentifier;
-class GeneralizedTime;
-
 struct EncodeResult
 {
     bool   success;
@@ -152,36 +146,6 @@ EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const Impl
     EncodeResult encode_res = object.encode_content_and_length(output);
     encode_res.length += id_length;
     return encode_res;
-}
-
-template <typename ID = ExplicitIdentifier<UniversalTag::octet_string>>
-EncodeResult encode(absl::Span<uint8_t> output, const OctetString& object, const ID& id = ID{})
-{
-    return encode_impl(output, object, id);
-}
-
-template <typename ID = ExplicitIdentifier<UniversalTag::boolean>>
-EncodeResult encode(absl::Span<uint8_t> output, const Boolean& object, const ID& id = ID{})
-{
-    return encode_impl(output, object, id);
-}
-
-template <typename ID = ExplicitIdentifier<UniversalTag::null>>
-EncodeResult encode(absl::Span<uint8_t> output, const Null& object, const ID& id = ID{})
-{
-    return encode_impl(output, object, id);
-}
-
-template <typename ID = ExplicitIdentifier<UniversalTag::object_identifier>>
-EncodeResult encode(absl::Span<uint8_t> output, const ObjectIdentifier& object, const ID& id = ID{})
-{
-    return encode_impl(output, object, id);
-}
-
-template <typename ID = ExplicitIdentifier<UniversalTag::generalized_time>>
-EncodeResult encode(absl::Span<uint8_t> output, const GeneralizedTime& object, const ID& id = ID{})
-{
-    return encode_impl(output, object, id);
 }
 
 } // namespace fast_ber

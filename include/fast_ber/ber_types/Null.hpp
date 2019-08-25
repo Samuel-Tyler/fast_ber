@@ -3,11 +3,12 @@
 #include "absl/types/span.h"
 
 #include "fast_ber/util/BerView.hpp"
+#include "fast_ber/util/DecodeHelpers.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
 
 #include <algorithm>
-#include <cstdint>
 #include <array>
+#include <cstdint>
 
 namespace fast_ber
 {
@@ -54,6 +55,18 @@ inline EncodeResult Null::encode_content_and_length(absl::Span<uint8_t> buffer) 
     {
         return EncodeResult{false, 0};
     }
+}
+
+template <typename ID = ExplicitIdentifier<UniversalTag::null>>
+EncodeResult encode(absl::Span<uint8_t> output, const Null& object, const ID& id = ID{})
+{
+    return encode_impl(output, object, id);
+}
+
+template <typename ID = ExplicitIdentifier<UniversalTag::null>>
+DecodeResult decode(BerViewIterator& input, Null& output, const ID& id = {}) noexcept
+{
+    return decode_impl(input, output, id);
 }
 
 } // namespace fast_ber

@@ -209,7 +209,7 @@ EncodeResult encode(absl::Span<uint8_t> output, const Integer<>& object, const I
 template <typename ID = ExplicitIdentifier<UniversalTag::integer>>
 DecodeResult decode(BerViewIterator& input, Integer<>& output, const ID& id = {}) noexcept
 {
-    return primitive_decode_impl(input, output, id);
+    return decode_impl(input, output, id);
 }
 
 } // namespace fast_ber

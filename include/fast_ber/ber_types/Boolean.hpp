@@ -5,14 +5,15 @@
 #include "fast_ber/ber_types/Class.hpp"
 #include "fast_ber/ber_types/Construction.hpp"
 #include "fast_ber/util/BerView.hpp"
+#include "fast_ber/util/DecodeHelpers.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
 #include "fast_ber/util/EncodeIdentifiers.hpp"
 #include "fast_ber/util/Extract.hpp"
 
 #include <algorithm>
+#include <array>
 #include <cstdint>
 #include <cstring>
-#include <array>
 
 namespace fast_ber
 {
@@ -86,6 +87,18 @@ inline EncodeResult Boolean::encode_content_and_length(absl::Span<uint8_t> buffe
     buffer[0] = m_data[0];
     buffer[1] = m_data[1];
     return EncodeResult{true, m_data.size()};
+}
+
+template <typename ID = ExplicitIdentifier<UniversalTag::boolean>>
+EncodeResult encode(absl::Span<uint8_t> output, const Boolean& object, const ID& id = ID{})
+{
+    return encode_impl(output, object, id);
+}
+
+template <typename ID = ExplicitIdentifier<UniversalTag::boolean>>
+DecodeResult decode(BerViewIterator& input, Boolean& output, const ID& id = {}) noexcept
+{
+    return decode_impl(input, output, id);
 }
 
 } // namespace fast_ber

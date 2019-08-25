@@ -41,7 +41,7 @@ class ObjectIdentifier
     bool operator!=(const ObjectIdentifier& rhs) const noexcept { return !(*this == rhs); }
     bool operator==(const ObjectIdentifierComponents& rhs) const noexcept { return this->value() == rhs; }
     bool operator!=(const ObjectIdentifierComponents& rhs) const noexcept { return !(*this == rhs); }
-    friend std::ostream& operator<<(std::ostream& os, const OctetString& str) noexcept;
+    friend std::ostream& operator<<(std::ostream& os, const ObjectIdentifier& str) noexcept;
 
     size_t  number_of_components() const noexcept;
     int64_t component_number(size_t number_of_component_to_extract) const noexcept;
@@ -289,6 +289,18 @@ inline size_t ObjectIdentifier::assign_ber(absl::Span<const uint8_t> buffer) noe
 inline EncodeResult ObjectIdentifier::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
 {
     return m_contents.encode_content_and_length(buffer);
+}
+
+template <typename ID = ExplicitIdentifier<UniversalTag::object_identifier>>
+EncodeResult encode(absl::Span<uint8_t> output, const ObjectIdentifier& object, const ID& id = ID{})
+{
+    return encode_impl(output, object, id);
+}
+
+template <typename ID = ExplicitIdentifier<UniversalTag::object_identifier>>
+DecodeResult decode(BerViewIterator& input, ObjectIdentifier& output, const ID& id = {}) noexcept
+{
+    return decode_impl(input, output, id);
 }
 
 } // namespace fast_ber

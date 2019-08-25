@@ -7,19 +7,13 @@
 namespace fast_ber
 {
 
-class Boolean;
-class Null;
-class OctetString;
-class ObjectIdentifier;
-class GeneralizedTime;
-
 struct DecodeResult
 {
     bool success;
 };
 
 template <typename T, UniversalTag T2>
-DecodeResult primitive_decode_impl(BerViewIterator& input, T& output, const ExplicitIdentifier<T2>& id) noexcept
+DecodeResult decode_impl(BerViewIterator& input, T& output, const ExplicitIdentifier<T2>& id) noexcept
 {
     if (!input->is_valid() || val(id.tag()) != input->tag())
     {
@@ -32,8 +26,7 @@ DecodeResult primitive_decode_impl(BerViewIterator& input, T& output, const Expl
 }
 
 template <typename T, Class T2, Tag T3, typename T4>
-DecodeResult primitive_decode_impl(BerViewIterator& input, T& output,
-                                   const TaggedExplicitIdentifier<T2, T3, T4>& id) noexcept
+DecodeResult decode_impl(BerViewIterator& input, T& output, const TaggedExplicitIdentifier<T2, T3, T4>& id) noexcept
 {
     if (!input->is_valid() || val(id.outer_tag()) != input->tag())
     {
@@ -52,7 +45,7 @@ DecodeResult primitive_decode_impl(BerViewIterator& input, T& output,
 }
 
 template <typename T, Class T2, Tag T3>
-DecodeResult primitive_decode_impl(BerViewIterator& input, T& output, const ImplicitIdentifier<T2, T3>& id) noexcept
+DecodeResult decode_impl(BerViewIterator& input, T& output, const ImplicitIdentifier<T2, T3>& id) noexcept
 {
     if (!input->is_valid() || val(id.tag()) != input->tag())
     {
@@ -62,36 +55,6 @@ DecodeResult primitive_decode_impl(BerViewIterator& input, T& output, const Impl
     bool success = output.assign_ber(*input) > 0;
     ++input;
     return DecodeResult{success};
-}
-
-template <typename ID = ExplicitIdentifier<UniversalTag::boolean>>
-DecodeResult decode(BerViewIterator& input, Boolean& output, const ID& id = {}) noexcept
-{
-    return primitive_decode_impl(input, output, id);
-}
-
-template <typename ID = ExplicitIdentifier<UniversalTag::octet_string>>
-DecodeResult decode(BerViewIterator& input, OctetString& output, const ID& id = {}) noexcept
-{
-    return primitive_decode_impl(input, output, id);
-}
-
-template <typename ID = ExplicitIdentifier<UniversalTag::null>>
-DecodeResult decode(BerViewIterator& input, Null& output, const ID& id = {}) noexcept
-{
-    return primitive_decode_impl(input, output, id);
-}
-
-template <typename ID = ExplicitIdentifier<UniversalTag::object_identifier>>
-DecodeResult decode(BerViewIterator& input, ObjectIdentifier& output, const ID& id = {}) noexcept
-{
-    return primitive_decode_impl(input, output, id);
-}
-
-template <typename ID = ExplicitIdentifier<UniversalTag::generalized_time>>
-DecodeResult decode(BerViewIterator& input, GeneralizedTime& output, const ID& id = {}) noexcept
-{
-    return primitive_decode_impl(input, output, id);
 }
 
 template <typename T, typename ID>

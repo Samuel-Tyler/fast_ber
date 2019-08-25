@@ -1,6 +1,7 @@
 #pragma once
 
 #include "fast_ber/util/BerLengthAndContentContainer.hpp"
+#include "fast_ber/util/DecodeHelpers.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
 
 #include "absl/strings/string_view.h"
@@ -145,6 +146,18 @@ inline size_t OctetString::assign_ber(absl::Span<const uint8_t> buffer) noexcept
 inline EncodeResult OctetString::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
 {
     return m_contents.encode_content_and_length(buffer);
+}
+
+template <typename ID = ExplicitIdentifier<UniversalTag::octet_string>>
+EncodeResult encode(absl::Span<uint8_t> output, const OctetString& object, const ID& id = ID{})
+{
+    return encode_impl(output, object, id);
+}
+
+template <typename ID = ExplicitIdentifier<UniversalTag::octet_string>>
+DecodeResult decode(BerViewIterator& input, OctetString& output, const ID& id = {}) noexcept
+{
+    return decode_impl(input, output, id);
 }
 
 } // namespace fast_ber
