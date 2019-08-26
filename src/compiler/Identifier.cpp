@@ -165,7 +165,6 @@ struct IdentifierHelper
     {
         return identifier(t, current_module, tree);
     }
-
     const Module&   current_module;
     const Asn1Tree& tree;
 };
@@ -178,7 +177,12 @@ std::string fully_tagged_type(const Type& type, const Module& current_module, co
         return type_as_string(type, current_module, tree);
     }
 
-    return "TaggedType<" + type_as_string(type, current_module, tree) + ", " + tagging_info.tag + ">";
+    if (is_set(type) || is_sequence(type) || is_enumerated(type) || is_choice(type) || is_defined(type) ||
+        is_prefixed(type))
+    {
+        return "TaggedType<" + type_as_string(type, current_module, tree) + ", " + tagging_info.tag + ">";
+    }
+    return type_as_string(type, current_module, tree);
 }
 
 TaggingInfo identifier(const DefinedType& defined, const Module& current_module, const Asn1Tree& tree)

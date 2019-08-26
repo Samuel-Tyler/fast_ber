@@ -45,7 +45,11 @@ class Boolean
     std::array<uint8_t, 2> m_data;
 }; // namespace fast_ber
 
-constexpr inline ExplicitIdentifier<UniversalTag::boolean> identifier(const Boolean<>*) noexcept { return {}; }
+template <typename Identifier>
+constexpr Identifier identifier(const Boolean<Identifier>*) noexcept
+{
+    return {};
+}
 
 template <typename Identifier>
 inline Boolean<Identifier>& Boolean<Identifier>::operator=(bool rhs) noexcept

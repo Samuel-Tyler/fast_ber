@@ -43,6 +43,16 @@ void test_type(const T& a)
     REQUIRE(decode_result.success);
     REQUIRE(fast_ber::BerView(buffer).tag() == fast_ber::reference_tag(identifier(&a)));
     REQUIRE(a == f);
+
+    // Encode with alternative ID
+    using TestTag = fast_ber::ImplicitIdentifier<fast_ber::Class::application, 50>;
+    T g;
+    encode_result = fast_ber::encode(absl::Span<uint8_t>(buffer), a, TestTag{});
+    decode_result = fast_ber::decode(absl::Span<uint8_t>(buffer), g, TestTag{});
+    REQUIRE(encode_result.success);
+    REQUIRE(decode_result.success);
+    REQUIRE(fast_ber::BerView(buffer).tag() == fast_ber::reference_tag(TestTag{}));
+    REQUIRE(a == g);
 }
 
 TEST_CASE("AllTypes: Check all types share a unified interface")
@@ -67,6 +77,9 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
     test_type(fast_ber::ObjectIdentifier<>(fast_ber::ObjectIdentifierComponents{1, 2, 500, 9999}));
     test_type(fast_ber::OctetString<>("TestString"));
     test_type(fast_ber::Optional<fast_ber::Null<>>(fast_ber::Null<>()));
+    test_type(fast_ber::Optional<fast_ber::TaggedType<fast_ber::All::The_Enum,
+                                                      fast_ber::ImplicitIdentifier<fast_ber::Class::application, 500>>>(
+        fast_ber::All::The_Enum::pear));
     // test_type(fast_ber::Prefixed);
     // test_type(fast_ber::Real);
     // test_type(fast_ber::RelativeIRI);

@@ -58,7 +58,7 @@ class Integer
 };
 
 template <typename Identifier>
-constexpr inline ExplicitIdentifier<UniversalTag::integer> identifier(const Integer<Identifier>*) noexcept
+constexpr inline Identifier identifier(const Integer<Identifier>*) noexcept
 {
     return {};
 }
@@ -200,14 +200,14 @@ inline EncodeResult Integer<Identifier>::encode_content_and_length(absl::Span<ui
     return EncodeResult{true, encoded_length()};
 }
 
-template <typename DefaultIdentifier, typename ID = ExplicitIdentifier<UniversalTag::integer>>
+template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 EncodeResult encode(absl::Span<uint8_t> output, const Integer<DefaultIdentifier>& object, const ID& id = ID{})
 {
     return encode_impl(output, object, id);
 }
 
-template <typename DefaultIdentifier, typename ID = ExplicitIdentifier<UniversalTag::integer>>
-DecodeResult decode(BerViewIterator& input, Integer<DefaultIdentifier>& output, const ID& id = {}) noexcept
+template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
+DecodeResult decode(BerViewIterator& input, Integer<DefaultIdentifier>& output, const ID& id = ID{}) noexcept
 {
     return decode_impl(input, output, id);
 }

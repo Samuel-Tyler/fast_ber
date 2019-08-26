@@ -50,7 +50,7 @@ class Real
 };
 
 template <typename Identifier>
-constexpr inline ExplicitIdentifier<UniversalTag::real> identifier(const Real<Identifier>*) noexcept
+constexpr inline Identifier identifier(const Real<Identifier>*) noexcept
 {
     return {};
 }

@@ -32,7 +32,7 @@ class Null
 };
 
 template <typename Identifier>
-constexpr ExplicitIdentifier<UniversalTag::null> identifier(const Null<Identifier>*) noexcept
+constexpr Identifier identifier(const Null<Identifier>*) noexcept
 {
     return {};
 }
@@ -64,13 +64,13 @@ EncodeResult Null<Identifier>::encode_content_and_length(absl::Span<uint8_t> buf
     }
 }
 
-template <typename DefaultIdentifier, typename ID = ExplicitIdentifier<UniversalTag::null>>
+template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 EncodeResult encode(absl::Span<uint8_t> output, const Null<DefaultIdentifier>& object, const ID& id = ID{})
 {
     return encode_impl(output, object, id);
 }
 
-template <typename DefaultIdentifier, typename ID = ExplicitIdentifier<UniversalTag::null>>
+template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 DecodeResult decode(BerViewIterator& input, Null<DefaultIdentifier>& output, const ID& id = {}) noexcept
 {
     return decode_impl(input, output, id);

@@ -166,6 +166,11 @@ std::string to_string(Class class_)
 
 std::string make_type_optional(const std::string& type) { return "Optional<" + type + ">"; }
 
+bool is_any(const Type& type)
+{
+    return absl::holds_alternative<BuiltinType>(type) && absl::holds_alternative<AnyType>(absl::get<BuiltinType>(type));
+}
+
 bool is_bit_string(const Type& type)
 {
     return absl::holds_alternative<BuiltinType>(type) &&

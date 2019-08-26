@@ -63,7 +63,7 @@ class ObjectIdentifier
 };
 
 template <typename Identifier>
-constexpr ExplicitIdentifier<UniversalTag::object_identifier> identifier(const ObjectIdentifier<Identifier>*) noexcept
+constexpr Identifier identifier(const ObjectIdentifier<Identifier>*) noexcept
 {
     return {};
 }
@@ -312,13 +312,13 @@ EncodeResult ObjectIdentifier<Identifier>::encode_content_and_length(absl::Span<
     return m_contents.encode_content_and_length(buffer);
 }
 
-template <typename DefaultIdentifier, typename ID = ExplicitIdentifier<UniversalTag::object_identifier>>
+template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 EncodeResult encode(absl::Span<uint8_t> output, const ObjectIdentifier<DefaultIdentifier>& object, const ID& id = ID{})
 {
     return encode_impl(output, object, id);
 }
 
-template <typename DefaultIdentifier, typename ID = ExplicitIdentifier<UniversalTag::object_identifier>>
+template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 DecodeResult decode(BerViewIterator& input, ObjectIdentifier<DefaultIdentifier>& output, const ID& id = {}) noexcept
 {
     return decode_impl(input, output, id);

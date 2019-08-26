@@ -18,9 +18,15 @@ template <typename Identifier = ExplicitIdentifier<UniversalTag::octet_string>>
 class OctetString
 {
   public:
-    OctetString() noexcept                       = default;
-    OctetString(const OctetString& rhs) noexcept = default;
-    OctetString(OctetString&& rhs) noexcept      = default;
+    OctetString() noexcept = default;
+    template <typename Identifier2>
+    OctetString(const OctetString<Identifier2>& rhs) noexcept : m_contents(rhs.m_contents)
+    {
+    }
+    template <typename Identifier2>
+    OctetString(OctetString<Identifier2>&& rhs) noexcept : m_contents(std::move(rhs.m_contents))
+    {
+    }
 
     OctetString(const char* input_data) noexcept { assign(absl::string_view(input_data)); }
     OctetString(const std::string& input_data) noexcept { assign(absl::string_view(input_data)); }
@@ -76,7 +82,7 @@ class OctetString
 }; // namespace fast_ber
 
 template <typename Identifier>
-constexpr ExplicitIdentifier<UniversalTag::octet_string> identifier(const OctetString<Identifier>*) noexcept
+constexpr Identifier identifier(const OctetString<Identifier>*) noexcept
 {
     return {};
 }
@@ -183,13 +189,13 @@ EncodeResult OctetString<Identifier>::encode_content_and_length(absl::Span<uint8
     return m_contents.encode_content_and_length(buffer);
 }
 
-template <typename DefaultIdentifier, typename ID = ExplicitIdentifier<UniversalTag::octet_string>>
+template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 EncodeResult encode(absl::Span<uint8_t> output, const OctetString<DefaultIdentifier>& object, const ID& id = ID{})
 {
     return encode_impl(output, object, id);
 }
 
-template <typename DefaultIdentifier, typename ID = ExplicitIdentifier<UniversalTag::octet_string>>
+template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 DecodeResult decode(BerViewIterator& input, OctetString<DefaultIdentifier>& output, const ID& id = {}) noexcept
 {
     return decode_impl(input, output, id);

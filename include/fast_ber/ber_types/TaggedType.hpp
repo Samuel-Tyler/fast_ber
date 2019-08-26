@@ -16,8 +16,8 @@ class TaggedType : public Type
     {
     }
 
-    template <typename T>
-    TaggedType(const T& t) : Type(t)
+    template <typename... T>
+    TaggedType(T&&... t) : Type{std::forward<T>(t)...}
     {
     }
 
@@ -42,8 +42,8 @@ struct TaggedType<Type, TagType, typename std::enable_if<std::is_enum<Type>::val
         enumerated = t;
         return *this;
     }
-    bool operator==(const Type& t) const { return enumerated == t; }  
-    bool operator!=(const Type& t) const { return enumerated != t; }  
+    bool operator==(const Type& t) const { return enumerated == t; }
+    bool operator!=(const Type& t) const { return enumerated != t; }
 
                 operator Type&() { return enumerated; }
                 operator const Type&() const { return enumerated; }
@@ -64,9 +64,9 @@ EncodeResult encode(absl::Span<uint8_t> output, const TaggedType<T, DefaultTag>&
 }
 
 template <typename T, typename DefaultTag, typename ID = DefaultTag>
-DecodeResult decode(absl::Span<const uint8_t> output, TaggedType<T, DefaultTag>& object, const ID& id = ID{})
+DecodeResult decode(BerViewIterator& input, TaggedType<T, DefaultTag>& object, const ID& id = ID{})
 {
-    return decode(output, object.get(), id);
+    return decode(input, object.get(), id);
 }
 
 } // namespace fast_ber

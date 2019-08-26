@@ -4,10 +4,30 @@
 
 static int unnamed_definition_reference_num = 0;
 
-std::string type_as_string(const AnyType&, const Module&, const Asn1Tree&) { return "Any"; }
-std::string type_as_string(const BitStringType&, const Module&, const Asn1Tree&) { return "BitString<>"; }
-std::string type_as_string(const BooleanType&, const Module&, const Asn1Tree&) { return "Boolean<>"; }
-std::string type_as_string(const CharacterStringType&, const Module&, const Asn1Tree&) { return "CharacterString<>"; }
+template <typename Type>
+std::string identifier_template_params(const Type& type, const Module& module, const Asn1Tree& tree)
+{
+    const auto tagging_info = identifier(type, module, tree);
+    if (tagging_info.is_default_tagged)
+    {
+        return "<>";
+    }
+    return "<" + tagging_info.tag + ">";
+}
+
+std::string type_as_string(const AnyType& type, const Module& module, const Asn1Tree& tree) { return "Any"; }
+std::string type_as_string(const BitStringType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "BitString" + identifier_template_params(type, module, tree);
+}
+std::string type_as_string(const BooleanType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "Boolean" + identifier_template_params(type, module, tree);
+}
+std::string type_as_string(const CharacterStringType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "CharacterString" + identifier_template_params(type, module, tree);
+}
 std::string type_as_string(const ChoiceType& choice, const Module& module, const Asn1Tree& tree)
 {
     bool        is_first = true;
@@ -40,11 +60,23 @@ std::string type_as_string(const ChoiceType& choice, const Module& module, const
     res += ">";
     return res;
 }
-std::string type_as_string(const DateType&, const Module&, const Asn1Tree&) { return "Date<>"; }
-std::string type_as_string(const DateTimeType&, const Module&, const Asn1Tree&) { return "DateTime<>"; }
-std::string type_as_string(const DurationType&, const Module&, const Asn1Tree&) { return "Duration<>"; }
-std::string type_as_string(const EmbeddedPDVType&, const Module&, const Asn1Tree&) { return "EmbeddedPDV<>"; }
-std::string type_as_string(const EnumeratedType& enumerated, const Module&, const Asn1Tree&)
+std::string type_as_string(const DateType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "Date" + identifier_template_params(type, module, tree);
+}
+std::string type_as_string(const DateTimeType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "DateTime" + identifier_template_params(type, module, tree);
+}
+std::string type_as_string(const DurationType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "Duration" + identifier_template_params(type, module, tree);
+}
+std::string type_as_string(const EmbeddedPDVType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "EmbeddedPDV" + identifier_template_params(type, module, tree);
+}
+std::string type_as_string(const EnumeratedType& enumerated, const Module& module, const Asn1Tree& tree)
 {
     std::string res = " {\n";
     for (const EnumerationValue& enum_value : enumerated.enum_values)
@@ -60,29 +92,65 @@ std::string type_as_string(const EnumeratedType& enumerated, const Module&, cons
 
     return res;
 }
-std::string type_as_string(const ExternalType&, const Module&, const Asn1Tree&) { return "External<>"; }
-std::string type_as_string(const GeneralizedTimeType&, const Module&, const Asn1Tree&) { return "GeneralizedTime<>"; }
-std::string type_as_string(const InstanceOfType&, const Module&, const Asn1Tree&) { return "InstanceOf<>"; }
-std::string type_as_string(const IntegerType&, const Module&, const Asn1Tree&) { return "Integer<>"; }
-std::string type_as_string(const IRIType&, const Module&, const Asn1Tree&) { return "IRI<>"; }
-std::string type_as_string(const NullType&, const Module&, const Asn1Tree&) { return "Null<>"; }
-std::string type_as_string(const ObjectClassFieldType&, const Module&, const Asn1Tree&)
+std::string type_as_string(const ExternalType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "External" + identifier_template_params(type, module, tree);
+}
+std::string type_as_string(const GeneralizedTimeType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "GeneralizedTime" + identifier_template_params(type, module, tree);
+}
+std::string type_as_string(const InstanceOfType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "InstanceOf" + identifier_template_params(type, module, tree);
+}
+std::string type_as_string(const IntegerType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "Integer" + identifier_template_params(type, module, tree);
+}
+std::string type_as_string(const IRIType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "IRI" + identifier_template_params(type, module, tree);
+}
+std::string type_as_string(const NullType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "Null" + identifier_template_params(type, module, tree);
+}
+std::string type_as_string(const ObjectClassFieldType& type, const Module& module, const Asn1Tree& tree)
 {
     throw std::runtime_error("ObjectClassFieldType is not serializable!");
 }
-std::string type_as_string(const ObjectDescriptorType&, const Module&, const Asn1Tree&) { return "ObjectDescriptor<>"; }
-std::string type_as_string(const ObjectIdentifierType&, const Module&, const Asn1Tree&) { return "ObjectIdentifier<>"; }
-std::string type_as_string(const OctetStringType&, const Module&, const Asn1Tree&) { return "OctetString<>"; }
-std::string type_as_string(const RealType&, const Module&, const Asn1Tree&) { return "Real<>"; }
-std::string type_as_string(const RelativeIRIType&, const Module&, const Asn1Tree&) { return "RelativeIRI<>"; }
-std::string type_as_string(const RelativeOIDType&, const Module&, const Asn1Tree&) { return "RelativeOID<>"; }
+std::string type_as_string(const ObjectDescriptorType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "ObjectDescriptor" + identifier_template_params(type, module, tree);
+}
+std::string type_as_string(const ObjectIdentifierType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "ObjectIdentifier" + identifier_template_params(type, module, tree);
+}
+std::string type_as_string(const OctetStringType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "OctetString" + identifier_template_params(type, module, tree);
+}
+std::string type_as_string(const RealType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "Real" + identifier_template_params(type, module, tree);
+}
+std::string type_as_string(const RelativeIRIType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "RelativeIRI" + identifier_template_params(type, module, tree);
+}
+std::string type_as_string(const RelativeOIDType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "RelativeOID" + identifier_template_params(type, module, tree);
+}
 std::string type_as_string(const SequenceType& sequence, const Module& module, const Asn1Tree& tree)
 {
     std::string res = " {\n";
 
     for (const ComponentType& component : sequence.components)
     {
-        std::string component_type = type_as_string(component.named_type.type, module, tree);
+        std::string component_type = fully_tagged_type(component.named_type.type, module, tree);
         if (is_enumerated(component.named_type.type))
         {
             component_type = "UnnamedEnum" + std::to_string(unnamed_definition_reference_num++);
@@ -136,7 +204,7 @@ std::string type_as_string(const SequenceOfType& sequence, const Module& module,
     }
     else
     {
-        return "SequenceOf<" + type_as_string(type, module, tree) + ">";
+        return "SequenceOf<" + fully_tagged_type(type, module, tree) + ">";
     }
 }
 std::string type_as_string(const SetType& set, const Module& module, const Asn1Tree& tree)
@@ -145,7 +213,7 @@ std::string type_as_string(const SetType& set, const Module& module, const Asn1T
 
     for (const ComponentType& component : set.components)
     {
-        std::string component_type = type_as_string(component.named_type.type, module, tree);
+        std::string component_type = fully_tagged_type(component.named_type.type, module, tree);
         if (is_enumerated(component.named_type.type))
         {
             component_type = "UnnamedEnum" + std::to_string(unnamed_definition_reference_num++);
@@ -199,7 +267,7 @@ std::string type_as_string(const SetOfType& set, const Module& module, const Asn
     }
     else
     {
-        return "SequenceOf<" + type_as_string(type, module, tree) + ">";
+        return "SequenceOf<" + fully_tagged_type(type, module, tree) + ">";
     }
 }
 std::string type_as_string(const PrefixedType& prefixed_type, const Module& module, const Asn1Tree& tree)
@@ -216,11 +284,20 @@ std::string type_as_string(const PrefixedType& prefixed_type, const Module& modu
     {
         return "UnnamedEnum" + std::to_string(unnamed_definition_reference_num++);
     }
-    return type_as_string(prefixed_type.tagged_type->type, module, tree);
+    return fully_tagged_type(prefixed_type.tagged_type->type, module, tree);
 }
-std::string type_as_string(const TimeType&, const Module&, const Asn1Tree&) { return "Time<>"; }
-std::string type_as_string(const TimeOfDayType&, const Module&, const Asn1Tree&) { return "TimeOfDay<>"; }
-std::string type_as_string(const UTCTimeType&, const Module&, const Asn1Tree&) { return "UTCTime<>"; }
+std::string type_as_string(const TimeType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "Time" + identifier_template_params(type, module, tree);
+}
+std::string type_as_string(const TimeOfDayType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "TimeOfDay" + identifier_template_params(type, module, tree);
+}
+std::string type_as_string(const UTCTimeType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "UTCTime" + identifier_template_params(type, module, tree);
+}
 std::string type_as_string(const DefinedType& type, const Module&, const Asn1Tree&) { return type.type_reference; }
 
 struct ToStringHelper
