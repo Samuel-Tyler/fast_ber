@@ -1,4 +1,5 @@
 #include "fast_ber/ber_types/TaggedType.hpp"
+#include "fast_ber/ber_types/All.hpp"
 #include "fast_ber/ber_types/Identifier.hpp"
 #include "fast_ber/ber_types/Integer.hpp"
 
@@ -44,3 +45,17 @@ TEST_CASE("TaggedType: Encode Decode")
 
     REQUIRE(b == 10);
 }
+
+enum class TestEnum
+{
+    option_one,
+    option_two,
+    option_three
+};
+
+static_assert(
+    std::is_same<decltype(fast_ber::identifier(
+                     static_cast<fast_ber::TaggedType<
+                         TestEnum, fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>>*>(nullptr))),
+                 fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>>::value,
+    "Tagged Enum Identifier");

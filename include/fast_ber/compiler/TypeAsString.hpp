@@ -36,4 +36,3 @@ std::string type_as_string(const UTCTimeType&, const Module&, const Asn1Tree&);
 std::string type_as_string(const DefinedType&, const Module&, const Asn1Tree&);
 std::string type_as_string(const BuiltinType&, const Module&, const Asn1Tree&);
 std::string type_as_string(const Type&, const Module&, const Asn1Tree&);
-std::string fully_tagged_type(const Type& type, const Module&, const Asn1Tree&);

@@ -82,7 +82,7 @@ TEST_CASE("Tags: Encoding and decoding a packet with various tagging modes")
 TEST_CASE("Tags: Tagging an enum")
 {
     fast_ber::Tags::TaggedEnum a = fast_ber::Tags::UnnamedEnum0::enum_;
-    REQUIRE(fast_ber::reference_tag(identifier(&a)) == 7);
+    REQUIRE(fast_ber::reference_tag(fast_ber::identifier(&a)) == 7);
     REQUIRE(a == fast_ber::Tags::UnnamedEnum0::enum_);
 
     std::array<uint8_t, 5000> buffer        = {};

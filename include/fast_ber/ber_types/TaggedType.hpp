@@ -57,6 +57,12 @@ constexpr TagType identifier(const TaggedType<Type, TagType>*) noexcept
     return {};
 }
 
+template <typename Type, typename TagType, typename std::enable_if<std::is_enum<Type>::value>::type>
+constexpr TagType identifier(const TaggedType<Type, TagType>*) noexcept
+{
+    return {};
+}
+
 template <typename T, typename DefaultTag, typename ID = DefaultTag>
 EncodeResult encode(absl::Span<uint8_t> output, const TaggedType<T, DefaultTag>& object, const ID& id = ID{})
 {

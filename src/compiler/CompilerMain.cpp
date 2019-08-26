@@ -35,7 +35,7 @@ std::string create_type_assignment(const std::string& name, const Type& type, co
     }
     else
     {
-        return "using " + name + " = " + fully_tagged_type(type, module, tree) + ";\n";
+        return "using " + name + " = " + type_as_string(type, module, tree) + ";\n";
     }
 }
 
@@ -75,7 +75,7 @@ std::string create_assignment(const Asn1Tree& tree, const Module& module, const 
         if (absl::holds_alternative<ValueAssignment>(assignment.specific)) // Value assignment
         {
             const ValueAssignment& value_assign = absl::get<ValueAssignment>(assignment.specific);
-            std::string result = fully_tagged_type(value_assign.type, module, tree) + " " + assignment.name + " = ";
+            std::string result = type_as_string(value_assign.type, module, tree) + " " + assignment.name + " = ";
 
             const Type& assigned_to_type =
                 (is_defined(value_assign.type))

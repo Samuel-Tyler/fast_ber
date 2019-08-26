@@ -19,9 +19,13 @@ TEST_CASE("Enumerated: Encode Decode")
     TestEnum enum_two = TestEnum::option_three;
 
     fast_ber::encode(absl::Span<uint8_t>(data), enum_one,
-                                      fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::enumerated>{});
+                     fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::enumerated>{});
     fast_ber::decode(absl::Span<const uint8_t>(data), enum_two,
-                                      fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::enumerated>{});
+                     fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::enumerated>{});
 
     REQUIRE(enum_one == enum_two);
 }
+
+static_assert(std::is_same<decltype(fast_ber::identifier(static_cast<TestEnum*>(nullptr))),
+                           fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::enumerated>>::value,
+              "Enum Identifier");
