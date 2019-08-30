@@ -10,7 +10,8 @@ template <typename T, size_t N = default_inlined_size>
 using SequenceOf = absl::InlinedVector<T, N>;
 
 template <typename T>
-constexpr inline ExplicitIdentifier<UniversalTag::sequence_of> identifier(const SequenceOf<T>*) noexcept
+constexpr inline ExplicitIdentifier<UniversalTag::sequence_of>
+identifier(const SequenceOf<T>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
 {
     return {};
 }
@@ -25,7 +26,7 @@ EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T>& seque
     content_buffer.remove_prefix(header_length_guess);
     for (const auto& element : sequence)
     {
-        const auto element_encode_result = encode(content_buffer, element, identifier(&element));
+        const auto element_encode_result = encode(content_buffer, element, identifier(&element, IdentifierAdlToken{}));
         if (!element_encode_result.success)
         {
             return {false, 0};
@@ -47,7 +48,7 @@ DecodeResult decode(BerViewIterator& input, SequenceOf<T>& output, const ID& id 
     }
 
     auto           child    = input->begin();
-    constexpr auto child_id = identifier(static_cast<const T*>(nullptr));
+    constexpr auto child_id = identifier(static_cast<const T*>(nullptr), IdentifierAdlToken{});
 
     while (child->is_valid() && child->tag() == reference_tag(child_id))
     {

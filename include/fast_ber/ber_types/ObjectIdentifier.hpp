@@ -63,7 +63,7 @@ class ObjectIdentifier
 };
 
 template <typename Identifier>
-constexpr Identifier identifier(const ObjectIdentifier<Identifier>*) noexcept
+constexpr Identifier identifier(const ObjectIdentifier<Identifier>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
 {
     return {};
 }

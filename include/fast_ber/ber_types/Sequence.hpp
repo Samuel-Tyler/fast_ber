@@ -19,10 +19,11 @@ inline EncodeResult encode_sequence_combine_impl(absl::Span<uint8_t>&, size_t en
     return EncodeResult{true, encoding_length};
 }
 
-template <typename... Args, typename T, typename ID>
+template <typename... Args, typename T>
 EncodeResult encode_sequence_combine_impl(absl::Span<uint8_t>& output, size_t encoding_length, const T& object,
-                                          const ID& id, const Args&... args) noexcept
+                                          const Args&... args) noexcept
 {
+    constexpr auto     id     = identifier(static_cast<T*>(nullptr), IdentifierAdlToken{});
     const EncodeResult result = encode(output, object, id);
     if (!result.success)
     {
@@ -52,11 +53,13 @@ EncodeResult encode_sequence_combine(const absl::Span<uint8_t> output, const ID&
 
 inline DecodeResult decode_sequence_combine_impl(BerViewIterator&, const char*) noexcept { return DecodeResult{true}; }
 
-template <typename T, typename ID, typename... Args>
-DecodeResult decode_sequence_combine_impl(BerViewIterator& input, const char* parent_name, T& object, const ID& id,
+template <typename T, typename... Args>
+DecodeResult decode_sequence_combine_impl(BerViewIterator& input, const char* parent_name, T& object,
                                           Args&&... args) noexcept
 {
-    DecodeResult result = decode(input, object, id);
+    constexpr auto id = identifier(static_cast<T*>(nullptr), IdentifierAdlToken{});
+
+    DecodeResult result = decode(input, object);
     if (!result.success)
     {
         std::cerr << "Error decoding " << parent_name << ": could not decode field with tag " << reference_tag(id)

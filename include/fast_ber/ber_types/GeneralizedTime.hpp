@@ -46,7 +46,7 @@ class GeneralizedTime
 };
 
 template <typename Identifier>
-constexpr Identifier identifier(const GeneralizedTime<Identifier>*) noexcept
+constexpr Identifier identifier(const GeneralizedTime<Identifier>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
 {
     return {};
 }

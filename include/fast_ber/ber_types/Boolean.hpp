@@ -46,7 +46,7 @@ class Boolean
 }; // namespace fast_ber
 
 template <typename Identifier>
-constexpr Identifier identifier(const Boolean<Identifier>*) noexcept
+constexpr Identifier identifier(const Boolean<Identifier>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
 {
     return {};
 }

@@ -32,7 +32,7 @@ class Null
 };
 
 template <typename Identifier>
-constexpr Identifier identifier(const Null<Identifier>*) noexcept
+constexpr Identifier identifier(const Null<Identifier>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
 {
     return {};
 }

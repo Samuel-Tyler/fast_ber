@@ -50,7 +50,7 @@ class Real
 };
 
 template <typename Identifier>
-constexpr inline Identifier identifier(const Real<Identifier>*) noexcept
+constexpr inline Identifier identifier(const Real<Identifier>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
 {
     return {};
 }

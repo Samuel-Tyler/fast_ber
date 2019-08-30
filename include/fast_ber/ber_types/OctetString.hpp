@@ -82,7 +82,7 @@ class OctetString
 }; // namespace fast_ber
 
 template <typename Identifier>
-constexpr Identifier identifier(const OctetString<Identifier>*) noexcept
+constexpr Identifier identifier(const OctetString<Identifier>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
 {
     return {};
 }

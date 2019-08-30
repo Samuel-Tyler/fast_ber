@@ -57,7 +57,8 @@ DecodeResult decode(BerViewIterator& input, Optional<T>& output) noexcept
 }
 
 template <typename T>
-constexpr auto identifier(const absl::optional<T>*) noexcept -> decltype(identifier(static_cast<T*>(nullptr)))
+constexpr auto identifier(const absl::optional<T>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
+    -> decltype(identifier(static_cast<T*>(nullptr)))
 {
     return {};
 }

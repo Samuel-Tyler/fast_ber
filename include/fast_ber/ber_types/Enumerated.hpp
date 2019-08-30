@@ -8,7 +8,7 @@ namespace fast_ber
 {
 
 template <typename T, typename T2 = std::enable_if<std::is_enum<T>::type>>
-ExplicitIdentifier<UniversalTag::enumerated> identifier(const T*) noexcept
+ExplicitIdentifier<UniversalTag::enumerated> identifier(const T*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
 {
     return {};
 }
@@ -39,7 +39,8 @@ DecodeResult decode(BerViewIterator& input, Enumerated& output, const ID& id = I
 }
 
 template <typename Enumerated, typename std::enable_if<std::is_enum<Enumerated>{}, int>::type = 0>
-constexpr inline ExplicitIdentifier<UniversalTag::enumerated> identifier(const Enumerated*) noexcept
+constexpr inline ExplicitIdentifier<UniversalTag::enumerated>
+identifier(const Enumerated*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
 {
     return {};
 }

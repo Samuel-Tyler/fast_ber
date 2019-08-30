@@ -58,7 +58,7 @@ class Integer
 };
 
 template <typename Identifier>
-constexpr inline Identifier identifier(const Integer<Identifier>*) noexcept
+constexpr inline Identifier identifier(const Integer<Identifier>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
 {
     return {};
 }

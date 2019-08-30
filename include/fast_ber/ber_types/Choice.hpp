@@ -26,7 +26,8 @@ EncodeResult encode_if(const absl::Span<uint8_t>&, const Choice<Variants...>&, c
 }
 
 template <typename... T>
-constexpr inline ExplicitIdentifier<UniversalTag::choice> identifier(const Choice<T...>*) noexcept
+constexpr inline ExplicitIdentifier<UniversalTag::choice> identifier(const Choice<T...>*,
+                                                                     IdentifierAdlToken = IdentifierAdlToken{}) noexcept
 {
     return {};
 }

@@ -52,13 +52,13 @@ struct TaggedType<Type, TagType, typename std::enable_if<std::is_enum<Type>::val
 };
 
 template <typename Type, typename TagType>
-constexpr TagType identifier(const TaggedType<Type, TagType>*) noexcept
+constexpr TagType identifier(const TaggedType<Type, TagType>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
 {
     return {};
 }
 
 template <typename Type, typename TagType, typename std::enable_if<std::is_enum<Type>::value>::type>
-constexpr TagType identifier(const TaggedType<Type, TagType>*) noexcept
+constexpr TagType identifier(const TaggedType<Type, TagType>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
 {
     return {};
 }

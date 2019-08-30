@@ -70,4 +70,9 @@ constexpr Class reference_class(const ImplicitIdentifier<T1, T2>& id)
     return id.class_();
 }
 
+// Used to ensure identifier() functions can be found in the fast_ber namespace using ADL
+struct IdentifierAdlToken
+{
+};
+
 } // namespace fast_ber
