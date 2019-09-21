@@ -6,6 +6,6 @@
 
 namespace fast_ber
 {
-template <typename Identifier = ExplicitIdentifier<UniversalTag::printable_string>>
-using PrintableString = fast_ber::OctetString<Identifier>;
+template <typename Identifier = ExplicitIdentifier<UniversalTag::utf8_string>>
+using UTF8String = fast_ber::OctetString<Identifier>;
 }

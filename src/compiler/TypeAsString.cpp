@@ -28,8 +28,10 @@ std::string identifier_template_params(const Type& type, const Module& module, c
     return "<" + tagging_info.tag + ">";
 }
 
-std::string type_as_string(const AnyType& type, const Module& module, const Asn1Tree& tree) { return "Any"; }
-
+std::string type_as_string(const AnyType& type, const Module& module, const Asn1Tree& tree)
+{
+    return "Any" + identifier_template_params(type, module, tree);
+}
 std::string type_as_string(const BitStringType& type, const Module& module, const Asn1Tree& tree)
 {
     return "BitString" + identifier_template_params(type, module, tree);
@@ -40,7 +42,7 @@ std::string type_as_string(const BooleanType& type, const Module& module, const 
 }
 std::string type_as_string(const CharacterStringType& type, const Module& module, const Asn1Tree& tree)
 {
-    return "CharacterString" + identifier_template_params(type, module, tree);
+    return to_string(type) + identifier_template_params(type, module, tree);
 }
 std::string type_as_string(const ChoiceType& choice, const Module& module, const Asn1Tree& tree)
 {

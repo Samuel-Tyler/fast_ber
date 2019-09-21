@@ -257,6 +257,8 @@
 %type<BitStringType>     BitStringType;
 %type<BooleanType>       BooleanType;
 %type<CharacterStringType> CharacterStringType;
+%type<CharacterStringType> RestrictedCharacterStringType;
+%type<CharacterStringType> UnrestrictedCharacterStringType;
 %type<ChoiceType>        ChoiceType;
 %type<DateType>          DateType;
 %type<DateTimeType>      DateTimeType;
@@ -1436,26 +1438,41 @@ DurationType:
 
 CharacterStringType:
     RestrictedCharacterStringType
-|   UnrestrictedCharacterStringType;
+    { $$ = $1; }
+|   UnrestrictedCharacterStringType
+    { $$ = $1; }
 
 RestrictedCharacterStringType:
     BMPString
+    { $$ = CharacterStringType::bmp_string; }
 |   GeneralString
+    { $$ = CharacterStringType::general_string; }
 |   GraphicString
+    { $$ = CharacterStringType::graphic_string; }
 |   IA5String
+    { $$ = CharacterStringType::ia5_string; }
 |   ISO646String
+    { $$ = CharacterStringType::iso646_string; }
 |   NumericString
+    { $$ = CharacterStringType::numeric_string; }
 |   PrintableString
+    { $$ = CharacterStringType::printable_string; }
 |   TeletexString
+    { $$ = CharacterStringType::teletex_string; }
 |   T61String
+    { $$ = CharacterStringType::t61_string; }
 |   UniversalString
+    { $$ = CharacterStringType::universal_string; }
 |   UTF8String
+    { $$ = CharacterStringType::utf8_string; }
 |   VideotexString
-|   VisibleString;
-
+    { $$ = CharacterStringType::videotex_string; }
+|   VisibleString
+    { $$ = CharacterStringType::visible_string; }
 
 UnrestrictedCharacterStringType:
-    CHARACTER STRING;
+    CHARACTER STRING
+    { $$ = CharacterStringType::character_string; }
 
 ConstrainedType:
     Type Constraint

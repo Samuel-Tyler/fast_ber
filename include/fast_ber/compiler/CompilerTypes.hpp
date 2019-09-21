@@ -58,9 +58,61 @@ struct BitStringType
 struct BooleanType
 {
 };
-struct CharacterStringType
+enum class CharacterStringType
 {
+    unknown,
+    bmp_string,
+    general_string,
+    graphic_string,
+    ia5_string,
+    iso646_string,
+    numeric_string,
+    printable_string,
+    teletex_string,
+    t61_string,
+    universal_string,
+    utf8_string,
+    videotex_string,
+    visible_string,
+    character_string,
 };
+inline std::string to_string(CharacterStringType type)
+{
+    switch (type)
+    {
+    case CharacterStringType::bmp_string:
+        return "BMPString";
+    case CharacterStringType::general_string:
+        return "GeneralString";
+    case CharacterStringType::graphic_string:
+        return "GraphicString";
+    case CharacterStringType::ia5_string:
+        return "IA5String";
+    case CharacterStringType::iso646_string:
+        return "ISO646String";
+    case CharacterStringType::numeric_string:
+        return "NumericString";
+    case CharacterStringType::printable_string:
+        return "PrintableString";
+    case CharacterStringType::teletex_string:
+        return "TeletexString";
+    case CharacterStringType::t61_string:
+        return "T61String";
+    case CharacterStringType::universal_string:
+        return "UniversalString";
+    case CharacterStringType::utf8_string:
+        return "UTF8String";
+    case CharacterStringType::videotex_string:
+        return "VideotexString";
+    case CharacterStringType::visible_string:
+        return "VisibleString";
+    case CharacterStringType::character_string:
+        return "CharacterString";
+    case CharacterStringType::unknown:
+        return "UnknownStringType";
+    }
+    return "UnknownStringType";
+}
 struct ChoiceType;
 struct DateType
 {
