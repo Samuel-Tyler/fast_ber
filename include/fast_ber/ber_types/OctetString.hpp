@@ -192,13 +192,13 @@ EncodeResult OctetString<Identifier>::encode_content_and_length(absl::Span<uint8
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 EncodeResult encode(absl::Span<uint8_t> output, const OctetString<DefaultIdentifier>& object, const ID& id = ID{})
 {
-    return encode_impl(output, object, id);
+    return encode_impl<DefaultIdentifier>(output, object, id);
 }
 
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 DecodeResult decode(BerViewIterator& input, OctetString<DefaultIdentifier>& output, const ID& id = {}) noexcept
 {
-    return decode_impl(input, output, id);
+    return decode_impl<DefaultIdentifier>(input, output, id);
 }
 
 } // namespace fast_ber

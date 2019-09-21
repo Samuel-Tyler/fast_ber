@@ -315,13 +315,13 @@ EncodeResult ObjectIdentifier<Identifier>::encode_content_and_length(absl::Span<
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 EncodeResult encode(absl::Span<uint8_t> output, const ObjectIdentifier<DefaultIdentifier>& object, const ID& id = ID{})
 {
-    return encode_impl(output, object, id);
+    return encode_impl<DefaultIdentifier>(output, object, id);
 }
 
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 DecodeResult decode(BerViewIterator& input, ObjectIdentifier<DefaultIdentifier>& output, const ID& id = {}) noexcept
 {
-    return decode_impl(input, output, id);
+    return decode_impl<DefaultIdentifier>(input, output, id);
 }
 
 } // namespace fast_ber

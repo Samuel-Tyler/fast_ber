@@ -12,7 +12,7 @@ struct DecodeResult
     bool success;
 };
 
-template <typename T, UniversalTag T2>
+template <typename DefaultTag, typename T, UniversalTag T2>
 DecodeResult decode_impl(BerViewIterator& input, T& output, const ExplicitIdentifier<T2>& id) noexcept
 {
     if (!input->is_valid() || val(id.tag()) != input->tag())
@@ -25,7 +25,7 @@ DecodeResult decode_impl(BerViewIterator& input, T& output, const ExplicitIdenti
     return DecodeResult{success};
 }
 
-template <typename T, Class T2, Tag T3, typename T4>
+template <typename DefaultTag, typename T, Class T2, Tag T3, typename T4>
 DecodeResult decode_impl(BerViewIterator& input, T& output, const TaggedExplicitIdentifier<T2, T3, T4>& id) noexcept
 {
     if (!input->is_valid() || val(id.outer_tag()) != input->tag())
@@ -44,7 +44,7 @@ DecodeResult decode_impl(BerViewIterator& input, T& output, const TaggedExplicit
     return DecodeResult{success};
 }
 
-template <typename T, Class T2, Tag T3>
+template <typename DefaultTag, typename T, Class T2, Tag T3>
 DecodeResult decode_impl(BerViewIterator& input, T& output, const ImplicitIdentifier<T2, T3>& id) noexcept
 {
     if (!input->is_valid() || val(id.tag()) != input->tag())

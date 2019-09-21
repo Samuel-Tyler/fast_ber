@@ -94,7 +94,7 @@ inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t     
     return EncodeResult{true, header_length + content_length};
 }
 
-template <typename T, UniversalTag T2>
+template <typename DefaultTag, typename T, UniversalTag T2>
 EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const ExplicitIdentifier<T2>&)
 {
     constexpr auto tag    = ExplicitIdentifier<T2>::tag();
@@ -116,7 +116,7 @@ EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const Expl
     return encode_res;
 }
 
-template <typename T, Class T2, Tag T3, typename T4>
+template <typename DefaultTag, typename T, Class T2, Tag T3, typename T4>
 EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const TaggedExplicitIdentifier<T2, T3, T4>& id)
 {
     const auto header_length_guess = 2;
@@ -131,7 +131,7 @@ EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const Tagg
     return wrap_with_ber_header(output, inner_encoding.length, id, header_length_guess);
 }
 
-template <typename T, Class T2, Tag T3>
+template <typename DefaultTag, typename T, Class T2, Tag T3>
 EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const ImplicitIdentifier<T2, T3>& id)
 {
     size_t id_length = encode_identifier(output, Construction::primitive, id.class_(), id.tag());
