@@ -45,6 +45,9 @@ class Integer
 
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
+    using ExplicitId = ExplicitIdentifier<UniversalTag::integer>;
+    using Id         = Identifier;
+
   private:
     void set_content_length(uint64_t length) noexcept
     {
@@ -56,12 +59,6 @@ class Integer
 
     std::array<uint8_t, sizeof(int64_t) + sizeof(uint8_t)> m_data;
 };
-
-template <typename Identifier>
-constexpr inline Identifier identifier(const Integer<Identifier>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
-{
-    return {};
-}
 
 inline bool decode_integer(absl::Span<const uint8_t> input, int64_t& output) noexcept
 {
@@ -203,13 +200,13 @@ inline EncodeResult Integer<Identifier>::encode_content_and_length(absl::Span<ui
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 EncodeResult encode(absl::Span<uint8_t> output, const Integer<DefaultIdentifier>& object, const ID& id = ID{})
 {
-    return encode_impl<DefaultIdentifier>(output, object, id);
+    return encode_impl<typename Integer<DefaultIdentifier>::ExplicitId>(output, object, id);
 }
 
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 DecodeResult decode(BerViewIterator& input, Integer<DefaultIdentifier>& output, const ID& id = ID{}) noexcept
 {
-    return decode_impl<DefaultIdentifier>(input, output, id);
+    return decode_impl<typename Integer<DefaultIdentifier>::ExplicitId>(input, output, id);
 }
 
 } // namespace fast_ber

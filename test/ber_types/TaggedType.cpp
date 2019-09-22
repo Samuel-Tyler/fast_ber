@@ -9,25 +9,58 @@
 
 TEST_CASE("TaggedType: Assign")
 {
+    using Tag       = fast_ber::ImplicitIdentifier<fast_ber::Class::universal, fast_ber::Tag(5)>;
+    using TaggedInt = fast_ber::TaggedType<fast_ber::Integer<>, Tag>;
+
     fast_ber::Integer<> a(4);
-    fast_ber::TaggedType<fast_ber::Integer<>,
-                         fast_ber::ImplicitIdentifier<fast_ber::Class::universal, fast_ber::Tag(5)>>
-        b = a;
+    TaggedInt           b = a;
 
     REQUIRE(b == 4);
-    REQUIRE(fast_ber::reference_tag(identifier(&b)) == 5);
+    REQUIRE(fast_ber::val(identifier(&b).tag()) == 5);
+
+    static_assert(std::is_same<decltype(fast_ber::explicit_identifier(static_cast<TaggedInt*>(nullptr))), Tag>::value,
+                  "Double Tagged Identifier");
+
+    static_assert(std::is_same<decltype(fast_ber::identifier(static_cast<TaggedInt*>(nullptr))), Tag>::value,
+                  "Double Tagged Identifier");
 }
 
 TEST_CASE("TaggedType: Double Tagged")
 {
+    using TestInnerTag    = fast_ber::ImplicitIdentifier<fast_ber::Class::universal, fast_ber::Tag(5)>;
+    using TestOuterTag    = fast_ber::ImplicitIdentifier<fast_ber::Class::universal, fast_ber::Tag(10)>;
+    using DoubleTaggedInt = fast_ber::TaggedType<fast_ber::TaggedType<fast_ber::Integer<>, TestInnerTag>, TestOuterTag>;
+
     fast_ber::Integer<> a(4);
-    fast_ber::TaggedType<fast_ber::TaggedType<fast_ber::Integer<>, fast_ber::ImplicitIdentifier<
-                                                                       fast_ber::Class::universal, fast_ber::Tag(5)>>,
-                         fast_ber::ImplicitIdentifier<fast_ber::Class::universal, fast_ber::Tag(10)>>
-        b = a;
+    DoubleTaggedInt     b = a;
 
     REQUIRE(b == 4);
-    REQUIRE(fast_ber::reference_tag(identifier(&b)) == 10);
+    REQUIRE(fast_ber::val(identifier(&b).tag()) == 10);
+
+    static_assert(std::is_same<decltype(fast_ber::explicit_identifier(static_cast<DoubleTaggedInt*>(nullptr))),
+                               TestOuterTag>::value,
+                  "Double Tagged Identifier");
+
+    static_assert(
+        std::is_same<decltype(fast_ber::identifier(static_cast<DoubleTaggedInt*>(nullptr))), TestOuterTag>::value,
+        "Double Tagged Identifier");
+}
+
+TEST_CASE("TaggedType: Double Tagged Explicit")
+{
+    using TestInnerTag = fast_ber::TaggedExplicitIdentifier<fast_ber::Class::application, fast_ber::Tag(5), int>;
+    using TestOuterTag = fast_ber::TaggedExplicitIdentifier<fast_ber::Class::application, fast_ber::Tag(10), int>;
+    using ExplicitTag  = fast_ber::ImplicitIdentifier<fast_ber::Class::private_, 10>;
+    using DoubleTaggedInt =
+        fast_ber::TaggedType<fast_ber::TaggedType<fast_ber::Integer<ExplicitTag>, TestInnerTag>, TestOuterTag>;
+
+    static_assert(std::is_same<decltype(fast_ber::explicit_identifier(static_cast<DoubleTaggedInt*>(nullptr))),
+                               ExplicitTag>::value,
+                  "Double Tagged Identifier");
+
+    static_assert(
+        std::is_same<decltype(fast_ber::identifier(static_cast<DoubleTaggedInt*>(nullptr))), TestOuterTag>::value,
+        "Double Tagged Identifier");
 }
 
 TEST_CASE("TaggedType: Encode Decode")
@@ -46,16 +79,34 @@ TEST_CASE("TaggedType: Encode Decode")
     REQUIRE(b == 10);
 }
 
-enum class TestEnum
+TEST_CASE("TaggedType: Combining tags")
 {
-    option_one,
-    option_two,
-    option_three
-};
+    using Tag1 = fast_ber::ImplicitIdentifier<fast_ber::Class::universal, fast_ber::Tag(5)>;
+    using Tag2 = fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, fast_ber::Tag(10)>;
+    using Tag3 = fast_ber::TaggedExplicitIdentifier<fast_ber::Class::universal, fast_ber::Tag(15), Tag2>;
+    using Tag4 = fast_ber::TaggedExplicitIdentifier<fast_ber::Class::context_specific, fast_ber::Tag(5),
+                                                    fast_ber::DefaultTagging>;
 
-static_assert(
-    std::is_same<decltype(fast_ber::identifier(
-                     static_cast<fast_ber::TaggedType<
-                         TestEnum, fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>>*>(nullptr))),
-                 fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>>::value,
-    "Tagged Enum Identifier");
+    static_assert(std::is_same<decltype(fast_ber::resultant_identifier(Tag1{}, Tag2{})), Tag2>::value,
+                  "Combining Tags");
+
+    // static_assert(std::is_same<decltype(fast_ber::resultant_identifier(Tag3{}, Tag1{})), Tag4>::value,
+    //            "Combining Tags");
+}
+
+TEST_CASE("TaggedType: Tagged Enum")
+{
+    enum class TestEnum
+    {
+        option_one,
+        option_two,
+        option_three
+    };
+
+    static_assert(
+        std::is_same<decltype(fast_ber::identifier(
+                         static_cast<fast_ber::TaggedType<
+                             TestEnum, fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>>*>(nullptr))),
+                     fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>>::value,
+        "Tagged Enum Identifier");
+}

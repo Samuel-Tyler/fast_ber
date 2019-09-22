@@ -12,7 +12,20 @@ struct DecodeResult
     bool success;
 };
 
-template <typename DefaultTag, typename T, UniversalTag T2>
+template <typename ExplicitId, typename T>
+DecodeResult decode_impl(BerViewIterator& input, T& output, const DefaultTagging&) noexcept
+{
+    if (!input->is_valid() || val(identifier(static_cast<T*>(nullptr)).tag()) != input->tag())
+    {
+        return DecodeResult{false};
+    }
+
+    bool success = output.assign_ber(*input) > 0;
+    ++input;
+    return DecodeResult{success};
+}
+
+template <typename ExplicitId, typename T, UniversalTag T2>
 DecodeResult decode_impl(BerViewIterator& input, T& output, const ExplicitIdentifier<T2>& id) noexcept
 {
     if (!input->is_valid() || val(id.tag()) != input->tag())
@@ -25,16 +38,17 @@ DecodeResult decode_impl(BerViewIterator& input, T& output, const ExplicitIdenti
     return DecodeResult{success};
 }
 
-template <typename DefaultTag, typename T, Class T2, Tag T3, typename T4>
+template <typename ExplicitId, typename T, Class T2, Tag T3, typename T4>
 DecodeResult decode_impl(BerViewIterator& input, T& output, const TaggedExplicitIdentifier<T2, T3, T4>& id) noexcept
 {
-    if (!input->is_valid() || val(id.outer_tag()) != input->tag())
+    if (!input->is_valid() || val(id.tag()) != input->tag())
     {
         return DecodeResult{false};
     }
 
-    BerView inner = fast_ber::BerView(input->content());
-    if (!inner.is_valid() || val(id.inner_id().tag()) != inner.tag())
+    BerView         inner = input->content();
+    BerViewIterator iter  = input->content();
+    if (!decode(iter, output).success)
     {
         return DecodeResult{false};
     }
@@ -44,7 +58,7 @@ DecodeResult decode_impl(BerViewIterator& input, T& output, const TaggedExplicit
     return DecodeResult{success};
 }
 
-template <typename DefaultTag, typename T, Class T2, Tag T3>
+template <typename ExplicitId, typename T, Class T2, Tag T3>
 DecodeResult decode_impl(BerViewIterator& input, T& output, const ImplicitIdentifier<T2, T3>& id) noexcept
 {
     if (!input->is_valid() || val(id.tag()) != input->tag())

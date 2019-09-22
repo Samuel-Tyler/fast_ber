@@ -41,15 +41,12 @@ class GeneralizedTime
     GeneralizedTime(const absl::Time& time) { set_time(time); }
     GeneralizedTime() { set_time(absl::Time()); }
 
+    using ExplicitId = ExplicitIdentifier<UniversalTag::generalized_time>;
+    using Id         = Identifier;
+
   private:
     BerLengthAndContentContainer m_contents;
 };
-
-template <typename Identifier>
-constexpr Identifier identifier(const GeneralizedTime<Identifier>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
-{
-    return {};
-}
 
 template <typename Identifier>
 bool operator==(const GeneralizedTime<Identifier>& lhs, const GeneralizedTime<Identifier>& rhs)
@@ -177,13 +174,13 @@ EncodeResult GeneralizedTime<Identifier>::encode_content_and_length(absl::Span<u
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 EncodeResult encode(absl::Span<uint8_t> output, const GeneralizedTime<DefaultIdentifier>& object, const ID& id = ID{})
 {
-    return encode_impl<DefaultIdentifier>(output, object, id);
+    return encode_impl<typename GeneralizedTime<DefaultIdentifier>::ExplicitId>(output, object, id);
 }
 
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 DecodeResult decode(BerViewIterator& input, GeneralizedTime<DefaultIdentifier>& output, const ID& id = {}) noexcept
 {
-    return decode_impl<DefaultIdentifier>(input, output, id);
+    return decode_impl<typename GeneralizedTime<DefaultIdentifier>::ExplicitId>(input, output, id);
 }
 
 } // namespace fast_ber

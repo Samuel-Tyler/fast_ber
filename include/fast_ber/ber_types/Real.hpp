@@ -37,6 +37,9 @@ class Real
 
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
+    using ExplicitId = ExplicitIdentifier<UniversalTag::real>;
+    using Id         = Identifier;
+
   private:
     void set_content_length(uint64_t length) noexcept
     {
@@ -48,11 +51,5 @@ class Real
 
     std::array<uint8_t, sizeof(int64_t) + sizeof(uint8_t)> m_data;
 };
-
-template <typename Identifier>
-constexpr inline Identifier identifier(const Real<Identifier>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
-{
-    return {};
-}
 
 } // namespace fast_ber

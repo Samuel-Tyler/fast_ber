@@ -19,7 +19,7 @@ using Choice = absl::variant<args...>;
 
 template <size_t index, size_t max_depth, typename... Variants, typename ID,
           typename std::enable_if<(!(index < max_depth)), int>::type = 0>
-EncodeResult encode_if(const absl::Span<uint8_t>&, const Choice<Variants...>&, const ID&) noexcept
+EncodeResult encode_if(const absl::Span<uint8_t>&, const Choice<Variants...>&, ID) noexcept
 {
     // No substitutions found, fail
     return EncodeResult{false, 0};
@@ -32,9 +32,16 @@ constexpr inline ExplicitIdentifier<UniversalTag::choice> identifier(const Choic
     return {};
 }
 
+template <typename... T>
+constexpr inline ExplicitIdentifier<UniversalTag::choice>
+explicit_identifier(const Choice<T...>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
+{
+    return {};
+}
+
 template <size_t index, size_t max_depth, typename... Variants, typename ID,
           typename std::enable_if<(index < max_depth), int>::type = 0>
-EncodeResult encode_if(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice, const ID& id) noexcept
+EncodeResult encode_if(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice, ID id) noexcept
 {
     using T = typename absl::variant_alternative<index, Choice<Variants...>>::type;
     if (choice.index() == index)
@@ -61,7 +68,7 @@ EncodeResult encode_if(const absl::Span<uint8_t>& buffer, const Choice<Variants.
 }
 
 template <typename... Variants, typename ID = ExplicitIdentifier<UniversalTag::choice>>
-EncodeResult encode(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice, const ID& id = ID{}) noexcept
+EncodeResult encode(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice, ID id = ID{}) noexcept
 {
     constexpr auto depth =
         static_cast<int>(absl::variant_size<typename std::remove_reference<decltype(choice)>::type>::value);
@@ -70,7 +77,7 @@ EncodeResult encode(const absl::Span<uint8_t>& buffer, const Choice<Variants...>
 
 template <int index, int max_depth, typename... Variants, typename ID,
           typename std::enable_if<(!(index < max_depth)), int>::type = 0>
-DecodeResult decode_if(BerViewIterator&, Choice<Variants...>&, const ID&) noexcept
+DecodeResult decode_if(BerViewIterator&, Choice<Variants...>&, ID) noexcept
 {
     // No substitutions found, fail
     return DecodeResult{false};
@@ -78,11 +85,11 @@ DecodeResult decode_if(BerViewIterator&, Choice<Variants...>&, const ID&) noexce
 
 template <size_t index, size_t max_depth, typename... Variants, typename ID,
           typename std::enable_if<(index < max_depth), int>::type = 0>
-DecodeResult decode_if(BerViewIterator& input, Choice<Variants...>& output, const ID& id) noexcept
+DecodeResult decode_if(BerViewIterator& input, Choice<Variants...>& output, ID id) noexcept
 {
     using T                 = typename absl::variant_alternative<index, Choice<Variants...>>::type;
     constexpr auto child_id = identifier(static_cast<T*>(nullptr));
-    if (input->tag() == reference_tag(child_id))
+    if (input->tag() == val(child_id.tag()))
     {
         T* child = &output.template emplace<index>();
         return decode(input, *child, child_id);
@@ -94,9 +101,9 @@ DecodeResult decode_if(BerViewIterator& input, Choice<Variants...>& output, cons
 }
 
 template <typename... Variants, typename ID = ExplicitIdentifier<UniversalTag::choice>>
-DecodeResult decode(BerViewIterator& input, Choice<Variants...>& output, const ID& id = ID{}) noexcept
+DecodeResult decode(BerViewIterator& input, Choice<Variants...>& output, ID id = ID{}) noexcept
 {
-    if (!input->is_valid() || input->tag() != reference_tag(id))
+    if (!input->is_valid() || input->tag() != val(id.tag()))
     {
         return DecodeResult{false};
     }

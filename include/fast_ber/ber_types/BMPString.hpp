@@ -6,6 +6,6 @@
 
 namespace fast_ber
 {
-template <typename Identifier = ExplicitIdentifier<UniversalTag::bmp_string>>
+template <typename Identifier = DefaultTagging>
 using BMPString = fast_ber::StringImpl<UniversalTag::bmp_string, Identifier>;
 }

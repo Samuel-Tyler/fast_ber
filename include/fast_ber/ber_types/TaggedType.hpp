@@ -7,6 +7,25 @@
 namespace fast_ber
 {
 
+template <typename OriginalIdentifier, typename OverrideIndetifier,
+          typename E = typename std::enable_if<is_explicit_tagged(OriginalIdentifier{})>::type>
+constexpr auto resultant_identifier(OriginalIdentifier, OverrideIndetifier override)
+    -> TaggedExplicitIdentifier<override.class_(), override.tag(), DefaultTagging>
+{
+    return {};
+}
+
+template <typename OriginalIdentifier, typename OverrideIndetifier,
+          typename E = typename std::enable_if<!is_explicit_tagged(OriginalIdentifier{})>::type>
+constexpr auto resultant_identifier(OriginalIdentifier, OverrideIndetifier) -> OverrideIndetifier
+{
+    return {};
+}
+
+/*
+template <typename OriginalIdentifier, OverrideIndetifier>
+    auto resultant_type*/
+
 template <typename Type, typename TagType, typename Enable = void>
 class TaggedType : public Type
 {
@@ -27,6 +46,9 @@ class TaggedType : public Type
 
     Type&       get() { return *this; }
     const Type& get() const { return *this; }
+
+    using ExplicitId = decltype(explicit_identifier(static_cast<Type*>(nullptr), IdentifierAdlToken{}));
+    using Id         = decltype(resultant_identifier(TaggedType::ExplicitId{}, TagType{}));
 };
 
 // Special template required for enums as they can't be inhereted from
@@ -49,28 +71,33 @@ struct TaggedType<Type, TagType, typename std::enable_if<std::is_enum<Type>::val
                 operator const Type&() const { return enumerated; }
     Type&       get() { return enumerated; }
     const Type& get() const { return enumerated; }
+
+    using ExplicitId = decltype(explicit_identifier(static_cast<Type*>(nullptr), IdentifierAdlToken{}));
+    using Id         = decltype(resultant_identifier(TaggedType::ExplicitId{}, TagType{}));
 };
 
 template <typename Type, typename TagType>
-constexpr TagType identifier(const TaggedType<Type, TagType>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
+constexpr auto identifier(const TaggedType<Type, TagType>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept ->
+    typename TaggedType<Type, TagType>::Identifier
 {
     return {};
 }
 
 template <typename Type, typename TagType, typename std::enable_if<std::is_enum<Type>::value>::type>
-constexpr TagType identifier(const TaggedType<Type, TagType>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
+constexpr auto identifier(const TaggedType<Type, TagType>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept ->
+    typename TaggedType<Type, TagType>::Identifier
 {
     return {};
 }
 
 template <typename T, typename DefaultTag, typename ID = DefaultTag>
-EncodeResult encode(absl::Span<uint8_t> output, const TaggedType<T, DefaultTag>& object, const ID& id = ID{})
+EncodeResult encode(absl::Span<uint8_t> output, const TaggedType<T, DefaultTag>& object, ID id = ID{})
 {
     return encode(output, object.get(), id);
 }
 
 template <typename T, typename DefaultTag, typename ID = DefaultTag>
-DecodeResult decode(BerViewIterator& input, TaggedType<T, DefaultTag>& object, const ID& id = ID{})
+DecodeResult decode(BerViewIterator& input, TaggedType<T, DefaultTag>& object, ID id = ID{})
 {
     return decode(input, object.get(), id);
 }

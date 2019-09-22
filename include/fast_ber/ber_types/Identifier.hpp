@@ -9,6 +9,11 @@
 namespace fast_ber
 {
 
+// Token used to suggest default tagging should be used
+struct DefaultTagging
+{
+};
+
 // Class is always universal
 template <UniversalTag ExplicitTag>
 struct ExplicitIdentifier
@@ -21,9 +26,8 @@ struct ExplicitIdentifier
 template <Class OuterClass, Tag OuterTag, typename ExplicitTag>
 struct TaggedExplicitIdentifier
 {
-    constexpr static Class       outer_class() { return OuterClass; }
-    constexpr static Tag         outer_tag() { return OuterTag; }
-    constexpr static ExplicitTag inner_id() { return ExplicitTag(); }
+    constexpr static Class class_() { return OuterClass; }
+    constexpr static Tag   tag() { return OuterTag; }
 };
 
 // Any class or tag is valid
@@ -40,39 +44,57 @@ constexpr Tag reference_tag(const ExplicitIdentifier<T>& id)
     return val(id.tag());
 }
 
-template <Class T1, Tag T2, typename T3>
-constexpr Tag reference_tag(const TaggedExplicitIdentifier<T1, T2, T3>& id)
-{
-    return id.outer_tag();
-}
-
-template <Class T1, Tag T2>
-constexpr Tag reference_tag(const ImplicitIdentifier<T1, T2>& id)
-{
-    return id.tag();
-}
-
-template <UniversalTag T>
-constexpr Class reference_class(const ExplicitIdentifier<T>& id)
-{
-    return id.class_();
-}
-
-template <Class T1, Tag T2, typename T3>
-constexpr Class reference_class(const TaggedExplicitIdentifier<T1, T2, T3>& id)
-{
-    return id.outer_class();
-}
-
-template <Class T1, Tag T2>
-constexpr Class reference_class(const ImplicitIdentifier<T1, T2>& id)
-{
-    return id.class_();
-}
-
 // Used to ensure identifier() functions can be found in the fast_ber namespace using ADL
 struct IdentifierAdlToken
 {
 };
+
+template <Class T1, Tag T2, typename T3>
+constexpr bool is_explicit_tagged(TaggedExplicitIdentifier<T1, T2, T3>)
+{
+    return true;
+}
+
+template <typename Identifier, typename ExplicitIdentifier,
+          typename E = typename std::enable_if<is_explicit_tagged(Identifier{})>::type>
+constexpr ExplicitIdentifier select_explicit_identifier_impl(Identifier, ExplicitIdentifier)
+{
+    return {};
+}
+
+template <typename Identifier, typename ExplicitIdentifier,
+          typename E = typename std::enable_if<!is_explicit_tagged(Identifier{})>::type>
+constexpr Identifier select_explicit_identifier_impl(Identifier, ExplicitIdentifier)
+{
+    return {};
+}
+
+template <typename T>
+constexpr auto explicit_identifier(const T*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
+    -> decltype(select_explicit_identifier_impl(typename T::Id{}, typename T::ExplicitId{}))
+{
+    return {};
+}
+
+template <typename T, typename E = typename std::enable_if<std::is_same<typename T::Id, DefaultTagging>::value>::type>
+constexpr typename T::ExplicitId identifier(const T*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
+{
+    return {};
+}
+
+template <typename T, typename E = typename std::enable_if<!std::is_same<typename T::Id, DefaultTagging>::value>::type>
+constexpr typename T::Id identifier(const T*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
+{
+    return {};
+}
+
+template <typename T>
+constexpr bool is_explicit_tagged(T)
+{
+    return false;
+}
+
+static_assert(is_explicit_tagged(TaggedExplicitIdentifier<Class::universal, 2, DefaultTagging>{}), "!");
+static_assert(!is_explicit_tagged(DefaultTagging{}), "!");
 
 } // namespace fast_ber

@@ -41,7 +41,7 @@ void test_type(const T& a)
     fast_ber::DecodeResult    decode_result = fast_ber::decode(absl::Span<uint8_t>(buffer), f);
     REQUIRE(encode_result.success);
     REQUIRE(decode_result.success);
-    REQUIRE(fast_ber::BerView(buffer).tag() == fast_ber::reference_tag(identifier(&a)));
+    REQUIRE(fast_ber::BerView(buffer).tag() == val(identifier(&a).tag()));
     REQUIRE(a == f);
 
     // Encode with alternative ID
@@ -51,7 +51,7 @@ void test_type(const T& a)
     decode_result = fast_ber::decode(absl::Span<uint8_t>(buffer), g, TestTag{});
     REQUIRE(encode_result.success);
     REQUIRE(decode_result.success);
-    REQUIRE(fast_ber::BerView(buffer).tag() == fast_ber::reference_tag(TestTag{}));
+    REQUIRE(fast_ber::BerView(buffer).tag() == val(TestTag{}.tag()));
     REQUIRE(a == g);
 }
 

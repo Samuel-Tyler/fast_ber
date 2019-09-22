@@ -58,15 +58,12 @@ class ObjectIdentifier
 
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
+    using ExplicitId = ExplicitIdentifier<UniversalTag::object_identifier>;
+    using Id         = Identifier;
+
   private:
     BerLengthAndContentContainer m_contents;
 };
-
-template <typename Identifier>
-constexpr Identifier identifier(const ObjectIdentifier<Identifier>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
-{
-    return {};
-}
 
 inline size_t encoded_object_id_length(const ObjectIdentifierComponents& input) noexcept
 {
@@ -315,13 +312,13 @@ EncodeResult ObjectIdentifier<Identifier>::encode_content_and_length(absl::Span<
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 EncodeResult encode(absl::Span<uint8_t> output, const ObjectIdentifier<DefaultIdentifier>& object, const ID& id = ID{})
 {
-    return encode_impl<DefaultIdentifier>(output, object, id);
+    return encode_impl<typename ObjectIdentifier<DefaultIdentifier>::ExplicitId>(output, object, id);
 }
 
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 DecodeResult decode(BerViewIterator& input, ObjectIdentifier<DefaultIdentifier>& output, const ID& id = {}) noexcept
 {
-    return decode_impl<DefaultIdentifier>(input, output, id);
+    return decode_impl<typename ObjectIdentifier<DefaultIdentifier>::ExplicitId>(input, output, id);
 }
 
 } // namespace fast_ber

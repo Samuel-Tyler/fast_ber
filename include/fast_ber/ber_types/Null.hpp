@@ -29,13 +29,10 @@ class Null
     size_t       assign_ber(const BerView& rhs) noexcept;
     size_t       assign_ber(absl::Span<const uint8_t> buffer) noexcept { return assign_ber(BerView(buffer)); }
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
-};
 
-template <typename Identifier>
-constexpr Identifier identifier(const Null<Identifier>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
-{
-    return {};
-}
+    using ExplicitId = ExplicitIdentifier<UniversalTag::null>;
+    using Id         = Identifier;
+};
 
 template <typename Identifier>
 size_t Null<Identifier>::assign_ber(const BerView& rhs) noexcept
@@ -67,13 +64,13 @@ EncodeResult Null<Identifier>::encode_content_and_length(absl::Span<uint8_t> buf
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 EncodeResult encode(absl::Span<uint8_t> output, const Null<DefaultIdentifier>& object, const ID& id = ID{})
 {
-    return encode_impl<DefaultIdentifier>(output, object, id);
+    return encode_impl<typename Null<DefaultIdentifier>::ExplicitId>(output, object, id);
 }
 
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 DecodeResult decode(BerViewIterator& input, Null<DefaultIdentifier>& output, const ID& id = {}) noexcept
 {
-    return decode_impl<DefaultIdentifier>(input, output, id);
+    return decode_impl<typename Null<DefaultIdentifier>::ExplicitId>(input, output, id);
 }
 
 } // namespace fast_ber

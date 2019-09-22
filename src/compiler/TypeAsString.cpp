@@ -191,6 +191,9 @@ std::string type_as_string(const SequenceType& sequence, const Module& module, c
             res += "    " + component_type + " " + component.named_type.name + ";\n";
         }
     }
+
+    res += "    using Id = ExplicitIdentifier<UniversalTag::sequence>;";
+    res += "    using ExplicitId = ExplicitIdentifier<UniversalTag::sequence>;";
     res += "};\n";
 
     if (!identifier(sequence, module, tree).is_default_tagged)
@@ -259,6 +262,8 @@ std::string type_as_string(const SetType& set, const Module& module, const Asn1T
             res += "    " + component_type + " " + component.named_type.name + ";\n";
         }
     }
+    res += "    using Id = ExplicitIdentifier<UniversalTag::set>;";
+    res += "    using ExplicitId = ExplicitIdentifier<UniversalTag::set>;";
     res += "};\n";
 
     if (!identifier(set, module, tree).is_default_tagged)
