@@ -53,6 +53,11 @@ void test_type(const T& a)
     REQUIRE(decode_result.success);
     REQUIRE(fast_ber::BerView(buffer).tag() == val(TestTag{}.tag()));
     REQUIRE(a == g);
+
+    // Identifier checks
+    static_assert(!fast_ber::is_explicit_tagged(explicit_identifier(static_cast<T*>(nullptr))),
+                  "Explicit ID must not be complex");
+    std::cout << identifier(&a) << std::endl;
 }
 
 TEST_CASE("AllTypes: Check all types share a unified interface")

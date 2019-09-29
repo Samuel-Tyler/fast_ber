@@ -13,6 +13,7 @@ endfunction(fast_ber_generate2)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/simple5.asn simple)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/choice.asn choice)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/tags.asn tags)
+fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/prefixed_types.asn prefixed_types)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/enumeration.asn enum)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/object_identifier.asn object_identifier)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/top_level_encodings.asn top_level_encodings)
@@ -34,6 +35,7 @@ aux_source_directory(compiler TEST_SRC)
 add_executable(fast_ber_tests Test ${TEST_SRC} autogen/choice.hpp
                                                autogen/simple.hpp
                                                autogen/tags.hpp
+                                               autogen/prefixed_types.hpp
                                                autogen/top_level_encodings.hpp
                                                autogen/enum.hpp
                                                autogen/real_schema.hpp

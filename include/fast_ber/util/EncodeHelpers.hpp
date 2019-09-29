@@ -97,23 +97,9 @@ inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t     
 template <typename ExplicitId, typename T>
 EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const DefaultTagging&)
 {
-    constexpr auto tag    = identifier(static_cast<T*>(nullptr)).tag();
-    constexpr auto class_ = Class::universal;
-
-    if (output.empty())
-    {
-        return EncodeResult{false, 0};
-    }
-    constexpr auto id_length  = 1;
-    constexpr auto encoded_id = encode_short_identifier(Construction::primitive, class_, tag);
-    static_assert(val(tag) < 31, "Tag must be short form!");
-
-    output[0] = encoded_id;
-    output.remove_prefix(id_length);
-
-    EncodeResult encode_res = object.encode_content_and_length(output);
-    encode_res.length += id_length;
-    return encode_res;
+    constexpr auto tag = inner_identifier(explicit_identifier(static_cast<T*>(nullptr)));
+    static_assert(is_explicit(tag), "Explicit");
+    return encode(output, object, tag);
 }
 
 template <typename ExplicitId, typename T, UniversalTag T2>
@@ -144,8 +130,7 @@ EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const Tagg
     const auto header_length_guess = 2;
     auto       inner_buffer        = output;
     inner_buffer.remove_prefix(header_length_guess);
-    // static_assert(std::is_same<T4, decltype(explicit_identifier(static_cast<T*>(nullptr)))>::value, "a");
-    EncodeResult inner_encoding = encode(inner_buffer, object, explicit_identifier(static_cast<T*>(nullptr)));
+    EncodeResult inner_encoding = encode(inner_buffer, object, T4{});
     if (!inner_encoding.success)
     {
         return EncodeResult{false, 0};
