@@ -253,30 +253,6 @@ create_collection_encode_functions(const std::string assignment_name, const std:
                                    const CollectionType& collection, const Module& module, const Asn1Tree tree)
 {
     std::string res;
-    std::string tags_class = module.module_reference + "_" + assignment_name + "Tags";
-    std::replace(tags_class.begin(), tags_class.end(), ':', '_');
-
-    res += "namespace " + tags_class + " {\n";
-    int tag_counter = 0;
-
-    for (const ComponentType& component : collection.components)
-    {
-        res += "static constexpr auto " + component.named_type.name + " = ";
-        if (is_prefixed(component.named_type.type))
-        {
-            res += identifier(component.named_type.type, module, tree).tag + "{}";
-        }
-        else if (module.tagging_default == TaggingMode::automatic)
-        {
-            res += "ImplicitIdentifier<Class::context_specific, " + std::to_string(tag_counter++) + ">{}";
-        }
-        else
-        {
-            res += identifier(component.named_type.type, module, tree).tag + "{}";
-        }
-        res += ";\n";
-    }
-    res += "}\n\n";
 
     // Make child encode functions
     for (const ComponentType& component : collection.components)
