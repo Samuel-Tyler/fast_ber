@@ -7,7 +7,7 @@ Collection ::= SEQUENCE {
     bool1 [3] IMPLICIT BOOLEAN,
     bool2 [PRIVATE 4] EXPLICIT BOOLEAN,
     bool3 [APPLICATION 5] BOOLEAN
---  enumerated [APPLICATION 6] ENUMERATED { enum }
+    enumerated [APPLICATION 6] ENUMERATED { enum }
 }
 
 TaggedEnum ::= [APPLICATION 7] ENUMERATED { enum }

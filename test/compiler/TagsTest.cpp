@@ -63,7 +63,7 @@ TEST_CASE("Tags: Encoding and decoding a packet with various tagging modes")
 {
     std::array<uint8_t, 5000> buffer = {};
 
-    fast_ber::Tags::Collection tags{"Implicit", "And explicit tags", 0, true, false, true};
+    fast_ber::Tags::Collection tags{"Implicit", "And explicit tags", 0, true, false, true, {}};
     fast_ber::Tags::Collection tags_copy{};
 
     fast_ber::EncodeResult encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), tags);
@@ -81,9 +81,9 @@ TEST_CASE("Tags: Encoding and decoding a packet with various tagging modes")
 
 TEST_CASE("Tags: Tagging an enum")
 {
-    fast_ber::Tags::TaggedEnum a = fast_ber::Tags::UnnamedEnum0::enum_;
+    fast_ber::Tags::TaggedEnum a = fast_ber::Tags::UnnamedEnum1::enum_;
     REQUIRE(fast_ber::val(fast_ber::identifier(&a).tag()) == 7);
-    REQUIRE(a == fast_ber::Tags::UnnamedEnum0::enum_);
+    REQUIRE(a == fast_ber::Tags::UnnamedEnum1::enum_);
 
     std::array<uint8_t, 5000> buffer        = {};
     fast_ber::EncodeResult    encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), a);
