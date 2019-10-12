@@ -1,0 +1,116 @@
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fast_ber_benchmarks is a Catch v2.4.1 host application.
+Run with -? for options
+
+-------------------------------------------------------------------------------
+Component Performance: Encode
+-------------------------------------------------------------------------------
+/home/styler/git/fast_ber/benchmarks/ComponentPerformance.cpp:67
+...............................................................................
+
+benchmark name                                  iters   elapsed ns      average 
+-------------------------------------------------------------------------------
+fast_ber        - encode Integer                    1       358169   358.169 µs 
+fast_ber        - encode Boolean                    1       370418   370.418 µs 
+fast_ber        - encode OctetString            10000         4830         0 ns 
+fast_ber        - encode Null                       1       358102   358.102 µs 
+fast_ber        - encode ObjectIdentifier       10000         4864         0 ns 
+fast_ber        - encode Optional (String)      10000        20923         2 ns 
+fast_ber        - encode Optional (Integer)         1       358120    358.12 µs 
+fast_ber        - encode Optional (Empty)           1       358060    358.06 µs 
+fast_ber        - encode Choice (String)            1      7397651   7.39765 ms 
+fast_ber        - encode Choice (Integer)           1      5731675   5.73168 ms 
+
+-------------------------------------------------------------------------------
+Component Performance: Decode
+-------------------------------------------------------------------------------
+/home/styler/git/fast_ber/benchmarks/ComponentPerformance.cpp:84
+...............................................................................
+
+benchmark name                                  iters   elapsed ns      average 
+-------------------------------------------------------------------------------
+fast_ber        - decode Integer                    1      6450889   6.45089 ms 
+fast_ber        - decode Boolean                    1      4298934   4.29893 ms 
+fast_ber        - decode OctetString                1     10953425   10.9534 ms 
+fast_ber        - decode Null                       1      3581902    3.5819 ms 
+fast_ber        - decode ObjectIdentifier           1     10110347   10.1103 ms 
+fast_ber        - decode Optional (String)          1     21787597   21.7876 ms 
+fast_ber        - decode Optional (Integer)         1      6805596    6.8056 ms 
+fast_ber        - decode Optional (Empty)           1      3221895   3.22189 ms 
+fast_ber        - decode Choice (String)            1     31034108   31.0341 ms 
+fast_ber        - decode Choice (Integer)           1     23820381   23.8204 ms 
+
+-------------------------------------------------------------------------------
+Component Performance: Object Construction
+-------------------------------------------------------------------------------
+/home/styler/git/fast_ber/benchmarks/ComponentPerformance.cpp:101
+...............................................................................
+
+benchmark name                                  iters   elapsed ns      average 
+-------------------------------------------------------------------------------
+fast_ber        - construct Integer                 1     10387374   10.3874 ms 
+fast_ber        - construct Boolean             10000         3992         0 ns 
+fast_ber        - construct OctetString             1     18882744   18.8827 ms 
+fast_ber        - construct Null                10000         3967         0 ns 
+fast_ber        - construct ObjectIdentifier        1     28112506   28.1125 ms 
+fast_ber        - construct Optional (String)       1     19338364   19.3384 ms 
+fast_ber        - construct Optional (Integer)      1      9488785   9.48879 ms 
+fast_ber        - construct Optional (Empty)    10000         3968         0 ns 
+fast_ber        - construct Choice (String)         1      5744649   5.74465 ms 
+fast_ber        - construct Choice (Integer)    10000         3957         0 ns 
+
+-------------------------------------------------------------------------------
+Component Performance: Default Construction
+-------------------------------------------------------------------------------
+/home/styler/git/fast_ber/benchmarks/ComponentPerformance.cpp:118
+...............................................................................
+
+benchmark name                                  iters   elapsed ns      average 
+-------------------------------------------------------------------------------
+fast_ber        - dflt construct Integer        10000         3968         0 ns 
+fast_ber        - dflt construct Boolean        10000         3941         0 ns 
+fast_ber        - dflt construct OctetString    10000         3901         0 ns 
+fast_ber        - dflt construct Null           10000         3912         0 ns 
+fast_ber        - dflt construct ObjectId       10000         3921         0 ns 
+fast_ber        - dflt construct Optional       10000         3895         0 ns 
+fast_ber        - dflt construct Choice         10000         3922         0 ns 
+
+-------------------------------------------------------------------------------
+Benchmark: Decode Performance
+-------------------------------------------------------------------------------
+/home/styler/git/fast_ber/benchmarks/PerformanceTests.cpp:132
+...............................................................................
+
+benchmark name                                  iters   elapsed ns      average 
+-------------------------------------------------------------------------------
+fast_ber        - decode 2107 byte packet           1    495170210    495.17 ms 
+asn1c           - decode 2107 byte packet           1   4697590373    4.69759 s 
+fast_ber        - decode 64 byte packet             1    176391936   176.392 ms 
+asn1c           - decode 64 byte packet             1   2434707143    2.43471 s 
+
+-------------------------------------------------------------------------------
+Benchmark: Encode Performance
+-------------------------------------------------------------------------------
+/home/styler/git/fast_ber/benchmarks/PerformanceTests.cpp:194
+...............................................................................
+
+benchmark name                                  iters   elapsed ns      average 
+-------------------------------------------------------------------------------
+fast_ber        - encode                            1    221334723   221.335 ms 
+asn1c           - encode                            1   7140200185     7.1402 s 
+
+-------------------------------------------------------------------------------
+Benchmark: Object Construction Performance
+-------------------------------------------------------------------------------
+/home/styler/git/fast_ber/benchmarks/PerformanceTests.cpp:278
+...............................................................................
+
+benchmark name                                  iters   elapsed ns      average 
+-------------------------------------------------------------------------------
+fast_ber        - construct                         1    619005166   619.005 ms 
+asn1c           - construct                         1    435105136   435.105 ms 
+
+===============================================================================
+All tests passed (28 assertions in 7 test cases)
+
