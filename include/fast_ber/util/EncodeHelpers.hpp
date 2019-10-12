@@ -27,8 +27,8 @@ struct EncodeResult
 // These are the samllest ID lengths, optimising for small sized ber headers.
 
 template <UniversalTag T>
-inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t   content_length,
-                                         const ExplicitIdentifier<T>&, size_t content_offset = 0)
+inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_length, ExplicitIdentifier<T>,
+                                         size_t content_offset = 0)
 {
     constexpr auto tag    = ExplicitIdentifier<T>::tag();
     constexpr auto class_ = ExplicitIdentifier<T>::class_();
@@ -49,8 +49,8 @@ inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t   co
 }
 
 template <Class T1, Tag T2, typename T3>
-inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t                  content_length,
-                                         const TaggedExplicitIdentifier<T1, T2, T3>&, size_t content_offset = 0)
+inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t           content_length,
+                                         TaggedExplicitIdentifier<T1, T2, T3>, size_t content_offset = 0)
 {
     constexpr auto tag    = TaggedExplicitIdentifier<T1, T2, T3>::tag();
     constexpr auto class_ = TaggedExplicitIdentifier<T1, T2, T3>::class_();
@@ -72,8 +72,8 @@ inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t     
 }
 
 template <Class T1, Tag T2>
-inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t        content_length,
-                                         const ImplicitIdentifier<T1, T2>&, size_t content_offset = 0)
+inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_length, ImplicitIdentifier<T1, T2>,
+                                         size_t content_offset = 0)
 {
     constexpr auto tag    = ImplicitIdentifier<T1, T2>::tag();
     constexpr auto class_ = ImplicitIdentifier<T1, T2>::class_();
@@ -95,7 +95,7 @@ inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t     
 }
 
 template <typename ExplicitId, typename T>
-EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const DefaultTagging&)
+EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, DefaultTagging)
 {
     constexpr auto tag = inner_identifier(explicit_identifier(static_cast<T*>(nullptr)));
     static_assert(is_explicit(tag), "Explicit");
@@ -103,7 +103,7 @@ EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const Defa
 }
 
 template <typename ExplicitId, typename T, UniversalTag T2>
-EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const ExplicitIdentifier<T2>&)
+EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, ExplicitIdentifier<T2>)
 {
     constexpr auto tag    = ExplicitIdentifier<T2>::tag();
     constexpr auto class_ = ExplicitIdentifier<T2>::class_();
@@ -125,12 +125,12 @@ EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const Expl
 }
 
 template <typename ExplicitId, typename T, Class T2, Tag T3, typename T4>
-EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const TaggedExplicitIdentifier<T2, T3, T4>& id)
+EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, TaggedExplicitIdentifier<T2, T3, T4> id)
 {
     const auto header_length_guess = 2;
     auto       inner_buffer        = output;
     inner_buffer.remove_prefix(header_length_guess);
-    EncodeResult inner_encoding = encode(inner_buffer, object, T4{});
+    EncodeResult inner_encoding = encode(inner_buffer, object, id.inner_id());
     if (!inner_encoding.success)
     {
         return EncodeResult{false, 0};
@@ -140,7 +140,7 @@ EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const Tagg
 }
 
 template <typename ExplicitId, typename T, Class T2, Tag T3>
-EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, const ImplicitIdentifier<T2, T3>& id)
+EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, ImplicitIdentifier<T2, T3> id)
 {
     size_t id_length = encode_identifier(output, Construction::primitive, id.class_(), id.tag());
     if (id_length == 0)

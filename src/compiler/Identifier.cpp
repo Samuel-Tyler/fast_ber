@@ -134,14 +134,13 @@ TaggingInfo identifier(const TaggedType& tagged_type, const Module& current_modu
 
     if (is_explicit)
     {
-        tag = "TaggedExplicitIdentifier<Class::" + to_string(tagged_type.tag.class_) + ", " +
-              std::to_string(tagged_type.tag.tag_number) + ", " +
-              identifier(tagged_type.type, current_module, tree).tag + ">";
+        tag = "TId<" + to_string(tagged_type.tag.class_, true) + ", " + std::to_string(tagged_type.tag.tag_number) +
+              ", " + identifier(tagged_type.type, current_module, tree).tag + ">";
     }
     else
     {
-        tag = "ImplicitIdentifier<Class::" + to_string(tagged_type.tag.class_) + ", " +
-              std::to_string(tagged_type.tag.tag_number) + ">";
+        tag =
+            "IId<" + to_string(tagged_type.tag.class_, true) + ", " + std::to_string(tagged_type.tag.tag_number) + ">";
     }
     return TaggingInfo{tag, false};
 }

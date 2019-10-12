@@ -16,11 +16,11 @@ struct DefaultTagging
 };
 
 // Class is always universal
-template <UniversalTag ExplicitTag>
+template <UniversalTag explicit_tag>
 struct ExplicitIdentifier
 {
     constexpr static Class        class_() { return Class::universal; }
-    constexpr static UniversalTag tag() { return ExplicitTag; }
+    constexpr static UniversalTag tag() { return explicit_tag; }
 };
 
 template <Class OuterClass, Tag OuterTag, typename ExplicitTag>
@@ -157,5 +157,15 @@ std::ostream& operator<<(std::ostream& os, const ImplicitIdentifier<ImplicitClas
 {
     return os << "Implicit(" << id.tag() << ", " << id.class_() << ")";
 }
+
+namespace abbreviations
+{
+template <UniversalTag explicit_tag>
+using EId = ExplicitIdentifier<explicit_tag>;
+template <Class OuterClass, Tag OuterTag, typename ExplicitTag>
+using TId = TaggedExplicitIdentifier<OuterClass, OuterTag, ExplicitTag>;
+template <Class ImplicitClass, Tag ImplicitTag>
+using IId = ImplicitIdentifier<ImplicitClass, ImplicitTag>;
+} // namespace abbreviations
 
 } // namespace fast_ber

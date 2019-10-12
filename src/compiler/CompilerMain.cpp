@@ -512,6 +512,7 @@ std::string create_body(const Asn1Tree& tree, const Module& module)
 {
     std::string output;
     output += "\n";
+    output += "using namespace abbreviations;\n\n";
 
     for (const Import& import : module.imports)
     {
@@ -543,6 +544,7 @@ std::string create_detail_body(const Asn1Tree& tree)
     output += "/* Functionality provided for Encoding and Decoding BER */\n\n";
 
     std::string body;
+    body += "using namespace abbreviations;\n\n";
 
     for (const Module& module : tree.modules)
     {

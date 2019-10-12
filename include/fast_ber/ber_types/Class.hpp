@@ -38,4 +38,12 @@ inline std::ostream& operator<<(std::ostream& os, const Class& c) noexcept
     }
 }
 
+namespace abbreviations
+{
+constexpr Class uni = Class::universal;
+constexpr Class app = Class::application;
+constexpr Class ctx = Class::context_specific;
+constexpr Class pri = Class::private_;
+} // namespace abbreviations
+
 } // namespace fast_ber

@@ -13,9 +13,10 @@ struct DecodeResult
 };
 
 template <typename ExplicitId, typename T>
-DecodeResult decode_impl(BerViewIterator& input, T& output, const DefaultTagging&) noexcept
+DecodeResult decode_impl(BerViewIterator& input, T& output, DefaultTagging) noexcept
 {
-    if (!input->is_valid() || val(identifier(static_cast<T*>(nullptr)).tag()) != input->tag())
+    constexpr auto default_id = inner_identifier(explicit_identifier(static_cast<T*>(nullptr)));
+    if (!input->is_valid() || val(default_id.tag()) != input->tag() || default_id.class_() != input->class_())
     {
         return DecodeResult{false};
     }
@@ -26,7 +27,7 @@ DecodeResult decode_impl(BerViewIterator& input, T& output, const DefaultTagging
 }
 
 template <typename ExplicitId, typename T, UniversalTag T2>
-DecodeResult decode_impl(BerViewIterator& input, T& output, const ExplicitIdentifier<T2>& id) noexcept
+DecodeResult decode_impl(BerViewIterator& input, T& output, ExplicitIdentifier<T2> id) noexcept
 {
     if (!input->is_valid() || val(id.tag()) != input->tag())
     {
@@ -39,7 +40,7 @@ DecodeResult decode_impl(BerViewIterator& input, T& output, const ExplicitIdenti
 }
 
 template <typename ExplicitId, typename T, Class T2, Tag T3, typename T4>
-DecodeResult decode_impl(BerViewIterator& input, T& output, const TaggedExplicitIdentifier<T2, T3, T4>& id) noexcept
+DecodeResult decode_impl(BerViewIterator& input, T& output, TaggedExplicitIdentifier<T2, T3, T4> id) noexcept
 {
     if (!input->is_valid() || val(id.tag()) != input->tag())
     {
@@ -48,7 +49,7 @@ DecodeResult decode_impl(BerViewIterator& input, T& output, const TaggedExplicit
 
     BerView         inner = input->content();
     BerViewIterator iter  = input->content();
-    if (!decode(iter, output).success)
+    if (!decode(iter, output, id.inner_id()).success)
     {
         return DecodeResult{false};
     }
@@ -59,7 +60,7 @@ DecodeResult decode_impl(BerViewIterator& input, T& output, const TaggedExplicit
 }
 
 template <typename ExplicitId, typename T, Class T2, Tag T3>
-DecodeResult decode_impl(BerViewIterator& input, T& output, const ImplicitIdentifier<T2, T3>& id) noexcept
+DecodeResult decode_impl(BerViewIterator& input, T& output, ImplicitIdentifier<T2, T3> id) noexcept
 {
     if (!input->is_valid() || val(id.tag()) != input->tag())
     {
@@ -72,7 +73,7 @@ DecodeResult decode_impl(BerViewIterator& input, T& output, const ImplicitIdenti
 }
 
 template <typename T, typename ID>
-DecodeResult decode(absl::Span<const uint8_t> input, T& output, const ID& id) noexcept
+DecodeResult decode(absl::Span<const uint8_t> input, T& output, ID id) noexcept
 {
     BerViewIterator iter(input);
     return decode(iter, output, id);

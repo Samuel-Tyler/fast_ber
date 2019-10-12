@@ -2,6 +2,8 @@
 #include "fast_ber/ber_types/Integer.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
 
+#include "absl/types/optional.h"
+
 #include <catch2/catch.hpp>
 #include <limits>
 
@@ -34,8 +36,20 @@ TEST_CASE("Integer: Construction from int")
 
     for (int64_t val : test_vals)
     {
-        fast_ber::Integer<> integer(val);
-        REQUIRE(integer == val);
+        fast_ber::Integer<>                                                                   integer1(val);
+        fast_ber::Integer<fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 2>> integer2(integer1);
+        fast_ber::Integer<fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 4>> integer3;
+        absl::optional<fast_ber::Integer<>>                                                   integer4;
+        absl::optional<fast_ber::Integer<>>                                                   integer5(integer1);
+
+        integer3 = integer2;
+        integer4 = integer3;
+
+        REQUIRE(integer1 == val);
+        REQUIRE(integer2 == val);
+        REQUIRE(integer3 == val);
+        REQUIRE(integer4 == val);
+        REQUIRE(integer5 == val);
     }
 }
 

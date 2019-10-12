@@ -147,21 +147,36 @@ std::string santize_name(const std::string& name)
     return copy;
 }
 
-std::string to_string(Class class_)
+std::string to_string(Class class_, bool abbreviated)
 {
+    if (abbreviated)
+    {
+        switch (class_)
+        {
+        case Class::universal:
+            return "uni";
+        case Class::application:
+            return "app";
+        case Class::context_specific:
+            return "ctx";
+        case Class::private_:
+            return "pri";
+        }
+    }
+
     switch (class_)
     {
     case Class::universal:
-        return "universal";
+        return "Class::universal";
     case Class::application:
-        return "application";
+        return "Class::application";
     case Class::context_specific:
-        return "context_specific";
+        return "Class::context_specific";
     case Class::private_:
-        return "private_";
-    default:
-        return "";
+        return "Class::private_";
     }
+
+    return "UknownClass";
 }
 
 std::string make_type_optional(const std::string& type) { return "Optional<" + type + ">"; }

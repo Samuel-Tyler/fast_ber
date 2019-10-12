@@ -449,7 +449,7 @@ struct ObjectIdComponents
     std::vector<ObjectIdComponentValue> components;
 };
 
-std::string to_string(Class class_);
+std::string to_string(Class class_, bool abbreviated);
 
 // Switch asn '-' for C++ '_'
 // Rename any names which are reserved in C++

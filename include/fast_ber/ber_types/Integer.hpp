@@ -28,6 +28,8 @@ class Integer
     Integer() noexcept : m_data{0x01, 0x00} {}
     Integer(int64_t num) noexcept { assign(num); }
     Integer(BerView& view) noexcept { assign_ber(view); }
+    template <typename Identifier2>
+    Integer(const Integer<Identifier2>& rhs) noexcept;
 
     explicit Integer(absl::Span<const uint8_t> ber_data) noexcept { assign_ber(ber_data); }
 
@@ -36,17 +38,22 @@ class Integer
     int64_t value() const noexcept;
 
     Integer<Identifier>& operator=(int64_t rhs) noexcept;
-    Integer<Identifier>& operator=(const Integer<Identifier>& rhs) noexcept;
+    template <typename Identifier2>
+    Integer<Identifier>& operator=(const Integer<Identifier2>& rhs) noexcept;
     Integer<Identifier>& operator=(const BerView& rhs) noexcept;
     void                 assign(int64_t val) noexcept;
-    void                 assign(const Integer<Identifier>& rhs) noexcept;
-    size_t               assign_ber(const BerView& rhs) noexcept;
-    size_t               assign_ber(absl::Span<const uint8_t> buffer) noexcept;
+    template <typename Identifier2>
+    void   assign(const Integer<Identifier2>& rhs) noexcept;
+    size_t assign_ber(const BerView& rhs) noexcept;
+    size_t assign_ber(absl::Span<const uint8_t> buffer) noexcept;
 
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
     using ExplicitId = ExplicitIdentifier<UniversalTag::integer>;
     using Id         = Identifier;
+
+    template <typename Identifier2>
+    friend class Integer;
 
   private:
     void set_content_length(uint64_t length) noexcept
@@ -130,6 +137,12 @@ inline size_t encode_integer(absl::Span<uint8_t> output, int64_t input) noexcept
 }
 
 template <typename Identifier>
+template <typename Identifier2>
+Integer<Identifier>::Integer(const Integer<Identifier2>& rhs) noexcept : m_data(rhs.m_data)
+{
+}
+
+template <typename Identifier>
 inline int64_t Integer<Identifier>::value() const noexcept
 {
     int64_t ret = 0;
@@ -145,7 +158,8 @@ inline Integer<Identifier>& Integer<Identifier>::operator=(int64_t rhs) noexcept
 }
 
 template <typename Identifier>
-inline Integer<Identifier>& Integer<Identifier>::operator=(const Integer<Identifier>& rhs) noexcept
+template <typename Identifier2>
+inline Integer<Identifier>& Integer<Identifier>::operator=(const Integer<Identifier2>& rhs) noexcept
 {
     assign(rhs);
     return *this;
@@ -158,7 +172,8 @@ inline void Integer<Identifier>::assign(int64_t val) noexcept
 }
 
 template <typename Identifier>
-inline void Integer<Identifier>::assign(const Integer<Identifier>& rhs) noexcept
+template <typename Identifier2>
+inline void Integer<Identifier>::assign(const Integer<Identifier2>& rhs) noexcept
 {
     m_data = rhs.m_data;
 }
