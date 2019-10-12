@@ -56,6 +56,11 @@ TEST_CASE("Tags: Encoding a packet with various tagging modes")
             REQUIRE(iter->construction() == fast_ber::Construction::primitive);
             REQUIRE(iter->class_() == fast_ber::Class::application);
         }
+        else if (i == 6)
+        {
+            REQUIRE(iter->construction() == fast_ber::Construction::primitive);
+            REQUIRE(iter->class_() == fast_ber::Class::application);
+        }
     }
 }
 
@@ -77,6 +82,26 @@ TEST_CASE("Tags: Encoding and decoding a packet with various tagging modes")
     REQUIRE(tags_copy.bool1);
     REQUIRE(!tags_copy.bool2);
     REQUIRE(tags_copy.bool3);
+    REQUIRE(tags_copy.enumerated == fast_ber::Tags::UnnamedEnum0{});
+
+    REQUIRE(tags_copy.bool3);
+
+    REQUIRE(std::is_same<decltype(identifier(&tags_copy.string2)),
+                         fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 1>>::value);
+    REQUIRE(std::is_same<
+            decltype(identifier(&tags_copy.integer)),
+            fast_ber::TaggedExplicitIdentifier<fast_ber::Class::context_specific, 2,
+                                               fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::integer>>>::value);
+    REQUIRE(std::is_same<decltype(identifier(&tags_copy.bool1)),
+                         fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 3>>::value);
+    REQUIRE(std::is_same<
+            decltype(identifier(&tags_copy.bool2)),
+            fast_ber::TaggedExplicitIdentifier<fast_ber::Class::private_, 4,
+                                               fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::boolean>>>::value);
+    REQUIRE(std::is_same<decltype(identifier(&tags_copy.bool3)),
+                         fast_ber::ImplicitIdentifier<fast_ber::Class::application, 5>>::value);
+    REQUIRE(std::is_same<decltype(identifier(&tags_copy.enumerated)),
+                         fast_ber::ImplicitIdentifier<fast_ber::Class::application, 6>>::value);
 }
 
 TEST_CASE("Tags: Tagging an enum")
