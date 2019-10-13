@@ -134,6 +134,15 @@ constexpr auto identifier(const T*, IdentifierAdlToken = IdentifierAdlToken{}) n
     return {};
 }
 
+template <typename T>
+struct IdentifierType
+{
+    using type = decltype(resolve_default(typename T::Id{}, typename T::ExplicitId{}));
+};
+
+template <typename T>
+using Identifier = typename IdentifierType<T>::type;
+
 static_assert(is_explicit_tagged(TaggedExplicitIdentifier<Class::universal, 2, DefaultTagging>{}), "!");
 static_assert(!is_explicit_tagged(DefaultTagging{}), "!");
 

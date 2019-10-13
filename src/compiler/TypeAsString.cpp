@@ -185,21 +185,38 @@ std::string type_as_string(const SequenceType& sequence, const Module& module, c
 {
     std::string res = " {\n";
 
+    size_t tag_counter = 0;
     for (const ComponentType& component : sequence.components)
     {
-        std::string component_type = type_as_string(component.named_type.type, module, tree);
-        if (is_enumerated(component.named_type.type))
-        {
-            component_type = "UnnamedEnum" + std::to_string(unnamed_definition_reference_num++);
-        }
+        std::string component_type;
 
         if (is_set(component.named_type.type) || is_sequence(component.named_type.type))
         {
+            component_type = type_as_string(component.named_type.type, module, tree);
             res += "struct " + component.named_type.name + "_type " + component_type;
             res += "    " + component.named_type.name + "_type " + component.named_type.name + ";\n";
         }
         else
         {
+            if (is_enumerated(component.named_type.type))
+            {
+                component_type = "UnnamedEnum" + std::to_string(unnamed_definition_reference_num++);
+                if (module.tagging_default == TaggingMode::automatic)
+                {
+                    component_type =
+                        wrap_with_tagged_type(component_type, "IId<ctx, " + std::to_string(tag_counter++) + ">");
+                }
+            }
+            else if (!is_prefixed(component.named_type.type) && module.tagging_default == TaggingMode::automatic)
+            {
+                component_type = type_as_string(component.named_type.type, module, tree,
+                                                "IId<ctx, " + std::to_string(tag_counter++) + ">");
+            }
+            else
+            {
+                component_type = type_as_string(component.named_type.type, module, tree);
+            }
+
             if (component.is_optional)
             {
                 component_type = make_type_optional(component_type);
@@ -270,21 +287,38 @@ std::string type_as_string(const SetType& set, const Module& module, const Asn1T
 {
     std::string res = " {\n";
 
+    size_t tag_counter = 0;
     for (const ComponentType& component : set.components)
     {
-        std::string component_type = type_as_string(component.named_type.type, module, tree);
-        if (is_enumerated(component.named_type.type))
-        {
-            component_type = "UnnamedEnum" + std::to_string(unnamed_definition_reference_num++);
-        }
+        std::string component_type;
 
         if (is_set(component.named_type.type) || is_sequence(component.named_type.type))
         {
-            res += "    struct " + component.named_type.name + "_type " + component_type;
-            res += component.named_type.name + "_type " + component.named_type.name + ";\n";
+            component_type = type_as_string(component.named_type.type, module, tree);
+            res += "struct " + component.named_type.name + "_type " + component_type;
+            res += "    " + component.named_type.name + "_type " + component.named_type.name + ";\n";
         }
         else
         {
+            if (is_enumerated(component.named_type.type))
+            {
+                component_type = "UnnamedEnum" + std::to_string(unnamed_definition_reference_num++);
+                if (module.tagging_default == TaggingMode::automatic)
+                {
+                    component_type =
+                        wrap_with_tagged_type(component_type, "IId<ctx, " + std::to_string(tag_counter++) + ">");
+                }
+            }
+            else if (!is_prefixed(component.named_type.type) && module.tagging_default == TaggingMode::automatic)
+            {
+                component_type = type_as_string(component.named_type.type, module, tree,
+                                                "IId<ctx, " + std::to_string(tag_counter++) + ">");
+            }
+            else
+            {
+                component_type = type_as_string(component.named_type.type, module, tree);
+            }
+
             if (component.is_optional)
             {
                 component_type = make_type_optional(component_type);
@@ -292,6 +326,7 @@ std::string type_as_string(const SetType& set, const Module& module, const Asn1T
             res += "    " + component_type + " " + component.named_type.name + ";\n";
         }
     }
+
     res += "    using Id = ExplicitIdentifier<UniversalTag::set>;\n";
     res += "    using ExplicitId = ExplicitIdentifier<UniversalTag::set>;\n";
     res += "};\n";

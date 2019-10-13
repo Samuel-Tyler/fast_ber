@@ -64,6 +64,25 @@ TEST_CASE("Tags: Encoding a packet with various tagging modes")
     }
 }
 
+TEST_CASE("Tags: Unspecified tags of an automatic sequence should be sequential")
+{
+
+    std::cout << fast_ber::Identifier<decltype(fast_ber::Tags::DefaultCollection::string1)>{} << std::endl;
+    REQUIRE(std::is_same<fast_ber::Identifier<decltype(fast_ber::Tags::DefaultCollection::string1)>,
+                         fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>>::value);
+    REQUIRE(std::is_same<fast_ber::Identifier<decltype(fast_ber::Tags::DefaultCollection::string2)>,
+                         fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>>::value);
+    REQUIRE(std::is_same<fast_ber::Identifier<decltype(fast_ber::Tags::DefaultCollection::string3)>,
+                         fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>>::value);
+
+    REQUIRE(std::is_same<fast_ber::Identifier<decltype(fast_ber::AutomaticTags::DefaultCollection::string1)>,
+                         fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 0>>::value);
+    REQUIRE(std::is_same<fast_ber::Identifier<decltype(fast_ber::AutomaticTags::DefaultCollection::string2)>,
+                         fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 1>>::value);
+    REQUIRE(std::is_same<fast_ber::Identifier<decltype(fast_ber::AutomaticTags::DefaultCollection::string3)>,
+                         fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 2>>::value);
+}
+
 TEST_CASE("Tags: Encoding and decoding a packet with various tagging modes")
 {
     std::array<uint8_t, 5000> buffer = {};
