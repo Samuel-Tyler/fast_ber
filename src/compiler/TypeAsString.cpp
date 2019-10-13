@@ -2,8 +2,6 @@
 #include "fast_ber/compiler/Identifier.hpp"
 #include "fast_ber/compiler/ResolveType.hpp"
 
-static int unnamed_definition_reference_num = 0;
-
 std::string wrap_with_tagged_type(const std::string& type_string, const std::string& identifier)
 {
     if (identifier.empty())
@@ -51,23 +49,12 @@ std::string type_as_string(const ChoiceType& choice, const Module& module, const
         if (!is_first)
             res += ", ";
 
-        if (is_sequence(named_type.type))
+        if (is_sequence(named_type.type) || is_set(named_type.type) || is_enumerated(named_type.type))
         {
-            res += "UnnamedSequence" + std::to_string(unnamed_definition_reference_num++);
-        }
-        else if (is_set(named_type.type))
-        {
-            res += "UnnamedSet" + std::to_string(unnamed_definition_reference_num++);
-        }
-        else if (is_enumerated(named_type.type))
-        {
-            res += "UnnamedEnum" + std::to_string(unnamed_definition_reference_num++);
-        }
-        else
-        {
-            res += type_as_string(named_type.type, module, tree);
+            throw std::runtime_error("ChoiceType must not be a structure or enum");
         }
 
+        res += type_as_string(named_type.type, module, tree);
         is_first = false;
     }
 
@@ -198,16 +185,7 @@ std::string type_as_string(const SequenceType& sequence, const Module& module, c
         }
         else
         {
-            if (is_enumerated(component.named_type.type))
-            {
-                component_type = "UnnamedEnum" + std::to_string(unnamed_definition_reference_num++);
-                if (module.tagging_default == TaggingMode::automatic)
-                {
-                    component_type =
-                        wrap_with_tagged_type(component_type, "IId<ctx, " + std::to_string(tag_counter++) + ">");
-                }
-            }
-            else if (!is_prefixed(component.named_type.type) && module.tagging_default == TaggingMode::automatic)
+            if (!is_prefixed(component.named_type.type) && module.tagging_default == TaggingMode::automatic)
             {
                 component_type = type_as_string(component.named_type.type, module, tree,
                                                 "IId<ctx, " + std::to_string(tag_counter++) + ">");
@@ -240,46 +218,12 @@ std::string type_as_string(const SequenceOfType& sequence, const Module& module,
                            const std::string& identifier_override)
 {
     const Type& type = sequence.has_name ? sequence.named_type->type : *sequence.type;
-    std::string inner;
-
-    if (is_sequence(type))
+    if (is_sequence(type) || is_set(type) || is_enumerated(type))
     {
-        if (sequence.has_name)
-        {
-            inner = "SequenceOf<" + sequence.named_type->name + ">";
-        }
-        else
-        {
-            inner = "SequenceOf<UnnamedSequence" + std::to_string(unnamed_definition_reference_num++) + ">";
-        }
-    }
-    else if (is_set(type))
-    {
-        if (sequence.has_name)
-        {
-            inner = "SequenceOf<" + sequence.named_type->name + ">";
-        }
-        else
-        {
-            inner = "SequenceOf<UnnamedSet" + std::to_string(unnamed_definition_reference_num++) + ">";
-        }
-    }
-    else if (is_enumerated(type))
-    {
-        if (sequence.has_name)
-        {
-            inner = "SequenceOf<" + sequence.named_type->name + ">";
-        }
-        else
-        {
-            inner = "SequenceOf<UnnamedEnum" + std::to_string(unnamed_definition_reference_num++) + ">";
-        }
-    }
-    else
-    {
-        inner = "SequenceOf<" + type_as_string(type, module, tree) + ">";
+        throw std::runtime_error("SequenceOfType must not be a structure or enum");
     }
 
+    const std::string& inner = "SequenceOf<" + type_as_string(type, module, tree) + ">";
     return wrap_with_tagged_type(inner, identifier_override);
 }
 std::string type_as_string(const SetType& set, const Module& module, const Asn1Tree& tree,
@@ -300,16 +244,7 @@ std::string type_as_string(const SetType& set, const Module& module, const Asn1T
         }
         else
         {
-            if (is_enumerated(component.named_type.type))
-            {
-                component_type = "UnnamedEnum" + std::to_string(unnamed_definition_reference_num++);
-                if (module.tagging_default == TaggingMode::automatic)
-                {
-                    component_type =
-                        wrap_with_tagged_type(component_type, "IId<ctx, " + std::to_string(tag_counter++) + ">");
-                }
-            }
-            else if (!is_prefixed(component.named_type.type) && module.tagging_default == TaggingMode::automatic)
+            if (!is_prefixed(component.named_type.type) && module.tagging_default == TaggingMode::automatic)
             {
                 component_type = type_as_string(component.named_type.type, module, tree,
                                                 "IId<ctx, " + std::to_string(tag_counter++) + ">");
@@ -341,74 +276,27 @@ std::string type_as_string(const SetType& set, const Module& module, const Asn1T
 std::string type_as_string(const SetOfType& set, const Module& module, const Asn1Tree& tree,
                            const std::string& identifier_override)
 {
-    std::string inner;
     const Type& type = set.has_name ? set.named_type->type : *set.type;
-    if (is_sequence(type))
+    if (is_sequence(type) || is_set(type) || is_enumerated(type))
     {
-        if (set.has_name)
-        {
-            inner = "SequenceOf<" + set.named_type->name + ">";
-        }
-        else
-        {
-            inner = "SequenceOf<UnnamedSequence" + std::to_string(unnamed_definition_reference_num++) + ">";
-        }
-    }
-    else if (is_set(type))
-    {
-        if (set.has_name)
-        {
-            inner = "SequenceOf<" + set.named_type->name + ">";
-        }
-        else
-        {
-            inner = "SequenceOf<UnnamedSet" + std::to_string(unnamed_definition_reference_num++) + ">";
-        }
-    }
-    else if (is_enumerated(type))
-    {
-        if (set.has_name)
-        {
-            inner = "SequenceOf<" + set.named_type->name + ">";
-        }
-        else
-        {
-            inner = "SequenceOf<UnnamedEnum" + std::to_string(unnamed_definition_reference_num++) + ">";
-        }
-    }
-    else
-    {
-        inner = "SequenceOf<" + type_as_string(type, module, tree) + ">";
+        throw std::runtime_error("SetOfType must not be a structure or enum");
     }
 
+    const std::string& inner = "SequenceOf<" + type_as_string(type, module, tree) + ">";
     return wrap_with_tagged_type(inner, identifier_override);
 }
 std::string type_as_string(const PrefixedType& prefixed_type, const Module& module, const Asn1Tree& tree,
                            const std::string& identifier_override)
 {
-    auto        id = identifier(prefixed_type, module, tree).tag;
-    std::string child_type;
+    auto id = identifier(prefixed_type, module, tree).tag;
 
-    if (is_sequence(prefixed_type.tagged_type->type))
+    if (is_sequence(prefixed_type.tagged_type->type) || is_set(prefixed_type.tagged_type->type) ||
+        is_enumerated(prefixed_type.tagged_type->type))
     {
-        child_type = "UnnamedSequence" + std::to_string(unnamed_definition_reference_num++);
-        child_type = wrap_with_tagged_type(child_type, id);
-    }
-    else if (is_set(prefixed_type.tagged_type->type))
-    {
-        child_type = "UnnamedSet" + std::to_string(unnamed_definition_reference_num++);
-        child_type = wrap_with_tagged_type(child_type, id);
-    }
-    else if (is_enumerated(prefixed_type.tagged_type->type))
-    {
-        child_type = "UnnamedEnum" + std::to_string(unnamed_definition_reference_num++);
-        child_type = wrap_with_tagged_type(child_type, id);
-    }
-    else
-    {
-        child_type = type_as_string(prefixed_type.tagged_type->type, module, tree, id);
+        throw std::runtime_error("PrefixedType must not be a structure or enum");
     }
 
+    const std::string& child_type = type_as_string(prefixed_type.tagged_type->type, module, tree, id);
     return wrap_with_tagged_type(child_type, identifier_override);
 }
 std::string type_as_string(const TimeType& type, const Module& module, const Asn1Tree& tree,
