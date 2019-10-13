@@ -13,15 +13,17 @@ TEST_CASE("RealSchema: Testing a standard asn schema")
     fast_ber::SGSN_2009A_CDR::CAMELInformationPDP  pdp;
     fast_ber::SGSN_2009A_CDR::ManagementExtensions e;
 
-    fast_ber::encode(absl::Span<uint8_t>(buffer), smtr);
-    fast_ber::encode(absl::Span<uint8_t>(buffer), pdp);
-    fast_ber::encode(absl::Span<uint8_t>(buffer), e);
-    fast_ber::encode(absl::Span<uint8_t>(buffer), record);
+    REQUIRE(fast_ber::encode(absl::Span<uint8_t>(buffer), smtr).success);
+    REQUIRE(fast_ber::decode(absl::Span<uint8_t>(buffer), smtr).success);
 
-    fast_ber::decode(absl::Span<uint8_t>(buffer), smtr);
-    fast_ber::decode(absl::Span<uint8_t>(buffer), pdp);
-    fast_ber::decode(absl::Span<uint8_t>(buffer), e);
-    fast_ber::decode(absl::Span<uint8_t>(buffer), record);
+    REQUIRE(fast_ber::encode(absl::Span<uint8_t>(buffer), pdp).success);
+    REQUIRE(fast_ber::decode(absl::Span<uint8_t>(buffer), pdp).success);
+
+    REQUIRE(fast_ber::encode(absl::Span<uint8_t>(buffer), e).success);
+    REQUIRE(fast_ber::decode(absl::Span<uint8_t>(buffer), e).success);
+
+    REQUIRE(fast_ber::encode(absl::Span<uint8_t>(buffer), record).success);
+    REQUIRE(fast_ber::decode(absl::Span<uint8_t>(buffer), record).success);
 
     REQUIRE(record == record);
 }
