@@ -9677,23 +9677,23 @@ namespace yy {
 	}
 yy2:
 	++context.cursor;
-#line 9699 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9700 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_END_OF_FILE(context.location); }
 #line 9683 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy4:
 	++context.cursor;
 yy5:
-#line 9726 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9727 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ std::cerr << "Ignoring unknown symbol: " <<  static_cast<int>(*start) << std::endl; return yylex(context); }
 #line 9689 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy6:
 	++context.cursor;
-#line 9703 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9704 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); context.location.columns(); return yylex(context); }
 #line 9694 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy8:
 	++context.cursor;
-#line 9702 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9703 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); context.location.lines();   return yylex(context); }
 #line 9699 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy10:
@@ -9704,7 +9704,7 @@ yy10:
 	}
 yy11:
 	++context.cursor;
-#line 9721 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9722 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXCLAMATION_MARK (context.location); }
 #line 9710 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy13:
@@ -9804,17 +9804,17 @@ yy16:
 	}
 yy18:
 	++context.cursor;
-#line 9711 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9712 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OPEN_PARENTHESIS (context.location); }
 #line 9810 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy20:
 	++context.cursor;
-#line 9712 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9713 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CLOSE_PARENTHESIS (context.location); }
 #line 9815 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy22:
 	++context.cursor;
-#line 9717 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9718 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_COMMA (context.location); }
 #line 9820 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy24:
@@ -9834,7 +9834,7 @@ yy24:
 	default:	goto yy25;
 	}
 yy25:
-#line 9718 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9719 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_HYPHEN_MINUS (context.location); }
 #line 9840 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy26:
@@ -9844,7 +9844,7 @@ yy26:
 	default:	goto yy27;
 	}
 yy27:
-#line 9719 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9720 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_FULL_STOP (context.location); }
 #line 9850 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy28:
@@ -9871,7 +9871,7 @@ yy29:
 	default:	goto yy31;
 	}
 yy31:
-#line 9685 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9686 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_number(std::stoll(std::string(start, context.cursor)), context.location); }
 #line 9877 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy32:
@@ -9882,22 +9882,22 @@ yy32:
 	default:	goto yy33;
 	}
 yy33:
-#line 9715 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9716 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_COLON (context.location); }
 #line 9888 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy34:
 	++context.cursor;
-#line 9716 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9717 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_SEMICOLON (context.location); }
 #line 9893 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy36:
 	++context.cursor;
-#line 9722 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9723 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_LESS_THAN (context.location); }
 #line 9898 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy38:
 	++context.cursor;
-#line 9725 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9726 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_AT (context.location); }
 #line 9903 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy40:
@@ -9912,7 +9912,7 @@ yy40:
 	default:	goto yy49;
 	}
 yy41:
-#line 9693 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9694 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(santize_name(std::string(start, context.cursor)), context.location); }
 #line 9918 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy42:
@@ -10145,17 +10145,17 @@ yy60:
 	}
 yy61:
 	++context.cursor;
-#line 9713 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9714 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OPEN_SQUARE_BRACKET (context.location); }
 #line 10151 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy63:
 	++context.cursor;
-#line 9714 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9715 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CLOSE_SQUARE_BRACKET (context.location); }
 #line 10156 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy65:
 	++context.cursor;
-#line 9723 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9724 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ACCENT (context.location); }
 #line 10161 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy67:
@@ -10229,22 +10229,22 @@ yy67:
 	default:	goto yy69;
 	}
 yy69:
-#line 9694 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9695 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(santize_name(std::string(start, context.cursor)), context.location); }
 #line 10235 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy70:
 	++context.cursor;
-#line 9709 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9710 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OPEN_BRACE (context.location); }
 #line 10240 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy72:
 	++context.cursor;
-#line 9720 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9721 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_VERTICAL_LINE (context.location); }
 #line 10245 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy74:
 	++context.cursor;
-#line 9710 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9711 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CLOSE_BRACE (context.location); }
 #line 10250 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy76:
@@ -10254,7 +10254,7 @@ yy76:
 	default:	goto yy77;
 	}
 yy77:
-#line 9688 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9689 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_cstring(std::string(start, context.cursor), context.location); }
 #line 10260 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy78:
@@ -10338,7 +10338,7 @@ yy81:
 	default:	goto yy83;
 	}
 yy83:
-#line 9695 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9696 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_typefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
 #line 10344 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy84:
@@ -10412,7 +10412,7 @@ yy84:
 	default:	goto yy86;
 	}
 yy86:
-#line 9696 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9697 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_valuefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
 #line 10418 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy87:
@@ -10453,8 +10453,7 @@ yy88:
 	default:	goto yy13;
 	}
 yy90:
-	yyaccept = 6;
-	yych = *(YYMARKER = ++context.cursor);
+	yych = *++context.cursor;
 	switch (yych) {
 	case '\n':
 	case '\r':	goto yy92;
@@ -10462,9 +10461,9 @@ yy90:
 	default:	goto yy90;
 	}
 yy92:
-#line 9679 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9680 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return yylex(context); }
-#line 10468 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10467 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy93:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -10481,9 +10480,9 @@ yy93:
 	default:	goto yy95;
 	}
 yy95:
-#line 9686 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9687 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_negativenumber(std::stoll(std::string(start, context.cursor)), context.location); }
-#line 10487 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10486 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy96:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -10491,9 +10490,9 @@ yy96:
 	default:	goto yy97;
 	}
 yy97:
-#line 9708 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9709 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_RANGE (context.location); }
-#line 10497 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10496 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy98:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -10524,98 +10523,97 @@ yy101:
 	case 3: 	goto yy69;
 	case 4: 	goto yy83;
 	case 5: 	goto yy86;
-	case 6: 	goto yy92;
-	case 7: 	goto yy114;
-	case 8: 	goto yy141;
-	case 9: 	goto yy187;
-	case 10: 	goto yy189;
-	case 11: 	goto yy194;
-	case 12: 	goto yy208;
-	case 13: 	goto yy225;
-	case 14: 	goto yy227;
-	case 15: 	goto yy238;
-	case 16: 	goto yy247;
-	case 17: 	goto yy282;
-	case 18: 	goto yy295;
-	case 19: 	goto yy309;
-	case 20: 	goto yy322;
-	case 21: 	goto yy327;
-	case 22: 	goto yy332;
-	case 23: 	goto yy334;
-	case 24: 	goto yy336;
-	case 25: 	goto yy348;
-	case 26: 	goto yy354;
-	case 27: 	goto yy360;
-	case 28: 	goto yy377;
-	case 29: 	goto yy395;
-	case 30: 	goto yy414;
-	case 31: 	goto yy423;
-	case 32: 	goto yy431;
-	case 33: 	goto yy444;
-	case 34: 	goto yy466;
-	case 35: 	goto yy479;
-	case 36: 	goto yy481;
-	case 37: 	goto yy487;
-	case 38: 	goto yy499;
-	case 39: 	goto yy506;
-	case 40: 	goto yy511;
-	case 41: 	goto yy516;
-	case 42: 	goto yy525;
-	case 43: 	goto yy527;
-	case 44: 	goto yy532;
-	case 45: 	goto yy539;
-	case 46: 	goto yy543;
-	case 47: 	goto yy546;
-	case 48: 	goto yy548;
-	case 49: 	goto yy559;
-	case 50: 	goto yy575;
-	case 51: 	goto yy577;
-	case 52: 	goto yy581;
-	case 53: 	goto yy584;
-	case 54: 	goto yy591;
-	case 55: 	goto yy593;
-	case 56: 	goto yy595;
-	case 57: 	goto yy603;
-	case 58: 	goto yy609;
-	case 59: 	goto yy611;
-	case 60: 	goto yy624;
-	case 61: 	goto yy626;
-	case 62: 	goto yy628;
-	case 63: 	goto yy630;
-	case 64: 	goto yy634;
-	case 65: 	goto yy643;
-	case 66: 	goto yy656;
-	case 67: 	goto yy661;
-	case 68: 	goto yy669;
-	case 69: 	goto yy672;
-	case 70: 	goto yy676;
-	case 71: 	goto yy682;
-	case 72: 	goto yy697;
-	case 73: 	goto yy703;
-	case 74: 	goto yy705;
-	case 75: 	goto yy707;
-	case 76: 	goto yy724;
-	case 77: 	goto yy737;
-	case 78: 	goto yy739;
-	case 79: 	goto yy741;
-	case 80: 	goto yy744;
-	case 81: 	goto yy750;
-	case 82: 	goto yy759;
-	case 83: 	goto yy761;
-	case 84: 	goto yy764;
-	case 85: 	goto yy767;
-	case 86: 	goto yy770;
-	case 87: 	goto yy775;
-	case 88: 	goto yy779;
-	case 89: 	goto yy784;
-	case 90: 	goto yy791;
-	case 91: 	goto yy793;
-	case 92: 	goto yy796;
-	case 93: 	goto yy799;
-	case 94: 	goto yy802;
-	case 95: 	goto yy804;
-	case 96: 	goto yy806;
-	case 97: 	goto yy808;
+	case 6: 	goto yy114;
+	case 7: 	goto yy141;
+	case 8: 	goto yy187;
+	case 9: 	goto yy189;
+	case 10: 	goto yy194;
+	case 11: 	goto yy208;
+	case 12: 	goto yy225;
+	case 13: 	goto yy227;
+	case 14: 	goto yy238;
+	case 15: 	goto yy247;
+	case 16: 	goto yy282;
+	case 17: 	goto yy295;
+	case 18: 	goto yy309;
+	case 19: 	goto yy322;
+	case 20: 	goto yy327;
+	case 21: 	goto yy332;
+	case 22: 	goto yy334;
+	case 23: 	goto yy336;
+	case 24: 	goto yy348;
+	case 25: 	goto yy354;
+	case 26: 	goto yy360;
+	case 27: 	goto yy377;
+	case 28: 	goto yy395;
+	case 29: 	goto yy414;
+	case 30: 	goto yy423;
+	case 31: 	goto yy431;
+	case 32: 	goto yy444;
+	case 33: 	goto yy466;
+	case 34: 	goto yy479;
+	case 35: 	goto yy481;
+	case 36: 	goto yy487;
+	case 37: 	goto yy499;
+	case 38: 	goto yy506;
+	case 39: 	goto yy511;
+	case 40: 	goto yy516;
+	case 41: 	goto yy525;
+	case 42: 	goto yy527;
+	case 43: 	goto yy532;
+	case 44: 	goto yy539;
+	case 45: 	goto yy543;
+	case 46: 	goto yy546;
+	case 47: 	goto yy548;
+	case 48: 	goto yy559;
+	case 49: 	goto yy575;
+	case 50: 	goto yy577;
+	case 51: 	goto yy581;
+	case 52: 	goto yy584;
+	case 53: 	goto yy591;
+	case 54: 	goto yy593;
+	case 55: 	goto yy595;
+	case 56: 	goto yy603;
+	case 57: 	goto yy609;
+	case 58: 	goto yy611;
+	case 59: 	goto yy624;
+	case 60: 	goto yy626;
+	case 61: 	goto yy628;
+	case 62: 	goto yy630;
+	case 63: 	goto yy634;
+	case 64: 	goto yy643;
+	case 65: 	goto yy656;
+	case 66: 	goto yy661;
+	case 67: 	goto yy669;
+	case 68: 	goto yy672;
+	case 69: 	goto yy676;
+	case 70: 	goto yy682;
+	case 71: 	goto yy697;
+	case 72: 	goto yy703;
+	case 73: 	goto yy705;
+	case 74: 	goto yy707;
+	case 75: 	goto yy724;
+	case 76: 	goto yy737;
+	case 77: 	goto yy739;
+	case 78: 	goto yy741;
+	case 79: 	goto yy744;
+	case 80: 	goto yy750;
+	case 81: 	goto yy759;
+	case 82: 	goto yy761;
+	case 83: 	goto yy764;
+	case 84: 	goto yy767;
+	case 85: 	goto yy770;
+	case 86: 	goto yy775;
+	case 87: 	goto yy779;
+	case 88: 	goto yy784;
+	case 89: 	goto yy791;
+	case 90: 	goto yy793;
+	case 91: 	goto yy796;
+	case 92: 	goto yy799;
+	case 93: 	goto yy802;
+	case 94: 	goto yy804;
+	case 95: 	goto yy806;
+	case 96: 	goto yy808;
 	default:	goto yy810;
 	}
 yy102:
@@ -10756,7 +10754,7 @@ yy112:
 	default:	goto yy49;
 	}
 yy113:
-	yyaccept = 7;
+	yyaccept = 6;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -10828,7 +10826,7 @@ yy113:
 yy114:
 #line 9593 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_BY (context.location); }
-#line 10832 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 10830 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy115:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -11013,7 +11011,7 @@ yy139:
 	default:	goto yy49;
 	}
 yy140:
-	yyaccept = 8;
+	yyaccept = 7;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -11085,7 +11083,7 @@ yy140:
 yy141:
 #line 9641 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OF (context.location); }
-#line 11089 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11087 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy142:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -11473,14 +11471,14 @@ yy170:
 	}
 yy171:
 	++context.cursor;
-#line 9690 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9691 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_bstring(std::string(start + 1, context.cursor - 2), context.location); }
-#line 11479 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11477 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy173:
 	++context.cursor;
-#line 9692 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9693 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_hstring(std::string(start + 1, context.cursor - 2), context.location); }
-#line 11484 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11482 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy175:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -11491,15 +11489,15 @@ yy176:
 	yych = *++context.cursor;
 	switch (yych) {
 	case '\n':
-	case '\r':	goto yy101;
+	case '\r':	goto yy92;
 	case '-':	goto yy264;
 	default:	goto yy90;
 	}
 yy177:
 	++context.cursor;
-#line 9707 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9708 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ELIPSIS (context.location); }
-#line 11503 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11501 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy179:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -11522,14 +11520,14 @@ yy180:
 	default:	goto yy182;
 	}
 yy182:
-#line 9684 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9685 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context.cursor)), context.location); }
-#line 11528 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11526 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy183:
 	++context.cursor;
-#line 9706 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9707 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_DEFINED_AS (context.location); }
-#line 11533 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11531 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy185:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -11539,7 +11537,7 @@ yy185:
 	default:	goto yy49;
 	}
 yy186:
-	yyaccept = 9;
+	yyaccept = 8;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -11611,9 +11609,9 @@ yy186:
 yy187:
 #line 9585 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ALL (context.location); }
-#line 11615 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11613 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy188:
-	yyaccept = 10;
+	yyaccept = 9;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -11685,7 +11683,7 @@ yy188:
 yy189:
 #line 9586 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ANY (context.location); }
-#line 11689 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11687 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy190:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -11708,7 +11706,7 @@ yy192:
 	default:	goto yy49;
 	}
 yy193:
-	yyaccept = 11;
+	yyaccept = 10;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -11780,7 +11778,7 @@ yy193:
 yy194:
 #line 9590 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_BIT (context.location); }
-#line 11784 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11782 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy195:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -11868,7 +11866,7 @@ yy206:
 	default:	goto yy49;
 	}
 yy207:
-	yyaccept = 12;
+	yyaccept = 11;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -11940,7 +11938,7 @@ yy207:
 yy208:
 #line 9609 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_END (context.location); }
-#line 11944 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11942 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy209:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -12049,7 +12047,7 @@ yy223:
 	default:	goto yy49;
 	}
 yy224:
-	yyaccept = 13;
+	yyaccept = 12;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -12121,9 +12119,9 @@ yy224:
 yy225:
 #line 9632 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_MAX (context.location); }
-#line 12125 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12123 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy226:
-	yyaccept = 14;
+	yyaccept = 13;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -12195,7 +12193,7 @@ yy226:
 yy227:
 #line 9633 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_MIN (context.location); }
-#line 12199 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12197 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy228:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -12260,7 +12258,7 @@ yy236:
 	default:	goto yy49;
 	}
 yy237:
-	yyaccept = 15;
+	yyaccept = 14;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -12332,7 +12330,7 @@ yy237:
 yy238:
 #line 9645 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_PDV (context.location); }
-#line 12336 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12334 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy239:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -12383,7 +12381,7 @@ yy245:
 	default:	goto yy49;
 	}
 yy246:
-	yyaccept = 16;
+	yyaccept = 15;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -12455,7 +12453,7 @@ yy246:
 yy247:
 #line 9654 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_SET (context.location); }
-#line 12459 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12457 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy248:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -12574,12 +12572,12 @@ yy264:
 	++context.cursor;
 #line 9678 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return yylex(context); }
-#line 12578 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12576 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy266:
 	++context.cursor;
-#line 9681 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9682 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return yylex(context); }
-#line 12583 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12581 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy268:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -12672,7 +12670,7 @@ yy280:
 	default:	goto yy49;
 	}
 yy281:
-	yyaccept = 17;
+	yyaccept = 16;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy364;
@@ -12744,7 +12742,7 @@ yy281:
 yy282:
 #line 9601 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_DATE (context.location); }
-#line 12748 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12746 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy283:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -12824,7 +12822,7 @@ yy293:
 	default:	goto yy49;
 	}
 yy294:
-	yyaccept = 18;
+	yyaccept = 17;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -12896,7 +12894,7 @@ yy294:
 yy295:
 #line 9617 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_FROM (context.location); }
-#line 12900 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12898 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy296:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -13045,7 +13043,7 @@ yy307:
 	default:	goto yy101;
 	}
 yy308:
-	yyaccept = 19;
+	yyaccept = 18;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -13117,7 +13115,7 @@ yy308:
 yy309:
 #line 9636 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ASN_NULL (context.location); }
-#line 13121 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13119 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy310:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -13196,7 +13194,7 @@ yy320:
 	default:	goto yy49;
 	}
 yy321:
-	yyaccept = 20;
+	yyaccept = 19;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -13268,7 +13266,7 @@ yy321:
 yy322:
 #line 9650 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_REAL (context.location); }
-#line 13272 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13270 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy323:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -13291,7 +13289,7 @@ yy325:
 	default:	goto yy49;
 	}
 yy326:
-	yyaccept = 21;
+	yyaccept = 20;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -13363,7 +13361,7 @@ yy326:
 yy327:
 #line 9656 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_SIZE (context.location); }
-#line 13367 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13365 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy328:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -13386,7 +13384,7 @@ yy330:
 	default:	goto yy49;
 	}
 yy331:
-	yyaccept = 22;
+	yyaccept = 21;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -13458,9 +13456,9 @@ yy331:
 yy332:
 #line 9660 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_TAGS (context.location); }
-#line 13462 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13460 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy333:
-	yyaccept = 23;
+	yyaccept = 22;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy410;
@@ -13532,9 +13530,9 @@ yy333:
 yy334:
 #line 9662 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_TIME (context.location); }
-#line 13536 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13534 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy335:
-	yyaccept = 24;
+	yyaccept = 23;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -13606,7 +13604,7 @@ yy335:
 yy336:
 #line 9664 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_TRUE (context.location); }
-#line 13610 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13608 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy337:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -13678,7 +13676,7 @@ yy346:
 	default:	goto yy49;
 	}
 yy347:
-	yyaccept = 25;
+	yyaccept = 24;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -13750,7 +13748,7 @@ yy347:
 yy348:
 #line 9674 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_WITH (context.location); }
-#line 13754 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13752 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy349:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -13780,7 +13778,7 @@ yy352:
 	default:	goto yy49;
 	}
 yy353:
-	yyaccept = 26;
+	yyaccept = 25;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -13852,7 +13850,7 @@ yy353:
 yy354:
 #line 9589 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_BEGIN (context.location); }
-#line 13856 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13854 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy355:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -13882,7 +13880,7 @@ yy358:
 	default:	goto yy49;
 	}
 yy359:
-	yyaccept = 27;
+	yyaccept = 26;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -13954,7 +13952,7 @@ yy359:
 yy360:
 #line 9596 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CLASS (context.location); }
-#line 13958 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13956 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy361:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -14123,7 +14121,7 @@ yy375:
 	default:	goto yy49;
 	}
 yy376:
-	yyaccept = 28;
+	yyaccept = 27;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -14195,7 +14193,7 @@ yy376:
 yy377:
 #line 9616 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_FALSE (context.location); }
-#line 14199 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14197 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy378:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -14310,7 +14308,7 @@ yy393:
 	default:	goto yy49;
 	}
 yy394:
-	yyaccept = 29;
+	yyaccept = 28;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -14382,7 +14380,7 @@ yy394:
 yy395:
 #line 9640 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OCTET (context.location); }
-#line 14386 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14384 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy396:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -14625,7 +14623,7 @@ yy412:
 	default:	goto yy49;
 	}
 yy413:
-	yyaccept = 30;
+	yyaccept = 29;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -14697,7 +14695,7 @@ yy413:
 yy414:
 #line 9666 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_UNION (context.location); }
-#line 14701 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14699 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy415:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -14748,7 +14746,7 @@ yy421:
 	default:	goto yy49;
 	}
 yy422:
-	yyaccept = 31;
+	yyaccept = 30;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -14820,7 +14818,7 @@ yy422:
 yy423:
 #line 9583 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ABSENT (context.location); }
-#line 14824 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14822 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy424:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -14864,7 +14862,7 @@ yy429:
 	default:	goto yy49;
 	}
 yy430:
-	yyaccept = 32;
+	yyaccept = 31;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -14936,7 +14934,7 @@ yy430:
 yy431:
 #line 9595 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CHOICE (context.location); }
-#line 14940 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14938 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy432:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -15015,7 +15013,7 @@ yy442:
 	default:	goto yy49;
 	}
 yy443:
-	yyaccept = 33;
+	yyaccept = 32;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -15087,7 +15085,7 @@ yy443:
 yy444:
 #line 9611 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXCEPT (context.location); }
-#line 15091 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15089 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy445:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -15351,7 +15349,7 @@ yy464:
 	default:	goto yy49;
 	}
 yy465:
-	yyaccept = 34;
+	yyaccept = 33;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -15423,7 +15421,7 @@ yy465:
 yy466:
 #line 9638 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OBJECT (context.location); }
-#line 15427 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15425 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy467:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -15502,7 +15500,7 @@ yy477:
 	default:	goto yy49;
 	}
 yy478:
-	yyaccept = 35;
+	yyaccept = 34;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -15574,9 +15572,9 @@ yy478:
 yy479:
 #line 9657 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_STRING (context.location); }
-#line 15578 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15576 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy480:
-	yyaccept = 36;
+	yyaccept = 35;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -15648,7 +15646,7 @@ yy480:
 yy481:
 #line 9658 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_SYNTAX (context.location); }
-#line 15652 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15650 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy482:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -15678,7 +15676,7 @@ yy485:
 	default:	goto yy49;
 	}
 yy486:
-	yyaccept = 37;
+	yyaccept = 36;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -15750,7 +15748,7 @@ yy486:
 yy487:
 #line 9667 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_UNIQUE (context.location); }
-#line 15754 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15752 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy488:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -15822,7 +15820,7 @@ yy497:
 	default:	goto yy49;
 	}
 yy498:
-	yyaccept = 38;
+	yyaccept = 37;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -15894,7 +15892,7 @@ yy498:
 yy499:
 #line 9592 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_BOOLEAN (context.location); }
-#line 15898 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15896 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy500:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -15931,7 +15929,7 @@ yy504:
 	default:	goto yy49;
 	}
 yy505:
-	yyaccept = 39;
+	yyaccept = 38;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -16003,7 +16001,7 @@ yy505:
 yy506:
 #line 9603 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_DEFAULT (context.location); }
-#line 16007 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16005 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy507:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -16026,7 +16024,7 @@ yy509:
 	default:	goto yy49;
 	}
 yy510:
-	yyaccept = 40;
+	yyaccept = 39;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -16098,7 +16096,7 @@ yy510:
 yy511:
 #line 9607 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ENCODED (context.location); }
-#line 16102 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16100 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy512:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -16121,7 +16119,7 @@ yy514:
 	default:	goto yy49;
 	}
 yy515:
-	yyaccept = 41;
+	yyaccept = 40;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -16193,7 +16191,7 @@ yy515:
 yy516:
 #line 9613 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXPORTS (context.location); }
-#line 16197 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16195 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy517:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -16245,7 +16243,7 @@ yy523:
 	default:	goto yy49;
 	}
 yy524:
-	yyaccept = 42;
+	yyaccept = 41;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -16317,9 +16315,9 @@ yy524:
 yy525:
 #line 9624 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_IMPLIED (context.location); }
-#line 16321 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16319 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy526:
-	yyaccept = 43;
+	yyaccept = 42;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -16391,7 +16389,7 @@ yy526:
 yy527:
 #line 9625 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_IMPORTS (context.location); }
-#line 16395 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16393 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy528:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -16414,7 +16412,7 @@ yy530:
 	default:	goto yy49;
 	}
 yy531:
-	yyaccept = 44;
+	yyaccept = 43;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -16486,7 +16484,7 @@ yy531:
 yy532:
 #line 9629 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_INTEGER (context.location); }
-#line 16490 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16488 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy533:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -16523,7 +16521,7 @@ yy537:
 	default:	goto yy49;
 	}
 yy538:
-	yyaccept = 45;
+	yyaccept = 44;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -16595,7 +16593,7 @@ yy538:
 yy539:
 #line 9642 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OID_IRI (context.location); }
-#line 16599 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16597 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy540:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -16611,7 +16609,7 @@ yy541:
 	default:	goto yy49;
 	}
 yy542:
-	yyaccept = 46;
+	yyaccept = 45;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -16683,7 +16681,7 @@ yy542:
 yy543:
 #line 9644 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_PATTERN (context.location); }
-#line 16687 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16685 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy544:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -16692,7 +16690,7 @@ yy544:
 	default:	goto yy49;
 	}
 yy545:
-	yyaccept = 47;
+	yyaccept = 46;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -16764,9 +16762,9 @@ yy545:
 yy546:
 #line 9647 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_PRESENT (context.location); }
-#line 16768 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16766 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy547:
-	yyaccept = 48;
+	yyaccept = 47;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -16838,7 +16836,7 @@ yy547:
 yy548:
 #line 9649 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_PRIVATE (context.location); }
-#line 16842 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16840 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy549:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -16903,7 +16901,7 @@ yy557:
 	default:	goto yy49;
 	}
 yy558:
-	yyaccept = 49;
+	yyaccept = 48;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -16975,7 +16973,7 @@ yy558:
 yy559:
 #line 9670 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_UTCTime (context.location); }
-#line 16979 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16977 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy560:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -17075,7 +17073,7 @@ yy573:
 	default:	goto yy49;
 	}
 yy574:
-	yyaccept = 50;
+	yyaccept = 49;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -17147,9 +17145,9 @@ yy574:
 yy575:
 #line 9605 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_DURATION (context.location); }
-#line 17151 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17149 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy576:
-	yyaccept = 51;
+	yyaccept = 50;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -17221,7 +17219,7 @@ yy576:
 yy577:
 #line 9606 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_EMBEDDED (context.location); }
-#line 17225 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17223 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy578:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -17237,7 +17235,7 @@ yy579:
 	default:	goto yy49;
 	}
 yy580:
-	yyaccept = 52;
+	yyaccept = 51;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -17309,7 +17307,7 @@ yy580:
 yy581:
 #line 9612 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXPLICIT (context.location); }
-#line 17313 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17311 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy582:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -17318,7 +17316,7 @@ yy582:
 	default:	goto yy49;
 	}
 yy583:
-	yyaccept = 53;
+	yyaccept = 52;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -17390,7 +17388,7 @@ yy583:
 yy584:
 #line 9615 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXTERNAL (context.location); }
-#line 17394 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17392 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy585:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -17427,7 +17425,7 @@ yy589:
 	default:	goto yy49;
 	}
 yy590:
-	yyaccept = 54;
+	yyaccept = 53;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -17499,9 +17497,9 @@ yy590:
 yy591:
 #line 9623 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_IMPLICIT (context.location); }
-#line 17503 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17501 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy592:
-	yyaccept = 55;
+	yyaccept = 54;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -17573,9 +17571,9 @@ yy592:
 yy593:
 #line 9626 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_INCLUDES (context.location); }
-#line 17577 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17575 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy594:
-	yyaccept = 56;
+	yyaccept = 55;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -17647,7 +17645,7 @@ yy594:
 yy595:
 #line 9627 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_INSTANCE (context.location); }
-#line 17651 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17649 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy596:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -17691,7 +17689,7 @@ yy601:
 	default:	goto yy49;
 	}
 yy602:
-	yyaccept = 57;
+	yyaccept = 56;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -17763,7 +17761,7 @@ yy602:
 yy603:
 #line 9643 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OPTIONAL (context.location); }
-#line 17767 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17765 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy604:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -17793,7 +17791,7 @@ yy607:
 	default:	goto yy49;
 	}
 yy608:
-	yyaccept = 58;
+	yyaccept = 57;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -17865,9 +17863,9 @@ yy608:
 yy609:
 #line 9653 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_SEQUENCE (context.location); }
-#line 17869 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17867 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy610:
-	yyaccept = 59;
+	yyaccept = 58;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -17939,7 +17937,7 @@ yy610:
 yy611:
 #line 9655 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_SETTINGS (context.location); }
-#line 17943 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17941 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy612:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -18140,7 +18138,7 @@ yy622:
 	default:	goto yy49;
 	}
 yy623:
-	yyaccept = 60;
+	yyaccept = 59;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -18212,9 +18210,9 @@ yy623:
 yy624:
 #line 9588 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_AUTOMATIC (context.location); }
-#line 18216 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18214 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy625:
-	yyaccept = 61;
+	yyaccept = 60;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -18286,9 +18284,9 @@ yy625:
 yy626:
 #line 9591 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_BMPString (context.location); }
-#line 18290 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18288 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy627:
-	yyaccept = 62;
+	yyaccept = 61;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -18360,9 +18358,9 @@ yy627:
 yy628:
 #line 9594 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CHARACTER (context.location); }
-#line 18364 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18362 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy629:
-	yyaccept = 63;
+	yyaccept = 62;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -18434,7 +18432,7 @@ yy629:
 yy630:
 #line 9597 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_COMPONENT (context.location); }
-#line 18438 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18436 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy631:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -18450,7 +18448,7 @@ yy632:
 	default:	goto yy49;
 	}
 yy633:
-	yyaccept = 64;
+	yyaccept = 63;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -18522,7 +18520,7 @@ yy633:
 yy634:
 #line 9602 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_DATE_TIME (context.location); }
-#line 18526 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18524 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy635:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -18573,7 +18571,7 @@ yy641:
 	default:	goto yy49;
 	}
 yy642:
-	yyaccept = 65;
+	yyaccept = 64;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -18645,7 +18643,7 @@ yy642:
 yy643:
 #line 9621 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_IA5String (context.location); }
-#line 18649 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18647 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy644:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -18785,7 +18783,7 @@ yy654:
 	default:	goto yy101;
 	}
 yy655:
-	yyaccept = 66;
+	yyaccept = 65;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -18857,7 +18855,7 @@ yy655:
 yy656:
 #line 9659 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_T61String (context.location); }
-#line 18861 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18859 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy657:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -18880,7 +18878,7 @@ yy659:
 	default:	goto yy49;
 	}
 yy660:
-	yyaccept = 67;
+	yyaccept = 66;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -18952,7 +18950,7 @@ yy660:
 yy661:
 #line 9668 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_UNIVERSAL (context.location); }
-#line 18956 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18954 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy662:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -18996,7 +18994,7 @@ yy667:
 	default:	goto yy49;
 	}
 yy668:
-	yyaccept = 68;
+	yyaccept = 67;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -19068,7 +19066,7 @@ yy668:
 yy669:
 #line 9598 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_COMPONENTS (context.location); }
-#line 19072 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 19070 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy670:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -19077,7 +19075,7 @@ yy670:
 	default:	goto yy49;
 	}
 yy671:
-	yyaccept = 69;
+	yyaccept = 68;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -19149,7 +19147,7 @@ yy671:
 yy672:
 #line 9600 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CONTAINING (context.location); }
-#line 19153 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 19151 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy673:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -19165,7 +19163,7 @@ yy674:
 	default:	goto yy49;
 	}
 yy675:
-	yyaccept = 70;
+	yyaccept = 69;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -19237,7 +19235,7 @@ yy675:
 yy676:
 #line 9610 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ENUMERATED (context.location); }
-#line 19241 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 19239 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy677:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -19267,7 +19265,7 @@ yy680:
 	default:	goto yy49;
 	}
 yy681:
-	yyaccept = 71;
+	yyaccept = 70;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -19339,7 +19337,7 @@ yy681:
 yy682:
 #line 9622 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_IDENTIFIER (context.location); }
-#line 19343 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 19341 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy683:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -19432,7 +19430,7 @@ yy695:
 	default:	goto yy49;
 	}
 yy696:
-	yyaccept = 72;
+	yyaccept = 71;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -19504,7 +19502,7 @@ yy696:
 yy697:
 #line 9671 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_UTF8String (context.location); }
-#line 19508 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 19506 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy698:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -19534,7 +19532,7 @@ yy701:
 	default:	goto yy49;
 	}
 yy702:
-	yyaccept = 73;
+	yyaccept = 72;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -19606,9 +19604,9 @@ yy702:
 yy703:
 #line 9587 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_APPLICATION (context.location); }
-#line 19610 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 19608 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy704:
-	yyaccept = 74;
+	yyaccept = 73;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -19680,9 +19678,9 @@ yy704:
 yy705:
 #line 9599 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CONSTRAINED (context.location); }
-#line 19684 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 19682 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy706:
-	yyaccept = 75;
+	yyaccept = 74;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -19754,7 +19752,7 @@ yy706:
 yy707:
 #line 9604 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_DEFINITIONS (context.location); }
-#line 19758 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 19756 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy708:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -19861,7 +19859,7 @@ yy722:
 	default:	goto yy49;
 	}
 yy723:
-	yyaccept = 76;
+	yyaccept = 75;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -19933,7 +19931,7 @@ yy723:
 yy724:
 #line 9663 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_TIME_OF_DAY (context.location); }
-#line 19937 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 19935 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy725:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -20012,7 +20010,7 @@ yy735:
 	default:	goto yy49;
 	}
 yy736:
-	yyaccept = 77;
+	yyaccept = 76;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -20084,9 +20082,9 @@ yy736:
 yy737:
 #line 9628 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_INSTRUCTIONS (context.location); }
-#line 20088 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 20086 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy738:
-	yyaccept = 78;
+	yyaccept = 77;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -20158,9 +20156,9 @@ yy738:
 yy739:
 #line 9630 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_INTERSECTION (context.location); }
-#line 20162 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 20160 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy740:
-	yyaccept = 79;
+	yyaccept = 78;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -20232,7 +20230,7 @@ yy740:
 yy741:
 #line 9631 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ISO646String (context.location); }
-#line 20236 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 20234 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy742:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -20241,7 +20239,7 @@ yy742:
 	default:	goto yy49;
 	}
 yy743:
-	yyaccept = 80;
+	yyaccept = 79;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -20313,7 +20311,7 @@ yy743:
 yy744:
 #line 9635 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_NOT_A_NUMBER (context.location); }
-#line 20317 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 20315 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy745:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -20343,7 +20341,7 @@ yy748:
 	default:	goto yy49;
 	}
 yy749:
-	yyaccept = 81;
+	yyaccept = 80;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy772;
@@ -20415,7 +20413,7 @@ yy749:
 yy750:
 #line 9651 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_RELATIVE_OID (context.location); }
-#line 20419 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 20417 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy751:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -20466,7 +20464,7 @@ yy757:
 	default:	goto yy49;
 	}
 yy758:
-	yyaccept = 82;
+	yyaccept = 81;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -20538,9 +20536,9 @@ yy758:
 yy759:
 #line 9614 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXTENSIBILITY (context.location); }
-#line 20542 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 20540 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy760:
-	yyaccept = 83;
+	yyaccept = 82;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -20612,7 +20610,7 @@ yy760:
 yy761:
 #line 9619 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_GeneralString (context.location); }
-#line 20616 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 20614 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy762:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -20621,7 +20619,7 @@ yy762:
 	default:	goto yy49;
 	}
 yy763:
-	yyaccept = 84;
+	yyaccept = 83;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -20693,7 +20691,7 @@ yy763:
 yy764:
 #line 9620 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_GraphicString (context.location); }
-#line 20697 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 20695 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy765:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -20702,7 +20700,7 @@ yy765:
 	default:	goto yy49;
 	}
 yy766:
-	yyaccept = 85;
+	yyaccept = 84;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -20774,7 +20772,7 @@ yy766:
 yy767:
 #line 9637 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_NumericString (context.location); }
-#line 20778 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 20776 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy768:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -20783,7 +20781,7 @@ yy768:
 	default:	goto yy49;
 	}
 yy769:
-	yyaccept = 86;
+	yyaccept = 85;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -20855,7 +20853,7 @@ yy769:
 yy770:
 #line 9646 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_PLUS_INFINITY (context.location); }
-#line 20859 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 20857 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy771:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -20939,7 +20937,7 @@ yy773:
 	default:	goto yy49;
 	}
 yy774:
-	yyaccept = 87;
+	yyaccept = 86;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -21011,7 +21009,7 @@ yy774:
 yy775:
 #line 9661 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_TeletexString (context.location); }
-#line 21015 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 21013 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy776:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -21027,7 +21025,7 @@ yy777:
 	default:	goto yy49;
 	}
 yy778:
-	yyaccept = 88;
+	yyaccept = 87;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -21099,7 +21097,7 @@ yy778:
 yy779:
 #line 9673 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_VisibleString (context.location); }
-#line 21103 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 21101 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy780:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -21122,7 +21120,7 @@ yy782:
 	default:	goto yy49;
 	}
 yy783:
-	yyaccept = 89;
+	yyaccept = 88;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -21194,7 +21192,7 @@ yy783:
 yy784:
 #line 9634 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_MINUS_INFINITY (context.location); }
-#line 21198 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 21196 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy785:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -21231,7 +21229,7 @@ yy789:
 	default:	goto yy49;
 	}
 yy790:
-	yyaccept = 90;
+	yyaccept = 89;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -21303,9 +21301,9 @@ yy790:
 yy791:
 #line 9672 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_VideotexString (context.location); }
-#line 21307 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 21305 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy792:
-	yyaccept = 91;
+	yyaccept = 90;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -21377,7 +21375,7 @@ yy792:
 yy793:
 #line 9584 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ABSTRACT_SYNTAX (context.location); }
-#line 21381 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 21379 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy794:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -21386,7 +21384,7 @@ yy794:
 	default:	goto yy49;
 	}
 yy795:
-	yyaccept = 92;
+	yyaccept = 91;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -21458,7 +21456,7 @@ yy795:
 yy796:
 #line 9618 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_GeneralizedTime (context.location); }
-#line 21462 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 21460 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy797:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -21467,7 +21465,7 @@ yy797:
 	default:	goto yy49;
 	}
 yy798:
-	yyaccept = 93;
+	yyaccept = 92;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -21539,7 +21537,7 @@ yy798:
 yy799:
 #line 9648 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_PrintableString (context.location); }
-#line 21543 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 21541 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy800:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -21548,7 +21546,7 @@ yy800:
 	default:	goto yy49;
 	}
 yy801:
-	yyaccept = 94;
+	yyaccept = 93;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -21620,9 +21618,9 @@ yy801:
 yy802:
 #line 9665 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_TYPE_IDENTIFIER (context.location); }
-#line 21624 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 21622 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy803:
-	yyaccept = 95;
+	yyaccept = 94;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -21694,9 +21692,9 @@ yy803:
 yy804:
 #line 9669 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_UniversalString (context.location); }
-#line 21698 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 21696 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy805:
-	yyaccept = 96;
+	yyaccept = 95;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -21768,9 +21766,9 @@ yy805:
 yy806:
 #line 9608 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ENCODING_CONTROL (context.location); }
-#line 21772 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 21770 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy807:
-	yyaccept = 97;
+	yyaccept = 96;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -21842,9 +21840,9 @@ yy807:
 yy808:
 #line 9639 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ObjectDescriptor (context.location); }
-#line 21846 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 21844 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy809:
-	yyaccept = 98;
+	yyaccept = 97;
 	yych = *(YYMARKER = ++context.cursor);
 	switch (yych) {
 	case '-':	goto yy103;
@@ -21916,9 +21914,9 @@ yy809:
 yy810:
 #line 9652 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_RELATIVE_OID_IRI (context.location); }
-#line 21920 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 21918 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 }
-#line 9727 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 9728 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 
     }
 }

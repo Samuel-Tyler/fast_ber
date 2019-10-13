@@ -1874,7 +1874,8 @@ re2c:define:YYCURSOR = "context.cursor";
 // Comments
 "--" ([\-]?[^\r\n\-])* "--"
                         { context.location.columns(context.cursor - start); return yylex(context); }
-"--" ([\-]?[^\r\n\-])*  { context.location.columns(context.cursor - start); return yylex(context); }
+"--" ([\-]?[^\r\n\-])*[\-]?
+                        { context.location.columns(context.cursor - start); return yylex(context); }
 "/*" ([^\*]|[\*][^/])* "*/"
                         { context.location.columns(context.cursor - start); return yylex(context); }
 
