@@ -1,7 +1,7 @@
 MultiModuleA DEFINITIONS IMPLICIT TAGS ::= BEGIN
 IMPORTS
-    StringInModuleB FROM MultiModuleB
-    IntegerInModuleC FROM MultiModuleC;
+    StringInModuleB, string-value FROM MultiModuleB
+    IntegerInModuleC, integer-value FROM MultiModuleC;
 
 Collection ::= SEQUENCE {
     string StringInModuleB,

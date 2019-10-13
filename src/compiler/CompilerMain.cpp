@@ -75,7 +75,8 @@ std::string create_assignment(const Asn1Tree& tree, const Module& module, const 
         if (absl::holds_alternative<ValueAssignment>(assignment.specific)) // Value assignment
         {
             const ValueAssignment& value_assign = absl::get<ValueAssignment>(assignment.specific);
-            std::string result = type_as_string(value_assign.type, module, tree) + " " + assignment.name + " = ";
+            std::string            result =
+                "static const " + type_as_string(value_assign.type, module, tree) + " " + assignment.name + " = ";
 
             const Type& assigned_to_type =
                 (is_defined(value_assign.type))
@@ -494,10 +495,14 @@ std::string create_body(const Asn1Tree& tree, const Module& module)
     {
         for (const auto& import_name : import.imports)
         {
-            if (is_type(resolve(tree, import.module_reference, import_name)) ||
-                is_value(resolve(tree, import.module_reference, import_name)))
+            if (is_type(resolve(tree, import.module_reference, import_name)))
             {
                 output += "using " + import_name + " = " + import.module_reference + "::" + import_name + ";\n";
+            }
+            else if (is_value(resolve(tree, import.module_reference, import_name)))
+            {
+                output +=
+                    "static const auto " + import_name + " = " + import.module_reference + "::" + import_name + ";\n";
             }
         }
         if (import.imports.size() > 0)
