@@ -47,6 +47,7 @@ class TaggedType : public Type
 
     using Id = decltype(resultant_identifier(identifier(static_cast<Type*>(nullptr), IdentifierAdlToken{}), TagType{}));
     using ExplicitId = decltype(inner_identifier(Id{}));
+    using BaseType   = Type;
 };
 
 // Special template required for enums as they can't be inhereted from
@@ -72,6 +73,7 @@ struct TaggedType<Type, TagType, typename std::enable_if<std::is_enum<Type>::val
 
     using Id = decltype(resultant_identifier(identifier(static_cast<Type*>(nullptr), IdentifierAdlToken{}), TagType{}));
     using ExplicitId = decltype(inner_identifier(Id{}));
+    using BaseType   = Type;
 };
 
 template <typename T, typename DefaultTag, typename ID = typename TaggedType<T, DefaultTag>::Id>
