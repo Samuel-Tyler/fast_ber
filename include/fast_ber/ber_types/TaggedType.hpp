@@ -25,22 +25,18 @@ constexpr auto resultant_identifier(OriginalIdentifier, OverrideIndetifier)
 }
 
 template <typename Type, typename TagType, typename Enable = void>
-class TaggedType : public Type
+struct TaggedType : public Type
 {
-  public:
-    template <typename T1, typename T2>
-    TaggedType(const TaggedType<T1, T2>& t) : Type(t)
-    {
-    }
-
+    TaggedType(const Type& t) : Type(t) {}
+    TaggedType(Type&& t) : Type(std::move(t)) {}
     template <typename... T>
     TaggedType(T&&... t) : Type{std::forward<T>(t)...}
     {
     }
-
-    // No members, destructor doesn't need to be virtual
-    TaggedType()           = default; // Noexcept fails on g++4.8
-    ~TaggedType() noexcept = default;
+    template <typename T1, typename T2>
+    TaggedType(const TaggedType<T1, T2>& t) : Type(t.get())
+    {
+    }
 
     Type&       get() { return *this; }
     const Type& get() const { return *this; }
@@ -49,6 +45,42 @@ class TaggedType : public Type
     using ExplicitId = decltype(inner_identifier(Id{}));
     using BaseType   = Type;
 };
+
+template <typename T1, typename T2, typename T3>
+bool operator==(const TaggedType<T1, T2>& lhs, const T3& rhs)
+{
+    return lhs.get() == rhs;
+}
+
+template <typename T1, typename T2, typename T3>
+bool operator==(const T1& lhs, const TaggedType<T2, T3>& rhs)
+{
+    return lhs == rhs.get();
+}
+
+template <typename T1, typename T2, typename T3, typename T4>
+bool operator==(const TaggedType<T1, T2>& lhs, const TaggedType<T3, T4>& rhs)
+{
+    return lhs.get() == rhs.get();
+}
+
+template <typename T1, typename T2, typename T3>
+bool operator!=(const TaggedType<T1, T2>& lhs, const T3& rhs)
+{
+    return lhs.get() != rhs;
+}
+
+template <typename T1, typename T2, typename T3>
+bool operator!=(const T1& lhs, const TaggedType<T2, T3>& rhs)
+{
+    return lhs != rhs.get();
+}
+
+template <typename T1, typename T2, typename T3, typename T4>
+bool operator!=(const TaggedType<T1, T2>& lhs, const TaggedType<T3, T4>& rhs)
+{
+    return lhs.get() != rhs.get();
+}
 
 // Special template required for enums as they can't be inhereted from
 template <typename Type, typename TagType>
