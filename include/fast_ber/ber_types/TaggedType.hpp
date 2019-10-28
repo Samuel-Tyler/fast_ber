@@ -10,7 +10,7 @@ namespace fast_ber
 template <typename OriginalIdentifier, typename OverrideIndetifier,
           typename E = typename std::enable_if<is_explicit_tagged(OriginalIdentifier{})>::type>
 constexpr auto resultant_identifier(OriginalIdentifier, OverrideIndetifier)
-    -> TaggedExplicitIdentifier<OverrideIndetifier{}.class_(), OverrideIndetifier{}.tag(),
+    -> TaggedExplicitIdentifier<OverrideIndetifier::class_(), OverrideIndetifier::tag(),
                                 decltype(inner_identifier(OriginalIdentifier{}))>
 {
     return {};
