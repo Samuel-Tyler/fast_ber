@@ -18,7 +18,7 @@
 namespace fast_ber
 {
 
-template <typename Identifier = DefaultTagging>
+template <typename Identifier = ExplicitIdentifier<UniversalTag::boolean>>
 class Boolean
 {
   public:

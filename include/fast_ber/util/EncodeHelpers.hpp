@@ -94,14 +94,6 @@ inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t cont
     return EncodeResult{true, header_length + content_length};
 }
 
-template <typename ExplicitId, typename T>
-EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, DefaultTagging)
-{
-    constexpr auto tag = inner_identifier(explicit_identifier(static_cast<T*>(nullptr)));
-    static_assert(is_explicit(tag), "Explicit");
-    return encode(output, object, tag);
-}
-
 template <typename ExplicitId, typename T, UniversalTag T2>
 EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, ExplicitIdentifier<T2>)
 {

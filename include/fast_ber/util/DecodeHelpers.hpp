@@ -12,20 +12,6 @@ struct DecodeResult
     bool success;
 };
 
-template <typename ExplicitId, typename T>
-DecodeResult decode_impl(BerViewIterator& input, T& output, DefaultTagging) noexcept
-{
-    constexpr auto default_id = inner_identifier(explicit_identifier(static_cast<T*>(nullptr)));
-    if (!input->is_valid() || val(default_id.tag()) != input->tag() || default_id.class_() != input->class_())
-    {
-        return DecodeResult{false};
-    }
-
-    bool success = output.assign_ber(*input) > 0;
-    ++input;
-    return DecodeResult{success};
-}
-
 template <typename ExplicitId, typename T, UniversalTag T2>
 DecodeResult decode_impl(BerViewIterator& input, T& output, ExplicitIdentifier<T2> id) noexcept
 {

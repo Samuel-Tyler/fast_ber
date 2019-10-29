@@ -288,7 +288,7 @@ std::string type_as_string(const SetOfType& set, const Module& module, const Asn
 std::string type_as_string(const PrefixedType& prefixed_type, const Module& module, const Asn1Tree& tree,
                            const std::string& identifier_override)
 {
-    auto id = identifier(prefixed_type, module, tree).tag;
+    auto id = identifier(prefixed_type, module, tree).name();
 
     if (is_sequence(prefixed_type.tagged_type->type) || is_set(prefixed_type.tagged_type->type) ||
         is_enumerated(prefixed_type.tagged_type->type))

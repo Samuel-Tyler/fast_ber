@@ -80,25 +80,22 @@ TEST_CASE("Integer: Default value") { REQUIRE(fast_ber::Integer<>() == 0); }
 
 TEST_CASE("Integer: Tagging")
 {
-    using Tag         = fast_ber::ImplicitIdentifier<fast_ber::Class::application, 2>;
-    using DefaultTag  = fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::integer>;
-    using ExplicitTag = fast_ber::TaggedExplicitIdentifier<fast_ber::Class::application, 2, fast_ber::DefaultTagging>;
-    using FullExplicitTag   = fast_ber::TaggedExplicitIdentifier<fast_ber::Class::application, 2, DefaultTag>;
+    using Tag        = fast_ber::ImplicitIdentifier<fast_ber::Class::application, 2>;
+    using DefaultTag = fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::integer>;
+    using ExplicitTag =
+        fast_ber::TaggedExplicitIdentifier<fast_ber::Class::application, 2,
+                                           fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::integer>>;
     using TaggedInt         = fast_ber::Integer<Tag>;
     using ExplicitTaggedInt = fast_ber::Integer<ExplicitTag>;
+
+    static_assert(
+        std::is_same<decltype(fast_ber::identifier(static_cast<fast_ber::Integer<>*>(nullptr))), DefaultTag>::value,
+        "Tagged Integer");
 
     static_assert(std::is_same<decltype(fast_ber::identifier(static_cast<TaggedInt*>(nullptr))), Tag>::value,
                   "Tagged Integer");
 
     static_assert(
-        std::is_same<decltype(fast_ber::explicit_identifier(static_cast<TaggedInt*>(nullptr))), DefaultTag>::value,
+        std::is_same<decltype(fast_ber::identifier(static_cast<ExplicitTaggedInt*>(nullptr))), ExplicitTag>::value,
         "Tagged Identifier");
-
-    static_assert(
-        std::is_same<decltype(fast_ber::identifier(static_cast<ExplicitTaggedInt*>(nullptr))), FullExplicitTag>::value,
-        "Tagged Identifier");
-
-    static_assert(std::is_same<decltype(fast_ber::explicit_identifier(static_cast<ExplicitTaggedInt*>(nullptr))),
-                               DefaultTag>::value,
-                  "Tagged Identifier");
 }

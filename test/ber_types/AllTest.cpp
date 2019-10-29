@@ -55,8 +55,6 @@ void test_type(const T& a)
     REQUIRE(a == g);
 
     // Identifier checks
-    static_assert(!fast_ber::is_explicit_tagged(explicit_identifier(static_cast<T*>(nullptr))),
-                  "Explicit ID must not be complex");
     std::cout << identifier(&a) << std::endl;
 }
 

@@ -7,23 +7,6 @@
 namespace fast_ber
 {
 
-template <typename OriginalIdentifier, typename OverrideIndetifier,
-          typename E = typename std::enable_if<is_explicit_tagged(OriginalIdentifier{})>::type>
-constexpr auto resultant_identifier(OriginalIdentifier, OverrideIndetifier)
-    -> TaggedExplicitIdentifier<OverrideIndetifier::class_(), OverrideIndetifier::tag(),
-                                decltype(inner_identifier(OriginalIdentifier{}))>
-{
-    return {};
-}
-
-template <typename OriginalIdentifier, typename OverrideIndetifier,
-          typename E = typename std::enable_if<!is_explicit_tagged(OriginalIdentifier{})>::type>
-constexpr auto resultant_identifier(OriginalIdentifier, OverrideIndetifier)
-    -> decltype(resolve_default(OverrideIndetifier{}, OriginalIdentifier{}))
-{
-    return {};
-}
-
 template <typename Type, typename TagType, typename Enable = void>
 struct TaggedType : public Type
 {
@@ -41,9 +24,8 @@ struct TaggedType : public Type
     Type&       get() { return *this; }
     const Type& get() const { return *this; }
 
-    using Id = decltype(resultant_identifier(identifier(static_cast<Type*>(nullptr), IdentifierAdlToken{}), TagType{}));
-    using ExplicitId = decltype(inner_identifier(Id{}));
-    using BaseType   = Type;
+    using Id       = TagType;
+    using BaseType = Type;
 };
 
 template <typename T1, typename T2, typename T3>
@@ -103,9 +85,8 @@ struct TaggedType<Type, TagType, typename std::enable_if<std::is_enum<Type>::val
     Type&       get() { return enumerated; }
     const Type& get() const { return enumerated; }
 
-    using Id = decltype(resultant_identifier(identifier(static_cast<Type*>(nullptr), IdentifierAdlToken{}), TagType{}));
-    using ExplicitId = decltype(inner_identifier(Id{}));
-    using BaseType   = Type;
+    using Id       = TagType;
+    using BaseType = Type;
 };
 
 template <typename T, typename DefaultTag, typename ID = typename TaggedType<T, DefaultTag>::Id>

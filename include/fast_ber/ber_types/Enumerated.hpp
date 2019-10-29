@@ -45,11 +45,4 @@ identifier(const Enumerated*, IdentifierAdlToken = IdentifierAdlToken{}) noexcep
     return {};
 }
 
-template <typename Enumerated, typename std::enable_if<std::is_enum<Enumerated>{}, int>::type = 0>
-constexpr inline ExplicitIdentifier<UniversalTag::enumerated>
-explicit_identifier(const Enumerated*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
-{
-    return {};
-}
-
 } // namespace fast_ber

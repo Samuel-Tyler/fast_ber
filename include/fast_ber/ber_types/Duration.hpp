@@ -4,6 +4,6 @@
 
 namespace fast_ber
 {
-template <typename Identifier = DefaultTagging>
+template <typename Identifier = ExplicitIdentifier<UniversalTag::generalized_time>>
 using Duration = GeneralizedTime<Identifier>;
 } // namespace fast_ber

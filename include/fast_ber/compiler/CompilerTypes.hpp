@@ -396,10 +396,29 @@ struct Asn1Tree
     std::vector<Module> modules;
 };
 
+struct Identifier
+{
+    std::string class_;
+    int         tag_number;
+};
+
 struct TaggingInfo
 {
-    std::string tag;
+    Identifier  outer_tag;
+    std::string inner_tag;
     bool        is_default_tagged;
+
+    std::string name() const
+    {
+        if (outer_tag.class_.empty())
+        {
+            return inner_tag;
+        }
+        else
+        {
+            return "TId<" + outer_tag.class_ + ", " + std::to_string(outer_tag.tag_number) + ", " + inner_tag + ">";
+        }
+    }
 };
 
 struct ObjectIdComponentValue

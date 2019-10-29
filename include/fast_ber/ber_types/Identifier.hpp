@@ -10,11 +10,6 @@
 namespace fast_ber
 {
 
-// Token used to suggest default tagging should be used
-struct DefaultTagging
-{
-};
-
 // Class is always universal
 template <UniversalTag explicit_tag>
 struct ExplicitIdentifier
@@ -45,8 +40,6 @@ constexpr Tag reference_tag(const ExplicitIdentifier<T>& id)
     return val(id.tag());
 }
 
-constexpr DefaultTagging inner_identifier(DefaultTagging) { return {}; }
-
 template <UniversalTag ExplicitTag>
 constexpr ExplicitIdentifier<ExplicitTag> inner_identifier(ExplicitIdentifier<ExplicitTag>)
 {
@@ -62,25 +55,6 @@ constexpr ExplicitTag inner_identifier(TaggedExplicitIdentifier<OuterClass, Oute
 template <Class ImplicitClass, Tag ImplicitTag>
 constexpr ImplicitIdentifier<ImplicitClass, ImplicitTag>
     inner_identifier(ImplicitIdentifier<ImplicitClass, ImplicitTag>)
-{
-    return {};
-}
-
-template <typename Default>
-constexpr Default resolve_default(DefaultTagging, Default)
-{
-    return {};
-}
-
-template <UniversalTag ExplicitTag, typename Default>
-constexpr ExplicitIdentifier<ExplicitTag> resolve_default(ExplicitIdentifier<ExplicitTag>, Default)
-{
-    return {};
-}
-
-template <Class OuterClass, Tag OuterTag, typename ExplicitTag, typename Default>
-constexpr auto resolve_default(TaggedExplicitIdentifier<OuterClass, OuterTag, ExplicitTag>, Default)
-    -> TaggedExplicitIdentifier<OuterClass, OuterTag, decltype(resolve_default(ExplicitTag{}, Default{}))>
 {
     return {};
 }
@@ -122,14 +96,7 @@ constexpr bool is_explicit_tagged(T)
 }
 
 template <typename T>
-constexpr typename T::ExplicitId explicit_identifier(const T*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
-{
-    return {};
-}
-
-template <typename T>
-constexpr auto identifier(const T*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
-    -> decltype(resolve_default(typename T::Id{}, typename T::ExplicitId{}))
+constexpr auto identifier(const T*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept -> typename T::Id
 {
     return {};
 }
@@ -137,16 +104,11 @@ constexpr auto identifier(const T*, IdentifierAdlToken = IdentifierAdlToken{}) n
 template <typename T>
 struct IdentifierType
 {
-    using type = decltype(resolve_default(typename T::Id{}, typename T::ExplicitId{}));
+    using type = typename T::Id;
 };
 
 template <typename T>
 using Identifier = typename IdentifierType<T>::type;
-
-static_assert(is_explicit_tagged(TaggedExplicitIdentifier<Class::universal, 2, DefaultTagging>{}), "!");
-static_assert(!is_explicit_tagged(DefaultTagging{}), "!");
-
-inline std::ostream& operator<<(std::ostream& os, const DefaultTagging&) noexcept { return os << "Default"; }
 
 template <UniversalTag ExplicitTag>
 std::ostream& operator<<(std::ostream& os, const ExplicitIdentifier<ExplicitTag>& id) noexcept
