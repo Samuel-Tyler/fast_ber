@@ -131,7 +131,10 @@ struct Optional : public OptionalImplementation<T, storage>::Type
     using Implementation::Implementation;
     using Implementation::operator=;
     const Implementation& base() const { return *static_cast<const Implementation*>(this); }
+
+    Optional() : Implementation() {}
     Optional(const Implementation& rhs) : Implementation(rhs) {}
+    Optional(Implementation&& rhs) : Implementation(rhs) {}
 };
 
 template <typename T, typename T2, StorageMode s1>

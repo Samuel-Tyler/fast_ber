@@ -67,8 +67,8 @@ TEST_CASE("Choice: Clashing type")
 
     REQUIRE(enc_success);
     REQUIRE(dec_success);
-    REQUIRE(absl::holds_alternative<absl::variant_alternative<2, choice_type>::type>(choice_1));
-    REQUIRE(absl::holds_alternative<absl::variant_alternative<2, choice_type>::type>(choice_2));
+    REQUIRE(absl::holds_alternative<fast_ber::variant_alternative<2, choice_type>::type>(choice_1));
+    REQUIRE(absl::holds_alternative<fast_ber::variant_alternative<2, choice_type>::type>(choice_2));
     REQUIRE(choice_1 == choice_2);
 }
 
