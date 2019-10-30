@@ -42,9 +42,9 @@ class BerLengthAndContentContainer
     const uint8_t*            content_data() const noexcept { return m_data.data() + m_content_offset; }
     size_t                    content_length() const noexcept { return m_data.size() - m_content_offset; }
 
-    size_t       from_raw(const absl::Span<const uint8_t> data) noexcept;
-    EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
-    size_t       content_and_length_from_raw(const absl::Span<const uint8_t> data) noexcept;
+    DecodeResult from_raw(const absl::Span<const uint8_t> data) noexcept;
+    EncodeResult content_and_length_to_raw(absl::Span<uint8_t> buffer) const noexcept;
+    DecodeResult content_and_length_from_raw(const absl::Span<const uint8_t> data) noexcept;
 
   private:
     absl::InlinedVector<uint8_t, 100> m_data;
@@ -108,7 +108,12 @@ inline void BerLengthAndContentContainer::resize_content(size_t size) noexcept
     encode_length(absl::MakeSpan(m_data), size);
 }
 
-inline EncodeResult BerLengthAndContentContainer::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
+inline DecodeResult BerLengthAndContentContainer::from_raw(const absl::Span<const uint8_t> data) noexcept
+{
+    return DecodeResult{assign(BerView(data)) > 0};
+}
+
+inline EncodeResult BerLengthAndContentContainer::content_and_length_to_raw(absl::Span<uint8_t> buffer) const noexcept
 {
     if (buffer.size() < m_data.size())
     {
@@ -117,11 +122,6 @@ inline EncodeResult BerLengthAndContentContainer::encode_content_and_length(absl
 
     std::memcpy(buffer.data(), m_data.data(), m_data.size());
     return EncodeResult{true, m_data.size()};
-}
-
-inline size_t BerLengthAndContentContainer::content_and_length_from_raw(const absl::Span<const uint8_t> data) noexcept
-{
-    return assign(BerView(data));
 }
 
 } // namespace fast_ber

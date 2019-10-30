@@ -168,7 +168,7 @@ size_t GeneralizedTime<Identifier>::assign_ber(const BerView& view) noexcept
 template <typename Identifier>
 EncodeResult GeneralizedTime<Identifier>::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
 {
-    return m_contents.encode_content_and_length(buffer);
+    return m_contents.content_and_length_to_raw(buffer);
 }
 
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>

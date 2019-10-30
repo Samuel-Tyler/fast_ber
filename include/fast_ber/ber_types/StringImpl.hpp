@@ -186,7 +186,7 @@ size_t StringImpl<tag, Identifier>::assign_ber(absl::Span<const uint8_t> buffer)
 template <UniversalTag tag, typename Identifier>
 EncodeResult StringImpl<tag, Identifier>::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
 {
-    return m_contents.encode_content_and_length(buffer);
+    return m_contents.content_and_length_to_raw(buffer);
 }
 
 template <UniversalTag tag, typename DefaultIdentifier, typename ID = DefaultIdentifier>

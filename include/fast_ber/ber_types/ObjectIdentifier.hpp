@@ -308,7 +308,7 @@ size_t ObjectIdentifier<Identifier>::assign_ber(absl::Span<const uint8_t> buffer
 template <typename Identifier>
 EncodeResult ObjectIdentifier<Identifier>::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
 {
-    return m_contents.encode_content_and_length(buffer);
+    return m_contents.content_and_length_to_raw(buffer);
 }
 
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
