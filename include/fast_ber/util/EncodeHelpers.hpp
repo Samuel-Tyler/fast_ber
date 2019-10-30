@@ -27,8 +27,8 @@ struct EncodeResult
 // These are the samllest ID lengths, optimising for small sized ber headers.
 
 template <UniversalTag T>
-inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_length, ExplicitIdentifier<T>,
-                                         size_t content_offset = 0)
+EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_length, ExplicitIdentifier<T>,
+                                  size_t content_offset = 0)
 {
     constexpr auto tag    = ExplicitIdentifier<T>::tag();
     constexpr auto class_ = ExplicitIdentifier<T>::class_();
@@ -49,8 +49,8 @@ inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t cont
 }
 
 template <Class T1, Tag T2, typename T3>
-inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t           content_length,
-                                         TaggedExplicitIdentifier<T1, T2, T3>, size_t content_offset = 0)
+EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t           content_length,
+                                  TaggedExplicitIdentifier<T1, T2, T3>, size_t content_offset = 0)
 {
     constexpr auto tag    = TaggedExplicitIdentifier<T1, T2, T3>::tag();
     constexpr auto class_ = TaggedExplicitIdentifier<T1, T2, T3>::class_();
@@ -72,8 +72,8 @@ inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t     
 }
 
 template <Class T1, Tag T2>
-inline EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_length, ImplicitIdentifier<T1, T2>,
-                                         size_t content_offset = 0)
+EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_length, ImplicitIdentifier<T1, T2>,
+                                  size_t content_offset = 0)
 {
     constexpr auto tag    = ImplicitIdentifier<T1, T2>::tag();
     constexpr auto class_ = ImplicitIdentifier<T1, T2>::class_();

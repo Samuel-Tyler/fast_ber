@@ -16,7 +16,7 @@ class BerLengthAndContentContainer
 {
   public:
     BerLengthAndContentContainer() noexcept : m_data{0}, m_content_offset{1} {}
-    BerLengthAndContentContainer(const BerView& view) noexcept { assign_ber(view); }
+    BerLengthAndContentContainer(const BerView& view) noexcept { assign(view); }
     BerLengthAndContentContainer(const BerLengthAndContentContainer& container) noexcept
         : m_data{container.m_data}, m_content_offset{container.m_content_offset}
     {
@@ -27,13 +27,14 @@ class BerLengthAndContentContainer
 
     bool operator==(const BerLengthAndContentContainer& rhs) const noexcept { return m_data == rhs.m_data; }
     bool operator!=(const BerLengthAndContentContainer& rhs) const noexcept { return !(*this == rhs); }
+
     BerLengthAndContentContainer& operator=(const BerView& view) noexcept;
     BerLengthAndContentContainer& operator=(const BerLengthAndContentContainer& container) noexcept;
-    size_t                        assign_ber(const BerView& view) noexcept;
-    size_t                        assign_ber(const BerContainer& container) noexcept;
-    size_t                        assign_ber(const absl::Span<const uint8_t> data) noexcept;
-    void                          assign_content(const absl::Span<const uint8_t> input_content) noexcept;
-    void                          resize_content(size_t size) noexcept;
+    size_t                        assign(const BerView& view) noexcept;
+    size_t                        assign(const BerContainer& container) noexcept;
+
+    void assign_content(const absl::Span<const uint8_t> input_content) noexcept;
+    void resize_content(size_t size) noexcept;
 
     absl::Span<uint8_t>       content() noexcept { return absl::MakeSpan(content_data(), content_length()); }
     absl::Span<const uint8_t> content() const noexcept { return absl::MakeSpan(content_data(), content_length()); }
@@ -41,7 +42,9 @@ class BerLengthAndContentContainer
     const uint8_t*            content_data() const noexcept { return m_data.data() + m_content_offset; }
     size_t                    content_length() const noexcept { return m_data.size() - m_content_offset; }
 
+    size_t       from_raw(const absl::Span<const uint8_t> data) noexcept;
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
+    size_t       content_and_length_from_raw(const absl::Span<const uint8_t> data) noexcept;
 
   private:
     absl::InlinedVector<uint8_t, 100> m_data;
@@ -50,7 +53,7 @@ class BerLengthAndContentContainer
 
 inline BerLengthAndContentContainer& BerLengthAndContentContainer::operator=(const BerView& view) noexcept
 {
-    assign_ber(view);
+    assign(view);
     return *this;
 }
 
@@ -62,7 +65,7 @@ inline BerLengthAndContentContainer& BerLengthAndContentContainer::
     return *this;
 }
 
-inline size_t BerLengthAndContentContainer::assign_ber(const BerView& view) noexcept
+inline size_t BerLengthAndContentContainer::assign(const BerView& view) noexcept
 {
     if (!view.is_valid())
     {
@@ -77,14 +80,9 @@ inline size_t BerLengthAndContentContainer::assign_ber(const BerView& view) noex
     return view.identifier_length() + length_and_content_length;
 }
 
-inline size_t BerLengthAndContentContainer::assign_ber(const BerContainer& container) noexcept
+inline size_t BerLengthAndContentContainer::assign(const BerContainer& container) noexcept
 {
-    return assign_ber(container.view());
-}
-
-inline size_t BerLengthAndContentContainer::assign_ber(const absl::Span<const uint8_t> data) noexcept
-{
-    return assign_ber(BerView(data));
+    return assign(container.view());
 }
 
 inline void BerLengthAndContentContainer::assign_content(const absl::Span<const uint8_t> input_content) noexcept
@@ -119,6 +117,11 @@ inline EncodeResult BerLengthAndContentContainer::encode_content_and_length(absl
 
     std::memcpy(buffer.data(), m_data.data(), m_data.size());
     return EncodeResult{true, m_data.size()};
+}
+
+inline size_t BerLengthAndContentContainer::content_and_length_from_raw(const absl::Span<const uint8_t> data) noexcept
+{
+    return assign(BerView(data));
 }
 
 } // namespace fast_ber

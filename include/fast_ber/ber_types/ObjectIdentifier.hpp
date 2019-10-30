@@ -288,19 +288,21 @@ bool ObjectIdentifier<Identifier>::assign(const ObjectIdentifierComponents& oid)
 template <typename Identifier>
 size_t ObjectIdentifier<Identifier>::assign_ber(const BerView& view) noexcept
 {
-    return m_contents.assign_ber(view);
+    m_contents.assign(view);
+    return 1;
 }
 
 template <typename Identifier>
 size_t ObjectIdentifier<Identifier>::assign_ber(const BerContainer& container) noexcept
 {
-    return m_contents.assign_ber(container);
+    m_contents.assign(container);
+    return 1;
 }
 
 template <typename Identifier>
 size_t ObjectIdentifier<Identifier>::assign_ber(absl::Span<const uint8_t> buffer) noexcept
 {
-    return m_contents.assign_ber(buffer);
+    return m_contents.assign(buffer);
 }
 
 template <typename Identifier>

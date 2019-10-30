@@ -162,7 +162,7 @@ size_t GeneralizedTime<Identifier>::assign_ber(const BerView& view) noexcept
     {
         return false;
     }
-    return m_contents.assign_ber(view);
+    return m_contents.assign(view);
 }
 
 template <typename Identifier>
@@ -181,6 +181,21 @@ template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 DecodeResult decode(BerViewIterator& input, GeneralizedTime<DefaultIdentifier>& output, const ID& id = {}) noexcept
 {
     return decode_impl<typename GeneralizedTime<DefaultIdentifier>::ExplicitId>(input, output, id);
+}
+
+template <typename Identifier>
+EncodeResult encode_content_and_length(absl::Span<uint8_t> output, const GeneralizedTime<Identifier>& object) noexcept
+{
+    return object.encode_content_and_length(output);
+}
+
+template <typename Identifier>
+DecodeResult decode_content_and_length(BerViewIterator& input, GeneralizedTime<Identifier>& output) noexcept
+{
+    (void)input;
+    (void)output;
+
+    return {};
 }
 
 } // namespace fast_ber
