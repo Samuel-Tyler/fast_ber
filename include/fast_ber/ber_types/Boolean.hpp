@@ -128,7 +128,7 @@ inline EncodeResult Boolean<Identifier>::encode_content_and_length(absl::Span<ui
 }
 
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
-EncodeResult encode(absl::Span<uint8_t> output, const Boolean<DefaultIdentifier>& object, const ID& id = ID{})
+EncodeResult encode(absl::Span<uint8_t> output, const Boolean<DefaultIdentifier>& object, const ID& id = ID{}) noexcept
 {
     return encode_impl<typename Boolean<DefaultIdentifier>::ExplicitId>(output, object, id);
 }
@@ -137,6 +137,21 @@ template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 DecodeResult decode(BerViewIterator& input, Boolean<DefaultIdentifier>& output, const ID& id = {}) noexcept
 {
     return decode_impl<typename Boolean<DefaultIdentifier>::ExplicitId>(input, output, id);
+}
+
+template <typename Identifier>
+EncodeResult encode_content_and_length(absl::Span<uint8_t> output, const Boolean<Identifier>& object) noexcept
+{
+    return object.encode_content_and_length(output);
+}
+
+template <typename Identifier>
+DecodeResult decode_content_and_length(BerViewIterator& input, Boolean<Identifier>& output) noexcept
+{
+    (void)input;
+    (void)output;
+
+    return {};
 }
 
 } // namespace fast_ber

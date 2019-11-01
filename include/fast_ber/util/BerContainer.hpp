@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "fast_ber/util/BerView.hpp"
 #include "fast_ber/util/DecodeHelpers.hpp"
@@ -34,8 +34,8 @@ class BerContainer
 
     BerContainer& operator=(const BerView& input_view) noexcept;
     BerContainer& operator=(const BerContainer& input_container) noexcept;
-    void          assign(const BerView& input_view) noexcept;
-    void          assign(const BerContainer& container) noexcept;
+    bool          assign(const BerView& input_view) noexcept;
+    bool          assign(const BerContainer& container) noexcept;
 
     void assign_content(const absl::Span<const uint8_t> input_content) noexcept;
     void assign_content(Construction input_construction, Class input_class, Tag input_tag,
@@ -61,10 +61,10 @@ class BerContainer
 
     const BerView& view() const noexcept { return m_view; }
 
-    EncodeResult to_raw(absl::Span<uint8_t> buffer) const noexcept;
-    DecodeResult from_raw(const absl::Span<const uint8_t> input_data) noexcept;
-    EncodeResult content_and_length_to_raw(absl::Span<uint8_t> buffer) const noexcept;
-    DecodeResult content_and_length_from_raw(const absl::Span<const uint8_t> input_data) noexcept;
+    EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
+    DecodeResult decode(BerViewIterator& input_data) noexcept;
+    EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
+    DecodeResult decode_content_and_length(BerViewIterator& input_data) noexcept;
 
   private:
     absl::InlinedVector<uint8_t, 100u> m_data;
@@ -111,20 +111,27 @@ inline BerContainer& BerContainer::operator=(const BerContainer& container) noex
     return *this;
 }
 
-inline void BerContainer::assign(const BerView& input_view) noexcept
+inline bool BerContainer::assign(const BerView& input_view) noexcept
 {
     if (!input_view.is_valid())
     {
         m_data = {};
         m_view.assign(absl::Span<uint8_t>(m_data));
+        assert(!m_view.is_valid());
+        return false;
     }
 
     m_data.assign(input_view.ber().begin(), input_view.ber().end());
     m_view.assign(absl::MakeSpan(m_data.data(), m_data.size()), input_view.tag(), input_view.identifier_length(),
                   input_view.header_length(), input_view.content_length());
+
+    return m_view.is_valid();
 }
 
-inline void BerContainer::assign(const BerContainer& input_container) noexcept { assign(input_container.view()); }
+inline bool BerContainer::assign(const BerContainer& input_container) noexcept
+{
+    return assign(input_container.view());
+}
 
 inline void BerContainer::assign_content(const absl::Span<const uint8_t> input_content) noexcept
 {
@@ -174,40 +181,42 @@ inline void BerContainer::resize_content(size_t size)
     assert(m_view.is_valid());
 }
 
-inline EncodeResult BerContainer::to_raw(absl::Span<uint8_t> buffer) const noexcept { return m_view.encode(buffer); }
+inline EncodeResult BerContainer::encode(absl::Span<uint8_t> buffer) const noexcept { return m_view.encode(buffer); }
 
-inline DecodeResult BerContainer::from_raw(const absl::Span<const uint8_t> input_data) noexcept
+inline DecodeResult BerContainer::decode(BerViewIterator& input_data) noexcept
 {
-    m_data.assign(input_data.begin(), input_data.end());
-    m_view.assign(absl::MakeSpan(m_data.begin(), m_data.size()));
-
-    if (!m_view.is_valid())
-    {
-        return DecodeResult{false};
-    }
-    return DecodeResult{true};
+    bool success = assign(*input_data) > 0;
+    ++input_data;
+    return DecodeResult{success};
 }
 
-inline EncodeResult BerContainer::content_and_length_to_raw(absl::Span<uint8_t> buffer) const noexcept
+inline EncodeResult BerContainer::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
 {
     return m_view.encode_content_and_length(buffer);
 }
 
-inline DecodeResult BerContainer::content_and_length_from_raw(const absl::Span<const uint8_t> input_data) noexcept
+inline DecodeResult BerContainer::decode_content_and_length(BerViewIterator& input_data) noexcept
 {
+    if (!input_data->is_valid())
+    {
+        return DecodeResult{false};
+    }
+
     if (!m_view.is_valid())
     {
         *this = BerContainer();
     }
 
-    m_data.resize(input_data.length() + identifier_length());
-    std::copy(input_data.data(), input_data.end(), m_data.data() + identifier_length());
+    m_data.resize(input_data->content_length() + identifier_length());
+    std::copy(input_data->content().begin(), input_data->content().end(), m_data.data() + identifier_length());
     m_view.assign(absl::MakeSpan(m_data.begin(), m_data.size()));
 
     if (!m_view.is_valid())
     {
         return DecodeResult{false};
     }
+
+    ++input_data;
     return DecodeResult{true};
 }
 

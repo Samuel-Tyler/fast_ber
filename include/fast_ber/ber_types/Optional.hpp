@@ -216,6 +216,36 @@ DecodeResult decode(BerViewIterator& input, Optional<T, s1>& output) noexcept
 }
 
 template <typename T, StorageMode s1>
+EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer, const Optional<T, s1>& optional_type) noexcept
+{
+    constexpr auto id = identifier(static_cast<T*>(nullptr));
+    if (optional_type.has_value())
+    {
+        return encode_content_and_length(buffer, *optional_type, id);
+    }
+    else
+    {
+        return {true, 0};
+    }
+}
+
+template <typename T, StorageMode s1>
+DecodeResult decode_content_and_length(BerViewIterator& input, Optional<T, s1>& output) noexcept
+{
+    constexpr auto id = identifier(static_cast<T*>(nullptr));
+    if (input->is_valid() && input->tag() == val(id.tag()))
+    {
+        output.emplace();
+        return decode_content_and_length(input, *output, id);
+    }
+    else
+    {
+        output = empty;
+        return DecodeResult{true};
+    }
+}
+
+template <typename T, StorageMode s1>
 constexpr auto identifier(const Optional<T, s1>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
     -> decltype(identifier(static_cast<T*>(nullptr)))
 {

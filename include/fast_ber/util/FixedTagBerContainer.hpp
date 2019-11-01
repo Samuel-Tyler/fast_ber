@@ -1,5 +1,7 @@
 #pragma once
 
+#include "fast_ber/ber_types/Identifier.hpp"
+#include "fast_ber/util/BerContainer.hpp"
 #include "fast_ber/util/BerView.hpp"
 #include "fast_ber/util/EncodeIdentifiers.hpp"
 
@@ -10,63 +12,65 @@
 
 namespace fast_ber
 {
-/*
 
 // Owning container of a ber packet. Contents may or may not be valid. Memory is stored in a small buffer optimized
 // vector. Can be constructed directly from encoded ber memory (assign_ber) or by specifiyng the desired contents
 // (assign_contents)
-class FixedTagBerContainer
+
+template <typename Identifier>
+class FixedIdBerContainer
 {
   public:
-    FixedTagBerContainer() noexcept;
-    FixedTagBerContainer(const BerView& input_view) noexcept { assign_ber(input_view); }
-    FixedTagBerContainer(const BerContainer& container) noexcept { assign_ber(container); }
-    FixedTagBerContainer(absl::Span<const uint8_t> input_data, ConstructionMethod method) noexcept;
-    FixedTagBerContainer(Construction input_construction, Class input_class, Tag input_tag,
-                 absl::Span<const uint8_t> input_content) noexcept;
+    FixedIdBerContainer() noexcept;
+    FixedIdBerContainer(const FixedIdBerContainer&) = default;
+    FixedIdBerContainer(FixedIdBerContainer&&)      = default;
+    FixedIdBerContainer(const BerView& input_view) noexcept { assign_ber(input_view); }
+    FixedIdBerContainer(absl::Span<const uint8_t> input_data, ConstructionMethod method) noexcept;
+    FixedIdBerContainer(Construction input_construction, Class input_class, Tag input_tag,
+                        absl::Span<const uint8_t> input_content) noexcept;
 
-    BerContainer& operator=(const BerView& input_view) noexcept;
-    BerContainer& operator=(const BerContainer& input_container) noexcept;
-    size_t        assign_ber(const BerView& input_view) noexcept;
-    size_t        assign_ber(const BerContainer& container) noexcept;
-    size_t        assign_ber(const absl::Span<const uint8_t> input_data) noexcept;
-    void          assign_content(const absl::Span<const uint8_t> input_content) noexcept;
-    void          assign_content(Construction input_construction, Class input_class, Tag input_tag,
-                                 absl::Span<const uint8_t> input_content) noexcept;
-    void          resize_content(size_t size);
+    FixedIdBerContainer& operator=(const BerView& input_view) noexcept;
+    FixedIdBerContainer& operator=(const FixedIdBerContainer& input_container) noexcept;
+    size_t               assign_ber(const BerView& input_view) noexcept;
+    size_t               assign_ber(const FixedIdBerContainer& container) noexcept;
+    size_t               assign_ber(const absl::Span<const uint8_t> input_data) noexcept;
+    void                 assign_content(const absl::Span<const uint8_t> input_content) noexcept;
+    void                 assign_content(Construction input_construction, Class input_class, Tag input_tag,
+                                        absl::Span<const uint8_t> input_content) noexcept;
+    void                 resize_content(size_t size);
 
-    bool         is_valid() const noexcept { return m_view.is_valid(); }
-    Construction construction() const noexcept { return m_view.construction(); }
-    Class        class_() const noexcept { return m_view.class_(); }
-    Tag          tag() const noexcept { return m_view.tag(); }
-    size_t       identifier_length() const noexcept { return m_view.identifier_length(); }
-    size_t       header_length() const noexcept { return m_view.header_length(); }
+    constexpr static Class class_() noexcept { return Identifier::class_(); }
+    constexpr static Tag   tag() noexcept { return Identifier::tag(); }
 
-    absl::Span<uint8_t>       content() noexcept { return m_view.content(); }
-    absl::Span<const uint8_t> content() const noexcept { return m_view.content(); }
-    uint8_t*                  content_data() noexcept { return m_view.content_data(); }
-    const uint8_t*            content_data() const noexcept { return m_view.content_data(); }
+    absl::Span<uint8_t>       content() noexcept { return absl::MakeSpan(content_data(), m_content_length); }
+    absl::Span<const uint8_t> content() const noexcept { return absl::MakeSpan(content_data(), m_content_length); }
+    uint8_t*                  content_data() noexcept { return m_data[m_data.size() - m_content_length]; }
+    const uint8_t*            content_data() const noexcept { return m_data[m_data.size() - m_content_length]; }
     size_t                    content_length() const noexcept { return m_view.content_length(); }
 
-    absl::Span<const uint8_t> ber() const noexcept { return m_view.ber(); }
-    const uint8_t*            ber_data() const noexcept { return m_view.ber_data(); }
-    size_t                    ber_length() const noexcept { return m_view.ber_length(); }
+    absl::Span<const uint8_t> encoded() const noexcept { return absl::MakeSpan(m_data.begin(), m_data.end()); }
+    const uint8_t*            ber_data() const noexcept { return m_data.data(); }
+    size_t                    ber_length() const noexcept { return m_data.length(); }
 
-    const BerView& view() const noexcept { return m_view; }
+    BerView view() const noexcept { return BerView(m_data.begin(), m_data.end()); }
 
     size_t encode(absl::Span<uint8_t> buffer) const noexcept { return m_view.encode(buffer); }
     size_t encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
   private:
     absl::InlinedVector<uint8_t, 100u> m_data;
+    size_t                             m_content_length;
 };
 
-inline BerContainer::BerContainer() noexcept
+template <typename Identifier>
+FixedIdBerContainer<Identifier>::FixedIdBerContainer() noexcept
     : m_data{0x80, 0x00}, m_view(absl::MakeSpan(m_data.begin(), m_data.size()), 0, 1, 2, 0)
 {
 }
 
-inline BerContainer::BerContainer(absl::Span<const uint8_t> input_data, ConstructionMethod method) noexcept
+template <typename Identifier>
+FixedIdBerContainer<Identifier>::FixedIdBerContainer(absl::Span<const uint8_t> input_data,
+                                                     ConstructionMethod        method) noexcept
     : m_data(input_data.begin(), input_data.end()), m_view(absl::MakeSpan(m_data.begin(), m_data.size()))
 {
     if (method == ConstructionMethod::construct_with_provided_content)
@@ -83,25 +87,29 @@ inline BerContainer::BerContainer(absl::Span<const uint8_t> input_data, Construc
     }
 }
 
-inline BerContainer::BerContainer(Construction input_construction, Class input_class, Tag input_tag,
-                                  absl::Span<const uint8_t> input_content) noexcept
+template <typename Identifier>
+FixedIdBerContainer<Identifier>::FixedIdBerContainer(Construction input_construction, Class input_class, Tag input_tag,
+                                                     absl::Span<const uint8_t> input_content) noexcept
 {
     assign_content(input_construction, input_class, input_tag, input_content);
 }
 
-inline BerContainer& BerContainer::operator=(const BerView& input_view) noexcept
+template <typename Identifier>
+FixedIdBerContainer& FixedIdBerContainer<Identifier>::operator=(const BerView& input_view) noexcept
 {
     assign_ber(input_view);
     return *this;
 }
 
-inline BerContainer& BerContainer::operator=(const BerContainer& container) noexcept
+template <typename Identifier>
+FixedIdBerContainer& FixedIdBerContainer<Identifier>::operator=(const FixedIdBerContainer& container) noexcept
 {
     assign_ber(container);
     return *this;
 }
 
-inline size_t BerContainer::assign_ber(const BerView& input_view) noexcept
+template <typename Identifier>
+size_t FixedIdBerContainer<Identifier>::assign_ber(const BerView& input_view) noexcept
 {
     if (!input_view.is_valid())
     {
@@ -115,11 +123,13 @@ inline size_t BerContainer::assign_ber(const BerView& input_view) noexcept
     return input_view.ber_length();
 }
 
-inline size_t BerContainer::assign_ber(const BerContainer& input_container) noexcept
+template <typename Identifier>
+size_t FixedIdBerContainer<Identifier>::assign_ber(const FixedIdBerContainer& input_container) noexcept
 {
     return assign_ber(input_container.view());
 }
-inline size_t BerContainer::assign_ber(const absl::Span<const uint8_t> input_data) noexcept
+template <typename Identifier>
+size_t FixedIdBerContainer<Identifier>::assign_ber(const absl::Span<const uint8_t> input_data) noexcept
 {
     m_data.assign(input_data.begin(), input_data.end());
     m_view.assign(absl::MakeSpan(m_data.begin(), m_data.size()));
@@ -131,7 +141,8 @@ inline size_t BerContainer::assign_ber(const absl::Span<const uint8_t> input_dat
     return ber_length();
 }
 
-inline void BerContainer::assign_content(const absl::Span<const uint8_t> input_content) noexcept
+template <typename Identifier>
+void FixedIdBerContainer<Identifier>::assign_content(const absl::Span<const uint8_t> input_content) noexcept
 {
     m_data.resize(15 + input_content.size());
     m_data[0] = 0x80; // No identifier provided, use a tag of 0
@@ -145,8 +156,9 @@ inline void BerContainer::assign_content(const absl::Span<const uint8_t> input_c
     assert(m_view.is_valid());
 }
 
-inline void BerContainer::assign_content(Construction input_construction, Class input_class, Tag input_tag,
-                                         absl::Span<const uint8_t> input_content) noexcept
+template <typename Identifier>
+void FixedIdBerContainer<Identifier>::assign_content(Construction input_construction, Class input_class, Tag input_tag,
+                                                     absl::Span<const uint8_t> input_content) noexcept
 {
     m_data.resize(30 + input_content.size());
     size_t input_header_length = encode_header(absl::MakeSpan(m_data.data(), m_data.size()), input_construction,
@@ -159,7 +171,8 @@ inline void BerContainer::assign_content(Construction input_construction, Class 
     assert(m_view.is_valid());
 }
 
-inline void FixedTagBerContainer::resize_content(size_t size)
+template <typename Identifier>
+void FixedIdBerContainer<Identifier>::resize_content(size_t size)
 {
     std::array<uint8_t, 20> length_buffer;
 
@@ -179,9 +192,10 @@ inline void FixedTagBerContainer::resize_content(size_t size)
     assert(m_view.is_valid());
 }
 
-inline size_t FixedTagBerContainer::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
+template <typename Identifier>
+size_t FixedIdBerContainer<Identifier>::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
 {
     return m_view.encode_content_and_length(buffer);
 }
-*/
+
 } // namespace fast_ber

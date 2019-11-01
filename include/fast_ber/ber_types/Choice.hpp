@@ -46,14 +46,6 @@ bool operator!=(const Choice<Args...>& lhs, const Choice<Args...>& rhs)
     return lhs.base() != rhs.base();
 }
 
-template <size_t index, size_t max_depth, typename... Variants, typename ID,
-          typename std::enable_if<(!(index < max_depth)), int>::type = 0>
-EncodeResult encode_if(const absl::Span<uint8_t>&, const Choice<Variants...>&, ID) noexcept
-{
-    // No substitutions found, fail
-    return EncodeResult{false, 0};
-}
-
 template <typename... Args>
 constexpr ExplicitIdentifier<UniversalTag::choice> identifier(const Choice<Args...>*,
                                                               IdentifierAdlToken = IdentifierAdlToken{}) noexcept
@@ -61,39 +53,53 @@ constexpr ExplicitIdentifier<UniversalTag::choice> identifier(const Choice<Args.
     return {};
 }
 
-template <size_t index, size_t max_depth, typename... Variants, typename ID,
+template <size_t index, size_t max_depth, typename... Variants,
+          typename std::enable_if<(!(index < max_depth)), int>::type = 0>
+EncodeResult encode_if(const absl::Span<uint8_t>&, const Choice<Variants...>&) noexcept
+{
+    // No substitutions found, fail
+    return EncodeResult{false, 0};
+}
+
+template <size_t index, size_t max_depth, typename... Variants,
           typename std::enable_if<(index < max_depth), int>::type = 0>
-EncodeResult encode_if(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice, ID id) noexcept
+EncodeResult encode_if(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice) noexcept
 {
     using T = typename fast_ber::variant_alternative<index, Choice<Variants...>>::type;
     if (choice.index() == index)
     {
         const auto*    child    = absl::get_if<index>(&choice);
         constexpr auto child_id = identifier(static_cast<T*>(nullptr));
-
         assert(child);
 
-        const auto header_length_guess = 2;
-        auto       child_buffer        = buffer;
-        child_buffer.remove_prefix(header_length_guess);
-        const EncodeResult& inner_encode_result = encode(child_buffer, *child, child_id);
-        if (!inner_encode_result.success)
-        {
-            return inner_encode_result;
-        }
-        return wrap_with_ber_header(buffer, inner_encode_result.length, id, header_length_guess);
+        return encode(buffer, *child, child_id);
     }
     else
     {
-        return encode_if<index + 1, max_depth>(buffer, choice, id);
+        return encode_if<index + 1, max_depth>(buffer, choice);
     }
+}
+
+template <typename... Variants, typename ID = ExplicitIdentifier<UniversalTag::choice>>
+EncodeResult encode_content_and_length(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice) noexcept
+{
+    constexpr auto depth = static_cast<int>(fast_ber::variant_size<Choice<Variants...>>::value);
+    return encode_if<0, depth>(buffer, choice);
 }
 
 template <typename... Variants, typename ID = ExplicitIdentifier<UniversalTag::choice>>
 EncodeResult encode(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice, ID id = ID{}) noexcept
 {
-    constexpr auto depth = static_cast<int>(fast_ber::variant_size<Choice<Variants...>>::value);
-    return encode_if<0, depth>(buffer, choice, id);
+    const auto header_length_guess = 2;
+    auto       child_buffer        = buffer;
+    child_buffer.remove_prefix(header_length_guess);
+
+    const EncodeResult& inner_encode_result = encode_content_and_length(child_buffer, choice);
+    if (!inner_encode_result.success)
+    {
+        return inner_encode_result;
+    }
+    return wrap_with_ber_header(buffer, inner_encode_result.length, id, header_length_guess);
 }
 
 template <int index, int max_depth, typename... Variants, typename ID,

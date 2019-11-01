@@ -73,4 +73,19 @@ DecodeResult decode(BerViewIterator& input, Null<DefaultIdentifier>& output, con
     return decode_impl<typename Null<DefaultIdentifier>::ExplicitId>(input, output, id);
 }
 
+template <typename Identifier>
+EncodeResult encode_content_and_length(absl::Span<uint8_t> output, const Null<Identifier>& object) noexcept
+{
+    return object.encode_content_and_length(output);
+}
+
+template <typename Identifier>
+DecodeResult decode_content_and_length(BerViewIterator& input, Null<Identifier>& output) noexcept
+{
+    (void)input;
+    (void)output;
+
+    return {};
+}
+
 } // namespace fast_ber
