@@ -12,12 +12,12 @@ namespace fast_ber
 template <typename Type, typename TagType, typename Enable = void>
 struct TaggedType : public Type
 {
+    using Type::Type;
+
+    TaggedType() = default;
     TaggedType(const Type& t) : Type(t) {}
     TaggedType(Type&& t) : Type(std::move(t)) {}
-    template <typename... T>
-    TaggedType(T&&... t) : Type{std::forward<T>(t)...}
-    {
-    }
+
     template <typename T1, typename T2>
     TaggedType(const TaggedType<T1, T2>& t) : Type(t.get_base())
     {

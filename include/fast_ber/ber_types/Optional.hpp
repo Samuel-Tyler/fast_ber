@@ -40,7 +40,6 @@ struct Optional : public OptionalImplementation<T, storage>::Type
 {
     using Implementation = typename OptionalImplementation<T, storage>::Type;
     using Implementation::Implementation;
-    using Implementation::operator=;
 
     const Implementation& base() const { return *static_cast<const Implementation*>(this); }
 
