@@ -187,11 +187,11 @@ std::string create_identifier_functions_recursive(const std::string& assignment_
     std::string res = "constexpr inline ";
     if (is_set(collection))
     {
-        res += "ExplicitIdentifier<UniversalTag::set>";
+        res += "ExplicitId<UniversalTag::set>";
     }
     else if (is_sequence(collection))
     {
-        res += "ExplicitIdentifier<UniversalTag::sequence>";
+        res += "ExplicitId<UniversalTag::sequence>";
     }
     else
     {
@@ -218,6 +218,17 @@ std::string create_identifier_functions_recursive(const std::string& assignment_
                 child.named_type.name + "_type", absl::get<SetType>(absl::get<BuiltinType>(child.named_type.type)),
                 namespace_name + "::" + assignment_name);
         }
+    }
+
+    res += "template <>\n";
+    res += "struct IdentifierType<" + namespace_name + "::" + assignment_name + ">{ using type = ";
+    if (is_set(collection))
+    {
+        res += "ExplicitId<UniversalTag::set>; };\n";
+    }
+    else if (is_sequence(collection))
+    {
+        res += "ExplicitId<UniversalTag::sequence>; };\n";
     }
 
     return res;
@@ -274,8 +285,7 @@ create_collection_encode_functions(const std::string assignment_name, const std:
         }
     }
 
-    std::vector<std::string> template_args = {"ID = ExplicitIdentifier<UniversalTag::" + collection_name(collection) +
-                                              ">"};
+    std::vector<std::string> template_args = {"ID = ExplicitId<UniversalTag::" + collection_name(collection) + ">"};
     res += create_template_definition(template_args);
     res += "inline EncodeResult encode(absl::Span<uint8_t> output, const " + module.module_reference +
            "::" + assignment_name + "& input, const ID& id = ID{}) noexcept\n{\n";
@@ -303,8 +313,7 @@ std::string create_collection_decode_functions(const std::string&            ass
     std::string tags_class = module.module_reference + "_" + assignment_name + "Tags";
     std::replace(tags_class.begin(), tags_class.end(), ':', '_');
 
-    std::vector<std::string> template_args = {"ID = ExplicitIdentifier<UniversalTag::" + collection_name(collection) +
-                                              ">"};
+    std::vector<std::string> template_args = {"ID = ExplicitId<UniversalTag::" + collection_name(collection) + ">"};
 
     res += create_template_definition(template_args);
     res += "inline DecodeResult decode(const BerView& input, " + module.module_reference + "::" + assignment_name +

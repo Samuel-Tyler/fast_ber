@@ -6,6 +6,6 @@
 
 namespace fast_ber
 {
-template <typename Identifier = ExplicitIdentifier<UniversalTag::teletex_string>>
+template <typename Identifier = ExplicitId<UniversalTag::teletex_string>>
 using TeletexString = fast_ber::StringImpl<UniversalTag::teletex_string, Identifier>;
 }

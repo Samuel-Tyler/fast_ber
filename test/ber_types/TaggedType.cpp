@@ -42,10 +42,10 @@ TEST_CASE("TaggedType: Double Tagged")
 TEST_CASE("TaggedType: Double Tagged Explicit")
 {
     using TestInnerTag =
-        fast_ber::TaggedExplicitIdentifier<fast_ber::Class::application, fast_ber::Tag(5),
-                                           fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::integer>>;
+        fast_ber::DoubleId<fast_ber::ImplicitIdentifier<fast_ber::Class::application, fast_ber::Tag(5)>,
+                           fast_ber::ExplicitId<fast_ber::UniversalTag::integer>>;
     using TestOuterTag = fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, fast_ber::Tag(10)>;
-    using ExplicitTag  = fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::integer>;
+    using ExplicitTag  = fast_ber::ExplicitId<fast_ber::UniversalTag::integer>;
 
     using DoubleTaggedInt =
         fast_ber::TaggedType<fast_ber::TaggedType<fast_ber::Integer<ExplicitTag>, TestInnerTag>, TestOuterTag>;
@@ -83,7 +83,7 @@ TEST_CASE("TaggedType: Tagged Enum")
     static_assert(
         std::is_same<decltype(fast_ber::identifier(
                          static_cast<fast_ber::TaggedType<
-                             TestEnum, fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>>*>(nullptr))),
-                     fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>>::value,
+                             TestEnum, fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>>*>(nullptr))),
+                     fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>>::value,
         "Tagged Enum Identifier");
 }

@@ -6,6 +6,6 @@
 
 namespace fast_ber
 {
-template <typename Identifier = ExplicitIdentifier<UniversalTag::octet_string>>
+template <typename Identifier = ExplicitId<UniversalTag::octet_string>>
 using OctetString = fast_ber::StringImpl<UniversalTag::octet_string, Identifier>;
 }

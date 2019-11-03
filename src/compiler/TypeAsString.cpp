@@ -188,7 +188,7 @@ std::string type_as_string(const SequenceType& sequence, const Module& module, c
             if (!is_prefixed(component.named_type.type) && module.tagging_default == TaggingMode::automatic)
             {
                 component_type = type_as_string(component.named_type.type, module, tree,
-                                                "IId<ctx, " + std::to_string(tag_counter++) + ">");
+                                                "Id<ctx, " + std::to_string(tag_counter++) + ">");
             }
             else
             {
@@ -203,8 +203,6 @@ std::string type_as_string(const SequenceType& sequence, const Module& module, c
         }
     }
 
-    res += "    using Id = ExplicitIdentifier<UniversalTag::sequence>;\n";
-    res += "    using ExplicitId = ExplicitIdentifier<UniversalTag::sequence>;\n";
     res += "};\n";
 
     if (!identifier(sequence, module, tree).is_default_tagged)
@@ -247,7 +245,7 @@ std::string type_as_string(const SetType& set, const Module& module, const Asn1T
             if (!is_prefixed(component.named_type.type) && module.tagging_default == TaggingMode::automatic)
             {
                 component_type = type_as_string(component.named_type.type, module, tree,
-                                                "IId<ctx, " + std::to_string(tag_counter++) + ">");
+                                                "Id<ctx, " + std::to_string(tag_counter++) + ">");
             }
             else
             {
@@ -262,8 +260,6 @@ std::string type_as_string(const SetType& set, const Module& module, const Asn1T
         }
     }
 
-    res += "    using Id = ExplicitIdentifier<UniversalTag::set>;\n";
-    res += "    using ExplicitId = ExplicitIdentifier<UniversalTag::set>;\n";
     res += "};\n";
 
     if (!identifier(set, module, tree).is_default_tagged)

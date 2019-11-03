@@ -16,7 +16,7 @@ const std::string g_local_time_format                    = "%E4Y%m%d%H%M%S";
 const std::string g_universal_time_format                = "%E4Y%m%d%H%M%SZ";
 const std::string g_universal_time_with_time_zone_format = "%E4Y%m%d%H%M%S";
 
-template <typename Identifier = ExplicitIdentifier<UniversalTag::generalized_time>>
+template <typename Identifier = ExplicitId<UniversalTag::generalized_time>>
 class GeneralizedTime
 {
   public:
@@ -41,8 +41,7 @@ class GeneralizedTime
     GeneralizedTime(const absl::Time& time) { set_time(time); }
     GeneralizedTime() { set_time(absl::Time()); }
 
-    using ExplicitId = ExplicitIdentifier<UniversalTag::generalized_time>;
-    using Id         = Identifier;
+    using Id = Identifier;
 
   private:
     BerLengthAndContentContainer m_contents;
@@ -174,13 +173,13 @@ EncodeResult GeneralizedTime<Identifier>::encode_content_and_length(absl::Span<u
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 EncodeResult encode(absl::Span<uint8_t> output, const GeneralizedTime<DefaultIdentifier>& object, const ID& id = ID{})
 {
-    return encode_impl<typename GeneralizedTime<DefaultIdentifier>::ExplicitId>(output, object, id);
+    return encode_impl(output, object, id);
 }
 
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 DecodeResult decode(BerViewIterator& input, GeneralizedTime<DefaultIdentifier>& output, const ID& id = {}) noexcept
 {
-    return decode_impl<typename GeneralizedTime<DefaultIdentifier>::ExplicitId>(input, output, id);
+    return decode_impl(input, output, id);
 }
 
 template <typename Identifier>

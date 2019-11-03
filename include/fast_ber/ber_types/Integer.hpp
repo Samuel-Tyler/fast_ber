@@ -13,6 +13,7 @@
 #include <array>
 #include <cstdint>
 #include <cstring>
+#include <iosfwd>
 #include <limits>
 
 namespace fast_ber
@@ -21,7 +22,7 @@ namespace fast_ber
 inline bool   decode_integer(absl::Span<const uint8_t> input, int64_t& output) noexcept;
 inline size_t encode_integer(absl::Span<uint8_t> output, int64_t input) noexcept;
 
-template <typename Identifier = ExplicitIdentifier<UniversalTag::integer>>
+template <typename Identifier = ExplicitId<UniversalTag::integer>>
 class Integer
 {
   public:
@@ -34,14 +35,31 @@ class Integer
     explicit Integer(absl::Span<const uint8_t> ber_data) noexcept { assign_ber(ber_data); }
 
     // Implicit conversion to int
-            operator int64_t() const noexcept { return value(); }
+    //    operator int64_t() const noexcept { return value(); }
     int64_t value() const noexcept;
 
     Integer<Identifier>& operator=(int64_t rhs) noexcept;
     template <typename Identifier2>
     Integer<Identifier>& operator=(const Integer<Identifier2>& rhs) noexcept;
     Integer<Identifier>& operator=(const BerView& rhs) noexcept;
-    void                 assign(int64_t val) noexcept;
+
+    template <typename Identifier2>
+    bool operator==(const Integer<Identifier2>& rhs) const
+    {
+        return this->value() == rhs.value();
+    }
+
+    template <typename Identifier2>
+    bool operator!=(const Integer<Identifier2>& rhs) const
+    {
+        return !(*this == rhs);
+    }
+
+    bool operator==(int64_t rhs) const { return this->value() == rhs; }
+    bool operator!=(int64_t rhs) const { return !(*this == rhs); }
+
+    void assign(int64_t val) noexcept;
+
     template <typename Identifier2>
     void   assign(const Integer<Identifier2>& rhs) noexcept;
     size_t assign_ber(const BerView& rhs) noexcept;
@@ -49,8 +67,7 @@ class Integer
 
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
-    using ExplicitId = ExplicitIdentifier<UniversalTag::integer>;
-    using Id         = Identifier;
+    using Id = Identifier;
 
     template <typename Identifier2>
     friend class Integer;
@@ -215,13 +232,13 @@ inline EncodeResult Integer<Identifier>::encode_content_and_length(absl::Span<ui
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 EncodeResult encode(absl::Span<uint8_t> output, const Integer<DefaultIdentifier>& object, const ID& id = ID{})
 {
-    return encode_impl<typename Integer<DefaultIdentifier>::ExplicitId>(output, object, id);
+    return encode_impl(output, object, id);
 }
 
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 DecodeResult decode(BerViewIterator& input, Integer<DefaultIdentifier>& output, const ID& id = ID{}) noexcept
 {
-    return decode_impl<typename Integer<DefaultIdentifier>::ExplicitId>(input, output, id);
+    return decode_impl(input, output, id);
 }
 
 template <typename Identifier>
@@ -237,6 +254,12 @@ DecodeResult decode_content_and_length(BerViewIterator& input, Integer<Identifie
     (void)output;
 
     return {};
+}
+
+template <typename Identifier>
+std::ostream& operator<<(std::ostream& os, const Integer<Identifier>& object) noexcept
+{
+    return os << object.value();
 }
 
 } // namespace fast_ber

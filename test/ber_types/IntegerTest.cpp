@@ -59,7 +59,7 @@ TEST_CASE("Integer: Encoding")
     std::array<uint8_t, 100> buffer   = {};
     std::array<uint8_t, 3>   expected = {0x02, 0x01, 0x64};
     size_t                   size     = fast_ber::encode(absl::Span<uint8_t>(buffer.data(), buffer.size()), i,
-                                   fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::integer>{})
+                                   fast_ber::ExplicitId<fast_ber::UniversalTag::integer>{})
                       .length;
 
     REQUIRE(size == 3);
@@ -80,11 +80,10 @@ TEST_CASE("Integer: Default value") { REQUIRE(fast_ber::Integer<>() == 0); }
 
 TEST_CASE("Integer: Tagging")
 {
-    using Tag        = fast_ber::ImplicitIdentifier<fast_ber::Class::application, 2>;
-    using DefaultTag = fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::integer>;
-    using ExplicitTag =
-        fast_ber::TaggedExplicitIdentifier<fast_ber::Class::application, 2,
-                                           fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::integer>>;
+    using Tag               = fast_ber::ImplicitIdentifier<fast_ber::Class::application, 2>;
+    using DefaultTag        = fast_ber::ExplicitId<fast_ber::UniversalTag::integer>;
+    using ExplicitTag       = fast_ber::DoubleId<fast_ber::ImplicitIdentifier<fast_ber::Class::application, 2>,
+                                           fast_ber::ExplicitId<fast_ber::UniversalTag::integer>>;
     using TaggedInt         = fast_ber::Integer<Tag>;
     using ExplicitTaggedInt = fast_ber::Integer<ExplicitTag>;
 

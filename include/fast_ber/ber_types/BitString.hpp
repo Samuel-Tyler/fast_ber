@@ -5,6 +5,6 @@
 
 namespace fast_ber
 {
-template <typename Identifier = ExplicitIdentifier<UniversalTag::bit_string>>
+template <typename Identifier = ExplicitId<UniversalTag::bit_string>>
 using BitString = fast_ber::StringImpl<UniversalTag::bit_string, Identifier>;
 }

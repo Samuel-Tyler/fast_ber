@@ -80,7 +80,7 @@ inline std::ostream& operator<<(std::ostream& os, const UniversalTag& t) noexcep
     case UniversalTag::enumerated:
         return os << "Enumerated";
     case UniversalTag::embedded_pdv:
-        return os << "Embedded_pdv";
+        return os << "Embedded PDV";
     case UniversalTag::utf8_string:
         return os << "UTF8 String";
     case UniversalTag::relative_oid:
@@ -88,7 +88,7 @@ inline std::ostream& operator<<(std::ostream& os, const UniversalTag& t) noexcep
     case UniversalTag::sequence:
         return os << "Sequence / Sequence Of";
     case UniversalTag::set:
-        return os << "Set Set_of";
+        return os << "Set / Set Of";
     case UniversalTag::numeric_string:
         return os << "Numeric String";
     case UniversalTag::printable_string:
@@ -102,11 +102,11 @@ inline std::ostream& operator<<(std::ostream& os, const UniversalTag& t) noexcep
     case UniversalTag::utc_time:
         return os << "UTC Time";
     case UniversalTag::generalized_time:
-        return os << "generalized_time";
+        return os << "Generalized Time";
     case UniversalTag::graphic_string:
-        return os << "graphic_string";
+        return os << "Graphic String";
     case UniversalTag::visible_string:
-        return os << "visible_string/iso646_string";
+        return os << "Visible String / ISO646 String";
     case UniversalTag::general_string:
         return os << "General String";
     case UniversalTag::universal_string:

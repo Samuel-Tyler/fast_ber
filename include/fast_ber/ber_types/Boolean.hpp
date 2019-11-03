@@ -18,7 +18,7 @@
 namespace fast_ber
 {
 
-template <typename Identifier = ExplicitIdentifier<UniversalTag::boolean>>
+template <typename Identifier = ExplicitId<UniversalTag::boolean>>
 class Boolean
 {
   public:
@@ -45,8 +45,7 @@ class Boolean
 
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
-    using ExplicitId = ExplicitIdentifier<UniversalTag::boolean>;
-    using Id         = Identifier;
+    using Id = Identifier;
 
     template <typename Identifier2>
     friend class Boolean;
@@ -130,13 +129,13 @@ inline EncodeResult Boolean<Identifier>::encode_content_and_length(absl::Span<ui
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 EncodeResult encode(absl::Span<uint8_t> output, const Boolean<DefaultIdentifier>& object, const ID& id = ID{}) noexcept
 {
-    return encode_impl<typename Boolean<DefaultIdentifier>::ExplicitId>(output, object, id);
+    return encode_impl(output, object, id);
 }
 
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 DecodeResult decode(BerViewIterator& input, Boolean<DefaultIdentifier>& output, const ID& id = {}) noexcept
 {
-    return decode_impl<typename Boolean<DefaultIdentifier>::ExplicitId>(input, output, id);
+    return decode_impl(input, output, id);
 }
 
 template <typename Identifier>

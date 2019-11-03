@@ -10,20 +10,13 @@
 namespace fast_ber
 {
 
-// Class is always universal
-template <UniversalTag explicit_tag>
-struct ExplicitIdentifier
+template <typename OuterId, typename InnerId>
+struct DoubleId
 {
-    constexpr static Class        class_() { return Class::universal; }
-    constexpr static UniversalTag tag() { return explicit_tag; }
-};
-
-template <Class OuterClass, Tag OuterTag, typename ExplicitTag>
-struct TaggedExplicitIdentifier
-{
-    constexpr static Class       class_() { return OuterClass; }
-    constexpr static Tag         tag() { return OuterTag; }
-    constexpr static ExplicitTag inner_id() { return {}; }
+    constexpr static Class   class_() { return OuterId::class_(); }
+    constexpr static Tag     tag() { return OuterId::tag(); }
+    constexpr static OuterId outer_id() { return {}; }
+    constexpr static InnerId inner_id() { return {}; }
 };
 
 // Any class or tag is valid
@@ -34,20 +27,12 @@ struct ImplicitIdentifier
     constexpr static Tag   tag() { return ImplicitTag; }
 };
 
-template <UniversalTag T>
-constexpr Tag reference_tag(const ExplicitIdentifier<T>& id)
-{
-    return val(id.tag());
-}
+// Class is always universal
+template <UniversalTag explicit_tag>
+using ExplicitId = ImplicitIdentifier<Class::universal, val(explicit_tag)>;
 
-template <UniversalTag ExplicitTag>
-constexpr ExplicitIdentifier<ExplicitTag> inner_identifier(ExplicitIdentifier<ExplicitTag>)
-{
-    return {};
-}
-
-template <Class OuterClass, Tag OuterTag, typename ExplicitTag>
-constexpr ExplicitTag inner_identifier(TaggedExplicitIdentifier<OuterClass, OuterTag, ExplicitTag>)
+template <typename OuterId, typename InnerId>
+constexpr InnerId inner_identifier(DoubleId<OuterId, InnerId>)
 {
     return {};
 }
@@ -71,30 +56,6 @@ struct IdentifierAdlToken
 {
 };
 
-template <UniversalTag ExplicitTag>
-constexpr bool is_explicit(ExplicitIdentifier<ExplicitTag>)
-{
-    return true;
-}
-
-template <typename T>
-constexpr bool is_explicit(T)
-{
-    return false;
-}
-
-template <Class T1, Tag T2, typename T3>
-constexpr bool is_explicit_tagged(TaggedExplicitIdentifier<T1, T2, T3>)
-{
-    return true;
-}
-
-template <typename T>
-constexpr bool is_explicit_tagged(T)
-{
-    return false;
-}
-
 template <typename T>
 constexpr auto identifier(const T*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept -> typename T::Id
 {
@@ -104,39 +65,33 @@ constexpr auto identifier(const T*, IdentifierAdlToken = IdentifierAdlToken{}) n
 template <typename T>
 struct IdentifierType
 {
-    using type = typename T::Id;
+    using type = decltype(identifier(static_cast<T*>(nullptr), IdentifierAdlToken{}));
 };
 
 template <typename T>
 using Identifier = typename IdentifierType<T>::type;
 
-template <UniversalTag ExplicitTag>
-std::ostream& operator<<(std::ostream& os, const ExplicitIdentifier<ExplicitTag>& id) noexcept
-{
-    return os << "Explicit(" << id.tag() << ", " << id.class_() << ")";
-}
-
-template <Class OuterClass, Tag OuterTag, typename ExplicitTag>
-std::ostream& operator<<(std::ostream&                                                      os,
-                         const TaggedExplicitIdentifier<OuterClass, OuterTag, ExplicitTag>& id) noexcept
-{
-    return os << "TaggedExplicit(" << id.tag() << ", " << id.class_() << ", " << id.inner_id() << ")";
-}
-
 template <Class ImplicitClass, Tag ImplicitTag>
 std::ostream& operator<<(std::ostream& os, const ImplicitIdentifier<ImplicitClass, ImplicitTag>& id) noexcept
 {
-    return os << "Implicit(" << id.tag() << ", " << id.class_() << ")";
+    if (id.class_() == Class::universal)
+    {
+        UniversalTag tag = static_cast<UniversalTag>(id.tag());
+        return os << "Identifier(" << id.class_() << ", " << tag << ")";
+    }
+    return os << "Identifier(" << id.class_() << ", " << id.tag() << ")";
+}
+
+template <typename OuterId, typename InnerId>
+std::ostream& operator<<(std::ostream& os, const DoubleId<OuterId, InnerId>& id) noexcept
+{
+    return os << "DoubleIdentifier(" << id.outer_id() << ", " << id.inner_id() << ")";
 }
 
 namespace abbreviations
 {
-template <UniversalTag explicit_tag>
-using EId = ExplicitIdentifier<explicit_tag>;
-template <Class OuterClass, Tag OuterTag, typename ExplicitTag>
-using TId = TaggedExplicitIdentifier<OuterClass, OuterTag, ExplicitTag>;
 template <Class ImplicitClass, Tag ImplicitTag>
-using IId = ImplicitIdentifier<ImplicitClass, ImplicitTag>;
+using Id = ImplicitIdentifier<ImplicitClass, ImplicitTag>;
 } // namespace abbreviations
 
 } // namespace fast_ber

@@ -6,6 +6,6 @@
 
 namespace fast_ber
 {
-template <typename Identifier = ExplicitIdentifier<UniversalTag::utf8_string>>
+template <typename Identifier = ExplicitId<UniversalTag::utf8_string>>
 using UTF8String = fast_ber::StringImpl<UniversalTag::utf8_string, Identifier>;
 }

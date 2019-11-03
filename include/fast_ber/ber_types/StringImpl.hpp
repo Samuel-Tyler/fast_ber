@@ -77,12 +77,17 @@ class StringImpl
 
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
-    using ExplicitId = ExplicitIdentifier<tag>;
-    using Id         = Identifier;
+    using Id = Identifier;
 
   private:
     BerLengthAndContentContainer m_contents;
 }; // namespace fast_ber
+
+template <UniversalTag tag, typename Identifier>
+struct IdentifierType<StringImpl<tag, Identifier>>
+{
+    using type = Identifier;
+};
 
 template <UniversalTag tag, typename Identifier>
 StringImpl<tag, Identifier>& StringImpl<tag, Identifier>::operator=(absl::Span<const uint8_t> rhs) noexcept
@@ -192,13 +197,13 @@ EncodeResult StringImpl<tag, Identifier>::encode_content_and_length(absl::Span<u
 template <UniversalTag tag, typename DefaultIdentifier, typename ID = DefaultIdentifier>
 EncodeResult encode(absl::Span<uint8_t> output, const StringImpl<tag, DefaultIdentifier>& object, const ID& id = ID{})
 {
-    return encode_impl<typename StringImpl<tag, DefaultIdentifier>::ExplicitId>(output, object, id);
+    return encode_impl(output, object, id);
 }
 
 template <UniversalTag tag, typename DefaultIdentifier, typename ID = DefaultIdentifier>
 DecodeResult decode(BerViewIterator& input, StringImpl<tag, DefaultIdentifier>& output, const ID& id = {}) noexcept
 {
-    return decode_impl<typename StringImpl<tag, DefaultIdentifier>::ExplicitId>(input, output, id);
+    return decode_impl(input, output, id);
 }
 
 template <UniversalTag tag, typename Identifier>

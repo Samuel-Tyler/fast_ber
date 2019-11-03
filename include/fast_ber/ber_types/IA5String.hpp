@@ -6,6 +6,6 @@
 
 namespace fast_ber
 {
-template <typename Identifier = ExplicitIdentifier<UniversalTag::ia5_string>>
+template <typename Identifier = ExplicitId<UniversalTag::ia5_string>>
 using IA5String = fast_ber::StringImpl<UniversalTag::ia5_string, Identifier>;
 }

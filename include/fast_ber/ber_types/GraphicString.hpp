@@ -6,6 +6,6 @@
 
 namespace fast_ber
 {
-template <typename Identifier = ExplicitIdentifier<UniversalTag::graphic_string>>
+template <typename Identifier = ExplicitId<UniversalTag::graphic_string>>
 using GraphicString = fast_ber::StringImpl<UniversalTag::graphic_string, Identifier>;
 }

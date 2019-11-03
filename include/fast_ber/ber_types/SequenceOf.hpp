@@ -9,23 +9,34 @@ namespace fast_ber
 constexpr const size_t default_inlined_size = 5;
 
 template <typename T, size_t N = default_inlined_size>
-using SequenceOf = absl::InlinedVector<T, N>;
+struct SequenceOf : public absl::InlinedVector<T, N>
+{
+    using absl::InlinedVector<T, N>::InlinedVector;
+
+    SequenceOf(const absl::InlinedVector<T, N>& t) : absl::InlinedVector<T, N>(t) {}
+    SequenceOf(absl::InlinedVector<T, N>&& t) : absl::InlinedVector<T, N>(std::move(t)) {}
+    template <typename T2, size_t N2 = default_inlined_size>
+    SequenceOf(const SequenceOf<T2, N2>& t) : absl::InlinedVector<T, N>(t)
+    {
+    }
+    using Id = ExplicitId<UniversalTag::enumerated>;
+};
 
 template <typename T>
-constexpr inline ExplicitIdentifier<UniversalTag::sequence_of>
-identifier(const SequenceOf<T>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
+constexpr inline ExplicitId<UniversalTag::sequence_of> identifier(const SequenceOf<T>*,
+                                                                  IdentifierAdlToken = IdentifierAdlToken{}) noexcept
 {
     return {};
 }
 
 template <typename T>
-constexpr inline ExplicitIdentifier<UniversalTag::sequence_of>
+constexpr inline ExplicitId<UniversalTag::sequence_of>
 explicit_identifier(const SequenceOf<T>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
 {
     return {};
 }
 
-template <typename T, typename ID = ExplicitIdentifier<UniversalTag::sequence_of>>
+template <typename T, typename ID = ExplicitId<UniversalTag::sequence_of>>
 EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T>& sequence, ID id = ID{}) noexcept
 {
     const size_t header_length_guess = 2;
@@ -47,7 +58,7 @@ EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T>& seque
     return wrap_with_ber_header(buffer, combined_length, id, header_length_guess);
 }
 
-template <typename T, typename ID = ExplicitIdentifier<UniversalTag::sequence_of>>
+template <typename T, typename ID = ExplicitId<UniversalTag::sequence_of>>
 DecodeResult decode(BerViewIterator& input, SequenceOf<T>& output, ID id = ID{}) noexcept
 {
     output.clear();

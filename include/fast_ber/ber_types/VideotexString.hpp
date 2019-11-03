@@ -6,6 +6,6 @@
 
 namespace fast_ber
 {
-template <typename Identifier = ExplicitIdentifier<UniversalTag::videotex_string>>
+template <typename Identifier = ExplicitId<UniversalTag::videotex_string>>
 using VideotexString = fast_ber::StringImpl<UniversalTag::videotex_string, Identifier>;
 }

@@ -13,7 +13,7 @@
 namespace fast_ber
 {
 
-template <typename Identifier = ExplicitIdentifier<UniversalTag::null>>
+template <typename Identifier = ExplicitId<UniversalTag::null>>
 class Null
 {
   public:
@@ -30,8 +30,7 @@ class Null
     size_t       assign_ber(absl::Span<const uint8_t> buffer) noexcept { return assign_ber(BerView(buffer)); }
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
-    using ExplicitId = ExplicitIdentifier<UniversalTag::null>;
-    using Id         = Identifier;
+    using Id = Identifier;
 };
 
 template <typename Identifier>
@@ -64,13 +63,13 @@ EncodeResult Null<Identifier>::encode_content_and_length(absl::Span<uint8_t> buf
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 EncodeResult encode(absl::Span<uint8_t> output, const Null<DefaultIdentifier>& object, const ID& id = ID{})
 {
-    return encode_impl<typename Null<DefaultIdentifier>::ExplicitId>(output, object, id);
+    return encode_impl(output, object, id);
 }
 
 template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
 DecodeResult decode(BerViewIterator& input, Null<DefaultIdentifier>& output, const ID& id = {}) noexcept
 {
-    return decode_impl<typename Null<DefaultIdentifier>::ExplicitId>(input, output, id);
+    return decode_impl(input, output, id);
 }
 
 template <typename Identifier>

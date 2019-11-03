@@ -69,11 +69,11 @@ TEST_CASE("Tags: Unspecified tags of an automatic sequence should be sequential"
 
     std::cout << fast_ber::Identifier<decltype(fast_ber::Tags::DefaultCollection::string1)>{} << std::endl;
     REQUIRE(std::is_same<fast_ber::Identifier<decltype(fast_ber::Tags::DefaultCollection::string1)>,
-                         fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>>::value);
+                         fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>>::value);
     REQUIRE(std::is_same<fast_ber::Identifier<decltype(fast_ber::Tags::DefaultCollection::string2)>,
-                         fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>>::value);
+                         fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>>::value);
     REQUIRE(std::is_same<fast_ber::Identifier<decltype(fast_ber::Tags::DefaultCollection::string3)>,
-                         fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>>::value);
+                         fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>>::value);
 
     REQUIRE(std::is_same<fast_ber::Identifier<decltype(fast_ber::AutomaticTags::DefaultCollection::string1)>,
                          fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 0>>::value);
@@ -107,16 +107,14 @@ TEST_CASE("Tags: Encoding and decoding a packet with various tagging modes")
 
     REQUIRE(std::is_same<decltype(identifier(&tags_copy.string2)),
                          fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 1>>::value);
-    REQUIRE(std::is_same<
-            decltype(identifier(&tags_copy.integer)),
-            fast_ber::TaggedExplicitIdentifier<fast_ber::Class::context_specific, 2,
-                                               fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::integer>>>::value);
+    REQUIRE(std::is_same<decltype(identifier(&tags_copy.integer)),
+                         fast_ber::DoubleId<fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 2>,
+                                            fast_ber::ExplicitId<fast_ber::UniversalTag::integer>>>::value);
     REQUIRE(std::is_same<decltype(identifier(&tags_copy.bool1)),
                          fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 3>>::value);
-    REQUIRE(std::is_same<
-            decltype(identifier(&tags_copy.bool2)),
-            fast_ber::TaggedExplicitIdentifier<fast_ber::Class::private_, 4,
-                                               fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::boolean>>>::value);
+    REQUIRE(std::is_same<decltype(identifier(&tags_copy.bool2)),
+                         fast_ber::DoubleId<fast_ber::ImplicitIdentifier<fast_ber::Class::private_, 4>,
+                                            fast_ber::ExplicitId<fast_ber::UniversalTag::boolean>>>::value);
     REQUIRE(std::is_same<decltype(identifier(&tags_copy.bool3)),
                          fast_ber::ImplicitIdentifier<fast_ber::Class::application, 5>>::value);
     REQUIRE(std::is_same<decltype(identifier(&tags_copy.enumerated)),

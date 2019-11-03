@@ -33,6 +33,8 @@ enum class Class
     private_,
 };
 
+std::string to_string(Class class_, bool abbreviated);
+
 struct ComponentType;
 struct TaggedType;
 using ComponentTypeList = std::vector<ComponentType>;
@@ -398,25 +400,27 @@ struct Asn1Tree
 
 struct Identifier
 {
-    std::string class_;
-    int         tag_number;
+    Class   class_;
+    int64_t tag_number;
+
+    std::string name() const { return "Id<" + to_string(class_, true) + ", " + std::to_string(tag_number) + ">"; }
 };
 
 struct TaggingInfo
 {
-    Identifier  outer_tag;
-    std::string inner_tag;
-    bool        is_default_tagged;
+    absl::optional<Identifier> outer_tag;
+    std::string                inner_tag;
+    bool                       is_default_tagged;
 
     std::string name() const
     {
-        if (outer_tag.class_.empty())
+        if (!outer_tag)
         {
             return inner_tag;
         }
         else
         {
-            return "TId<" + outer_tag.class_ + ", " + std::to_string(outer_tag.tag_number) + ", " + inner_tag + ">";
+            return "DoubleId<" + outer_tag->name() + ", " + inner_tag + ">";
         }
     }
 };
@@ -467,8 +471,6 @@ struct ObjectIdComponents
     }
     std::vector<ObjectIdComponentValue> components;
 };
-
-std::string to_string(Class class_, bool abbreviated);
 
 // Switch asn '-' for C++ '_'
 // Rename any names which are reserved in C++

@@ -26,6 +26,8 @@ struct Choice : public absl::variant<Args...>
     Choice() : absl::variant<Args...>() {}
     Choice(const absl::variant<Args...>& rhs) : absl::variant<Args...>(rhs) {}
     Choice(absl::variant<Args...>&& rhs) : absl::variant<Args...>(rhs) {}
+
+    using Id = ExplicitId<UniversalTag::choice>;
 };
 
 template <typename T>
@@ -47,8 +49,8 @@ bool operator!=(const Choice<Args...>& lhs, const Choice<Args...>& rhs)
 }
 
 template <typename... Args>
-constexpr ExplicitIdentifier<UniversalTag::choice> identifier(const Choice<Args...>*,
-                                                              IdentifierAdlToken = IdentifierAdlToken{}) noexcept
+constexpr ExplicitId<UniversalTag::choice> identifier(const Choice<Args...>*,
+                                                      IdentifierAdlToken = IdentifierAdlToken{}) noexcept
 {
     return {};
 }
@@ -80,14 +82,14 @@ EncodeResult encode_if(const absl::Span<uint8_t>& buffer, const Choice<Variants.
     }
 }
 
-template <typename... Variants, typename ID = ExplicitIdentifier<UniversalTag::choice>>
+template <typename... Variants, typename ID = ExplicitId<UniversalTag::choice>>
 EncodeResult encode_content_and_length(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice) noexcept
 {
     constexpr auto depth = static_cast<int>(fast_ber::variant_size<Choice<Variants...>>::value);
     return encode_if<0, depth>(buffer, choice);
 }
 
-template <typename... Variants, typename ID = ExplicitIdentifier<UniversalTag::choice>>
+template <typename... Variants, typename ID = ExplicitId<UniversalTag::choice>>
 EncodeResult encode(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice, ID id = ID{}) noexcept
 {
     const auto header_length_guess = 2;
@@ -127,7 +129,7 @@ DecodeResult decode_if(BerViewIterator& input, Choice<Variants...>& output, ID i
     }
 }
 
-template <typename... Variants, typename ID = ExplicitIdentifier<UniversalTag::choice>>
+template <typename... Variants, typename ID = ExplicitId<UniversalTag::choice>>
 DecodeResult decode(BerViewIterator& input, Choice<Variants...>& output, ID id = ID{}) noexcept
 {
     if (!input->is_valid() || input->tag() != val(id.tag()))

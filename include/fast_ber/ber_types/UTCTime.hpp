@@ -5,6 +5,6 @@
 
 namespace fast_ber
 {
-template <typename Identifier = ExplicitIdentifier<UniversalTag::utc_time>>
+template <typename Identifier = ExplicitId<UniversalTag::utc_time>>
 using UTCTime = GeneralizedTime<Identifier>;
 } // namespace fast_ber

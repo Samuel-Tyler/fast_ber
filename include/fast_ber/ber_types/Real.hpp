@@ -6,7 +6,7 @@
 namespace fast_ber
 {
 
-template <typename Identifier = ExplicitIdentifier<UniversalTag::real>>
+template <typename Identifier = ExplicitId<UniversalTag::real>>
 class Real
 {
   public:
@@ -37,8 +37,7 @@ class Real
 
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
-    using ExplicitId = ExplicitIdentifier<UniversalTag::real>;
-    using Id         = Identifier;
+    using Id = Identifier;
 
   private:
     void set_content_length(uint64_t length) noexcept
