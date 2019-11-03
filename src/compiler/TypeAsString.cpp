@@ -51,7 +51,8 @@ std::string type_as_string(const ChoiceType& choice, const Module& module, const
 
         if (is_sequence(named_type.type) || is_set(named_type.type) || is_enumerated(named_type.type))
         {
-            throw std::runtime_error("ChoiceType must not be a structure or enum");
+            throw std::runtime_error("ChoiceType must not be a structure or enum" +
+                                     type_as_string(named_type.type, module, tree));
         }
 
         res += type_as_string(named_type.type, module, tree);

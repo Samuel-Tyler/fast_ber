@@ -148,7 +148,8 @@ void resolve_dependencies(const std::unordered_map<std::string, Assignment>& ass
 
     if (visited_names.count(name) == 1)
     {
-        throw std::runtime_error("Circular dependency when trying to resolve dependencies of " + name);
+        std::cerr << "Warning: Circular dependency when trying to resolve dependencies of " << name << std::endl;
+        return;
     }
 
     visited_names.insert(name);
@@ -243,6 +244,8 @@ void find_nested_structs(const Module& module, Type& type, std::vector<NamedType
     {
         SetOfType& set_of     = absl::get<SetOfType>(absl::get<BuiltinType>(type));
         Type&      inner_type = set_of.has_name ? set_of.named_type->type : *set_of.type;
+        find_nested_structs(module, inner_type, nested_structs);
+
         if (is_set(inner_type))
         {
             const std::string& name = "UnnamedSet" + std::to_string(unnamed_definition_num++);
@@ -261,12 +264,14 @@ void find_nested_structs(const Module& module, Type& type, std::vector<NamedType
             nested_structs.push_back(NamedType{name, inner_type});
             inner_type = DefinedType{module.module_reference, name, {}};
         }
-        find_nested_structs(module, inner_type, nested_structs);
     }
     else if (is_sequence_of(type))
     {
         SequenceOfType& sequence_of = absl::get<SequenceOfType>(absl::get<BuiltinType>(type));
         Type&           inner_type  = sequence_of.has_name ? sequence_of.named_type->type : *sequence_of.type;
+
+        find_nested_structs(module, inner_type, nested_structs);
+
         if (is_set(inner_type))
         {
             const std::string& name = "UnnamedSet" + std::to_string(unnamed_definition_num++);
@@ -285,7 +290,6 @@ void find_nested_structs(const Module& module, Type& type, std::vector<NamedType
             nested_structs.push_back(NamedType{name, inner_type});
             inner_type = DefinedType{module.module_reference, name, {}};
         }
-        find_nested_structs(module, inner_type, nested_structs);
     }
     else if (is_choice(type))
     {
@@ -293,6 +297,8 @@ void find_nested_structs(const Module& module, Type& type, std::vector<NamedType
         for (NamedType& choice_selection : choice.choices)
         {
             Type& inner_type = choice_selection.type;
+            find_nested_structs(module, choice_selection.type, nested_structs);
+
             if (is_set(inner_type))
             {
                 const std::string& name = "UnnamedSet" + std::to_string(unnamed_definition_num++);
@@ -311,12 +317,13 @@ void find_nested_structs(const Module& module, Type& type, std::vector<NamedType
                 nested_structs.push_back(NamedType{name, inner_type});
                 inner_type = DefinedType{module.module_reference, name, {}};
             }
-            find_nested_structs(module, choice_selection.type, nested_structs);
         }
     }
     else if (is_prefixed(type))
     {
         Type& inner_type = absl::get<PrefixedType>(absl::get<BuiltinType>(type)).tagged_type->type;
+        find_nested_structs(module, inner_type, nested_structs);
+
         if (is_set(inner_type))
         {
             const std::string& name = "UnnamedSet" + std::to_string(unnamed_definition_num++);
@@ -335,7 +342,6 @@ void find_nested_structs(const Module& module, Type& type, std::vector<NamedType
             nested_structs.push_back(NamedType{name, inner_type});
             inner_type = DefinedType{module.module_reference, name, {}};
         }
-        find_nested_structs(module, inner_type, nested_structs);
     }
 }
 

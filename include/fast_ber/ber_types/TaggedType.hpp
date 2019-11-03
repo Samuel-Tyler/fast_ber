@@ -19,12 +19,12 @@ struct TaggedType : public Type
     {
     }
     template <typename T1, typename T2>
-    TaggedType(const TaggedType<T1, T2>& t) : Type(t.get())
+    TaggedType(const TaggedType<T1, T2>& t) : Type(t.get_base())
     {
     }
 
-    Type&       get() { return *this; }
-    const Type& get() const { return *this; }
+    Type&       get_base() { return *this; }
+    const Type& get_base() const { return *this; }
 
     using Id       = TagType;
     using BaseType = Type;
@@ -48,80 +48,45 @@ struct TaggedType<Type, TagType, typename std::enable_if<std::is_enum<Type>::val
 
                 operator Type&() { return enumerated; }
                 operator const Type&() const { return enumerated; }
-    Type&       get() { return enumerated; }
-    const Type& get() const { return enumerated; }
+    Type&       get_base() { return enumerated; }
+    const Type& get_base() const { return enumerated; }
 
     using Id       = TagType;
     using BaseType = Type;
 };
 
+/*
 template <typename Type, typename TagType>
 struct TaggedType<fast_ber::Integer<Type>, TagType> : fast_ber::Integer<TagType>
 {
     TaggedType(const fast_ber::Integer<TagType>& t) : fast_ber::Integer<TagType>(t) {}
     TaggedType(Type&& t) : fast_ber::Integer<TagType>(std::move(t)) {}
-    template <typename... T>
-    TaggedType(T&&... t) : fast_ber::Integer<TagType>{std::forward<T>(t)...}
+    template <typename... Args>
+    TaggedType(Args&&... t) : fast_ber::Integer<TagType>{std::forward<Args>(t)...}
     {
     }
     template <typename T1, typename T2>
-    TaggedType(const TaggedType<T1, T2>& t) : fast_ber::Integer<TagType>(t.get())
+    TaggedType(const TaggedType<T1, T2>& t) : fast_ber::Integer<TagType>(t.get_base())
     {
     }
 
-    fast_ber::Integer<TagType>&       get() { return *this; }
-    const fast_ber::Integer<TagType>& get() const { return *this; }
+    fast_ber::Integer<TagType>&       get_base() { return *this; }
+    const fast_ber::Integer<TagType>& get_base() const { return *this; }
 
     using Id       = TagType;
     using BaseType = Type;
-};
+};*/
 
-template <typename T1, typename T2, typename T3>
-bool operator==(const TaggedType<T1, T2>& lhs, const T3& rhs)
+template <typename T, typename TagType, typename ID = TagType>
+EncodeResult encode(absl::Span<uint8_t> output, const TaggedType<T, TagType>& object, ID id = ID{})
 {
-    return lhs.get() == rhs;
+    return encode(output, object.get_base(), id);
 }
 
-template <typename T1, typename T2, typename T3>
-bool operator==(const T1& lhs, const TaggedType<T2, T3>& rhs)
+template <typename T, typename TagType, typename ID = TagType>
+DecodeResult decode(BerViewIterator& input, TaggedType<T, TagType>& object, ID id = ID{})
 {
-    return lhs == rhs.get();
-}
-
-template <typename T1, typename T2, typename T3, typename T4>
-bool operator==(const TaggedType<T1, T2>& lhs, const TaggedType<T3, T4>& rhs)
-{
-    return lhs.get() == rhs.get();
-}
-
-template <typename T1, typename T2, typename T3>
-bool operator!=(const TaggedType<T1, T2>& lhs, const T3& rhs)
-{
-    return lhs.get() != rhs;
-}
-
-template <typename T1, typename T2, typename T3>
-bool operator!=(const T1& lhs, const TaggedType<T2, T3>& rhs)
-{
-    return lhs != rhs.get();
-}
-
-template <typename T1, typename T2, typename T3, typename T4>
-bool operator!=(const TaggedType<T1, T2>& lhs, const TaggedType<T3, T4>& rhs)
-{
-    return lhs.get() != rhs.get();
-}
-
-template <typename T, typename DefaultTag, typename ID = typename TaggedType<T, DefaultTag>::Id>
-EncodeResult encode(absl::Span<uint8_t> output, const TaggedType<T, DefaultTag>& object, ID id = ID{})
-{
-    return encode(output, object.get(), id);
-}
-
-template <typename T, typename DefaultTag, typename ID = typename TaggedType<T, DefaultTag>::Id>
-DecodeResult decode(BerViewIterator& input, TaggedType<T, DefaultTag>& object, ID id = ID{})
-{
-    return decode(input, object.get(), id);
+    return decode(input, object.get_base(), id);
 }
 
 } // namespace fast_ber

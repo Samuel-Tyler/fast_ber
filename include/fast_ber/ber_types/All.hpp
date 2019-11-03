@@ -1,5 +1,7 @@
 #pragma once
 
+#include "fast_ber/util/Alias.hpp"
+
 #include "BMPString.hpp"
 #include "BitString.hpp"
 #include "Boolean.hpp"

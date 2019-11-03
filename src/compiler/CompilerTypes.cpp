@@ -176,7 +176,8 @@ static const std::unordered_set<std::string> reserved_keywords = {
     "UTF8String",
     "UniversalString",
     "VideotexString",
-    "VisibleString"};
+    "VisibleString",
+    "Id"};
 
 // Switch asn '-' for C++ '_'
 // Rename any names which are reserved in C++

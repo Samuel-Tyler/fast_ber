@@ -22,36 +22,50 @@ std::string strip_path(const std::string& path)
     return path.substr(found + 1);
 }
 
-std::string create_type_fwd(const std::string& name, const Type& type, const Module& module, const Asn1Tree& tree)
+std::string create_type_fwd(const std::string& name, const Type& assignment_type, const Module& module,
+                            const Asn1Tree tree)
 {
-    if (is_set(type) || is_sequence(type))
+    if (is_set(assignment_type) || is_sequence(assignment_type))
     {
         return "struct " + name + ";\n";
     }
-    else if (is_enumerated(type))
+    else if (is_enumerated(assignment_type))
     {
         return "enum class " + name + ";\n";
     }
+    else if (is_defined(assignment_type) &&
+             is_enumerated(type(resolve(tree, module.module_reference, absl::get<DefinedType>(assignment_type)))))
+    {
+        return "";
+    }
     else
     {
-        return "using " + name + " = " + type_as_string(type, module, tree) + ";\n";
+        return "struct " + name + ";\n";
     }
 }
 
-std::string create_type_assignment(const std::string& name, const Type& type, const Module& module,
+std::string create_type_assignment(const std::string& name, const Type& assignment_type, const Module& module,
                                    const Asn1Tree& tree)
 {
-    if (is_set(type) || is_sequence(type))
+    if (is_set(assignment_type) || is_sequence(assignment_type))
     {
-        return "struct " + name + type_as_string(type, module, tree);
+        return "struct " + name + type_as_string(assignment_type, module, tree);
     }
-    else if (is_enumerated(type))
+    else if (is_enumerated(assignment_type))
     {
-        return "enum class " + name + type_as_string(type, module, tree);
+        return "enum class " + name + type_as_string(assignment_type, module, tree);
+    }
+    else if (is_defined(assignment_type) &&
+             is_enumerated(type(resolve(tree, module.module_reference, absl::get<DefinedType>(assignment_type)))))
+    {
+        return "using " + name + " = " + type_as_string(assignment_type, module, tree) + ";\n";
     }
     else
     {
-        return "using " + name + " = " + type_as_string(type, module, tree) + ";\n";
+        std::string output;
+        output += "using " + name + "_INTERNAL = " + type_as_string(assignment_type, module, tree) + ";\n";
+        output += "FAST_BER_ALIAS(" + name + "," + name + "_INTERNAL);\n";
+        return output;
     }
 }
 
@@ -394,12 +408,30 @@ std::string create_encode_functions(const Assignment& assignment, const Module& 
             const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(type_assignment.type));
             return create_collection_encode_functions(assignment.name, assignment.parameters, set, module, tree);
         }
+        else if (is_enumerated(type_assignment.type) ||
+                 (is_defined(type_assignment.type) &&
+                  is_enumerated(
+                      type(resolve(tree, module.module_reference, absl::get<DefinedType>(type_assignment.type))))))
+        {
+            return "";
+        }
+        else
+        {
+            const std::string& name = module.module_reference + "::" + assignment.name;
+            std::string        res;
+            res += "template <typename ID = Identifier<" + name + ">>\n";
+            res += "EncodeResult encode(absl::Span<uint8_t> output, const " + name + "& object, ID id = ID{})\n";
+            res += "{\n";
+            res += "    return encode(output, object.get_base(), id);\n";
+            res += "}\n";
+            return res;
+        }
     }
 
     return "";
 }
 
-std::string create_decode_functions(const Assignment& assignment, const Module& module)
+std::string create_decode_functions(const Assignment& assignment, const Module& module, const Asn1Tree& tree)
 {
     if (absl::holds_alternative<TypeAssignment>(assignment.specific))
     {
@@ -414,6 +446,24 @@ std::string create_decode_functions(const Assignment& assignment, const Module& 
         {
             const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(type_assignment.type));
             return create_collection_decode_functions(assignment.name, assignment.parameters, set, module);
+        }
+        else if (is_enumerated(type_assignment.type) ||
+                 (is_defined(type_assignment.type) &&
+                  is_enumerated(
+                      type(resolve(tree, module.module_reference, absl::get<DefinedType>(type_assignment.type))))))
+        {
+            return "";
+        }
+        else
+        {
+            const std::string& name = module.module_reference + "::" + assignment.name;
+            std::string        res;
+            res += "template <typename ID = Identifier<" + name + ">>\n";
+            res += "DecodeResult decode(BerViewIterator& input, " + name + "& object, ID id = ID{})\n";
+            res += "{\n";
+            res += "    return decode(input, object.get_base(), id);\n";
+            res += "}\n";
+            return res;
         }
     }
     return "";
@@ -553,7 +603,7 @@ std::string create_body(const Asn1Tree& tree, const Module& module)
 std::string create_fwd_declarations(const Asn1Tree& tree, const Module& module)
 {
     std::string output;
-    output += create_imports(tree, module, false);
+    //  output += create_imports(tree, module, false);
 
     for (const Assignment& assignment : module.assignments)
     {
@@ -606,7 +656,7 @@ std::string create_detail_body(const Asn1Tree& tree)
         for (const Assignment& assignment : module.assignments)
         {
             body += create_encode_functions(assignment, module, tree);
-            body += create_decode_functions(assignment, module) + "\n";
+            body += create_decode_functions(assignment, module, tree) + "\n";
             helpers += create_helper_functions(assignment);
         }
 

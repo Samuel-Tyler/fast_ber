@@ -13,6 +13,7 @@ struct SequenceOf : public absl::InlinedVector<T, N>
 {
     using absl::InlinedVector<T, N>::InlinedVector;
 
+    SequenceOf() = default;
     SequenceOf(const absl::InlinedVector<T, N>& t) : absl::InlinedVector<T, N>(t) {}
     SequenceOf(absl::InlinedVector<T, N>&& t) : absl::InlinedVector<T, N>(std::move(t)) {}
     template <typename T2, size_t N2 = default_inlined_size>

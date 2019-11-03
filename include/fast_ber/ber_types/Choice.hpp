@@ -17,15 +17,30 @@ namespace fast_ber
 template <typename... Args>
 struct Choice : public absl::variant<Args...>
 {
-    using absl::variant<Args...>::variant;
-    using absl::variant<Args...>::operator=;
-
     using Base = absl::variant<Args...>;
-    const absl::variant<Args...>& base() const { return *static_cast<const absl::variant<Args...>*>(this); }
+    using Base::variant;
+    using Base::operator=;
+
+    Base&       base() { return *static_cast<Base*>(this); }
+    const Base& base() const { return *static_cast<const Base*>(this); }
 
     Choice() : absl::variant<Args...>() {}
     Choice(const absl::variant<Args...>& rhs) : absl::variant<Args...>(rhs) {}
     Choice(absl::variant<Args...>&& rhs) : absl::variant<Args...>(rhs) {}
+
+    bool operator==(const Choice<Args...>& rhs) const { return this->base() == rhs.base(); }
+    bool operator!=(const Choice<Args...>& rhs) const { return this->base() != rhs.base(); }
+
+    template <typename T>
+    bool operator==(const T& rhs) const
+    {
+        return base() == rhs;
+    }
+    template <typename T>
+    bool operator!=(const T& rhs) const
+    {
+        return base() != rhs;
+    }
 
     using Id = ExplicitId<UniversalTag::choice>;
 };
@@ -35,18 +50,6 @@ using variant_size = absl::variant_size<typename T::Base>;
 
 template <std::size_t n, typename T>
 using variant_alternative = absl::variant_alternative<n, typename T::Base>;
-
-template <typename... Args>
-bool operator==(const Choice<Args...>& lhs, const Choice<Args...>& rhs)
-{
-    return lhs.base() == rhs.base();
-}
-
-template <typename... Args>
-bool operator!=(const Choice<Args...>& lhs, const Choice<Args...>& rhs)
-{
-    return lhs.base() != rhs.base();
-}
 
 template <typename... Args>
 constexpr ExplicitId<UniversalTag::choice> identifier(const Choice<Args...>*,
