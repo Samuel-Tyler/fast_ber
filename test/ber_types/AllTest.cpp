@@ -56,6 +56,7 @@ void test_type(const T& a)
 
     // Identifier checks
     std::cout << identifier(&a) << std::endl;
+    static_assert(std::is_same<decltype(identifier(static_cast<T*>(nullptr))), Identifier<T>>::value, "");
 }
 
 TEST_CASE("AllTypes: Check all types share a unified interface")

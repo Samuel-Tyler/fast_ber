@@ -23,7 +23,7 @@ template <typename... Args, typename T>
 EncodeResult encode_sequence_combine_impl(absl::Span<uint8_t>& output, size_t encoding_length, const T& object,
                                           const Args&... args) noexcept
 {
-    constexpr auto     id     = identifier(static_cast<T*>(nullptr), IdentifierAdlToken{});
+    Identifier<T>      id;
     const EncodeResult result = encode(output, object, id);
     if (!result.success)
     {
@@ -57,9 +57,8 @@ template <typename T, typename... Args>
 DecodeResult decode_sequence_combine_impl(BerViewIterator& input, const char* parent_name, T& object,
                                           Args&&... args) noexcept
 {
-    constexpr auto id = identifier(static_cast<T*>(nullptr), IdentifierAdlToken{});
-
-    DecodeResult result = decode(input, object);
+    Identifier<T> id;
+    DecodeResult  result = decode(input, object);
     if (!result.success)
     {
         std::cerr << "Error decoding " << parent_name << ": could not decode field with tag " << val(id.tag()) << "\n";

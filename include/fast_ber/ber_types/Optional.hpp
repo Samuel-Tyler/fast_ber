@@ -189,8 +189,7 @@ EncodeResult encode(absl::Span<uint8_t> buffer, const Optional<T, s1>& optional_
 template <typename T, StorageMode s1>
 EncodeResult encode(absl::Span<uint8_t> buffer, const Optional<T, s1>& optional_type) noexcept
 {
-    constexpr auto id = identifier(static_cast<T*>(nullptr));
-    return encode(buffer, optional_type, id);
+    return encode(buffer, optional_type, Identifier<T>{});
 }
 
 template <typename T, typename ID, StorageMode s1>
@@ -211,14 +210,13 @@ DecodeResult decode(BerViewIterator& input, Optional<T, s1>& output, const ID& i
 template <typename T, StorageMode s1>
 DecodeResult decode(BerViewIterator& input, Optional<T, s1>& output) noexcept
 {
-    constexpr auto id = identifier(static_cast<T*>(nullptr));
-    return decode(input, output, id);
+    return decode(input, output, Identifier<T>{});
 }
 
 template <typename T, StorageMode s1>
 EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer, const Optional<T, s1>& optional_type) noexcept
 {
-    constexpr auto id = identifier(static_cast<T*>(nullptr));
+    constexpr Identifier<T> id;
     if (optional_type.has_value())
     {
         return encode_content_and_length(buffer, *optional_type, id);
@@ -232,7 +230,7 @@ EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer, const Optiona
 template <typename T, StorageMode s1>
 DecodeResult decode_content_and_length(BerViewIterator& input, Optional<T, s1>& output) noexcept
 {
-    constexpr auto id = identifier(static_cast<T*>(nullptr));
+    constexpr Identifier<T> id;
     if (input->is_valid() && input->tag() == val(id.tag()))
     {
         output.emplace();
@@ -246,15 +244,7 @@ DecodeResult decode_content_and_length(BerViewIterator& input, Optional<T, s1>& 
 }
 
 template <typename T, StorageMode s1>
-constexpr auto identifier(const Optional<T, s1>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
-    -> decltype(identifier(static_cast<T*>(nullptr)))
-{
-    return {};
-}
-
-template <typename T, StorageMode s1>
-constexpr auto explicit_identifier(const Optional<T, s1>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
-    -> decltype(explicit_identifier(static_cast<T*>(nullptr)))
+constexpr auto identifier(const Optional<T, s1>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept -> Identifier<T>
 {
     return {};
 }

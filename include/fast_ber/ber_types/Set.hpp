@@ -18,8 +18,8 @@ template <typename T, typename... Args>
 DecodeResult decode_set_combine_impl(BerViewIterator& input, const char* parent_name, T& object,
                                      Args&&... args) noexcept
 {
-    constexpr auto id     = identifier(static_cast<T*>(nullptr));
-    DecodeResult   result = decode(input, object, id);
+    Identifier<T> id;
+    DecodeResult  result = decode(input, object, id);
     if (!result.success)
     {
         std::cerr << "Error decoding " << parent_name << ": could not decode field with tag " << val(id.tag()) << "\n";

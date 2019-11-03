@@ -67,8 +67,8 @@ DecodeResult decode(BerViewIterator& input, SequenceOf<T>& output, ID id = ID{})
         return DecodeResult{false};
     }
 
-    auto           child    = input->begin();
-    constexpr auto child_id = identifier(static_cast<const T*>(nullptr), IdentifierAdlToken{});
+    auto                    child = input->begin();
+    constexpr Identifier<T> child_id;
 
     while (child->is_valid() && child->tag() == val(child_id.tag()))
     {

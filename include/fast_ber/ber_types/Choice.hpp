@@ -71,7 +71,7 @@ EncodeResult encode_if(const absl::Span<uint8_t>& buffer, const Choice<Variants.
     if (choice.index() == index)
     {
         const auto*    child    = absl::get_if<index>(&choice);
-        constexpr auto child_id = identifier(static_cast<T*>(nullptr));
+        constexpr auto child_id = Identifier<T>{};
         assert(child);
 
         return encode(buffer, *child, child_id);
@@ -117,7 +117,7 @@ template <size_t index, size_t max_depth, typename... Variants, typename ID,
 DecodeResult decode_if(BerViewIterator& input, Choice<Variants...>& output, ID id) noexcept
 {
     using T                 = typename fast_ber::variant_alternative<index, Choice<Variants...>>::type;
-    constexpr auto child_id = identifier(static_cast<T*>(nullptr));
+    constexpr auto child_id = Identifier<T>{};
     if (input->tag() == val(child_id.tag()))
     {
         T* child = &output.template emplace<index>();
