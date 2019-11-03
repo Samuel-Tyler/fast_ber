@@ -197,4 +197,10 @@ DecodeResult decode_content_and_length(BerViewIterator& input, GeneralizedTime<I
     return {};
 }
 
+template <typename Identifier>
+std::ostream& operator<<(std::ostream& os, const GeneralizedTime<Identifier>& time)
+{
+    return os << time.time();
+}
+
 } // namespace fast_ber

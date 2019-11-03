@@ -9,27 +9,27 @@
 #include "fast_ber/util/DecodeHelpers.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
 
+#include <iosfwd>
 #include <tuple>
 
 namespace fast_ber
 {
 
-template <typename... Args>
-struct Choice : public absl::variant<Args...>
+template <typename T0, typename... Args>
+struct Choice : public absl::variant<T0, Args...>
 {
-    using Base = absl::variant<Args...>;
+    using Base = absl::variant<T0, Args...>;
     using Base::variant;
-    using Base::operator=;
 
     Base&       base() { return *static_cast<Base*>(this); }
     const Base& base() const { return *static_cast<const Base*>(this); }
 
-    Choice() : absl::variant<Args...>() {}
-    Choice(const absl::variant<Args...>& rhs) : absl::variant<Args...>(rhs) {}
-    Choice(absl::variant<Args...>&& rhs) : absl::variant<Args...>(rhs) {}
+    Choice() : Base() {}
+    Choice(const Base& rhs) : Base(rhs) {}
+    Choice(Base&& rhs) : Base(rhs) {}
 
-    bool operator==(const Choice<Args...>& rhs) const { return this->base() == rhs.base(); }
-    bool operator!=(const Choice<Args...>& rhs) const { return this->base() != rhs.base(); }
+    bool operator==(const Choice& rhs) const { return this->base() == rhs.base(); }
+    bool operator!=(const Choice& rhs) const { return this->base() != rhs.base(); }
 
     template <typename T>
     bool operator==(const T& rhs) const
@@ -50,6 +50,13 @@ using variant_size = absl::variant_size<typename T::Base>;
 
 template <std::size_t n, typename T>
 using variant_alternative = absl::variant_alternative<n, typename T::Base>;
+
+template <typename Visitor, typename... Variants>
+absl::variant_internal::VisitResult<Visitor, Choice<Variants...>> visit(Visitor&&                  vis,
+                                                                        const Choice<Variants...>& variant)
+{
+    return absl::visit(vis, variant.base());
+}
 
 template <typename... Args>
 constexpr ExplicitId<UniversalTag::choice> identifier(const Choice<Args...>*,
@@ -150,6 +157,28 @@ DecodeResult decode(BerViewIterator& input, Choice<Variants...>& output, ID id =
     const DecodeResult result = decode_if<0, depth>(child, output, id);
     ++input;
     return result;
+}
+
+template <typename... Variants>
+std::ostream& operator<<(std::ostream& os, const Choice<Variants...>& variant);
+
+struct OsVisitor
+{
+    template <typename T>
+    std::ostream& operator()(const T& t)
+    {
+        return os << t;
+    }
+
+    std::ostream& os;
+};
+
+template <typename... Variants>
+std::ostream& operator<<(std::ostream& os, const Choice<Variants...>& variant)
+{
+    OsVisitor visitor{os};
+
+    return fast_ber::visit(visitor, variant);
 }
 
 } // namespace fast_ber

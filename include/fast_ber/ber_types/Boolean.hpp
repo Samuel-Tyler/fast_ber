@@ -153,4 +153,14 @@ DecodeResult decode_content_and_length(BerViewIterator& input, Boolean<Identifie
     return {};
 }
 
+template <typename Identifier>
+std::ostream& operator<<(std::ostream& os, const Boolean<Identifier>& object)
+{
+    if (object)
+    {
+        return os << "true";
+    }
+    return os << "false";
+}
+
 } // namespace fast_ber

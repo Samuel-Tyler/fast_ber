@@ -104,4 +104,11 @@ EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, ImplicitId
     return encode_res;
 }
 
+enum class StorageMode
+{
+    static_,
+    small_buffer_optimised,
+    dynamic,
+};
+
 } // namespace fast_ber

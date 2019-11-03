@@ -1,0 +1,18 @@
+Circular DEFINITIONS IMPLICIT TAGS ::= BEGIN
+
+CircularSequence1 ::= SEQUENCE {
+    name OCTET STRING,
+    cs2 CircularSequence2 OPTIONAL
+}
+
+CircularSequence2 ::= SEQUENCE {
+    cs1 CircularSequence1
+}
+
+CircularSequenceOf1 ::= SEQUENCE {
+    sequence CircularSequenceOf2
+}
+
+CircularSequenceOf2 ::= SEQUENCE OF CircularSequenceOf1
+
+END-- Comment at end

@@ -55,6 +55,7 @@ void test_type(const T& a)
     REQUIRE(a == g);
 
     // Identifier checks
+    std::cout << a << std::endl;
     std::cout << identifier(&a) << std::endl;
     static_assert(std::is_same<decltype(identifier(static_cast<T*>(nullptr))), Identifier<T>>::value, "");
 }

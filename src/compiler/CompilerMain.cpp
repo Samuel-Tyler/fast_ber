@@ -470,6 +470,33 @@ std::string create_decode_functions(const Assignment& assignment, const Module& 
 }
 
 template <typename CollectionType>
+std::string create_ostream_operators(const CollectionType& collection, const std::string& name)
+{
+    std::string res;
+    res += "std::ostream& operator<<(std::ostream& os, const " + name + "& object)\n";
+    res += "{\n";
+    res += "    bool first = true;\n";
+    res += "    os << '{';\n";
+    if (collection.components.size() == 0)
+    {
+        res += "    (void)object;\n";
+        res += "    (void)first;\n";
+    }
+
+    for (const ComponentType& component : collection.components)
+    {
+        res += "    if (!first) os << \", \";\n";
+        res +=
+            "    os << \"\\\"" + component.named_type.name + "\\\" : \" << object." + component.named_type.name + ";\n";
+        res += "    first = false;\n";
+    }
+    res += "    os << '}';\n";
+    res += "    return os;\n";
+    res += "}\n\n";
+    return res;
+}
+
+template <typename CollectionType>
 std::string create_collection_equality_operators(const CollectionType& collection, const std::string& name)
 {
     const std::string tags_class = name + "Tags";
@@ -500,6 +527,8 @@ std::string create_collection_equality_operators(const CollectionType& collectio
     res += "const " + name + "& rhs)\n";
     res += "{\n";
     res += "    return !(lhs == rhs);\n}\n\n";
+
+    res += create_ostream_operators(collection, name);
 
     std::string child_equality;
     // Create assignments for any children too
@@ -553,6 +582,12 @@ std::string create_helper_functions(const Assignment& assignment)
             res += "    default: return \"Invalid state!\";\n";
             res += "    }\n";
             res += "}\n";
+
+            res += "std::ostream& operator<<(std::ostream& os, const " + assignment.name + "& object)\n";
+            res += "{\n";
+            res += "    os << to_string(object);\n";
+            res += "    return os;\n";
+            res += "}\n\n";
             return res;
         }
     }

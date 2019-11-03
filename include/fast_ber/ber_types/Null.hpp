@@ -87,4 +87,10 @@ DecodeResult decode_content_and_length(BerViewIterator& input, Null<Identifier>&
     return {};
 }
 
+template <typename Identifier>
+std::ostream& operator<<(std::ostream& os, const Null<Identifier>)
+{
+    return os << "null";
+}
+
 } // namespace fast_ber
