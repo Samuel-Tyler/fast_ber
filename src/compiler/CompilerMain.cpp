@@ -22,6 +22,22 @@ std::string strip_path(const std::string& path)
     return path.substr(found + 1);
 }
 
+std::string create_type_fwd(const std::string& name, const Type& type, const Module& module, const Asn1Tree& tree)
+{
+    if (is_set(type) || is_sequence(type))
+    {
+        return "struct " + name + ";\n";
+    }
+    else if (is_enumerated(type))
+    {
+        return "enum class " + name + ";\n";
+    }
+    else
+    {
+        return "using " + name + " = " + type_as_string(type, module, tree) + ";\n";
+    }
+}
+
 std::string create_type_assignment(const std::string& name, const Type& type, const Module& module,
                                    const Asn1Tree& tree)
 {
@@ -494,11 +510,9 @@ std::string create_helper_functions(const Assignment& assignment)
     return "";
 }
 
-std::string create_body(const Asn1Tree& tree, const Module& module)
+std::string create_imports(const Asn1Tree& tree, const Module& module, bool include_values = true)
 {
     std::string output;
-    output += "\n";
-    output += "using namespace abbreviations;\n\n";
 
     for (const Import& import : module.imports)
     {
@@ -508,7 +522,7 @@ std::string create_body(const Asn1Tree& tree, const Module& module)
             {
                 output += "using " + import_name + " = " + import.module_reference + "::" + import_name + ";\n";
             }
-            else if (is_value(resolve(tree, import.module_reference, import_name)))
+            else if (include_values && is_value(resolve(tree, import.module_reference, import_name)))
             {
                 output +=
                     "static const auto " + import_name + " = " + import.module_reference + "::" + import_name + ";\n";
@@ -520,11 +534,56 @@ std::string create_body(const Asn1Tree& tree, const Module& module)
         }
     }
 
+    return output;
+}
+std::string create_body(const Asn1Tree& tree, const Module& module)
+{
+    std::string output;
+    output += "\n";
+    output += create_imports(tree, module);
+
     for (const Assignment& assignment : module.assignments)
     {
         output += create_assignment(tree, module, assignment);
     }
 
+    return output;
+}
+
+std::string create_fwd_declarations(const Asn1Tree& tree, const Module& module)
+{
+    std::string output;
+    output += create_imports(tree, module, false);
+
+    for (const Assignment& assignment : module.assignments)
+    {
+        if (absl::holds_alternative<TypeAssignment>(assignment.specific))
+        {
+            output +=
+                create_type_fwd(assignment.name, absl::get<TypeAssignment>(assignment.specific).type, module, tree);
+        }
+    }
+
+    return output;
+}
+
+std::string create_fwd_body(const Asn1Tree& tree)
+{
+    std::string output;
+    output += "/* Forward declration of ASN.1 types */\n\n";
+    output += "#pragma once\n\n";
+    output += create_include("fast_ber/ber_types/All.hpp");
+    output += "\n";
+
+    std::string definitions;
+    definitions += "using namespace abbreviations;\n";
+
+    for (const auto& module : tree.modules)
+    {
+        definitions += add_namespace(module.module_reference, create_fwd_declarations(tree, module));
+    }
+
+    output += add_namespace("fast_ber", definitions) + '\n';
     return output;
 }
 
@@ -534,7 +593,6 @@ std::string create_detail_body(const Asn1Tree& tree)
     output += "/* Functionality provided for Encoding and Decoding BER */\n\n";
 
     std::string body;
-    body += "using namespace abbreviations;\n\n";
 
     for (const Module& module : tree.modules)
     {
@@ -558,14 +616,18 @@ std::string create_detail_body(const Asn1Tree& tree)
     return output;
 }
 
-std::string create_output_file(const Asn1Tree& tree, const std::string detail_filename)
+std::string create_output_file(const Asn1Tree& tree, const std::string& fwd_filename,
+                               const std::string& detail_filename)
 {
     std::string output;
     output += "#pragma once\n\n";
     output += create_include("fast_ber/ber_types/All.hpp");
+    output += create_include(strip_path(fwd_filename)) + '\n';
     output += "\n";
 
     std::string definitions;
+    definitions += "using namespace abbreviations;\n\n";
+
     for (const auto& module : tree.modules)
     {
         definitions += add_namespace(module.module_reference, create_body(tree, module));
@@ -611,13 +673,20 @@ int main(int argc, char** argv)
         }
 
         const std::string& output_filename = std::string(argv[argc - 1]) + ".hpp";
+        const std::string& fwd_filame      = std::string(argv[argc - 1]) + ".fwd.hpp";
         const std::string& detail_filame   = std::string(argv[argc - 1]) + ".detail.hpp";
 
         std::ofstream output_file(output_filename);
+        std::ofstream fwd_output_file(fwd_filame);
         std::ofstream detail_output_file(detail_filame);
         if (!output_file.good())
         {
             std::cerr << "Could not create output file: " + output_filename + "\n";
+            return -1;
+        }
+        if (!fwd_output_file.good())
+        {
+            std::cerr << "Could not create output file: " + fwd_filame + "\n";
             return -1;
         }
         if (!detail_output_file.good())
@@ -640,7 +709,8 @@ int main(int argc, char** argv)
         resolve_components_of(context.asn1_tree);
         resolve_object_classes(context.asn1_tree);
 
-        output_file << create_output_file(context.asn1_tree, detail_filame);
+        output_file << create_output_file(context.asn1_tree, fwd_filame, detail_filame);
+        fwd_output_file << create_fwd_body(context.asn1_tree);
         detail_output_file << create_detail_body(context.asn1_tree);
 
         return 0;
