@@ -21,6 +21,7 @@ fast_ber is a small, lightweight library for BER encoding and decoding. Fast ber
 ## Usage
 1. Build the compiler:
 ```
+git submodule update --init
 mkdir build_cmake
 cd build_cmake
 cmake ..
