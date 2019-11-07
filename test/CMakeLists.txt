@@ -25,6 +25,8 @@ fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/parameterized_types.asn paramete
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/sequence_of.asn sequence_of)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/time.asn time)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/circular.asn circular)
+fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/defaults.asn defaults)
+fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/anonymous_members.asn anonymous_members)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/SGSN-CDR-def-v2009A.asn real_schema)
 fast_ber_generate2(${CMAKE_SOURCE_DIR}/testfiles/multi_file_import_1.asn
                    ${CMAKE_SOURCE_DIR}/testfiles/multi_file_import_2.asn multi_file_import)
@@ -49,7 +51,9 @@ add_executable(fast_ber_tests Test ${TEST_SRC} autogen/choice.hpp
                                                autogen/parameterized_types.hpp
                                                autogen/sequence_of.hpp
                                                autogen/time.hpp
-                                               autogen/circular.hpp)
+                                               autogen/circular.hpp
+                                               autogen/defaults.hpp
+                                               autogen/anonymous_members.hpp)
 target_include_directories(fast_ber_tests PRIVATE SYSTEM ${CMAKE_SOURCE_DIR}/3rd_party/Catch2/single_include)
 target_include_directories(fast_ber_tests PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 target_link_libraries (fast_ber_tests fast_ber_lib)

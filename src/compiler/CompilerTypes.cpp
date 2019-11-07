@@ -292,3 +292,9 @@ bool is_oid(const Type& type)
 }
 
 bool is_defined(const Type& type) { return absl::holds_alternative<DefinedType>(type); }
+
+std::string gen_anon_member_name()
+{
+    static size_t count = 0;
+    return "anonymous_member_" + std::to_string(count++);
+}

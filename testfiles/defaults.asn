@@ -1,0 +1,14 @@
+Defaults
+
+DEFINITIONS EXPLICIT TAGS ::=
+
+BEGIN
+
+SequenceWithDefault ::= SEQUENCE
+{
+    flag    BOOLEAN DEFAULT FALSE,
+    seq     SEQUENCE OF INTEGER,
+    ...
+}
+
+END

@@ -1227,7 +1227,13 @@ ComponentTypeList:
     { $1.push_back($3); $$ = $1; }
 
 ComponentType:
-    NamedType
+    Type
+    { $$ = ComponentType{{gen_anon_member_name(), $1}, false, absl::nullopt, absl::nullopt}; }
+|   Type OPTIONAL
+    { $$ = ComponentType{{gen_anon_member_name(), $1}, true, absl::nullopt, absl::nullopt}; }
+|   Type DEFAULT SingleValue
+    { $$ = ComponentType{{gen_anon_member_name(), $1}, false, $3, absl::nullopt}; }
+|   NamedType
     { $$ = ComponentType{$1, false, absl::nullopt, absl::nullopt}; }
 |   NamedType OPTIONAL
     { $$ = ComponentType{$1, true, absl::nullopt, absl::nullopt}; }

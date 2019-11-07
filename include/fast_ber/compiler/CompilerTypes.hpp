@@ -491,3 +491,5 @@ bool is_oid(const Type& type);
 bool is_defined(const Type& type);
 
 struct Context;
+
+std::string gen_anon_member_name();
