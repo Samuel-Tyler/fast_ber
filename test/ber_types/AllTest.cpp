@@ -7,12 +7,6 @@
 #include "absl/time/clock.h"
 
 using namespace fast_ber;
-enum TestEnum
-{
-    apple,
-    pear,
-    orange
-};
 
 template <typename T>
 void test_type(const T& a)
@@ -72,6 +66,7 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
     // test_type(fast_ber::Duration<>);
     // test_type(fast_ber::EmbeddedPDV);
     test_type(fast_ber::All::The_Enum(fast_ber::All::The_Enum::pear));
+    test_type(fast_ber::Enumerated<fast_ber::All::The_Enum>(fast_ber::All::The_Enum::pear));
     // test_type(fast_ber::External);
     test_type(fast_ber::GeneralizedTime<>(absl::Now()));
     // test_type(fast_ber::IRI);

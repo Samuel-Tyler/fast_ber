@@ -34,8 +34,6 @@ class Integer
 
     explicit Integer(absl::Span<const uint8_t> ber_data) noexcept { assign_ber(ber_data); }
 
-    // Implicit conversion to int
-    //    operator int64_t() const noexcept { return value(); }
     int64_t value() const noexcept;
 
     Integer<Identifier>& operator=(int64_t rhs) noexcept;

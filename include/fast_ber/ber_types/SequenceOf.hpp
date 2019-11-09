@@ -118,7 +118,7 @@ std::ostream& operator<<(std::ostream& os, const SequenceOf<T, s1>& sequence)
     {
         if (!first)
         {
-            os << " ,";
+            os << ", ";
         }
         os << member;
         first = false;
