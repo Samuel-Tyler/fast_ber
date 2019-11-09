@@ -12,6 +12,8 @@ fast_ber is a small, lightweight library for BER encoding and decoding. Fast ber
 - View classes are provided for zero copy decoding
 - Interfaces mimic STL types such as std::string, std::vector and std::optional
 
+[Read more about the decisions made writing this library](https://medium.com/@samtyler6/translating-asn-1-ber-types-to-modern-c-226fb06d026f)
+
 #### Limitations
 - No circular data structures
 - Size and value constraints are not implemented
@@ -19,6 +21,7 @@ fast_ber is a small, lightweight library for BER encoding and decoding. Fast ber
 ## Usage
 1. Build the compiler:
 ```
+git submodule update --init
 mkdir build_cmake
 cd build_cmake
 cmake ..
