@@ -65,8 +65,7 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
     // test_type(fast_ber::DateTime<>);
     // test_type(fast_ber::Duration<>);
     // test_type(fast_ber::EmbeddedPDV);
-    test_type(fast_ber::All::The_Enum(fast_ber::All::The_Enum::pear));
-    test_type(fast_ber::Enumerated<fast_ber::All::The_Enum>(fast_ber::All::The_Enum::pear));
+    test_type(fast_ber::All::The_Enum(fast_ber::All::The_Enum::Values::pear));
     // test_type(fast_ber::External);
     test_type(fast_ber::GeneralizedTime<>(absl::Now()));
     // test_type(fast_ber::IRI);
@@ -80,7 +79,7 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
     test_type(fast_ber::Optional<fast_ber::Null<>>(fast_ber::Null<>()));
     test_type(fast_ber::Optional<fast_ber::TaggedType<fast_ber::All::The_Enum,
                                                       fast_ber::ImplicitIdentifier<fast_ber::Class::application, 500>>>(
-        fast_ber::All::The_Enum::pear));
+        fast_ber::All::The_Enum::Values::pear));
     // test_type(fast_ber::Prefixed);
     // test_type(fast_ber::Real);
     // test_type(fast_ber::RelativeIRI);

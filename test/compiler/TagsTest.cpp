@@ -123,9 +123,9 @@ TEST_CASE("Tags: Encoding and decoding a packet with various tagging modes")
 
 TEST_CASE("Tags: Tagging an enum")
 {
-    fast_ber::Tags::TaggedEnum a = fast_ber::Tags::TaggedEnum::BaseType::enum_;
+    fast_ber::Tags::TaggedEnum a = fast_ber::Tags::TaggedEnum::BaseType::Values::enum_;
     REQUIRE(fast_ber::val(fast_ber::identifier(&a).tag()) == 7);
-    REQUIRE(a == fast_ber::Tags::TaggedEnum::BaseType::enum_);
+    REQUIRE(a == fast_ber::Tags::TaggedEnum::BaseType::Values::enum_);
 
     std::array<uint8_t, 5000> buffer        = {};
     fast_ber::EncodeResult    encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), a);

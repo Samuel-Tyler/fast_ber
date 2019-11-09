@@ -22,26 +22,9 @@ std::string strip_path(const std::string& path)
     return path.substr(found + 1);
 }
 
-std::string create_type_fwd(const std::string& name, const Type& assignment_type, const Module& module,
-                            const Asn1Tree tree)
+std::string create_type_fwd(const std::string& name, const Type&, const Module&, const Asn1Tree&)
 {
-    if (is_set(assignment_type) || is_sequence(assignment_type))
-    {
-        return "struct " + name + ";\n";
-    }
-    else if (is_enumerated(assignment_type))
-    {
-        return "enum class " + name + ";\n";
-    }
-    else if (is_defined(assignment_type) &&
-             is_enumerated(type(resolve(tree, module.module_reference, absl::get<DefinedType>(assignment_type)))))
-    {
-        return "";
-    }
-    else
-    {
-        return "struct " + name + ";\n";
-    }
+    return "struct " + name + ";\n";
 }
 
 std::string create_type_assignment(const std::string& name, const Type& assignment_type, const Module& module,
@@ -53,12 +36,11 @@ std::string create_type_assignment(const std::string& name, const Type& assignme
     }
     else if (is_enumerated(assignment_type))
     {
-        return "enum class " + name + type_as_string(assignment_type, module, tree);
-    }
-    else if (is_defined(assignment_type) &&
-             is_enumerated(type(resolve(tree, module.module_reference, absl::get<DefinedType>(assignment_type)))))
-    {
-        return "using " + name + " = " + type_as_string(assignment_type, module, tree) + ";\n";
+        std::string output;
+        output += "enum class " + name + "Values" + type_as_string(assignment_type, module, tree);
+        output += "using " + name + "_INTERNAL = " + "Enumerated<" + name + "Values>" + ";\n";
+        output += "FAST_BER_ALIAS(" + name + "," + name + "_INTERNAL);\n";
+        return output;
     }
     else
     {
@@ -570,20 +552,20 @@ std::string create_helper_functions(const Assignment& assignment)
         {
             const EnumeratedType& e = absl::get<EnumeratedType>(absl::get<BuiltinType>(type_assignment.type));
 
-            std::string res = "const char* to_string(const " + assignment.name + "& e)\n";
+            std::string res = "const char* to_string(const " + assignment.name + "::Values& e)\n";
             res += "{\n";
             res += "    switch (e)\n";
             res += "    {\n";
             for (const EnumerationValue& enum_value : e.enum_values)
             {
-                res +=
-                    "    case " + assignment.name + "::" + enum_value.name + ": return \"" + enum_value.name + "\";\n";
+                res += "    case " + assignment.name + "::Values::" + enum_value.name + ": return \"" +
+                       enum_value.name + "\";\n";
             }
             res += "    default: return \"Invalid state!\";\n";
             res += "    }\n";
             res += "}\n";
 
-            res += "std::ostream& operator<<(std::ostream& os, const " + assignment.name + "& object)\n";
+            res += "std::ostream& operator<<(std::ostream& os, const " + assignment.name + "::Values& object)\n";
             res += "{\n";
             res += "    os << to_string(object);\n";
             res += "    return os;\n";
