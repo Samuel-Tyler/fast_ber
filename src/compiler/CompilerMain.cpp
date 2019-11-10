@@ -32,22 +32,22 @@ std::string create_type_assignment(const std::string& name, const Type& assignme
 {
     if (is_set(assignment_type) || is_sequence(assignment_type))
     {
-        return "struct " + name + type_as_string(assignment_type, module, tree);
+        std::string res;
+
+        res += "struct " + name + type_as_string(assignment_type, module, tree);
+        return res;
     }
     else if (is_enumerated(assignment_type))
     {
         std::string output;
         output += "enum class " + name + "Values" + type_as_string(assignment_type, module, tree);
-        output += "using " + name + "_INTERNAL = " + "Enumerated<" + name + "Values>" + ";\n";
-        output += "FAST_BER_ALIAS(" + name + "," + name + "_INTERNAL);\n";
+        output += "FAST_BER_ALIAS(" + name + ", " + "Enumerated<" + name + "Values>);";
+
         return output;
     }
     else
     {
-        std::string output;
-        output += "using " + name + "_INTERNAL = " + type_as_string(assignment_type, module, tree) + ";\n";
-        output += "FAST_BER_ALIAS(" + name + "," + name + "_INTERNAL);\n";
-        return output;
+        return "FAST_BER_ALIAS(" + name + ", " + type_as_string(assignment_type, module, tree) + ");\n";
     }
 }
 

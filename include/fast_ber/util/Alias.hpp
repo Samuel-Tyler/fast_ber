@@ -1,14 +1,14 @@
 #pragma once
 
-#define FAST_BER_ALIAS(X, Y)                                                                                           \
-    struct X : Y                                                                                                       \
+#define FAST_BER_ALIAS(X, ...)                                                                                         \
+    struct X : __VA_ARGS__                                                                                             \
     {                                                                                                                  \
-        using Y::Y;                                                                                                    \
+        using AliasedType = __VA_ARGS__;                                                                               \
+        using AliasedType::AliasedType;                                                                                \
         X() = default;                                                                                                 \
-        X(const Y& y) : Y(y) {}                                                                                        \
-        X(Y&& y) : Y(std::move(y)) {}                                                                                  \
-        using Id          = fast_ber::Identifier<Y>;                                                                   \
-        using AliasedType = Y;                                                                                         \
-        Y&       get_base() { return *this; }                                                                          \
-        const Y& get_base() const { return *this; }                                                                    \
+        X(const AliasedType& y) : AliasedType(y) {}                                                                    \
+        X(AliasedType&& y) : AliasedType(std::move(y)) {}                                                              \
+        using Id = fast_ber::Identifier<AliasedType>;                                                                  \
+        AliasedType&       get_base() { return *this; }                                                                \
+        const AliasedType& get_base() const { return *this; }                                                          \
     }
