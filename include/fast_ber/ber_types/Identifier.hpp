@@ -51,21 +51,10 @@ constexpr ImplicitIdentifier<ImplicitClass, ImplicitTag> resolve_default(Implici
     return {};
 }
 
-// Used to ensure identifier() functions can be found in the fast_ber namespace using ADL
-struct IdentifierAdlToken
-{
-};
-
-template <typename T>
-constexpr auto identifier(const T*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept -> typename T::Id
-{
-    return {};
-}
-
 template <typename T>
 struct IdentifierType
 {
-    using type = decltype(identifier(static_cast<T*>(nullptr), IdentifierAdlToken{}));
+    using type = typename T::Id;
 };
 
 template <typename T>

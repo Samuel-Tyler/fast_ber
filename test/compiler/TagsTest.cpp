@@ -105,26 +105,26 @@ TEST_CASE("Tags: Encoding and decoding a packet with various tagging modes")
 
     REQUIRE(tags_copy.bool3);
 
-    REQUIRE(std::is_same<decltype(identifier(&tags_copy.string2)),
+    REQUIRE(std::is_same<fast_ber::Identifier<decltype(tags_copy.string2)>,
                          fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 1>>::value);
-    REQUIRE(std::is_same<decltype(identifier(&tags_copy.integer)),
+    REQUIRE(std::is_same<fast_ber::Identifier<decltype(tags_copy.integer)>,
                          fast_ber::DoubleId<fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 2>,
                                             fast_ber::ExplicitId<fast_ber::UniversalTag::integer>>>::value);
-    REQUIRE(std::is_same<decltype(identifier(&tags_copy.bool1)),
+    REQUIRE(std::is_same<fast_ber::Identifier<decltype(tags_copy.bool1)>,
                          fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 3>>::value);
-    REQUIRE(std::is_same<decltype(identifier(&tags_copy.bool2)),
+    REQUIRE(std::is_same<fast_ber::Identifier<decltype(tags_copy.bool2)>,
                          fast_ber::DoubleId<fast_ber::ImplicitIdentifier<fast_ber::Class::private_, 4>,
                                             fast_ber::ExplicitId<fast_ber::UniversalTag::boolean>>>::value);
-    REQUIRE(std::is_same<decltype(identifier(&tags_copy.bool3)),
+    REQUIRE(std::is_same<fast_ber::Identifier<decltype(tags_copy.bool3)>,
                          fast_ber::ImplicitIdentifier<fast_ber::Class::application, 5>>::value);
-    REQUIRE(std::is_same<decltype(identifier(&tags_copy.enumerated)),
+    REQUIRE(std::is_same<fast_ber::Identifier<decltype(tags_copy.enumerated)>,
                          fast_ber::ImplicitIdentifier<fast_ber::Class::application, 6>>::value);
 }
 
 TEST_CASE("Tags: Tagging an enum")
 {
     fast_ber::Tags::TaggedEnum a = fast_ber::Tags::TaggedEnum::BaseType::Values::enum_;
-    REQUIRE(fast_ber::val(fast_ber::identifier(&a).tag()) == 7);
+    REQUIRE(fast_ber::Identifier<fast_ber::Tags::TaggedEnum>::tag() == 7);
     REQUIRE(a == fast_ber::Tags::TaggedEnum::BaseType::Values::enum_);
 
     std::array<uint8_t, 5000> buffer        = {};

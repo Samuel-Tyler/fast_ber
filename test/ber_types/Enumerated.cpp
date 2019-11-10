@@ -22,6 +22,7 @@ std::ostream& operator<<(std::ostream& os, const TestEnumValues& obj) noexcept
     case TestEnumValues::option_three:
         return os << "option_three";
     }
+    return os;
 }
 
 using TestEnum = fast_ber::Enumerated<TestEnumValues>;

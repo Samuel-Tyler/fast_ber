@@ -48,6 +48,12 @@ struct Optional : public OptionalImplementation<T, storage>::Type
     Optional(Implementation&& rhs) : Implementation(rhs) {}
 };
 
+template <typename T>
+struct IdentifierType<Optional<T>>
+{
+    using type = Identifier<T>;
+};
+
 template <typename T, typename ID, StorageMode s1>
 EncodeResult encode(absl::Span<uint8_t> buffer, const Optional<T, s1>& optional_type, const ID& id) noexcept
 {
@@ -116,12 +122,6 @@ DecodeResult decode_content_and_length(BerViewIterator& input, Optional<T, s1>& 
         output = empty;
         return DecodeResult{true};
     }
-}
-
-template <typename T, StorageMode s1>
-constexpr auto identifier(const Optional<T, s1>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept -> Identifier<T>
-{
-    return {};
 }
 
 template <typename T, StorageMode s1>

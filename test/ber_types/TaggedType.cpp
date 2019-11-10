@@ -16,10 +16,9 @@ TEST_CASE("TaggedType: Assign")
     TaggedInt           b = a;
 
     REQUIRE(b == 4);
-    REQUIRE(fast_ber::val(identifier(&b).tag()) == 5);
+    REQUIRE(fast_ber::val(fast_ber::Identifier<TaggedInt>::tag()) == 5);
 
-    static_assert(std::is_same<decltype(fast_ber::identifier(static_cast<TaggedInt*>(nullptr))), Tag>::value,
-                  "Double Tagged Identifier");
+    static_assert(std::is_same<fast_ber::Identifier<TaggedInt>, Tag>::value, "Double Tagged Identifier");
 }
 
 TEST_CASE("TaggedType: Double Tagged")
@@ -32,11 +31,9 @@ TEST_CASE("TaggedType: Double Tagged")
     DoubleTaggedInt     b = a;
 
     REQUIRE(b == 4);
-    REQUIRE(fast_ber::val(identifier(&b).tag()) == 10);
+    REQUIRE(fast_ber::val(fast_ber::Identifier<DoubleTaggedInt>::tag()) == 10);
 
-    static_assert(
-        std::is_same<decltype(fast_ber::identifier(static_cast<DoubleTaggedInt*>(nullptr))), TestOuterTag>::value,
-        "Double Tagged Identifier");
+    static_assert(std::is_same<fast_ber::Identifier<DoubleTaggedInt>, TestOuterTag>::value, "Double Tagged Identifier");
 }
 
 TEST_CASE("TaggedType: Double Tagged Explicit")
@@ -50,9 +47,7 @@ TEST_CASE("TaggedType: Double Tagged Explicit")
     using DoubleTaggedInt =
         fast_ber::TaggedType<fast_ber::TaggedType<fast_ber::Integer<ExplicitTag>, TestInnerTag>, TestOuterTag>;
 
-    static_assert(
-        std::is_same<decltype(fast_ber::identifier(static_cast<DoubleTaggedInt*>(nullptr))), TestOuterTag>::value,
-        "Double Tagged Identifier");
+    static_assert(std::is_same<fast_ber::Identifier<DoubleTaggedInt>, TestOuterTag>::value, "Double Tagged Identifier");
 }
 
 TEST_CASE("TaggedType: Encode Decode")
@@ -81,9 +76,8 @@ TEST_CASE("TaggedType: Tagged Enum")
     };
 
     static_assert(
-        std::is_same<decltype(fast_ber::identifier(
-                         static_cast<fast_ber::TaggedType<
-                             TestEnum, fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>>*>(nullptr))),
+        std::is_same<fast_ber::Identifier<
+                         fast_ber::TaggedType<TestEnum, fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>>>,
                      fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>>::value,
         "Tagged Enum Identifier");
 }

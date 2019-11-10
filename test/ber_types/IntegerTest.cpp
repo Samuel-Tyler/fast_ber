@@ -1,4 +1,4 @@
-#include "fast_ber/ber_types/Identifier.hpp"
+﻿#include "fast_ber/ber_types/Identifier.hpp"
 #include "fast_ber/ber_types/Integer.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
 
@@ -87,14 +87,7 @@ TEST_CASE("Integer: Tagging")
     using TaggedInt         = fast_ber::Integer<Tag>;
     using ExplicitTaggedInt = fast_ber::Integer<ExplicitTag>;
 
-    static_assert(
-        std::is_same<decltype(fast_ber::identifier(static_cast<fast_ber::Integer<>*>(nullptr))), DefaultTag>::value,
-        "Tagged Integer");
-
-    static_assert(std::is_same<decltype(fast_ber::identifier(static_cast<TaggedInt*>(nullptr))), Tag>::value,
-                  "Tagged Integer");
-
-    static_assert(
-        std::is_same<decltype(fast_ber::identifier(static_cast<ExplicitTaggedInt*>(nullptr))), ExplicitTag>::value,
-        "Tagged Identifier");
+    static_assert(std::is_same<fast_ber::Identifier<fast_ber::Integer<>>, DefaultTag>::value, "Tagged Integer");
+    static_assert(std::is_same<fast_ber::Identifier<TaggedInt>, Tag>::value, "Tagged Integer");
+    static_assert(std::is_same<fast_ber::Identifier<ExplicitTaggedInt>, ExplicitTag>::value, "Tagged Identifier");
 }

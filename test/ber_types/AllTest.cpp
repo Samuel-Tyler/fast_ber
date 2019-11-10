@@ -35,7 +35,7 @@ void test_type(const T& a)
     fast_ber::DecodeResult    decode_result = fast_ber::decode(absl::Span<uint8_t>(buffer), f);
     REQUIRE(encode_result.success);
     REQUIRE(decode_result.success);
-    REQUIRE(fast_ber::BerView(buffer).tag() == val(identifier(&a).tag()));
+    REQUIRE(fast_ber::BerView(buffer).tag() == val(fast_ber::Identifier<T>::tag()));
     REQUIRE(a == f);
 
     // Encode with alternative ID
@@ -50,8 +50,7 @@ void test_type(const T& a)
 
     // Identifier checks
     std::cout << a << std::endl;
-    std::cout << identifier(&a) << std::endl;
-    static_assert(std::is_same<decltype(identifier(static_cast<T*>(nullptr))), Identifier<T>>::value, "");
+    std::cout << fast_ber::Identifier<T>{} << std::endl;
 }
 
 TEST_CASE("AllTypes: Check all types share a unified interface")

@@ -142,6 +142,5 @@ TEST_CASE("OctetString: Tagging")
     using Tag               = fast_ber::ImplicitIdentifier<fast_ber::Class::application, 2>;
     using TaggedOctetString = fast_ber::OctetString<Tag>;
 
-    static_assert(std::is_same<decltype(fast_ber::identifier(static_cast<TaggedOctetString*>(nullptr))), Tag>::value,
-                  "Tagged Integer");
+    static_assert(std::is_same<fast_ber::Identifier<TaggedOctetString>, Tag>::value, "Tagged Integer");
 }

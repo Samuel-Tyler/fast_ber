@@ -46,20 +46,6 @@ struct SequenceOf : public SequenceOfImplementation<T, s>::Type
     using Id = ExplicitId<UniversalTag::sequence>;
 };
 
-template <typename T>
-constexpr inline ExplicitId<UniversalTag::sequence_of> identifier(const SequenceOf<T>*,
-                                                                  IdentifierAdlToken = IdentifierAdlToken{}) noexcept
-{
-    return {};
-}
-
-template <typename T>
-constexpr inline ExplicitId<UniversalTag::sequence_of>
-explicit_identifier(const SequenceOf<T>*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept
-{
-    return {};
-}
-
 template <typename T, StorageMode s, typename ID = ExplicitId<UniversalTag::sequence_of>>
 EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T, s>& sequence, ID id = ID{}) noexcept
 {
@@ -68,9 +54,9 @@ EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T, s>& se
     size_t       combined_length     = 0;
 
     content_buffer.remove_prefix(header_length_guess);
-    for (const auto& element : sequence)
+    for (const T& element : sequence)
     {
-        const auto element_encode_result = encode(content_buffer, element, identifier(&element, IdentifierAdlToken{}));
+        const auto element_encode_result = encode(content_buffer, element, Identifier<T>{});
         if (!element_encode_result.success)
         {
             return {false, 0};

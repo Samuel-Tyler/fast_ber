@@ -196,25 +196,7 @@ template <typename CollectionType>
 std::string create_identifier_functions_recursive(const std::string& assignment_name, const CollectionType& collection,
                                                   const std::string& namespace_name)
 {
-    std::string res = "constexpr inline ";
-    if (is_set(collection))
-    {
-        res += "ExplicitId<UniversalTag::set>";
-    }
-    else if (is_sequence(collection))
-    {
-        res += "ExplicitId<UniversalTag::sequence>";
-    }
-    else
-    {
-        throw(std::runtime_error("Unexpected type"));
-    }
-
-    res += "identifier(const " + namespace_name + "::" + assignment_name +
-           "*, IdentifierAdlToken = IdentifierAdlToken{}) noexcept";
-    res += "\n{\n";
-    res += "    return {};\n";
-    res += "}\n\n";
+    std::string res;
 
     for (const auto& child : collection.components)
     {

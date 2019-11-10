@@ -58,13 +58,6 @@ absl::variant_internal::VisitResult<Visitor, Choice<Variants...>> visit(Visitor&
     return absl::visit(vis, variant.base());
 }
 
-template <typename... Args>
-constexpr ExplicitId<UniversalTag::choice> identifier(const Choice<Args...>*,
-                                                      IdentifierAdlToken = IdentifierAdlToken{}) noexcept
-{
-    return {};
-}
-
 template <size_t index, size_t max_depth, typename... Variants,
           typename std::enable_if<(!(index < max_depth)), int>::type = 0>
 EncodeResult encode_if(const absl::Span<uint8_t>&, const Choice<Variants...>&) noexcept
