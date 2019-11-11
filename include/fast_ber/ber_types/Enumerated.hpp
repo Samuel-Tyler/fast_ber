@@ -30,7 +30,7 @@ class Enumerated
     Enumerated& operator=(const Enumerated<EnumeratedType, Identifier2>& rhs) noexcept;
     Enumerated& operator=(EnumeratedType rhs) noexcept
     {
-        assign(static_cast<int64_t>(rhs));
+        assign(rhs);
         return *this;
     }
 

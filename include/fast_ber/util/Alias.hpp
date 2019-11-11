@@ -5,7 +5,8 @@
     {                                                                                                                  \
         using AliasedType = __VA_ARGS__;                                                                               \
         using AliasedType::AliasedType;                                                                                \
-        X() = default;                                                                                                 \
+        using AliasedType::operator=;                                                                                  \
+        X()                        = default;                                                                          \
         X(const AliasedType& y) : AliasedType(y) {}                                                                    \
         X(AliasedType&& y) : AliasedType(std::move(y)) {}                                                              \
         using Id = fast_ber::Identifier<AliasedType>;                                                                  \

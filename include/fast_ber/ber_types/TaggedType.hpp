@@ -13,6 +13,7 @@ template <typename Type, typename TagType, typename Enable = void>
 struct TaggedType : public Type
 {
     using Type::Type;
+    using Type::operator=;
 
     TaggedType() = default;
     TaggedType(const Type& t) : Type(t) {}

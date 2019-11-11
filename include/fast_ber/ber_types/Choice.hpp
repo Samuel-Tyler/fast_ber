@@ -19,7 +19,8 @@ template <typename T0, typename... Args>
 struct Choice : public absl::variant<T0, Args...>
 {
     using Base = absl::variant<T0, Args...>;
-    using Base::variant;
+    using Base::Base;
+    using Base::operator=;
 
     Base&       base() { return *static_cast<Base*>(this); }
     const Base& base() const { return *static_cast<const Base*>(this); }
@@ -52,8 +53,7 @@ template <std::size_t n, typename T>
 using variant_alternative = absl::variant_alternative<n, typename T::Base>;
 
 template <typename Visitor, typename... Variants>
-absl::variant_internal::VisitResult<Visitor, Choice<Variants...>> visit(Visitor&&                  vis,
-                                                                        const Choice<Variants...>& variant)
+auto visit(Visitor&& vis, const Choice<Variants...>& variant) -> decltype(absl::visit(vis, variant.base()))
 {
     return absl::visit(vis, variant.base());
 }
@@ -158,9 +158,9 @@ std::ostream& operator<<(std::ostream& os, const Choice<Variants...>& variant);
 struct OsVisitor
 {
     template <typename T>
-    std::ostream& operator()(const T& t)
+    void operator()(const T& t)
     {
-        return os << t;
+        os << t;
     }
 
     std::ostream& os;
@@ -171,7 +171,8 @@ std::ostream& operator<<(std::ostream& os, const Choice<Variants...>& variant)
 {
     OsVisitor visitor{os};
 
-    return fast_ber::visit(visitor, variant);
+    fast_ber::visit(visitor, variant);
+    return os;
 }
 
 } // namespace fast_ber

@@ -34,9 +34,10 @@ class StringImpl
     explicit StringImpl(const BerView& view) noexcept { assign_ber(view); }
     explicit StringImpl(const BerContainer& container) noexcept { assign_ber(container); }
 
+    template <UniversalTag tag2, typename Identifier2>
+    StringImpl& operator=(const StringImpl<tag2, Identifier2>& rhs) noexcept;
     StringImpl& operator=(const BerView& view) noexcept;
     StringImpl& operator=(const BerContainer& rhs) noexcept;
-    StringImpl& operator=(const StringImpl& rhs) noexcept;
     StringImpl& operator=(const char* rhs) noexcept;
     StringImpl& operator=(const std::string& rhs) noexcept;
 
@@ -67,9 +68,10 @@ class StringImpl
     size_t                    length() const noexcept { return m_contents.content_length(); }
     std::string               value() const noexcept { return std::string(c_str(), length()); }
 
+    template <UniversalTag tag2, typename Identifier2>
+    void   assign(const StringImpl<tag2, Identifier2>& rhs) noexcept;
     void   assign(absl::string_view buffer) noexcept;
     void   assign(absl::Span<const uint8_t> buffer) noexcept;
-    void   assign(const StringImpl& rhs) noexcept;
     size_t assign_ber(const BerView& view) noexcept;
     size_t assign_ber(const BerContainer& container) noexcept;
     size_t assign_ber(absl::Span<const uint8_t> buffer) noexcept;
@@ -111,7 +113,8 @@ StringImpl<tag, Identifier>& StringImpl<tag, Identifier>::operator=(const std::s
 }
 
 template <UniversalTag tag, typename Identifier>
-StringImpl<tag, Identifier>& StringImpl<tag, Identifier>::operator=(const StringImpl<tag, Identifier>& rhs) noexcept
+template <UniversalTag tag2, typename Identifier2>
+StringImpl<tag, Identifier>& StringImpl<tag, Identifier>::operator=(const StringImpl<tag2, Identifier2>& rhs) noexcept
 {
     assign(rhs);
     return *this;
@@ -154,9 +157,10 @@ void StringImpl<tag, Identifier>::assign(absl::Span<const uint8_t> buffer) noexc
 }
 
 template <UniversalTag tag, typename Identifier>
-void StringImpl<tag, Identifier>::assign(const StringImpl& rhs) noexcept
+template <UniversalTag tag2, typename Identifier2>
+void StringImpl<tag, Identifier>::assign(const StringImpl<tag2, Identifier2>& rhs) noexcept
 {
-    m_contents = rhs.m_contents;
+    assign(rhs.span());
 }
 
 template <UniversalTag tag, typename Identifier>
