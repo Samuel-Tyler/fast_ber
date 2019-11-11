@@ -1,32 +1,40 @@
-sudo: required
 language: cpp
 
 matrix:
   include:
-    - env: BUILD_TYPE=Debug
+    - env: BUILD_TYPE=Debug   CXX_STANDARD=11
       compiler: clang
+      sudo: true
       addons:
         apt:
           packages:
             - bison
 
-    - env: BUILD_TYPE=Release
-      compiler: clang
-
-    - env: BUILD_TYPE=Debug
+    - env: BUILD_TYPE=Debug   CXX_STANDARD=11
       compiler: gcc
+      sudo: true
       addons:
         apt:
           packages:
             - bison
 
-    - env: BUILD_TYPE=Release
+    - env: BUILD_TYPE=Release CXX_STANDARD=11
+      compiler: clang
+
+    - env: BUILD_TYPE=Release CXX_STANDARD=11
       compiler: gcc
 
+    - env: BUILD_TYPE=Release CXX_STANDARD=17
+      compiler: clang
+      dist: bionic
+
+    - env: BUILD_TYPE=Release CXX_STANDARD=17
+      compiler: gcc
+      dist: bionic
 
 script:
   - mkdir build
   - cd build
-  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_STANDARD=$CXX_STANDARD
   - make
   - ctest

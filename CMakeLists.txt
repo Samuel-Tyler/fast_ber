@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 project(fast_ber)
 
 if (NOT DEFINED CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_STANDARD 11)
 endif()
 
 add_subdirectory(3rd_party/abseil-cpp)
