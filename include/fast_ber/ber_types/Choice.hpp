@@ -26,8 +26,10 @@ struct Choice : public absl::variant<T0, Args...>
     const Base& base() const { return *static_cast<const Base*>(this); }
 
     Choice() : Base() {}
-    Choice(const Base& rhs) : Base(rhs) {}
-    Choice(Base&& rhs) : Base(rhs) {}
+    Choice(const Choice& rhs) = default;
+    Choice(Choice&& rhs)      = default;
+
+    Choice& operator=(const Choice& rhs) = default;
 
     bool operator==(const Choice& rhs) const { return this->base() == rhs.base(); }
     bool operator!=(const Choice& rhs) const { return this->base() != rhs.base(); }

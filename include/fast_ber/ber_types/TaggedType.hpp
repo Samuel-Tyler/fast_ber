@@ -18,11 +18,14 @@ struct TaggedType : public Type
     TaggedType() = default;
     TaggedType(const Type& t) : Type(t) {}
     TaggedType(Type&& t) : Type(std::move(t)) {}
-
+    TaggedType(const TaggedType&) = default;
+    TaggedType(TaggedType&&)      = default;
     template <typename T1, typename T2>
     TaggedType(const TaggedType<T1, T2>& t) : Type(t.get_base())
     {
     }
+
+    TaggedType& operator=(const TaggedType&) = default;
 
     Type&       get_base() { return *this; }
     const Type& get_base() const { return *this; }

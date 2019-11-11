@@ -131,7 +131,10 @@ inline EncodeResult encode_object_id(absl::Span<uint8_t> output, const ObjectIde
 
 inline DecodeResult decode_object_id(absl::Span<const uint8_t> input, absl::InlinedVector<int64_t, 10>& output) noexcept
 {
-    output.clear();
+    if (!output.empty())
+    {
+        output.clear();
+    }
 
     if (input.empty())
     {

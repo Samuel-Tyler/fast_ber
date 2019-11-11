@@ -7,9 +7,10 @@
         using AliasedType::AliasedType;                                                                                \
         using AliasedType::operator=;                                                                                  \
         X()                        = default;                                                                          \
-        X(const AliasedType& y) : AliasedType(y) {}                                                                    \
-        X(AliasedType&& y) : AliasedType(std::move(y)) {}                                                              \
-        using Id = fast_ber::Identifier<AliasedType>;                                                                  \
+        X(const X&)                = default;                                                                          \
+        X(X&&)                     = default;                                                                          \
+        X& operator=(const X&) = default;                                                                              \
+        using Id               = fast_ber::Identifier<AliasedType>;                                                    \
         AliasedType&       get_base() { return *this; }                                                                \
         const AliasedType& get_base() const { return *this; }                                                          \
     }
