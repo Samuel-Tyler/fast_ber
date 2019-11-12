@@ -64,7 +64,7 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
     // test_type(fast_ber::DateTime<>);
     // test_type(fast_ber::Duration<>);
     // test_type(fast_ber::EmbeddedPDV);
-    test_type(fast_ber::All::The_Enum(fast_ber::All::The_Enum::Values::pear));
+    test_type(fast_ber::All::The_Enum<>(fast_ber::All::The_Enum<>::Values::pear));
     // test_type(fast_ber::External);
     test_type(fast_ber::GeneralizedTime<>(absl::Now()));
     // test_type(fast_ber::IRI);
@@ -76,16 +76,16 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
     test_type(fast_ber::ObjectIdentifier<>(fast_ber::ObjectIdentifierComponents{1, 2, 500, 9999}));
     test_type(fast_ber::OctetString<>("TestString"));
     test_type(fast_ber::Optional<fast_ber::Null<>>(fast_ber::Null<>()));
-    test_type(fast_ber::Optional<fast_ber::TaggedType<fast_ber::All::The_Enum,
+    test_type(fast_ber::Optional<fast_ber::TaggedType<fast_ber::All::The_Enum<>,
                                                       fast_ber::ImplicitIdentifier<fast_ber::Class::application, 500>>>(
-        fast_ber::All::The_Enum::Values::pear));
+        fast_ber::All::The_Enum<>::Values::pear));
     // test_type(fast_ber::Prefixed);
     // test_type(fast_ber::Real);
     // test_type(fast_ber::RelativeIRI);
     // test_type(fast_ber::RelativeOID);
-    test_type(fast_ber::All::The_Sequence{"Hello", 42});
+    test_type(fast_ber::All::The_Sequence<>{"Hello", 42});
     test_type(fast_ber::SequenceOf<fast_ber::Integer<>>({1, 4, 6, 100, 2555}));
-    test_type(fast_ber::All::The_Set{"Hello", 42});
+    test_type(fast_ber::All::The_Set<>{"Hello", 42});
     test_type(fast_ber::SetOf<
               fast_ber::OctetString<fast_ber::DoubleId<fast_ber::ImplicitIdentifier<fast_ber::Class::private_, 4>,
                                                        fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>>>>(

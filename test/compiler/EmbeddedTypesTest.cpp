@@ -6,8 +6,8 @@
 
 TEST_CASE("Embedded Types: Encode and decode nested structures")
 {
-    fast_ber::Simple::OuterCollection collection;
-    fast_ber::Simple::OuterCollection copy;
+    fast_ber::Simple::OuterCollection<> collection;
+    fast_ber::Simple::OuterCollection<> copy;
 
     collection.middle_collection.inner_collection.string = "We're really deep in this";
     collection.outer_choice                              = 500;

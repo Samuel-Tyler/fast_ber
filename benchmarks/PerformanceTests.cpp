@@ -137,7 +137,7 @@ TEST_CASE("Benchmark: Decode Performance")
     {
         for (int i = 0; i < iterations; i++)
         {
-            fast_ber::Simple::Collection collection;
+            fast_ber::Simple::Collection<> collection;
             success = fast_ber::decode(
                           absl::MakeSpan(large_test_collection_packet.begin(), large_test_collection_packet.size()),
                           collection)
@@ -166,7 +166,7 @@ TEST_CASE("Benchmark: Decode Performance")
     {
         for (int i = 0; i < iterations; i++)
         {
-            fast_ber::Simple::Collection collection;
+            fast_ber::Simple::Collection<> collection;
             success = fast_ber::decode(
                           absl::MakeSpan(small_test_collection_packet.begin(), small_test_collection_packet.size()),
                           collection)
@@ -203,14 +203,14 @@ TEST_CASE("Benchmark: Encode Performance")
     std::array<uint8_t, 5000> asn1c_buffer    = {};
     fast_ber::EncodeResult    encode_result   = {};
 
-    fast_ber::Simple::Collection collection{
+    fast_ber::Simple::Collection<> collection{
         hello,
         goodbye,
         5,
         fast_ber::Boolean<>(true),
-        fast_ber::Simple::Child{fast_ber::Integer<>(-42), fast_ber::SequenceOf<fast_ber::OctetString<>>{}},
-        fast_ber::Simple::Child{999999999,
-                                fast_ber::SequenceOf<fast_ber::OctetString<>>{the, second, child, long_string}},
+        fast_ber::Simple::Child<>{fast_ber::Integer<>(-42), fast_ber::SequenceOf<fast_ber::OctetString<>>{}},
+        fast_ber::Simple::Child<>{999999999,
+                                  fast_ber::SequenceOf<fast_ber::OctetString<>>{the, second, child, long_string}},
         decltype(collection.the_choice){absl::in_place_index_t<1>(), "I chose a string!"}};
 
     BENCHMARK("fast_ber        - encode")
@@ -289,14 +289,14 @@ TEST_CASE("Benchmark: Object Construction Performance")
     {
         for (int i = 0; i < iterations; i++)
         {
-            fast_ber::Simple::Collection collection{
+            fast_ber::Simple::Collection<> collection{
                 hello,
                 goodbye,
                 5,
                 fast_ber::Boolean<>(true),
-                fast_ber::Simple::Child{-42, fast_ber::SequenceOf<fast_ber::OctetString<>>{}},
-                fast_ber::Simple::Child{999999999,
-                                        fast_ber::SequenceOf<fast_ber::OctetString<>>{the, second, child, long_string}},
+                fast_ber::Simple::Child<>{-42, fast_ber::SequenceOf<fast_ber::OctetString<>>{}},
+                fast_ber::Simple::Child<>{
+                    999999999, fast_ber::SequenceOf<fast_ber::OctetString<>>{the, second, child, long_string}},
                 decltype(collection.the_choice){absl::in_place_index_t<1>(), "I chose a string!"}};
         }
     }

@@ -74,14 +74,14 @@ TEST_CASE("Choice: Clashing type")
 
 TEST_CASE("Choice: Generated choice")
 {
-    fast_ber::MakeAChoice::Collection collection;
+    fast_ber::MakeAChoice::Collection<> collection;
     collection.the_choice = fast_ber::Integer<fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 2>>(5);
 
     std::vector<uint8_t> buffer(1000, 0x00);
     size_t               length = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), collection).length;
     buffer.resize(length);
 
-    fast_ber::MakeAChoice::Collection copy;
+    fast_ber::MakeAChoice::Collection<> copy;
     bool success = fast_ber::decode(absl::MakeSpan(buffer.data(), buffer.size()), copy).success;
 
     REQUIRE(length > 0);

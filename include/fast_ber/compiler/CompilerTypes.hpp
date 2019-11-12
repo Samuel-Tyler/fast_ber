@@ -78,6 +78,7 @@ enum class CharacterStringType
     visible_string,
     character_string,
 };
+
 inline std::string to_string(CharacterStringType type)
 {
     switch (type)
@@ -115,6 +116,43 @@ inline std::string to_string(CharacterStringType type)
     }
     return "UnknownStringType";
 }
+inline std::string to_string_snake_case(CharacterStringType type)
+{
+    switch (type)
+    {
+    case CharacterStringType::bmp_string:
+        return "bmp_string";
+    case CharacterStringType::general_string:
+        return "general_string";
+    case CharacterStringType::graphic_string:
+        return "graphic_string";
+    case CharacterStringType::ia5_string:
+        return "ia5_string";
+    case CharacterStringType::iso646_string:
+        return "iso646_string";
+    case CharacterStringType::numeric_string:
+        return "numeric_string";
+    case CharacterStringType::printable_string:
+        return "printable_string";
+    case CharacterStringType::teletex_string:
+        return "teletex_string";
+    case CharacterStringType::t61_string:
+        return "t61_string";
+    case CharacterStringType::universal_string:
+        return "universal_string";
+    case CharacterStringType::utf8_string:
+        return "utf8_string";
+    case CharacterStringType::videotex_string:
+        return "videotex_string";
+    case CharacterStringType::visible_string:
+        return "visible_string";
+    case CharacterStringType::character_string:
+        return "character_string";
+    case CharacterStringType::unknown:
+        return "unknown";
+    }
+}
+
 struct ChoiceType;
 struct DateType
 {

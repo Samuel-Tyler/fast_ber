@@ -4,9 +4,9 @@
 
 TEST_CASE("Circular Types: Optional Members")
 {
-    fast_ber::Circular::CircularSequence1 copy;
-    fast_ber::Circular::CircularSequence1 circular = {"layer1",
-                                                      {{"layer2", {{"layer3", {{"layer4", {{"layer5", {}}}}}}}}}};
+    fast_ber::Circular::CircularSequence1<> copy;
+    fast_ber::Circular::CircularSequence1<> circular = {"layer1",
+                                                        {{"layer2", {{"layer3", {{"layer4", {{"layer5", {}}}}}}}}}};
 
     REQUIRE(copy != circular);
 
@@ -21,8 +21,8 @@ TEST_CASE("Circular Types: Optional Members")
 
 TEST_CASE("Circular Types: Sequence Of")
 {
-    fast_ber::Circular::CircularSequenceOf1 copy;
-    fast_ber::Circular::CircularSequenceOf1 circular = {{{{{}, {}, {}, {}}}, {}, {{{}, {}}}, {}, {{{}, {}, {}}}}};
+    fast_ber::Circular::CircularSequenceOf1<> copy;
+    fast_ber::Circular::CircularSequenceOf1<> circular = {{{{{}, {}, {}, {}}}, {}, {{{}, {}}}, {}, {{{}, {}, {}}}}};
     REQUIRE(copy != circular);
 
     std::vector<uint8_t>          buffer(500, 0);

@@ -31,19 +31,29 @@ ctest
 
 2. Define an ASN.1 file - Example: pokemon.asn
 ```
-Pokemon DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+Pokemon DEFINITIONS EXPLICIT TAGS ::= BEGIN
 
 Team ::= SEQUENCE {
+    team-name OCTET STRING,
     members SEQUENCE OF Pokemon
 }
 
 Pokemon ::= SEQUENCE {
     name OCTET STRING,
     category OCTET STRING,
-    type OCTET STRING,
+    type Type,
     ability OCTET STRING,
     weakness OCTET STRING,
     weight INTEGER
+}
+
+Type ::= ENUMERATED {
+    normal,
+    fire,
+    fighting,
+    water,
+    flying,
+    grass
 }
 
 END
@@ -56,27 +66,44 @@ cd build_cmake
 ```
 output:
 ```
+#pragma once
+
 #include "fast_ber/ber_types/All.hpp"
-#include "fast_ber/util/Encode.hpp"
-#include "fast_ber/util/Decode.hpp"
+#include "pokemon.fwd.hpp"
+
 
 namespace fast_ber {
+using namespace abbreviations;
+
 namespace Pokemon {
 
+enum class TypeValues {
+    normal,
+    fire,
+    fighting,
+    water,
+    flying,
+    grass,
+};
+
+template <typename Identifier>
+FAST_BER_ALIAS(Type, Enumerated<TypeValues>);
+
+template <typename Identifier>
 struct Pokemon {
-    OctetString name;
-    OctetString category;
-    OctetString type;
-    OctetString ability;
-    OctetString weakness;
-    Integer weight;
+    OctetString<> name;
+    OctetString<> category;
+    Type<> type;
+    OctetString<> ability;
+    OctetString<> weakness;
+    Integer<> weight;
 };
 
+template <typename Identifier>
 struct Team {
-    SequenceOf<Pokemon> members;
+    OctetString<> team_name;
+    SequenceOf<Pokemon<>> members;
 };
-
-... helper functions ...
 
 } // End namespace Pokemon
 } // End namespace fast_ber
@@ -88,14 +115,24 @@ struct Team {
 
 int main()
 {
-    fast_ber::Pokemon::Team    team;
-    fast_ber::Pokemon::Pokemon muchlax = {"Munchlax", "Big Eater", "Normal", "Thick Fat, Pickup", "Fighting", 105};
-    fast_ber::Pokemon::Pokemon piplup  = {"Piplup", "Penguin", "Water", "Torrent", "Electric, Grass", 12};
+    fast_ber::Pokemon::Team<>    team    = {"Sam's Team"};
+    fast_ber::Pokemon::Pokemon<> muchlax = { "Munchlax",
+                                             "Big Eater",
+                                             fast_ber::Pokemon::Type<>::Values::normal,
+                                             "Thick Fat, Pickup",
+                                             "Fighting",
+                                             105 };
+    fast_ber::Pokemon::Pokemon<> piplup  = { "Piplup",
+                                             "Penguin",
+                                             fast_ber::Pokemon::Type<>::Values::water,
+                                             Torrent",
+                                             "Electric, Grass",
+                                             12 };
     team.members.push_back(muchlax);
     team.members.push_back(piplup);
 
-    std::array<uint8_t, 2000> buffer;
-    const auto encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), team);
+    std::array<uint8_t, 2000> buffer{};
+    const auto                encode_result = fast_ber::encode(absl::Span<uint8_t>(buffer), team);
     if (!encode_result.success)
     {
         return -1;

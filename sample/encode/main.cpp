@@ -4,11 +4,11 @@
 
 int main()
 {
-    fast_ber::Pokemon::Team    team{"Sam's Team"};
-    fast_ber::Pokemon::Pokemon muchlax = {"Munchlax",          "Big Eater", fast_ber::Pokemon::Type::Values::normal,
-                                          "Thick Fat, Pickup", "Fighting",  105};
-    fast_ber::Pokemon::Pokemon piplup  = {"Piplup",  "Penguin",         fast_ber::Pokemon::Type::Values::water,
-                                         "Torrent", "Electric, Grass", 12};
+    fast_ber::Pokemon::Team<>    team    = {"Sam's Team"};
+    fast_ber::Pokemon::Pokemon<> muchlax = {"Munchlax",          "Big Eater", fast_ber::Pokemon::Type<>::Values::normal,
+                                            "Thick Fat, Pickup", "Fighting",  105};
+    fast_ber::Pokemon::Pokemon<> piplup  = {"Piplup",  "Penguin",         fast_ber::Pokemon::Type<>::Values::water,
+                                           "Torrent", "Electric, Grass", 12};
     team.members.push_back(muchlax);
     team.members.push_back(piplup);
 

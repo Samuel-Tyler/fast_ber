@@ -168,6 +168,9 @@ std::string type_as_string(const RelativeOIDType& type, const Module& module, co
 {
     return "RelativeOID" + identifier_template_params(type, module, tree, identifier_override);
 }
+
+thread_local static size_t id_counter = 0;
+
 std::string type_as_string(const SequenceType& sequence, const Module& module, const Asn1Tree& tree,
                            const std::string& identifier_override)
 {
@@ -180,9 +183,12 @@ std::string type_as_string(const SequenceType& sequence, const Module& module, c
 
         if (is_set(component.named_type.type) || is_sequence(component.named_type.type))
         {
-            component_type = type_as_string(component.named_type.type, module, tree);
+            const std::string id_template_param = "Identifier" + std::to_string(id_counter++);
+            component_type                      = type_as_string(component.named_type.type, module, tree);
+
+            res += create_template_definition({id_template_param + " = ExplicitId<UniversalTag::sequence>"});
             res += "struct " + component.named_type.name + "_type " + component_type;
-            res += "    " + component.named_type.name + "_type " + component.named_type.name + ";\n";
+            res += "    " + component.named_type.name + "_type<> " + component.named_type.name + ";\n";
         }
         else
         {
@@ -237,9 +243,12 @@ std::string type_as_string(const SetType& set, const Module& module, const Asn1T
 
         if (is_set(component.named_type.type) || is_sequence(component.named_type.type))
         {
-            component_type = type_as_string(component.named_type.type, module, tree);
+            const std::string id_template_param = "Identifier" + std::to_string(id_counter++);
+            component_type                      = type_as_string(component.named_type.type, module, tree);
+
+            res += create_template_definition({id_template_param + " = ExplicitId<UniversalTag::set>"});
             res += "struct " + component.named_type.name + "_type " + component_type;
-            res += "    " + component.named_type.name + "_type " + component.named_type.name + ";\n";
+            res += "    " + component.named_type.name + "_type<> " + component.named_type.name + ";\n";
         }
         else
         {
@@ -314,7 +323,7 @@ std::string type_as_string(const UTCTimeType& type, const Module& module, const 
 std::string type_as_string(const DefinedType& type, const Module&, const Asn1Tree&,
                            const std::string& identifier_override)
 {
-    return wrap_with_tagged_type(type.type_reference, identifier_override);
+    return wrap_with_tagged_type(type.type_reference + "<>", identifier_override);
 }
 
 struct ToStringHelper

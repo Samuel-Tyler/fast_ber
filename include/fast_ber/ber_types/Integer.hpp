@@ -56,6 +56,8 @@ class Integer
     bool operator==(int64_t rhs) const { return this->value() == rhs; }
     bool operator!=(int64_t rhs) const { return !(*this == rhs); }
 
+    using Id = Identifier;
+
     void assign(int64_t val) noexcept;
 
     template <typename Identifier2>
@@ -64,8 +66,6 @@ class Integer
     size_t assign_ber(absl::Span<const uint8_t> buffer) noexcept;
 
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
-
-    using Id = Identifier;
 
     template <typename Identifier2>
     friend class Integer;

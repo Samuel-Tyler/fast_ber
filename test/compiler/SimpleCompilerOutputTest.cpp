@@ -11,16 +11,17 @@ TEST_CASE("SimpleCompilerOutput: Testing a generated ber container")
     const std::string hello   = "Hello world!";
     const std::string goodbye = "Good bye world!";
 
-    fast_ber::Simple::Collection new_collection;
-    fast_ber::Simple::Collection collection;
+    fast_ber::Simple::Collection<> new_collection;
+    fast_ber::Simple::Collection<> collection;
 
     collection.hello                 = hello;
     collection.goodbye               = goodbye;
     collection.integer               = 5;
     collection.boolean               = true;
     collection.child.meaning_of_life = -42;
-    collection.optional_child = fast_ber::Simple::Child{999999999, {"The", "second", "child", std::string(2000, 'x')}};
-    collection.the_choice     = decltype(collection.the_choice){absl::in_place_index_t<1>(), "I chose a string!"};
+    collection.optional_child =
+        fast_ber::Simple::Child<>{999999999, {"The", "second", "child", std::string(2000, 'x')}};
+    collection.the_choice = decltype(collection.the_choice){absl::in_place_index_t<1>(), "I chose a string!"};
 
     fast_ber::EncodeResult encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), collection);
     fast_ber::DecodeResult decode_result =

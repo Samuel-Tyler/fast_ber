@@ -13,9 +13,9 @@ TaggingInfo identifier(const BooleanType&, const Module&, const Asn1Tree&)
 {
     return TaggingInfo{{}, "ExplicitId<UniversalTag::boolean>", true};
 }
-TaggingInfo identifier(const CharacterStringType&, const Module&, const Asn1Tree&)
+TaggingInfo identifier(const CharacterStringType& type, const Module&, const Asn1Tree&)
 {
-    return TaggingInfo{{}, "ExplicitId<UniversalTag::bit_string>", true};
+    return TaggingInfo{{}, "ExplicitId<UniversalTag::" + to_string_snake_case(type) + ">", true};
 }
 TaggingInfo identifier(const ChoiceType&, const Module&, const Asn1Tree&)
 {
