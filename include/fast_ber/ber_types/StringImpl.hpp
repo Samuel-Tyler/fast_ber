@@ -79,6 +79,9 @@ class StringImpl
 
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
+    template <UniversalTag tag2, typename Identifier2>
+    friend class StringImpl;
+
     using Id = Identifier;
 
   private:

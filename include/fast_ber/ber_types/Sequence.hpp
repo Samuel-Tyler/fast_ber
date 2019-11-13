@@ -23,11 +23,10 @@ template <typename... Args, typename T>
 EncodeResult encode_sequence_combine_impl(absl::Span<uint8_t>& output, size_t encoding_length, const T& object,
                                           const Args&... args) noexcept
 {
-    Identifier<T>      id;
-    const EncodeResult result = encode(output, object, id);
+    const EncodeResult result = encode(output, object);
     if (!result.success)
     {
-        std::cerr << "Failed encoding packet, tag = " << val(id.tag()) << std::endl;
+        std::cerr << "Failed encoding packet, tag = " << val(Identifier<T>::tag()) << std::endl;
         return EncodeResult{false, result.length};
     }
 
@@ -57,11 +56,11 @@ template <typename T, typename... Args>
 DecodeResult decode_sequence_combine_impl(BerViewIterator& input, const char* parent_name, T& object,
                                           Args&&... args) noexcept
 {
-    Identifier<T> id;
-    DecodeResult  result = decode(input, object);
+    DecodeResult result = decode(input, object);
     if (!result.success)
     {
-        std::cerr << "Error decoding " << parent_name << ": could not decode field with tag " << val(id.tag()) << "\n";
+        std::cerr << "Error decoding " << parent_name << ": could not decode field with tag "
+                  << val(Identifier<T>::tag()) << "\n";
         return DecodeResult{false};
     }
     return decode_sequence_combine_impl(input, parent_name, args...);

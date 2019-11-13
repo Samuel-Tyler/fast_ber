@@ -68,12 +68,14 @@ TEST_CASE("TaggedType: Encode Decode")
 
 TEST_CASE("TaggedType: Tagged Enum")
 {
-    enum class TestEnum
+    enum class TestEnumValues
     {
         option_one,
         option_two,
         option_three
     };
+
+    using TestEnum = fast_ber::Enumerated<TestEnumValues>;
 
     static_assert(
         std::is_same<fast_ber::Identifier<

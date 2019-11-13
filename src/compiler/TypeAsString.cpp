@@ -320,10 +320,20 @@ std::string type_as_string(const UTCTimeType& type, const Module& module, const 
 {
     return "UTCTime" + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const DefinedType& type, const Module&, const Asn1Tree&,
+std::string type_as_string(const DefinedType& defined_type, const Module& module, const Asn1Tree& tree,
                            const std::string& identifier_override)
 {
-    return wrap_with_tagged_type(type.type_reference + "<>", identifier_override);
+    if (identifier_override.empty())
+    {
+        return defined_type.type_reference + "<>";
+    }
+
+    const Type& referenced = type(resolve(tree, module.module_reference, defined_type));
+    if (is_set(referenced) || is_sequence(referenced))
+    {
+        return wrap_with_tagged_type(defined_type.type_reference + "<>", identifier_override);
+    }
+    return defined_type.type_reference + "<" + identifier_override + ">";
 }
 
 struct ToStringHelper
