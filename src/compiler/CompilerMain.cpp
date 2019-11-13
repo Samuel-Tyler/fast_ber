@@ -45,12 +45,12 @@ std::string create_type_assignment(const std::string& name, const Type& assignme
     {
         res += "enum class " + name + "Values" + type_as_string(assignment_type, module, tree);
         res += create_template_definition({"Identifier"});
-        res += "FAST_BER_ALIAS(" + name + ", " + "Enumerated<" + name + "Values>);\n";
+        res += "FAST_BER_ALIAS(" + name + ", " + "Enumerated<" + name + "Values, Identifier>);\n";
     }
     else
     {
         res += create_template_definition({"Identifier"});
-        res += "FAST_BER_ALIAS(" + name + ", " + type_as_string(assignment_type, module, tree) + ");\n";
+        res += "FAST_BER_ALIAS(" + name + ", " + type_as_string(assignment_type, module, tree, "Identifier") + ");\n";
     }
     return res;
 }
