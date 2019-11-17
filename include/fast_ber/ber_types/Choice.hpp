@@ -72,14 +72,12 @@ template <size_t index, size_t max_depth, typename... Variants,
           typename std::enable_if<(index < max_depth), int>::type = 0>
 EncodeResult encode_if(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice) noexcept
 {
-    using T = typename fast_ber::variant_alternative<index, Choice<Variants...>>::type;
     if (choice.index() == index)
     {
-        const auto*    child    = absl::get_if<index>(&choice);
-        constexpr auto child_id = Identifier<T>{};
+        const auto* child = absl::get_if<index>(&choice);
         assert(child);
 
-        return encode(buffer, *child, child_id);
+        return encode(buffer, *child);
     }
     else
     {
@@ -126,7 +124,7 @@ DecodeResult decode_if(BerViewIterator& input, Choice<Variants...>& output, ID i
     if (input->tag() == val(child_id.tag()))
     {
         T* child = &output.template emplace<index>();
-        return decode(input, *child, child_id);
+        return decode(input, *child);
     }
     else
     {

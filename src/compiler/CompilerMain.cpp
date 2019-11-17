@@ -410,10 +410,10 @@ std::string create_encode_functions(const Assignment& assignment, const Module& 
                 module.module_reference + "::" + assignment.name + create_template_arguments({"Identifier"});
 
             std::string res;
-            res += create_template_definition({"Identifier", "ID = Identifier"});
-            res += "EncodeResult encode(absl::Span<uint8_t> output, const " + name + "& object, ID id = ID{})\n";
+            res += create_template_definition({"Identifier"});
+            res += "EncodeResult encode(absl::Span<uint8_t> output, const " + name + "& object)\n";
             res += "{\n";
-            res += "    return encode(output, object.get_base(), id);\n";
+            res += "    return encode(output, object.get_base());\n";
             res += "}\n";
             return res;
         }
@@ -444,10 +444,10 @@ std::string create_decode_functions(const Assignment& assignment, const Module& 
                 module.module_reference + "::template " + assignment.name + create_template_arguments({"Identifier"});
 
             std::string res;
-            res += create_template_definition({"Identifier", "ID = Identifier"});
-            res += "DecodeResult decode(BerViewIterator& input, " + name + "& object, ID id = ID{})\n";
+            res += create_template_definition({"Identifier"});
+            res += "DecodeResult decode(BerViewIterator& input, " + name + "& object)\n";
             res += "{\n";
-            res += "    return decode(input, object.get_base(), id);\n";
+            res += "    return decode(input, object.get_base());\n";
             res += "}\n";
             return res;
         }

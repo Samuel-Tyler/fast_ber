@@ -72,21 +72,6 @@ EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_len
     return EncodeResult{true, header_length + content_length};
 }
 
-template <typename T, typename OuterId, typename InnerId>
-EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, DoubleId<OuterId, InnerId> id)
-{
-    const auto header_length_guess = 2;
-    auto       inner_buffer        = output;
-    inner_buffer.remove_prefix(header_length_guess);
-    EncodeResult inner_encoding = encode(inner_buffer, object, id.inner_id());
-    if (!inner_encoding.success)
-    {
-        return EncodeResult{false, 0};
-    }
-
-    return wrap_with_ber_header(output, inner_encoding.length, id, header_length_guess);
-}
-
 template <typename T, Class T2, Tag T3>
 EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, ImplicitIdentifier<T2, T3> id)
 {
@@ -102,6 +87,21 @@ EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, ImplicitId
     EncodeResult encode_res = object.encode_content_and_length(output);
     encode_res.length += id_length;
     return encode_res;
+}
+
+template <typename T, typename OuterId, typename InnerId>
+EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, DoubleId<OuterId, InnerId> id)
+{
+    const auto header_length_guess = 2;
+    auto       inner_buffer        = output;
+    inner_buffer.remove_prefix(header_length_guess);
+    EncodeResult inner_encoding = encode_impl(inner_buffer, object, id.inner_id());
+    if (!inner_encoding.success)
+    {
+        return EncodeResult{false, 0};
+    }
+
+    return wrap_with_ber_header(output, inner_encoding.length, id, header_length_guess);
 }
 
 enum class StorageMode

@@ -54,68 +54,26 @@ struct IdentifierType<Optional<T>>
     using type = Identifier<T>;
 };
 
-template <typename T, typename ID, StorageMode s1>
-EncodeResult encode(absl::Span<uint8_t> buffer, const Optional<T, s1>& optional_type, const ID& id) noexcept
+template <typename T, StorageMode s1>
+EncodeResult encode(absl::Span<uint8_t> buffer, const Optional<T, s1>& optional_type) noexcept
 {
     if (optional_type.has_value())
     {
-        return encode(buffer, *optional_type, id);
+        return encode(buffer, *optional_type);
     }
     else
     {
         return {true, 0};
-    }
-}
-
-template <typename T, StorageMode s1>
-EncodeResult encode(absl::Span<uint8_t> buffer, const Optional<T, s1>& optional_type) noexcept
-{
-    return encode(buffer, optional_type, Identifier<T>{});
-}
-
-template <typename T, typename ID, StorageMode s1>
-DecodeResult decode(BerViewIterator& input, Optional<T, s1>& output, const ID& id) noexcept
-{
-    if (input->is_valid() && input->tag() == val(id.tag()))
-    {
-        output.emplace();
-        return decode(input, *output, id);
-    }
-    else
-    {
-        output = empty;
-        return DecodeResult{true};
     }
 }
 
 template <typename T, StorageMode s1>
 DecodeResult decode(BerViewIterator& input, Optional<T, s1>& output) noexcept
 {
-    return decode(input, output, Identifier<T>{});
-}
-
-template <typename T, StorageMode s1>
-EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer, const Optional<T, s1>& optional_type) noexcept
-{
-    constexpr Identifier<T> id;
-    if (optional_type.has_value())
-    {
-        return encode_content_and_length(buffer, *optional_type, id);
-    }
-    else
-    {
-        return {true, 0};
-    }
-}
-
-template <typename T, StorageMode s1>
-DecodeResult decode_content_and_length(BerViewIterator& input, Optional<T, s1>& output) noexcept
-{
-    constexpr Identifier<T> id;
-    if (input->is_valid() && input->tag() == val(id.tag()))
+    if (input->is_valid() && input->tag() == Identifier<T>::tag() && input->class_() == Identifier<T>::class_())
     {
         output.emplace();
-        return decode_content_and_length(input, *output, id);
+        return decode(input, *output);
     }
     else
     {

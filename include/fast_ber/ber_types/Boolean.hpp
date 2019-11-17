@@ -126,16 +126,16 @@ inline EncodeResult Boolean<Identifier>::encode_content_and_length(absl::Span<ui
     return EncodeResult{true, m_data.size()};
 }
 
-template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
-EncodeResult encode(absl::Span<uint8_t> output, const Boolean<DefaultIdentifier>& object, const ID& id = ID{}) noexcept
+template <typename Identifier>
+EncodeResult encode(absl::Span<uint8_t> output, const Boolean<Identifier>& object) noexcept
 {
-    return encode_impl(output, object, id);
+    return encode_impl(output, object, Identifier{});
 }
 
-template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
-DecodeResult decode(BerViewIterator& input, Boolean<DefaultIdentifier>& output, const ID& id = {}) noexcept
+template <typename Identifier>
+DecodeResult decode(BerViewIterator& input, Boolean<Identifier>& output) noexcept
 {
-    return decode_impl(input, output, id);
+    return decode_impl(input, output, Identifier{});
 }
 
 template <typename Identifier>

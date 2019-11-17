@@ -38,16 +38,6 @@ void test_type(const T& a)
     REQUIRE(fast_ber::BerView(buffer).tag() == val(fast_ber::Identifier<T>::tag()));
     REQUIRE(a == f);
 
-    // Encode with alternative ID
-    using TestTag = fast_ber::ImplicitIdentifier<fast_ber::Class::application, 50>;
-    T g;
-    encode_result = fast_ber::encode(absl::Span<uint8_t>(buffer), a, TestTag{});
-    decode_result = fast_ber::decode(absl::Span<uint8_t>(buffer), g, TestTag{});
-    REQUIRE(encode_result.success);
-    REQUIRE(decode_result.success);
-    REQUIRE(fast_ber::BerView(buffer).tag() == val(TestTag{}.tag()));
-    REQUIRE(a == g);
-
     // Identifier checks
     std::cout << a << std::endl;
     std::cout << fast_ber::Identifier<T>{} << std::endl;
@@ -76,9 +66,9 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
     test_type(fast_ber::ObjectIdentifier<>(fast_ber::ObjectIdentifierComponents{1, 2, 500, 9999}));
     test_type(fast_ber::OctetString<>("TestString"));
     test_type(fast_ber::Optional<fast_ber::Null<>>(fast_ber::Null<>()));
-    test_type(fast_ber::Optional<fast_ber::TaggedType<fast_ber::All::The_Enum<>,
+    test_type(fast_ber::Optional<fast_ber::TaggedType<fast_ber::All::The_Set<>,
                                                       fast_ber::ImplicitIdentifier<fast_ber::Class::application, 500>>>(
-        fast_ber::All::The_Enum<>::Values::pear));
+        fast_ber::All::The_Set<>{"Hello", 42}));
     // test_type(fast_ber::Prefixed);
     // test_type(fast_ber::Real);
     // test_type(fast_ber::RelativeIRI);
@@ -91,8 +81,8 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
                                                        fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>>>>(
         {"A", "list", "of", "strings"}));
     test_type(
-        fast_ber::TaggedType<fast_ber::Integer<>, fast_ber::ImplicitIdentifier<fast_ber::Class::application, 500>>(
-            500));
+        fast_ber::TaggedType<fast_ber::All::The_Set<>, fast_ber::ImplicitIdentifier<fast_ber::Class::application, 500>>(
+            {"Hello", 42}));
     // test_type(fast_ber::Time);
     // test_type(fast_ber::TimeOfDay);
     test_type(fast_ber::VisibleString<>("TestString"));

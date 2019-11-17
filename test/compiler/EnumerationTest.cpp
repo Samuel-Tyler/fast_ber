@@ -25,10 +25,8 @@ TEST_CASE("Enumeration: Encode Decode")
     fast_ber::Enumerations::Enumeration<> enum_one = fast_ber::Enumerations::Enumeration<>::Values::pear;
     fast_ber::Enumerations::Enumeration<> enum_two = fast_ber::Enumerations::Enumeration<>::Values::orange;
 
-    REQUIRE(fast_ber::encode(absl::Span<uint8_t>(data), enum_one,
-                             fast_ber::ExplicitId<fast_ber::UniversalTag::enumerated>{})
-                .success);
-    REQUIRE(fast_ber::decode(data, enum_two, fast_ber::ExplicitId<fast_ber::UniversalTag::enumerated>{}).success);
+    REQUIRE(fast_ber::encode(absl::Span<uint8_t>(data), enum_one).success);
+    REQUIRE(fast_ber::decode(data, enum_two).success);
 
     REQUIRE(enum_one == enum_two);
 }
