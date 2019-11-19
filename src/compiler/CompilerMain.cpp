@@ -698,7 +698,12 @@ std::string create_detail_body(const Asn1Tree& tree)
         {
             body += create_identifier_functions(assignment, module);
         }
+    }
 
+    body += '\n';
+
+    for (const Module& module : tree.modules)
+    {
         std::string helpers;
         for (const Assignment& assignment : module.assignments)
         {

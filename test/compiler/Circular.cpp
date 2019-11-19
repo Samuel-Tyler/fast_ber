@@ -5,6 +5,7 @@
 TEST_CASE("Circular Types: Optional Members")
 {
     fast_ber::Circular::CircularSequence1<> copy;
+
     fast_ber::Circular::CircularSequence1<> circular = {"layer1",
                                                         {{"layer2", {{"layer3", {{"layer4", {{"layer5", {}}}}}}}}}};
 
