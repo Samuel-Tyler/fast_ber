@@ -17,6 +17,7 @@ TEST_CASE("Circular Types: Optional Members")
     REQUIRE(encode_res.success);
     REQUIRE(decode_res.success);
     REQUIRE(copy == circular);
+    REQUIRE(copy.cs2->cs1.cs2->cs1.cs2->cs1.cs2->cs1.name == "layer5");
 }
 
 TEST_CASE("Circular Types: Sequence Of")
@@ -32,4 +33,5 @@ TEST_CASE("Circular Types: Sequence Of")
     REQUIRE(encode_res.success);
     REQUIRE(decode_res.success);
     REQUIRE(copy == circular);
+    REQUIRE(copy.sequence[0].sequence.size() == 4);
 }
