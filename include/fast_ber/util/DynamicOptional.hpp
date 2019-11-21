@@ -14,11 +14,12 @@ class DynamicOptional
 {
   public:
     DynamicOptional() = default;
-    DynamicOptional(const DynamicOptional& rhs) noexcept : m_val(rhs.m_val ? absl::make_unique<T>(*rhs.m_val) : nullptr)
-    {
-    }
+    DynamicOptional(const DynamicOptional& rhs) : m_val(nullptr) { *this = rhs; }
     DynamicOptional(DynamicOptional&&) = default;
     DynamicOptional(Empty) {}
+    DynamicOptional(const T& t) : m_val(new T(t)) {}
+    DynamicOptional(T&& t) : m_val(new T(std::move(t))) {}
+
     template <typename U = T,
               typename std::enable_if<
                   absl::conjunction<absl::negation<std::is_same<absl::in_place_t, typename std::decay<U>::type>>,
@@ -37,12 +38,24 @@ class DynamicOptional
     }
     DynamicOptional& operator=(const DynamicOptional& rhs)
     {
-        m_val = (rhs.m_val ? absl::make_unique<T>(*rhs.m_val) : nullptr);
+        if (rhs.m_val)
+        {
+            m_val = absl::make_unique<T>(*rhs.m_val);
+        }
+        else
+        {
+            m_val = nullptr;
+        }
         return *this;
     }
     DynamicOptional& operator=(Empty)
     {
         m_val = nullptr;
+        return *this;
+    }
+    DynamicOptional& operator=(const T& t)
+    {
+        m_val.reset(new T(t));
         return *this;
     }
     DynamicOptional& operator=(DynamicOptional&&) = default;
