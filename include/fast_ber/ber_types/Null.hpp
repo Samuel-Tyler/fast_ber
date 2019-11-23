@@ -30,7 +30,7 @@ class Null
     size_t       assign_ber(absl::Span<const uint8_t> buffer) noexcept { return assign_ber(BerView(buffer)); }
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
-    using Id = Identifier;
+    using AsnId = Identifier;
 };
 
 template <typename Identifier>

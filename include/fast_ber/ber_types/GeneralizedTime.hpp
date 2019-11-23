@@ -41,7 +41,7 @@ class GeneralizedTime
     GeneralizedTime(const absl::Time& time) { set_time(time); }
     GeneralizedTime() { set_time(absl::Time()); }
 
-    using Id = Identifier;
+    using AsnId = Identifier;
 
   private:
     BerLengthAndContentContainer m_contents;

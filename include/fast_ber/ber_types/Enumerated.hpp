@@ -62,7 +62,7 @@ class Enumerated
         return m_val.encode_content_and_length(buffer);
     }
 
-    using Id = Identifier;
+    using AsnId = Identifier;
 
     template <typename EnumeratedType2, typename Identifier2>
     friend class Enumerated;

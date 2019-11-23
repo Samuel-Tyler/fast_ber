@@ -56,7 +56,7 @@ class Integer
     bool operator==(int64_t rhs) const { return this->value() == rhs; }
     bool operator!=(int64_t rhs) const { return !(*this == rhs); }
 
-    using Id = Identifier;
+    using AsnId = Identifier;
 
     void assign(int64_t val) noexcept;
 

@@ -43,7 +43,7 @@ struct SequenceOf : public SequenceOfImplementation<T, s>::Type
     {
     }
 
-    using Id = ExplicitId<UniversalTag::sequence>;
+    using AsnId = ExplicitId<UniversalTag::sequence>;
 };
 
 template <typename T, StorageMode s, typename ID = ExplicitId<UniversalTag::sequence_of>>

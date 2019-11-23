@@ -19,7 +19,6 @@
 #include "IA5String.hpp"
 #include "IRI.hpp"
 #include "ISO646String.hpp"
-#include "InstanceOf.hpp"
 #include "Integer.hpp"
 #include "Null.hpp"
 #include "NumericString.hpp"

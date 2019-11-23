@@ -45,7 +45,7 @@ class Boolean
 
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
-    using Id = Identifier;
+    using AsnId = Identifier;
 
     template <typename Identifier2>
     friend class Boolean;

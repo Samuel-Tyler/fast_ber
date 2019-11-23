@@ -30,7 +30,7 @@ struct TaggedType : public Type
     Type&       get_base() { return *this; }
     const Type& get_base() const { return *this; }
 
-    using Id       = TagType;
+    using AsnId    = TagType;
     using BaseType = Type;
 };
 

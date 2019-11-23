@@ -3,6 +3,7 @@
 #include "fast_ber/ber_types/Class.hpp"
 #include "fast_ber/ber_types/Construction.hpp"
 #include "fast_ber/ber_types/Tag.hpp"
+#include "fast_ber/util/Definitions.hpp"
 
 #include <iostream>
 #include <tuple>
@@ -43,18 +44,18 @@ constexpr ImplicitIdentifier<ImplicitClass, ImplicitTag>
 {
     return {};
 }
-
-template <Class ImplicitClass, Tag ImplicitTag, typename Default>
-constexpr ImplicitIdentifier<ImplicitClass, ImplicitTag> resolve_default(ImplicitIdentifier<ImplicitClass, ImplicitTag>,
-                                                                         Default)
+/*
+template <Class ImplicitClass, Tag ImplicitTag>
+constexpr ImplicitIdentifier<ImplicitClass, ImplicitTag>
+    inner_identifier(ImplicitIdentifier<ImplicitClass, ImplicitTag>)
 {
     return {};
 }
-
+*/
 template <typename T>
 struct IdentifierType
 {
-    using type = typename T::Id;
+    using type = typename T::AsnId;
 };
 
 template <typename T>

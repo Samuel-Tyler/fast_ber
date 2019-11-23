@@ -45,7 +45,7 @@ struct Choice : public absl::variant<T0, Args...>
         return base() != rhs;
     }
 
-    using Id = ExplicitId<UniversalTag::choice>;
+    using AsnId = ExplicitId<UniversalTag::choice>;
 };
 
 template <typename T>

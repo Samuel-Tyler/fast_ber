@@ -82,7 +82,7 @@ class StringImpl
     template <UniversalTag tag2, typename Identifier2>
     friend class StringImpl;
 
-    using Id = Identifier;
+    using AsnId = Identifier;
 
   private:
     BerLengthAndContentContainer m_contents;
