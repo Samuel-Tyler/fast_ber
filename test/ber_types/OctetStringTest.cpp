@@ -139,7 +139,7 @@ TEST_CASE("OctetString: Default value") { REQUIRE(fast_ber::OctetString<>{} == "
 
 TEST_CASE("OctetString: Tagging")
 {
-    using Tag               = fast_ber::ImplicitIdentifier<fast_ber::Class::application, 2>;
+    using Tag               = fast_ber::Id<fast_ber::Class::application, 2>;
     using TaggedOctetString = fast_ber::OctetString<Tag>;
 
     static_assert(std::is_same<fast_ber::Identifier<TaggedOctetString>, Tag>::value, "Tagged Integer");

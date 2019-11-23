@@ -9,7 +9,7 @@
 
 TEST_CASE("TaggedType: Assign")
 {
-    using Tag       = fast_ber::ImplicitIdentifier<fast_ber::Class::universal, fast_ber::Tag(5)>;
+    using Tag       = fast_ber::Id<fast_ber::Class::universal, fast_ber::Tag(5)>;
     using TaggedInt = fast_ber::Integer<Tag>;
     fast_ber::Integer<> a(4);
     TaggedInt           b = a;
@@ -22,8 +22,8 @@ TEST_CASE("TaggedType: Assign")
 
 TEST_CASE("TaggedType: Encode Decode")
 {
-    fast_ber::Integer<fast_ber::ImplicitIdentifier<fast_ber::Class::universal, fast_ber::Tag(5)>> a      = 10;
-    fast_ber::Integer<fast_ber::ImplicitIdentifier<fast_ber::Class::universal, fast_ber::Tag(5)>> b      = 20;
+    fast_ber::Integer<fast_ber::Id<fast_ber::Class::universal, fast_ber::Tag(5)>> a      = 10;
+    fast_ber::Integer<fast_ber::Id<fast_ber::Class::universal, fast_ber::Tag(5)>> b      = 20;
     std::array<uint8_t, 100>                                                                      buffer = {};
 
     fast_ber::encode(absl::Span<uint8_t>(buffer), a);

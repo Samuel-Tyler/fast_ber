@@ -37,8 +37,8 @@ TEST_CASE("Integer: Construction from int")
     for (int64_t val : test_vals)
     {
         fast_ber::Integer<>                                                                   integer1(val);
-        fast_ber::Integer<fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 2>> integer2(integer1);
-        fast_ber::Integer<fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 4>> integer3;
+        fast_ber::Integer<fast_ber::Id<fast_ber::Class::context_specific, 2>> integer2(integer1);
+        fast_ber::Integer<fast_ber::Id<fast_ber::Class::context_specific, 4>> integer3;
         absl::optional<fast_ber::Integer<>>                                                   integer4;
         absl::optional<fast_ber::Integer<>>                                                   integer5(integer1);
 
@@ -80,9 +80,9 @@ TEST_CASE("Integer: Default value") { REQUIRE(fast_ber::Integer<>() == 0); }
 
 TEST_CASE("Integer: Tagging")
 {
-    using Tag               = fast_ber::ImplicitIdentifier<fast_ber::Class::application, 2>;
+    using Tag               = fast_ber::Id<fast_ber::Class::application, 2>;
     using DefaultTag        = fast_ber::ExplicitId<fast_ber::UniversalTag::integer>;
-    using ExplicitTag       = fast_ber::DoubleId<fast_ber::ImplicitIdentifier<fast_ber::Class::application, 2>,
+    using ExplicitTag       = fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::application, 2>,
                                            fast_ber::ExplicitId<fast_ber::UniversalTag::integer>>;
     using TaggedInt         = fast_ber::Integer<Tag>;
     using ExplicitTaggedInt = fast_ber::Integer<ExplicitTag>;

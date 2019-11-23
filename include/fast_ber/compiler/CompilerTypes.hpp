@@ -443,7 +443,7 @@ struct Identifier
 
     std::string name() const
     {
-        return "ImplicitIdentifier<" + to_string(class_, true) + ", " + std::to_string(tag_number) + ">";
+        return "Id<" + to_string(class_, true) + ", " + std::to_string(tag_number) + ">";
     }
 };
 

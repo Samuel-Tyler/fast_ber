@@ -52,12 +52,12 @@ TEST_CASE("Choice: Clashing type")
     using choice_type =
         fast_ber::Choice<fast_ber::Integer<>,
                          fast_ber::TaggedType<fast_ber::OctetString<>,
-                                              fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 99>>,
+                                              fast_ber::Id<fast_ber::Class::context_specific, 99>>,
                          fast_ber::TaggedType<fast_ber::OctetString<>,
-                                              fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 100>>>;
+                                              fast_ber::Id<fast_ber::Class::context_specific, 100>>>;
     auto choice_1 = choice_type(
         fast_ber::TaggedType<fast_ber::OctetString<>,
-                             fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 100>>("Test string"));
+                             fast_ber::Id<fast_ber::Class::context_specific, 100>>("Test string"));
     auto choice_2 = choice_type();
 
     std::vector<uint8_t> choice_encoded(100, 0x00);
@@ -75,7 +75,7 @@ TEST_CASE("Choice: Clashing type")
 TEST_CASE("Choice: Generated choice")
 {
     fast_ber::MakeAChoice::Collection<> collection;
-    collection.the_choice = fast_ber::Integer<fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 2>>(5);
+    collection.the_choice = fast_ber::Integer<fast_ber::Id<fast_ber::Class::context_specific, 2>>(5);
 
     std::vector<uint8_t> buffer(1000, 0x00);
     size_t               length = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), collection).length;

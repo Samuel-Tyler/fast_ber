@@ -50,11 +50,11 @@ EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_len
 }
 
 template <Class T1, Tag T2>
-EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_length, ImplicitIdentifier<T1, T2>,
+EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_length, Id<T1, T2>,
                                   size_t content_offset = 0)
 {
-    constexpr auto tag    = ImplicitIdentifier<T1, T2>::tag();
-    constexpr auto class_ = ImplicitIdentifier<T1, T2>::class_();
+    constexpr auto tag    = Id<T1, T2>::tag();
+    constexpr auto class_ = Id<T1, T2>::class_();
 
     size_t header_length = encoded_header_length(Construction::constructed, class_, tag, content_length);
     if (header_length + content_length > buffer.length())
@@ -73,7 +73,7 @@ EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_len
 }
 
 template <typename T, Class T2, Tag T3>
-EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, ImplicitIdentifier<T2, T3> id)
+EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, Id<T2, T3> id)
 {
     size_t id_length = encode_identifier(output, Construction::primitive, id.class_(), id.tag());
     if (id_length == 0)

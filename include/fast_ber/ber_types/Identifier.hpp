@@ -22,7 +22,7 @@ struct DoubleId
 
 // Any class or tag is valid
 template <Class ImplicitClass, Tag ImplicitTag>
-struct ImplicitIdentifier
+struct Id
 {
     constexpr static Class class_() { return ImplicitClass; }
     constexpr static Tag   tag() { return ImplicitTag; }
@@ -30,7 +30,7 @@ struct ImplicitIdentifier
 
 // Class is always universal
 template <UniversalTag explicit_tag>
-using ExplicitId = ImplicitIdentifier<Class::universal, val(explicit_tag)>;
+using ExplicitId = Id<Class::universal, val(explicit_tag)>;
 
 template <typename OuterId, typename InnerId>
 constexpr InnerId inner_identifier(DoubleId<OuterId, InnerId>)
@@ -39,15 +39,14 @@ constexpr InnerId inner_identifier(DoubleId<OuterId, InnerId>)
 }
 
 template <Class ImplicitClass, Tag ImplicitTag>
-constexpr ImplicitIdentifier<ImplicitClass, ImplicitTag>
-    inner_identifier(ImplicitIdentifier<ImplicitClass, ImplicitTag>)
+constexpr Id<ImplicitClass, ImplicitTag> inner_identifier(Id<ImplicitClass, ImplicitTag>)
 {
     return {};
 }
 /*
 template <Class ImplicitClass, Tag ImplicitTag>
-constexpr ImplicitIdentifier<ImplicitClass, ImplicitTag>
-    inner_identifier(ImplicitIdentifier<ImplicitClass, ImplicitTag>)
+constexpr Id<ImplicitClass, ImplicitTag>
+    inner_identifier(Id<ImplicitClass, ImplicitTag>)
 {
     return {};
 }
@@ -62,7 +61,7 @@ template <typename T>
 using Identifier = typename IdentifierType<T>::type;
 
 template <Class ImplicitClass, Tag ImplicitTag>
-std::ostream& operator<<(std::ostream& os, const ImplicitIdentifier<ImplicitClass, ImplicitTag>& id) noexcept
+std::ostream& operator<<(std::ostream& os, const Id<ImplicitClass, ImplicitTag>& id) noexcept
 {
     if (id.class_() == Class::universal)
     {
@@ -77,11 +76,5 @@ std::ostream& operator<<(std::ostream& os, const DoubleId<OuterId, InnerId>& id)
 {
     return os << "DoubleIdentifier(" << id.outer_id() << ", " << id.inner_id() << ")";
 }
-
-namespace abbreviations
-{
-template <Class ImplicitClass, Tag ImplicitTag>
-using Id = ImplicitIdentifier<ImplicitClass, ImplicitTag>;
-} // namespace abbreviations
 
 } // namespace fast_ber

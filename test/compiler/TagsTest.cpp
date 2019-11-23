@@ -76,11 +76,11 @@ TEST_CASE("Tags: Unspecified tags of an automatic sequence should be sequential"
                          fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>>::value);
 
     REQUIRE(std::is_same<fast_ber::Identifier<decltype(fast_ber::AutomaticTags::DefaultCollection<>::string1)>,
-                         fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 0>>::value);
+                         fast_ber::Id<fast_ber::Class::context_specific, 0>>::value);
     REQUIRE(std::is_same<fast_ber::Identifier<decltype(fast_ber::AutomaticTags::DefaultCollection<>::string2)>,
-                         fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 1>>::value);
+                         fast_ber::Id<fast_ber::Class::context_specific, 1>>::value);
     REQUIRE(std::is_same<fast_ber::Identifier<decltype(fast_ber::AutomaticTags::DefaultCollection<>::string3)>,
-                         fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 2>>::value);
+                         fast_ber::Id<fast_ber::Class::context_specific, 2>>::value);
 }
 
 TEST_CASE("Tags: Encoding and decoding a packet with various tagging modes")
@@ -106,19 +106,19 @@ TEST_CASE("Tags: Encoding and decoding a packet with various tagging modes")
     REQUIRE(tags_copy.bool3);
 
     REQUIRE(std::is_same<fast_ber::Identifier<decltype(tags_copy.string2)>,
-                         fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 1>>::value);
+                         fast_ber::Id<fast_ber::Class::context_specific, 1>>::value);
     REQUIRE(std::is_same<fast_ber::Identifier<decltype(tags_copy.integer)>,
-                         fast_ber::DoubleId<fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 2>,
+                         fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::context_specific, 2>,
                                             fast_ber::ExplicitId<fast_ber::UniversalTag::integer>>>::value);
     REQUIRE(std::is_same<fast_ber::Identifier<decltype(tags_copy.bool1)>,
-                         fast_ber::ImplicitIdentifier<fast_ber::Class::context_specific, 3>>::value);
+                         fast_ber::Id<fast_ber::Class::context_specific, 3>>::value);
     REQUIRE(std::is_same<fast_ber::Identifier<decltype(tags_copy.bool2)>,
-                         fast_ber::DoubleId<fast_ber::ImplicitIdentifier<fast_ber::Class::private_, 4>,
+                         fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::private_, 4>,
                                             fast_ber::ExplicitId<fast_ber::UniversalTag::boolean>>>::value);
     REQUIRE(std::is_same<fast_ber::Identifier<decltype(tags_copy.bool3)>,
-                         fast_ber::ImplicitIdentifier<fast_ber::Class::application, 5>>::value);
+                         fast_ber::Id<fast_ber::Class::application, 5>>::value);
     REQUIRE(std::is_same<fast_ber::Identifier<decltype(tags_copy.enumerated)>,
-                         fast_ber::ImplicitIdentifier<fast_ber::Class::application, 6>>::value);
+                         fast_ber::Id<fast_ber::Class::application, 6>>::value);
 }
 
 TEST_CASE("Tags: Tagging an enum")

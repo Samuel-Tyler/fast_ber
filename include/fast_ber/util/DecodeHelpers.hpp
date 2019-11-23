@@ -13,7 +13,7 @@ struct DecodeResult
 };
 
 template <typename T, Class T2, Tag T3>
-DecodeResult decode_impl(BerViewIterator& input, T& output, ImplicitIdentifier<T2, T3> id) noexcept
+DecodeResult decode_impl(BerViewIterator& input, T& output, Id<T2, T3> id) noexcept
 {
     if (!input->is_valid() || val(id.tag()) != input->tag())
     {
