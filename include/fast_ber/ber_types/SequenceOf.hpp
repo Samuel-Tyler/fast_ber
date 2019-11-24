@@ -56,7 +56,7 @@ EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T, s>& se
     content_buffer.remove_prefix(header_length_guess);
     for (const T& element : sequence)
     {
-        const auto element_encode_result = encode(content_buffer, element, Identifier<T>{});
+        const auto element_encode_result = encode(content_buffer, element);
         if (!element_encode_result.success)
         {
             return {false, 0};
@@ -83,7 +83,7 @@ DecodeResult decode(BerViewIterator& input, SequenceOf<T, s>& output, ID id = ID
     while (child->is_valid() && child->tag() == val(child_id.tag()))
     {
         output.emplace_back(T{});
-        bool success = decode(child, output.back(), child_id).success;
+        bool success = decode(child, output.back()).success;
         if (!success)
         {
             return DecodeResult{false};

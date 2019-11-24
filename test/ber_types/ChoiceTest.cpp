@@ -49,15 +49,13 @@ TEST_CASE("Choice: Basic choice")
 
 TEST_CASE("Choice: Clashing type")
 {
-    using choice_type =
-        fast_ber::Choice<fast_ber::Integer<>,
-                         fast_ber::TaggedType<fast_ber::OctetString<>,
-                                              fast_ber::Id<fast_ber::Class::context_specific, 99>>,
-                         fast_ber::TaggedType<fast_ber::OctetString<>,
-                                              fast_ber::Id<fast_ber::Class::context_specific, 100>>>;
-    auto choice_1 = choice_type(
-        fast_ber::TaggedType<fast_ber::OctetString<>,
-                             fast_ber::Id<fast_ber::Class::context_specific, 100>>("Test string"));
+    using choice_type = fast_ber::Choice<
+        fast_ber::Integer<>,
+        fast_ber::TaggedType<fast_ber::OctetString<>, fast_ber::Id<fast_ber::Class::context_specific, 99>>,
+        fast_ber::TaggedType<fast_ber::OctetString<>, fast_ber::Id<fast_ber::Class::context_specific, 100>>>;
+    auto choice_1 =
+        choice_type(fast_ber::TaggedType<fast_ber::OctetString<>, fast_ber::Id<fast_ber::Class::context_specific, 100>>(
+            "Test string"));
     auto choice_2 = choice_type();
 
     std::vector<uint8_t> choice_encoded(100, 0x00);
@@ -70,6 +68,40 @@ TEST_CASE("Choice: Clashing type")
     REQUIRE(absl::holds_alternative<fast_ber::variant_alternative<2, choice_type>::type>(choice_1));
     REQUIRE(absl::holds_alternative<fast_ber::variant_alternative<2, choice_type>::type>(choice_2));
     REQUIRE(choice_1 == choice_2);
+}
+
+TEST_CASE("Choice: Choice of choices")
+{
+    using Choice1 = fast_ber::Choice<fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 1>>,
+                                     fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 2>>>;
+    using Choice2 = fast_ber::Choice<fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 3>>,
+                                     fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 4>>>;
+    using Choice3 = fast_ber::Choice<Choice1, Choice2>;
+
+    using ExpectedId = fast_ber::ChoiceId<fast_ber::ChoiceId<fast_ber::Id<fast_ber::Class::context_specific, 1>,
+                                                             fast_ber::Id<fast_ber::Class::context_specific, 2>>,
+                                          fast_ber::ChoiceId<fast_ber::Id<fast_ber::Class::context_specific, 3>,
+                                                             fast_ber::Id<fast_ber::Class::context_specific, 4>>>;
+
+    Choice3 choice_orig = fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 4>>{};
+    Choice3 choice_copy = fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 1>>{};
+
+    REQUIRE(absl::holds_alternative<Choice2>(choice_orig));
+    REQUIRE(absl::holds_alternative<Choice1>(choice_copy));
+
+    std::vector<uint8_t> choice_encoded(100, 0x00);
+
+    bool enc_success =
+        fast_ber::encode(absl::MakeSpan(choice_encoded.data(), choice_encoded.size()), choice_orig).success;
+    bool dec_success =
+        fast_ber::decode(absl::MakeSpan(choice_encoded.data(), choice_encoded.size()), choice_copy).success;
+
+    REQUIRE(enc_success);
+    REQUIRE(dec_success);
+    REQUIRE(absl::holds_alternative<Choice2>(choice_orig));
+    REQUIRE(absl::holds_alternative<Choice2>(choice_copy));
+    REQUIRE(choice_orig == choice_copy);
+    REQUIRE(std::is_same<fast_ber::Identifier<Choice3>, ExpectedId>::value);
 }
 
 TEST_CASE("Choice: Generated choice")

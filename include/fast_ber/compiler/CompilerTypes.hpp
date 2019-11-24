@@ -441,10 +441,7 @@ struct Identifier
     Class   class_;
     int64_t tag_number;
 
-    std::string name() const
-    {
-        return "Id<" + to_string(class_, true) + ", " + std::to_string(tag_number) + ">";
-    }
+    std::string name() const { return "Id<" + to_string(class_, true) + ", " + std::to_string(tag_number) + ">"; }
 };
 
 struct TaggingInfo

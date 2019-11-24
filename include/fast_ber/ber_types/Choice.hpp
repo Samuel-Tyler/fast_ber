@@ -15,6 +15,48 @@
 namespace fast_ber
 {
 
+inline bool is_an_identifier_choice(Class, Tag) { return false; }
+
+template <typename Identifier, typename... Identifiers>
+bool is_an_identifier_choice(Class class_, Tag tag, Identifier id, Identifiers... ids)
+{
+    if (id.check_id_match(class_, tag))
+    {
+        return true;
+    }
+
+    return is_an_identifier_choice(class_, tag, ids...);
+}
+
+template <typename... Identifiers>
+struct ChoiceId
+{
+    static std::tuple<Identifiers...> choice_ids() { return {}; };
+    constexpr static bool check_id_match(Class c, Tag t) { return is_an_identifier_choice(c, t, Identifiers{}...); }
+};
+
+inline void print(std::ostream&) noexcept {}
+
+template <typename Identifier, typename... Identifiers>
+void print(std::ostream& os, Identifier id, Identifiers... ids) noexcept
+{
+    os << id;
+
+    if (sizeof...(ids) > 0)
+    {
+        os << ", ";
+    }
+    print(os, ids...);
+}
+
+template <typename... Identifiers>
+inline std::ostream& operator<<(std::ostream& os, const ChoiceId<Identifiers...>&) noexcept
+{
+    os << "ChoiceId(";
+    print(os, Identifiers{}...);
+    return os << ")";
+}
+
 template <typename T0, typename... Args>
 struct Choice : public absl::variant<T0, Args...>
 {
@@ -45,7 +87,13 @@ struct Choice : public absl::variant<T0, Args...>
         return base() != rhs;
     }
 
-    using AsnId = ExplicitId<UniversalTag::choice>;
+    template <typename... Variants>
+    static constexpr auto identifier(Choice<Variants...>*) -> ChoiceId<Identifier<Variants>...>
+    {
+        return {};
+    }
+
+    using AsnId = decltype(identifier(static_cast<Choice<T0, Args...>*>(nullptr)));
 };
 
 template <typename T>
@@ -85,21 +133,21 @@ EncodeResult encode_if(const absl::Span<uint8_t>& buffer, const Choice<Variants.
     }
 }
 
-template <typename... Variants, typename ID = ExplicitId<UniversalTag::choice>>
-EncodeResult encode_content_and_length(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice) noexcept
+template <typename... Variants>
+EncodeResult encode_choice(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice) noexcept
 {
     constexpr auto depth = static_cast<int>(fast_ber::variant_size<Choice<Variants...>>::value);
     return encode_if<0, depth>(buffer, choice);
 }
 
-template <typename... Variants, typename ID = ExplicitId<UniversalTag::choice>>
-EncodeResult encode(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice, ID id = ID{}) noexcept
+template <typename... Variants, typename ID>
+EncodeResult encode(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice, ID id) noexcept
 {
     const auto header_length_guess = 2;
     auto       child_buffer        = buffer;
     child_buffer.remove_prefix(header_length_guess);
 
-    const EncodeResult& inner_encode_result = encode_content_and_length(child_buffer, choice);
+    const EncodeResult& inner_encode_result = encode_choice(child_buffer, choice);
     if (!inner_encode_result.success)
     {
         return inner_encode_result;
@@ -107,33 +155,50 @@ EncodeResult encode(const absl::Span<uint8_t>& buffer, const Choice<Variants...>
     return wrap_with_ber_header(buffer, inner_encode_result.length, id, header_length_guess);
 }
 
-template <int index, int max_depth, typename... Variants, typename ID,
+template <typename... Variants>
+EncodeResult encode(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice,
+                    ChoiceId<Identifier<Variants>...> = {}) noexcept
+{
+    return encode_choice(buffer, choice);
+}
+
+template <int index, int max_depth, typename... Variants,
           typename std::enable_if<(!(index < max_depth)), int>::type = 0>
-DecodeResult decode_if(BerViewIterator&, Choice<Variants...>&, ID) noexcept
+DecodeResult decode_if(BerViewIterator&, Choice<Variants...>&) noexcept
 {
     // No substitutions found, fail
     return DecodeResult{false};
 }
 
-template <size_t index, size_t max_depth, typename... Variants, typename ID,
+template <size_t index, size_t max_depth, typename... Variants,
           typename std::enable_if<(index < max_depth), int>::type = 0>
-DecodeResult decode_if(BerViewIterator& input, Choice<Variants...>& output, ID id) noexcept
+DecodeResult decode_if(BerViewIterator& input, Choice<Variants...>& output) noexcept
 {
-    using T                 = typename fast_ber::variant_alternative<index, Choice<Variants...>>::type;
-    constexpr auto child_id = Identifier<T>{};
-    if (input->tag() == val(child_id.tag()))
+    using T = typename fast_ber::variant_alternative<index, Choice<Variants...>>::type;
+
+    if (Identifier<T>::check_id_match(input->class_(), input->tag()))
     {
         T* child = &output.template emplace<index>();
         return decode(input, *child);
     }
     else
     {
-        return decode_if<index + 1, max_depth>(input, output, id);
+        return decode_if<index + 1, max_depth>(input, output);
     }
 }
 
-template <typename... Variants, typename ID = ExplicitId<UniversalTag::choice>>
-DecodeResult decode(BerViewIterator& input, Choice<Variants...>& output, ID id = ID{}) noexcept
+template <typename... Variants>
+DecodeResult decode(BerViewIterator& input, Choice<Variants...>& output,
+                    ChoiceId<Identifier<Variants>...> = {}) noexcept
+{
+    constexpr auto     depth  = fast_ber::variant_size<typename std::remove_reference<decltype(output)>::type>::value;
+    const DecodeResult result = decode_if<0, depth>(input, output);
+    ++input;
+    return result;
+}
+
+template <typename... Variants, typename ID>
+DecodeResult decode(BerViewIterator& input, Choice<Variants...>& output, ID id) noexcept
 {
     if (!input->is_valid() || input->tag() != val(id.tag()))
     {
@@ -147,7 +212,7 @@ DecodeResult decode(BerViewIterator& input, Choice<Variants...>& output, ID id =
     }
 
     constexpr auto     depth  = fast_ber::variant_size<typename std::remove_reference<decltype(output)>::type>::value;
-    const DecodeResult result = decode_if<0, depth>(child, output, id);
+    const DecodeResult result = decode_if<0, depth>(child, output);
     ++input;
     return result;
 }

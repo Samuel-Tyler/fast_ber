@@ -9,4 +9,11 @@ enum class EncodingMode
     der
 };
 
+enum class StorageMode
+{
+    static_,
+    small_buffer_optimised,
+    dynamic,
+};
+
 }

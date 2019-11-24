@@ -25,7 +25,6 @@ enum class UniversalTag : Tag
     embedded_pdv      = 11,
     utf8_string       = 12,
     relative_oid      = 13,
-    choice            = 16,
     sequence          = 16,
     sequence_of       = 16,
     set               = 17,

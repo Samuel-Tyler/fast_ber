@@ -26,7 +26,7 @@ EncodeResult encode_sequence_combine_impl(absl::Span<uint8_t>& output, size_t en
     const EncodeResult result = encode(output, object);
     if (!result.success)
     {
-        std::cerr << "Failed encoding packet, tag = " << val(Identifier<T>::tag()) << std::endl;
+        std::cerr << "Failed encoding packet, id = " << Identifier<T>{} << std::endl;
         return EncodeResult{false, result.length};
     }
 

@@ -45,4 +45,6 @@ TEST_CASE("SimpleCompilerOutput: Testing a generated ber container")
 
     fast_ber::BerView view = absl::Span<const uint8_t>(buffer);
     REQUIRE(std::distance(view.begin(), view.end()) == 7);
+
+    std::cout << "fast_ber::Simple::Collection: " << collection << std::endl;
 }

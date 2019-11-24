@@ -36,11 +36,11 @@ TEST_CASE("Integer: Construction from int")
 
     for (int64_t val : test_vals)
     {
-        fast_ber::Integer<>                                                                   integer1(val);
+        fast_ber::Integer<>                                                   integer1(val);
         fast_ber::Integer<fast_ber::Id<fast_ber::Class::context_specific, 2>> integer2(integer1);
         fast_ber::Integer<fast_ber::Id<fast_ber::Class::context_specific, 4>> integer3;
-        absl::optional<fast_ber::Integer<>>                                                   integer4;
-        absl::optional<fast_ber::Integer<>>                                                   integer5(integer1);
+        absl::optional<fast_ber::Integer<>>                                   integer4;
+        absl::optional<fast_ber::Integer<>>                                   integer5(integer1);
 
         integer3 = integer2;
         integer4 = integer3;
@@ -56,13 +56,13 @@ TEST_CASE("Integer: Construction from int")
 TEST_CASE("Integer: Encoding")
 {
     fast_ber::Integer<>      i(100);
-    std::array<uint8_t, 100> buffer   = {};
-    std::array<uint8_t, 3>   expected = {0x02, 0x01, 0x64};
-    size_t                   size     = fast_ber::encode(absl::Span<uint8_t>(buffer.data(), buffer.size()), i,
-                                   fast_ber::ExplicitId<fast_ber::UniversalTag::integer>{})
-                      .length;
+    std::array<uint8_t, 100> buffer       = {};
+    std::array<uint8_t, 3>   expected     = {0x02, 0x01, 0x64};
+    size_t                   encoded_size = fast_ber::encoded_length(i);
+    size_t                   size = fast_ber::encode(absl::Span<uint8_t>(buffer.data(), buffer.size()), i).length;
 
     REQUIRE(size == 3);
+    REQUIRE(encoded_size == 3);
     REQUIRE(absl::MakeSpan(buffer.data(), 3) == absl::MakeSpan(expected));
 }
 

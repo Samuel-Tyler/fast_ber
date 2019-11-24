@@ -3,7 +3,16 @@
 
 TaggingInfo identifier(const AnyType&, const Module&, const Asn1Tree&)
 {
-    return TaggingInfo{{}, "ExplicitId<UniversalTag::choice>", true};
+    std::string id = "fast_ber::ChoiceId<"
+                     "fast_ber::Id<fast_ber::Class::universal, 3>, fast_ber::Id<fast_ber::Class::universal, 1>,"
+                     "fast_ber::Id<fast_ber::Class::universal, 29>, fast_ber::Id<fast_ber::Class::universal, 24>,"
+                     "fast_ber::Id<fast_ber::Class::universal, 24>, fast_ber::Id<fast_ber::Class::universal, 24>,"
+                     "fast_ber::Id<fast_ber::Class::universal, 24>, fast_ber::Id<fast_ber::Class::universal, 2>,"
+                     "fast_ber::Id<fast_ber::Class::universal, 5>, fast_ber::Id<fast_ber::Class::universal, 6>,"
+                     "fast_ber::Id<fast_ber::Class::universal, 4>, fast_ber::Id<fast_ber::Class::universal, 9>,"
+                     "fast_ber::Id<fast_ber::Class::universal, 23>, fast_ber::Id<fast_ber::Class::universal, 23>,"
+                     "fast_ber::Id<fast_ber::Class::universal, 23>, fast_ber::Id<fast_ber::Class::universal, 26>>";
+    return TaggingInfo{{}, id, true};
 }
 TaggingInfo identifier(const BitStringType&, const Module&, const Asn1Tree&)
 {
@@ -17,9 +26,23 @@ TaggingInfo identifier(const CharacterStringType& type, const Module&, const Asn
 {
     return TaggingInfo{{}, "ExplicitId<UniversalTag::" + to_string_snake_case(type) + ">", true};
 }
-TaggingInfo identifier(const ChoiceType&, const Module&, const Asn1Tree&)
+TaggingInfo identifier(const ChoiceType& choice, const Module& module, const Asn1Tree& tree)
 {
-    return TaggingInfo{{}, "ExplicitId<UniversalTag::choice>", true};
+    std::string id    = "ChoiceId<";
+    bool        first = true;
+
+    for (const NamedType& named_type : choice.choices)
+    {
+        if (!first)
+        {
+            id += ", ";
+        }
+        id += identifier(named_type.type, module, tree).name();
+        first = false;
+    }
+
+    id += ">";
+    return TaggingInfo{{}, id, true};
 }
 TaggingInfo identifier(const DateType&, const Module&, const Asn1Tree&)
 {

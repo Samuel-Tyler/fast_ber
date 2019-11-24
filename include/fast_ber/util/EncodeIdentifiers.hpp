@@ -39,6 +39,13 @@ inline size_t encode_header(absl::Span<uint8_t> output, Construction constructio
 inline size_t encoded_header_length(Construction construction, Class class_, Tag tag, size_t length) noexcept;
 inline size_t encoded_header_length(Construction construction, Class class_, UniversalTag tag, size_t length) noexcept;
 
+template <Class class_, Tag tag>
+constexpr size_t encoded_length(Id<class_, tag> id);
+template <Class class_, Tag tag>
+constexpr size_t encoded_length(size_t content_and_length_length, Id<class_, tag> id);
+template <Class class_1, Tag tag_1, Class class_2, Tag tag_2>
+constexpr size_t encoded_length(size_t content_and_length_length, DoubleId<Id<class_1, tag_1>, Id<class_2, tag_2>> id);
+
 constexpr inline uint8_t add_short_tag(uint8_t first_byte, Tag tag) noexcept
 {
     return static_cast<uint8_t>(tag) | (first_byte & 0xE0);
@@ -295,6 +302,26 @@ inline size_t encoded_header_length(Construction construction, Class class_, Tag
 inline size_t encoded_header_length(Construction construction, Class class_, UniversalTag tag, size_t length) noexcept
 {
     return encoded_identifier_length(construction, class_, tag) + encoded_length_length(length);
+}
+
+template <Class class_, Tag tag>
+constexpr size_t encoded_length(Id<class_, tag> id)
+{
+    return encoded_identifier_length(Construction::primitive, id.class_(), id.tag());
+}
+
+template <Class class_, Tag tag>
+constexpr size_t encoded_length(size_t content_and_length_length, Id<class_, tag> id)
+{
+    return content_and_length_length + encoded_length(id);
+}
+
+template <Class class_1, Tag tag_1, Class class_2, Tag tag_2>
+constexpr size_t encoded_length(size_t content_and_length_length, DoubleId<Id<class_1, tag_1>, Id<class_2, tag_2>> id)
+{
+    return encoded_length(encoded_length_length(encoded_length(content_and_length_length, id.inner_id())) +
+                              encoded_length(content_and_length_length, id.inner_id()),
+                          id.outer_id());
 }
 
 } // namespace fast_ber

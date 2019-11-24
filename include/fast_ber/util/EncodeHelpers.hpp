@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "fast_ber/ber_types/Identifier.hpp"
+#include "fast_ber/util/Definitions.hpp"
 
 #include "absl/types/span.h"
 
@@ -103,12 +104,5 @@ EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, DoubleId<O
 
     return wrap_with_ber_header(output, inner_encoding.length, id, header_length_guess);
 }
-
-enum class StorageMode
-{
-    static_,
-    small_buffer_optimised,
-    dynamic,
-};
 
 } // namespace fast_ber

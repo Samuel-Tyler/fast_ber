@@ -27,12 +27,8 @@ class ObjectIdentifier
     ObjectIdentifier() noexcept                                        = default;
     ObjectIdentifier(const ObjectIdentifier<Identifier>& rhs) noexcept = default;
     ObjectIdentifier(ObjectIdentifier<Identifier>&& rhs) noexcept      = default;
-
-    explicit ObjectIdentifier(const ObjectIdentifierComponents& oid) noexcept { assign(oid); }
-    explicit ObjectIdentifier(const std::initializer_list<int64_t>& oid) noexcept
-    {
-        assign(ObjectIdentifierComponents(oid));
-    }
+    ObjectIdentifier(const ObjectIdentifierComponents& oid) noexcept { assign(oid); }
+    ObjectIdentifier(const std::initializer_list<int64_t>& oid) noexcept { assign(ObjectIdentifierComponents(oid)); }
 
     ObjectIdentifier<Identifier>& operator=(const BerView& view) noexcept;
     ObjectIdentifier<Identifier>& operator=(const ObjectIdentifierComponents& rhs) noexcept;
@@ -240,7 +236,7 @@ ObjectIdentifier<Identifier>& ObjectIdentifier<Identifier>::operator=(absl::Span
 template <typename Identifier>
 std::ostream& operator<<(std::ostream& os, const ObjectIdentifier<Identifier>& oid) noexcept
 {
-    os << "{ ";
+    os << "[";
     const auto oid_components = oid.value();
     for (size_t i = 0; i < oid_components.size(); i++)
     {
@@ -250,7 +246,7 @@ std::ostream& operator<<(std::ostream& os, const ObjectIdentifier<Identifier>& o
             os << ", ";
         }
     }
-    os << " }";
+    os << "]";
     return os;
 }
 

@@ -14,6 +14,7 @@ namespace fast_ber
 template <typename OuterId, typename InnerId>
 struct DoubleId
 {
+    constexpr static bool    check_id_match(Class c, Tag t) { return c == class_() && t == tag(); }
     constexpr static Class   class_() { return OuterId::class_(); }
     constexpr static Tag     tag() { return OuterId::tag(); }
     constexpr static OuterId outer_id() { return {}; }
@@ -21,11 +22,12 @@ struct DoubleId
 };
 
 // Any class or tag is valid
-template <Class ImplicitClass, Tag ImplicitTag>
+template <Class class_1, Tag tag_1>
 struct Id
 {
-    constexpr static Class class_() { return ImplicitClass; }
-    constexpr static Tag   tag() { return ImplicitTag; }
+    constexpr static bool  check_id_match(Class c, Tag t) { return c == class_() && t == tag(); }
+    constexpr static Class class_() { return class_1; }
+    constexpr static Tag   tag() { return tag_1; }
 };
 
 // Class is always universal
@@ -38,19 +40,12 @@ constexpr InnerId inner_identifier(DoubleId<OuterId, InnerId>)
     return {};
 }
 
-template <Class ImplicitClass, Tag ImplicitTag>
-constexpr Id<ImplicitClass, ImplicitTag> inner_identifier(Id<ImplicitClass, ImplicitTag>)
+template <Class class_, Tag tag>
+constexpr Id<class_, tag> inner_identifier(Id<class_, tag>)
 {
     return {};
 }
-/*
-template <Class ImplicitClass, Tag ImplicitTag>
-constexpr Id<ImplicitClass, ImplicitTag>
-    inner_identifier(Id<ImplicitClass, ImplicitTag>)
-{
-    return {};
-}
-*/
+
 template <typename T>
 struct IdentifierType
 {
@@ -60,8 +55,8 @@ struct IdentifierType
 template <typename T>
 using Identifier = typename IdentifierType<T>::type;
 
-template <Class ImplicitClass, Tag ImplicitTag>
-std::ostream& operator<<(std::ostream& os, const Id<ImplicitClass, ImplicitTag>& id) noexcept
+template <Class class_1, Tag tag_1>
+std::ostream& operator<<(std::ostream& os, const Id<class_1, tag_1>& id) noexcept
 {
     if (id.class_() == Class::universal)
     {

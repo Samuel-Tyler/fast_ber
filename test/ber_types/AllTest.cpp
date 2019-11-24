@@ -6,11 +6,11 @@
 
 #include "absl/time/clock.h"
 
-using namespace fast_ber;
-
 template <typename T>
 void test_type(const T& a)
 {
+    using ID = fast_ber::Identifier<T>;
+
     // Check that type can be default constructed
     REQUIRE(T{} == T{});
 
@@ -35,12 +35,11 @@ void test_type(const T& a)
     fast_ber::DecodeResult    decode_result = fast_ber::decode(absl::Span<uint8_t>(buffer), f);
     REQUIRE(encode_result.success);
     REQUIRE(decode_result.success);
-    REQUIRE(fast_ber::BerView(buffer).tag() == val(fast_ber::Identifier<T>::tag()));
     REQUIRE(a == f);
+    REQUIRE(ID::check_id_match(fast_ber::BerView(buffer).class_(), fast_ber::BerView(buffer).tag()));
 
-    // Identifier checks
-    std::cout << a << std::endl;
-    std::cout << fast_ber::Identifier<T>{} << std::endl;
+    // Printing checks
+    std::cout << "All test : " << a << "\n      id : " << ID{} << "\n\n";
 }
 
 TEST_CASE("AllTypes: Check all types share a unified interface")
@@ -55,10 +54,8 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
     // test_type(fast_ber::Duration<>);
     // test_type(fast_ber::EmbeddedPDV);
     test_type(fast_ber::All::The_Enum<>(fast_ber::All::The_Enum<>::Values::pear));
-    // test_type(fast_ber::External);
     test_type(fast_ber::GeneralizedTime<>(absl::Now()));
     // test_type(fast_ber::IRI);
-    // test_type(fast_ber::InstanceOf);
     test_type(fast_ber::Integer<>(5));
     test_type(fast_ber::Null<fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::application, 20>,
                                                 fast_ber::ExplicitId<fast_ber::UniversalTag::null>>>());
@@ -66,8 +63,8 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
     test_type(fast_ber::ObjectIdentifier<>(fast_ber::ObjectIdentifierComponents{1, 2, 500, 9999}));
     test_type(fast_ber::OctetString<>("TestString"));
     test_type(fast_ber::Optional<fast_ber::Null<>>(fast_ber::Null<>()));
-    test_type(fast_ber::Optional<fast_ber::TaggedType<fast_ber::All::The_Set<>,
-                                                      fast_ber::Id<fast_ber::Class::application, 500>>>(
+    test_type(fast_ber::Optional<
+              fast_ber::TaggedType<fast_ber::All::The_Set<>, fast_ber::Id<fast_ber::Class::application, 500>>>(
         fast_ber::All::The_Set<>{"Hello", 42}));
     // test_type(fast_ber::Prefixed);
     // test_type(fast_ber::Real);
@@ -76,13 +73,12 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
     test_type(fast_ber::All::The_Sequence<>{"Hello", 42});
     test_type(fast_ber::SequenceOf<fast_ber::Integer<>>({1, 4, 6, 100, 2555}));
     test_type(fast_ber::All::The_Set<>{"Hello", 42});
-    test_type(fast_ber::SetOf<
-              fast_ber::OctetString<fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::private_, 4>,
-                                                       fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>>>>(
-        {"A", "list", "of", "strings"}));
     test_type(
-        fast_ber::TaggedType<fast_ber::All::The_Set<>, fast_ber::Id<fast_ber::Class::application, 500>>(
-            {"Hello", 42}));
+        fast_ber::SetOf<fast_ber::OctetString<fast_ber::DoubleId<
+            fast_ber::Id<fast_ber::Class::private_, 4>, fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>>>>(
+            {"A", "list", "of", "strings"}));
+    test_type(
+        fast_ber::TaggedType<fast_ber::All::The_Set<>, fast_ber::Id<fast_ber::Class::application, 500>>({"Hello", 42}));
     // test_type(fast_ber::Time);
     // test_type(fast_ber::TimeOfDay);
     test_type(fast_ber::VisibleString<>("TestString"));
