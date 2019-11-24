@@ -139,9 +139,8 @@ EncodeResult encode_choice(const absl::Span<uint8_t>&                   buffer,
     return encode_if<0, depth>(buffer, choice);
 }
 
-template <typename Identifier, typename... Variants, typename ID>
-EncodeResult encode(const absl::Span<uint8_t>& buffer, const TaggedChoice<Identifier, Variants...>& choice,
-                    ID id) noexcept
+template <typename Identifier, typename... Variants>
+EncodeResult encode(const absl::Span<uint8_t>& buffer, const TaggedChoice<Identifier, Variants...>& choice) noexcept
 {
     const auto header_length_guess = 2;
     auto       child_buffer        = buffer;
@@ -152,13 +151,12 @@ EncodeResult encode(const absl::Span<uint8_t>& buffer, const TaggedChoice<Identi
     {
         return inner_encode_result;
     }
-    return wrap_with_ber_header(buffer, inner_encode_result.length, id, header_length_guess);
+    return wrap_with_ber_header(buffer, inner_encode_result.length, Identifier{}, header_length_guess);
 }
 
 template <typename... Variants>
 EncodeResult encode(const absl::Span<uint8_t>&                                          buffer,
-                    const TaggedChoice<ChoiceId<Identifier<Variants>...>, Variants...>& choice,
-                    ChoiceId<Identifier<Variants>...> = {}) noexcept
+                    const TaggedChoice<ChoiceId<Identifier<Variants>...>, Variants...>& choice) noexcept
 {
     return encode_choice(buffer, choice);
 }
@@ -189,8 +187,8 @@ DecodeResult decode_if(BerViewIterator& input, TaggedChoice<ID, Variants...>& ou
 }
 
 template <typename... Variants>
-DecodeResult decode(BerViewIterator& input, TaggedChoice<ChoiceId<Identifier<Variants>...>, Variants...>& output,
-                    ChoiceId<Identifier<Variants>...> = {}) noexcept
+DecodeResult decode(BerViewIterator&                                              input,
+                    TaggedChoice<ChoiceId<Identifier<Variants>...>, Variants...>& output) noexcept
 {
     constexpr auto     depth  = fast_ber::variant_size<typename std::remove_reference<decltype(output)>::type>::value;
     const DecodeResult result = decode_if<0, depth>(input, output);
@@ -198,10 +196,10 @@ DecodeResult decode(BerViewIterator& input, TaggedChoice<ChoiceId<Identifier<Var
     return result;
 }
 
-template <typename Identifier, typename... Variants, typename ID>
-DecodeResult decode(BerViewIterator& input, TaggedChoice<Identifier, Variants...>& output, ID id) noexcept
+template <typename Identifier, typename... Variants>
+DecodeResult decode(BerViewIterator& input, TaggedChoice<Identifier, Variants...>& output) noexcept
 {
-    if (!input->is_valid() || input->tag() != val(id.tag()))
+    if (!input->is_valid() || input->tag() != Identifier::tag() || input->class_() != Identifier::class_())
     {
         return DecodeResult{false};
     }
