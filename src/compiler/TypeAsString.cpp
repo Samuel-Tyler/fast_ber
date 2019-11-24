@@ -237,8 +237,13 @@ std::string type_as_string(const SequenceOfType& sequence, const Module& module,
         throw std::runtime_error("SequenceOfType must not be a structure or enum");
     }
 
-    const std::string& inner = "SequenceOf<" + type_as_string(type, module, tree) + ">";
-    return wrap_with_tagged_type(inner, identifier_override);
+    std::string res = "SequenceOf<" + type_as_string(type, module, tree);
+    if (!identifier_override.empty())
+    {
+        res += ", " + identifier_override;
+    }
+    res += ">";
+    return res;
 }
 std::string type_as_string(const SetType& set, const Module& module, const Asn1Tree& tree,
                            const std::string& identifier_override)
@@ -297,8 +302,13 @@ std::string type_as_string(const SetOfType& set, const Module& module, const Asn
         throw std::runtime_error("SetOfType must not be a structure or enum");
     }
 
-    const std::string& inner = "SequenceOf<" + type_as_string(type, module, tree) + ">";
-    return wrap_with_tagged_type(inner, identifier_override);
+    std::string res = "SetOf<" + type_as_string(type, module, tree);
+    if (!identifier_override.empty())
+    {
+        res += ", " + identifier_override;
+    }
+    res += ">";
+    return res;
 }
 std::string type_as_string(const PrefixedType& prefixed_type, const Module& module, const Asn1Tree& tree,
                            const std::string& identifier_override)

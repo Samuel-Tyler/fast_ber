@@ -29,7 +29,7 @@ struct SequenceOfImplementation<T, StorageMode::dynamic>
     using Type = std::vector<T>;
 };
 
-template <typename T, StorageMode s = StorageMode::dynamic>
+template <typename T, typename I = ExplicitId<UniversalTag::sequence>, StorageMode s = StorageMode::dynamic>
 struct SequenceOf : public SequenceOfImplementation<T, s>::Type
 {
     using Implementation = typename SequenceOfImplementation<T, s>::Type;
@@ -38,16 +38,16 @@ struct SequenceOf : public SequenceOfImplementation<T, s>::Type
     SequenceOf() = default;
     SequenceOf(const Implementation& t) : Implementation(t) {}
     SequenceOf(Implementation&& t) : Implementation(std::move(t)) {}
-    template <typename T2, StorageMode s2>
-    SequenceOf(const SequenceOf<T2, s2>& t) : Implementation(t)
+    template <typename T2, typename I2, StorageMode s2>
+    SequenceOf(const SequenceOf<T2, I2, s2>& t) : Implementation(t)
     {
     }
 
-    using AsnId = ExplicitId<UniversalTag::sequence>;
+    using AsnId = I;
 };
 
-template <typename T, StorageMode s, typename ID = ExplicitId<UniversalTag::sequence_of>>
-EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T, s>& sequence, ID id = ID{}) noexcept
+template <typename T, typename I, StorageMode s>
+EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T, I, s>& sequence) noexcept
 {
     const size_t header_length_guess = 2;
     auto         content_buffer      = buffer;
@@ -65,14 +65,15 @@ EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T, s>& se
         content_buffer.remove_prefix(element_encode_result.length);
     }
 
-    return wrap_with_ber_header(buffer, combined_length, id, header_length_guess);
+    return wrap_with_ber_header(buffer, combined_length, I{}, header_length_guess);
 }
 
-template <typename T, StorageMode s, typename ID = ExplicitId<UniversalTag::sequence_of>>
-DecodeResult decode(BerViewIterator& input, SequenceOf<T, s>& output, ID id = ID{}) noexcept
+template <typename T, typename I, StorageMode s>
+DecodeResult decode(BerViewIterator& input, SequenceOf<T, I, s>& output) noexcept
 {
     output.clear();
-    if (!(input->is_valid() && input->tag() == val(id.tag())) && input->construction() == Construction::constructed)
+    if (!(input->is_valid() && input->tag() == I::tag() && input->class_() == I::class_() &&
+          input->construction() == Construction::constructed))
     {
         return DecodeResult{false};
     }
@@ -94,8 +95,8 @@ DecodeResult decode(BerViewIterator& input, SequenceOf<T, s>& output, ID id = ID
     return DecodeResult{true};
 }
 
-template <typename T, StorageMode s1>
-std::ostream& operator<<(std::ostream& os, const SequenceOf<T, s1>& sequence)
+template <typename T, typename I, StorageMode s1>
+std::ostream& operator<<(std::ostream& os, const SequenceOf<T, I, s1>& sequence)
 {
     bool first = true;
 
