@@ -57,8 +57,8 @@ inline std::ostream& operator<<(std::ostream& os, const ChoiceId<Identifiers...>
     return os << ")";
 }
 
-template <typename T0, typename... Args>
-struct Choice : public absl::variant<T0, Args...>
+template <typename Identifier, typename T0, typename... Args>
+struct TaggedChoice : public absl::variant<T0, Args...>
 {
     using Base = absl::variant<T0, Args...>;
     using Base::Base;
@@ -67,14 +67,14 @@ struct Choice : public absl::variant<T0, Args...>
     Base&       base() { return *static_cast<Base*>(this); }
     const Base& base() const { return *static_cast<const Base*>(this); }
 
-    Choice() : Base() {}
-    Choice(const Choice& rhs) = default;
-    Choice(Choice&& rhs)      = default;
+    TaggedChoice() : Base() {}
+    TaggedChoice(const TaggedChoice& rhs) = default;
+    TaggedChoice(TaggedChoice&& rhs)      = default;
 
-    Choice& operator=(const Choice& rhs) = default;
+    TaggedChoice& operator=(const TaggedChoice& rhs) = default;
 
-    bool operator==(const Choice& rhs) const { return this->base() == rhs.base(); }
-    bool operator!=(const Choice& rhs) const { return this->base() != rhs.base(); }
+    bool operator==(const TaggedChoice& rhs) const { return this->base() == rhs.base(); }
+    bool operator!=(const TaggedChoice& rhs) const { return this->base() != rhs.base(); }
 
     template <typename T>
     bool operator==(const T& rhs) const
@@ -87,14 +87,11 @@ struct Choice : public absl::variant<T0, Args...>
         return base() != rhs;
     }
 
-    template <typename... Variants>
-    static constexpr auto identifier(Choice<Variants...>*) -> ChoiceId<Identifier<Variants>...>
-    {
-        return {};
-    }
-
-    using AsnId = decltype(identifier(static_cast<Choice<T0, Args...>*>(nullptr)));
+    using AsnId = Identifier;
 };
+
+template <typename T0, typename... Args>
+using Choice = TaggedChoice<ChoiceId<Identifier<T0>, Identifier<Args>...>, T0, Args...>;
 
 template <typename T>
 using variant_size = absl::variant_size<typename T::Base>;
@@ -102,23 +99,24 @@ using variant_size = absl::variant_size<typename T::Base>;
 template <std::size_t n, typename T>
 using variant_alternative = absl::variant_alternative<n, typename T::Base>;
 
-template <typename Visitor, typename... Variants>
-auto visit(Visitor&& vis, const Choice<Variants...>& variant) -> decltype(absl::visit(vis, variant.base()))
+template <typename Visitor, typename Identifier, typename... Variants>
+auto visit(Visitor&& vis, const TaggedChoice<Identifier, Variants...>& variant)
+    -> decltype(absl::visit(vis, variant.base()))
 {
     return absl::visit(vis, variant.base());
 }
 
-template <size_t index, size_t max_depth, typename... Variants,
+template <size_t index, size_t max_depth, typename Identifier, typename... Variants,
           typename std::enable_if<(!(index < max_depth)), int>::type = 0>
-EncodeResult encode_if(const absl::Span<uint8_t>&, const Choice<Variants...>&) noexcept
+EncodeResult encode_if(const absl::Span<uint8_t>&, const TaggedChoice<Identifier, Variants...>&) noexcept
 {
     // No substitutions found, fail
     return EncodeResult{false, 0};
 }
 
-template <size_t index, size_t max_depth, typename... Variants,
+template <size_t index, size_t max_depth, typename Identifier, typename... Variants,
           typename std::enable_if<(index < max_depth), int>::type = 0>
-EncodeResult encode_if(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice) noexcept
+EncodeResult encode_if(const absl::Span<uint8_t>& buffer, const TaggedChoice<Identifier, Variants...>& choice) noexcept
 {
     if (choice.index() == index)
     {
@@ -133,15 +131,17 @@ EncodeResult encode_if(const absl::Span<uint8_t>& buffer, const Choice<Variants.
     }
 }
 
-template <typename... Variants>
-EncodeResult encode_choice(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice) noexcept
+template <typename Identifier, typename... Variants>
+EncodeResult encode_choice(const absl::Span<uint8_t>&                   buffer,
+                           const TaggedChoice<Identifier, Variants...>& choice) noexcept
 {
-    constexpr auto depth = static_cast<int>(fast_ber::variant_size<Choice<Variants...>>::value);
+    constexpr auto depth = static_cast<int>(fast_ber::variant_size<TaggedChoice<Identifier, Variants...>>::value);
     return encode_if<0, depth>(buffer, choice);
 }
 
-template <typename... Variants, typename ID>
-EncodeResult encode(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice, ID id) noexcept
+template <typename Identifier, typename... Variants, typename ID>
+EncodeResult encode(const absl::Span<uint8_t>& buffer, const TaggedChoice<Identifier, Variants...>& choice,
+                    ID id) noexcept
 {
     const auto header_length_guess = 2;
     auto       child_buffer        = buffer;
@@ -156,25 +156,26 @@ EncodeResult encode(const absl::Span<uint8_t>& buffer, const Choice<Variants...>
 }
 
 template <typename... Variants>
-EncodeResult encode(const absl::Span<uint8_t>& buffer, const Choice<Variants...>& choice,
+EncodeResult encode(const absl::Span<uint8_t>&                                          buffer,
+                    const TaggedChoice<ChoiceId<Identifier<Variants>...>, Variants...>& choice,
                     ChoiceId<Identifier<Variants>...> = {}) noexcept
 {
     return encode_choice(buffer, choice);
 }
 
-template <int index, int max_depth, typename... Variants,
+template <int index, int max_depth, typename Identifier, typename... Variants,
           typename std::enable_if<(!(index < max_depth)), int>::type = 0>
-DecodeResult decode_if(BerViewIterator&, Choice<Variants...>&) noexcept
+DecodeResult decode_if(BerViewIterator&, TaggedChoice<Identifier, Variants...>&) noexcept
 {
     // No substitutions found, fail
     return DecodeResult{false};
 }
 
-template <size_t index, size_t max_depth, typename... Variants,
+template <size_t index, size_t max_depth, typename ID, typename... Variants,
           typename std::enable_if<(index < max_depth), int>::type = 0>
-DecodeResult decode_if(BerViewIterator& input, Choice<Variants...>& output) noexcept
+DecodeResult decode_if(BerViewIterator& input, TaggedChoice<ID, Variants...>& output) noexcept
 {
-    using T = typename fast_ber::variant_alternative<index, Choice<Variants...>>::type;
+    using T = typename fast_ber::variant_alternative<index, TaggedChoice<ID, Variants...>>::type;
 
     if (Identifier<T>::check_id_match(input->class_(), input->tag()))
     {
@@ -188,7 +189,7 @@ DecodeResult decode_if(BerViewIterator& input, Choice<Variants...>& output) noex
 }
 
 template <typename... Variants>
-DecodeResult decode(BerViewIterator& input, Choice<Variants...>& output,
+DecodeResult decode(BerViewIterator& input, TaggedChoice<ChoiceId<Identifier<Variants>...>, Variants...>& output,
                     ChoiceId<Identifier<Variants>...> = {}) noexcept
 {
     constexpr auto     depth  = fast_ber::variant_size<typename std::remove_reference<decltype(output)>::type>::value;
@@ -197,8 +198,8 @@ DecodeResult decode(BerViewIterator& input, Choice<Variants...>& output,
     return result;
 }
 
-template <typename... Variants, typename ID>
-DecodeResult decode(BerViewIterator& input, Choice<Variants...>& output, ID id) noexcept
+template <typename Identifier, typename... Variants, typename ID>
+DecodeResult decode(BerViewIterator& input, TaggedChoice<Identifier, Variants...>& output, ID id) noexcept
 {
     if (!input->is_valid() || input->tag() != val(id.tag()))
     {
@@ -217,8 +218,8 @@ DecodeResult decode(BerViewIterator& input, Choice<Variants...>& output, ID id) 
     return result;
 }
 
-template <typename... Variants>
-std::ostream& operator<<(std::ostream& os, const Choice<Variants...>& variant);
+template <typename Identifier, typename... Variants>
+std::ostream& operator<<(std::ostream& os, const TaggedChoice<Identifier, Variants...>& variant);
 
 struct OsVisitor
 {
@@ -231,8 +232,8 @@ struct OsVisitor
     std::ostream& os;
 };
 
-template <typename... Variants>
-std::ostream& operator<<(std::ostream& os, const Choice<Variants...>& variant)
+template <typename Identifier, typename... Variants>
+std::ostream& operator<<(std::ostream& os, const TaggedChoice<Identifier, Variants...>& variant)
 {
     OsVisitor visitor{os};
 

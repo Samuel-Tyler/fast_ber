@@ -63,7 +63,8 @@ TEST_CASE("RealSchema: Testing a standard asn schema")
     fast_ber::SGSN_2009A_CDR::CAMELInformationPDP<>  pdp;
     fast_ber::SGSN_2009A_CDR::ManagementExtensions<> e;
 
-    record = test_record;
+    record = fast_ber::TaggedType<fast_ber::SGSN_2009A_CDR::SGSNPDPRecord<>,
+                                  fast_ber::Id<fast_ber::Class::context_specific, 20>>{test_record};
 
     REQUIRE(fast_ber::encode(absl::Span<uint8_t>(buffer), smtr).success);
     REQUIRE(fast_ber::decode(absl::Span<uint8_t>(buffer), smtr).success);

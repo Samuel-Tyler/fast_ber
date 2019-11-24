@@ -49,13 +49,11 @@ TEST_CASE("Choice: Basic choice")
 
 TEST_CASE("Choice: Clashing type")
 {
-    using choice_type = fast_ber::Choice<
-        fast_ber::Integer<>,
-        fast_ber::TaggedType<fast_ber::OctetString<>, fast_ber::Id<fast_ber::Class::context_specific, 99>>,
-        fast_ber::TaggedType<fast_ber::OctetString<>, fast_ber::Id<fast_ber::Class::context_specific, 100>>>;
+    using choice_type = fast_ber::Choice<fast_ber::Integer<>,
+                                         fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 99>>,
+                                         fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 100>>>;
     auto choice_1 =
-        choice_type(fast_ber::TaggedType<fast_ber::OctetString<>, fast_ber::Id<fast_ber::Class::context_specific, 100>>(
-            "Test string"));
+        choice_type(fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 100>>("Test string"));
     auto choice_2 = choice_type();
 
     std::vector<uint8_t> choice_encoded(100, 0x00);
