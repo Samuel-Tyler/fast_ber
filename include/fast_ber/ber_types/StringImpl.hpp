@@ -84,6 +84,8 @@ class StringImpl
 
     using AsnId = Identifier;
 
+    const BerLengthAndContentContainer& container() const noexcept { return m_contents; }
+
   private:
     BerLengthAndContentContainer m_contents;
 }; // namespace fast_ber
@@ -201,31 +203,22 @@ EncodeResult StringImpl<tag, Identifier>::encode_content_and_length(absl::Span<u
     return m_contents.content_and_length_to_raw(buffer);
 }
 
-template <UniversalTag tag, typename DefaultIdentifier, typename ID = DefaultIdentifier>
-EncodeResult encode(absl::Span<uint8_t> output, const StringImpl<tag, DefaultIdentifier>& object, const ID& id = ID{})
+template <UniversalTag tag, typename Identifier>
+size_t encoded_length(const StringImpl<tag, Identifier>& object) noexcept
 {
-    return encode_impl(output, object, id);
-}
-
-template <UniversalTag tag, typename DefaultIdentifier, typename ID = DefaultIdentifier>
-DecodeResult decode(BerViewIterator& input, StringImpl<tag, DefaultIdentifier>& output, const ID& id = {}) noexcept
-{
-    return decode_impl(input, output, id);
+    return encoded_length(object.container().content_and_length_length(), Identifier{});
 }
 
 template <UniversalTag tag, typename Identifier>
-EncodeResult encode_content_and_length(absl::Span<uint8_t> output, const StringImpl<tag, Identifier>& object) noexcept
+EncodeResult encode(absl::Span<uint8_t> output, const StringImpl<tag, Identifier>& object)
 {
-    return object.encode_content_and_length(output);
+    return encode_impl(output, object, Identifier{});
 }
 
 template <UniversalTag tag, typename Identifier>
-DecodeResult decode_content_and_length(BerViewIterator& input, StringImpl<tag, Identifier>& output) noexcept
+DecodeResult decode(BerViewIterator& input, StringImpl<tag, Identifier>& output) noexcept
 {
-    (void)input;
-    (void)output;
-
-    return {};
+    return decode_impl(input, output, Identifier{});
 }
 
 } // namespace fast_ber

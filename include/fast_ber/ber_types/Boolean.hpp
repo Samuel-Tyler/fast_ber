@@ -43,7 +43,8 @@ class Boolean
     size_t assign_ber(const BerView& rhs) noexcept;
     size_t assign_ber(absl::Span<const uint8_t> buffer) noexcept;
 
-    EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
+    EncodeResult     encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
+    constexpr size_t encoded_content_and_length_length() const noexcept { return m_data.size(); }
 
     using AsnId = Identifier;
 
@@ -79,6 +80,7 @@ template <typename Identifier>
 inline Boolean<Identifier>& Boolean<Identifier>::operator=(const BerView& rhs) noexcept
 {
     assign_ber(rhs);
+
     return *this;
 }
 
@@ -127,6 +129,12 @@ inline EncodeResult Boolean<Identifier>::encode_content_and_length(absl::Span<ui
 }
 
 template <typename Identifier>
+constexpr size_t encoded_length(const Boolean<Identifier>& object) noexcept
+{
+    return encoded_length(object.encoded_content_and_length_length(), Identifier{});
+}
+
+template <typename Identifier>
 EncodeResult encode(absl::Span<uint8_t> output, const Boolean<Identifier>& object) noexcept
 {
     return encode_impl(output, object, Identifier{});
@@ -136,21 +144,6 @@ template <typename Identifier>
 DecodeResult decode(BerViewIterator& input, Boolean<Identifier>& output) noexcept
 {
     return decode_impl(input, output, Identifier{});
-}
-
-template <typename Identifier>
-EncodeResult encode_content_and_length(absl::Span<uint8_t> output, const Boolean<Identifier>& object) noexcept
-{
-    return object.encode_content_and_length(output);
-}
-
-template <typename Identifier>
-DecodeResult decode_content_and_length(BerViewIterator& input, Boolean<Identifier>& output) noexcept
-{
-    (void)input;
-    (void)output;
-
-    return {};
 }
 
 template <typename Identifier>

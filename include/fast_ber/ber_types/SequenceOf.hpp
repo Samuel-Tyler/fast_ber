@@ -4,6 +4,7 @@
 
 #include "absl/container/inlined_vector.h"
 
+#include <numeric>
 #include <vector>
 
 namespace fast_ber
@@ -38,13 +39,21 @@ struct SequenceOf : public SequenceOfImplementation<T, s>::Type
     SequenceOf() = default;
     SequenceOf(const Implementation& t) : Implementation(t) {}
     SequenceOf(Implementation&& t) : Implementation(std::move(t)) {}
-    template <typename T2, typename I2, StorageMode s2>
-    SequenceOf(const SequenceOf<T2, I2, s2>& t) : Implementation(t)
+    template <typename I2, StorageMode s2>
+    SequenceOf(const SequenceOf<T, I2, s2>& t) : Implementation(t)
     {
     }
 
     using AsnId = I;
 };
+
+template <typename T, typename I, StorageMode s>
+size_t encoded_length(const SequenceOf<T, I, s>& sequence) noexcept
+{
+    const size_t content_length = std::accumulate(sequence.begin(), sequence.end(), size_t(0),
+                                                  [](size_t count, const T& t) { return count + encoded_length(t); });
+    return wrap_with_ber_header_length(content_length, I{});
+}
 
 template <typename T, typename I, StorageMode s>
 EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T, I, s>& sequence) noexcept

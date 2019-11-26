@@ -60,16 +60,22 @@ EncodeResult Null<Identifier>::encode_content_and_length(absl::Span<uint8_t> buf
     }
 }
 
-template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
-EncodeResult encode(absl::Span<uint8_t> output, const Null<DefaultIdentifier>& object, const ID& id = ID{})
+template <typename Identifier>
+constexpr size_t encoded_length(const Null<Identifier>&)
 {
-    return encode_impl(output, object, id);
+    return encoded_length(1, Identifier{});
 }
 
-template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
-DecodeResult decode(BerViewIterator& input, Null<DefaultIdentifier>& output, const ID& id = {}) noexcept
+template <typename Identifier>
+EncodeResult encode(absl::Span<uint8_t> output, const Null<Identifier>& object)
 {
-    return decode_impl(input, output, id);
+    return encode_impl(output, object, Identifier{});
+}
+
+template <typename Identifier>
+DecodeResult decode(BerViewIterator& input, Null<Identifier>& output) noexcept
+{
+    return decode_impl(input, output, Identifier{});
 }
 
 template <typename Identifier>

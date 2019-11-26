@@ -314,6 +314,10 @@ std::string type_as_string(const PrefixedType& prefixed_type, const Module& modu
                            const std::string& identifier_override)
 {
     auto id = identifier(prefixed_type, module, tree).name();
+    if (!identifier_override.empty())
+    {
+        id = identifier_override;
+    }
 
     if (is_sequence(prefixed_type.tagged_type->type) || is_set(prefixed_type.tagged_type->type) ||
         is_enumerated(prefixed_type.tagged_type->type))
@@ -321,8 +325,7 @@ std::string type_as_string(const PrefixedType& prefixed_type, const Module& modu
         throw std::runtime_error("PrefixedType must not be a structure or enum");
     }
 
-    const std::string& child_type = type_as_string(prefixed_type.tagged_type->type, module, tree, id);
-    return wrap_with_tagged_type(child_type, identifier_override);
+    return type_as_string(prefixed_type.tagged_type->type, module, tree, id);
 }
 std::string type_as_string(const TimeType& type, const Module& module, const Asn1Tree& tree,
                            const std::string& identifier_override)

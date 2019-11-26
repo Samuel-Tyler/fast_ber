@@ -27,6 +27,18 @@ struct EncodeResult
 // 2 for single tagged, 4 for double tagged
 // These are the samllest ID lengths, optimising for small sized ber headers.
 
+template <Class T1, Tag T2>
+constexpr size_t wrap_with_ber_header_length(size_t content_length, Id<T1, T2> id)
+{
+    return encoded_header_length(Construction::primitive, id.class_(), id.tag(), content_length) + content_length;
+}
+template <typename OuterId, typename InnerId>
+constexpr size_t wrap_with_ber_header_length(size_t content_length, DoubleId<OuterId, InnerId> id)
+{
+    return wrap_with_ber_header_length(wrap_with_ber_header_length(content_length, id.inner_id()), id.outer_id) +
+           content_length;
+}
+
 template <typename OuterId, typename InnerId>
 EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_length, DoubleId<OuterId, InnerId> id,
                                   size_t content_offset = 0)

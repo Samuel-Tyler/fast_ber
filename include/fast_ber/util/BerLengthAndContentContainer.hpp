@@ -42,6 +42,7 @@ class BerLengthAndContentContainer
     const uint8_t*            content_data() const noexcept { return m_data.data() + m_content_offset; }
     size_t                    content_length() const noexcept { return m_data.size() - m_content_offset; }
 
+    size_t       content_and_length_length() const noexcept { return m_data.size(); }
     DecodeResult from_raw(const absl::Span<const uint8_t> data) noexcept;
     EncodeResult content_and_length_to_raw(absl::Span<uint8_t> buffer) const noexcept;
     DecodeResult content_and_length_from_raw(const absl::Span<const uint8_t> data) noexcept;
