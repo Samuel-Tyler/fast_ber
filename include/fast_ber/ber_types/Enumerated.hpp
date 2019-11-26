@@ -57,32 +57,34 @@ class Enumerated
     void   assign(EnumeratedType val) noexcept { m_val.assign(static_cast<int64_t>(val)); }
     size_t assign_ber(const BerView& rhs) noexcept { return m_val.assign_ber(rhs); }
 
-    EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
-    {
-        return m_val.encode_content_and_length(buffer);
-    }
-
     using AsnId = Identifier;
 
     template <typename EnumeratedType2, typename Identifier2>
     friend class Enumerated;
 
+    const Integer<Identifier>& container() const noexcept { return m_val; }
+    Integer<Identifier>&       container() noexcept { return m_val; }
+
   private:
     Integer<Identifier> m_val;
 };
 
-template <typename EnumeratedType, typename Identifier, typename ID = Identifier>
-EncodeResult encode(absl::Span<uint8_t> output, const Enumerated<EnumeratedType, Identifier>& object,
-                    const ID& id = ID{})
+template <typename EnumeratedType, typename Identifier>
+size_t encoded_length(const Enumerated<EnumeratedType, Identifier>& object)
 {
-    return encode_impl(output, object, id);
+    return encoded_length(object.container());
 }
 
-template <typename EnumeratedType, typename Identifier, typename ID = Identifier>
-DecodeResult decode(BerViewIterator& input, Enumerated<EnumeratedType, Identifier>& output,
-                    const ID& id = ID{}) noexcept
+template <typename EnumeratedType, typename Identifier>
+EncodeResult encode(absl::Span<uint8_t> output, const Enumerated<EnumeratedType, Identifier>& object)
 {
-    return decode_impl(input, output, id);
+    return encode(output, object.container());
+}
+
+template <typename EnumeratedType, typename Identifier>
+DecodeResult decode(BerViewIterator& input, Enumerated<EnumeratedType, Identifier>& output) noexcept
+{
+    return decode(input, output.container());
 }
 
 template <typename EnumeratedType, typename Identifier>

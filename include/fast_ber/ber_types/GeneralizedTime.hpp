@@ -36,6 +36,7 @@ class GeneralizedTime
     TimeFormat  format() const;
 
     size_t       assign_ber(const BerView& view) noexcept;
+    size_t       encoded_content_and_length_length() const noexcept { return m_contents.content_and_length_length(); }
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
     GeneralizedTime(const absl::Time& time) { set_time(time); }
@@ -170,31 +171,22 @@ EncodeResult GeneralizedTime<Identifier>::encode_content_and_length(absl::Span<u
     return m_contents.content_and_length_to_raw(buffer);
 }
 
-template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
-EncodeResult encode(absl::Span<uint8_t> output, const GeneralizedTime<DefaultIdentifier>& object, const ID& id = ID{})
+template <typename Identifier>
+size_t encoded_length(const GeneralizedTime<Identifier>& object)
 {
-    return encode_impl(output, object, id);
-}
-
-template <typename DefaultIdentifier, typename ID = DefaultIdentifier>
-DecodeResult decode(BerViewIterator& input, GeneralizedTime<DefaultIdentifier>& output, const ID& id = {}) noexcept
-{
-    return decode_impl(input, output, id);
+    return encoded_length(object.encoded_content_and_length_length());
 }
 
 template <typename Identifier>
-EncodeResult encode_content_and_length(absl::Span<uint8_t> output, const GeneralizedTime<Identifier>& object) noexcept
+EncodeResult encode(absl::Span<uint8_t> output, const GeneralizedTime<Identifier>& object)
 {
-    return object.encode_content_and_length(output);
+    return encode_impl(output, object, Identifier{});
 }
 
 template <typename Identifier>
-DecodeResult decode_content_and_length(BerViewIterator& input, GeneralizedTime<Identifier>& output) noexcept
+DecodeResult decode(BerViewIterator& input, GeneralizedTime<Identifier>& output) noexcept
 {
-    (void)input;
-    (void)output;
-
-    return {};
+    return decode_impl(input, output, Identifier{});
 }
 
 template <typename Identifier>
