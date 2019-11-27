@@ -106,6 +106,28 @@ auto visit(Visitor&& vis, const TaggedChoice<Identifier, Variants...>& variant)
     return absl::visit(vis, variant.base());
 }
 
+struct LengthVisitor
+{
+    template <typename T>
+    size_t operator()(const T& t) const
+    {
+        return encoded_length(t);
+    }
+};
+
+template <typename Identifier, typename... Variants>
+size_t encoded_length(const TaggedChoice<Identifier, Variants...>& choice) noexcept
+{
+    LengthVisitor visit;
+    return wrap_with_ber_header_length(fast_ber::visit(visit, choice), Identifier{});
+}
+template <typename... Variants>
+size_t encoded_length(const TaggedChoice<ChoiceId<Identifier<Variants>...>, Variants...>& choice) noexcept
+{
+    LengthVisitor visit;
+    return fast_ber::visit(visit, choice);
+}
+
 template <size_t index, size_t max_depth, typename Identifier, typename... Variants,
           typename std::enable_if<(!(index < max_depth)), int>::type = 0>
 EncodeResult encode_if(const absl::Span<uint8_t>&, const TaggedChoice<Identifier, Variants...>&) noexcept

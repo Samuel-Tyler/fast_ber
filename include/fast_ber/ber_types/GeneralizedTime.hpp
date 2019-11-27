@@ -174,7 +174,7 @@ EncodeResult GeneralizedTime<Identifier>::encode_content_and_length(absl::Span<u
 template <typename Identifier>
 size_t encoded_length(const GeneralizedTime<Identifier>& object)
 {
-    return encoded_length(object.encoded_content_and_length_length());
+    return encoded_length(object.encoded_content_and_length_length(), Identifier{});
 }
 
 template <typename Identifier>

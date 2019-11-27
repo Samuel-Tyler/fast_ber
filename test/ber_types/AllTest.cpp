@@ -30,11 +30,13 @@ void test_type(const T& a)
 
     // Check that type can be serialized
     T                         f;
-    std::array<uint8_t, 1000> buffer        = {};
-    fast_ber::EncodeResult    encode_result = fast_ber::encode(absl::Span<uint8_t>(buffer), a);
-    fast_ber::DecodeResult    decode_result = fast_ber::decode(absl::Span<uint8_t>(buffer), f);
+    std::array<uint8_t, 1000> buffer         = {};
+    size_t                    encoded_length = fast_ber::encoded_length(a);
+    fast_ber::EncodeResult    encode_result  = fast_ber::encode(absl::Span<uint8_t>(buffer), a);
+    fast_ber::DecodeResult    decode_result  = fast_ber::decode(absl::Span<uint8_t>(buffer), f);
     REQUIRE(encode_result.success);
     REQUIRE(decode_result.success);
+    REQUIRE(encode_result.length == encoded_length);
     REQUIRE(a == f);
     REQUIRE(ID::check_id_match(fast_ber::BerView(buffer).class_(), fast_ber::BerView(buffer).tag()));
 

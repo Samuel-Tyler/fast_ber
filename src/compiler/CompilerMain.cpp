@@ -303,8 +303,8 @@ create_collection_encode_functions(const std::vector<std::string>& namespaces, c
     const std::string        name = namespace_name + assignment_name + create_template_arguments({"Identifier"});
 
     res += create_template_definition(template_args);
-    res += "inline EncodeResult encode(absl::Span<uint8_t> output, const " + name +
-           "& input, const ID& id = ID{}) noexcept\n{\n";
+    res +=
+        "inline EncodeResult encode(absl::Span<uint8_t> output, const " + name + "& input, ID id = ID{}) noexcept\n{\n";
 
     if (collection.components.size() == 0)
     {
@@ -317,6 +317,21 @@ create_collection_encode_functions(const std::vector<std::string>& namespaces, c
         res += ",\n                          input." + component.named_type.name;
     }
     res += ");\n}\n\n";
+
+    res += create_template_definition(template_args);
+    res += "inline size_t encoded_length(const " + name + "& input, ID id = ID{}) noexcept\n{\n";
+    if (collection.components.size() == 0)
+    {
+        res += "    (void)input;\n";
+    }
+
+    res += "    size_t content_length = 0;\n\n";
+    for (const ComponentType& component : collection.components)
+    {
+        res += "    content_length += encoded_length(input." + component.named_type.name + ");\n";
+    }
+    res += "\n    return wrap_with_ber_header_length(content_length, id);\n";
+    res += "}\n\n";
     return res;
 }
 
@@ -343,20 +358,22 @@ std::string create_collection_decode_functions(const std::vector<std::string>& n
                                               "ID = ExplicitId<UniversalTag::" + collection_name(collection) + ">"};
 
     res += create_template_definition(template_args);
-    res += "inline DecodeResult decode(const BerView& input, " + name + "& output, const ID& id = ID{}) noexcept\n{\n";
-
+    res +=
+        "inline DecodeResult decode(BerViewIterator& input, " + name + "& output, const ID& id = ID{}) noexcept\n{\n";
     if (collection.components.size() == 0)
     {
         res += "    (void)output;\n";
     }
 
-    res += "    return decode_" + collection_name(collection) + "_combine(input, \"" + name + "\", id";
+    res += "    DecodeResult result = decode_" + collection_name(collection) + "_combine(*input, \"" + name + "\", id";
     for (const ComponentType& component : collection.components)
     {
         res += ",\n                          output." + component.named_type.name;
     }
-    res += ");\n}\n\n";
-
+    res += ");\n";
+    res += "    ++input;\n";
+    res += "    return result;\n";
+    res += "}\n\n";
     // Make child decode functions
     for (const ComponentType& component : collection.components)
     {
@@ -375,14 +392,6 @@ std::string create_collection_decode_functions(const std::vector<std::string>& n
                                                       set, module);
         }
     }
-
-    res += create_template_definition(template_args);
-    res +=
-        "inline DecodeResult decode(BerViewIterator& input, " + name + "& output, const ID& id = ID{}) noexcept\n{\n";
-    res += "    DecodeResult result = decode(*input, output, id);\n";
-    res += "    ++input;\n";
-    res += "    return result;\n";
-    res += "}\n\n";
     return res;
 }
 
@@ -400,25 +409,10 @@ std::string create_encode_functions(const Assignment& assignment, const Module& 
         }
         else if (is_set(type_assignment.type))
         {
-            std::string    res;
             const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(type_assignment.type));
             return create_collection_encode_functions({}, assignment.name, assignment.parameters, set, module, tree);
         }
-        else
-        {
-            const std::string& name =
-                module.module_reference + "::" + assignment.name + create_template_arguments({"Identifier"});
-
-            std::string res;
-            res += create_template_definition({"Identifier"});
-            res += "EncodeResult encode(absl::Span<uint8_t> output, const " + name + "& object)\n";
-            res += "{\n";
-            res += "    return encode(output, object.get_base());\n";
-            res += "}\n";
-            return res;
-        }
     }
-
     return "";
 }
 
@@ -437,19 +431,6 @@ std::string create_decode_functions(const Assignment& assignment, const Module& 
         {
             const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(type_assignment.type));
             return create_collection_decode_functions({}, assignment.name, assignment.parameters, set, module);
-        }
-        else
-        {
-            const std::string& name =
-                module.module_reference + "::template " + assignment.name + create_template_arguments({"Identifier"});
-
-            std::string res;
-            res += create_template_definition({"Identifier"});
-            res += "DecodeResult decode(BerViewIterator& input, " + name + "& object)\n";
-            res += "{\n";
-            res += "    return decode(input, object.get_base());\n";
-            res += "}\n";
-            return res;
         }
     }
     return "";

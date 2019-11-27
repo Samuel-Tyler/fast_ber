@@ -79,5 +79,6 @@ TEST_CASE("RealSchema: Testing a standard asn schema")
     REQUIRE(fast_ber::decode(absl::Span<uint8_t>(buffer), record).success);
 
     REQUIRE(record == fast_ber::SGSN_2009A_CDR::CallEventRecord<>{test_record});
+    REQUIRE(fast_ber::encoded_length(record) == test_record_expected_encoding.size());
     REQUIRE(absl::MakeSpan(buffer.data(), test_record_expected_encoding.size()) == test_record_expected_encoding);
 }

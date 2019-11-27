@@ -35,6 +35,12 @@ struct TaggedType : public Type
 };
 
 template <typename T, typename TagType, typename ID = TagType>
+size_t encoded_length(const TaggedType<T, TagType>& object, ID id = ID{})
+{
+    return encoded_length(object.get_base(), id);
+}
+
+template <typename T, typename TagType, typename ID = TagType>
 EncodeResult encode(absl::Span<uint8_t> output, const TaggedType<T, TagType>& object, ID id = ID{})
 {
     return encode(output, object.get_base(), id);

@@ -58,6 +58,19 @@ struct IdentifierType<Optional<T>>
 };
 
 template <typename T, StorageMode s1>
+size_t encoded_length(const Optional<T, s1>& optional_type) noexcept
+{
+    if (optional_type.has_value())
+    {
+        return encoded_length(*optional_type);
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+template <typename T, StorageMode s1>
 EncodeResult encode(absl::Span<uint8_t> buffer, const Optional<T, s1>& optional_type) noexcept
 {
     if (optional_type.has_value())
