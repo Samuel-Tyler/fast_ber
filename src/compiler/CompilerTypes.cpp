@@ -226,7 +226,11 @@ std::string to_string(Class class_, bool abbreviated)
     return "UknownClass";
 }
 
-std::string make_type_optional(const std::string& type) { return "Optional<" + type + ">"; }
+std::string make_type_optional(const std::string& type, const Asn1Tree& tree)
+{
+    return "Optional<" + type +
+           (tree.is_circular ? std::string(", StorageMode::dynamic") : std::string(", StorageMode::static_")) + ">";
+}
 
 bool is_any(const Type& type)
 {

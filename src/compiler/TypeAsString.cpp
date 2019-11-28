@@ -213,7 +213,7 @@ std::string type_as_string(const SequenceType& sequence, const Module& module, c
 
             if (component.is_optional)
             {
-                component_type = make_type_optional(component_type);
+                component_type = make_type_optional(component_type, tree);
             }
             res += "    " + component_type + " " + component.named_type.name + ";\n";
         }
@@ -238,10 +238,24 @@ std::string type_as_string(const SequenceOfType& sequence, const Module& module,
     }
 
     std::string res = "SequenceOf<" + type_as_string(type, module, tree);
-    if (!identifier_override.empty())
+    if (identifier_override.empty())
+    {
+        res += ", ExplicitId<UniversalTag::sequence>";
+    }
+    else
     {
         res += ", " + identifier_override;
     }
+
+    if (tree.is_circular)
+    {
+        res += ", StorageMode::dynamic";
+    }
+    else
+    {
+        res += ", StorageMode::small_buffer_optimised";
+    }
+
     res += ">";
     return res;
 }
@@ -278,7 +292,7 @@ std::string type_as_string(const SetType& set, const Module& module, const Asn1T
 
             if (component.is_optional)
             {
-                component_type = make_type_optional(component_type);
+                component_type = make_type_optional(component_type, tree);
             }
             res += "    " + component_type + " " + component.named_type.name + ";\n";
         }

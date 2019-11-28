@@ -35,7 +35,7 @@ struct OptionalImplementation<T, StorageMode::dynamic>
     using Type = DynamicOptional<T>;
 };
 
-template <typename T, StorageMode storage = StorageMode::dynamic>
+template <typename T, StorageMode storage = StorageMode::static_>
 struct Optional : public OptionalImplementation<T, storage>::Type
 {
     using Implementation = typename OptionalImplementation<T, storage>::Type;
@@ -51,8 +51,8 @@ struct Optional : public OptionalImplementation<T, storage>::Type
     Optional& operator=(Optional&& rhs) = default;
 };
 
-template <typename T>
-struct IdentifierType<Optional<T>>
+template <typename T, StorageMode s1>
+struct IdentifierType<Optional<T, s1>>
 {
     using type = Identifier<T>;
 };
@@ -108,4 +108,41 @@ std::ostream& operator<<(std::ostream& os, const Optional<T, s1>& optional)
 
     return os << *optional;
 }
+
+template <typename T, typename T2, StorageMode s1>
+bool operator==(const Optional<T, s1>& lhs, const T2& rhs)
+{
+    return lhs.base() == rhs;
+}
+
+template <typename T, typename T2, StorageMode s1>
+bool operator==(const T& lhs, const Optional<T2, s1>& rhs)
+{
+    return lhs == rhs.base();
+}
+
+template <typename T, typename T2, StorageMode s1, StorageMode s2>
+bool operator==(const Optional<T, s1>& lhs, const Optional<T2, s2>& rhs)
+{
+    return lhs.base() == rhs.base();
+}
+
+template <typename T, typename T2, StorageMode s1>
+bool operator!=(const Optional<T, s1>& lhs, const T2& rhs)
+{
+    return lhs.base() != rhs;
+}
+
+template <typename T, typename T2, StorageMode s1>
+bool operator!=(const T& lhs, const Optional<T2, s1>& rhs)
+{
+    return lhs != rhs.base();
+}
+
+template <typename T, typename T2, StorageMode s1, StorageMode s2>
+bool operator!=(const Optional<T, s1>& lhs, const Optional<T2, s2>& rhs)
+{
+    return lhs.base() != rhs.base();
+}
+
 } // namespace fast_ber

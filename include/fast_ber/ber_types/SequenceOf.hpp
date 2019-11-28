@@ -30,7 +30,8 @@ struct SequenceOfImplementation<T, StorageMode::dynamic>
     using Type = std::vector<T>;
 };
 
-template <typename T, typename I = ExplicitId<UniversalTag::sequence>, StorageMode s = StorageMode::dynamic>
+template <typename T, typename I = ExplicitId<UniversalTag::sequence>,
+          StorageMode s = StorageMode::small_buffer_optimised>
 struct SequenceOf : public SequenceOfImplementation<T, s>::Type
 {
     using Implementation = typename SequenceOfImplementation<T, s>::Type;

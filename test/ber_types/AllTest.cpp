@@ -16,11 +16,13 @@ void test_type(const T& a)
 
     // Check that type can be copied
     T b = a;
+    b   = a;
     T c(b);
     REQUIRE(c == a);
 
     // Check that type can be moved
     T d = std::move(b);
+    d   = std::move(c);
     T e(std::move(d));
     REQUIRE(e == a);
 
@@ -73,7 +75,10 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
     // test_type(fast_ber::RelativeIRI);
     // test_type(fast_ber::RelativeOID);
     test_type(fast_ber::All::The_Sequence<>{"Hello", 42});
-    test_type(fast_ber::SequenceOf<fast_ber::Integer<>>({1, 4, 6, 100, 2555}));
+    test_type(fast_ber::SequenceOf<fast_ber::Integer<>, fast_ber::ExplicitId<fast_ber::UniversalTag::sequence_of>,
+                                   fast_ber::StorageMode::small_buffer_optimised>({1, 4, 6, 100, 2555}));
+    test_type(fast_ber::SequenceOf<fast_ber::Integer<>, fast_ber::ExplicitId<fast_ber::UniversalTag::sequence_of>,
+                                   fast_ber::StorageMode::dynamic>({1, 4, 6, 100, 2555}));
     test_type(fast_ber::All::The_Set<>{"Hello", 42});
     test_type(
         fast_ber::SetOf<fast_ber::OctetString<fast_ber::DoubleId<

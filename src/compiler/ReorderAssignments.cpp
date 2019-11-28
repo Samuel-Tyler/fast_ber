@@ -132,7 +132,7 @@ void resolve_components_of(Asn1Tree& tree)
 void resolve_dependencies(const std::unordered_map<std::string, Assignment>& assignment_infos, const std::string& name,
                           std::unordered_set<std::string>& assigned_names,
                           std::unordered_set<std::string>& visited_names,
-                          std::vector<Assignment>&         ordered_assignment_infos)
+                          std::vector<Assignment>& ordered_assignment_infos, bool& is_circular)
 {
     const auto& assign_iter = assignment_infos.find(name);
     if (assign_iter == assignment_infos.end())
@@ -149,6 +149,7 @@ void resolve_dependencies(const std::unordered_map<std::string, Assignment>& ass
     if (visited_names.count(name) == 1)
     {
         std::cerr << "Warning: Circular dependency when trying to resolve dependencies of " << name << std::endl;
+        is_circular = true;
         return;
     }
 
@@ -157,7 +158,8 @@ void resolve_dependencies(const std::unordered_map<std::string, Assignment>& ass
     const Assignment& assignment = assign_iter->second;
     for (const std::string& dependency : assignment.depends_on)
     {
-        resolve_dependencies(assignment_infos, dependency, assigned_names, visited_names, ordered_assignment_infos);
+        resolve_dependencies(assignment_infos, dependency, assigned_names, visited_names, ordered_assignment_infos,
+                             is_circular);
     }
 
     ordered_assignment_infos.push_back(assignment);
@@ -166,7 +168,8 @@ void resolve_dependencies(const std::unordered_map<std::string, Assignment>& ass
 
 // Reorder assignments, defining
 // Should be able to detect missing assignments and circular dependencies
-std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments, const std::vector<Import>& imports)
+std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments, const std::vector<Import>& imports,
+                                            bool& is_circular)
 {
     std::unordered_map<std::string, Assignment> assignment_map;
     assignment_map.reserve(assignments.size());
@@ -193,7 +196,8 @@ std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments
 
     for (const std::pair<std::string, Assignment>& assignment : assignment_map)
     {
-        resolve_dependencies(assignment_map, assignment.first, assigned_names, visited_names, ordered_assignments);
+        resolve_dependencies(assignment_map, assignment.first, assigned_names, visited_names, ordered_assignments,
+                             is_circular);
     }
 
     if (assignments.size() != ordered_assignments.size())

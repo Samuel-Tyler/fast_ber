@@ -32,9 +32,11 @@ class ObjectIdentifier
 
     ObjectIdentifier<Identifier>& operator=(const BerView& view) noexcept;
     ObjectIdentifier<Identifier>& operator=(const ObjectIdentifierComponents& rhs) noexcept;
-
     ObjectIdentifier<Identifier>& operator=(absl::Span<const uint8_t> buffer) noexcept;
-    bool                          operator==(const ObjectIdentifier<Identifier>& rhs) const noexcept
+    ObjectIdentifier&             operator=(const ObjectIdentifier&) = default;
+    ObjectIdentifier&             operator=(ObjectIdentifier&&) = default;
+
+    bool operator==(const ObjectIdentifier<Identifier>& rhs) const noexcept
     {
         return this->m_contents == rhs.m_contents;
     }

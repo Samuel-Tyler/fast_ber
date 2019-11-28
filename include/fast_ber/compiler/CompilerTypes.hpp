@@ -434,6 +434,7 @@ struct Module
 struct Asn1Tree
 {
     std::vector<Module> modules;
+    bool                is_circular = false;
 };
 
 struct Identifier
@@ -514,7 +515,7 @@ struct ObjectIdComponents
 // Rename any names which are reserved in C++
 std::string santize_name(const std::string& name);
 
-std::string make_type_optional(const std::string& type);
+std::string make_type_optional(const std::string& type, const Asn1Tree& tree);
 
 bool is_bit_string(const Type& type);
 bool is_set(const Type& type);

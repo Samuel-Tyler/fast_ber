@@ -22,8 +22,19 @@ class Null
     Null(Null&&) noexcept      = default;
     explicit Null(std::nullptr_t) noexcept {}
 
-    bool           operator==(const Null&) const noexcept { return true; }
-    bool           operator!=(const Null&) const noexcept { return false; }
+    Null& operator=(const Null&) = default;
+    Null& operator=(Null&&) = default;
+
+    template <typename Identifier2>
+    bool operator==(const Null<Identifier2>&) const noexcept
+    {
+        return true;
+    }
+    template <typename Identifier2>
+    bool operator!=(const Null<Identifier2>&) const noexcept
+    {
+        return false;
+    }
     std::nullptr_t value() { return nullptr; }
 
     size_t       assign_ber(const BerView& rhs) noexcept;
