@@ -1,6 +1,8 @@
 #include "autogen/pokemon.hpp"
+
 #include <fstream>
 #include <iostream>
+#include <vector>
 
 int main()
 {
@@ -12,8 +14,10 @@ int main()
     team.members.push_back(muchlax);
     team.members.push_back(piplup);
 
-    std::array<uint8_t, 2000> buffer{};
-    const auto                encode_result = fast_ber::encode(absl::Span<uint8_t>(buffer), team);
+    std::vector<uint8_t> buffer;
+    buffer.resize(fast_ber::encoded_length(team));
+
+    const auto encode_result = fast_ber::encode(absl::Span<uint8_t>(buffer), team);
     if (!encode_result.success)
     {
         std::cout << "Failed to encode data\n";
