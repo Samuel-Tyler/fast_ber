@@ -9,20 +9,15 @@ image:
   - Visual Studio 2019
 
 init:
-  - echo %APPVEYOR_BUILD_WORKER_IMAGE%
-  - if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2019" (call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64)
   - if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" (call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64)
+  - if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2019" (call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64)
 
 build_script:
 - cmd: >-
     git submodule update --init
-
     mkdir build
-    
     cd build
-    
     cmake .. -DCMAKE_BUILD_TYPE=Release -G "NMake Makefiles"
-   
     cmake --build . --config Release
 
 test_script:
