@@ -35,6 +35,30 @@ struct ChoiceId
     constexpr static bool check_id_match(Class c, Tag t) { return is_an_identifier_choice(c, t, Identifiers{}...); }
 };
 
+template <typename T>
+bool is_choid_id(T)
+{
+    return false;
+}
+
+template <typename... Identifiers>
+bool is_choid_id(ChoiceId<Identifiers...>)
+{
+    return true;
+}
+
+template <typename... Identifiers>
+size_t wrap_with_ber_header_length(size_t content_length, ChoiceId<Identifiers...>)
+{
+    return content_length;
+}
+
+template <typename... Identifiers>
+EncodeResult wrap_with_ber_header(absl::Span<uint8_t>, size_t content_length, ChoiceId<Identifiers...>, size_t = 0)
+{
+    return EncodeResult{true, content_length};
+}
+
 inline void print(std::ostream&) noexcept {}
 
 template <typename Identifier, typename... Identifiers>
@@ -121,12 +145,6 @@ size_t encoded_length(const TaggedChoice<Identifier, Variants...>& choice) noexc
     LengthVisitor visit;
     return wrap_with_ber_header_length(fast_ber::visit(visit, choice), Identifier{});
 }
-template <typename... Variants>
-size_t encoded_length(const TaggedChoice<ChoiceId<Identifier<Variants>...>, Variants...>& choice) noexcept
-{
-    LengthVisitor visit;
-    return fast_ber::visit(visit, choice);
-}
 
 template <size_t index, size_t max_depth, typename Identifier, typename... Variants,
           typename std::enable_if<(!(index < max_depth)), int>::type = 0>
@@ -164,6 +182,11 @@ EncodeResult encode_choice(const absl::Span<uint8_t>&                   buffer,
 template <typename Identifier, typename... Variants>
 EncodeResult encode(const absl::Span<uint8_t>& buffer, const TaggedChoice<Identifier, Variants...>& choice) noexcept
 {
+    if (is_choid_id(Identifier{}))
+    {
+        return encode_choice(buffer, choice);
+    }
+
     const auto header_length_guess = 2;
     auto       child_buffer        = buffer;
     child_buffer.remove_prefix(header_length_guess);
@@ -174,13 +197,6 @@ EncodeResult encode(const absl::Span<uint8_t>& buffer, const TaggedChoice<Identi
         return inner_encode_result;
     }
     return wrap_with_ber_header(buffer, inner_encode_result.length, Identifier{}, header_length_guess);
-}
-
-template <typename... Variants>
-EncodeResult encode(const absl::Span<uint8_t>&                                          buffer,
-                    const TaggedChoice<ChoiceId<Identifier<Variants>...>, Variants...>& choice) noexcept
-{
-    return encode_choice(buffer, choice);
 }
 
 template <int index, int max_depth, typename Identifier, typename... Variants,
@@ -208,20 +224,18 @@ DecodeResult decode_if(BerViewIterator& input, TaggedChoice<ID, Variants...>& ou
     }
 }
 
-template <typename... Variants>
-DecodeResult decode(BerViewIterator&                                              input,
-                    TaggedChoice<ChoiceId<Identifier<Variants>...>, Variants...>& output) noexcept
-{
-    constexpr auto     depth  = fast_ber::variant_size<typename std::remove_reference<decltype(output)>::type>::value;
-    const DecodeResult result = decode_if<0, depth>(input, output);
-    ++input;
-    return result;
-}
-
 template <typename Identifier, typename... Variants>
 DecodeResult decode(BerViewIterator& input, TaggedChoice<Identifier, Variants...>& output) noexcept
 {
-    if (!input->is_valid() || input->tag() != Identifier::tag() || input->class_() != Identifier::class_())
+    constexpr auto     depth  = fast_ber::variant_size<typename std::remove_reference<decltype(output)>::type>::value;
+    if (is_choid_id(Identifier{}))
+    {
+        const DecodeResult result = decode_if<0, depth>(input, output);
+        ++input;
+        return result;
+    }
+
+    if (!input->is_valid() || !Identifier::check_id_match(input->class_(), input->tag()))
     {
         return DecodeResult{false};
     }
@@ -232,7 +246,6 @@ DecodeResult decode(BerViewIterator& input, TaggedChoice<Identifier, Variants...
         return DecodeResult{false};
     }
 
-    constexpr auto     depth  = fast_ber::variant_size<typename std::remove_reference<decltype(output)>::type>::value;
     const DecodeResult result = decode_if<0, depth>(child, output);
     ++input;
     return result;
