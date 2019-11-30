@@ -347,3 +347,37 @@ TEST_CASE("Benchmark: Object Construction Performance")
     }
 #endif
 }
+
+TEST_CASE("Benchmark: Calculate Encoded Length Performance")
+{
+    const std::string         long_string     = std::string(2000, 'x');
+    const std::string         hello           = "Hello world!";
+    const std::string         goodbye         = "Good bye world!";
+    const std::string         the             = "The";
+    const std::string         second          = "second";
+    const std::string         child           = "child";
+    std::array<uint8_t, 5000> fast_ber_buffer = {};
+    std::array<uint8_t, 5000> asn1c_buffer    = {};
+    fast_ber::EncodeResult    encode_result   = {};
+
+    fast_ber::Simple::Collection<> collection{
+        hello,
+        goodbye,
+        5,
+        fast_ber::Boolean<>(true),
+        fast_ber::Simple::Child<fast_ber::Id<fast_ber::Class::context_specific, 4>>{
+            fast_ber::Integer<>(-42), fast_ber::SequenceOf<fast_ber::OctetString<>>{}},
+        fast_ber::Simple::Child<fast_ber::Id<fast_ber::Class::context_specific, 5>>{
+            999999999, fast_ber::SequenceOf<fast_ber::OctetString<>>{the, second, child, long_string}},
+        decltype(collection.the_choice){absl::in_place_index_t<1>(), "I chose a string!"}};
+
+    size_t encoded_length = 0;
+    BENCHMARK("fast_ber        - calculate encoded length")
+    {
+        for (int i = 0; i < iterations; i++)
+        {
+            encoded_length = fast_ber::encoded_length(collection);
+        }
+    }
+    REQUIRE(encoded_length != 0);
+}
