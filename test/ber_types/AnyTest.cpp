@@ -1,6 +1,4 @@
-﻿#include "autogen/choice.hpp"
-
-#include "fast_ber/ber_types/Any.hpp"
+﻿#include "fast_ber/ber_types/All.hpp"
 
 #include <catch2/catch.hpp>
 

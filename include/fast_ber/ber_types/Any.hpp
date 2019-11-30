@@ -3,7 +3,6 @@
 #include "fast_ber/ber_types/Choice.hpp"
 #include "fast_ber/ber_types/Identifier.hpp"
 #include "fast_ber/ber_types/Tag.hpp"
-#include "fast_ber/ber_types/TaggedType.hpp"
 
 namespace fast_ber
 {

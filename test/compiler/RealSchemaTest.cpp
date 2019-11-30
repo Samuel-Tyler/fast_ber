@@ -4,7 +4,7 @@
 
 #include <array>
 
-const fast_ber::SGSN_2009A_CDR::SGSNPDPRecord<> test_record = {
+const fast_ber::SGSN_2009A_CDR::SGSNPDPRecord<fast_ber::Id<fast_ber::Class::context_specific, 20>> test_record = {
     10,
     "123",
     "12345678",
@@ -35,7 +35,8 @@ const fast_ber::SGSN_2009A_CDR::SGSNPDPRecord<> test_record = {
     {},
     "XX",
     100,
-    fast_ber::SGSN_2009A_CDR::CAMELInformationPDP<>{{}, {}, {}, {}, {}, {}, {}, {}, {}},
+    fast_ber::SGSN_2009A_CDR::CAMELInformationPDP<fast_ber::Id<fast_ber::Class::context_specific, 30>>{
+        {}, {}, {}, {}, {}, {}, {}, {}, {}},
     fast_ber::SGSN_2009A_CDR::ChChSelectionMode<>::Values::roamingDefault,
     {},
     {},
@@ -63,8 +64,7 @@ TEST_CASE("RealSchema: Testing a standard asn schema")
     fast_ber::SGSN_2009A_CDR::CAMELInformationPDP<>  pdp;
     fast_ber::SGSN_2009A_CDR::ManagementExtensions<> e;
 
-    record = fast_ber::TaggedType<fast_ber::SGSN_2009A_CDR::SGSNPDPRecord<>,
-                                  fast_ber::Id<fast_ber::Class::context_specific, 20>>{test_record};
+    record = test_record;
 
     REQUIRE(fast_ber::encode(absl::Span<uint8_t>(buffer), smtr).success);
     REQUIRE(fast_ber::decode(absl::Span<uint8_t>(buffer), smtr).success);

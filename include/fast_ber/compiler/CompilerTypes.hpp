@@ -151,6 +151,7 @@ inline std::string to_string_snake_case(CharacterStringType type)
     case CharacterStringType::unknown:
         return "unknown";
     }
+    return "UnknownStringType";
 }
 
 struct ChoiceType;

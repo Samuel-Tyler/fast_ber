@@ -237,6 +237,8 @@ std::string create_identifier_functions_recursive(const std::string& assignment_
 
 std::string create_identifier_functions(const Assignment& assignment, const Module& module)
 {
+    return "";
+
     std::string res;
 
     if (absl::holds_alternative<TypeAssignment>(assignment.specific))
@@ -298,20 +300,18 @@ create_collection_encode_functions(const std::vector<std::string>& namespaces, c
         namespace_name += ns + "<>::template ";
     }
 
-    std::vector<std::string> template_args = {"Identifier",
-                                              "ID = ExplicitId<UniversalTag::" + collection_name(collection) + ">"};
-    const std::string        name = namespace_name + assignment_name + create_template_arguments({"Identifier"});
+    std::vector<std::string> template_args = {"Identifier"};
+    const std::string        name = namespace_name + assignment_name + create_template_arguments(template_args);
 
     res += create_template_definition(template_args);
-    res +=
-        "inline EncodeResult encode(absl::Span<uint8_t> output, const " + name + "& input, ID id = ID{}) noexcept\n{\n";
+    res += "inline EncodeResult encode(absl::Span<uint8_t> output, const " + name + "& input) noexcept\n{\n";
 
     if (collection.components.size() == 0)
     {
         res += "    (void)input;\n";
     }
 
-    res += "    return encode_sequence_combine(output, id";
+    res += "    return encode_sequence_combine(output, Identifier{}";
     for (const ComponentType& component : collection.components)
     {
         res += ",\n                          input." + component.named_type.name;
@@ -319,7 +319,7 @@ create_collection_encode_functions(const std::vector<std::string>& namespaces, c
     res += ");\n}\n\n";
 
     res += create_template_definition(template_args);
-    res += "inline size_t encoded_length(const " + name + "& input, ID id = ID{}) noexcept\n{\n";
+    res += "inline size_t encoded_length(const " + name + "& input) noexcept\n{\n";
     if (collection.components.size() == 0)
     {
         res += "    (void)input;\n";
@@ -330,7 +330,7 @@ create_collection_encode_functions(const std::vector<std::string>& namespaces, c
     {
         res += "    content_length += encoded_length(input." + component.named_type.name + ");\n";
     }
-    res += "\n    return wrap_with_ber_header_length(content_length, id);\n";
+    res += "\n    return wrap_with_ber_header_length(content_length, Identifier{});\n";
     res += "}\n\n";
     return res;
 }
@@ -354,18 +354,17 @@ std::string create_collection_decode_functions(const std::vector<std::string>& n
     std::string       res;
     const std::string name = namespace_name + assignment_name + create_template_arguments({"Identifier"});
 
-    std::vector<std::string> template_args = {"Identifier",
-                                              "ID = ExplicitId<UniversalTag::" + collection_name(collection) + ">"};
+    std::vector<std::string> template_args = {"Identifier"};
 
     res += create_template_definition(template_args);
-    res +=
-        "inline DecodeResult decode(BerViewIterator& input, " + name + "& output, const ID& id = ID{}) noexcept\n{\n";
+    res += "inline DecodeResult decode(BerViewIterator& input, " + name + "& output) noexcept\n{\n";
     if (collection.components.size() == 0)
     {
         res += "    (void)output;\n";
     }
 
-    res += "    DecodeResult result = decode_" + collection_name(collection) + "_combine(*input, \"" + name + "\", id";
+    res += "    DecodeResult result = decode_" + collection_name(collection) + "_combine(*input, \"" + name +
+           "\", Identifier{}";
     for (const ComponentType& component : collection.components)
     {
         res += ",\n                          output." + component.named_type.name;

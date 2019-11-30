@@ -67,10 +67,8 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
     test_type(fast_ber::ObjectIdentifier<>(fast_ber::ObjectIdentifierComponents{1, 2, 500, 9999}));
     test_type(fast_ber::OctetString<>("TestString"));
     test_type(fast_ber::Optional<fast_ber::Null<>>(fast_ber::Null<>()));
-    test_type(fast_ber::Optional<
-              fast_ber::TaggedType<fast_ber::All::The_Set<>, fast_ber::Id<fast_ber::Class::application, 500>>>(
-        fast_ber::All::The_Set<>{"Hello", 42}));
-    // test_type(fast_ber::Prefixed);
+    test_type(fast_ber::Optional<fast_ber::All::The_Set<fast_ber::Id<fast_ber::Class::application, 500>>>(
+        fast_ber::All::The_Set<fast_ber::Id<fast_ber::Class::application, 500>>{"Hello", 42}));
     // test_type(fast_ber::Real);
     // test_type(fast_ber::RelativeIRI);
     // test_type(fast_ber::RelativeOID);
@@ -84,8 +82,7 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
         fast_ber::SetOf<fast_ber::OctetString<fast_ber::DoubleId<
             fast_ber::Id<fast_ber::Class::private_, 4>, fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>>>>(
             {"A", "list", "of", "strings"}));
-    test_type(
-        fast_ber::TaggedType<fast_ber::All::The_Set<>, fast_ber::Id<fast_ber::Class::application, 500>>({"Hello", 42}));
+    test_type(fast_ber::All::The_Set<fast_ber::Id<fast_ber::Class::application, 500>>({"Hello", 42}));
     // test_type(fast_ber::Time);
     // test_type(fast_ber::TimeOfDay);
     test_type(fast_ber::VisibleString<>("TestString"));

@@ -2,16 +2,6 @@
 #include "fast_ber/compiler/Identifier.hpp"
 #include "fast_ber/compiler/ResolveType.hpp"
 
-std::string wrap_with_tagged_type(const std::string& type_string, const std::string& identifier)
-{
-    if (identifier.empty())
-    {
-        return type_string;
-    }
-
-    return "TaggedType<" + type_string + ", " + identifier + ">";
-}
-
 template <typename Type>
 std::string identifier_template_params(const Type&, const Module&, const Asn1Tree&,
                                        const std::string& identifier_override)
@@ -219,14 +209,15 @@ std::string type_as_string(const SequenceType& sequence, const Module& module, c
         }
     }
 
+    res += "    using AsnId = Identifier;\n";
     res += "};\n";
 
-    if (!identifier(sequence, module, tree).is_default_tagged)
+    if (!identifier(sequence, module, tree).is_default_tagged || !identifier_override.empty())
     {
         throw std::runtime_error("Sequence must be default tagged");
     }
 
-    return wrap_with_tagged_type(res, identifier_override);
+    return res;
 }
 std::string type_as_string(const SequenceOfType& sequence, const Module& module, const Asn1Tree& tree,
                            const std::string& identifier_override)
@@ -298,14 +289,15 @@ std::string type_as_string(const SetType& set, const Module& module, const Asn1T
         }
     }
 
+    res += "    using AsnId = Identifier;\n";
     res += "};\n";
 
-    if (!identifier(set, module, tree).is_default_tagged)
+    if (!identifier(set, module, tree).is_default_tagged || !identifier_override.empty())
     {
         throw std::runtime_error("Set must be default tagged");
     }
 
-    return wrap_with_tagged_type(res, identifier_override);
+    return res;
 }
 std::string type_as_string(const SetOfType& set, const Module& module, const Asn1Tree& tree,
                            const std::string& identifier_override)
@@ -367,7 +359,14 @@ std::string type_as_string(const DefinedType& defined_type, const Module& module
     const Type& referenced = type(resolve(tree, module.module_reference, defined_type));
     if (is_set(referenced) || is_sequence(referenced))
     {
-        return wrap_with_tagged_type(defined_type.type_reference + "<>", identifier_override);
+        if (!identifier_override.empty())
+        {
+            return defined_type.type_reference + "<" + identifier_override + ">";
+        }
+        else
+        {
+            return defined_type.type_reference + "<" + identifier(referenced, module, tree).name() + ">";
+        }
     }
     return defined_type.type_reference + "<" + identifier_override + ">";
 }

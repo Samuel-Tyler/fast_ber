@@ -1,4 +1,3 @@
-#include "fast_ber/ber_types/TaggedType.hpp"
 #include "fast_ber/ber_types/All.hpp"
 #include "fast_ber/ber_types/Identifier.hpp"
 #include "fast_ber/ber_types/Integer.hpp"
@@ -24,7 +23,7 @@ TEST_CASE("TaggedType: Encode Decode")
 {
     fast_ber::Integer<fast_ber::Id<fast_ber::Class::universal, fast_ber::Tag(5)>> a      = 10;
     fast_ber::Integer<fast_ber::Id<fast_ber::Class::universal, fast_ber::Tag(5)>> b      = 20;
-    std::array<uint8_t, 100>                                                                      buffer = {};
+    std::array<uint8_t, 100>                                                      buffer = {};
 
     fast_ber::encode(absl::Span<uint8_t>(buffer), a);
     fast_ber::decode(absl::Span<const uint8_t>(buffer), b);

@@ -1,4 +1,4 @@
-﻿#include "autogen/simple.hpp"
+#include "autogen/simple.hpp"
 
 #include "catch2/catch.hpp"
 
@@ -19,8 +19,8 @@ TEST_CASE("SimpleCompilerOutput: Testing a generated ber container")
     collection.integer               = 5;
     collection.boolean               = true;
     collection.child.meaning_of_life = -42;
-    collection.optional_child =
-        fast_ber::Simple::Child<>{999999999, {"The", "second", "child", std::string(2000, 'x')}};
+    collection.optional_child        = fast_ber::Simple::Child<fast_ber::Id<fast_ber::Class::context_specific, 5>>{
+        999999999, {"The", "second", "child", std::string(2000, 'x')}};
     collection.the_choice = decltype(collection.the_choice){absl::in_place_index_t<1>(), "I chose a string!"};
 
     fast_ber::EncodeResult encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), collection);
