@@ -18,6 +18,9 @@ fast_ber is a small, lightweight library for BER encoding and decoding. Fast ber
 - No circular data structures
 - Size and value constraints are not implemented
 
+## Call for Test Data
+Test data is wanted to improve this product! If you have any test ASN.1 specs or BER files please share them. More test data will improve parsing and help find any issues with the library.
+
 ## Usage
 1. Build the compiler:
 ```
