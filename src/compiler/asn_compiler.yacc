@@ -832,13 +832,12 @@ SymbolsFromModule:
     { $$ = Import{ $3, $1 }; }
 
 GlobalModuleReference:
-    modulereference AssignedIdentifier
+    modulereference
     { $$ = $1; }
-
-AssignedIdentifier:
-    ObjectIdentifierValue
-|   valuereference
-|   %empty;
+|   modulereference ObjectIdentifierValue
+    { $$ = $1; }
+// |   modulereference valuereference
+//    { $$ = $1; } // Clashes with value import
 
 SymbolList:
     Symbol
