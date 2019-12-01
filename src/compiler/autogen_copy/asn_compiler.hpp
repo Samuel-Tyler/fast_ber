@@ -11400,7 +11400,7 @@ yy2:
 yy4:
 	++context.cursor;
 yy5:
-#line 11444 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11443 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ std::cerr << "Ignoring unknown symbol: " <<  static_cast<int>(*start) << std::endl; return yylex(context); }
 #line 11406 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy6:
@@ -11614,7 +11614,7 @@ yy36:
 #line 11615 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy38:
 	++context.cursor;
-#line 11443 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11442 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_AT (context.location); }
 #line 11620 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy40:
@@ -14293,7 +14293,7 @@ yy264:
 yy266:
 	++context.cursor;
 #line 11399 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
-	{ context.location.columns(context.cursor - start); return yylex(context); }
+	{ for (char c: std::string(start, context.cursor)) { context.location.columns(); if (c == '\n') context.location.lines(); } return yylex(context); }
 #line 14298 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy268:
 	yyaccept = 2;
@@ -23633,7 +23633,7 @@ yy810:
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_RELATIVE_OID_IRI (context.location); }
 #line 23635 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 }
-#line 11445 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11444 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 
     }
 }

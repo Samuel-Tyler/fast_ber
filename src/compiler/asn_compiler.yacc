@@ -1883,7 +1883,7 @@ re2c:define:YYCURSOR = "context.cursor";
 "--" ([\-]?[^\r\n\-])*[\-]?
                         { context.location.columns(context.cursor - start); return yylex(context); }
 "/*" ([^\*]|[\*][^/])* "*/"
-                        { context.location.columns(context.cursor - start); return yylex(context); }
+                        { for (char c: std::string(start, context.cursor)) { context.location.columns(); if (c == '\n') context.location.lines(); } return yylex(context); }
 
 // Identifiers
 [0-9]+'\.'[0-9]+        { context.location.columns(context.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context.cursor)), context.location); }
@@ -1926,7 +1926,6 @@ re2c:define:YYCURSOR = "context.cursor";
 "!"                     { context.location.columns(context.cursor - start); return asn1_parser::make_EXCLAMATION_MARK (context.location); }
 "<"                     { context.location.columns(context.cursor - start); return asn1_parser::make_LESS_THAN (context.location); }
 "^"                     { context.location.columns(context.cursor - start); return asn1_parser::make_ACCENT (context.location); }
-
 "@"                     { context.location.columns(context.cursor - start); return asn1_parser::make_AT (context.location); }
 .                       { std::cerr << "Ignoring unknown symbol: " <<  static_cast<int>(*start) << std::endl; return yylex(context); }
 %}
