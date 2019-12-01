@@ -6,21 +6,20 @@ configuration:
 
 image:
   - Visual Studio 2017
+  - Visual Studio 2019
 
 init:
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+  - if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" (call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat" x64)
+  - if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2019" (call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64)
 
+before_build:
+  - git submodule update --init
+  - mkdir build
+  - cd build
+    
 build_script:
-- cmd: >-
-    git submodule update --init
-
-    mkdir build
-    
-    cd build
-    
-    cmake .. -DCMAKE_BUILD_TYPE=Release -G "NMake Makefiles"
-   
-    cmake --build . --config Release
+  - cmake .. -DCMAKE_BUILD_TYPE=Release -G "NMake Makefiles"
+  - cmake --build . --config Release
 
 test_script:
   - ctest -C Release -j 8

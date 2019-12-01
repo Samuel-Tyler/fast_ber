@@ -5,7 +5,8 @@
 namespace fast_ber
 {
 
-template <typename T, size_t N = default_inlined_size>
-using SetOf = SequenceOf<T, N>;
+template <typename T, typename I = fast_ber::ExplicitId<fast_ber::UniversalTag::set>,
+          StorageMode s = StorageMode::dynamic>
+using SetOf = SequenceOf<T, I, s>;
 
 } // namespace fast_ber

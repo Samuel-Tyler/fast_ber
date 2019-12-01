@@ -1,9 +1,12 @@
 cmake_minimum_required(VERSION 2.8)
 project(fast_ber)
 
+if (NOT DEFINED CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 11)
+endif()
+
 add_subdirectory(3rd_party/abseil-cpp)
 
-set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(default_build_type Release)
 set(SKIP_AUTO_GENERATION false) # Set to true to avoid bison / asn1c autogeneration (use checked in files instead)

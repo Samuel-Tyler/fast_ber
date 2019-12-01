@@ -19,14 +19,14 @@ inline EncodeResult encode_sequence_combine_impl(absl::Span<uint8_t>&, size_t en
     return EncodeResult{true, encoding_length};
 }
 
-template <typename... Args, typename T, typename ID>
+template <typename... Args, typename T>
 EncodeResult encode_sequence_combine_impl(absl::Span<uint8_t>& output, size_t encoding_length, const T& object,
-                                          const ID& id, const Args&... args) noexcept
+                                          const Args&... args) noexcept
 {
-    const EncodeResult result = encode(output, object, id);
+    const EncodeResult result = encode(output, object);
     if (!result.success)
     {
-        std::cerr << "Failed encoding packet, tag = " << reference_tag(id) << std::endl;
+        std::cerr << "Failed encoding packet, id = " << Identifier<T>{} << std::endl;
         return EncodeResult{false, result.length};
     }
 
@@ -36,7 +36,7 @@ EncodeResult encode_sequence_combine_impl(absl::Span<uint8_t>& output, size_t en
 }
 
 template <typename... Args, typename ID>
-EncodeResult encode_sequence_combine(const absl::Span<uint8_t> output, const ID& id, const Args&... args) noexcept
+EncodeResult encode_sequence_combine(const absl::Span<uint8_t> output, ID id, const Args&... args) noexcept
 {
     auto   encoding_output     = output;
     size_t header_length_guess = 2;
@@ -52,14 +52,14 @@ EncodeResult encode_sequence_combine(const absl::Span<uint8_t> output, const ID&
 
 inline DecodeResult decode_sequence_combine_impl(BerViewIterator&, const char*) noexcept { return DecodeResult{true}; }
 
-template <typename T, typename ID, typename... Args>
-DecodeResult decode_sequence_combine_impl(BerViewIterator& input, const char* parent_name, T& object, const ID& id,
+template <typename T, typename... Args>
+DecodeResult decode_sequence_combine_impl(BerViewIterator& input, const char* parent_name, T& object,
                                           Args&&... args) noexcept
 {
-    DecodeResult result = decode(input, object, id);
+    DecodeResult result = decode(input, object);
     if (!result.success)
     {
-        std::cerr << "Error decoding " << parent_name << ": could not decode field with tag " << reference_tag(id)
+        std::cerr << "Error decoding " << parent_name << ": could not decode field with identifier " << Identifier<T>{}
                   << "\n";
         return DecodeResult{false};
     }
@@ -67,18 +67,17 @@ DecodeResult decode_sequence_combine_impl(BerViewIterator& input, const char* pa
 }
 
 template <typename ID, typename... Args>
-DecodeResult decode_sequence_combine(const BerView& input, const char* parent_name, const ID& id,
-                                     Args&&... args) noexcept
+DecodeResult decode_sequence_combine(const BerView& input, const char* parent_name, ID id, Args&&... args) noexcept
 {
     if (!input.is_valid())
     {
         std::cerr << "Error decoding " << parent_name << ": Input is not valid ber\n";
         return DecodeResult{false};
     }
-    if (input.tag() != reference_tag(id))
+    if (input.tag() != val(id.tag()))
     {
-        std::cerr << "Error decoding " << parent_name << ": Expected tag = " << reference_tag(id) << " got "
-                  << input.tag() << "\n";
+        std::cerr << "Error decoding " << parent_name << ": Expected identifier = " << id << " got " << val(input.tag())
+                  << "\n";
         return DecodeResult{false};
     }
 

@@ -2,6 +2,7 @@
 
 #include "fast_ber/ber_types/Class.hpp"
 #include "fast_ber/ber_types/Construction.hpp"
+#include "fast_ber/util/EncodeHelpers.hpp"
 #include "fast_ber/util/EncodeIdentifiers.hpp"
 #include "fast_ber/util/Extract.hpp"
 
@@ -51,8 +52,8 @@ class BerView
     BerViewIterator begin() const noexcept;
     BerViewIterator end() const noexcept;
 
-    size_t encode(absl::Span<uint8_t> buffer) const noexcept;
-    size_t encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
+    EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
+    EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
   private:
     const uint8_t* m_data;
@@ -251,28 +252,28 @@ inline BerViewIterator        MutableBerView::cend() const noexcept { return Ber
 inline MutableBerViewIterator MutableBerView::begin() noexcept { return MutableBerViewIterator{content()}; }
 inline MutableBerViewIterator MutableBerView::end() noexcept { return MutableBerViewIterator{End::end}; }
 
-inline size_t BerView::encode(absl::Span<uint8_t> buffer) const noexcept
+inline EncodeResult BerView::encode(absl::Span<uint8_t> buffer) const noexcept
 {
     if (ber_length() > buffer.size())
     {
-        return 0;
+        return EncodeResult{false, 0};
     }
 
     std::memcpy(buffer.data(), ber_data(), ber_length());
-    return ber_length();
+    return EncodeResult{true, ber_length()};
 }
 
-inline size_t BerView::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
+inline EncodeResult BerView::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
 {
     auto ber_span = this->ber();
     ber_span.remove_prefix(identifier_length());
     if (ber_span.size() > buffer.size())
     {
-        return 0;
+        return EncodeResult{false, 0};
     }
 
     std::memcpy(buffer.data(), ber_span.data(), ber_span.size());
-    return ber_span.length();
+    return EncodeResult{true, ber_span.length()};
 }
 
 } // namespace fast_ber

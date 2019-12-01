@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <iostream>
 
 namespace fast_ber
 {
@@ -20,6 +21,19 @@ constexpr inline uint8_t add_construction(uint8_t first_byte, Construction const
 
 {
     return static_cast<uint8_t>((static_cast<uint8_t>(construction) << 5) | (first_byte & 0xDF));
+}
+
+inline std::ostream& operator<<(std::ostream& os, const Construction& c) noexcept
+{
+    switch (c)
+    {
+    case Construction::primitive:
+        return os << "Primitive";
+    case Construction::constructed:
+        return os << "Constructed";
+    default:
+        return os << "Unknown Construction";
+    }
 }
 
 } // namespace fast_ber

@@ -27,7 +27,6 @@ else()
 endif()
 
 add_library(fast_ber_lib empty)
-target_include_directories(fast_ber_lib INTERFACE SYSTEM ../3rd_party/abseil-cpp)
 target_include_directories(fast_ber_lib INTERFACE ../include ${CMAKE_CURRENT_BINARY_DIR})
 
 aux_source_directory(compiler SRC_LIST)

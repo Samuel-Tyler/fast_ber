@@ -1,0 +1,15 @@
+Anonymous
+
+DEFINITIONS EXPLICIT TAGS ::=
+
+BEGIN
+
+Anon ::= SEQUENCE
+{
+    NULL,
+    SEQUENCE OF OCTET STRING,
+    ...,
+    INTEGER
+}
+
+END

@@ -22,21 +22,37 @@ std::string strip_path(const std::string& path)
     return path.substr(found + 1);
 }
 
-std::string create_type_assignment(const std::string& name, const Type& type, const Module& module,
+std::string create_type_fwd(const std::string& name, const Type& type, const Module& module, const Asn1Tree& tree)
+{
+    TaggingInfo tag = identifier(type, module, tree);
+    std::string res;
+    res += create_template_definition({"Identifier = " + tag.name()});
+    res += "struct " + name + ";\n";
+    return res;
+}
+
+std::string create_type_assignment(const std::string& name, const Type& assignment_type, const Module& module,
                                    const Asn1Tree& tree)
 {
-    if (is_set(type) || is_sequence(type))
+    std::string res;
+
+    if (is_set(assignment_type) || is_sequence(assignment_type))
     {
-        return "struct " + name + type_as_string(type, module, tree);
+        res += create_template_definition({"Identifier"});
+        res += "struct " + name + type_as_string(assignment_type, module, tree);
     }
-    else if (is_enumerated(type))
+    else if (is_enumerated(assignment_type))
     {
-        return "enum class " + name + type_as_string(type, module, tree);
+        res += "enum class " + name + "Values" + type_as_string(assignment_type, module, tree);
+        res += create_template_definition({"Identifier"});
+        res += "FAST_BER_ALIAS(" + name + ", " + "Enumerated<" + name + "Values, Identifier>);\n";
     }
     else
     {
-        return "using " + name + " = " + fully_tagged_type(type, module, tree) + ";\n";
+        res += create_template_definition({"Identifier"});
+        res += "FAST_BER_ALIAS(" + name + ", " + type_as_string(assignment_type, module, tree, "Identifier") + ");\n";
     }
+    return res;
 }
 
 std::string create_type_assignment(const Assignment& assignment, const Module& module, const Asn1Tree& tree)
@@ -75,7 +91,8 @@ std::string create_assignment(const Asn1Tree& tree, const Module& module, const 
         if (absl::holds_alternative<ValueAssignment>(assignment.specific)) // Value assignment
         {
             const ValueAssignment& value_assign = absl::get<ValueAssignment>(assignment.specific);
-            std::string result = fully_tagged_type(value_assign.type, module, tree) + " " + assignment.name + " = ";
+            std::string            result =
+                "static const " + type_as_string(value_assign.type, module, tree) + " " + assignment.name + " = ";
 
             const Type& assigned_to_type =
                 (is_defined(value_assign.type))
@@ -83,7 +100,7 @@ std::string create_assignment(const Asn1Tree& tree, const Module& module, const 
                     : value_assign.type;
             if (is_oid(assigned_to_type))
             {
-                result += "ObjectIdentifier{";
+                result += "ObjectIdentifier<>{";
                 try
                 {
                     const ObjectIdComponents& object_id = ObjectIdComponents(value_assign.value);
@@ -179,35 +196,65 @@ std::string create_assignment(const Asn1Tree& tree, const Module& module, const 
     }
 }
 
-std::string create_identifier_functions(const Assignment& assignment, const std::string& module_name)
+template <typename CollectionType>
+std::string create_identifier_functions_recursive(const std::string& assignment_name, const CollectionType& collection,
+                                                  const std::string&              module_name,
+                                                  const std::vector<std::string>& namespace_names)
 {
+    std::string res;
+
+    auto child_namespaces = namespace_names;
+    child_namespaces.push_back(assignment_name);
+
+    for (const auto& child : collection.components)
+    {
+        if (is_sequence(child.named_type.type))
+        {
+            res += create_identifier_functions_recursive(
+                child.named_type.name + "_type", absl::get<SequenceType>(absl::get<BuiltinType>(child.named_type.type)),
+                module_name, child_namespaces);
+        }
+        else if (is_set(child.named_type.type))
+        {
+            res += create_identifier_functions_recursive(
+                child.named_type.name + "_type", absl::get<SetType>(absl::get<BuiltinType>(child.named_type.type)),
+                module_name, child_namespaces);
+        }
+    }
+
+    std::string name = module_name + "::";
+    for (const std::string& ns : namespace_names)
+    {
+        name += ns + "<>::template ";
+    }
+    name += assignment_name + create_template_arguments({"Identifier"});
+
+    res += create_template_definition({"Identifier"});
+    res += "struct IdentifierType<" + name + ">{ using type = Identifier ; };\n";
+
+    return res;
+}
+
+std::string create_identifier_functions(const Assignment& assignment, const Module& module)
+{
+    return "";
+
     std::string res;
 
     if (absl::holds_alternative<TypeAssignment>(assignment.specific))
     {
         const TypeAssignment& type_assign = absl::get<TypeAssignment>(assignment.specific);
-
         if (is_sequence(type_assign.type))
         {
-            const std::string tags_class = assignment.name + "Tags";
-
-            res += "constexpr inline ExplicitIdentifier<UniversalTag::sequence> identifier(const fast_ber::" +
-                   module_name + "::" + assignment.name + "*) noexcept";
-            res += "\n{\n";
-            res += "    return {};\n";
-            res += "}\n\n";
-            return res;
+            const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(type_assign.type));
+            return create_identifier_functions_recursive(assignment.name, sequence,
+                                                         "fast_ber::" + module.module_reference, {});
         }
         else if (is_set(type_assign.type))
         {
-            const std::string tags_class = assignment.name + "Tags";
-
-            res += "constexpr inline ExplicitIdentifier<UniversalTag::set> identifier(const fast_ber::" + module_name +
-                   "::" + assignment.name + "*) noexcept";
-            res += "\n{\n";
-            res += "    return {};\n";
-            res += "}\n\n";
-            return res;
+            const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(type_assign.type));
+            return create_identifier_functions_recursive(assignment.name, set, "fast_ber::" + module.module_reference,
+                                                         {});
         }
     }
     return "";
@@ -218,34 +265,14 @@ std::string collection_name(const SetType&) { return "set"; }
 
 template <typename CollectionType>
 std::string
-create_collection_encode_functions(const std::string assignment_name, const std::vector<Parameter>& parameters,
-                                   const CollectionType& collection, const Module& module, const Asn1Tree tree)
+create_collection_encode_functions(const std::vector<std::string>& namespaces, const std::string& assignment_name,
+                                   const std::vector<Parameter>& parameters, const CollectionType& collection,
+                                   const Module& module, const Asn1Tree tree)
 {
     std::string res;
-    std::string tags_class = module.module_reference + "_" + assignment_name + "Tags";
-    std::replace(tags_class.begin(), tags_class.end(), ':', '_');
 
-    res += "namespace " + tags_class + " {\n";
-    int tag_counter = 0;
-
-    for (const ComponentType& component : collection.components)
-    {
-        res += "static constexpr auto " + component.named_type.name + " = ";
-        if (is_prefixed(component.named_type.type))
-        {
-            res += identifier(component.named_type.type, module, tree).tag + "{}";
-        }
-        else if (module.tagging_default == TaggingMode::automatic)
-        {
-            res += "ImplicitIdentifier<Class::context_specific, " + std::to_string(tag_counter++) + ">{}";
-        }
-        else
-        {
-            res += identifier(component.named_type.type, module, tree).tag + "{}";
-        }
-        res += ";\n";
-    }
-    res += "}\n\n";
+    std::vector<std::string> child_namespaces = namespaces;
+    child_namespaces.push_back(assignment_name);
 
     // Make child encode functions
     for (const ComponentType& component : collection.components)
@@ -254,69 +281,98 @@ create_collection_encode_functions(const std::string assignment_name, const std:
         {
             const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(component.named_type.type));
 
-            res += create_collection_encode_functions(assignment_name + "::" + component.named_type.name + "_type",
-                                                      parameters, sequence, module, tree);
+            res += create_collection_encode_functions(child_namespaces, component.named_type.name + "_type", parameters,
+                                                      sequence, module, tree);
         }
         else if (is_set(component.named_type.type))
         {
             const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(component.named_type.type));
 
-            res += create_collection_encode_functions(assignment_name + "::" + component.named_type.name + "_type",
-                                                      parameters, set, module, tree);
+            res += create_collection_encode_functions(child_namespaces, component.named_type.name + "_type", parameters,
+                                                      set, module, tree);
         }
     }
 
-    std::vector<std::string> template_args = {"ID = ExplicitIdentifier<UniversalTag::" + collection_name(collection) +
-                                              ">"};
+    std::string namespace_name = module.module_reference + "::template ";
+
+    for (const std::string& ns : namespaces)
+    {
+        namespace_name += ns + "<>::template ";
+    }
+
+    std::vector<std::string> template_args = {"Identifier"};
+    const std::string        name = namespace_name + assignment_name + create_template_arguments(template_args);
+
     res += create_template_definition(template_args);
-    res += "inline EncodeResult encode(absl::Span<uint8_t> output, const " + module.module_reference +
-           "::" + assignment_name + "& input, const ID& id = ID{}) noexcept\n{\n";
+    res += "inline EncodeResult encode(absl::Span<uint8_t> output, const " + name + "& input) noexcept\n{\n";
 
     if (collection.components.size() == 0)
     {
         res += "    (void)input;\n";
     }
 
-    res += "    return encode_sequence_combine(output, id";
+    res += "    return encode_sequence_combine(output, Identifier{}";
     for (const ComponentType& component : collection.components)
     {
-        res += ",\n                          input." + component.named_type.name + ", " + tags_class +
-               "::" + component.named_type.name;
+        res += ",\n                          input." + component.named_type.name;
     }
     res += ");\n}\n\n";
+
+    res += create_template_definition(template_args);
+    res += "inline size_t encoded_length(const " + name + "& input) noexcept\n{\n";
+    if (collection.components.size() == 0)
+    {
+        res += "    (void)input;\n";
+    }
+
+    res += "    size_t content_length = 0;\n\n";
+    for (const ComponentType& component : collection.components)
+    {
+        res += "    content_length += encoded_length(input." + component.named_type.name + ");\n";
+    }
+    res += "\n    return wrap_with_ber_header_length(content_length, Identifier{});\n";
+    res += "}\n\n";
     return res;
 }
 
 template <typename CollectionType>
-std::string create_collection_decode_functions(const std::string             assignment_name,
-                                               const std::vector<Parameter>& parameters,
+std::string create_collection_decode_functions(const std::vector<std::string>& namespaces,
+                                               const std::string&              assignment_name,
+                                               const std::vector<Parameter>&   parameters,
                                                const CollectionType& collection, const Module& module)
 {
-    std::string res;
-    std::string tags_class = module.module_reference + "_" + assignment_name + "Tags";
-    std::replace(tags_class.begin(), tags_class.end(), ':', '_');
+    std::string namespace_name = module.module_reference + "::template ";
 
-    std::vector<std::string> template_args = {"ID = ExplicitIdentifier<UniversalTag::" + collection_name(collection) +
-                                              ">"};
+    std::vector<std::string> child_namespaces = namespaces;
+    child_namespaces.push_back(assignment_name);
+
+    for (const std::string& ns : namespaces)
+    {
+        namespace_name += ns + "<>::template ";
+    }
+
+    std::string       res;
+    const std::string name = namespace_name + assignment_name + create_template_arguments({"Identifier"});
+
+    std::vector<std::string> template_args = {"Identifier"};
 
     res += create_template_definition(template_args);
-    res += "inline DecodeResult decode(const BerView& input, " + module.module_reference + "::" + assignment_name +
-           "& output, const ID& id = ID{}) noexcept\n{\n";
-
+    res += "inline DecodeResult decode(BerViewIterator& input, " + name + "& output) noexcept\n{\n";
     if (collection.components.size() == 0)
     {
         res += "    (void)output;\n";
     }
 
-    res += "    return decode_" + collection_name(collection) + "_combine(input, \"" + module.module_reference +
-           "::" + assignment_name + "\", id";
+    res += "    DecodeResult result = decode_" + collection_name(collection) + "_combine(*input, \"" + name +
+           "\", Identifier{}";
     for (const ComponentType& component : collection.components)
     {
-        res += ",\n                          output." + component.named_type.name + ", " + tags_class +
-               "::" + component.named_type.name;
+        res += ",\n                          output." + component.named_type.name;
     }
-    res += ");\n}\n\n";
-
+    res += ");\n";
+    res += "    ++input;\n";
+    res += "    return result;\n";
+    res += "}\n\n";
     // Make child decode functions
     for (const ComponentType& component : collection.components)
     {
@@ -324,25 +380,17 @@ std::string create_collection_decode_functions(const std::string             ass
         {
             const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(component.named_type.type));
 
-            res += create_collection_decode_functions(assignment_name + "::" + component.named_type.name + "_type",
-                                                      parameters, sequence, module);
+            res += create_collection_decode_functions(child_namespaces, component.named_type.name + "_type", parameters,
+                                                      sequence, module);
         }
         else if (is_set(component.named_type.type))
         {
             const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(component.named_type.type));
 
-            res += create_collection_decode_functions(assignment_name + "::" + component.named_type.name + "_type",
-                                                      parameters, set, module);
+            res += create_collection_decode_functions(child_namespaces, component.named_type.name + "_type", parameters,
+                                                      set, module);
         }
     }
-
-    res += create_template_definition(template_args);
-    res += "inline DecodeResult decode(BerViewIterator& input, " + module.module_reference + "::" + assignment_name +
-           "& output, const ID& id = ID{}) noexcept\n{\n";
-    res += "    DecodeResult result = decode(*input, output, id);\n";
-    res += "    ++input;\n";
-    res += "    return result;\n";
-    res += "}\n\n";
     return res;
 }
 
@@ -355,20 +403,19 @@ std::string create_encode_functions(const Assignment& assignment, const Module& 
         if (is_sequence(type_assignment.type))
         {
             const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(type_assignment.type));
-            return create_collection_encode_functions(assignment.name, assignment.parameters, sequence, module, tree);
+            return create_collection_encode_functions({}, assignment.name, assignment.parameters, sequence, module,
+                                                      tree);
         }
         else if (is_set(type_assignment.type))
         {
-            std::string    res;
             const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(type_assignment.type));
-            return create_collection_encode_functions(assignment.name, assignment.parameters, set, module, tree);
+            return create_collection_encode_functions({}, assignment.name, assignment.parameters, set, module, tree);
         }
     }
-
     return "";
 }
 
-std::string create_decode_functions(const Assignment& assignment, const Module& module)
+std::string create_decode_functions(const Assignment& assignment, const Module& module, const Asn1Tree&)
 {
     if (absl::holds_alternative<TypeAssignment>(assignment.specific))
     {
@@ -377,27 +424,63 @@ std::string create_decode_functions(const Assignment& assignment, const Module& 
         if (is_sequence(type_assignment.type))
         {
             const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(type_assignment.type));
-            return create_collection_decode_functions(assignment.name, assignment.parameters, sequence, module);
+            return create_collection_decode_functions({}, assignment.name, assignment.parameters, sequence, module);
         }
         else if (is_set(type_assignment.type))
         {
             const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(type_assignment.type));
-            return create_collection_decode_functions(assignment.name, assignment.parameters, set, module);
+            return create_collection_decode_functions({}, assignment.name, assignment.parameters, set, module);
         }
     }
     return "";
 }
 
 template <typename CollectionType>
-std::string create_collection_equality_operators(const CollectionType& collection, const std::string& name)
+std::string create_ostream_operators(const CollectionType& collection, const std::string& name_with_template_params)
 {
-    const std::string tags_class = name + "Tags";
+    std::string res;
+    res += create_template_definition({"Identifier"});
+    res += "std::ostream& operator<<(std::ostream& os, const " + name_with_template_params + "& object)\n";
+    res += "{\n";
+    res += "    bool first = true;\n";
+    res += "    os << '{';\n";
+    if (collection.components.size() == 0)
+    {
+        res += "    (void)object;\n";
+        res += "    (void)first;\n";
+    }
+
+    for (const ComponentType& component : collection.components)
+    {
+        res += "    if (!first) os << \", \";\n";
+        res +=
+            "    os << \"\\\"" + component.named_type.name + "\\\" : \" << object." + component.named_type.name + ";\n";
+        res += "    first = false;\n";
+    }
+    res += "    os << '}';\n";
+    res += "    return os;\n";
+    res += "}\n\n";
+    return res;
+}
+
+template <typename CollectionType>
+std::string create_collection_equality_operators(const CollectionType& collection, std::vector<std::string> parents,
+                                                 const std::string& name)
+{
+    std::string name_with_template_params;
+    for (const std::string& parent : parents)
+    {
+        name_with_template_params += parent + "<>::template ";
+    }
+
+    name_with_template_params += name + create_template_arguments({"Identifier"});
 
     std::string res;
 
+    res += create_template_definition({"Identifier"});
     res += "bool operator==(";
-    res += "const " + name + "& lhs, ";
-    res += "const " + name + "& rhs)\n";
+    res += "const " + name_with_template_params + "& lhs, ";
+    res += "const " + name_with_template_params + "& rhs)\n";
     res += "{\n";
 
     if (collection.components.size() == 0)
@@ -414,11 +497,16 @@ std::string create_collection_equality_operators(const CollectionType& collectio
     }
     res += ";\n}\n\n";
 
+    res += create_template_definition({"Identifier"});
     res += "bool operator!=(";
-    res += "const " + name + "& lhs, ";
-    res += "const " + name + "& rhs)\n";
+    res += "const " + name_with_template_params + "& lhs, ";
+    res += "const " + name_with_template_params + "& rhs)\n";
     res += "{\n";
     res += "    return !(lhs == rhs);\n}\n\n";
+
+    res += create_ostream_operators(collection, name_with_template_params);
+
+    parents.push_back(name);
 
     std::string child_equality;
     // Create assignments for any children too
@@ -428,13 +516,12 @@ std::string create_collection_equality_operators(const CollectionType& collectio
         {
             const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(component.named_type.type));
             child_equality +=
-                create_collection_equality_operators(sequence, name + "::" + component.named_type.name + "_type");
+                create_collection_equality_operators(sequence, parents, component.named_type.name + "_type");
         }
         else if (is_set(component.named_type.type))
         {
             const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(component.named_type.type));
-            child_equality +=
-                create_collection_equality_operators(set, name + "::" + component.named_type.name + "_type");
+            child_equality += create_collection_equality_operators(set, parents, component.named_type.name + "_type");
         }
     }
     return child_equality + res;
@@ -449,29 +536,37 @@ std::string create_helper_functions(const Assignment& assignment)
         if (is_sequence(type_assignment.type))
         {
             const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(type_assignment.type));
-            return create_collection_equality_operators(sequence, assignment.name);
+            return create_collection_equality_operators(sequence, {}, assignment.name);
         }
         else if (is_set(type_assignment.type))
         {
             const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(type_assignment.type));
-            return create_collection_equality_operators(set, assignment.name);
+            return create_collection_equality_operators(set, {}, assignment.name);
         }
         else if (is_enumerated(type_assignment.type))
         {
-            const EnumeratedType& e = absl::get<EnumeratedType>(absl::get<BuiltinType>(type_assignment.type));
+            const EnumeratedType& e    = absl::get<EnumeratedType>(absl::get<BuiltinType>(type_assignment.type));
+            const std::string     name = assignment.name + "Values";
 
-            std::string res = "const char* to_string(const " + assignment.name + "& e)\n";
+            std::string res;
+            res += "const char* to_string(" + name + " e)\n";
             res += "{\n";
             res += "    switch (e)\n";
             res += "    {\n";
             for (const EnumerationValue& enum_value : e.enum_values)
             {
-                res +=
-                    "    case " + assignment.name + "::" + enum_value.name + ": return \"" + enum_value.name + "\";\n";
+                res += "    case " + name + "::" + enum_value.name + ": return \"" + enum_value.name + "\";\n";
             }
+
             res += "    default: return \"Invalid state!\";\n";
             res += "    }\n";
-            res += "}\n";
+            res += "}\n\n";
+
+            res += "std::ostream& operator<<(std::ostream& os, " + name + " object)\n";
+            res += "{\n";
+            res += "    os << to_string(object);\n";
+            res += "    return os;\n";
+            res += "}\n\n";
             return res;
         }
     }
@@ -479,19 +574,35 @@ std::string create_helper_functions(const Assignment& assignment)
     return "";
 }
 
-std::string create_body(const Asn1Tree& tree, const Module& module)
+std::string create_imports(const Asn1Tree& tree, const Module& module, bool fwd = false)
 {
     std::string output;
-    output += "\n";
 
     for (const Import& import : module.imports)
     {
         for (const auto& import_name : import.imports)
         {
-            if (is_type(resolve(tree, import.module_reference, import_name)) ||
-                is_value(resolve(tree, import.module_reference, import_name)))
+            if (fwd)
             {
-                output += "using " + import_name + " = " + import.module_reference + "::" + import_name + ";\n";
+                if (is_type(resolve(tree, import.module_reference, import_name)))
+                {
+                    output += create_type_fwd(import_name, type(resolve(tree, module.module_reference, import_name)),
+                                              module, tree);
+                }
+            }
+            else
+            {
+                if (is_type(resolve(tree, import.module_reference, import_name)))
+                {
+                    output += create_template_definition({"Identifier"});
+                    output += "FAST_BER_ALIAS(" + import_name + ", " + import.module_reference + "::" + import_name +
+                              "<>);\n";
+                }
+                else if (is_value(resolve(tree, import.module_reference, import_name)))
+                {
+                    output += "static const auto " + import_name + " = " + import.module_reference +
+                              "::" + import_name + ";\n";
+                }
             }
         }
         if (import.imports.size() > 0)
@@ -500,11 +611,56 @@ std::string create_body(const Asn1Tree& tree, const Module& module)
         }
     }
 
+    return output;
+}
+std::string create_body(const Asn1Tree& tree, const Module& module)
+{
+    std::string output;
+    output += "\n";
+    output += create_imports(tree, module);
+
     for (const Assignment& assignment : module.assignments)
     {
         output += create_assignment(tree, module, assignment);
     }
 
+    return output;
+}
+
+std::string create_fwd_declarations(const Asn1Tree& tree, const Module& module)
+{
+    std::string output;
+    output += create_imports(tree, module, true);
+
+    for (const Assignment& assignment : module.assignments)
+    {
+        if (absl::holds_alternative<TypeAssignment>(assignment.specific))
+        {
+            output +=
+                create_type_fwd(assignment.name, absl::get<TypeAssignment>(assignment.specific).type, module, tree);
+        }
+    }
+
+    return output;
+}
+
+std::string create_fwd_body(const Asn1Tree& tree)
+{
+    std::string output;
+    output += "/* Forward declration of ASN.1 types */\n\n";
+    output += "#pragma once\n\n";
+    output += create_include("fast_ber/ber_types/All.hpp");
+    output += "\n";
+
+    std::string definitions;
+    definitions += "using namespace abbreviations;\n";
+
+    for (const auto& module : tree.modules)
+    {
+        definitions += add_namespace(module.module_reference, create_fwd_declarations(tree, module));
+    }
+
+    output += add_namespace("fast_ber", definitions) + '\n';
     return output;
 }
 
@@ -518,18 +674,21 @@ std::string create_detail_body(const Asn1Tree& tree)
     for (const Module& module : tree.modules)
     {
         // Inside namespace due to argument dependant lookup rules
-        std::string ids;
         for (const Assignment& assignment : module.assignments)
         {
-            ids += create_identifier_functions(assignment, module.module_reference);
+            body += create_identifier_functions(assignment, module);
         }
-        body += add_namespace(module.module_reference, ids);
+    }
 
+    body += '\n';
+
+    for (const Module& module : tree.modules)
+    {
         std::string helpers;
         for (const Assignment& assignment : module.assignments)
         {
             body += create_encode_functions(assignment, module, tree);
-            body += create_decode_functions(assignment, module) + "\n";
+            body += create_decode_functions(assignment, module, tree) + "\n";
             helpers += create_helper_functions(assignment);
         }
 
@@ -539,14 +698,18 @@ std::string create_detail_body(const Asn1Tree& tree)
     return output;
 }
 
-std::string create_output_file(const Asn1Tree& tree, const std::string detail_filename)
+std::string create_output_file(const Asn1Tree& tree, const std::string& fwd_filename,
+                               const std::string& detail_filename)
 {
     std::string output;
     output += "#pragma once\n\n";
     output += create_include("fast_ber/ber_types/All.hpp");
+    output += create_include(strip_path(fwd_filename)) + '\n';
     output += "\n";
 
     std::string definitions;
+    definitions += "using namespace abbreviations;\n\n";
+
     for (const auto& module : tree.modules)
     {
         definitions += add_namespace(module.module_reference, create_body(tree, module));
@@ -592,13 +755,20 @@ int main(int argc, char** argv)
         }
 
         const std::string& output_filename = std::string(argv[argc - 1]) + ".hpp";
+        const std::string& fwd_filame      = std::string(argv[argc - 1]) + ".fwd.hpp";
         const std::string& detail_filame   = std::string(argv[argc - 1]) + ".detail.hpp";
 
         std::ofstream output_file(output_filename);
+        std::ofstream fwd_output_file(fwd_filame);
         std::ofstream detail_output_file(detail_filame);
         if (!output_file.good())
         {
             std::cerr << "Could not create output file: " + output_filename + "\n";
+            return -1;
+        }
+        if (!fwd_output_file.good())
+        {
+            std::cerr << "Could not create output file: " + fwd_filame + "\n";
             return -1;
         }
         if (!detail_output_file.good())
@@ -614,14 +784,15 @@ int main(int argc, char** argv)
         {
             module.assignments = split_definitions(module.assignments);
             check_duplicated_names(module.assignments, module.module_reference);
-            module.assignments = reorder_assignments(module.assignments, module.imports);
-            module.assignments = split_nested_structures(module.assignments);
+            module.assignments = reorder_assignments(module.assignments, module.imports, context.asn1_tree.is_circular);
+            module.assignments = split_nested_structures(module);
         }
 
         resolve_components_of(context.asn1_tree);
         resolve_object_classes(context.asn1_tree);
 
-        output_file << create_output_file(context.asn1_tree, detail_filame);
+        output_file << create_output_file(context.asn1_tree, fwd_filame, detail_filame);
+        fwd_output_file << create_fwd_body(context.asn1_tree);
         detail_output_file << create_detail_body(context.asn1_tree);
 
         return 0;

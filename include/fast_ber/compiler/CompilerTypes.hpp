@@ -33,6 +33,8 @@ enum class Class
     private_,
 };
 
+std::string to_string(Class class_, bool abbreviated);
+
 struct ComponentType;
 struct TaggedType;
 using ComponentTypeList = std::vector<ComponentType>;
@@ -58,9 +60,100 @@ struct BitStringType
 struct BooleanType
 {
 };
-struct CharacterStringType
+enum class CharacterStringType
 {
+    unknown,
+    bmp_string,
+    general_string,
+    graphic_string,
+    ia5_string,
+    iso646_string,
+    numeric_string,
+    printable_string,
+    teletex_string,
+    t61_string,
+    universal_string,
+    utf8_string,
+    videotex_string,
+    visible_string,
+    character_string,
 };
+
+inline std::string to_string(CharacterStringType type)
+{
+    switch (type)
+    {
+    case CharacterStringType::bmp_string:
+        return "BMPString";
+    case CharacterStringType::general_string:
+        return "GeneralString";
+    case CharacterStringType::graphic_string:
+        return "GraphicString";
+    case CharacterStringType::ia5_string:
+        return "IA5String";
+    case CharacterStringType::iso646_string:
+        return "ISO646String";
+    case CharacterStringType::numeric_string:
+        return "NumericString";
+    case CharacterStringType::printable_string:
+        return "PrintableString";
+    case CharacterStringType::teletex_string:
+        return "TeletexString";
+    case CharacterStringType::t61_string:
+        return "T61String";
+    case CharacterStringType::universal_string:
+        return "UniversalString";
+    case CharacterStringType::utf8_string:
+        return "UTF8String";
+    case CharacterStringType::videotex_string:
+        return "VideotexString";
+    case CharacterStringType::visible_string:
+        return "VisibleString";
+    case CharacterStringType::character_string:
+        return "CharacterString";
+    case CharacterStringType::unknown:
+        return "UnknownStringType";
+    }
+    return "UnknownStringType";
+}
+inline std::string to_string_snake_case(CharacterStringType type)
+{
+    switch (type)
+    {
+    case CharacterStringType::bmp_string:
+        return "bmp_string";
+    case CharacterStringType::general_string:
+        return "general_string";
+    case CharacterStringType::graphic_string:
+        return "graphic_string";
+    case CharacterStringType::ia5_string:
+        return "ia5_string";
+    case CharacterStringType::iso646_string:
+        return "iso646_string";
+    case CharacterStringType::numeric_string:
+        return "numeric_string";
+    case CharacterStringType::printable_string:
+        return "printable_string";
+    case CharacterStringType::teletex_string:
+        return "teletex_string";
+    case CharacterStringType::t61_string:
+        return "t61_string";
+    case CharacterStringType::universal_string:
+        return "universal_string";
+    case CharacterStringType::utf8_string:
+        return "utf8_string";
+    case CharacterStringType::videotex_string:
+        return "videotex_string";
+    case CharacterStringType::visible_string:
+        return "visible_string";
+    case CharacterStringType::character_string:
+        return "character_string";
+    case CharacterStringType::unknown:
+        return "unknown";
+    }
+    return "UnknownStringType";
+}
+
 struct ChoiceType;
 struct DateType
 {
@@ -342,12 +435,34 @@ struct Module
 struct Asn1Tree
 {
     std::vector<Module> modules;
+    bool                is_circular = false;
+};
+
+struct Identifier
+{
+    Class   class_;
+    int64_t tag_number;
+
+    std::string name() const { return "Id<" + to_string(class_, true) + ", " + std::to_string(tag_number) + ">"; }
 };
 
 struct TaggingInfo
 {
-    std::string tag;
-    bool        is_default_tagged;
+    absl::optional<Identifier> outer_tag;
+    std::string                inner_tag;
+    bool                       is_default_tagged;
+
+    std::string name() const
+    {
+        if (!outer_tag)
+        {
+            return inner_tag;
+        }
+        else
+        {
+            return "DoubleId<" + outer_tag->name() + ", " + inner_tag + ">";
+        }
+    }
 };
 
 struct ObjectIdComponentValue
@@ -397,13 +512,11 @@ struct ObjectIdComponents
     std::vector<ObjectIdComponentValue> components;
 };
 
-std::string to_string(Class class_);
-
 // Switch asn '-' for C++ '_'
 // Rename any names which are reserved in C++
 std::string santize_name(const std::string& name);
 
-std::string make_type_optional(const std::string& type);
+std::string make_type_optional(const std::string& type, const Asn1Tree& tree);
 
 bool is_bit_string(const Type& type);
 bool is_set(const Type& type);
@@ -418,3 +531,5 @@ bool is_oid(const Type& type);
 bool is_defined(const Type& type);
 
 struct Context;
+
+std::string gen_anon_member_name();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <iostream>
 
 namespace fast_ber
 {
@@ -24,7 +25,6 @@ enum class UniversalTag : Tag
     embedded_pdv      = 11,
     utf8_string       = 12,
     relative_oid      = 13,
-    choice            = 16,
     sequence          = 16,
     sequence_of       = 16,
     set               = 17,
@@ -50,6 +50,73 @@ template <typename T>
 constexpr int val(T t) noexcept
 {
     return static_cast<int>(t);
+}
+
+inline std::ostream& operator<<(std::ostream& os, const UniversalTag& t) noexcept
+{
+    switch (t)
+    {
+    case UniversalTag::reserved:
+        return os << "Reserved";
+    case UniversalTag::boolean:
+        return os << "Boolean";
+    case UniversalTag::integer:
+        return os << "Integer";
+    case UniversalTag::bit_string:
+        return os << "Bit String";
+    case UniversalTag::octet_string:
+        return os << "Octet String";
+    case UniversalTag::null:
+        return os << "Null";
+    case UniversalTag::object_identifier:
+        return os << "Object Identifier";
+    case UniversalTag::object_descriptor:
+        return os << "Object Descriptor";
+    case UniversalTag::instance_of:
+        return os << "Instance Of / External";
+    case UniversalTag::real:
+        return os << "Real";
+    case UniversalTag::enumerated:
+        return os << "Enumerated";
+    case UniversalTag::embedded_pdv:
+        return os << "Embedded PDV";
+    case UniversalTag::utf8_string:
+        return os << "UTF8 String";
+    case UniversalTag::relative_oid:
+        return os << "Relative OID";
+    case UniversalTag::sequence:
+        return os << "Sequence / Sequence Of";
+    case UniversalTag::set:
+        return os << "Set / Set Of";
+    case UniversalTag::numeric_string:
+        return os << "Numeric String";
+    case UniversalTag::printable_string:
+        return os << "Printable String";
+    case UniversalTag::teletex_string:
+        return os << "Teletex String / T161 String";
+    case UniversalTag::videotex_string:
+        return os << "Videotex String";
+    case UniversalTag::ia5_string:
+        return os << "IA5 String";
+    case UniversalTag::utc_time:
+        return os << "UTC Time";
+    case UniversalTag::generalized_time:
+        return os << "Generalized Time";
+    case UniversalTag::graphic_string:
+        return os << "Graphic String";
+    case UniversalTag::visible_string:
+        return os << "Visible String / ISO646 String";
+    case UniversalTag::general_string:
+        return os << "General String";
+    case UniversalTag::universal_string:
+        return os << "Universal String";
+    case UniversalTag::character_string:
+        return os << "Character String";
+    case UniversalTag::bmp_string:
+        return os << "BMP String";
+    default:
+        return os << "Unknown Universal Tag";
+    }
 }
 
 } // namespace fast_ber

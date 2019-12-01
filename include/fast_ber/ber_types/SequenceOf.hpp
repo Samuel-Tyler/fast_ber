@@ -2,30 +2,71 @@
 
 #include "fast_ber/ber_types/Sequence.hpp"
 
+#include "absl/container/inlined_vector.h"
+
+#include <numeric>
+#include <vector>
+
 namespace fast_ber
 {
+
 constexpr const size_t default_inlined_size = 5;
 
-template <typename T, size_t N = default_inlined_size>
-using SequenceOf = absl::InlinedVector<T, N>;
+template <typename T, StorageMode storage>
+struct SequenceOfImplementation
+{
+    using Type = absl::InlinedVector<T, default_inlined_size>;
+};
 
 template <typename T>
-constexpr inline ExplicitIdentifier<UniversalTag::sequence_of> identifier(const SequenceOf<T>*) noexcept
+struct SequenceOfImplementation<T, StorageMode::small_buffer_optimised>
 {
-    return {};
+    using Type = absl::InlinedVector<T, default_inlined_size>;
+};
+
+template <typename T>
+struct SequenceOfImplementation<T, StorageMode::dynamic>
+{
+    using Type = std::vector<T>;
+};
+
+template <typename T, typename I = ExplicitId<UniversalTag::sequence>,
+          StorageMode s = StorageMode::small_buffer_optimised>
+struct SequenceOf : public SequenceOfImplementation<T, s>::Type
+{
+    using Implementation = typename SequenceOfImplementation<T, s>::Type;
+
+    using Implementation::Implementation;
+    SequenceOf() = default;
+    SequenceOf(const Implementation& t) : Implementation(t) {}
+    SequenceOf(Implementation&& t) : Implementation(std::move(t)) {}
+    template <typename I2, StorageMode s2>
+    SequenceOf(const SequenceOf<T, I2, s2>& t) : Implementation(t)
+    {
+    }
+
+    using AsnId = I;
+};
+
+template <typename T, typename I, StorageMode s>
+size_t encoded_length(const SequenceOf<T, I, s>& sequence) noexcept
+{
+    const size_t content_length = std::accumulate(sequence.begin(), sequence.end(), size_t(0),
+                                                  [](size_t count, const T& t) { return count + encoded_length(t); });
+    return wrap_with_ber_header_length(content_length, I{});
 }
 
-template <typename T, typename ID = ExplicitIdentifier<UniversalTag::sequence_of>>
-EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T>& sequence, const ID& id = ID{}) noexcept
+template <typename T, typename I, StorageMode s>
+EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T, I, s>& sequence) noexcept
 {
     const size_t header_length_guess = 2;
     auto         content_buffer      = buffer;
     size_t       combined_length     = 0;
 
     content_buffer.remove_prefix(header_length_guess);
-    for (const auto& element : sequence)
+    for (const T& element : sequence)
     {
-        const auto element_encode_result = encode(content_buffer, element, identifier(&element));
+        const auto element_encode_result = encode(content_buffer, element);
         if (!element_encode_result.success)
         {
             return {false, 0};
@@ -34,25 +75,26 @@ EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T>& seque
         content_buffer.remove_prefix(element_encode_result.length);
     }
 
-    return wrap_with_ber_header(buffer, combined_length, id, header_length_guess);
+    return wrap_with_ber_header(buffer, combined_length, I{}, header_length_guess);
 }
 
-template <typename T, typename ID = ExplicitIdentifier<UniversalTag::sequence_of>>
-DecodeResult decode(BerViewIterator& input, SequenceOf<T>& output, const ID& id = ID{}) noexcept
+template <typename T, typename I, StorageMode s>
+DecodeResult decode(BerViewIterator& input, SequenceOf<T, I, s>& output) noexcept
 {
     output.clear();
-    if (!(input->is_valid() && input->tag() == reference_tag(id)) && input->construction() == Construction::constructed)
+    if (!(input->is_valid() && input->tag() == I::tag() && input->class_() == I::class_() &&
+          input->construction() == Construction::constructed))
     {
         return DecodeResult{false};
     }
 
-    auto           child    = input->begin();
-    constexpr auto child_id = identifier(static_cast<const T*>(nullptr));
+    auto                    child = input->begin();
+    constexpr Identifier<T> child_id;
 
-    while (child->is_valid() && child->tag() == reference_tag(child_id))
+    while (child->is_valid() && child->tag() == val(child_id.tag()))
     {
         output.emplace_back(T{});
-        bool success = decode(child, output.back(), child_id).success;
+        bool success = decode(child, output.back()).success;
         if (!success)
         {
             return DecodeResult{false};
@@ -61,6 +103,24 @@ DecodeResult decode(BerViewIterator& input, SequenceOf<T>& output, const ID& id 
     ++input;
 
     return DecodeResult{true};
+}
+
+template <typename T, typename I, StorageMode s1>
+std::ostream& operator<<(std::ostream& os, const SequenceOf<T, I, s1>& sequence)
+{
+    bool first = true;
+
+    os << "[";
+    for (const T& member : sequence)
+    {
+        if (!first)
+        {
+            os << ", ";
+        }
+        os << member;
+        first = false;
+    }
+    return os << "]";
 }
 
 } // namespace fast_ber

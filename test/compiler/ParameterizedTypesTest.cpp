@@ -6,13 +6,13 @@
 
 TEST_CASE("Parameterized Types: Encode and decode parameterized types")
 {
-    REQUIRE(std::is_same<fast_ber::Parameterized::T1, decltype(fast_ber::Parameterized::T3::b)>::value);
-    REQUIRE(std::is_same<fast_ber::Integer, decltype(fast_ber::Parameterized::T4::a_type::b)>::value);
-    REQUIRE(std::is_same<fast_ber::OctetString, decltype(fast_ber::Parameterized::T4::b_type::b)>::value);
+    REQUIRE(std::is_same<fast_ber::Parameterized::T1<>, decltype(fast_ber::Parameterized::T3<>::b)>::value);
+    REQUIRE(std::is_same<fast_ber::Integer<>, decltype(fast_ber::Parameterized::T4<>::a_type<>::b)>::value);
+    REQUIRE(std::is_same<fast_ber::OctetString<>, decltype(fast_ber::Parameterized::T4<>::b_type<>::b)>::value);
 
-    std::array<uint8_t, 100>    buffer = {};
-    fast_ber::Parameterized::T3 one    = {5, "param"};
-    fast_ber::Parameterized::T3 two    = {10, ";"};
+    std::array<uint8_t, 100>      buffer = {};
+    fast_ber::Parameterized::T3<> one    = {5, "param"};
+    fast_ber::Parameterized::T3<> two    = {10, ";"};
 
     one.a = 5;
     one.b = "param";

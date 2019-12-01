@@ -132,7 +132,7 @@ void resolve_components_of(Asn1Tree& tree)
 void resolve_dependencies(const std::unordered_map<std::string, Assignment>& assignment_infos, const std::string& name,
                           std::unordered_set<std::string>& assigned_names,
                           std::unordered_set<std::string>& visited_names,
-                          std::vector<Assignment>&         ordered_assignment_infos)
+                          std::vector<Assignment>& ordered_assignment_infos, bool& is_circular)
 {
     const auto& assign_iter = assignment_infos.find(name);
     if (assign_iter == assignment_infos.end())
@@ -148,7 +148,9 @@ void resolve_dependencies(const std::unordered_map<std::string, Assignment>& ass
 
     if (visited_names.count(name) == 1)
     {
-        throw std::runtime_error("Circular dependency when trying to resolve dependencies of " + name);
+        std::cerr << "Warning: Circular dependency when trying to resolve dependencies of " << name << std::endl;
+        is_circular = true;
+        return;
     }
 
     visited_names.insert(name);
@@ -156,7 +158,8 @@ void resolve_dependencies(const std::unordered_map<std::string, Assignment>& ass
     const Assignment& assignment = assign_iter->second;
     for (const std::string& dependency : assignment.depends_on)
     {
-        resolve_dependencies(assignment_infos, dependency, assigned_names, visited_names, ordered_assignment_infos);
+        resolve_dependencies(assignment_infos, dependency, assigned_names, visited_names, ordered_assignment_infos,
+                             is_circular);
     }
 
     ordered_assignment_infos.push_back(assignment);
@@ -165,7 +168,8 @@ void resolve_dependencies(const std::unordered_map<std::string, Assignment>& ass
 
 // Reorder assignments, defining
 // Should be able to detect missing assignments and circular dependencies
-std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments, const std::vector<Import>& imports)
+std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments, const std::vector<Import>& imports,
+                                            bool& is_circular)
 {
     std::unordered_map<std::string, Assignment> assignment_map;
     assignment_map.reserve(assignments.size());
@@ -192,7 +196,8 @@ std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments
 
     for (const std::pair<std::string, Assignment>& assignment : assignment_map)
     {
-        resolve_dependencies(assignment_map, assignment.first, assigned_names, visited_names, ordered_assignments);
+        resolve_dependencies(assignment_map, assignment.first, assigned_names, visited_names, ordered_assignments,
+                             is_circular);
     }
 
     if (assignments.size() != ordered_assignments.size())
@@ -205,122 +210,146 @@ std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments
 
 int unnamed_definition_num = 0;
 // Finds any sequence or set types nested within a type
-void find_nested_structs(const Type& type, std::vector<NamedType>& nested_structs)
+void find_nested_structs(const Module& module, Type& type, std::vector<NamedType>& nested_structs)
 {
     if (is_set(type))
     {
-        for (const ComponentType& component : absl::get<SetType>(absl::get<BuiltinType>(type)).components)
+        for (ComponentType& component : absl::get<SetType>(absl::get<BuiltinType>(type)).components)
         {
             if (is_enumerated(component.named_type.type))
             {
-                nested_structs.push_back(
-                    NamedType{"UnnamedEnum" + std::to_string(unnamed_definition_num++), component.named_type.type});
+                const std::string& name = "UnnamedEnum" + std::to_string(unnamed_definition_num++);
+                nested_structs.push_back(NamedType{name, component.named_type.type});
+                component.named_type.type = DefinedType{module.module_reference, name, {}};
             }
             else
             {
-                find_nested_structs(component.named_type.type, nested_structs);
+                find_nested_structs(module, component.named_type.type, nested_structs);
             }
         }
     }
     else if (is_sequence(type))
     {
-        for (const ComponentType& component : absl::get<SequenceType>(absl::get<BuiltinType>(type)).components)
+        for (ComponentType& component : absl::get<SequenceType>(absl::get<BuiltinType>(type)).components)
         {
             if (is_enumerated(component.named_type.type))
             {
-                nested_structs.push_back(
-                    NamedType{"UnnamedEnum" + std::to_string(unnamed_definition_num++), component.named_type.type});
+                const std::string& name = "UnnamedEnum" + std::to_string(unnamed_definition_num++);
+                nested_structs.push_back(NamedType{name, component.named_type.type});
+                component.named_type.type = DefinedType{module.module_reference, name, {}};
             }
             else
             {
-                find_nested_structs(component.named_type.type, nested_structs);
+                find_nested_structs(module, component.named_type.type, nested_structs);
             }
         }
     }
     else if (is_set_of(type))
     {
-        const SetOfType& set_of     = absl::get<SetOfType>(absl::get<BuiltinType>(type));
-        const Type&      inner_type = set_of.has_name ? set_of.named_type->type : *set_of.type;
+        SetOfType& set_of     = absl::get<SetOfType>(absl::get<BuiltinType>(type));
+        Type&      inner_type = set_of.has_name ? set_of.named_type->type : *set_of.type;
+        find_nested_structs(module, inner_type, nested_structs);
+
         if (is_set(inner_type))
         {
-            nested_structs.push_back(NamedType{"UnnamedSet" + std::to_string(unnamed_definition_num++), inner_type});
+            const std::string& name = "UnnamedSet" + std::to_string(unnamed_definition_num++);
+            nested_structs.push_back(NamedType{name, inner_type});
+            inner_type = DefinedType{module.module_reference, name, {}};
         }
         else if (is_sequence(inner_type))
         {
-            nested_structs.push_back(
-                NamedType{"UnnamedSequence" + std::to_string(unnamed_definition_num++), inner_type});
+            const std::string& name = "UnnamedSequence" + std::to_string(unnamed_definition_num++);
+            nested_structs.push_back(NamedType{name, inner_type});
+            inner_type = DefinedType{module.module_reference, name, {}};
         }
         else if (is_enumerated(inner_type))
         {
-            nested_structs.push_back(NamedType{"UnnamedEnum" + std::to_string(unnamed_definition_num++), inner_type});
+            const std::string& name = "UnnamedEnum" + std::to_string(unnamed_definition_num++);
+            nested_structs.push_back(NamedType{name, inner_type});
+            inner_type = DefinedType{module.module_reference, name, {}};
         }
-        find_nested_structs(inner_type, nested_structs);
     }
     else if (is_sequence_of(type))
     {
-        const SequenceOfType& sequence_of = absl::get<SequenceOfType>(absl::get<BuiltinType>(type));
-        const Type&           inner_type  = sequence_of.has_name ? sequence_of.named_type->type : *sequence_of.type;
+        SequenceOfType& sequence_of = absl::get<SequenceOfType>(absl::get<BuiltinType>(type));
+        Type&           inner_type  = sequence_of.has_name ? sequence_of.named_type->type : *sequence_of.type;
+
+        find_nested_structs(module, inner_type, nested_structs);
+
         if (is_set(inner_type))
         {
-            nested_structs.push_back(NamedType{"UnnamedSet" + std::to_string(unnamed_definition_num++), inner_type});
+            const std::string& name = "UnnamedSet" + std::to_string(unnamed_definition_num++);
+            nested_structs.push_back(NamedType{name, inner_type});
+            inner_type = DefinedType{module.module_reference, name, {}};
         }
         else if (is_sequence(inner_type))
         {
-            nested_structs.push_back(
-                NamedType{"UnnamedSequence" + std::to_string(unnamed_definition_num++), inner_type});
+            const std::string& name = "UnnamedSequence" + std::to_string(unnamed_definition_num++);
+            nested_structs.push_back(NamedType{name, inner_type});
+            inner_type = DefinedType{module.module_reference, name, {}};
         }
         else if (is_enumerated(inner_type))
         {
-            nested_structs.push_back(NamedType{"UnnamedEnum" + std::to_string(unnamed_definition_num++), inner_type});
+            const std::string& name = "UnnamedEnum" + std::to_string(unnamed_definition_num++);
+            nested_structs.push_back(NamedType{name, inner_type});
+            inner_type = DefinedType{module.module_reference, name, {}};
         }
-        find_nested_structs(inner_type, nested_structs);
     }
     else if (is_choice(type))
     {
-        const ChoiceType& choice = absl::get<ChoiceType>(absl::get<BuiltinType>(type));
-        for (const NamedType& choice_selection : choice.choices)
+        ChoiceType& choice = absl::get<ChoiceType>(absl::get<BuiltinType>(type));
+        for (NamedType& choice_selection : choice.choices)
         {
-            const Type& inner_type = choice_selection.type;
+            Type& inner_type = choice_selection.type;
+            find_nested_structs(module, choice_selection.type, nested_structs);
+
             if (is_set(inner_type))
             {
-                nested_structs.push_back(
-                    NamedType{"UnnamedSet" + std::to_string(unnamed_definition_num++), inner_type});
+                const std::string& name = "UnnamedSet" + std::to_string(unnamed_definition_num++);
+                nested_structs.push_back(NamedType{name, inner_type});
+                inner_type = DefinedType{module.module_reference, name, {}};
             }
             else if (is_sequence(inner_type))
             {
-                nested_structs.push_back(
-                    NamedType{"UnnamedSequence" + std::to_string(unnamed_definition_num++), inner_type});
+                const std::string& name = "UnnamedSequence" + std::to_string(unnamed_definition_num++);
+                nested_structs.push_back(NamedType{name, inner_type});
+                inner_type = DefinedType{module.module_reference, name, {}};
             }
             else if (is_enumerated(inner_type))
             {
-                nested_structs.push_back(
-                    NamedType{"UnnamedEnum" + std::to_string(unnamed_definition_num++), inner_type});
+                const std::string& name = "UnnamedEnum" + std::to_string(unnamed_definition_num++);
+                nested_structs.push_back(NamedType{name, inner_type});
+                inner_type = DefinedType{module.module_reference, name, {}};
             }
-            find_nested_structs(choice_selection.type, nested_structs);
         }
     }
     else if (is_prefixed(type))
     {
-        const Type& inner_type = absl::get<PrefixedType>(absl::get<BuiltinType>(type)).tagged_type->type;
+        Type& inner_type = absl::get<PrefixedType>(absl::get<BuiltinType>(type)).tagged_type->type;
+        find_nested_structs(module, inner_type, nested_structs);
+
         if (is_set(inner_type))
         {
-            nested_structs.push_back(NamedType{"UnnamedSet" + std::to_string(unnamed_definition_num++), inner_type});
+            const std::string& name = "UnnamedSet" + std::to_string(unnamed_definition_num++);
+            nested_structs.push_back(NamedType{name, inner_type});
+            inner_type = DefinedType{module.module_reference, name, {}};
         }
         else if (is_sequence(inner_type))
         {
-            nested_structs.push_back(
-                NamedType{"UnnamedSequence" + std::to_string(unnamed_definition_num++), inner_type});
+            const std::string& name = "UnnamedSequence" + std::to_string(unnamed_definition_num++);
+            nested_structs.push_back(NamedType{name, inner_type});
+            inner_type = DefinedType{module.module_reference, name, {}};
         }
         else if (is_enumerated(inner_type))
         {
-            nested_structs.push_back(NamedType{"UnnamedEnum" + std::to_string(unnamed_definition_num++), inner_type});
+            const std::string& name = "UnnamedEnum" + std::to_string(unnamed_definition_num++);
+            nested_structs.push_back(NamedType{name, inner_type});
+            inner_type = DefinedType{module.module_reference, name, {}};
         }
-        find_nested_structs(inner_type, nested_structs);
     }
 }
 
 // Statements such as integer type definitions can introduce new statements, such as value assignments
-//
 std::vector<Assignment> split_definitions(const std::vector<Assignment>& assignments)
 {
     return assignments;
@@ -353,17 +382,17 @@ std::vector<Assignment> split_definitions(const std::vector<Assignment>& assignm
 
 // structs (Sequence and Sets) cannot be defined within other definitions in C++, due to this nested assignments are
 // split into top level assignment statements. Note - assignments are assumed to already have been ordered
-std::vector<Assignment> split_nested_structures(const std::vector<Assignment>& assignments)
+std::vector<Assignment> split_nested_structures(const Module& module)
 {
     std::vector<Assignment> split_assignments;
-    split_assignments.reserve(assignments.size());
+    split_assignments.reserve(module.assignments.size());
 
-    for (const Assignment& assignment : assignments)
+    for (Assignment assignment : module.assignments)
     {
         if (absl::holds_alternative<TypeAssignment>(assignment.specific))
         {
             std::vector<NamedType> nested_structs;
-            find_nested_structs(absl::get<TypeAssignment>(assignment.specific).type, nested_structs);
+            find_nested_structs(module, absl::get<TypeAssignment>(assignment.specific).type, nested_structs);
 
             for (auto nested_iter = nested_structs.rbegin(); nested_iter != nested_structs.rend(); nested_iter++)
             {

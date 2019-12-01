@@ -12,36 +12,37 @@ namespace fast_ber
 
 using ObjectIdentifierComponents = absl::InlinedVector<int64_t, 10>;
 
-inline size_t       encoded_object_id_length(const ObjectIdentifierComponents& input) noexcept;
-inline EncodeResult encode_object_id(absl::Span<uint8_t> output, const ObjectIdentifierComponents& input,
-                                     size_t encoded_length = 0) noexcept;
-inline DecodeResult decode_object_id(absl::Span<const uint8_t> input, ObjectIdentifierComponents& output) noexcept;
+size_t       encoded_object_id_length(const ObjectIdentifierComponents& input) noexcept;
+EncodeResult encode_object_id(absl::Span<uint8_t> output, const ObjectIdentifierComponents& input,
+                              size_t encoded_length = 0) noexcept;
+DecodeResult decode_object_id(absl::Span<const uint8_t> input, ObjectIdentifierComponents& output) noexcept;
 // Return -1 on fail
-inline int64_t get_component_number(absl::Span<const uint8_t> input, size_t component_number) noexcept;
-inline size_t  get_number_of_components(absl::Span<const uint8_t> input) noexcept;
+int64_t get_component_number(absl::Span<const uint8_t> input, size_t component_number) noexcept;
+size_t  get_number_of_components(absl::Span<const uint8_t> input) noexcept;
 
+template <typename Identifier = ExplicitId<UniversalTag::object_identifier>>
 class ObjectIdentifier
 {
   public:
-    ObjectIdentifier() noexcept                            = default;
-    ObjectIdentifier(const ObjectIdentifier& rhs) noexcept = default;
-    ObjectIdentifier(ObjectIdentifier&& rhs) noexcept      = default;
+    ObjectIdentifier() noexcept                                        = default;
+    ObjectIdentifier(const ObjectIdentifier<Identifier>& rhs) noexcept = default;
+    ObjectIdentifier(ObjectIdentifier<Identifier>&& rhs) noexcept      = default;
+    ObjectIdentifier(const ObjectIdentifierComponents& oid) noexcept { assign(oid); }
+    ObjectIdentifier(const std::initializer_list<int64_t>& oid) noexcept { assign(ObjectIdentifierComponents(oid)); }
 
-    explicit ObjectIdentifier(const ObjectIdentifierComponents& oid) noexcept { assign(oid); }
-    explicit ObjectIdentifier(const std::initializer_list<int64_t>& oid) noexcept
+    ObjectIdentifier<Identifier>& operator=(const BerView& view) noexcept;
+    ObjectIdentifier<Identifier>& operator=(const ObjectIdentifierComponents& rhs) noexcept;
+    ObjectIdentifier<Identifier>& operator=(absl::Span<const uint8_t> buffer) noexcept;
+    ObjectIdentifier&             operator=(const ObjectIdentifier&) = default;
+    ObjectIdentifier&             operator=(ObjectIdentifier&&) = default;
+
+    bool operator==(const ObjectIdentifier<Identifier>& rhs) const noexcept
     {
-        assign(ObjectIdentifierComponents(oid));
+        return this->m_contents == rhs.m_contents;
     }
-
-    ObjectIdentifier& operator=(const BerView& view) noexcept;
-    ObjectIdentifier& operator=(const ObjectIdentifierComponents& rhs) noexcept;
-
-    ObjectIdentifier& operator=(absl::Span<const uint8_t> buffer) noexcept;
-    bool operator==(const ObjectIdentifier& rhs) const noexcept { return this->m_contents == rhs.m_contents; }
-    bool operator!=(const ObjectIdentifier& rhs) const noexcept { return !(*this == rhs); }
+    bool operator!=(const ObjectIdentifier<Identifier>& rhs) const noexcept { return !(*this == rhs); }
     bool operator==(const ObjectIdentifierComponents& rhs) const noexcept { return this->value() == rhs; }
     bool operator!=(const ObjectIdentifierComponents& rhs) const noexcept { return !(*this == rhs); }
-    friend std::ostream& operator<<(std::ostream& os, const OctetString& str) noexcept;
 
     size_t  number_of_components() const noexcept;
     int64_t component_number(size_t number_of_component_to_extract) const noexcept;
@@ -53,16 +54,14 @@ class ObjectIdentifier
     size_t assign_ber(const BerContainer& container) noexcept;
     size_t assign_ber(absl::Span<const uint8_t> buffer) noexcept;
 
+    size_t       encoded_content_and_length_length() const noexcept { return m_contents.content_and_length_length(); }
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
+
+    using AsnId = Identifier;
 
   private:
     BerLengthAndContentContainer m_contents;
 };
-
-constexpr inline ExplicitIdentifier<UniversalTag::object_identifier> identifier(const ObjectIdentifier*) noexcept
-{
-    return {};
-}
 
 inline size_t encoded_object_id_length(const ObjectIdentifierComponents& input) noexcept
 {
@@ -131,7 +130,10 @@ inline EncodeResult encode_object_id(absl::Span<uint8_t> output, const ObjectIde
 
 inline DecodeResult decode_object_id(absl::Span<const uint8_t> input, absl::InlinedVector<int64_t, 10>& output) noexcept
 {
-    output.clear();
+    if (!output.empty())
+    {
+        output.clear();
+    }
 
     if (input.empty())
     {
@@ -214,26 +216,30 @@ inline size_t get_number_of_components(absl::Span<const uint8_t> input) noexcept
     return number_of_components;
 }
 
-inline ObjectIdentifier& ObjectIdentifier::operator=(const BerView& view) noexcept
+template <typename Identifier>
+ObjectIdentifier<Identifier>& ObjectIdentifier<Identifier>::operator=(const BerView& view) noexcept
 {
     assign_ber(view);
     return *this;
 }
-inline ObjectIdentifier& ObjectIdentifier::operator=(const ObjectIdentifierComponents& rhs) noexcept
+template <typename Identifier>
+ObjectIdentifier<Identifier>& ObjectIdentifier<Identifier>::operator=(const ObjectIdentifierComponents& rhs) noexcept
 {
     assign(rhs);
     return *this;
 }
 
-inline ObjectIdentifier& ObjectIdentifier::operator=(absl::Span<const uint8_t> buffer) noexcept
+template <typename Identifier>
+ObjectIdentifier<Identifier>& ObjectIdentifier<Identifier>::operator=(absl::Span<const uint8_t> buffer) noexcept
 {
     assign_ber(buffer);
     return *this;
 }
 
-inline std::ostream& operator<<(std::ostream& os, const ObjectIdentifier& oid) noexcept
+template <typename Identifier>
+std::ostream& operator<<(std::ostream& os, const ObjectIdentifier<Identifier>& oid) noexcept
 {
-    os << "{ ";
+    os << "[";
     const auto oid_components = oid.value();
     for (size_t i = 0; i < oid_components.size(); i++)
     {
@@ -243,28 +249,32 @@ inline std::ostream& operator<<(std::ostream& os, const ObjectIdentifier& oid) n
             os << ", ";
         }
     }
-    os << " }";
+    os << "]";
     return os;
 }
 
-inline size_t ObjectIdentifier::number_of_components() const noexcept
+template <typename Identifier>
+size_t ObjectIdentifier<Identifier>::number_of_components() const noexcept
 {
     return fast_ber::get_number_of_components(m_contents.content());
 }
 
-inline int64_t ObjectIdentifier::component_number(size_t component_number) const noexcept
+template <typename Identifier>
+int64_t ObjectIdentifier<Identifier>::component_number(size_t component_number) const noexcept
 {
     return fast_ber::get_component_number(m_contents.content(), component_number);
 }
 
-inline ObjectIdentifierComponents ObjectIdentifier::value() const noexcept
+template <typename Identifier>
+ObjectIdentifierComponents ObjectIdentifier<Identifier>::value() const noexcept
 {
     ObjectIdentifierComponents output;
     decode_object_id(m_contents.content(), output);
     return output;
 }
 
-inline bool ObjectIdentifier::assign(const ObjectIdentifierComponents& oid) noexcept
+template <typename Identifier>
+bool ObjectIdentifier<Identifier>::assign(const ObjectIdentifierComponents& oid) noexcept
 {
     const size_t encoded_length = encoded_object_id_length(oid);
     m_contents.resize_content(encoded_length);
@@ -276,19 +286,48 @@ inline bool ObjectIdentifier::assign(const ObjectIdentifierComponents& oid) noex
     return res.success;
 }
 
-inline size_t ObjectIdentifier::assign_ber(const BerView& view) noexcept { return m_contents.assign_ber(view); }
-inline size_t ObjectIdentifier::assign_ber(const BerContainer& container) noexcept
+template <typename Identifier>
+size_t ObjectIdentifier<Identifier>::assign_ber(const BerView& view) noexcept
 {
-    return m_contents.assign_ber(container);
-}
-inline size_t ObjectIdentifier::assign_ber(absl::Span<const uint8_t> buffer) noexcept
-{
-    return m_contents.assign_ber(buffer);
+    m_contents.assign(view);
+    return 1;
 }
 
-inline EncodeResult ObjectIdentifier::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
+template <typename Identifier>
+size_t ObjectIdentifier<Identifier>::assign_ber(const BerContainer& container) noexcept
 {
-    return m_contents.encode_content_and_length(buffer);
+    m_contents.assign(container);
+    return 1;
+}
+
+template <typename Identifier>
+size_t ObjectIdentifier<Identifier>::assign_ber(absl::Span<const uint8_t> buffer) noexcept
+{
+    return m_contents.assign(buffer);
+}
+
+template <typename Identifier>
+EncodeResult ObjectIdentifier<Identifier>::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
+{
+    return m_contents.content_and_length_to_raw(buffer);
+}
+
+template <typename Identifier>
+size_t encoded_length(const ObjectIdentifier<Identifier>& object)
+{
+    return encoded_length(object.encoded_content_and_length_length(), Identifier{});
+}
+
+template <typename Identifier>
+EncodeResult encode(absl::Span<uint8_t> output, const ObjectIdentifier<Identifier>& object)
+{
+    return encode_impl(output, object, Identifier{});
+}
+
+template <typename Identifier>
+DecodeResult decode(BerViewIterator& input, ObjectIdentifier<Identifier>& output) noexcept
+{
+    return decode_impl(input, output, Identifier{});
 }
 
 } // namespace fast_ber

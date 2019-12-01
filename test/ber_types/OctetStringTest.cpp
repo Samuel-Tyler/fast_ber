@@ -26,7 +26,7 @@ TEST_CASE("OctetString: Construction from string")
 
     for (const auto& val : test_vals)
     {
-        fast_ber::OctetString str(val);
+        fast_ber::OctetString<> str(val);
         REQUIRE(str.length() == str.size());
         REQUIRE(str.value() == val);
     }
@@ -51,14 +51,14 @@ TEST_CASE("OctetString: Construction from const char*")
 
     for (const auto& val : test_vals)
     {
-        fast_ber::OctetString str(val);
+        fast_ber::OctetString<> str(val);
         REQUIRE(str.value() == val);
     }
 }
 
 TEST_CASE("OctetString: Construction from sample packet")
 {
-    fast_ber::OctetString octet_string;
+    fast_ber::OctetString<> octet_string;
     octet_string.assign_ber(hello_world_packet);
     REQUIRE(octet_string.value() == "Hello world");
 }
@@ -67,10 +67,8 @@ TEST_CASE("OctetString: Encode to buffer")
 {
     std::array<uint8_t, 100> buffer = {};
 
-    fast_ber::OctetString octet_string(std::string("Hello world"));
-    size_t                encoded_length = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), octet_string,
-                                             fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>{})
-                                .length;
+    fast_ber::OctetString<> octet_string(std::string("Hello world"));
+    size_t encoded_length = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), octet_string).length;
     REQUIRE(absl::MakeSpan(buffer.data(), encoded_length) == hello_world_packet);
 }
 
@@ -78,25 +76,21 @@ TEST_CASE("OctetString: Destructive encode to buffer")
 {
     std::array<uint8_t, 200> buffer = {};
 
-    fast_ber::OctetString octet_string(std::string(150, 'c'));
-    size_t                encoded_length = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), octet_string,
-                                             fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>{})
-                                .length;
+    fast_ber::OctetString<> octet_string(std::string(150, 'c'));
+    size_t encoded_length = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), octet_string).length;
 
     for (size_t i = 0; i < encoded_length; i++)
     {
-        bool success = fast_ber::encode(absl::MakeSpan(buffer.data(), i), octet_string,
-                                        fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::octet_string>{})
-                           .success;
+        bool success = fast_ber::encode(absl::MakeSpan(buffer.data(), i), octet_string).success;
         REQUIRE(!success);
     }
 }
 
 TEST_CASE("OctetString: Iterators")
 {
-    const std::string     test_string     = "deliver no evil";
-    const std::string     reversed_string = "live on reviled";
-    fast_ber::OctetString octet_string(test_string);
+    const std::string       test_string     = "deliver no evil";
+    const std::string       reversed_string = "live on reviled";
+    fast_ber::OctetString<> octet_string(test_string);
 
     std::reverse(octet_string.begin(), octet_string.end());
     REQUIRE(octet_string.value() == reversed_string);
@@ -104,12 +98,12 @@ TEST_CASE("OctetString: Iterators")
 
 TEST_CASE("OctetString: Assign")
 {
-    const auto                   test_data      = std::string(9999, 'c');
-    const fast_ber::OctetString  octet_string_1 = fast_ber::OctetString(test_data);
-    const fast_ber::OctetString& octet_string_2(octet_string_1);
-    const fast_ber::OctetString  octet_string_3(test_data);
-    const fast_ber::OctetString  octet_string_4 = test_data;
-    fast_ber::OctetString        octet_string_5;
+    const auto                     test_data      = std::string(9999, 'c');
+    const fast_ber::OctetString<>  octet_string_1 = fast_ber::OctetString<>(test_data);
+    const fast_ber::OctetString<>& octet_string_2(octet_string_1);
+    const fast_ber::OctetString<>  octet_string_3(test_data);
+    const fast_ber::OctetString<>  octet_string_4 = test_data;
+    fast_ber::OctetString<>        octet_string_5;
 
     octet_string_5 = octet_string_4;
 
@@ -122,17 +116,25 @@ TEST_CASE("OctetString: Assign")
 
 TEST_CASE("OctetString: StringView")
 {
-    const auto                  test = "StringView test";
-    const fast_ber::OctetString octet_string(test);
+    const auto                    test = "StringView test";
+    const fast_ber::OctetString<> octet_string(test);
 
     REQUIRE(absl::string_view(octet_string.c_str(), octet_string.length()) == test);
 }
 
 TEST_CASE("OctetString: Equality")
 {
-    fast_ber::OctetString test_octets = "Duck";
+    fast_ber::OctetString<> test_octets = "Duck";
     REQUIRE(test_octets == "Duck");
     REQUIRE(test_octets != "Quack");
 }
 
-TEST_CASE("OctetString: Default value") { REQUIRE(fast_ber::OctetString{} == ""); }
+TEST_CASE("OctetString: Default value") { REQUIRE(fast_ber::OctetString<>{} == ""); }
+
+TEST_CASE("OctetString: Tagging")
+{
+    using Tag               = fast_ber::Id<fast_ber::Class::application, 2>;
+    using TaggedOctetString = fast_ber::OctetString<Tag>;
+
+    static_assert(std::is_same<fast_ber::Identifier<TaggedOctetString>, Tag>::value, "Tagged Integer");
+}

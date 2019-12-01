@@ -3,71 +3,73 @@
 #include "fast_ber/ber_types/Class.hpp"
 #include "fast_ber/ber_types/Construction.hpp"
 #include "fast_ber/ber_types/Tag.hpp"
+#include "fast_ber/util/Definitions.hpp"
 
+#include <iostream>
 #include <tuple>
 
 namespace fast_ber
 {
 
-// Class is always universal
-template <UniversalTag ExplicitTag>
-struct ExplicitIdentifier
+template <typename OuterId, typename InnerId>
+struct DoubleId
 {
-    constexpr static Class        class_() { return Class::universal; }
-    constexpr static UniversalTag tag() { return ExplicitTag; }
-};
-
-// Inner class is always universal
-template <Class OuterClass, Tag OuterTag, typename ExplicitTag>
-struct TaggedExplicitIdentifier
-{
-    constexpr static Class       outer_class() { return OuterClass; }
-    constexpr static Tag         outer_tag() { return OuterTag; }
-    constexpr static ExplicitTag inner_id() { return ExplicitTag(); }
+    constexpr static bool    check_id_match(Class c, Tag t) { return c == class_() && t == tag(); }
+    constexpr static Class   class_() { return OuterId::class_(); }
+    constexpr static Tag     tag() { return OuterId::tag(); }
+    constexpr static OuterId outer_id() { return {}; }
+    constexpr static InnerId inner_id() { return {}; }
 };
 
 // Any class or tag is valid
-template <Class ImplicitClass, Tag ImplicitTag>
-struct ImplicitIdentifier
+template <Class class_1, Tag tag_1>
+struct Id
 {
-    constexpr static Class class_() { return ImplicitClass; }
-    constexpr static Tag   tag() { return ImplicitTag; }
+    constexpr static bool  check_id_match(Class c, Tag t) { return c == class_() && t == tag(); }
+    constexpr static Class class_() { return class_1; }
+    constexpr static Tag   tag() { return tag_1; }
 };
 
-template <UniversalTag T>
-constexpr Tag reference_tag(const ExplicitIdentifier<T>& id)
+// Class is always universal
+template <UniversalTag explicit_tag>
+using ExplicitId = Id<Class::universal, val(explicit_tag)>;
+
+template <typename OuterId, typename InnerId>
+constexpr InnerId inner_identifier(DoubleId<OuterId, InnerId>)
 {
-    return val(id.tag());
+    return {};
 }
 
-template <Class T1, Tag T2, typename T3>
-constexpr Tag reference_tag(const TaggedExplicitIdentifier<T1, T2, T3>& id)
+template <Class class_, Tag tag>
+constexpr Id<class_, tag> inner_identifier(Id<class_, tag>)
 {
-    return id.outer_tag();
+    return {};
 }
 
-template <Class T1, Tag T2>
-constexpr Tag reference_tag(const ImplicitIdentifier<T1, T2>& id)
+template <typename T>
+struct IdentifierType
 {
-    return id.tag();
+    using type = typename T::AsnId;
+};
+
+template <typename T>
+using Identifier = typename IdentifierType<T>::type;
+
+template <Class class_1, Tag tag_1>
+std::ostream& operator<<(std::ostream& os, const Id<class_1, tag_1>& id) noexcept
+{
+    if (id.class_() == Class::universal)
+    {
+        UniversalTag tag = static_cast<UniversalTag>(id.tag());
+        return os << "Identifier(" << id.class_() << ", " << tag << ")";
+    }
+    return os << "Identifier(" << id.class_() << ", " << id.tag() << ")";
 }
 
-template <UniversalTag T>
-constexpr Class reference_class(const ExplicitIdentifier<T>& id)
+template <typename OuterId, typename InnerId>
+std::ostream& operator<<(std::ostream& os, const DoubleId<OuterId, InnerId>& id) noexcept
 {
-    return id.class_();
-}
-
-template <Class T1, Tag T2, typename T3>
-constexpr Class reference_class(const TaggedExplicitIdentifier<T1, T2, T3>& id)
-{
-    return id.outer_class();
-}
-
-template <Class T1, Tag T2>
-constexpr Class reference_class(const ImplicitIdentifier<T1, T2>& id)
-{
-    return id.class_();
+    return os << "DoubleIdentifier(" << id.outer_id() << ", " << id.inner_id() << ")";
 }
 
 } // namespace fast_ber

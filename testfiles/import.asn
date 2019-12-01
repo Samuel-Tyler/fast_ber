@@ -1,7 +1,7 @@
 ModuleA DEFINITIONS IMPLICIT TAGS ::= BEGIN
 IMPORTS
-    StringInModuleB FROM ModuleB
-    IntegerInModuleC FROM ModuleC;
+    StringInModuleB, string-value FROM ModuleB
+    IntegerInModuleC, integer-value FROM ModuleC;
 
 Collection ::= SEQUENCE {
     string StringInModuleB,
@@ -15,11 +15,15 @@ EXPORTS StringInModuleB;
 
 StringInModuleB ::= OCTET STRING
 
+string-value StringInModuleB ::= "pear"
+
 END
 
 ModuleC DEFINITIONS IMPLICIT TAGS ::= BEGIN
 EXPORTS IntegerInModuleC;
 
 IntegerInModuleC ::= INTEGER
+
+integer-value IntegerInModuleC ::= 5
 
 END

@@ -1,6 +1,8 @@
-#include "fast_ber/ber_types/Identifier.hpp"
+﻿#include "fast_ber/ber_types/Identifier.hpp"
 #include "fast_ber/ber_types/Integer.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
+
+#include "absl/types/optional.h"
 
 #include <catch2/catch.hpp>
 #include <limits>
@@ -34,27 +36,39 @@ TEST_CASE("Integer: Construction from int")
 
     for (int64_t val : test_vals)
     {
-        fast_ber::Integer integer(val);
-        REQUIRE(integer == val);
+        fast_ber::Integer<>                                                   integer1(val);
+        fast_ber::Integer<fast_ber::Id<fast_ber::Class::context_specific, 2>> integer2(integer1);
+        fast_ber::Integer<fast_ber::Id<fast_ber::Class::context_specific, 4>> integer3;
+        absl::optional<fast_ber::Integer<>>                                   integer4;
+        absl::optional<fast_ber::Integer<>>                                   integer5(integer1);
+
+        integer3 = integer2;
+        integer4 = integer3;
+
+        REQUIRE(integer1 == val);
+        REQUIRE(integer2 == val);
+        REQUIRE(integer3 == val);
+        REQUIRE(integer4 == val);
+        REQUIRE(integer5 == val);
     }
 }
 
 TEST_CASE("Integer: Encoding")
 {
-    fast_ber::Integer        i(100);
-    std::array<uint8_t, 100> buffer   = {};
-    std::array<uint8_t, 3>   expected = {0x02, 0x01, 0x64};
-    size_t                   size     = fast_ber::encode(absl::Span<uint8_t>(buffer.data(), buffer.size()), i,
-                                   fast_ber::ExplicitIdentifier<fast_ber::UniversalTag::integer>{})
-                      .length;
+    fast_ber::Integer<>      i(100);
+    std::array<uint8_t, 100> buffer       = {};
+    std::array<uint8_t, 3>   expected     = {0x02, 0x01, 0x64};
+    size_t                   encoded_size = fast_ber::encoded_length(i);
+    size_t                   size = fast_ber::encode(absl::Span<uint8_t>(buffer.data(), buffer.size()), i).length;
 
     REQUIRE(size == 3);
+    REQUIRE(encoded_size == 3);
     REQUIRE(absl::MakeSpan(buffer.data(), 3) == absl::MakeSpan(expected));
 }
 
 TEST_CASE("Integer: Assign from raw")
 {
-    fast_ber::Integer      i(100);
+    fast_ber::Integer<>    i(100);
     std::array<uint8_t, 4> test_data = {0x00, 0x02, 0x12, 0x34};
 
     size_t size = i.assign_ber(absl::MakeSpan(test_data.data(), test_data.size()));
@@ -62,4 +76,18 @@ TEST_CASE("Integer: Assign from raw")
     REQUIRE(i == 0x1234);
 }
 
-TEST_CASE("Integer: Default value") { REQUIRE(fast_ber::Integer() == 0); }
+TEST_CASE("Integer: Default value") { REQUIRE(fast_ber::Integer<>() == 0); }
+
+TEST_CASE("Integer: Tagging")
+{
+    using Tag               = fast_ber::Id<fast_ber::Class::application, 2>;
+    using DefaultTag        = fast_ber::ExplicitId<fast_ber::UniversalTag::integer>;
+    using ExplicitTag       = fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::application, 2>,
+                                           fast_ber::ExplicitId<fast_ber::UniversalTag::integer>>;
+    using TaggedInt         = fast_ber::Integer<Tag>;
+    using ExplicitTaggedInt = fast_ber::Integer<ExplicitTag>;
+
+    static_assert(std::is_same<fast_ber::Identifier<fast_ber::Integer<>>, DefaultTag>::value, "Tagged Integer");
+    static_assert(std::is_same<fast_ber::Identifier<TaggedInt>, Tag>::value, "Tagged Integer");
+    static_assert(std::is_same<fast_ber::Identifier<ExplicitTaggedInt>, ExplicitTag>::value, "Tagged Identifier");
+}

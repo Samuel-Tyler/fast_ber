@@ -1,10 +1,9 @@
 #pragma once
 
-#include "fast_ber/ber_types/OctetString.hpp"
-#include "fast_ber/ber_types/TaggedType.hpp"
+#include "fast_ber/ber_types/StringImpl.hpp"
 
 namespace fast_ber
 {
-
-using BitString = TaggedType<OctetString, ExplicitIdentifier<UniversalTag::bit_string>>;
+template <typename Identifier = ExplicitId<UniversalTag::bit_string>>
+using BitString = fast_ber::StringImpl<UniversalTag::bit_string, Identifier>;
 }

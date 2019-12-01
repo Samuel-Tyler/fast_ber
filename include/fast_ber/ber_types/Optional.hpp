@@ -1,5 +1,6 @@
 #pragma once
 
+#include "absl/memory/memory.h"
 #include "absl/types/optional.h"
 #include "absl/types/span.h"
 
@@ -7,19 +8,74 @@
 #include "fast_ber/ber_types/Identifier.hpp"
 #include "fast_ber/ber_types/Tag.hpp"
 #include "fast_ber/util/DecodeHelpers.hpp"
+#include "fast_ber/util/DynamicOptional.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
 
 namespace fast_ber
 {
-template <typename T>
-using Optional = absl::optional<T>;
 
-template <typename T, typename ID>
-EncodeResult encode(absl::Span<uint8_t> buffer, const Optional<T>& optional_type, const ID& id) noexcept
+template <typename T>
+using StaticOptional = absl::optional<T>;
+
+template <typename T, StorageMode storage>
+struct OptionalImplementation
+{
+    using Type = absl::optional<T>;
+};
+
+template <typename T>
+struct OptionalImplementation<T, StorageMode::static_>
+{
+    using Type = absl::optional<T>;
+};
+
+template <typename T>
+struct OptionalImplementation<T, StorageMode::dynamic>
+{
+    using Type = DynamicOptional<T>;
+};
+
+template <typename T, StorageMode storage = StorageMode::static_>
+struct Optional : public OptionalImplementation<T, storage>::Type
+{
+    using Implementation = typename OptionalImplementation<T, storage>::Type;
+    using Implementation::Implementation;
+    using Implementation::operator=;
+
+    const Implementation& base() const { return *static_cast<const Implementation*>(this); }
+
+    Optional()                    = default;
+    Optional(const Optional& rhs) = default;
+    Optional(Optional&& rhs)      = default;
+    Optional& operator=(const Optional& rhs) = default;
+    Optional& operator=(Optional&& rhs) = default;
+};
+
+template <typename T, StorageMode s1>
+struct IdentifierType<Optional<T, s1>>
+{
+    using type = Identifier<T>;
+};
+
+template <typename T, StorageMode s1>
+size_t encoded_length(const Optional<T, s1>& optional_type) noexcept
 {
     if (optional_type.has_value())
     {
-        return encode(buffer, *optional_type, id);
+        return encoded_length(*optional_type);
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+template <typename T, StorageMode s1>
+EncodeResult encode(absl::Span<uint8_t> buffer, const Optional<T, s1>& optional_type) noexcept
+{
+    if (optional_type.has_value())
+    {
+        return encode(buffer, *optional_type);
     }
     else
     {
@@ -27,39 +83,66 @@ EncodeResult encode(absl::Span<uint8_t> buffer, const Optional<T>& optional_type
     }
 }
 
-template <typename T>
-EncodeResult encode(absl::Span<uint8_t> buffer, const Optional<T>& optional_type) noexcept
+template <typename T, StorageMode s1>
+DecodeResult decode(BerViewIterator& input, Optional<T, s1>& output) noexcept
 {
-    constexpr auto id = identifier(static_cast<T*>(nullptr));
-    return encode(buffer, optional_type, id);
-}
-
-template <typename T, typename ID>
-DecodeResult decode(BerViewIterator& input, Optional<T>& output, const ID& id) noexcept
-{
-    if (input->is_valid() && input->tag() == val(reference_tag(id)))
+    if (input->is_valid() && input->tag() == Identifier<T>::tag() && input->class_() == Identifier<T>::class_())
     {
         output.emplace();
-        return decode(input, *output, id);
+        return decode(input, *output);
     }
     else
     {
-        output = absl::nullopt;
+        output = empty;
         return DecodeResult{true};
     }
 }
 
-template <typename T>
-DecodeResult decode(BerViewIterator& input, Optional<T>& output) noexcept
+template <typename T, StorageMode s1>
+std::ostream& operator<<(std::ostream& os, const Optional<T, s1>& optional)
 {
-    constexpr auto id = identifier(static_cast<T*>(nullptr));
-    return decode(input, output, id);
+    if (!optional)
+    {
+        return os << "null";
+    }
+
+    return os << *optional;
 }
 
-template <typename T>
-constexpr auto identifier(const absl::optional<T>*) noexcept -> decltype(identifier(static_cast<T*>(nullptr)))
+template <typename T, typename T2, StorageMode s1>
+bool operator==(const Optional<T, s1>& lhs, const T2& rhs)
 {
-    return {};
+    return lhs.base() == rhs;
+}
+
+template <typename T, typename T2, StorageMode s1>
+bool operator==(const T& lhs, const Optional<T2, s1>& rhs)
+{
+    return lhs == rhs.base();
+}
+
+template <typename T, typename T2, StorageMode s1, StorageMode s2>
+bool operator==(const Optional<T, s1>& lhs, const Optional<T2, s2>& rhs)
+{
+    return lhs.base() == rhs.base();
+}
+
+template <typename T, typename T2, StorageMode s1>
+bool operator!=(const Optional<T, s1>& lhs, const T2& rhs)
+{
+    return lhs.base() != rhs;
+}
+
+template <typename T, typename T2, StorageMode s1>
+bool operator!=(const T& lhs, const Optional<T2, s1>& rhs)
+{
+    return lhs != rhs.base();
+}
+
+template <typename T, typename T2, StorageMode s1, StorageMode s2>
+bool operator!=(const Optional<T, s1>& lhs, const Optional<T2, s2>& rhs)
+{
+    return lhs.base() != rhs.base();
 }
 
 } // namespace fast_ber

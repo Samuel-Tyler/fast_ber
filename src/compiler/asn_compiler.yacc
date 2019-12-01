@@ -257,6 +257,8 @@
 %type<BitStringType>     BitStringType;
 %type<BooleanType>       BooleanType;
 %type<CharacterStringType> CharacterStringType;
+%type<CharacterStringType> RestrictedCharacterStringType;
+%type<CharacterStringType> UnrestrictedCharacterStringType;
 %type<ChoiceType>        ChoiceType;
 %type<DateType>          DateType;
 %type<DateTimeType>      DateTimeType;
@@ -1225,7 +1227,13 @@ ComponentTypeList:
     { $1.push_back($3); $$ = $1; }
 
 ComponentType:
-    NamedType
+    Type
+    { $$ = ComponentType{{gen_anon_member_name(), $1}, false, absl::nullopt, absl::nullopt}; }
+|   Type OPTIONAL
+    { $$ = ComponentType{{gen_anon_member_name(), $1}, true, absl::nullopt, absl::nullopt}; }
+|   Type DEFAULT SingleValue
+    { $$ = ComponentType{{gen_anon_member_name(), $1}, false, $3, absl::nullopt}; }
+|   NamedType
     { $$ = ComponentType{$1, false, absl::nullopt, absl::nullopt}; }
 |   NamedType OPTIONAL
     { $$ = ComponentType{$1, true, absl::nullopt, absl::nullopt}; }
@@ -1436,26 +1444,41 @@ DurationType:
 
 CharacterStringType:
     RestrictedCharacterStringType
-|   UnrestrictedCharacterStringType;
+    { $$ = $1; }
+|   UnrestrictedCharacterStringType
+    { $$ = $1; }
 
 RestrictedCharacterStringType:
     BMPString
+    { $$ = CharacterStringType::bmp_string; }
 |   GeneralString
+    { $$ = CharacterStringType::general_string; }
 |   GraphicString
+    { $$ = CharacterStringType::graphic_string; }
 |   IA5String
+    { $$ = CharacterStringType::ia5_string; }
 |   ISO646String
+    { $$ = CharacterStringType::iso646_string; }
 |   NumericString
+    { $$ = CharacterStringType::numeric_string; }
 |   PrintableString
+    { $$ = CharacterStringType::printable_string; }
 |   TeletexString
+    { $$ = CharacterStringType::teletex_string; }
 |   T61String
+    { $$ = CharacterStringType::t61_string; }
 |   UniversalString
+    { $$ = CharacterStringType::universal_string; }
 |   UTF8String
+    { $$ = CharacterStringType::utf8_string; }
 |   VideotexString
-|   VisibleString;
-
+    { $$ = CharacterStringType::videotex_string; }
+|   VisibleString
+    { $$ = CharacterStringType::visible_string; }
 
 UnrestrictedCharacterStringType:
-    CHARACTER STRING;
+    CHARACTER STRING
+    { $$ = CharacterStringType::character_string; }
 
 ConstrainedType:
     Type Constraint
@@ -1857,7 +1880,8 @@ re2c:define:YYCURSOR = "context.cursor";
 // Comments
 "--" ([\-]?[^\r\n\-])* "--"
                         { context.location.columns(context.cursor - start); return yylex(context); }
-"--" ([\-]?[^\r\n\-])*  { context.location.columns(context.cursor - start); return yylex(context); }
+"--" ([\-]?[^\r\n\-])*[\-]?
+                        { context.location.columns(context.cursor - start); return yylex(context); }
 "/*" ([^\*]|[\*][^/])* "*/"
                         { context.location.columns(context.cursor - start); return yylex(context); }
 

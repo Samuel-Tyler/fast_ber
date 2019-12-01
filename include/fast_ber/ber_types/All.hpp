@@ -1,5 +1,8 @@
 #pragma once
 
+#include "fast_ber/util/Alias.hpp"
+
+#include "BMPString.hpp"
 #include "BitString.hpp"
 #include "Boolean.hpp"
 #include "CharacterString.hpp"
@@ -10,15 +13,19 @@
 #include "EmbeddedPDV.hpp"
 #include "Enumerated.hpp"
 #include "External.hpp"
+#include "GeneralString.hpp"
 #include "GeneralizedTime.hpp"
+#include "GraphicString.hpp"
+#include "IA5String.hpp"
 #include "IRI.hpp"
-#include "InstanceOf.hpp"
+#include "ISO646String.hpp"
 #include "Integer.hpp"
 #include "Null.hpp"
+#include "NumericString.hpp"
 #include "ObjectIdentifier.hpp"
 #include "OctetString.hpp"
 #include "Optional.hpp"
-#include "Prefixed.hpp"
+#include "PrintableString.hpp"
 #include "Real.hpp"
 #include "RelativeIRI.hpp"
 #include "RelativeOID.hpp"
@@ -26,14 +33,13 @@
 #include "SequenceOf.hpp"
 #include "Set.hpp"
 #include "SetOf.hpp"
-#include "TaggedType.hpp"
+#include "TeletexString.hpp"
 #include "Time.hpp"
 #include "TimeOfDay.hpp"
 #include "UTCTime.hpp"
+#include "UTF8String.hpp"
+#include "UniversalString.hpp"
+#include "VideotexString.hpp"
 #include "VisibleString.hpp"
 
-namespace fast_ber
-{
-using Any = fast_ber::Choice<BitString, Boolean, CharacterString, Date, DateTime, Duration, GeneralizedTime, Integer,
-                             Null, ObjectIdentifier, OctetString, Real, Time, TimeOfDay, UTCTime, VisibleString>;
-}
+#include "Any.hpp"

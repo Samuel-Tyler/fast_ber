@@ -6,10 +6,26 @@ Collection ::= SEQUENCE {
     integer [2] EXPLICIT INTEGER,
     bool1 [3] IMPLICIT BOOLEAN,
     bool2 [PRIVATE 4] EXPLICIT BOOLEAN,
-    bool3 [APPLICATION 5] BOOLEAN
---  enumerated [APPLICATION 6] ENUMERATED { enum }
+    bool3 [APPLICATION 5] BOOLEAN,
+    enumerated [APPLICATION 6] ENUMERATED { enum }
+}
+
+DefaultCollection ::= SEQUENCE {
+    string1 OCTET STRING,
+    string2 OCTET STRING,
+    string3 OCTET STRING
 }
 
 TaggedEnum ::= [APPLICATION 7] ENUMERATED { enum }
+
+END
+
+AutomaticTags DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+DefaultCollection ::= SEQUENCE {
+    string1 OCTET STRING,
+    string2 OCTET STRING,
+    string3 OCTET STRING
+}
 
 END
