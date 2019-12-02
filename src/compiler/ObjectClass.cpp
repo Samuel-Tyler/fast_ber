@@ -184,12 +184,13 @@ void remove_object_classes(Asn1Tree& tree, const std::set<std::string>& object_c
     {
         for (Import& import : module.imports)
         {
-            import.imports.erase(std::remove_if(import.imports.begin(), import.imports.end(),
-                                                [&](const std::string& imported_name) {
-                                                    return is_defined_object_class(import.module_reference,
-                                                                                   imported_name, object_class_names);
-                                                }),
-                                 import.imports.end());
+            import.imported_types.erase(std::remove_if(import.imported_types.begin(), import.imported_types.end(),
+                                                       [&](const std::string& imported_name) {
+                                                           return is_defined_object_class(import.module_reference,
+                                                                                          imported_name,
+                                                                                          object_class_names);
+                                                       }),
+                                        import.imported_types.end());
         }
     }
 }
@@ -251,7 +252,7 @@ std::set<std::string> get_object_class_names(const Asn1Tree& tree)
         {
             for (const Import& import : module.imports)
             {
-                for (const std::string& imported_name : import.imports)
+                for (const std::string& imported_name : import.imported_types)
                 {
                     if (is_defined_object_class(import.module_reference, imported_name, object_class_names))
                     {

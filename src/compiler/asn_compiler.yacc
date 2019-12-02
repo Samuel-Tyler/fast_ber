@@ -829,7 +829,19 @@ SymbolsFromModuleList:
 
 SymbolsFromModule:
     SymbolList FROM GlobalModuleReference
-    { $$ = Import{ $3, $1 }; }
+    { $$ = Import{ $3, {}, {} };
+      for (const std::string& ref: $1)
+      {
+        if (std::isupper(ref[0]))
+        {
+          $$.imported_types.push_back(ref);
+        }
+        else
+        {
+          $$.imported_values.push_back(ref);
+        }
+      }
+    }
 
 GlobalModuleReference:
     modulereference

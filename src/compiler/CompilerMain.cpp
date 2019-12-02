@@ -3,6 +3,7 @@
 #include "fast_ber/compiler/CppGeneration.hpp"
 #include "fast_ber/compiler/Dependencies.hpp"
 #include "fast_ber/compiler/Identifier.hpp"
+#include "fast_ber/compiler/Logging.hpp"
 #include "fast_ber/compiler/ObjectClass.hpp"
 #include "fast_ber/compiler/Parameters.hpp"
 #include "fast_ber/compiler/ReorderAssignments.hpp"
@@ -25,10 +26,8 @@ std::string strip_path(const std::string& path)
 std::string create_type_fwd(const std::string& name, const Type& type, const Module& module, const Asn1Tree& tree)
 {
     TaggingInfo tag = identifier(type, module, tree);
-    std::string res;
-    res += create_template_definition({"Identifier = " + tag.name()});
-    res += "struct " + name + ";\n";
-    return res;
+
+    return create_template_definition({"Identifier = " + tag.name()}) + "struct " + name + ";\n";
 }
 
 std::string create_type_assignment(const std::string& name, const Type& assignment_type, const Module& module,
@@ -90,6 +89,8 @@ std::string create_assignment(const Asn1Tree& tree, const Module& module, const 
     {
         if (absl::holds_alternative<ValueAssignment>(assignment.specific)) // Value assignment
         {
+            log_debug(tree, "Creating value assignment: " + module.module_reference + "." + assignment.name);
+
             const ValueAssignment& value_assign = absl::get<ValueAssignment>(assignment.specific);
             std::string            result =
                 "static const " + type_as_string(value_assign.type, module, tree) + " " + assignment.name + " = ";
@@ -179,6 +180,8 @@ std::string create_assignment(const Asn1Tree& tree, const Module& module, const 
         }
         else if (absl::holds_alternative<TypeAssignment>(assignment.specific))
         {
+            log_debug(tree, "Creating type assignment: " + module.module_reference + "." + assignment.name);
+
             return create_type_assignment(assignment, module, tree);
         }
         else if (absl::holds_alternative<ObjectClassAssignment>(assignment.specific))
@@ -574,38 +577,22 @@ std::string create_helper_functions(const Assignment& assignment)
     return "";
 }
 
-std::string create_imports(const Asn1Tree& tree, const Module& module, bool fwd = false)
+std::string create_imports(const Asn1Tree& tree, const Module& module)
 {
+
     std::string output;
 
     for (const Import& import : module.imports)
     {
-        for (const auto& import_name : import.imports)
+        for (const auto& import_name : import.imported_values)
         {
-            if (fwd)
-            {
-                if (is_type(resolve(tree, import.module_reference, import_name)))
-                {
-                    output += create_type_fwd(import_name, type(resolve(tree, module.module_reference, import_name)),
-                                              module, tree);
-                }
-            }
-            else
-            {
-                if (is_type(resolve(tree, import.module_reference, import_name)))
-                {
-                    output += create_template_definition({"Identifier"});
-                    output += "FAST_BER_ALIAS(" + import_name + ", " + import.module_reference + "::" + import_name +
-                              "<>);\n";
-                }
-                else if (is_value(resolve(tree, import.module_reference, import_name)))
-                {
-                    output += "static const auto " + import_name + " = " + import.module_reference +
-                              "::" + import_name + ";\n";
-                }
-            }
+
+            log_debug(tree, "Value import " + module.module_reference + "." + import_name + " <- " +
+                                import.module_reference + "." + import_name);
+
+            output += "static const auto " + import_name + " = " + import.module_reference + "::" + import_name + ";\n";
         }
-        if (import.imports.size() > 0)
+        if (import.imported_values.size() > 0)
         {
             output += "\n";
         }
@@ -630,12 +617,12 @@ std::string create_body(const Asn1Tree& tree, const Module& module)
 std::string create_fwd_declarations(const Asn1Tree& tree, const Module& module)
 {
     std::string output;
-    output += create_imports(tree, module, true);
 
     for (const Assignment& assignment : module.assignments)
     {
         if (absl::holds_alternative<TypeAssignment>(assignment.specific))
         {
+            log_debug(tree, "Creating forward definition: " + module.module_reference + "." + assignment.name);
             output +=
                 create_type_fwd(assignment.name, absl::get<TypeAssignment>(assignment.specific).type, module, tree);
         }
@@ -646,6 +633,7 @@ std::string create_fwd_declarations(const Asn1Tree& tree, const Module& module)
 
 std::string create_fwd_body(const Asn1Tree& tree)
 {
+    log_debug(tree, "Creating .fwd.hpp");
     std::string output;
     output += "/* Forward declration of ASN.1 types */\n\n";
     output += "#pragma once\n\n";
@@ -661,11 +649,13 @@ std::string create_fwd_body(const Asn1Tree& tree)
     }
 
     output += add_namespace("fast_ber", definitions) + '\n';
+    log_debug(tree, "Done creating .fwd.hpp");
     return output;
 }
 
 std::string create_detail_body(const Asn1Tree& tree)
 {
+    log_debug(tree, "Creating .detail.hpp");
     std::string output;
     output += "/* Functionality provided for Encoding and Decoding BER */\n\n";
 
@@ -695,12 +685,14 @@ std::string create_detail_body(const Asn1Tree& tree)
         body += add_namespace(module.module_reference, helpers);
     }
     output += add_namespace("fast_ber", body) + "\n\n";
+    log_debug(tree, "Done creating .detail.hpp");
     return output;
 }
 
 std::string create_output_file(const Asn1Tree& tree, const std::string& fwd_filename,
                                const std::string& detail_filename)
 {
+    log_debug(tree, "Creating .hpp");
     std::string output;
     output += "#pragma once\n\n";
     output += create_include("fast_ber/ber_types/All.hpp");
@@ -717,6 +709,7 @@ std::string create_output_file(const Asn1Tree& tree, const std::string& fwd_file
 
     output += add_namespace("fast_ber", definitions) + '\n';
     output += create_include(strip_path(detail_filename)) + '\n';
+    log_debug(tree, "Done creating .hpp");
     return output;
 }
 
@@ -782,9 +775,10 @@ int main(int argc, char** argv)
 
         for (auto& module : context.asn1_tree.modules)
         {
+            module.assignments = split_imports(context.asn1_tree, module.assignments, module.imports);
             module.assignments = split_definitions(module.assignments);
             check_duplicated_names(module.assignments, module.module_reference);
-            module.assignments = reorder_assignments(module.assignments, module.imports, context.asn1_tree.is_circular);
+            module.assignments = reorder_assignments(module.assignments, context.asn1_tree.is_circular);
             module.assignments = split_nested_structures(module);
         }
 

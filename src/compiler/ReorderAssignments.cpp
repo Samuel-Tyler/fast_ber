@@ -1,8 +1,8 @@
 #include "fast_ber/compiler/ReorderAssignments.hpp"
 #include "fast_ber/compiler/Dependencies.hpp"
+#include "fast_ber/compiler/Logging.hpp"
 #include "fast_ber/compiler/ResolveType.hpp"
 
-#include <iostream>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -168,8 +168,7 @@ void resolve_dependencies(const std::unordered_map<std::string, Assignment>& ass
 
 // Reorder assignments, defining
 // Should be able to detect missing assignments and circular dependencies
-std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments, const std::vector<Import>& imports,
-                                            bool& is_circular)
+std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments, bool& is_circular)
 {
     std::unordered_map<std::string, Assignment> assignment_map;
     assignment_map.reserve(assignments.size());
@@ -181,15 +180,6 @@ std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments
 
     std::unordered_set<std::string> assigned_names;
     std::unordered_set<std::string> visited_names;
-
-    for (const Import& import : imports)
-    {
-        for (const std::string& import_name : import.imports)
-        {
-            assignment_map[import_name] = Assignment{};
-            assigned_names.insert(import_name);
-        }
-    }
 
     std::vector<Assignment> ordered_assignments;
     ordered_assignments.reserve(assignments.size());
@@ -347,6 +337,31 @@ void find_nested_structs(const Module& module, Type& type, std::vector<NamedType
             inner_type = DefinedType{module.module_reference, name, {}};
         }
     }
+}
+
+// Create assignments for imported types
+std::vector<Assignment> split_imports(const Asn1Tree& tree, std::vector<Assignment> assignments,
+                                      const std::vector<Import>& imports)
+{
+    for (const Import& module_import : imports)
+    {
+        for (const std::string& import : module_import.imported_types)
+        {
+            log_debug(tree, "Importing type " + import + " <- " + module_import.module_reference + "." + import);
+
+            assignments.push_back(
+                Assignment{import, TypeAssignment{DefinedType{module_import.module_reference, import, {}}}, {}, {}});
+        }
+
+        /* for (const std::string& import : module_import.imported_values)
+         {
+             log_debug(tree, "Importing type " + import + " <- " + module_import.module_reference + "." + import);
+
+             assignments.push_back(
+                 Assignment{import, ValueAssignment{DefinedType{module_import.module_reference, import, {}}}, {}, {}});
+         }*/
+    }
+    return assignments;
 }
 
 // Statements such as integer type definitions can introduce new statements, such as value assignments

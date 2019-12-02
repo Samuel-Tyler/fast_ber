@@ -37,6 +37,7 @@ TaggingInfo identifier(const ChoiceType& choice, const Module& module, const Asn
         {
             id += ", ";
         }
+
         id += identifier(named_type.type, module, tree).name();
         first = false;
     }
@@ -190,8 +191,11 @@ struct IdentifierHelper
 
 TaggingInfo identifier(const DefinedType& defined, const Module& current_module, const Asn1Tree& tree)
 {
-    const Type& resolved_type = type(resolve(tree, current_module.module_reference, defined));
-    return identifier(resolved_type, current_module, tree);
+    const Type&       resolved_type = type(resolve(tree, current_module.module_reference, defined));
+    const Module&     mod           = find_module(tree, current_module, defined);
+    const TaggingInfo info          = identifier(resolved_type, mod, tree);
+
+    return info;
 }
 TaggingInfo identifier(const BuiltinType& type, const Module& current_module, const Asn1Tree& tree)
 {

@@ -1,13 +1,21 @@
 MakeAChoice DEFINITIONS IMPLICIT TAGS ::= BEGIN
 
+IMPORTS BoolMod2 FROM OtherModule;
+
 Collection ::= SEQUENCE {
-    the-choice CHOICE {
-        hello [0] OCTET STRING,
-        goodbye [1] OCTET STRING,
-        integer [2] INTEGER,
-        boolean [3] BOOLEAN,
-        sequence [4] SEQUENCE { i INTEGER }
-    }
+     the-choice CHOICE {
+         hello [0] OCTET STRING,
+         goodbye [1] OCTET STRING,
+         integer [2] INTEGER,
+         boolean [3] BoolMod2,
+         sequence [4] SEQUENCE { i INTEGER }
+     }
 }
+
+END
+
+OtherModule DEFINITIONS IMPLICIT TAGS ::= BEGIN
+
+BoolMod2 ::= BOOLEAN
 
 END

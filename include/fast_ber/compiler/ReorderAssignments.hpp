@@ -13,11 +13,14 @@ void resolve_dependencies(const std::unordered_map<std::string, Assignment>& ass
 
 // Reorder assignments, defining
 // Should be able to detect missing assignments and circular dependencies
-std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments, const std::vector<Import>& imports,
-                                            bool& is_circular);
+std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments, bool& is_circular);
 
 // Finds any sequence or set types nested within a type
 void find_nested_structs(const Module& module, const Type& type, std::vector<NamedType>& nested_structs);
+
+// Create assignments for imported types
+std::vector<Assignment> split_imports(const Asn1Tree& tree, std::vector<Assignment> assignments,
+                                      const std::vector<Import>& imports);
 
 // Statements such as integer type definitions can introduce new statements, such as value assignments
 std::vector<Assignment> split_definitions(const std::vector<Assignment>& assignments);

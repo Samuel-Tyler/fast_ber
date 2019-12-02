@@ -416,7 +416,8 @@ struct Assignment
 struct Import
 {
     std::string              module_reference;
-    std::vector<std::string> imports;
+    std::vector<std::string> imported_types;
+    std::vector<std::string> imported_values;
 };
 
 struct Export

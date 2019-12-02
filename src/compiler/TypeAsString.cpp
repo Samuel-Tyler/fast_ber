@@ -351,24 +351,19 @@ std::string type_as_string(const UTCTimeType& type, const Module& module, const 
 std::string type_as_string(const DefinedType& defined_type, const Module& module, const Asn1Tree& tree,
                            const std::string& identifier_override)
 {
-    if (identifier_override.empty())
-    {
-        return defined_type.type_reference + "<>";
-    }
+    const std::string& assigned_type =
+        (defined_type.module_reference ? *defined_type.module_reference + "::" : std::string("")) +
+        defined_type.type_reference;
 
-    const Type& referenced = type(resolve(tree, module.module_reference, defined_type));
-    if (is_set(referenced) || is_sequence(referenced))
+    if (!identifier_override.empty())
     {
-        if (!identifier_override.empty())
-        {
-            return defined_type.type_reference + "<" + identifier_override + ">";
-        }
-        else
-        {
-            return defined_type.type_reference + "<" + identifier(referenced, module, tree).name() + ">";
-        }
+        return assigned_type + "<" + identifier_override + ">";
     }
-    return defined_type.type_reference + "<" + identifier_override + ">";
+    else
+    {
+        const Type& referenced = type(resolve(tree, module.module_reference, defined_type));
+        return assigned_type + "<" + identifier(referenced, module, tree).name() + ">";
+    }
 }
 
 struct ToStringHelper
