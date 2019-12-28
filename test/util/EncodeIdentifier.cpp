@@ -47,8 +47,8 @@ TEST_CASE("EncodeIdentifiers: Length length")
 
 TEST_CASE("EncodeIdentifiers: Creating tags")
 {
-    const auto test_vals = std::initializer_list<fast_ber::Tag>{
-        0, 1, 10, 55, 66, 127, 128, 255, 256, 500, 14000, 99244, 382348, 400532434, 99999999999ll};
+    const std::array<fast_ber::Tag, 15> test_vals = {0,   1,   10,    55,    66,     127,       128,          255,
+                                                     256, 500, 14000, 99244, 382348, 400532434, 99999999999ll};
 
     for (const int64_t test_val : test_vals)
     {
@@ -65,7 +65,8 @@ TEST_CASE("EncodeIdentifiers: Creating tags")
 
 TEST_CASE("EncodeIdentifiers: Creating lengths")
 {
-    const auto test_vals = std::initializer_list<size_t>{0,   1,   10,    55,    66,     127,       128,        255, 256, 500, 14000, 99244, 382348, 400532434/*64 bit systems only, 99999999999*/};
+    const std::array<fast_ber::Tag, 15> test_vals = {0,   1,   10,    55,    66,     127,       128,        255,
+                                                     256, 500, 14000, 99244, 382348, 400532434, 99999999999};
 
     for (const size_t test_val : test_vals)
     {
