@@ -33,8 +33,8 @@ TEST_CASE("Choice: Basic choice")
     choice_1 = "Test string";
     choice_2 = 10;
 
-    REQUIRE(absl::holds_alternative<fast_ber::OctetString<>>(choice_1));
-    REQUIRE(absl::holds_alternative<fast_ber::Integer<>>(choice_2));
+    REQUIRE(fast_ber::holds_alternative<fast_ber::OctetString<>>(choice_1));
+    REQUIRE(fast_ber::holds_alternative<fast_ber::Integer<>>(choice_2));
 
     std::vector<uint8_t> choice_encoded(100, 0x00);
     bool enc_success = fast_ber::encode(absl::MakeSpan(choice_encoded.data(), choice_encoded.size()), choice_1).success;
@@ -42,8 +42,8 @@ TEST_CASE("Choice: Basic choice")
 
     REQUIRE(enc_success);
     REQUIRE(dec_success);
-    REQUIRE(absl::holds_alternative<fast_ber::OctetString<>>(choice_1));
-    REQUIRE(absl::holds_alternative<fast_ber::OctetString<>>(choice_2));
+    REQUIRE(fast_ber::holds_alternative<fast_ber::OctetString<>>(choice_1));
+    REQUIRE(fast_ber::holds_alternative<fast_ber::OctetString<>>(choice_2));
     REQUIRE(choice_1 == choice_2);
 }
 
@@ -63,8 +63,8 @@ TEST_CASE("Choice: Clashing type")
 
     REQUIRE(enc_success);
     REQUIRE(dec_success);
-    REQUIRE(absl::holds_alternative<fast_ber::variant_alternative<2, choice_type>::type>(choice_1));
-    REQUIRE(absl::holds_alternative<fast_ber::variant_alternative<2, choice_type>::type>(choice_2));
+    REQUIRE(fast_ber::holds_alternative<fast_ber::variant_alternative<2, choice_type>::type>(choice_1));
+    REQUIRE(fast_ber::holds_alternative<fast_ber::variant_alternative<2, choice_type>::type>(choice_2));
     REQUIRE(choice_1 == choice_2);
 }
 
@@ -84,8 +84,8 @@ TEST_CASE("Choice: Choice of choices")
     Choice3 choice_orig = fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 4>>{};
     Choice3 choice_copy = fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 1>>{};
 
-    REQUIRE(absl::holds_alternative<Choice2>(choice_orig));
-    REQUIRE(absl::holds_alternative<Choice1>(choice_copy));
+    REQUIRE(fast_ber::holds_alternative<Choice2>(choice_orig));
+    REQUIRE(fast_ber::holds_alternative<Choice1>(choice_copy));
 
     std::vector<uint8_t> choice_encoded(100, 0x00);
 
@@ -96,8 +96,8 @@ TEST_CASE("Choice: Choice of choices")
 
     REQUIRE(enc_success);
     REQUIRE(dec_success);
-    REQUIRE(absl::holds_alternative<Choice2>(choice_orig));
-    REQUIRE(absl::holds_alternative<Choice2>(choice_copy));
+    REQUIRE(fast_ber::holds_alternative<Choice2>(choice_orig));
+    REQUIRE(fast_ber::holds_alternative<Choice2>(choice_copy));
     REQUIRE(choice_orig == choice_copy);
     REQUIRE(std::is_same<fast_ber::Identifier<Choice3>, ExpectedId>::value);
 }

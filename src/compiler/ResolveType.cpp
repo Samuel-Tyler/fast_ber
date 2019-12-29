@@ -110,7 +110,7 @@ Assignment& resolve(Asn1Tree& tree, const std::string& current_module_reference,
     throw std::runtime_error("Reference to undefined object: " + module_reference + "." + defined.type_reference);
 }
 
-const Assignment& resolve(const Asn1Tree& tree, const Module& module, const std::string& reference)
+const Assignment& resolve(const Asn1Tree&, const Module& module, const std::string& reference)
 {
     for (const Assignment& assignemnt : module.assignments)
     {
@@ -150,7 +150,7 @@ const Assignment& resolve(const Asn1Tree& tree, const std::string& current_modul
     throw std::runtime_error("Reference to undefined object: " + module_reference + "." + defined.type_reference);
 }
 
-bool exists(const Asn1Tree& tree, const Module& module, const std::string& reference)
+bool exists(const Asn1Tree&, const Module& module, const std::string& reference)
 {
     for (const Assignment& assignemnt : module.assignments)
     {

@@ -7,6 +7,7 @@
 #include "fast_ber/ber_types/Class.hpp"
 #include "fast_ber/ber_types/Tag.hpp"
 #include "fast_ber/util/DecodeHelpers.hpp"
+#include "fast_ber/util/DynamicVariant.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
 
 #include <iosfwd>
@@ -58,9 +59,9 @@ inline std::ostream& operator<<(std::ostream& os, const ChoiceId<Identifiers...>
 }
 
 template <typename Identifier, typename T0, typename... Args>
-struct TaggedChoice : public absl::variant<T0, Args...>
+struct TaggedChoice : public fast_ber::DynamicVariant<T0, Args...>
 {
-    using Base = absl::variant<T0, Args...>;
+    using Base = fast_ber::DynamicVariant<T0, Args...>;
     using Base::Base;
     using Base::operator=;
 
@@ -93,17 +94,23 @@ struct TaggedChoice : public absl::variant<T0, Args...>
 template <typename T0, typename... Args>
 using Choice = TaggedChoice<ChoiceId<Identifier<T0>, Identifier<Args>...>, T0, Args...>;
 
-template <typename T>
-using variant_size = absl::variant_size<typename T::Base>;
+template <typename Identifier, typename T0, class... Types>
+struct variant_size<TaggedChoice<Identifier, T0, Types...>>
+{
+    constexpr static std::size_t value = 1 + sizeof...(Types);
+};
 
-template <std::size_t n, typename T>
-using variant_alternative = absl::variant_alternative<n, typename T::Base>;
+template <std::size_t I, typename Identifier, typename T0, class... Types>
+struct variant_alternative<I, TaggedChoice<Identifier, T0, Types...>>
+{
+    using type = typename fast_ber::variant_alternative<I, typename TaggedChoice<Identifier, T0, Types...>::Base>::type;
+};
 
 template <typename Visitor, typename Identifier, typename... Variants>
 auto visit(Visitor&& vis, const TaggedChoice<Identifier, Variants...>& variant)
     -> decltype(absl::visit(vis, variant.base()))
 {
-    return absl::visit(vis, variant.base());
+    return fast_ber::visit(vis, variant.base());
 }
 
 struct LengthVisitor
@@ -142,7 +149,7 @@ EncodeResult encode_if(const absl::Span<uint8_t>& buffer, const TaggedChoice<Ide
 {
     if (choice.index() == index)
     {
-        const auto* child = absl::get_if<index>(&choice);
+        const auto* child = fast_ber::get_if<index>(&choice);
         assert(child);
 
         return encode(buffer, *child);
