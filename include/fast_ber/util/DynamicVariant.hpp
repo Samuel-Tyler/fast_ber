@@ -4,9 +4,6 @@
 #include "absl/types/internal/variant.h"
 #include "absl/types/variant.h"
 
-#include <functional>
-#include <tuple>
-
 namespace fast_ber
 {
 
@@ -222,6 +219,17 @@ template <size_t index, typename Visitor, typename... VariantOptions,
 
 template <size_t index, typename Visitor, typename... VariantOptions,
           typename std::enable_if<(index < sizeof...(VariantOptions)), int>::type = 0>
+auto visit_impl(Visitor&& vis, DynamicVariant<VariantOptions...>& variant) -> decltype(vis(get<0>(variant)))
+{
+    if (index == variant.index())
+    {
+        return vis(get<index>(variant));
+    }
+    return visit_impl<index + 1>(vis, variant);
+}
+
+template <size_t index, typename Visitor, typename... VariantOptions,
+          typename std::enable_if<(index < sizeof...(VariantOptions)), int>::type = 0>
 auto visit_impl(Visitor&& vis, const DynamicVariant<VariantOptions...>& variant) -> decltype(vis(get<0>(variant)))
 {
     if (index == variant.index())
@@ -292,13 +300,9 @@ class DynamicVariant<T0, Tn...>
                   "type.");
     static_assert(absl::conjunction<absl::negation<std::is_array<T0>>, absl::negation<std::is_array<Tn>>...>::value,
                   "Attempted to instantiate a variant containing an array type.");
-    static_assert(absl::conjunction<std::is_nothrow_destructible<T0>, std::is_nothrow_destructible<Tn>...>::value,
-                  "Attempted to instantiate a variant containing a non-nothrow "
-                  "destructible type.");
 
   public:
-    constexpr DynamicVariant() : m_index(0), m_data(new T0()) {}
-
+    DynamicVariant() : m_index(0), m_data(new T0()) {}
     DynamicVariant(const DynamicVariant& other) : m_index(other.m_index), m_data(visit(CopyVisitor{}, other)) {}
     DynamicVariant(DynamicVariant&& other) : m_index(std::move(other.m_index)), m_data(std::move(other.m_data))
     {
@@ -311,7 +315,7 @@ class DynamicVariant<T0, Tn...>
                   absl::variant_internal::IndexOfConstructedType<absl::variant<T0, Tn...>, T>>::type::value,
               class Tj = variant_alternative_t<I, DynamicVariant>,
               typename std::enable_if<std::is_constructible<Tj, T>::value>::type* = nullptr>
-    constexpr DynamicVariant(T&& t) : m_index(I), m_data(new Tj(std::forward<T>(t)))
+    DynamicVariant(T&& t) : m_index(I), m_data(new Tj(std::forward<T>(t)))
     {
     }
 
@@ -337,7 +341,7 @@ class DynamicVariant<T0, Tn...>
 
     ~DynamicVariant()
     {
-        if (!valueless_by_exception())
+        if (!valueless_by_exception() && m_data != nullptr)
         {
             visit(DeleteVisitor(), *this);
         }
@@ -345,9 +349,13 @@ class DynamicVariant<T0, Tn...>
 
     DynamicVariant& operator=(const DynamicVariant& other)
     {
-        visit(DeleteVisitor(), *this);
+        if (!valueless_by_exception() && m_data != nullptr)
+        {
+            visit(DeleteVisitor(), *this);
+        }
         m_index = other.m_index;
         m_data  = visit(CopyVisitor(), other);
+
         return *this;
     }
 
@@ -359,6 +367,7 @@ class DynamicVariant<T0, Tn...>
         other.m_data = nullptr;
         return *this;
     }
+
     template <class T,
               std::size_t I = std::enable_if<
                   absl::variant_internal::IsNeitherSelfNorInPlace<absl::variant<T0, Tn...>, absl::decay_t<T>>::value,
@@ -368,11 +377,10 @@ class DynamicVariant<T0, Tn...>
     DynamicVariant&
     operator=(T&& t) noexcept(std::is_nothrow_assignable<Tj&, T>::value&& std::is_nothrow_constructible<Tj, T>::value)
     {
-        if (!valueless_by_exception())
+        if (!valueless_by_exception() && m_data != nullptr)
         {
-            visit(DeleteVisitor{}, *this);
+            visit(DeleteVisitor(), *this);
         }
-
         m_index = I;
         m_data  = new Tj(t);
         return *this;
@@ -384,9 +392,9 @@ class DynamicVariant<T0, Tn...>
             variant_alternative_t<VariantIndex<T, T0, Tn...>::value, DynamicVariant>, Args...>::value>::type* = nullptr>
     T& emplace(Args&&... args)
     {
-        if (!valueless_by_exception())
+        if (!valueless_by_exception() && m_data != nullptr)
         {
-            visit(DeleteVisitor{}, *this);
+            visit(DeleteVisitor(), *this);
         }
         m_index = VariantIndex<T, T0, Tn...>::value;
         m_data  = new T(args...);
@@ -416,9 +424,9 @@ class DynamicVariant<T0, Tn...>
                   std::is_constructible<variant_alternative_t<I, DynamicVariant>, Args...>::value>::type* = nullptr>
     variant_alternative_t<I, DynamicVariant>& emplace(Args&&... args)
     {
-        if (!valueless_by_exception())
+        if (!valueless_by_exception() && m_data != nullptr)
         {
-            visit(DeleteVisitor{}, *this);
+            visit(DeleteVisitor(), *this);
         }
         m_index = I;
         m_data  = new variant_alternative_t<I, DynamicVariant>(args...);

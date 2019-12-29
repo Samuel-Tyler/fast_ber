@@ -68,17 +68,17 @@ TEST_CASE("DynamicVariant: Equality")
 }
 TEST_CASE("DynamicVariant: Get")
 {
-    TestVariant<int, char, bool, std::string>       var_a(5);
+    TestVariant<int, char, bool, std::string>       var_a;
     TestVariant<int, char, bool, std::string>       var_b('c');
     const TestVariant<int, char, bool, std::string> var_c(true);
     const TestVariant<int, char, bool, std::string> var_d(std::string("apple"));
 
-    REQUIRE(ns::get<int>(var_a) == 5);
+    REQUIRE(ns::get<int>(var_a) == 0);
     REQUIRE(ns::get<char>(var_b) == 'c');
     REQUIRE(ns::get<bool>(var_c) == true);
     REQUIRE(ns::get<std::string>(var_d) == "apple");
 
-    REQUIRE(ns::get<0>(var_a) == 5);
+    REQUIRE(ns::get<0>(var_a) == 0);
     REQUIRE(ns::get<1>(var_b) == 'c');
     REQUIRE(ns::get<2>(var_c) == true);
     REQUIRE(ns::get<3>(var_d) == "apple");
@@ -175,3 +175,32 @@ TEST_CASE("DynamicVariant: Visit")
     REQUIRE(ns::visit(Square(), var_a) == 25);
     REQUIRE(ns::visit(Square(), var_b) == 100);
 }
+
+struct CircularVariant
+{
+    int                                       a;
+    TestVariant<std::string, CircularVariant> var;
+};
+
+TEST_CASE("DynamicVariant: Circular")
+{
+    //  CircularVariant circular_var{5, CircularVariant{5, CircularVariant{5, CircularVariant{5, CircularVariant{5,
+    //  10}}}}};
+
+    CircularVariant circular_var{5, CircularVariant{5, "Deep string"}};
+
+    //  REQUIRE(ns::get<0>(ns::get<1>(ns::get<1>(ns::get<1>(ns::get<1>(circular_var.var).var).var).var).var) == 10);
+}
+
+class ForwardOnlyClass;
+
+TEST_CASE("DynamicVariant: Incomplete")
+{
+    TestVariant<int, ForwardOnlyClass> var_a(5);
+
+    REQUIRE(ns::get<int>(var_a) == 5);
+}
+
+class ForwardOnlyClass
+{
+};
