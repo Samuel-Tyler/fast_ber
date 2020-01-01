@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 
-const static bool debug = true;
+const static bool debug = false;
 
 inline void log_debug(const Asn1Tree&, const std::string& message)
 {

@@ -134,6 +134,8 @@ void resolve_dependencies(const std::unordered_map<std::string, Assignment>& ass
                           std::unordered_set<std::string>& visited_names,
                           std::vector<Assignment>& ordered_assignment_infos, bool& is_circular)
 {
+    is_circular = true;
+
     const auto& assign_iter = assignment_infos.find(name);
     if (assign_iter == assignment_infos.end())
     {
@@ -150,25 +152,58 @@ void resolve_dependencies(const std::unordered_map<std::string, Assignment>& ass
 
     if (visited_names.count(name) == 1)
     {
-        std::cerr << "Warning: Circular dependency when trying to resolve dependencies of " << name << std::endl;
-        is_circular = true;
-        return;
-
-        /*   if (type(assignment).)
-           {
-           }*/
+        throw std::runtime_error("Circular dependency when trying to resolve dependencies of " + name);
     }
 
     visited_names.insert(name);
 
-    for (const Dependency& dependency : assignment.depends_on)
+    if (is_type(assignment) &&
+        (is_choice(type(assignment)) || is_set_of(type(assignment)) || is_sequence_of(type(assignment))))
     {
-        if (dependency.module_reference && dependency.module_reference != module_reference)
+        ;
+    }
+    else if (is_type(assignment) && is_sequence(type(assignment)))
+    {
+        const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(type(assignment)));
+        for (const ComponentType& component : sequence.components)
         {
-            continue;
+            if (!component.is_optional)
+            {
+                for (const Dependency& dependency : depends_on(component.named_type.type))
+                {
+                    resolve_dependencies(assignment_infos, dependency.name, module_reference, assigned_names,
+                                         visited_names, ordered_assignment_infos, is_circular);
+                }
+            }
         }
-        resolve_dependencies(assignment_infos, dependency.name, module_reference, assigned_names, visited_names,
-                             ordered_assignment_infos, is_circular);
+    }
+    else if (is_type(assignment) && is_set(type(assignment)))
+    {
+        const SetType& sequence = absl::get<SetType>(absl::get<BuiltinType>(type(assignment)));
+        for (const ComponentType& component : sequence.components)
+        {
+            if (!component.is_optional)
+            {
+                for (const Dependency& dependency : depends_on(component.named_type.type))
+                {
+                    resolve_dependencies(assignment_infos, dependency.name, module_reference, assigned_names,
+                                         visited_names, ordered_assignment_infos, is_circular);
+                }
+            }
+        }
+    }
+    else
+    {
+        for (const Dependency& dependency : assignment.depends_on)
+        {
+            if (dependency.module_reference && dependency.module_reference != module_reference)
+            {
+                continue;
+            }
+
+            resolve_dependencies(assignment_infos, dependency.name, module_reference, assigned_names, visited_names,
+                                 ordered_assignment_infos, is_circular);
+        }
     }
 
     ordered_assignment_infos.push_back(assignment);
