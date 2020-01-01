@@ -41,12 +41,24 @@ struct SequenceOf : public SequenceOfImplementation<T, s>::Type
     SequenceOf(const Implementation& t) : Implementation(t) {}
     SequenceOf(Implementation&& t) : Implementation(std::move(t)) {}
     template <typename I2, StorageMode s2>
-    SequenceOf(const SequenceOf<T, I2, s2>& t) : Implementation(t)
+    SequenceOf(const SequenceOf<T, I2, s2>& t) : Implementation(t.begin(), t.end())
     {
     }
 
     using AsnId = I;
 };
+
+template <typename T, typename I1, StorageMode s1, typename I2, StorageMode s2>
+bool operator==(const SequenceOf<T, I1, s1>& lhs, const SequenceOf<T, I2, s2>& rhs) noexcept
+{
+    return lhs.size() == rhs.size() && std::equal(lhs.begin(), lhs.end(), rhs.begin());
+}
+
+template <typename T, typename I1, StorageMode s1, typename I2, StorageMode s2>
+bool operator!=(const SequenceOf<T, I1, s1>& lhs, const SequenceOf<T, I2, s2>& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
 
 template <typename T, typename I, StorageMode s>
 size_t encoded_length(const SequenceOf<T, I, s>& sequence) noexcept
