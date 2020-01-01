@@ -407,7 +407,8 @@ struct Parameter
 
 struct Dependency
 {
-    std::string name;
+    std::string                 name;
+    absl::optional<std::string> module_reference;
     //   bool        optional;
 };
 

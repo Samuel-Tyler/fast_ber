@@ -71,7 +71,7 @@ std::vector<Dependency> depends_on(const SetOfType& set)
     }
     else
     {
-        return {depends_on(*set.type)};
+        return depends_on(*set.type);
     };
 }
 std::vector<Dependency> depends_on(const PrefixedType& prefixed_type)
@@ -81,7 +81,10 @@ std::vector<Dependency> depends_on(const PrefixedType& prefixed_type)
 std::vector<Dependency> depends_on(const TimeType&) { return {}; }
 std::vector<Dependency> depends_on(const TimeOfDayType&) { return {}; }
 std::vector<Dependency> depends_on(const UTCTimeType&) { return {}; }
-std::vector<Dependency> depends_on(const DefinedType& defined) { return {{defined.type_reference}}; }
+std::vector<Dependency> depends_on(const DefinedType& defined)
+{
+    return {{defined.type_reference, defined.module_reference}};
+}
 
 struct DependsOnHelper
 {
@@ -98,7 +101,7 @@ std::vector<Dependency> depends_on(const Value& value)
 {
     if (absl::holds_alternative<DefinedValue>(value.value_selection))
     {
-        return {{absl::get<DefinedValue>(value.value_selection).reference}};
+        return {{absl::get<DefinedValue>(value.value_selection).reference, {}}};
     };
     return {};
 }

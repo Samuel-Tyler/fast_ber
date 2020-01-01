@@ -7,13 +7,14 @@ void        check_duplicated_names(const std::vector<Assignment>& assignments, c
 
 void resolve_components_of(Asn1Tree& tree);
 void resolve_dependencies(const std::unordered_map<std::string, Assignment>& assignment_infos, const std::string& name,
-                          std::unordered_set<std::string>& assigned_names,
+                          const std::string& module_reference, std::unordered_set<std::string>& assigned_names,
                           std::unordered_set<std::string>& visited_names,
                           std::vector<Assignment>&         ordered_assignment_infos);
 
 // Reorder assignments, defining
 // Should be able to detect missing assignments and circular dependencies
-std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments, bool& is_circular);
+std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments, const std::string& module_reference,
+                                            bool& is_circular);
 
 // Finds any sequence or set types nested within a type
 void find_nested_structs(const Module& module, const Type& type, std::vector<NamedType>& nested_structs);
