@@ -405,11 +405,17 @@ struct Parameter
     std::string          reference;
 };
 
+struct Dependency
+{
+    std::string name;
+    //   bool        optional;
+};
+
 struct Assignment
 {
     std::string                                                                                name;
     absl::variant<TypeAssignment, ValueAssignment, ObjectClassAssignment, ObjectSetAssignment> specific;
-    std::vector<std::string>                                                                   depends_on;
+    std::vector<Dependency>                                                                    depends_on;
     std::vector<Parameter>                                                                     parameters;
 };
 

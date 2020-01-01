@@ -140,6 +140,8 @@ void resolve_dependencies(const std::unordered_map<std::string, Assignment>& ass
         throw std::runtime_error("Reference to undefined type: " + name);
     }
 
+    const Assignment& assignment = assign_iter->second;
+
     if (assigned_names.count(name) == 1)
     {
         // Already assigned
@@ -151,14 +153,17 @@ void resolve_dependencies(const std::unordered_map<std::string, Assignment>& ass
         std::cerr << "Warning: Circular dependency when trying to resolve dependencies of " << name << std::endl;
         is_circular = true;
         return;
+
+        /*   if (type(assignment).)
+           {
+           }*/
     }
 
     visited_names.insert(name);
 
-    const Assignment& assignment = assign_iter->second;
-    for (const std::string& dependency : assignment.depends_on)
+    for (const Dependency& dependency : assignment.depends_on)
     {
-        resolve_dependencies(assignment_infos, dependency, assigned_names, visited_names, ordered_assignment_infos,
+        resolve_dependencies(assignment_infos, dependency.name, assigned_names, visited_names, ordered_assignment_infos,
                              is_circular);
     }
 
