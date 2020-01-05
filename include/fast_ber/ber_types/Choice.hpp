@@ -16,17 +16,12 @@
 namespace fast_ber
 {
 
-inline bool is_an_identifier_choice(Class, Tag) { return false; }
+inline constexpr bool is_an_identifier_choice(Class, Tag) { return false; }
 
 template <typename Identifier, typename... Identifiers>
-bool is_an_identifier_choice(Class class_, Tag tag, Identifier id, Identifiers... ids)
+constexpr bool is_an_identifier_choice(Class class_, Tag tag, Identifier id, Identifiers... ids)
 {
-    if (id.check_id_match(class_, tag))
-    {
-        return true;
-    }
-
-    return is_an_identifier_choice(class_, tag, ids...);
+    return id.check_id_match(class_, tag) ? true : is_an_identifier_choice(class_, tag, ids...);
 }
 
 template <typename... Identifiers>

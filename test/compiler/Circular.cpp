@@ -36,7 +36,7 @@ TEST_CASE("Circular Types: Sequence Of")
     REQUIRE(copy.sequence[0].sequence.size() == 4);
 }
 
-TEST_CASE("Circular Types: Variant")
+TEST_CASE("Circular Types: Choice")
 {
     fast_ber::Circular::CircularChoice1<> copy;
     fast_ber::Circular::CircularChoice1<> circular = fast_ber::Circular::CircularChoice2<>{"bla", {}};
@@ -51,4 +51,25 @@ TEST_CASE("Circular Types: Variant")
     REQUIRE(decode_res.success);
     REQUIRE(copy == circular);
     REQUIRE(fast_ber::get<0>(fast_ber::get<1>(copy).choice) == 0);
+}
+
+TEST_CASE("Circular Types: Choice Self Reference")
+{
+    using String = fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 0>>;
+    using Self   = fast_ber::Circular::SelfReference<fast_ber::Id<fast_ber::Class::context_specific, 1>>;
+
+    Self copy;
+    Self circular;
+    circular.emplace<Self>().emplace<Self>().emplace<Self>().emplace<String>("Hello!");
+
+    REQUIRE(copy != circular);
+
+    std::vector<uint8_t>          buffer(500, 0);
+    const fast_ber::EncodeResult& encode_res = fast_ber::encode(absl::Span<uint8_t>(buffer), circular);
+    const fast_ber::DecodeResult& decode_res = fast_ber::decode(absl::Span<uint8_t>(buffer), copy);
+
+    REQUIRE(encode_res.success);
+    REQUIRE(decode_res.success);
+    REQUIRE(copy == circular);
+    REQUIRE(fast_ber::get<0>(fast_ber::get<1>(fast_ber::get<1>(fast_ber::get<1>(copy)))) == "Hello!");
 }

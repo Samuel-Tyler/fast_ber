@@ -94,7 +94,7 @@ template <typename T, typename I, StorageMode s>
 DecodeResult decode(BerViewIterator& input, SequenceOf<T, I, s>& output) noexcept
 {
     output.clear();
-    if (!(input->is_valid() && input->tag() == I::tag() && input->class_() == I::class_() &&
+    if (!(input->is_valid() && I::check_id_match(input->class_(), input->tag()) &&
           input->construction() == Construction::constructed))
     {
         return DecodeResult{false};
@@ -103,9 +103,9 @@ DecodeResult decode(BerViewIterator& input, SequenceOf<T, I, s>& output) noexcep
     auto                    child = input->begin();
     constexpr Identifier<T> child_id;
 
-    while (child->is_valid() && child->tag() == val(child_id.tag()))
+    while (child->is_valid() && child_id.check_id_match(child->class_(), child->tag()))
     {
-        output.emplace_back(T{});
+        output.emplace_back();
         bool success = decode(child, output.back()).success;
         if (!success)
         {

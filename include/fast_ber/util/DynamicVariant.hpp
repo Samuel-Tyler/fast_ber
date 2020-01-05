@@ -34,6 +34,14 @@ using VariantIndex = absl::variant_internal::UnambiguousIndexOf<absl::variant<Ar
 template <typename... Ts>
 class DynamicVariant;
 
+class BadVariantAccess : public std::exception
+{
+  public:
+    BadVariantAccess() noexcept  = default;
+    ~BadVariantAccess() override = default;
+    const char* what() const noexcept override { return "Bad variant access;"; }
+};
+
 template <typename... Ts, absl::enable_if_t<absl::conjunction<std::is_move_constructible<Ts>...>::value, int> = 0>
 void swap(DynamicVariant<Ts...>& v, DynamicVariant<Ts...>& w) noexcept(noexcept(v.swap(w)))
 {
@@ -107,7 +115,7 @@ T& get(DynamicVariant<Types...>& v)
 {
     if (v.index() != absl::variant_internal::IndexOf<T, Types...>::value)
     {
-        absl::variant_internal::ThrowBadVariantAccess();
+        throw BadVariantAccess();
     }
     return v.template value<T>();
 }
@@ -117,7 +125,7 @@ T&& get(DynamicVariant<Types...>&& v)
 {
     if (v.index() != absl::variant_internal::IndexOf<T, Types...>::value)
     {
-        absl::variant_internal::ThrowBadVariantAccess();
+        throw BadVariantAccess();
     }
     return v.template value<T>();
 }
@@ -127,7 +135,7 @@ const T& get(const DynamicVariant<Types...>& v)
 {
     if (v.index() != absl::variant_internal::IndexOf<T, Types...>::value)
     {
-        absl::variant_internal::ThrowBadVariantAccess();
+        throw BadVariantAccess();
     }
     return v.template value<T>();
 }
@@ -137,7 +145,7 @@ const T&& get(const DynamicVariant<Types...>&& v)
 {
     if (v.index() != absl::variant_internal::IndexOf<T, Types...>::value)
     {
-        absl::variant_internal::ThrowBadVariantAccess();
+        throw BadVariantAccess();
     }
     return v.template value<T>();
 }
@@ -147,7 +155,7 @@ variant_alternative_t<I, DynamicVariant<Types...>>& get(DynamicVariant<Types...>
 {
     if (v.index() != I)
     {
-        absl::variant_internal::ThrowBadVariantAccess();
+        throw BadVariantAccess();
     }
     return v.template value<variant_alternative_t<I, DynamicVariant<Types...>>>();
 }
@@ -157,7 +165,7 @@ variant_alternative_t<I, DynamicVariant<Types...>>&& get(DynamicVariant<Types...
 {
     if (v.index() != I)
     {
-        absl::variant_internal::ThrowBadVariantAccess();
+        throw BadVariantAccess();
     }
     return v.template value<variant_alternative_t<I, DynamicVariant<Types...>>>();
 }
@@ -167,7 +175,7 @@ const variant_alternative_t<I, DynamicVariant<Types...>>& get(const DynamicVaria
 {
     if (v.index() != I)
     {
-        absl::variant_internal::ThrowBadVariantAccess();
+        throw BadVariantAccess();
     }
     return v.template value<variant_alternative_t<I, DynamicVariant<Types...>>>();
 }
@@ -177,7 +185,7 @@ const variant_alternative_t<I, DynamicVariant<Types...>>&& get(const DynamicVari
 {
     if (v.index() != I)
     {
-        absl::variant_internal::ThrowBadVariantAccess();
+        throw BadVariantAccess();
     }
     return v.template value<variant_alternative_t<I, DynamicVariant<Types...>>>();
 }
@@ -304,7 +312,7 @@ class DynamicVariant<T0, Tn...>
   public:
     DynamicVariant() : m_index(0), m_data(new T0()) {}
     DynamicVariant(const DynamicVariant& other) : m_index(other.m_index), m_data(visit(CopyVisitor{}, other)) {}
-    DynamicVariant(DynamicVariant&& other) : m_index(std::move(other.m_index)), m_data(std::move(other.m_data))
+    DynamicVariant(DynamicVariant&& other) noexcept : m_index(std::move(other.m_index)), m_data(std::move(other.m_data))
     {
         other.m_data = nullptr;
     }
