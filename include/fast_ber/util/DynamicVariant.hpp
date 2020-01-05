@@ -28,8 +28,93 @@ using TypeAtIndex = typename TypeAtIndexImpl<I, Args...>::Type;
 static_assert(std::is_same<TypeAtIndex<0, int, char>, int>::value, "");
 static_assert(std::is_same<TypeAtIndex<1, int, char>, char>::value, "");
 
-template <typename T, typename... Args>
-using VariantIndex = absl::variant_internal::UnambiguousIndexOf<absl::variant<Args...>, T>;
+template <typename T, typename = void>
+struct IsDefined
+{
+    constexpr static bool value = false;
+};
+
+template <typename T>
+struct IsDefined<T, decltype(sizeof(T), void())>
+{
+    constexpr static bool value = true;
+};
+
+struct UndefinedTest;
+static_assert(IsDefined<int>::value, "Defined");
+static_assert(!IsDefined<UndefinedTest>::value, "Not Defined");
+
+template <typename T>
+constexpr size_t type_occurrences()
+{
+    return 0;
+}
+
+template <typename T, typename T0, typename... Tn>
+constexpr size_t type_occurrences()
+{
+    return std::is_same<T, T0>::value + type_occurrences<T, Tn...>();
+}
+
+template <typename T>
+constexpr size_t constructable_type_occurrences()
+{
+    return 0;
+}
+
+template <typename T, typename T0, typename... Tn>
+constexpr size_t constructable_type_occurrences()
+{
+    return (IsDefined<T>::value && std::is_constructible<T0, T>::value) + constructable_type_occurrences<T, Tn...>();
+}
+
+template <typename T>
+constexpr size_t index_of_impl(size_t)
+{
+    return -1;
+}
+
+template <typename T, typename T0, typename... Tn>
+constexpr size_t index_of_impl(size_t current_index)
+{
+    return (std::is_same<T, T0>::value) ? current_index : index_of_impl<T, Tn...>(current_index + 1);
+}
+
+template <typename T>
+constexpr size_t index_of_constructed_impl(size_t)
+{
+    return 0;
+}
+
+template <typename T, typename T0, typename... Tn>
+constexpr size_t index_of_constructed_impl(size_t current_index)
+{
+    return (IsDefined<T>::value && std::is_constructible<T0, T>::value)
+               ? current_index
+               : index_of_constructed_impl<T, Tn...>(current_index + 1);
+}
+
+template <typename T, typename... Types>
+constexpr size_t index_of()
+{
+    static_assert(type_occurrences<T, Types...>() == 1, "Type must occur exactly once");
+    static_assert(index_of_impl<T, Types...>(0) != -1, "Invalid");
+    return index_of_impl<T, Types...>(0);
+}
+
+template <typename T, typename... Types>
+constexpr size_t index_of_constructed()
+{
+    //  static_assert(constructable_type_occurrences<T, Types...>() == 1, "Type must occur exactly once");
+    static_assert(index_of_constructed_impl<T, Types...>(0) != -1, "Invalid");
+    return index_of_constructed_impl<T, Types...>(0);
+}
+
+template <typename T, typename... Types>
+struct IndexOfConstructed
+{
+    static constexpr size_t value = index_of_constructed<T, Types...>();
+};
 
 template <typename... Ts>
 class DynamicVariant;
@@ -104,16 +189,13 @@ using variant_alternative_t = typename variant_alternative<I, T>::type;
 template <class T, class... Types>
 constexpr bool holds_alternative(const DynamicVariant<Types...>& v) noexcept
 {
-    static_assert(absl::variant_internal::UnambiguousIndexOfImpl<absl::variant<Types...>, T, 0>::value !=
-                      sizeof...(Types),
-                  "The type T must occur exactly once in Types...");
-    return v.index() == VariantIndex<T, Types...>::value;
+    return v.index() == index_of<T, Types...>();
 }
 
 template <class T, class... Types>
 T& get(DynamicVariant<Types...>& v)
 {
-    if (v.index() != absl::variant_internal::IndexOf<T, Types...>::value)
+    if (v.index() != index_of<T, Types...>())
     {
         throw BadVariantAccess();
     }
@@ -123,7 +205,7 @@ T& get(DynamicVariant<Types...>& v)
 template <class T, class... Types>
 T&& get(DynamicVariant<Types...>&& v)
 {
-    if (v.index() != absl::variant_internal::IndexOf<T, Types...>::value)
+    if (v.index() != index_of<T, Types...>())
     {
         throw BadVariantAccess();
     }
@@ -133,7 +215,7 @@ T&& get(DynamicVariant<Types...>&& v)
 template <class T, class... Types>
 const T& get(const DynamicVariant<Types...>& v)
 {
-    if (v.index() != absl::variant_internal::IndexOf<T, Types...>::value)
+    if (v.index() != index_of<T, Types...>())
     {
         throw BadVariantAccess();
     }
@@ -143,7 +225,7 @@ const T& get(const DynamicVariant<Types...>& v)
 template <class T, class... Types>
 const T&& get(const DynamicVariant<Types...>&& v)
 {
-    if (v.index() != absl::variant_internal::IndexOf<T, Types...>::value)
+    if (v.index() != index_of<T, Types...>())
     {
         throw BadVariantAccess();
     }
@@ -207,13 +289,13 @@ get_if(const DynamicVariant<Types...>* v) noexcept
 template <class T, class... Types>
 constexpr typename std::add_pointer<T>::type get_if(DynamicVariant<Types...>* v) noexcept
 {
-    return fast_ber::get_if<absl::variant_internal::IndexOf<T, Types...>::value>(v);
+    return fast_ber::get_if<index_of<T, Types...>()>(v);
 }
 
 template <class T, class... Types>
 constexpr typename std::add_pointer<const T>::type get_if(const DynamicVariant<Types...>* v) noexcept
 {
-    return fast_ber::get_if<absl::variant_internal::IndexOf<T, Types...>::value>(v);
+    return fast_ber::get_if<index_of<T, Types...>()>(v);
 }
 
 template <size_t index, typename Visitor, typename... VariantOptions,
@@ -329,15 +411,13 @@ class DynamicVariant<T0, Tn...>
 
     template <class T, class... Args>
     constexpr explicit DynamicVariant(absl::in_place_type_t<T>, Args&&... args)
-        : m_index(absl::variant_internal::UnambiguousIndexOf<absl::variant<T0, Tn...>, T>::value),
-          m_data(new T(absl::forward<Args>(args)...))
+        : m_index(index_of<T, T0, Tn...>()), m_data(new T(absl::forward<Args>(args)...))
     {
     }
 
     template <class T, class U, class... Args>
     constexpr explicit DynamicVariant(absl::in_place_type_t<T>, std::initializer_list<U> il, Args&&... args)
-        : m_index(absl::variant_internal::UnambiguousIndexOf<absl::variant<T0, Tn...>, T>::value),
-          m_data(new T(il, absl::forward<Args>(args)...))
+        : m_index(index_of<T, T0, Tn...>()), m_data(new T(il, absl::forward<Args>(args)...))
     {
     }
 
@@ -394,29 +474,21 @@ class DynamicVariant<T0, Tn...>
         return *this;
     }
 
-    template <
-        class T, class... Args,
-        typename std::enable_if<std::is_constructible<
-            variant_alternative_t<VariantIndex<T, T0, Tn...>::value, DynamicVariant>, Args...>::value>::type* = nullptr>
+    template <class T, class... Args,
+              typename std::enable_if<std::is_constructible<
+                  variant_alternative_t<index_of<T, T0, Tn...>(), DynamicVariant>, Args...>::value>::type* = nullptr>
     T& emplace(Args&&... args)
     {
         if (!valueless_by_exception() && m_data != nullptr)
         {
             visit(DeleteVisitor(), *this);
         }
-        m_index = VariantIndex<T, T0, Tn...>::value;
+        m_index = index_of<T, T0, Tn...>();
         m_data  = new T(args...);
 
         return *static_cast<T*>(m_data);
     }
     /*
-           // Constructs a value of the given alternative type T within the variant using
-           // an initializer list.
-           //
-           // Example:
-           //
-           //   absl::variant<std::vector<int>, int, std::string> v;
-           //   v.emplace<std::vector<int>>({0, 1, 2});
            template <class T, class U, class... Args,
                      typename std::enable_if<std::is_constructible<
                          absl::variant_alternative_t<variant_internal::UnambiguousIndexOf<variant, T>::value, variant>,
@@ -478,6 +550,11 @@ class DynamicVariant<T0, Tn...>
     void*  m_data;
 };
 
+static_assert(std::is_copy_constructible<DynamicVariant<int, char>>::value, "");
+static_assert(std::is_move_constructible<DynamicVariant<int, char>>::value, "");
+static_assert(std::is_copy_assignable<DynamicVariant<int, char>>::value, "");
+static_assert(std::is_move_assignable<DynamicVariant<int, char>>::value, "");
+
 template <>
 class DynamicVariant<>;
 
@@ -527,43 +604,37 @@ struct GreaterThanOrEquals
 };
 
 template <typename... Types>
-absl::variant_internal::RequireAllHaveEqualT<Types...> operator==(const DynamicVariant<Types...>& a,
-                                                                  const DynamicVariant<Types...>& b)
+bool operator==(const DynamicVariant<Types...>& a, const DynamicVariant<Types...>& b)
 {
     return (a.index() == b.index()) && visit_binary(Equals(), a, b);
 }
 
 template <typename... Types>
-absl::variant_internal::RequireAllHaveNotEqualT<Types...> operator!=(const DynamicVariant<Types...>& a,
-                                                                     const DynamicVariant<Types...>& b)
+bool operator!=(const DynamicVariant<Types...>& a, const DynamicVariant<Types...>& b)
 {
     return (a.index() != b.index()) || !visit_binary(Equals(), a, b);
 }
 
 template <typename... Types>
-absl::variant_internal::RequireAllHaveLessThanT<Types...> operator<(const DynamicVariant<Types...>& a,
-                                                                    const DynamicVariant<Types...>& b)
+bool operator<(const DynamicVariant<Types...>& a, const DynamicVariant<Types...>& b)
 {
     return (a.index() != b.index()) ? (a.index() + 1) < (b.index() + 1) : visit_binary(LessThan(), a, b);
 }
 
 template <typename... Types>
-absl::variant_internal::RequireAllHaveGreaterThanT<Types...> operator>(const DynamicVariant<Types...>& a,
-                                                                       const DynamicVariant<Types...>& b)
+bool operator>(const DynamicVariant<Types...>& a, const DynamicVariant<Types...>& b)
 {
     return (a.index() != b.index()) ? (a.index() + 1) > (b.index() + 1) : visit_binary(GreaterThan(), a, b);
 }
 
 template <typename... Types>
-absl::variant_internal::RequireAllHaveLessThanOrEqualT<Types...> operator<=(const DynamicVariant<Types...>& a,
-                                                                            const DynamicVariant<Types...>& b)
+bool operator<=(const DynamicVariant<Types...>& a, const DynamicVariant<Types...>& b)
 {
     return (a.index() != b.index()) ? (a.index() + 1) < (b.index() + 1) : visit_binary(LessThanOrEquals(), a, b);
 }
 
 template <typename... Types>
-absl::variant_internal::RequireAllHaveGreaterThanOrEqualT<Types...> operator>=(const DynamicVariant<Types...>& a,
-                                                                               const DynamicVariant<Types...>& b)
+bool operator>=(const DynamicVariant<Types...>& a, const DynamicVariant<Types...>& b)
 {
     return (a.index() != b.index()) ? (a.index() + 1) > (b.index() + 1) : visit_binary(GreaterThanOrEquals(), a, b);
 }
