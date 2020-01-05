@@ -29,4 +29,9 @@ CircularChoice2 ::= SEQUENCE {
 
 MyInt ::= INTEGER
 
+SelfReference ::= CHOICE {
+    str [0] OCTET STRING,
+    self [1] SelfReference
+}
+
 END-- Comment at end

@@ -167,7 +167,7 @@ void resolve_dependencies(const std::unordered_map<std::string, Assignment>& ass
         const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(type(assignment)));
         for (const ComponentType& component : sequence.components)
         {
-            if (!component.is_optional)
+            if (!component.is_optional || is_sequence(component.named_type.type))
             {
                 for (const Dependency& dependency : depends_on(component.named_type.type))
                 {

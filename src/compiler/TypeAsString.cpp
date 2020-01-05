@@ -36,7 +36,9 @@ std::string type_as_string(const ChoiceType& choice, const Module& module, const
     std::string res;
     if (identifier_override.empty())
     {
-        res += "Choice<";
+        // res += "Choice<";
+        res += "TaggedChoice<" + identifier(choice, module, tree).name();
+        is_first = false;
     }
     else
     {

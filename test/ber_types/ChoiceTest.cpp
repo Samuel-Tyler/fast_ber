@@ -118,3 +118,24 @@ TEST_CASE("Choice: Generated choice")
     REQUIRE(success);
     REQUIRE(copy.the_choice == collection.the_choice);
 }
+
+TEST_CASE("Choice: Tags")
+{
+    fast_ber::MakeAChoice::Collection<> c;
+    REQUIRE(std::is_same<
+            fast_ber::Identifier<decltype(c.the_choice)>,
+            fast_ber::ChoiceId<
+                fast_ber::Id<fast_ber::Class::context_specific, 0>, fast_ber::Id<fast_ber::Class::context_specific, 1>,
+                fast_ber::Id<fast_ber::Class::context_specific, 2>, fast_ber::Id<fast_ber::Class::context_specific, 3>,
+                fast_ber::Id<fast_ber::Class::context_specific, 4>>>::value);
+    REQUIRE(std::is_same<fast_ber::Identifier<fast_ber::variant_alternative_t<0, decltype(c.the_choice)>>,
+                         fast_ber::Id<fast_ber::Class::context_specific, 0>>::value);
+    REQUIRE(std::is_same<fast_ber::Identifier<fast_ber::variant_alternative_t<1, decltype(c.the_choice)>>,
+                         fast_ber::Id<fast_ber::Class::context_specific, 1>>::value);
+    REQUIRE(std::is_same<fast_ber::Identifier<fast_ber::variant_alternative_t<2, decltype(c.the_choice)>>,
+                         fast_ber::Id<fast_ber::Class::context_specific, 2>>::value);
+    REQUIRE(std::is_same<fast_ber::Identifier<fast_ber::variant_alternative_t<3, decltype(c.the_choice)>>,
+                         fast_ber::Id<fast_ber::Class::context_specific, 3>>::value);
+    REQUIRE(std::is_same<fast_ber::Identifier<fast_ber::variant_alternative_t<4, decltype(c.the_choice)>>,
+                         fast_ber::Id<fast_ber::Class::context_specific, 4>>::value);
+}

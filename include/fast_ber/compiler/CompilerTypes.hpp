@@ -60,6 +60,111 @@ struct BitStringType
 struct BooleanType
 {
 };
+
+enum class UniversalTag
+{
+    reserved          = 0,
+    boolean           = 1,
+    integer           = 2,
+    bit_string        = 3,
+    octet_string      = 4,
+    null              = 5,
+    object_identifier = 6,
+    object_descriptor = 7,
+    instance_of       = 8,
+    external          = 8,
+    real              = 9,
+    enumerated        = 10,
+    embedded_pdv      = 11,
+    utf8_string       = 12,
+    relative_oid      = 13,
+    sequence          = 16,
+    sequence_of       = 16,
+    set               = 17,
+    set_of            = 17,
+    numeric_string    = 18,
+    printable_string  = 19,
+    teletex_string    = 20,
+    t61_string        = 20,
+    videotex_string   = 21,
+    ia5_string        = 22,
+    utc_time          = 23,
+    generalized_time  = 24,
+    graphic_string    = 25,
+    visible_string    = 26,
+    iso646_string     = 26,
+    general_string    = 27,
+    universal_string  = 28,
+    character_string  = 29,
+    bmp_string        = 30
+};
+
+inline std::string to_string(UniversalTag t) noexcept
+{
+    switch (t)
+    {
+    case UniversalTag::reserved:
+        return "reserved";
+    case UniversalTag::boolean:
+        return "boolean";
+    case UniversalTag::integer:
+        return "integer";
+    case UniversalTag::bit_string:
+        return "bit_string";
+    case UniversalTag::octet_string:
+        return "octet_string";
+    case UniversalTag::null:
+        return "null";
+    case UniversalTag::object_identifier:
+        return "object_identifier";
+    case UniversalTag::object_descriptor:
+        return "object_descriptor";
+    case UniversalTag::instance_of:
+        return "instance_of";
+    case UniversalTag::real:
+        return "real";
+    case UniversalTag::enumerated:
+        return "enumerated";
+    case UniversalTag::embedded_pdv:
+        return "embedded_pdv";
+    case UniversalTag::utf8_string:
+        return "utf8_string";
+    case UniversalTag::relative_oid:
+        return "relative_oid";
+    case UniversalTag::sequence:
+        return "sequence";
+    case UniversalTag::set:
+        return "set";
+    case UniversalTag::numeric_string:
+        return "numeric_string";
+    case UniversalTag::printable_string:
+        return "printable_string";
+    case UniversalTag::teletex_string:
+        return "teletex_string";
+    case UniversalTag::videotex_string:
+        return "videotex_string";
+    case UniversalTag::ia5_string:
+        return "ia5_string";
+    case UniversalTag::utc_time:
+        return "utc_time";
+    case UniversalTag::generalized_time:
+        return "generalized_time";
+    case UniversalTag::graphic_string:
+        return "graphic_string";
+    case UniversalTag::visible_string:
+        return "visible_string";
+    case UniversalTag::general_string:
+        return "general_string";
+    case UniversalTag::universal_string:
+        return "universal_string";
+    case UniversalTag::character_string:
+        return "character_string";
+    case UniversalTag::bmp_string:
+        return "bmp_string";
+    }
+    return "Unknown Universal Tag";
+}
+
 enum class CharacterStringType
 {
     unknown,
@@ -100,7 +205,7 @@ inline std::string to_string(CharacterStringType type)
     case CharacterStringType::teletex_string:
         return "TeletexString";
     case CharacterStringType::t61_string:
-        return "T61String";
+        return "T161String";
     case CharacterStringType::universal_string:
         return "UniversalString";
     case CharacterStringType::utf8_string:
@@ -116,42 +221,42 @@ inline std::string to_string(CharacterStringType type)
     }
     return "UnknownStringType";
 }
-inline std::string to_string_snake_case(CharacterStringType type)
+inline UniversalTag universal_tag(CharacterStringType type)
 {
     switch (type)
     {
     case CharacterStringType::bmp_string:
-        return "bmp_string";
+        return UniversalTag::bmp_string;
     case CharacterStringType::general_string:
-        return "general_string";
+        return UniversalTag::general_string;
     case CharacterStringType::graphic_string:
-        return "graphic_string";
+        return UniversalTag::graphic_string;
     case CharacterStringType::ia5_string:
-        return "ia5_string";
+        return UniversalTag::ia5_string;
     case CharacterStringType::iso646_string:
-        return "iso646_string";
+        return UniversalTag::iso646_string;
     case CharacterStringType::numeric_string:
-        return "numeric_string";
+        return UniversalTag::numeric_string;
     case CharacterStringType::printable_string:
-        return "printable_string";
+        return UniversalTag::printable_string;
     case CharacterStringType::teletex_string:
-        return "teletex_string";
+        return UniversalTag::teletex_string;
     case CharacterStringType::t61_string:
-        return "t61_string";
+        return UniversalTag::t61_string;
     case CharacterStringType::universal_string:
-        return "universal_string";
+        return UniversalTag::universal_string;
     case CharacterStringType::utf8_string:
-        return "utf8_string";
+        return UniversalTag::utf8_string;
     case CharacterStringType::videotex_string:
-        return "videotex_string";
+        return UniversalTag::videotex_string;
     case CharacterStringType::visible_string:
-        return "visible_string";
+        return UniversalTag::visible_string;
     case CharacterStringType::character_string:
-        return "character_string";
+        return UniversalTag::character_string;
     case CharacterStringType::unknown:
-        return "unknown";
+        return UniversalTag::reserved;
     }
-    return "UnknownStringType";
+    return UniversalTag::reserved;
 }
 
 struct ChoiceType;
@@ -448,28 +553,72 @@ struct Asn1Tree
 
 struct Identifier
 {
-    Class   class_;
-    int64_t tag_number;
+    Class        class_     = Class::universal;
+    int64_t      tag_number = 0;
+    UniversalTag universal  = UniversalTag::reserved;
 
-    std::string name() const { return "Id<" + to_string(class_, true) + ", " + std::to_string(tag_number) + ">"; }
+    Identifier() = default;
+    explicit Identifier(Class c, int64_t tag) : class_(c), tag_number(tag) {}
+    explicit Identifier(UniversalTag tag) : class_(Class::universal), tag_number(0), universal(tag) {}
+
+    std::string name() const
+    {
+        if (universal == UniversalTag::reserved)
+        {
+            return "Id<" + to_string(class_, true) + ", " + std::to_string(tag_number) + ">";
+        }
+        else
+        {
+            return "ExplicitId<UniversalTag::" + to_string(universal) + ">";
+        }
+    }
 };
 
 struct TaggingInfo
 {
     absl::optional<Identifier> outer_tag;
-    std::string                inner_tag;
+    Identifier                 inner_tag;
+    std::vector<Identifier>    choice_ids;
     bool                       is_default_tagged;
 
     std::string name() const
     {
-        if (!outer_tag)
+        if (outer_tag)
         {
-            return inner_tag;
+            return "DoubleId<" + outer_tag->name() + ", " + inner_tag.name() + ">";
+        }
+        if (choice_ids.size() > 0)
+        {
+            std::string res      = "ChoiceId<";
+            bool        is_first = true;
+            for (const Identifier& id : choice_ids)
+            {
+                if (!is_first)
+                {
+                    res += ", ";
+                }
+                res += id.name();
+                is_first = false;
+            }
+            return res + ">";
         }
         else
         {
-            return "DoubleId<" + outer_tag->name() + ", " + inner_tag + ">";
+            return inner_tag.name();
         }
+    }
+
+    std::vector<Identifier> outer_tags() const
+    {
+        if (outer_tag)
+        {
+            return {*outer_tag};
+        }
+        if (choice_ids.size() > 0)
+        {
+            return choice_ids;
+        }
+        return {inner_tag};
     }
 };
 
