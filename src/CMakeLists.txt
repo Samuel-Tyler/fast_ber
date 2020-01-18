@@ -32,8 +32,8 @@ target_include_directories(fast_ber_lib INTERFACE ../include ${CMAKE_CURRENT_BIN
 aux_source_directory(compiler SRC_LIST)
 add_executable(${PROJECT_NAME}_compiler ${SRC_LIST} ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp)
 
-target_link_libraries(fast_ber_lib absl::base absl::container absl::strings absl::variant absl::optional absl::time)
-target_link_libraries(${PROJECT_NAME}_compiler fast_ber_lib absl_str_format)
+target_link_libraries(fast_ber_lib ${ABSEIL_LIBS})
+target_link_libraries(${PROJECT_NAME}_compiler fast_ber_lib)
 
 # CMake function to generate c++ include files from a given ASN1 input
 function(fast_ber_generate input_file output_name)

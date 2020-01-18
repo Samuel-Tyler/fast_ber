@@ -43,6 +43,6 @@ endif()
 target_include_directories(${PROJECT_NAME} PRIVATE SYSTEM ${CMAKE_SOURCE_DIR}/3rd_party/Catch2/single_include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c)
-target_link_libraries(${PROJECT_NAME} fast_ber_lib absl::strings)
+target_link_libraries(${PROJECT_NAME} fast_ber_lib)
 
 add_test(NAME fast_ber_benchmarks COMMAND ${PROJECT_NAME})
