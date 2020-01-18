@@ -1,0 +1,5 @@
+[requires]
+abseil/20191010@conan/testing
+
+[generators]
+cmake
