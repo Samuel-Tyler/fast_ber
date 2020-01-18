@@ -9,7 +9,7 @@ class FastberConan(ConanFile):
     url = "https://github.com/Samuel-Tyler/fast_ber"
     description = "A performant ASN.1 BER encoding and decoding library written in C++11"
     topics = ("ASN", "ASN1", "ASN.1", "BER", "Serialization")
-    exports_sources = "include*"
+    exports_sources = "include*", "generate.cmake"
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False]}
     default_options = {"shared": False}
@@ -31,6 +31,7 @@ class FastberConan(ConanFile):
         self.copy("*.lib", dst="lib", keep_path=False)
         self.copy("*.a", dst="lib", keep_path=False)
         self.copy("fast_ber_compiler", dst="bin", src="bin", keep_path=False)
+        self.copy("generate.cmake", dst="", src="", keep_path=False)
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
