@@ -85,7 +85,7 @@ install(
 )
 
 write_basic_package_version_file(
-    "${CMAKE_CURRENT_BINARY_DIR}/fast_ber_config-version.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/fast_ber-config-version.cmake"
    COMPATIBILITY
     SameMajorVersion
 )
