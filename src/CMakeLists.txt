@@ -33,7 +33,7 @@ target_include_directories(fast_ber_lib INTERFACE $<BUILD_INTERFACE:${CMAKE_CURR
 target_include_directories(${PROJECT_NAME}_compiler PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 
-target_link_libraries(fast_ber_lib absl::base absl::container absl::strings absl::variant absl::optional absl::time)
+target_link_libraries(fast_ber_lib ${ABSEIL_LIBS})
 target_link_libraries(${PROJECT_NAME}_compiler fast_ber_lib)
 
 add_library(fast_ber::fast_ber_lib ALIAS fast_ber_lib)
