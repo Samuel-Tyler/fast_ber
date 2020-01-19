@@ -51,8 +51,8 @@ include(CTest)
 set(FAST_BER_CMAKE_CONFIG_DESTINATION "${CMAKE_INSTALL_LIBDIR}/fast_ber")
 
 configure_package_config_file(
-    ${CMAKE_SOURCE_DIR}/cmake/FastBerConfig.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/FastBerConfig.cmake
+    ${CMAKE_SOURCE_DIR}/cmake/fast_ber_config.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/fast_ber-config.cmake
    INSTALL_DESTINATION
     ${FAST_BER_CMAKE_CONFIG_DESTINATION}
 )
@@ -85,7 +85,7 @@ install(
 )
 
 write_basic_package_version_file(
-    "${CMAKE_CURRENT_BINARY_DIR}/FastBerConfigVersion.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/fast_ber_config-version.cmake"
    COMPATIBILITY
     SameMajorVersion
 )
@@ -99,8 +99,8 @@ install(
 
 install(
    FILES
-   "${CMAKE_CURRENT_BINARY_DIR}/FastBerConfig.cmake"
-   "${CMAKE_CURRENT_BINARY_DIR}/FastBerConfigVersion.cmake"
+   "${CMAKE_CURRENT_BINARY_DIR}/fast_ber-config.cmake"
+   "${CMAKE_CURRENT_BINARY_DIR}/fast_ber-config-version.cmake"
    DESTINATION
     ${FAST_BER_CMAKE_CONFIG_DESTINATION}
 )
