@@ -1,5 +1,6 @@
 project(fast_ber_tests)
 
+include(${CMAKE_SOURCE_DIR}/cmake/fast_ber_generate.cmake)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/autogen)
 
 function(fast_ber_generate2 input_file1 input_file2 output_name)
