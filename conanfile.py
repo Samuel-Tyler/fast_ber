@@ -9,15 +9,12 @@ class FastberConan(ConanFile):
     url = "https://github.com/Samuel-Tyler/fast_ber"
     description = "A performant ASN.1 BER encoding and decoding library written in C++11"
     topics = ("ASN", "ASN1", "ASN.1", "BER", "Serialization")
-    exports_sources = "include*", "generate.cmake"
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False]}
     default_options = {"shared": False}
     generators = "cmake"
-    requires = "abseil/20191010@conan/testing"
-
-    def source(self):
-        self.run(f"git clone {self.url} --single-branch --branch conan")
+    requires = "abseil/20181200@bincrafters/stable"
+    scm = {"type": "git", "url": url, "revision": "conan", "subfolder": name}
 
     def build(self):
         cmake = CMake(self)
@@ -27,14 +24,10 @@ class FastberConan(ConanFile):
         cmake.build()
 
     def package(self):
-        self.copy("*.hpp", dst="include", src="include")
-        self.copy("*.lib", dst="lib", keep_path=False)
-        self.copy("*.a", dst="lib", keep_path=False)
-        self.copy("fast_ber_compiler", dst="bin", src="bin", keep_path=False)
-        self.copy("generate.cmake", dst="", src="", keep_path=False)
+        cmake = CMake(self)
+        cmake.install()
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
-        self.cpp_info.build_modules.append("generate.cmake")
         self.env_info.PATH = os.path.join(self.package_folder, "bin")
 
