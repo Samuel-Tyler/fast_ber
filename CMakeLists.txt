@@ -12,7 +12,7 @@ if (NOT ${SKIP_TESTING})
   enable_testing()
 endif()
 
-if (EXISTS "${CMAKE_SOURCE_DIR}/3rd_party/abseil-cpp")
+if (EXISTS "${CMAKE_SOURCE_DIR}/3rd_party/abseil-cpp/CMakeLists.txt")
   add_subdirectory("3rd_party/abseil-cpp")
   set(SKIP_INSTALL TRUE)
 else()
