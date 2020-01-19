@@ -1,6 +1,6 @@
 @PACKAGE_INIT@
 
 if(NOT TARGET fast_ber::fast_ber_lib)
-    include(${CMAKE_SOURCE_DIR}/cmake/fast_ber_generate.cmake)
     include(${CMAKE_CURRENT_LIST_DIR}/fast_ber_targets.cmake)
+    include(${CMAKE_CURRENT_LIST_DIR}/fast_ber_generate.cmake)
 endif()
