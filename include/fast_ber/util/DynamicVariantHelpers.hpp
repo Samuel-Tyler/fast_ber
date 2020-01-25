@@ -17,12 +17,6 @@ static constexpr size_t variant_npos = -1;
 namespace detail
 {
 
-template <typename...>
-using void_t = void;
-
-template <std::size_t I>
-using SizeT = std::integral_constant<std::size_t, I>;
-
 template <class Variant, std::size_t i = 0>
 struct ImaginaryFun;
 

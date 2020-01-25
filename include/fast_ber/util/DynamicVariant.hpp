@@ -309,14 +309,25 @@ class DynamicVariant
     template <typename T>
     using AcceptedIndex = detail::AcceptedIndex<T&&, DynamicVariant>;
 
+    template <size_t i, bool = (i < sizeof...(Types))>
+    struct ToTypeImpl
+    {
+    };
+
     template <size_t i>
-    using to_type = variant_alternative_t<i, DynamicVariant>;
+    struct ToTypeImpl<i, true>
+    {
+        using type = variant_alternative_t<i, DynamicVariant>;
+    };
+
+    template <size_t i>
+    using ToType = typename ToTypeImpl<i>::type;
 
     template <typename T>
-    using accepted_type = to_type<AcceptedIndex<T>::value>;
+    using AcceptedType = ToType<AcceptedIndex<T>::value>;
 
   public:
-    DynamicVariant() : m_index(0), m_data(new to_type<0>()) {}
+    DynamicVariant() : m_index(0), m_data(new ToType<0>()) {}
     DynamicVariant(const DynamicVariant& other) : m_index(other.m_index), m_data(fast_ber::visit(CopyVisitor{}, other))
     {
     }
@@ -326,15 +337,15 @@ class DynamicVariant
     }
 
     template <typename T, typename = absl::enable_if_t<!std::is_same<absl::decay_t<T>, DynamicVariant>::value>,
-              typename = absl::enable_if_t<ExactlyOnce<accepted_type<T&&>>::value &&
-                                      std::is_constructible<accepted_type<T&&>, T&&>::value>>
-    DynamicVariant(T&& t) noexcept(std::is_nothrow_constructible<accepted_type<T&&>, T&&>::value)
-        : m_index(detail::IndexOf<accepted_type<T&&>, Types...>::value), m_data(new accepted_type<T&&>(t))
+              typename = absl::enable_if_t<ExactlyOnce<AcceptedType<T&&>>::value &&
+                                           std::is_constructible<AcceptedType<T&&>, T&&>::value>>
+    DynamicVariant(T&& t) noexcept(std::is_nothrow_constructible<AcceptedType<T&&>, T&&>::value)
+        : m_index(detail::IndexOf<AcceptedType<T&&>, Types...>::value), m_data(new AcceptedType<T&&>(t))
 
     {
-        assert(holds_alternative<accepted_type<T&&>>(*this));
+        assert(holds_alternative<AcceptedType<T&&>>(*this));
     }
- 
+
     template <typename T, typename... Args,
               typename = absl::enable_if_t<ExactlyOnce<T>::value && std::is_constructible<T, Args&&...>::value>>
     explicit DynamicVariant(in_place_type_t<T>, Args&&... args)
@@ -354,23 +365,23 @@ class DynamicVariant
     }
 
     template <size_t i, typename... Args,
-              typename = absl::enable_if_t<std::is_constructible<to_type<i>, Args&&...>::value>>
+              typename = absl::enable_if_t<std::is_constructible<ToType<i>, Args&&...>::value>>
     explicit DynamicVariant(in_place_index_t<i>, Args&&... args)
-        : m_index(i), m_data(new to_type<i>(std::forward<Args>(args)...))
+        : m_index(i), m_data(new ToType<i>(std::forward<Args>(args)...))
     {
         assert(index() == i);
     }
 
     template <
         size_t i, typename U, typename... Args,
-        typename = absl::enable_if_t<std::is_constructible<to_type<i>, std::initializer_list<U>&, Args&&...>::value>>
+        typename = absl::enable_if_t<std::is_constructible<ToType<i>, std::initializer_list<U>&, Args&&...>::value>>
     explicit DynamicVariant(in_place_index_t<i>, std::initializer_list<U> il, Args&&... args)
-        : m_index(i), m_data(new to_type<i>(il, std::forward<Args>(args)...))
+        : m_index(i), m_data(new ToType<i>(il, std::forward<Args>(args)...))
 
     {
         assert(index() == i);
     }
- 
+
     ~DynamicVariant()
     {
         if (!valueless_by_exception() && m_data != nullptr)
@@ -405,18 +416,18 @@ class DynamicVariant
     }
 
     template <typename T, typename = absl::enable_if_t<!std::is_same<absl::decay_t<T>, DynamicVariant>::value>>
-    absl::enable_if_t<ExactlyOnce<accepted_type<T&&>>::value && std::is_constructible<accepted_type<T&&>, T&&>::value &&
-                          std::is_assignable<accepted_type<T&&>&, T&&>::value,
+    absl::enable_if_t<ExactlyOnce<AcceptedType<T&&>>::value && std::is_constructible<AcceptedType<T&&>, T&&>::value &&
+                          std::is_assignable<AcceptedType<T&&>&, T&&>::value,
                       DynamicVariant&>
-    operator=(T&& t) noexcept(std::is_nothrow_assignable<accepted_type<T&&>&, T&&>::value&&
-                                  std::is_nothrow_constructible<accepted_type<T&&>, T&&>::value)
+    operator=(T&& t) noexcept(std::is_nothrow_assignable<AcceptedType<T&&>&, T&&>::value&&
+                                  std::is_nothrow_constructible<AcceptedType<T&&>, T&&>::value)
     {
         if (!valueless_by_exception() && m_data != nullptr)
         {
             fast_ber::visit(DeleteVisitor(), *this);
         }
         m_index = AcceptedIndex<T>::value;
-        m_data  = new accepted_type<T>(t);
+        m_data  = new AcceptedType<T>(t);
         return *this;
     }
 
@@ -429,15 +440,15 @@ class DynamicVariant
             fast_ber::visit(DeleteVisitor(), *this);
         }
         m_index = AcceptedIndex<T>::value;
-        m_data  = new accepted_type<T>(std::forward<Args>(args)...);
+        m_data  = new AcceptedType<T>(std::forward<Args>(args)...);
 
         assert(holds_alternative<T>(*this));
         return *static_cast<T*>(m_data);
     }
 
     template <typename T, typename U, typename... Args,
-              typename = absl::enable_if_t<
-                  std::is_constructible<T, std::initializer_list<U>&, Args...>::value && ExactlyOnce<T>::value>>
+              typename = absl::enable_if_t<std::is_constructible<T, std::initializer_list<U>&, Args...>::value &&
+                                           ExactlyOnce<T>::value>>
     T& emplace(std::initializer_list<U> il, Args&&... args)
     {
         if (!valueless_by_exception() && m_data != nullptr)
@@ -466,7 +477,7 @@ class DynamicVariant
         try
         {
             m_index = i;
-            m_data  = new to_type<i>(std::forward<Args>(args)...);
+            m_data  = new ToType<i>(std::forward<Args>(args)...);
         }
         catch (...)
         {
@@ -475,7 +486,7 @@ class DynamicVariant
         }
         assert(index() == i);
         return get<i>(*this);
-    }   
+    }
 
     template <size_t i, typename U, typename... Args>
     absl::enable_if_t<
@@ -493,7 +504,7 @@ class DynamicVariant
         try
         {
             m_index = i;
-            m_data  = new to_type<i>(std::forward<Args>(il, args)...);
+            m_data  = new ToType<i>(std::forward<Args>(il, args)...);
         }
         catch (...)
         {

@@ -60,7 +60,8 @@ TEST_CASE("Circular Types: Choice Self Reference")
 
     Self copy;
     Self circular;
-    circular.emplace<Self>().emplace<Self>().emplace<Self>().emplace<String>("Hello!");
+
+    circular.emplace<1>().emplace<1>().emplace<1>().emplace<0>("Hello!");
 
     REQUIRE(copy != circular);
 
