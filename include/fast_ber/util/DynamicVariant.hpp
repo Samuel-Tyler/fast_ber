@@ -309,16 +309,8 @@ class DynamicVariant
     template <typename T>
     using AcceptedIndex = detail::AcceptedIndex<T&&, DynamicVariant>;
 
-    template <size_t i, bool = i<sizeof...(Types)> struct ToTypeImpl;
-
     template <size_t i>
-    struct ToTypeImpl<i, true>
-    {
-        using type = variant_alternative_t<i, DynamicVariant>;
-    };
-
-    template <size_t i>
-    using to_type = typename ToTypeImpl<i>::type;
+    using to_type = variant_alternative_t<i, DynamicVariant>;
 
     template <typename T>
     using accepted_type = to_type<AcceptedIndex<T>::value>;
@@ -335,14 +327,14 @@ class DynamicVariant
 
     template <typename T, typename = absl::enable_if_t<!std::is_same<absl::decay_t<T>, DynamicVariant>::value>,
               typename = absl::enable_if_t<ExactlyOnce<accepted_type<T&&>>::value &&
-                                           std::is_constructible<accepted_type<T&&>, T&&>::value>>
+                                      std::is_constructible<accepted_type<T&&>, T&&>::value>>
     DynamicVariant(T&& t) noexcept(std::is_nothrow_constructible<accepted_type<T&&>, T&&>::value)
         : m_index(detail::IndexOf<accepted_type<T&&>, Types...>::value), m_data(new accepted_type<T&&>(t))
 
     {
         assert(holds_alternative<accepted_type<T&&>>(*this));
     }
-
+ 
     template <typename T, typename... Args,
               typename = absl::enable_if_t<ExactlyOnce<T>::value && std::is_constructible<T, Args&&...>::value>>
     explicit DynamicVariant(in_place_type_t<T>, Args&&... args)
@@ -378,7 +370,7 @@ class DynamicVariant
     {
         assert(index() == i);
     }
-
+ 
     ~DynamicVariant()
     {
         if (!valueless_by_exception() && m_data != nullptr)
@@ -412,7 +404,7 @@ class DynamicVariant
         return *this;
     }
 
-    template <typename T, absl::enable_if_t<!std::is_same<absl::decay_t<T>, DynamicVariant>::value, int> = 0>
+    template <typename T, typename = absl::enable_if_t<!std::is_same<absl::decay_t<T>, DynamicVariant>::value>>
     absl::enable_if_t<ExactlyOnce<accepted_type<T&&>>::value && std::is_constructible<accepted_type<T&&>, T&&>::value &&
                           std::is_assignable<accepted_type<T&&>&, T&&>::value,
                       DynamicVariant&>
@@ -428,8 +420,9 @@ class DynamicVariant
         return *this;
     }
 
-    template <typename T, typename... Args>
-    absl::enable_if_t<std::is_constructible<T, Args...>::value && ExactlyOnce<T>::value, T&> emplace(Args&&... args)
+    template <typename T, typename... Args,
+              typename = absl::enable_if_t<std::is_constructible<T, Args...>::value && ExactlyOnce<T>::value>>
+    T& emplace(Args&&... args)
     {
         if (!valueless_by_exception() && m_data != nullptr)
         {
@@ -442,9 +435,10 @@ class DynamicVariant
         return *static_cast<T*>(m_data);
     }
 
-    template <typename T, typename U, typename... Args>
-    absl::enable_if_t<std::is_constructible<T, std::initializer_list<U>&, Args...>::value && ExactlyOnce<T>::value, T&>
-    emplace(std::initializer_list<U> il, Args&&... args)
+    template <typename T, typename U, typename... Args,
+              typename = absl::enable_if_t<
+                  std::is_constructible<T, std::initializer_list<U>&, Args...>::value && ExactlyOnce<T>::value>>
+    T& emplace(std::initializer_list<U> il, Args&&... args)
     {
         if (!valueless_by_exception() && m_data != nullptr)
         {
@@ -481,7 +475,7 @@ class DynamicVariant
         }
         assert(index() == i);
         return get<i>(*this);
-    }
+    }   
 
     template <size_t i, typename U, typename... Args>
     absl::enable_if_t<
