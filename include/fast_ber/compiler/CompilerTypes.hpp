@@ -7,6 +7,7 @@
 #include "absl/types/variant.h"
 
 #include <algorithm>
+#include <cctype>
 #include <fstream>
 #include <list>
 #include <map>
