@@ -101,12 +101,13 @@ struct variant_alternative<I, TaggedChoice<Identifier, T0, Types...>>
     using type = typename fast_ber::variant_alternative<I, typename TaggedChoice<Identifier, T0, Types...>::Base>::type;
 };
 
+/*
 template <typename Visitor, typename Identifier, typename... Variants>
 auto visit(Visitor&& vis, const TaggedChoice<Identifier, Variants...>& variant)
     -> decltype(absl::visit(vis, variant.base()))
 {
-    return fast_ber::visit(vis, variant.base());
-}
+    return absl::visit(vis, variant.base());
+}*/
 
 struct LengthVisitor
 {

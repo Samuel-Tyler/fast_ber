@@ -21,7 +21,7 @@ TEST_CASE("SimpleCompilerOutput: Testing a generated ber container")
     collection.child.meaning_of_life = -42;
     collection.optional_child        = fast_ber::Simple::Child<fast_ber::Id<fast_ber::Class::context_specific, 5>>{
         999999999, {"The", "second", "child", std::string(2000, 'x')}};
-    collection.the_choice = decltype(collection.the_choice){absl::in_place_index_t<1>(), "I chose a string!"};
+    collection.the_choice = decltype(collection.the_choice){fast_ber::in_place_index_t<1>(), "I chose a string!"};
 
     fast_ber::EncodeResult encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), collection);
     fast_ber::DecodeResult decode_result =

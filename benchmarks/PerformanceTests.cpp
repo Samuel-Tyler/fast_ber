@@ -212,7 +212,7 @@ TEST_CASE("Benchmark: Encode Performance")
             fast_ber::Integer<>(-42), fast_ber::SequenceOf<fast_ber::OctetString<>>{}},
         fast_ber::Simple::Child<fast_ber::Id<fast_ber::Class::context_specific, 5>>{
             999999999, fast_ber::SequenceOf<fast_ber::OctetString<>>{the, second, child, long_string}},
-        decltype(collection.the_choice){absl::in_place_index_t<1>(), "I chose a string!"}};
+        decltype(collection.the_choice){fast_ber::in_place_index_t<1>(), "I chose a string!"}};
 
     BENCHMARK("fast_ber        - encode")
     {
@@ -299,7 +299,7 @@ TEST_CASE("Benchmark: Object Construction Performance")
                     -42, fast_ber::SequenceOf<fast_ber::OctetString<>>{}},
                 fast_ber::Simple::Child<fast_ber::Id<fast_ber::Class::context_specific, 5>>{
                     999999999, fast_ber::SequenceOf<fast_ber::OctetString<>>{the, second, child, long_string}},
-                decltype(collection.the_choice){absl::in_place_index_t<1>(), "I chose a string!"}};
+                decltype(collection.the_choice){fast_ber::in_place_index_t<1>(), "I chose a string!"}};
         }
     }
 
@@ -369,7 +369,7 @@ TEST_CASE("Benchmark: Calculate Encoded Length Performance")
             fast_ber::Integer<>(-42), fast_ber::SequenceOf<fast_ber::OctetString<>>{}},
         fast_ber::Simple::Child<fast_ber::Id<fast_ber::Class::context_specific, 5>>{
             999999999, fast_ber::SequenceOf<fast_ber::OctetString<>>{the, second, child, long_string}},
-        decltype(collection.the_choice){absl::in_place_index_t<1>(), "I chose a string!"}};
+        decltype(collection.the_choice){fast_ber::in_place_index_t<1>(), "I chose a string!"}};
 
     size_t encoded_length = 0;
     BENCHMARK("fast_ber        - calculate encoded length")
