@@ -4,6 +4,8 @@
 #include <tuple>
 #include <type_traits>
 
+#include <absl/types/variant.h>
+
 namespace fast_ber
 {
 
@@ -17,6 +19,9 @@ namespace detail
 
 template <typename...>
 using void_t = void;
+
+template <std::size_t I>
+using SizeT = std::integral_constant<std::size_t, I>;
 
 template <class Variant, std::size_t i = 0>
 struct ImaginaryFun;
@@ -32,12 +37,12 @@ struct ImaginaryFun<DynamicVariant<H, T...>, i> : ImaginaryFun<DynamicVariant<T.
 {
     using ImaginaryFun<DynamicVariant<T...>, i + 1>::Run;
 
-    static std::integral_constant<std::size_t, i> Run(const H&);
-    static std::integral_constant<std::size_t, i> Run(H&&);
+    static std::integral_constant<std::size_t, i> Run(const H&, std::integral_constant<std::size_t, i>);
+    static std::integral_constant<std::size_t, i> Run(H&&, std::integral_constant<std::size_t, i>);
 };
 
 template <typename T, typename Variant>
-using FunType = decltype(ImaginaryFun<Variant>::Run(std::declval<T>()));
+using FunType = decltype(ImaginaryFun<Variant>::Run(std::declval<T>(), {}));
 
 template <typename T, typename Variant, typename = void>
 struct AcceptedIndex : std::integral_constant<size_t, variant_npos>
@@ -45,24 +50,12 @@ struct AcceptedIndex : std::integral_constant<size_t, variant_npos>
 };
 
 template <typename T, typename Variant>
-struct AcceptedIndex<T, Variant, void_t<FunType<T, Variant>>> : FunType<T, Variant>
+struct AcceptedIndex<T, Variant, absl::void_t<decltype(ImaginaryFun<Variant>::Run(std::declval<T>(), {}))>>
+    : decltype(ImaginaryFun<Variant>::Run(std::declval<T>(), {}))
 {
-};
-/*
-
-template <typename T, typename Variant, typename = void>
-struct AcceptedIndex
-{
-    static constexpr size_t value = variant_npos;
 };
 
-template <typename T, typename... Types>
-struct AcceptedIndex<T, DynamicVariant<Types...>, void_t<FunType<T, DynamicVariant<Types...>>>>
-{
-    static constexpr size_t value = FunType<T, DynamicVariant<Types...>>::value;
-};
-*/
-static_assert(AcceptedIndex<void, DynamicVariant<int>>::value == variant_npos, "");
+static_assert(AcceptedIndex<std::string, DynamicVariant<int>>::value == variant_npos, "");
 static_assert(AcceptedIndex<int, DynamicVariant<int>>::value != variant_npos, "");
 static_assert(AcceptedIndex<int, DynamicVariant<int>>::value == 0, "");
 static_assert(AcceptedIndex<bool, DynamicVariant<char, int, bool>>::value == 2, "");

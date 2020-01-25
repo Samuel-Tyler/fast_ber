@@ -295,36 +295,36 @@ struct DeleteVisitor
     }
 };
 
-template <typename T0, typename... Tn>
-class DynamicVariant<T0, Tn...>
+template <typename... Types>
+class DynamicVariant
 {
-    static_assert(absl::conjunction<std::is_object<T0>, std::is_object<Tn>...>::value,
+    static_assert(absl::conjunction<std::is_object<Types>...>::value,
                   "Attempted to instantiate a variant containing a non-object "
                   "type.");
-    static_assert(absl::conjunction<absl::negation<std::is_array<T0>>, absl::negation<std::is_array<Tn>>...>::value,
+    static_assert(absl::conjunction<absl::negation<std::is_array<Types>>...>::value,
                   "Attempted to instantiate a variant containing an array type.");
 
     template <typename T>
-    using ExactlyOnce = detail::ExactlyOnce<T, T0, Tn...>;
+    using ExactlyOnce = detail::ExactlyOnce<T, Types...>;
     template <typename T>
     using AcceptedIndex = detail::AcceptedIndex<T&&, DynamicVariant>;
 
-    template <size_t i, bool = i<1 + sizeof...(Tn)> struct to_type_impl;
+    template <size_t i, bool = i<sizeof...(Types)> struct ToTypeImpl;
 
     template <size_t i>
-    struct to_type_impl<i, true>
+    struct ToTypeImpl<i, true>
     {
         using type = variant_alternative_t<i, DynamicVariant>;
     };
 
     template <size_t i>
-    using to_type = typename to_type_impl<i>::type;
+    using to_type = typename ToTypeImpl<i>::type;
 
     template <typename T>
     using accepted_type = to_type<AcceptedIndex<T>::value>;
 
   public:
-    DynamicVariant() : m_index(0), m_data(new T0()) {}
+    DynamicVariant() : m_index(0), m_data(new to_type<0>()) {}
     DynamicVariant(const DynamicVariant& other) : m_index(other.m_index), m_data(fast_ber::visit(CopyVisitor{}, other))
     {
     }
@@ -337,7 +337,7 @@ class DynamicVariant<T0, Tn...>
               typename = absl::enable_if_t<ExactlyOnce<accepted_type<T&&>>::value &&
                                            std::is_constructible<accepted_type<T&&>, T&&>::value>>
     DynamicVariant(T&& t) noexcept(std::is_nothrow_constructible<accepted_type<T&&>, T&&>::value)
-        : m_index(detail::IndexOf<accepted_type<T&&>, T0, Tn...>::value), m_data(new accepted_type<T&&>(t))
+        : m_index(detail::IndexOf<accepted_type<T&&>, Types...>::value), m_data(new accepted_type<T&&>(t))
 
     {
         assert(holds_alternative<accepted_type<T&&>>(*this));
@@ -346,7 +346,7 @@ class DynamicVariant<T0, Tn...>
     template <typename T, typename... Args,
               typename = absl::enable_if_t<ExactlyOnce<T>::value && std::is_constructible<T, Args&&...>::value>>
     explicit DynamicVariant(in_place_type_t<T>, Args&&... args)
-        : m_index(detail::IndexOf<T, T0, Tn...>::value), m_data(new T(std::forward<Args>(args)...))
+        : m_index(detail::IndexOf<T, Types...>::value), m_data(new T(std::forward<Args>(args)...))
 
     {
         assert(holds_alternative<T>(*this));
@@ -356,7 +356,7 @@ class DynamicVariant<T0, Tn...>
               typename = absl::enable_if_t<ExactlyOnce<T>::value &&
                                            std::is_constructible<T, std::initializer_list<U>&, Args&&...>::value>>
     explicit DynamicVariant(in_place_type_t<T>, std::initializer_list<U> il, Args&&... args)
-        : m_index(detail::IndexOf<T, T0, Tn...>::value), m_data(new T(il, args...))
+        : m_index(detail::IndexOf<T, Types...>::value), m_data(new T(il, args...))
     {
         assert(holds_alternative<T>(*this));
     }
@@ -401,6 +401,10 @@ class DynamicVariant<T0, Tn...>
 
     DynamicVariant& operator=(DynamicVariant&& other) noexcept
     {
+        if (!valueless_by_exception() && m_data != nullptr)
+        {
+            fast_ber::visit(DeleteVisitor(), *this);
+        }
         m_index = other.m_index;
         m_data  = other.m_data;
 
@@ -408,10 +412,8 @@ class DynamicVariant<T0, Tn...>
         return *this;
     }
 
-    template <typename T>
-    absl::enable_if_t<!std::is_same<absl::decay_t<T>, DynamicVariant>::value &&
-                          ExactlyOnce<accepted_type<T&&>>::value &&
-                          std::is_constructible<accepted_type<T&&>, T&&>::value &&
+    template <typename T, absl::enable_if_t<!std::is_same<absl::decay_t<T>, DynamicVariant>::value, int> = 0>
+    absl::enable_if_t<ExactlyOnce<accepted_type<T&&>>::value && std::is_constructible<accepted_type<T&&>, T&&>::value &&
                           std::is_assignable<accepted_type<T&&>&, T&&>::value,
                       DynamicVariant&>
     operator=(T&& t) noexcept(std::is_nothrow_assignable<accepted_type<T&&>&, T&&>::value&&
@@ -429,6 +431,10 @@ class DynamicVariant<T0, Tn...>
     template <typename T, typename... Args>
     absl::enable_if_t<std::is_constructible<T, Args...>::value && ExactlyOnce<T>::value, T&> emplace(Args&&... args)
     {
+        if (!valueless_by_exception() && m_data != nullptr)
+        {
+            fast_ber::visit(DeleteVisitor(), *this);
+        }
         m_index = AcceptedIndex<T>::value;
         m_data  = new accepted_type<T>(std::forward<Args>(args)...);
 
@@ -440,6 +446,10 @@ class DynamicVariant<T0, Tn...>
     absl::enable_if_t<std::is_constructible<T, std::initializer_list<U>&, Args...>::value && ExactlyOnce<T>::value, T&>
     emplace(std::initializer_list<U> il, Args&&... args)
     {
+        if (!valueless_by_exception() && m_data != nullptr)
+        {
+            fast_ber::visit(DeleteVisitor(), *this);
+        }
         m_index = AcceptedIndex<T>::value;
         m_data  = new T(std::forward<Args>(il, args)...);
 
@@ -452,7 +462,13 @@ class DynamicVariant<T0, Tn...>
                       variant_alternative_t<i, DynamicVariant>&>
     emplace(Args&&... args)
     {
-        static_assert(i < 1 + sizeof...(Tn), "The index should be in [0, number of alternatives)");
+        static_assert(i < sizeof...(Types), "The index should be in [0, number of alternatives)");
+
+        if (!valueless_by_exception() && m_data != nullptr)
+        {
+            fast_ber::visit(DeleteVisitor(), *this);
+        }
+
         try
         {
             m_index = i;
@@ -473,7 +489,13 @@ class DynamicVariant<T0, Tn...>
         variant_alternative_t<i, DynamicVariant>&>
     emplace(std::initializer_list<U> il, Args&&... args)
     {
-        static_assert(i < 1 + sizeof...(Tn), "The index should be in [0, number of alternatives)");
+        static_assert(i < sizeof...(Types), "The index should be in [0, number of alternatives)");
+
+        if (!valueless_by_exception() && m_data != nullptr)
+        {
+            fast_ber::visit(DeleteVisitor(), *this);
+        }
+
         try
         {
             m_index = i;
@@ -519,9 +541,6 @@ static_assert(std::is_copy_constructible<DynamicVariant<int, char>>::value, "");
 static_assert(std::is_move_constructible<DynamicVariant<int, char>>::value, "");
 static_assert(std::is_copy_assignable<DynamicVariant<int, char>>::value, "");
 static_assert(std::is_move_assignable<DynamicVariant<int, char>>::value, "");
-
-template <>
-class DynamicVariant<>;
 
 struct Equals
 {
