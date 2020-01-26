@@ -14,7 +14,7 @@ class FastberConan(ConanFile):
     default_options = {"shared": False}
     generators = "cmake"
     requires = "abseil/20181200@bincrafters/stable"
-    scm = {"type": "git", "url": url, "revision": "conan", "subfolder": name}
+    scm = {"type": "git", "url": url, "revision": "devel", "subfolder": name}
 
     def build(self):
         cmake = CMake(self)
