@@ -1,6 +1,8 @@
 aux_source_directory(encode ENCODE_SRC)
 aux_source_directory(decode DECODE_SRC)
 
+include(${CMAKE_SOURCE_DIR}/cmake/fast_ber_generate.cmake)
+
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/autogen)
 
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/pokemon.asn pokemon)
