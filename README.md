@@ -31,6 +31,9 @@ fast_ber_view can be used to dump the contents of a BER PDU, without requiring a
 }
 ```
 
+## Call for Test Data
+Test data is wanted to improve this project! If you have any test ASN.1 specs or BER files please share them. More test data will improve parsing and help find any issues with the library.
+
 ## Compiler Usage
 1. Build the compiler:
 ```
