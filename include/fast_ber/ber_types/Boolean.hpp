@@ -26,7 +26,7 @@ class Boolean
     Boolean(bool val) noexcept { assign(val); }
     template <typename Identifier2>
     Boolean(const Boolean<Identifier2>& rhs) noexcept;
-    explicit Boolean(BerView& view) noexcept { assign_ber(view); }
+    explicit Boolean(const BerView& view) noexcept { assign_ber(view); }
     explicit Boolean(absl::Span<const uint8_t> ber_data) noexcept { assign_ber(ber_data); }
 
     // Implicit conversion to bool

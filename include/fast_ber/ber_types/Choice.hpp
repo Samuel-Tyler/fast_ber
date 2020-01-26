@@ -31,6 +31,16 @@ struct ChoiceId
     constexpr static bool check_id_match(Class c, Tag t) { return is_an_identifier_choice(c, t, Identifiers{}...); }
 };
 
+template <typename T>
+struct IsChoiceId : std::false_type
+{
+};
+
+template <typename... Identifiers>
+struct IsChoiceId<ChoiceId<Identifiers...>> : std::true_type
+{
+};
+
 inline void print(std::ostream&) noexcept {}
 
 template <typename Identifier, typename... Identifiers>
@@ -60,8 +70,8 @@ struct TaggedChoice : public fast_ber::DynamicVariant<T0, Args...>
     using Base::Base;
     using Base::operator=;
 
-    Base&       base() { return *static_cast<Base*>(this); }
-    const Base& base() const { return *static_cast<const Base*>(this); }
+    Base&       base() { return *this; }
+    const Base& base() const { return *this; }
 
     TaggedChoice() : Base() {}
     TaggedChoice(const TaggedChoice& rhs) = default;
@@ -101,12 +111,13 @@ struct variant_alternative<I, TaggedChoice<Identifier, T0, Types...>>
     using type = typename fast_ber::variant_alternative<I, typename TaggedChoice<Identifier, T0, Types...>::Base>::type;
 };
 
+/*
 template <typename Visitor, typename Identifier, typename... Variants>
 auto visit(Visitor&& vis, const TaggedChoice<Identifier, Variants...>& variant)
     -> decltype(absl::visit(vis, variant.base()))
 {
-    return fast_ber::visit(vis, variant.base());
-}
+    return absl::visit(vis, variant.base());
+}*/
 
 struct LengthVisitor
 {
@@ -117,14 +128,15 @@ struct LengthVisitor
     }
 };
 
-template <typename Identifier, typename... Variants>
+template <typename Identifier, typename... Variants, absl::enable_if_t<!IsChoiceId<Identifier>::value, int> = 0>
 size_t encoded_length(const TaggedChoice<Identifier, Variants...>& choice) noexcept
 {
     LengthVisitor visit;
     return wrap_with_ber_header_length(fast_ber::visit(visit, choice), Identifier{});
 }
-template <typename... Variants>
-size_t encoded_length(const TaggedChoice<ChoiceId<Identifier<Variants>...>, Variants...>& choice) noexcept
+
+template <typename Identifier, typename... Variants, absl::enable_if_t<IsChoiceId<Identifier>::value, int> = 0>
+size_t encoded_length(const TaggedChoice<Identifier, Variants...>& choice) noexcept
 {
     LengthVisitor visit;
     return fast_ber::visit(visit, choice);
@@ -163,7 +175,7 @@ EncodeResult encode_choice(const absl::Span<uint8_t>&                   buffer,
     return encode_if<0, depth>(buffer, choice);
 }
 
-template <typename Identifier, typename... Variants>
+template <typename Identifier, typename... Variants, absl::enable_if_t<!IsChoiceId<Identifier>::value, int> = 0>
 EncodeResult encode(const absl::Span<uint8_t>& buffer, const TaggedChoice<Identifier, Variants...>& choice) noexcept
 {
     const auto header_length_guess = 2;
@@ -175,12 +187,12 @@ EncodeResult encode(const absl::Span<uint8_t>& buffer, const TaggedChoice<Identi
     {
         return inner_encode_result;
     }
+
     return wrap_with_ber_header(buffer, inner_encode_result.length, Identifier{}, header_length_guess);
 }
 
-template <typename... Variants>
-EncodeResult encode(const absl::Span<uint8_t>&                                          buffer,
-                    const TaggedChoice<ChoiceId<Identifier<Variants>...>, Variants...>& choice) noexcept
+template <typename Identifier, typename... Variants, absl::enable_if_t<IsChoiceId<Identifier>::value, int> = 0>
+EncodeResult encode(const absl::Span<uint8_t>& buffer, const TaggedChoice<Identifier, Variants...>& choice) noexcept
 {
     return encode_choice(buffer, choice);
 }
@@ -220,7 +232,7 @@ DecodeResult decode(BerViewIterator&                                            
     return result;
 }
 
-template <typename Identifier, typename... Variants>
+template <typename Identifier, typename... Variants, absl::enable_if_t<!IsChoiceId<Identifier>::value, int> = 0>
 DecodeResult decode(BerViewIterator& input, TaggedChoice<Identifier, Variants...>& output) noexcept
 {
     if (!input->is_valid() || input->tag() != Identifier::tag() || input->class_() != Identifier::class_())

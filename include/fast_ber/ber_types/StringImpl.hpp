@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <string>
+#include <cctype>
 
 namespace fast_ber
 {
@@ -146,7 +147,14 @@ bool StringImpl<tag, Identifier>::operator==(const char* rhs) const noexcept
 template <UniversalTag tag, typename Identifier>
 std::ostream& operator<<(std::ostream& os, const StringImpl<tag, Identifier>& str) noexcept
 {
-    return os << '"' << absl::string_view(str) << '"';
+    if (std::all_of(str.begin(), str.end(), [](char c) { return std::isprint(c); }))
+    {
+        return os << '"' << absl::string_view(str) << '"';
+    }
+    else
+    {
+        return os << "\"binary data\"";
+    }
 }
 
 template <UniversalTag tag, typename Identifier>

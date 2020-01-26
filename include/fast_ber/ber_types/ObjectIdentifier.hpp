@@ -29,6 +29,7 @@ class ObjectIdentifier
     ObjectIdentifier(ObjectIdentifier<Identifier>&& rhs) noexcept      = default;
     ObjectIdentifier(const ObjectIdentifierComponents& oid) noexcept { assign(oid); }
     ObjectIdentifier(const std::initializer_list<int64_t>& oid) noexcept { assign(ObjectIdentifierComponents(oid)); }
+    explicit ObjectIdentifier(BerView view) { assign_ber(view); }
 
     ObjectIdentifier<Identifier>& operator=(const BerView& view) noexcept;
     ObjectIdentifier<Identifier>& operator=(const ObjectIdentifierComponents& rhs) noexcept;

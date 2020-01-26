@@ -46,7 +46,10 @@ if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER
     endif()
   else()
     add_definitions("-DNDEBUG")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -flto")
+    if (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+      # Link time optimisation. Disabled on clang due to issue on travis
+      set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -flto")
+    endif()
     set(SKIP_AUTO_GENERATION true)
   endif()
 else()

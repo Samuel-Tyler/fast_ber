@@ -185,7 +185,7 @@ inline EncodeResult BerContainer::encode(absl::Span<uint8_t> buffer) const noexc
 
 inline DecodeResult BerContainer::decode(BerViewIterator& input_data) noexcept
 {
-    bool success = assign(*input_data) > 0;
+    bool success = assign(*input_data);
     ++input_data;
     return DecodeResult{success};
 }

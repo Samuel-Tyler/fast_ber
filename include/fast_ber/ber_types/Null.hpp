@@ -21,6 +21,7 @@ class Null
     Null(const Null&) noexcept = default;
     Null(Null&&) noexcept      = default;
     explicit Null(std::nullptr_t) noexcept {}
+    explicit Null(BerView view) { assign_ber(view); }
 
     Null& operator=(const Null&) = default;
     Null& operator=(Null&&) = default;
