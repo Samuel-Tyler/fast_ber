@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <string>
+#include <cctype>
 
 namespace fast_ber
 {
