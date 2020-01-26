@@ -27,13 +27,15 @@ else()
 endif()
 
 add_library(fast_ber_lib STATIC util/BerView.cpp)
-target_include_directories(fast_ber_lib PUBLIC ../include ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(fast_ber_lib PUBLIC ${CMAKE_SOURCE_DIR}/include ${CMAKE_CURRENT_BINARY_DIR})
 
 aux_source_directory(compiler SRC_LIST)
 add_executable(${PROJECT_NAME}_compiler ${SRC_LIST} ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp)
+add_executable(${PROJECT_NAME}_view view/view.cpp)
 
 target_link_libraries(fast_ber_lib ${ABSEIL_LIBS})
 target_link_libraries(${PROJECT_NAME}_compiler fast_ber_lib)
+target_link_libraries(${PROJECT_NAME}_view fast_ber_lib)
 
 # CMake function to generate c++ include files from a given ASN1 input
 function(fast_ber_generate input_file output_name)

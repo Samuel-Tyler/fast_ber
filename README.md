@@ -8,7 +8,6 @@ fast_ber is a small, lightweight library for BER encoding and decoding. Fast ber
 - Simple, modern C++ interface
 - ASN.1 sequences are represented as POD structs - no private members or complex getters and setters
 - No exceptions, no RTTI and limited memory allocations (everything is small buffer optimised)
-- Header only
 - View classes are provided for zero copy decoding
 - Interfaces mimic STL types such as std::string, std::vector and std::optional
 
@@ -18,7 +17,21 @@ fast_ber is a small, lightweight library for BER encoding and decoding. Fast ber
 - No circular data structures
 - Size and value constraints are not implemented
 
-## Usage
+### Tools
+fast_ber_view can be used to dump the contents of a BER PDU, without requiring a schema.
+```
+./build/src/fast_ber_view ./build_gcc/sample/pokemon.ber | jq
+{
+  "length": 125,
+  "identifier": {
+    "class": "Universal",
+    "tag": "Sequence / Sequence Of"
+  },
+  "content": ...
+}
+```
+
+## Compiler Usage
 1. Build the compiler:
 ```
 git submodule update --init
