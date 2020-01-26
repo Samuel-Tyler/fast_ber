@@ -25,15 +25,13 @@ else()
 endif()
 
 
-add_library(fast_ber_lib STATIC util/BerView.cpp)
-target_include_directories(fast_ber_lib PUBLIC ${CMAKE_SOURCE_DIR}/include ${CMAKE_CURRENT_BINARY_DIR})
 
 aux_source_directory(compiler SRC_LIST)
-add_library(fast_ber_lib empty)
+add_library(fast_ber_lib STATIC util/BerView.cpp)
 add_executable(${PROJECT_NAME}_compiler ${SRC_LIST} ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp)
 add_executable(${PROJECT_NAME}_view view/view.cpp)
 
-target_include_directories(fast_ber_lib INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
+target_include_directories(fast_ber_lib PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
                                                   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 target_include_directories(${PROJECT_NAME}_compiler PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
