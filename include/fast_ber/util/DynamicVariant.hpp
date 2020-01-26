@@ -341,7 +341,6 @@ class DynamicVariant
                                            std::is_constructible<AcceptedType<T&&>, T&&>::value>>
     DynamicVariant(T&& t) noexcept(std::is_nothrow_constructible<AcceptedType<T&&>, T&&>::value)
         : m_index(detail::IndexOf<AcceptedType<T&&>, Types...>::value), m_data(new AcceptedType<T&&>(t))
-
     {
         assert(holds_alternative<AcceptedType<T&&>>(*this));
     }

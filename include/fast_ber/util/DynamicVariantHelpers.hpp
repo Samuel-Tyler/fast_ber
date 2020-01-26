@@ -12,7 +12,7 @@ namespace fast_ber
 template <typename... Ts>
 class DynamicVariant;
 
-static constexpr size_t variant_npos = -1;
+static constexpr size_t variant_npos = size_t(-1);
 
 namespace detail
 {

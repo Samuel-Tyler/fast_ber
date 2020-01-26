@@ -66,11 +66,13 @@ TEST_CASE("Circular Types: Choice Self Reference")
     REQUIRE(copy != circular);
 
     std::vector<uint8_t>          buffer(500, 0);
+    const size_t encode_res_len = fast_ber::encoded_length(circular);
     const fast_ber::EncodeResult& encode_res = fast_ber::encode(absl::Span<uint8_t>(buffer), circular);
     const fast_ber::DecodeResult& decode_res = fast_ber::decode(absl::Span<uint8_t>(buffer), copy);
 
     REQUIRE(encode_res.success);
     REQUIRE(decode_res.success);
+    REQUIRE(encode_res_len == encode_res.length);
     REQUIRE(copy == circular);
     REQUIRE(fast_ber::get<0>(fast_ber::get<1>(fast_ber::get<1>(fast_ber::get<1>(copy)))) == "Hello!");
 }
