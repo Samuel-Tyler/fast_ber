@@ -11,6 +11,15 @@
 namespace fast_ber
 {
 
+struct RuntimeId
+{
+    constexpr Class class_() const { return m_class; }
+    constexpr Tag   tag() const { return m_tag; }
+
+    Class m_class;
+    Tag   m_tag;
+};
+
 template <typename OuterId, typename InnerId>
 struct DoubleId
 {
@@ -55,21 +64,26 @@ struct IdentifierType
 template <typename T>
 using Identifier = typename IdentifierType<T>::type;
 
-template <Class class_1, Tag tag_1>
-std::ostream& operator<<(std::ostream& os, const Id<class_1, tag_1>& id) noexcept
+inline std::ostream& operator<<(std::ostream& os, RuntimeId id) noexcept
 {
     if (id.class_() == Class::universal)
     {
         UniversalTag tag = static_cast<UniversalTag>(id.tag());
-        return os << "Identifier(" << id.class_() << ", " << tag << ")";
+        return os << "{ \"class\": \"" << id.class_() << "\", \"tag\": \"" << tag << "\"}";
     }
-    return os << "Identifier(" << id.class_() << ", " << id.tag() << ")";
+    return os << "{ \"class\": \"" << id.class_() << "\", \"tag\": " << id.tag() << "}";
+}
+
+template <Class class_1, Tag tag_1>
+std::ostream& operator<<(std::ostream& os, Id<class_1, tag_1> id) noexcept
+{
+    return os << RuntimeId{id.class_(), id.tag()};
 }
 
 template <typename OuterId, typename InnerId>
-std::ostream& operator<<(std::ostream& os, const DoubleId<OuterId, InnerId>& id) noexcept
+std::ostream& operator<<(std::ostream& os, DoubleId<OuterId, InnerId> id) noexcept
 {
-    return os << "DoubleIdentifier(" << id.outer_id() << ", " << id.inner_id() << ")";
+    return os << "{ \"outer\": " << id.outer_id() << ", \"inner\": " << id.inner_id() << "}";
 }
 
 } // namespace fast_ber

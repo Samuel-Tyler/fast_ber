@@ -37,6 +37,7 @@ class BerView
 
     bool         is_valid() const noexcept { return m_valid; }
     Construction construction() const noexcept { return get_construction(m_data[0]); }
+    RuntimeId    identifier() const { return {class_(), tag()}; }
     Class        class_() const noexcept { return get_class(m_data[0]); }
     Tag          tag() const noexcept { return m_tag; }
     size_t       identifier_length() const noexcept { return m_id_length; }
@@ -275,5 +276,7 @@ inline EncodeResult BerView::encode_content_and_length(absl::Span<uint8_t> buffe
     std::memcpy(buffer.data(), ber_span.data(), ber_span.size());
     return EncodeResult{true, ber_span.length()};
 }
+
+std::ostream& operator<<(std::ostream& os, BerView view) noexcept;
 
 } // namespace fast_ber

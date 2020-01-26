@@ -26,8 +26,8 @@ else()
     configure_file(${CMAKE_SOURCE_DIR}/src/compiler/autogen_copy/asn_compiler.hpp ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp COPYONLY)
 endif()
 
-add_library(fast_ber_lib empty)
-target_include_directories(fast_ber_lib INTERFACE ../include ${CMAKE_CURRENT_BINARY_DIR})
+add_library(fast_ber_lib STATIC util/BerView.cpp)
+target_include_directories(fast_ber_lib PUBLIC ../include ${CMAKE_CURRENT_BINARY_DIR})
 
 aux_source_directory(compiler SRC_LIST)
 add_executable(${PROJECT_NAME}_compiler ${SRC_LIST} ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp)

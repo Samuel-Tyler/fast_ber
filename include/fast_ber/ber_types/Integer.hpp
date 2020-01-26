@@ -28,7 +28,7 @@ class Integer
   public:
     Integer() noexcept : m_data{0x01, 0x00} {}
     Integer(int64_t num) noexcept { assign(num); }
-    Integer(BerView& view) noexcept { assign_ber(view); }
+    Integer(const BerView& view) noexcept { assign_ber(view); }
     template <typename Identifier2>
     Integer(const Integer<Identifier2>& rhs) noexcept;
 

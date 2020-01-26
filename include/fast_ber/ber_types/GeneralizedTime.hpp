@@ -39,8 +39,14 @@ class GeneralizedTime
     size_t       encoded_content_and_length_length() const noexcept { return m_contents.content_and_length_length(); }
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
-    GeneralizedTime(const absl::Time& time) { set_time(time); }
     GeneralizedTime() { set_time(absl::Time()); }
+    GeneralizedTime(const GeneralizedTime&) = default;
+    GeneralizedTime(GeneralizedTime&&)      = default;
+    GeneralizedTime(const absl::Time& time) { set_time(time); }
+    explicit GeneralizedTime(BerView view) { assign_ber(view); }
+
+    GeneralizedTime& operator=(const GeneralizedTime&) = default;
+    GeneralizedTime& operator=(GeneralizedTime&&) = default;
 
     using AsnId = Identifier;
 
