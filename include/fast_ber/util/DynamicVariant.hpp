@@ -12,6 +12,8 @@
 
 namespace fast_ber
 {
+namespace dynamic
+{
 
 struct in_place_t
 {
@@ -189,26 +191,26 @@ template <std::size_t I, class... Types>
 constexpr typename std::add_pointer<variant_alternative_t<I, DynamicVariant<Types...>>>::type
 get_if(DynamicVariant<Types...>* v) noexcept
 {
-    return (v != nullptr && v->index() == I) ? std::addressof(fast_ber::get<I>(*v)) : nullptr;
+    return (v != nullptr && v->index() == I) ? std::addressof(fast_ber::dynamic::get<I>(*v)) : nullptr;
 }
 
 template <std::size_t I, class... Types>
 constexpr typename std::add_pointer<const variant_alternative_t<I, DynamicVariant<Types...>>>::type
 get_if(const DynamicVariant<Types...>* v) noexcept
 {
-    return (v != nullptr && v->index() == I) ? std::addressof(fast_ber::get<I>(*v)) : nullptr;
+    return (v != nullptr && v->index() == I) ? std::addressof(fast_ber::dynamic::get<I>(*v)) : nullptr;
 }
 
 template <class T, class... Types>
 constexpr typename std::add_pointer<T>::type get_if(DynamicVariant<Types...>* v) noexcept
 {
-    return fast_ber::get_if<detail::IndexOf<T, Types...>::value>(v);
+    return fast_ber::dynamic::get_if<detail::IndexOf<T, Types...>::value>(v);
 }
 
 template <class T, class... Types>
 constexpr typename std::add_pointer<const T>::type get_if(const DynamicVariant<Types...>* v) noexcept
 {
-    return fast_ber::get_if<detail::IndexOf<T, Types...>::value>(v);
+    return fast_ber::dynamic::get_if<detail::IndexOf<T, Types...>::value>(v);
 }
 
 template <size_t index, typename Visitor, typename... VariantOptions,
@@ -304,14 +306,14 @@ class DynamicVariant
     static_assert(absl::conjunction<absl::negation<std::is_array<Types>>...>::value,
                   "Attempted to instantiate a variant containing an array type.");
 
-    template <typename T>
-    using ExactlyOnce = detail::ExactlyOnce<T, Types...>;
-    template <typename T>
-    using AcceptedIndex = detail::AcceptedIndex<T&&, DynamicVariant>;
+    struct Nothing
+    {
+    };
 
     template <size_t i, bool = (i < sizeof...(Types))>
     struct ToTypeImpl
     {
+        using type = Nothing;
     };
 
     template <size_t i>
@@ -320,15 +322,19 @@ class DynamicVariant
         using type = variant_alternative_t<i, DynamicVariant>;
     };
 
+  public:
     template <size_t i>
     using ToType = typename ToTypeImpl<i>::type;
-
+    template <typename T>
+    using ExactlyOnce = detail::ExactlyOnce<T, Types...>;
+    template <typename T>
+    using AcceptedIndex = detail::AcceptedIndex<T&&, DynamicVariant>;
     template <typename T>
     using AcceptedType = ToType<AcceptedIndex<T>::value>;
 
-  public:
     DynamicVariant() : m_index(0), m_data(new ToType<0>()) {}
-    DynamicVariant(const DynamicVariant& other) : m_index(other.m_index), m_data(fast_ber::visit(CopyVisitor{}, other))
+    DynamicVariant(const DynamicVariant& other)
+        : m_index(other.m_index), m_data(fast_ber::dynamic::visit(CopyVisitor{}, other))
     {
     }
     DynamicVariant(DynamicVariant&& other) noexcept : m_index(std::move(other.m_index)), m_data(std::move(other.m_data))
@@ -385,7 +391,7 @@ class DynamicVariant
     {
         if (!valueless_by_exception() && m_data != nullptr)
         {
-            fast_ber::visit(DeleteVisitor(), *this);
+            fast_ber::dynamic::visit(DeleteVisitor(), *this);
         }
     }
 
@@ -393,10 +399,10 @@ class DynamicVariant
     {
         if (!valueless_by_exception() && m_data != nullptr)
         {
-            fast_ber::visit(DeleteVisitor(), *this);
+            fast_ber::dynamic::visit(DeleteVisitor(), *this);
         }
         m_index = other.m_index;
-        m_data  = fast_ber::visit(CopyVisitor(), other);
+        m_data  = fast_ber::dynamic::visit(CopyVisitor(), other);
 
         return *this;
     }
@@ -405,7 +411,7 @@ class DynamicVariant
     {
         if (!valueless_by_exception() && m_data != nullptr)
         {
-            fast_ber::visit(DeleteVisitor(), *this);
+            fast_ber::dynamic::visit(DeleteVisitor(), *this);
         }
         m_index = other.m_index;
         m_data  = other.m_data;
@@ -423,7 +429,7 @@ class DynamicVariant
     {
         if (!valueless_by_exception() && m_data != nullptr)
         {
-            fast_ber::visit(DeleteVisitor(), *this);
+            fast_ber::dynamic::visit(DeleteVisitor(), *this);
         }
         m_index = AcceptedIndex<T>::value;
         m_data  = new AcceptedType<T>(t);
@@ -436,7 +442,7 @@ class DynamicVariant
     {
         if (!valueless_by_exception() && m_data != nullptr)
         {
-            fast_ber::visit(DeleteVisitor(), *this);
+            fast_ber::dynamic::visit(DeleteVisitor(), *this);
         }
         m_index = AcceptedIndex<T>::value;
         m_data  = new AcceptedType<T>(std::forward<Args>(args)...);
@@ -452,7 +458,7 @@ class DynamicVariant
     {
         if (!valueless_by_exception() && m_data != nullptr)
         {
-            fast_ber::visit(DeleteVisitor(), *this);
+            fast_ber::dynamic::visit(DeleteVisitor(), *this);
         }
         m_index = AcceptedIndex<T>::value;
         m_data  = new T(std::forward<Args>(il, args)...);
@@ -470,7 +476,7 @@ class DynamicVariant
 
         if (!valueless_by_exception() && m_data != nullptr)
         {
-            fast_ber::visit(DeleteVisitor(), *this);
+            fast_ber::dynamic::visit(DeleteVisitor(), *this);
         }
 
         try
@@ -497,7 +503,7 @@ class DynamicVariant
 
         if (!valueless_by_exception() && m_data != nullptr)
         {
-            fast_ber::visit(DeleteVisitor(), *this);
+            fast_ber::dynamic::visit(DeleteVisitor(), *this);
         }
 
         try
@@ -627,4 +633,5 @@ bool operator>=(const DynamicVariant<Types...>& a, const DynamicVariant<Types...
     return (a.index() != b.index()) ? (a.index() + 1) > (b.index() + 1) : visit_binary(GreaterThanOrEquals(), a, b);
 }
 
+} // namespace dynamic
 } // namespace fast_ber

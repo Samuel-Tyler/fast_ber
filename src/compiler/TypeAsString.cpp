@@ -32,19 +32,8 @@ std::string type_as_string(const CharacterStringType& type, const Module& module
 std::string type_as_string(const ChoiceType& choice, const Module& module, const Asn1Tree& tree,
                            const std::string& identifier_override)
 {
+    std::string res      = "TaggedChoice<Choices<";
     bool        is_first = true;
-    std::string res;
-    if (identifier_override.empty())
-    {
-        // res += "Choice<";
-        res += "TaggedChoice<" + identifier(choice, module, tree).name();
-        is_first = false;
-    }
-    else
-    {
-        res += "TaggedChoice<" + identifier_override;
-        is_first = false;
-    }
 
     for (const auto& named_type : choice.choices)
     {
@@ -59,6 +48,16 @@ std::string type_as_string(const ChoiceType& choice, const Module& module, const
 
         res += type_as_string(named_type.type, module, tree);
         is_first = false;
+    }
+    res += ">, ";
+
+    if (identifier_override.empty())
+    {
+        res += identifier(choice, module, tree).name();
+    }
+    else
+    {
+        res += identifier_override;
     }
 
     res += ">";

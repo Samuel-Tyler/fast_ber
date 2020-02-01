@@ -6,8 +6,8 @@
 
 #if true
 template <typename... Args>
-using TestVariant = fast_ber::DynamicVariant<Args...>;
-namespace ns      = fast_ber;
+using TestVariant = fast_ber::dynamic::DynamicVariant<Args...>;
+namespace ns      = fast_ber::dynamic;
 #else
 template <typename... Args>
 using TestVariant = absl::variant<Args...>;

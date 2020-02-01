@@ -9,6 +9,9 @@
 namespace fast_ber
 {
 
+namespace dynamic
+{
+
 template <typename... Ts>
 class DynamicVariant;
 
@@ -106,4 +109,5 @@ struct IndexOf<T, First, Rest...>
 };
 
 } // namespace detail
+} // namespace dynamic
 } // namespace fast_ber
