@@ -32,7 +32,7 @@ std::string type_as_string(const CharacterStringType& type, const Module& module
 std::string type_as_string(const ChoiceType& choice, const Module& module, const Asn1Tree& tree,
                            const std::string& identifier_override)
 {
-    std::string res      = "TaggedChoice<Choices<";
+    std::string res      = "Choice<Choices<";
     bool        is_first = true;
 
     for (const auto& named_type : choice.choices)

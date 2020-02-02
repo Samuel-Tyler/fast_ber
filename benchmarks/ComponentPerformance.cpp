@@ -75,11 +75,17 @@ TEST_CASE("Component Performance: Encode")
     component_benchmark_encode(fast_ber::Optional<fast_ber::OctetString<>>("hello!"), "Optional (String)");
     component_benchmark_encode(fast_ber::Optional<fast_ber::Integer<>>(500), "Optional (Integer)");
     component_benchmark_encode(fast_ber::Optional<fast_ber::Integer<>>(absl::nullopt), "Optional (Empty)");
+    component_benchmark_encode(fast_ber::Choice<fast_ber::Choices<fast_ber::Integer<>, fast_ber::OctetString<>>>(
+                                   fast_ber::OctetString<>("hello!")),
+                               "Choice (String)");
+    component_benchmark_encode(fast_ber::Choice<fast_ber::Choices<fast_ber::Integer<>, fast_ber::OctetString<>>,
+                                                fast_ber::ChoiceId<fast_ber::Identifier<fast_ber::Integer<>>,
+                                                                   fast_ber::Identifier<fast_ber::OctetString<>>>,
+                                                fast_ber::StorageMode::dynamic>(fast_ber::OctetString<>("hello!")),
+                               "Choice (String, Dynamic)");
     component_benchmark_encode(
-        fast_ber::Choice<fast_ber::Integer<>, fast_ber::OctetString<>>(fast_ber::OctetString<>("hello!")),
-        "Choice (String)");
-    component_benchmark_encode(fast_ber::Choice<fast_ber::Integer<>, fast_ber::OctetString<>>(fast_ber::Integer<>(5)),
-                               "Choice (Integer)");
+        fast_ber::Choice<fast_ber::Choices<fast_ber::Integer<>, fast_ber::OctetString<>>>(fast_ber::Integer<>(5)),
+        "Choice (Integer)");
 }
 
 TEST_CASE("Component Performance: Decode")
@@ -93,11 +99,17 @@ TEST_CASE("Component Performance: Decode")
     component_benchmark_decode(fast_ber::Optional<fast_ber::OctetString<>>("hello!"), "Optional (String)");
     component_benchmark_decode(fast_ber::Optional<fast_ber::Integer<>>(500), "Optional (Integer)");
     component_benchmark_decode(fast_ber::Optional<fast_ber::Integer<>>(absl::nullopt), "Optional (Empty)");
+    component_benchmark_decode(fast_ber::Choice<fast_ber::Choices<fast_ber::Integer<>, fast_ber::OctetString<>>>(
+                                   fast_ber::OctetString<>("hello!")),
+                               "Choice (String)");
+    component_benchmark_decode(fast_ber::Choice<fast_ber::Choices<fast_ber::Integer<>, fast_ber::OctetString<>>,
+                                                fast_ber::ChoiceId<fast_ber::Identifier<fast_ber::Integer<>>,
+                                                                   fast_ber::Identifier<fast_ber::OctetString<>>>,
+                                                fast_ber::StorageMode::dynamic>(fast_ber::OctetString<>("hello!")),
+                               "Choice (String, Dynamic)");
     component_benchmark_decode(
-        fast_ber::Choice<fast_ber::Integer<>, fast_ber::OctetString<>>(fast_ber::OctetString<>("hello!")),
-        "Choice (String)");
-    component_benchmark_decode(fast_ber::Choice<fast_ber::Integer<>, fast_ber::OctetString<>>(fast_ber::Integer<>(5)),
-                               "Choice (Integer)");
+        fast_ber::Choice<fast_ber::Choices<fast_ber::Integer<>, fast_ber::OctetString<>>>(fast_ber::Integer<>(5)),
+        "Choice (Integer)");
 }
 
 TEST_CASE("Component Performance: Object Construction")
@@ -111,9 +123,13 @@ TEST_CASE("Component Performance: Object Construction")
     component_benchmark_construct<fast_ber::Optional<fast_ber::OctetString<>>>("hello!", "Optional (String)");
     component_benchmark_construct<fast_ber::Optional<fast_ber::Integer<>>>(500, "Optional (Integer)");
     component_benchmark_construct<fast_ber::Optional<fast_ber::Integer<>>>(absl::nullopt, "Optional (Empty)");
-    component_benchmark_construct<fast_ber::Choice<fast_ber::Integer<>, fast_ber::OctetString<>>>(
+    component_benchmark_construct<fast_ber::Choice<fast_ber::Choices<fast_ber::Integer<>, fast_ber::OctetString<>>>>(
         fast_ber::OctetString<>("hello!"), "Choice (String)");
-    component_benchmark_construct<fast_ber::Choice<fast_ber::Integer<>, fast_ber::OctetString<>>>(
+    component_benchmark_construct<fast_ber::Choice<
+        fast_ber::Choices<fast_ber::Integer<>, fast_ber::OctetString<>>,
+        fast_ber::ChoiceId<fast_ber::Identifier<fast_ber::Integer<>>, fast_ber::Identifier<fast_ber::OctetString<>>>,
+        fast_ber::StorageMode::dynamic>>(fast_ber::OctetString<>("hello!"), "Choice (String, Dynamic)");
+    component_benchmark_construct<fast_ber::Choice<fast_ber::Choices<fast_ber::Integer<>, fast_ber::OctetString<>>>>(
         fast_ber::Integer<>(5), "Choice (Integer)");
 }
 
@@ -125,5 +141,6 @@ TEST_CASE("Component Performance: Default Construction")
     component_benchmark_default_construct<fast_ber::Null<>>("Null");
     component_benchmark_default_construct<fast_ber::ObjectIdentifier<>>("ObjectId");
     component_benchmark_default_construct<fast_ber::Optional<fast_ber::Integer<>>>("Optional");
-    component_benchmark_default_construct<fast_ber::Choice<fast_ber::Integer<>, fast_ber::OctetString<>>>("Choice");
+    component_benchmark_default_construct<
+        fast_ber::Choice<fast_ber::Choices<fast_ber::Integer<>, fast_ber::OctetString<>>>>("Choice");
 }

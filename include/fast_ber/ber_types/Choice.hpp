@@ -32,7 +32,41 @@ struct ChoiceId
 };
 
 template <typename... Types>
-struct Choices;
+struct Choices
+{
+    using DefaultIdentifier = ChoiceId<Identifier<Types>...>;
+};
+
+template <typename Choices, typename Identifier = typename Choices::DefaultIdentifier,
+          StorageMode storage = StorageMode::dynamic>
+struct Choice;
+
+template <typename Types, StorageMode storage>
+struct ChoiceImplementation
+{
+};
+
+template <typename... Types>
+struct ChoiceImplementation<Choices<Types...>, StorageMode::static_>
+{
+    using Type = absl::variant<Types...>;
+
+    template <size_t i>
+    using InPlaceIndex = absl::in_place_index_t<i>;
+    using InPlace      = absl::in_place_t;
+};
+
+template <typename... Types>
+struct ChoiceImplementation<Choices<Types...>, StorageMode::dynamic>
+{
+    using Type = dynamic::DynamicVariant<Types...>;
+
+    template <size_t i>
+    using InPlaceIndex = dynamic::in_place_index_t<i>;
+
+    template <typename T>
+    using InPlaceType = dynamic::in_place_type_t<T>;
+};
 
 inline void print(std::ostream&) noexcept {}
 
@@ -56,11 +90,6 @@ inline std::ostream& operator<<(std::ostream& os, const ChoiceId<Identifiers...>
     return os << "]";
 }
 
-struct BadVariantAccess : dynamic::BadVariantAccess
-{
-    using dynamic::BadVariantAccess::BadVariantAccess;
-};
-
 struct in_place_t
 {
     explicit in_place_t() = default;
@@ -80,22 +109,20 @@ struct in_place_index_t
     explicit in_place_index_t() = default;
 };
 
-template <typename Choices, typename Identifier>
-struct TaggedChoice;
-
 template <class T>
 struct variant_size;
 
-template <typename Identifier, typename... Types>
-struct variant_size<TaggedChoice<Choices<Types...>, Identifier>> : std::integral_constant<std::size_t, sizeof...(Types)>
+template <typename Identifier, typename... Types, StorageMode storage>
+struct variant_size<Choice<Choices<Types...>, Identifier, storage>>
+    : std::integral_constant<std::size_t, sizeof...(Types)>
 {
 };
 
 template <std::size_t I, typename... Types>
 struct variant_alternative;
 
-template <std::size_t I, typename... Types, typename Identifier>
-struct variant_alternative<I, TaggedChoice<Choices<Types...>, Identifier>>
+template <std::size_t I, typename... Types, typename Identifier, StorageMode storage>
+struct variant_alternative<I, Choice<Choices<Types...>, Identifier, storage>>
 {
     using type = dynamic::detail::TypeAtIndex<I, Types...>;
 };
@@ -103,128 +130,176 @@ struct variant_alternative<I, TaggedChoice<Choices<Types...>, Identifier>>
 template <std::size_t I, class T>
 using variant_alternative_t = typename variant_alternative<I, T>::type;
 
-template <class T, typename... Types, typename Identifier>
-constexpr bool holds_alternative(const TaggedChoice<Choices<Types...>, Identifier>& v) noexcept
+template <class T, typename... Types, typename Identifier, StorageMode storage>
+constexpr bool holds_alternative(const Choice<Choices<Types...>, Identifier, storage>& v) noexcept
 {
     return v.index() == dynamic::detail::IndexOf<T, Types...>::value;
 }
 
 template <class T, typename... Types, typename Identifier>
-T& get(TaggedChoice<Choices<Types...>, Identifier>& v)
+T& get(Choice<Choices<Types...>, Identifier, StorageMode::static_>& v)
 {
-    if (v.index() != dynamic::detail::IndexOf<T, Types...>::value)
-    {
-        throw BadVariantAccess();
-    }
-    return v.template value<T>();
+    return absl::get<T>(v.base());
 }
 
 template <class T, typename... Types, typename Identifier>
-T&& get(TaggedChoice<Choices<Types...>, Identifier>&& v)
+T&& get(Choice<Choices<Types...>, Identifier, StorageMode::static_>&& v)
 {
-    if (v.index() != dynamic::detail::IndexOf<T, Types...>::value)
-    {
-        throw BadVariantAccess();
-    }
-    return v.template value<T>();
+    return absl::get<T>(v.base());
 }
 
 template <class T, typename... Types, typename Identifier>
-const T& get(const TaggedChoice<Choices<Types...>, Identifier>& v)
+const T& get(const Choice<Choices<Types...>, Identifier, StorageMode::static_>& v)
 {
-    if (v.index() != dynamic::detail::IndexOf<T, Types...>::value)
-    {
-        throw BadVariantAccess();
-    }
-    return v.template value<T>();
+    return absl::get<T>(v.base());
 }
 
 template <class T, typename... Types, typename Identifier>
-const T&& get(const TaggedChoice<Choices<Types...>, Identifier>&& v)
+const T&& get(const Choice<Choices<Types...>, Identifier, StorageMode::static_>&& v)
 {
-    if (v.index() != dynamic::detail::IndexOf<T, Types...>::value)
-    {
-        throw BadVariantAccess();
-    }
-    return v.template value<T>();
+    return absl::get<T>(v.base());
 }
 
 template <std::size_t I, typename... Types, typename Identifier>
-variant_alternative_t<I, TaggedChoice<Choices<Types...>, Identifier>>&
-get(TaggedChoice<Choices<Types...>, Identifier>& v)
+variant_alternative_t<I, Choice<Choices<Types...>, Identifier, StorageMode::static_>>&
+get(Choice<Choices<Types...>, Identifier, StorageMode::static_>& v)
 {
-    if (v.index() != I)
-    {
-        throw BadVariantAccess();
-    }
-    return v.template value<variant_alternative_t<I, TaggedChoice<Choices<Types...>, Identifier>>>();
+    return absl::get<I>(v.base());
 }
 
 template <std::size_t I, typename... Types, typename Identifier>
-variant_alternative_t<I, TaggedChoice<Choices<Types...>, Identifier>>&&
-get(TaggedChoice<Choices<Types...>, Identifier>&& v)
+variant_alternative_t<I, Choice<Choices<Types...>, Identifier, StorageMode::static_>>&&
+get(Choice<Choices<Types...>, Identifier, StorageMode::static_>&& v)
 {
-    if (v.index() != I)
-    {
-        throw BadVariantAccess();
-    }
-    return v.template value<variant_alternative_t<I, TaggedChoice<Choices<Types...>, Identifier>>>();
+    return absl::get<I>(v.base());
 }
 
 template <std::size_t I, typename... Types, typename Identifier>
-const variant_alternative_t<I, TaggedChoice<Choices<Types...>, Identifier>>&
-get(const TaggedChoice<Choices<Types...>, Identifier>& v)
+const variant_alternative_t<I, Choice<Choices<Types...>, Identifier, StorageMode::static_>>&
+get(const Choice<Choices<Types...>, Identifier, StorageMode::static_>& v)
 {
-    if (v.index() != I)
-    {
-        throw BadVariantAccess();
-    }
-    return v.template value<variant_alternative_t<I, TaggedChoice<Choices<Types...>, Identifier>>>();
+    return absl::get<I>(v.base());
 }
 
 template <std::size_t I, typename... Types, typename Identifier>
-const variant_alternative_t<I, TaggedChoice<Choices<Types...>, Identifier>>&&
-get(const TaggedChoice<Choices<Types...>, Identifier>&& v)
+const variant_alternative_t<I, Choice<Choices<Types...>, Identifier, StorageMode::static_>>&&
+get(const Choice<Choices<Types...>, Identifier, StorageMode::static_>&& v)
 {
-    if (v.index() != I)
-    {
-        throw BadVariantAccess();
-    }
-    return v.template value<variant_alternative_t<I, TaggedChoice<Choices<Types...>, Identifier>>>();
-}
-
-template <std::size_t I, typename... Types, typename Identifier>
-constexpr typename std::add_pointer<variant_alternative_t<I, TaggedChoice<Choices<Types...>, Identifier>>>::type
-get_if(TaggedChoice<Choices<Types...>, Identifier>* v) noexcept
-{
-    return (v != nullptr && v->index() == I) ? std::addressof(fast_ber::get<I>(*v)) : nullptr;
-}
-
-template <std::size_t I, typename... Types, typename Identifier>
-constexpr typename std::add_pointer<const variant_alternative_t<I, TaggedChoice<Choices<Types...>, Identifier>>>::type
-get_if(const TaggedChoice<Choices<Types...>, Identifier>* v) noexcept
-{
-    return (v != nullptr && v->index() == I) ? std::addressof(fast_ber::get<I>(*v)) : nullptr;
+    return absl::get<I>(v.base());
 }
 
 template <class T, typename... Types, typename Identifier>
-constexpr typename std::add_pointer<T>::type get_if(TaggedChoice<Choices<Types...>, Identifier>* v) noexcept
+T&& get(Choice<Choices<Types...>, Identifier, StorageMode::dynamic>&& v)
 {
-    return fast_ber::get_if<dynamic::detail::IndexOf<T, Types...>::value>(v);
+    return fast_ber::dynamic::get<T>(v.base());
 }
 
 template <class T, typename... Types, typename Identifier>
-constexpr typename std::add_pointer<const T>::type get_if(const TaggedChoice<Choices<Types...>, Identifier>* v) noexcept
+const T& get(const Choice<Choices<Types...>, Identifier, StorageMode::dynamic>& v)
 {
-    return fast_ber::get_if<dynamic::detail::IndexOf<T, Types...>::value>(v);
+    return fast_ber::dynamic::get<T>(v.base());
 }
 
-template <typename... Types, typename Identifier>
-struct TaggedChoice<Choices<Types...>, Identifier>
+template <class T, typename... Types, typename Identifier>
+const T&& get(const Choice<Choices<Types...>, Identifier, StorageMode::dynamic>&& v)
 {
-    using Base = fast_ber::dynamic::DynamicVariant<Types...>;
-    Base&       base() { return m_base; }
-    const Base& base() const { return m_base; }
+    return fast_ber::dynamic::get<T>(v.base());
+}
+
+template <std::size_t I, typename... Types, typename Identifier>
+variant_alternative_t<I, Choice<Choices<Types...>, Identifier, StorageMode::dynamic>>&
+get(Choice<Choices<Types...>, Identifier, StorageMode::dynamic>& v)
+{
+    return fast_ber::dynamic::get<I>(v.base());
+}
+
+template <std::size_t I, typename... Types, typename Identifier>
+variant_alternative_t<I, Choice<Choices<Types...>, Identifier, StorageMode::dynamic>>&&
+get(Choice<Choices<Types...>, Identifier, StorageMode::dynamic>&& v)
+{
+    return fast_ber::dynamic::get<I>(v.base());
+}
+
+template <std::size_t I, typename... Types, typename Identifier>
+const variant_alternative_t<I, Choice<Choices<Types...>, Identifier, StorageMode::dynamic>>&
+get(const Choice<Choices<Types...>, Identifier, StorageMode::dynamic>& v)
+{
+    return fast_ber::dynamic::get<I>(v.base());
+}
+
+template <std::size_t I, typename... Types, typename Identifier>
+const variant_alternative_t<I, Choice<Choices<Types...>, Identifier, StorageMode::dynamic>>&&
+get(const Choice<Choices<Types...>, Identifier, StorageMode::dynamic>&& v)
+{
+    return fast_ber::dynamic::get<I>(v.base());
+}
+
+template <std::size_t I, typename... Types, typename Identifier>
+constexpr typename std::add_pointer<
+    variant_alternative_t<I, Choice<Choices<Types...>, Identifier, StorageMode::static_>>>::type
+get_if(Choice<Choices<Types...>, Identifier, StorageMode::static_>* v) noexcept
+{
+    return v ? absl::get_if<I>(&(v->base())) : nullptr;
+}
+
+template <std::size_t I, typename... Types, typename Identifier>
+constexpr typename std::add_pointer<
+    const variant_alternative_t<I, Choice<Choices<Types...>, Identifier, StorageMode::static_>>>::type
+get_if(const Choice<Choices<Types...>, Identifier, StorageMode::static_>* v) noexcept
+{
+    return v ? absl::get_if<I>(&(v->base())) : nullptr;
+}
+
+template <class T, typename... Types, typename Identifier>
+constexpr typename std::add_pointer<T>::type
+get_if(Choice<Choices<Types...>, Identifier, StorageMode::static_>* v) noexcept
+{
+    return v ? absl::get_if<T>(&(v->base())) : nullptr;
+}
+
+template <class T, typename... Types, typename Identifier>
+constexpr typename std::add_pointer<const T>::type
+get_if(const Choice<Choices<Types...>, Identifier, StorageMode::static_>* v) noexcept
+{
+    return v ? absl::get_if<T>(&(v->base())) : nullptr;
+}
+
+template <std::size_t I, typename... Types, typename Identifier>
+constexpr typename std::add_pointer<
+    variant_alternative_t<I, Choice<Choices<Types...>, Identifier, StorageMode::dynamic>>>::type
+get_if(Choice<Choices<Types...>, Identifier, StorageMode::dynamic>* v) noexcept
+{
+    return v ? fast_ber::dynamic::get_if<I>(&(v->base())) : nullptr;
+}
+
+template <std::size_t I, typename... Types, typename Identifier>
+constexpr typename std::add_pointer<
+    const variant_alternative_t<I, Choice<Choices<Types...>, Identifier, StorageMode::dynamic>>>::type
+get_if(const Choice<Choices<Types...>, Identifier, StorageMode::dynamic>* v) noexcept
+{
+    return v ? fast_ber::dynamic::get_if<I>(&(v->base())) : nullptr;
+}
+
+template <class T, typename... Types, typename Identifier>
+constexpr typename std::add_pointer<T>::type
+get_if(Choice<Choices<Types...>, Identifier, StorageMode::dynamic>* v) noexcept
+{
+    return v ? fast_ber::dynamic::get_if<T>(&(v->base())) : nullptr;
+}
+
+template <class T, typename... Types, typename Identifier>
+constexpr typename std::add_pointer<const T>::type
+get_if(const Choice<Choices<Types...>, Identifier, StorageMode::dynamic>* v) noexcept
+{
+    return v ? fast_ber::dynamic::get_if<T>(&(v->base())) : nullptr;
+}
+
+template <typename... Types, typename Identifier, StorageMode storage>
+struct Choice<Choices<Types...>, Identifier, storage>
+{
+    using Implementation = ChoiceImplementation<Choices<Types...>, storage>;
+    typename Implementation::Type&       base() { return m_base; }
+    const typename Implementation::Type& base() const { return m_base; }
 
     template <size_t i>
     using ToType = typename dynamic::DynamicVariant<Types...>::template ToType<i>;
@@ -236,25 +311,25 @@ struct TaggedChoice<Choices<Types...>, Identifier>
     using AcceptedType = typename dynamic::DynamicVariant<Types...>::template AcceptedType<T>;
 
   public:
-    TaggedChoice()                          = default;
-    ~TaggedChoice()                         = default;
-    TaggedChoice(const TaggedChoice& other) = default;
-    TaggedChoice(TaggedChoice&& other)      = default;
-    TaggedChoice& operator=(const TaggedChoice& other) = default;
-    TaggedChoice& operator=(TaggedChoice&& other) = default;
+    Choice()                    = default;
+    ~Choice()                   = default;
+    Choice(const Choice& other) = default;
+    Choice(Choice&& other)      = default;
+    Choice& operator=(const Choice& other) = default;
+    Choice& operator=(Choice&& other) = default;
 
-    template <typename T, typename = absl::enable_if_t<!std::is_same<absl::decay_t<T>, TaggedChoice>::value &&
+    template <typename T, typename = absl::enable_if_t<!std::is_same<absl::decay_t<T>, Choice>::value &&
                                                        ExactlyOnce<AcceptedType<T&&>>::value &&
                                                        std::is_constructible<AcceptedType<T&&>, T&&>::value>>
-    TaggedChoice(T&& t) noexcept(std::is_nothrow_constructible<AcceptedType<T&&>, T&&>::value) : m_base(t)
+    Choice(T&& t) noexcept(std::is_nothrow_constructible<AcceptedType<T&&>, T&&>::value) : m_base(t)
     {
         assert(holds_alternative<AcceptedType<T&&>>(*this));
     }
 
     template <typename T, typename... Args,
               typename = absl::enable_if_t<ExactlyOnce<T>::value && std::is_constructible<T, Args&&...>::value>>
-    explicit TaggedChoice(in_place_type_t<T>, Args&&... args)
-        : m_base(dynamic::in_place_t{}, std::forward<Args>(args)...)
+    explicit Choice(in_place_type_t<T>, Args&&... args)
+        : m_base(typename Implementation::template InPlaceType<T>{}, std::forward<Args>(args)...)
     {
         assert(holds_alternative<T>(*this));
     }
@@ -262,16 +337,16 @@ struct TaggedChoice<Choices<Types...>, Identifier>
     template <typename T, typename U, typename... Args,
               typename = absl::enable_if_t<ExactlyOnce<T>::value &&
                                            std::is_constructible<T, std::initializer_list<U>&, Args&&...>::value>>
-    explicit TaggedChoice(in_place_type_t<T>, std::initializer_list<U> il, Args&&... args)
-        : m_base(dynamic::in_place_t{}, il, std::forward<Args>(args)...)
+    explicit Choice(in_place_type_t<T>, std::initializer_list<U> il, Args&&... args)
+        : m_base(typename Implementation::template InPlaceType<T>{}, il, std::forward<Args>(args)...)
     {
         assert(holds_alternative<T>(*this));
     }
 
     template <size_t i, typename... Args,
               typename = absl::enable_if_t<std::is_constructible<ToType<i>, Args&&...>::value>>
-    explicit TaggedChoice(in_place_index_t<i>, Args&&... args)
-        : m_base(dynamic::in_place_index_t<i>{}, std::forward<Args>(args)...)
+    explicit Choice(in_place_index_t<i>, Args&&... args)
+        : m_base(typename Implementation::template InPlaceIndex<i>{}, std::forward<Args>(args)...)
     {
         assert(index() == i);
     }
@@ -279,17 +354,17 @@ struct TaggedChoice<Choices<Types...>, Identifier>
     template <
         size_t i, typename U, typename... Args,
         typename = absl::enable_if_t<std::is_constructible<ToType<i>, std::initializer_list<U>&, Args&&...>::value>>
-    explicit TaggedChoice(in_place_index_t<i>, std::initializer_list<U> il, Args&&... args)
-        : m_base(dynamic::in_place_index_t<i>{}, il, std::forward<Args>(args)...)
+    explicit Choice(in_place_index_t<i>, std::initializer_list<U> il, Args&&... args)
+        : m_base(typename Implementation::template InPlaceIndex<i>{}, il, std::forward<Args>(args)...)
 
     {
         assert(index() == i);
     }
 
-    template <typename T, typename = absl::enable_if_t<!std::is_same<absl::decay_t<T>, TaggedChoice>::value>>
+    template <typename T, typename = absl::enable_if_t<!std::is_same<absl::decay_t<T>, Choice>::value>>
     absl::enable_if_t<ExactlyOnce<AcceptedType<T&&>>::value && std::is_constructible<AcceptedType<T&&>, T&&>::value &&
                           std::is_assignable<AcceptedType<T&&>&, T&&>::value,
-                      TaggedChoice&>
+                      Choice&>
     operator=(T&& t) noexcept(std::is_nothrow_assignable<AcceptedType<T&&>&, T&&>::value&&
                                   std::is_nothrow_constructible<AcceptedType<T&&>, T&&>::value)
     {
@@ -313,8 +388,8 @@ struct TaggedChoice<Choices<Types...>, Identifier>
     }
 
     template <size_t i, typename... Args>
-    absl::enable_if_t<std::is_constructible<variant_alternative_t<i, TaggedChoice>, Args...>::value,
-                      variant_alternative_t<i, TaggedChoice>&>
+    absl::enable_if_t<std::is_constructible<variant_alternative_t<i, Choice>, Args...>::value,
+                      variant_alternative_t<i, Choice>&>
     emplace(Args&&... args)
     {
         return m_base.template emplace<i>(std::forward<Args>(args)...);
@@ -322,8 +397,8 @@ struct TaggedChoice<Choices<Types...>, Identifier>
 
     template <size_t i, typename U, typename... Args>
     absl::enable_if_t<
-        std::is_constructible<variant_alternative_t<i, TaggedChoice>, std::initializer_list<U>&, Args...>::value,
-        variant_alternative_t<i, TaggedChoice>&>
+        std::is_constructible<variant_alternative_t<i, Choice>, std::initializer_list<U>&, Args...>::value,
+        variant_alternative_t<i, Choice>&>
     emplace(std::initializer_list<U> il, Args&&... args)
     {
         return m_base.template emplace<i>(il, std::forward<Args>(args)...);
@@ -333,85 +408,69 @@ struct TaggedChoice<Choices<Types...>, Identifier>
 
     constexpr std::size_t index() const noexcept { return m_base.index(); }
 
-    void swap(TaggedChoice& rhs) noexcept { return m_base.swap(rhs.base()); }
-
-    template <typename T>
-    T& value()
-    {
-        return m_base.template value<T>();
-    }
-
-    template <typename T>
-    const T& value() const
-    {
-        return m_base.template value<T>();
-    }
+    void swap(Choice& rhs) noexcept { return m_base.swap(rhs.base()); }
 
     using AsnId = Identifier;
 
   private:
-    fast_ber::dynamic::DynamicVariant<Types...> m_base;
+    typename Implementation::Type m_base;
 };
 
-template <typename... Variants, typename Identifier>
-bool operator==(const TaggedChoice<Choices<Variants...>, Identifier>& a,
-                const TaggedChoice<Choices<Variants...>, Identifier>& b)
+template <typename... Variants, typename Identifier, StorageMode storage>
+bool operator==(const Choice<Choices<Variants...>, Identifier, storage>& a,
+                const Choice<Choices<Variants...>, Identifier, storage>& b)
 {
     return a.base() == b.base();
 }
 
-template <typename... Variants, typename Identifier>
-bool operator!=(const TaggedChoice<Choices<Variants...>, Identifier>& a,
-                const TaggedChoice<Choices<Variants...>, Identifier>& b)
+template <typename... Variants, typename Identifier, StorageMode storage>
+bool operator!=(const Choice<Choices<Variants...>, Identifier, storage>& a,
+                const Choice<Choices<Variants...>, Identifier, storage>& b)
 {
     return a.base() != b.base();
 }
 
-template <typename... Variants, typename Identifier>
-bool operator<(const TaggedChoice<Choices<Variants...>, Identifier>& a,
-               const TaggedChoice<Choices<Variants...>, Identifier>& b)
+template <typename... Variants, typename Identifier, StorageMode storage>
+bool operator<(const Choice<Choices<Variants...>, Identifier, storage>& a,
+               const Choice<Choices<Variants...>, Identifier, storage>& b)
 {
     return a.base() < b.base();
 }
 
-template <typename... Variants, typename Identifier>
-bool operator>(const TaggedChoice<Choices<Variants...>, Identifier>& a,
-               const TaggedChoice<Choices<Variants...>, Identifier>& b)
+template <typename... Variants, typename Identifier, StorageMode storage>
+bool operator>(const Choice<Choices<Variants...>, Identifier, storage>& a,
+               const Choice<Choices<Variants...>, Identifier, storage>& b)
 {
     return a.base() > b.base();
 }
 
-template <typename... Variants, typename Identifier>
-bool operator<=(const TaggedChoice<Choices<Variants...>, Identifier>& a,
-                const TaggedChoice<Choices<Variants...>, Identifier>& b)
+template <typename... Variants, typename Identifier, StorageMode storage>
+bool operator<=(const Choice<Choices<Variants...>, Identifier, storage>& a,
+                const Choice<Choices<Variants...>, Identifier, storage>& b)
 {
     return a.base() <= b.base();
 }
 
-template <typename... Variants, typename Identifier>
-bool operator>=(const TaggedChoice<Choices<Variants...>, Identifier>& a,
-                const TaggedChoice<Choices<Variants...>, Identifier>& b)
+template <typename... Variants, typename Identifier, StorageMode storage>
+bool operator>=(const Choice<Choices<Variants...>, Identifier, storage>& a,
+                const Choice<Choices<Variants...>, Identifier, storage>& b)
 {
     return a.base() >= b.base();
 }
 
-template <typename... Types>
-using Choice = TaggedChoice<Choices<Types...>, ChoiceId<Identifier<Types>...>>;
-
 template <typename Visitor, typename... Variants, typename Identifier>
-auto visit(Visitor&& vis, const TaggedChoice<Choices<Variants...>, Identifier>& variant)
+auto visit(Visitor&& vis, const Choice<Choices<Variants...>, Identifier, StorageMode::dynamic>& variant)
     -> decltype(fast_ber::dynamic::visit(vis, variant.base()))
 {
     return fast_ber::dynamic::visit(vis, variant.base());
 }
 
-/*
 template <typename Visitor, typename... Variants, typename Identifier>
-auto visit(Visitor&& vis, const TaggedChoice<Identifier, Variants...>& variant)
+auto visit(Visitor&& vis, const Choice<Choices<Variants...>, Identifier, StorageMode::static_>& variant)
     -> decltype(absl::visit(vis, variant.base()))
 {
     return absl::visit(vis, variant.base());
-}*/
+}
 
 struct LengthVisitor
 {
@@ -422,34 +481,34 @@ struct LengthVisitor
     }
 };
 
-template <typename... Variants, typename Identifier,
+template <typename... Variants, typename Identifier, StorageMode storage,
           absl::enable_if_t<!std::is_same<Identifier, ChoiceId<fast_ber::Identifier<Variants>...>>::value, int> = 0>
-size_t encoded_length(const TaggedChoice<Choices<Variants...>, Identifier>& choice) noexcept
+size_t encoded_length(const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
     LengthVisitor visit;
     return wrap_with_ber_header_length(fast_ber::visit(visit, choice), Identifier{});
 }
 
-template <typename... Variants, typename Identifier,
+template <typename... Variants, typename Identifier, StorageMode storage,
           absl::enable_if_t<std::is_same<Identifier, ChoiceId<fast_ber::Identifier<Variants>...>>::value, int> = 0>
-size_t encoded_length(const TaggedChoice<Choices<Variants...>, Identifier>& choice) noexcept
+size_t encoded_length(const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
     LengthVisitor visit;
     return fast_ber::visit(visit, choice);
 }
 
-template <size_t index, size_t max_depth, typename... Variants, typename Identifier,
+template <size_t index, size_t max_depth, typename... Variants, typename Identifier, StorageMode storage,
           typename std::enable_if<(!(index < max_depth)), int>::type = 0>
-EncodeResult encode_if(const absl::Span<uint8_t>&, const TaggedChoice<Choices<Variants...>, Identifier>&) noexcept
+EncodeResult encode_if(const absl::Span<uint8_t>&, const Choice<Choices<Variants...>, Identifier, storage>&) noexcept
 {
     // No substitutions found, fail
     return EncodeResult{false, 0};
 }
 
-template <size_t index, size_t max_depth, typename... Variants, typename Identifier,
+template <size_t index, size_t max_depth, typename... Variants, typename Identifier, StorageMode storage,
           typename std::enable_if<(index < max_depth), int>::type = 0>
-EncodeResult encode_if(const absl::Span<uint8_t>&                            buffer,
-                       const TaggedChoice<Choices<Variants...>, Identifier>& choice) noexcept
+EncodeResult encode_if(const absl::Span<uint8_t>&                               buffer,
+                       const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
     if (choice.index() == index)
     {
@@ -464,18 +523,18 @@ EncodeResult encode_if(const absl::Span<uint8_t>&                            buf
     }
 }
 
-template <typename... Variants, typename Identifier>
-EncodeResult encode_choice(const absl::Span<uint8_t>&                            buffer,
-                           const TaggedChoice<Choices<Variants...>, Identifier>& choice) noexcept
+template <typename... Variants, typename Identifier, StorageMode storage>
+EncodeResult encode_choice(const absl::Span<uint8_t>&                               buffer,
+                           const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
     constexpr size_t depth = sizeof...(Variants);
     return encode_if<0, depth>(buffer, choice);
 }
 
-template <typename... Variants, typename Identifier,
+template <typename... Variants, typename Identifier, StorageMode storage,
           absl::enable_if_t<!std::is_same<Identifier, ChoiceId<fast_ber::Identifier<Variants>...>>::value, int> = 0>
-EncodeResult encode(const absl::Span<uint8_t>&                            buffer,
-                    const TaggedChoice<Choices<Variants...>, Identifier>& choice) noexcept
+EncodeResult encode(const absl::Span<uint8_t>&                               buffer,
+                    const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
     const auto header_length_guess = 2;
     auto       child_buffer        = buffer;
@@ -490,27 +549,27 @@ EncodeResult encode(const absl::Span<uint8_t>&                            buffer
     return wrap_with_ber_header(buffer, inner_encode_result.length, Identifier{}, header_length_guess);
 }
 
-template <typename... Variants, typename Identifier,
+template <typename... Variants, typename Identifier, StorageMode storage,
           absl::enable_if_t<std::is_same<Identifier, ChoiceId<fast_ber::Identifier<Variants>...>>::value, int> = 0>
-EncodeResult encode(const absl::Span<uint8_t>&                            buffer,
-                    const TaggedChoice<Choices<Variants...>, Identifier>& choice) noexcept
+EncodeResult encode(const absl::Span<uint8_t>&                               buffer,
+                    const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
     return encode_choice(buffer, choice);
 }
 
-template <int index, int max_depth, typename... Variants, typename Identifier,
+template <int index, int max_depth, typename... Variants, typename Identifier, StorageMode storage,
           absl::enable_if_t<(!(index < max_depth)), int> = 0>
-DecodeResult decode_if(BerViewIterator&, TaggedChoice<Choices<Variants...>, Identifier>&) noexcept
+DecodeResult decode_if(BerViewIterator&, Choice<Choices<Variants...>, Identifier, storage>&) noexcept
 {
     // No substitutions found, fail
     return DecodeResult{false};
 }
 
-template <size_t index, size_t max_depth, typename ID, typename... Variants,
+template <size_t index, size_t max_depth, typename ID, typename... Variants, StorageMode storage,
           absl::enable_if_t<(index < max_depth), int> = 0>
-DecodeResult decode_if(BerViewIterator& input, TaggedChoice<Choices<Variants...>, ID>& output) noexcept
+DecodeResult decode_if(BerViewIterator& input, Choice<Choices<Variants...>, ID, storage>& output) noexcept
 {
-    using T = typename fast_ber::variant_alternative<index, TaggedChoice<Choices<Variants...>, ID>>::type;
+    using T = typename fast_ber::variant_alternative<index, Choice<Choices<Variants...>, ID>>::type;
 
     if (Identifier<T>::check_id_match(input->class_(), input->tag()))
     {
@@ -523,9 +582,9 @@ DecodeResult decode_if(BerViewIterator& input, TaggedChoice<Choices<Variants...>
     }
 }
 
-template <typename... Variants, typename Identifier,
+template <typename... Variants, typename Identifier, StorageMode storage,
           absl::enable_if_t<std::is_same<Identifier, ChoiceId<fast_ber::Identifier<Variants>...>>::value, int> = 0>
-DecodeResult decode(BerViewIterator& input, TaggedChoice<Choices<Variants...>, Identifier>& output) noexcept
+DecodeResult decode(BerViewIterator& input, Choice<Choices<Variants...>, Identifier, storage>& output) noexcept
 {
     constexpr auto     depth  = sizeof...(Variants);
     const DecodeResult result = decode_if<0, depth>(input, output);
@@ -533,9 +592,9 @@ DecodeResult decode(BerViewIterator& input, TaggedChoice<Choices<Variants...>, I
     return result;
 }
 
-template <typename... Variants, typename Identifier,
+template <typename... Variants, typename Identifier, StorageMode storage,
           absl::enable_if_t<!std::is_same<Identifier, ChoiceId<fast_ber::Identifier<Variants>...>>::value, int> = 0>
-DecodeResult decode(BerViewIterator& input, TaggedChoice<Choices<Variants...>, Identifier>& output) noexcept
+DecodeResult decode(BerViewIterator& input, Choice<Choices<Variants...>, Identifier, storage>& output) noexcept
 {
     if (!input->is_valid() || input->tag() != Identifier::tag() || input->class_() != Identifier::class_())
     {
@@ -554,8 +613,8 @@ DecodeResult decode(BerViewIterator& input, TaggedChoice<Choices<Variants...>, I
     return result;
 }
 
-template <typename... Variants, typename Identifier>
-std::ostream& operator<<(std::ostream& os, const TaggedChoice<Choices<Variants...>, Identifier>& variant);
+template <typename... Variants, typename Identifier, StorageMode storage>
+std::ostream& operator<<(std::ostream& os, const Choice<Choices<Variants...>, Identifier, storage>& variant);
 
 struct OsVisitor
 {
@@ -568,8 +627,8 @@ struct OsVisitor
     std::ostream& os;
 };
 
-template <typename... Variants, typename Identifier>
-std::ostream& operator<<(std::ostream& os, const TaggedChoice<Choices<Variants...>, Identifier>& variant)
+template <typename... Variants, typename Identifier, StorageMode storage>
+std::ostream& operator<<(std::ostream& os, const Choice<Choices<Variants...>, Identifier, storage>& variant)
 {
     OsVisitor visitor{os};
 

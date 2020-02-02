@@ -9,7 +9,8 @@
 
 TEST_CASE("Choice: Check string choice matches simple string type")
 {
-    const auto choice = fast_ber::Choice<fast_ber::Integer<>, fast_ber::OctetString<>>("Test string");
+    const auto choice =
+        fast_ber::Choice<fast_ber::Choices<fast_ber::Integer<>, fast_ber::OctetString<>>>("Test string");
 
     std::vector<uint8_t> choice_encoded(100, 0x00);
     std::vector<uint8_t> string_encoded(100, 0x00);
@@ -27,8 +28,8 @@ TEST_CASE("Choice: Check string choice matches simple string type")
 
 TEST_CASE("Choice: Basic choice")
 {
-    fast_ber::Choice<fast_ber::Integer<>, fast_ber::OctetString<>> choice_1;
-    fast_ber::Choice<fast_ber::Integer<>, fast_ber::OctetString<>> choice_2;
+    fast_ber::Choice<fast_ber::Choices<fast_ber::Integer<>, fast_ber::OctetString<>>> choice_1;
+    fast_ber::Choice<fast_ber::Choices<fast_ber::Integer<>, fast_ber::OctetString<>>> choice_2;
 
     choice_1 = "Test string";
     choice_2 = 10;
@@ -49,9 +50,9 @@ TEST_CASE("Choice: Basic choice")
 
 TEST_CASE("Choice: Clashing type")
 {
-    using choice_type = fast_ber::Choice<fast_ber::Integer<>,
-                                         fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 99>>,
-                                         fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 100>>>;
+    using choice_type = fast_ber::Choice<fast_ber::Choices<
+        fast_ber::Integer<>, fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 99>>,
+        fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 100>>>>;
     auto choice_1 =
         choice_type(fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 100>>("Test string"));
     auto choice_2 = choice_type();
@@ -70,11 +71,13 @@ TEST_CASE("Choice: Clashing type")
 
 TEST_CASE("Choice: Choice of choices")
 {
-    using Choice1 = fast_ber::Choice<fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 1>>,
-                                     fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 2>>>;
-    using Choice2 = fast_ber::Choice<fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 3>>,
-                                     fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 4>>>;
-    using Choice3 = fast_ber::Choice<Choice1, Choice2>;
+    using Choice1 =
+        fast_ber::Choice<fast_ber::Choices<fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 1>>,
+                                           fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 2>>>>;
+    using Choice2 =
+        fast_ber::Choice<fast_ber::Choices<fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 3>>,
+                                           fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 4>>>>;
+    using Choice3 = fast_ber::Choice<fast_ber::Choices<Choice1, Choice2>>;
 
     using ExpectedId = fast_ber::ChoiceId<fast_ber::ChoiceId<fast_ber::Id<fast_ber::Class::context_specific, 1>,
                                                              fast_ber::Id<fast_ber::Class::context_specific, 2>>,

@@ -51,8 +51,11 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
     test_type(fast_ber::BitString<>("TestString"));
     test_type(fast_ber::Boolean<>(true));
     test_type(fast_ber::CharacterString<>("TestString"));
-    test_type(
-        fast_ber::Choice<fast_ber::Boolean<>, fast_ber::Integer<>, fast_ber::OctetString<>>(fast_ber::Boolean<>(true)));
+    test_type(fast_ber::Choice<fast_ber::Choices<fast_ber::Boolean<>, fast_ber::Integer<>, fast_ber::OctetString<>>>(
+        fast_ber::Boolean<>(true)));
+    test_type(fast_ber::Choice<fast_ber::Choices<fast_ber::Boolean<>, fast_ber::Integer<>, fast_ber::OctetString<>>,
+                               fast_ber::Id<fast_ber::Class::application, 20>, fast_ber::StorageMode::dynamic>(
+        fast_ber::Boolean<>(true)));
     // test_type(fast_ber::Date<>);
     // test_type(fast_ber::DateTime<>);
     // test_type(fast_ber::Duration<>);
