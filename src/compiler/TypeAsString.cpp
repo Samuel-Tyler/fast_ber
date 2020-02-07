@@ -108,7 +108,7 @@ std::string collection_as_string(const Collection& collection, const Module& mod
             {
                 res += ", ";
             }
-            res += "typename T" + std::to_string(i);
+            res += "typename T_" + std::to_string(i);
             is_first = false;
         }
         res += ">\n";
@@ -121,7 +121,7 @@ std::string collection_as_string(const Collection& collection, const Module& mod
             {
                 res += ", ";
             }
-            res += "T" + std::to_string(i) + "&& t" + std::to_string(i);
+            res += "T_" + std::to_string(i) + "&& t" + std::to_string(i);
             is_first = false;
         }
         res += ")\n";
@@ -138,7 +138,7 @@ std::string collection_as_string(const Collection& collection, const Module& mod
                 res += ", ";
             }
 
-            res += component.named_type.name + "(std::forward<T" + std::to_string(counter) + ">(t" +
+            res += component.named_type.name + "(std::forward<T_" + std::to_string(counter) + ">(t" +
                    std::to_string(counter) + "))\n";
             counter++;
         }
