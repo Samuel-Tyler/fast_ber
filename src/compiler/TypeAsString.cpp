@@ -287,6 +287,8 @@ std::string type_as_string(const ChoiceType& choice, const Module& module, const
         res += identifier_override;
     }
 
+    res += (tree.is_circular ? std::string(", StorageMode::dynamic") : std::string(", StorageMode::static_"));
+
     res += ">";
     return res;
 }

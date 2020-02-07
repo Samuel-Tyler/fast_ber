@@ -38,7 +38,7 @@ struct Choices
 };
 
 template <typename Choices, typename Identifier = typename Choices::DefaultIdentifier,
-          StorageMode storage = StorageMode::dynamic>
+          StorageMode storage = StorageMode::static_>
 struct Choice;
 
 template <typename Types, StorageMode storage>

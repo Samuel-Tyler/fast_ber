@@ -82,7 +82,7 @@ TEST_CASE("Component Performance: Encode")
                                                 fast_ber::ChoiceId<fast_ber::Identifier<fast_ber::Integer<>>,
                                                                    fast_ber::Identifier<fast_ber::OctetString<>>>,
                                                 fast_ber::StorageMode::dynamic>(fast_ber::OctetString<>("hello!")),
-                               "Choice (String, Dynamic)");
+                               "Choice (String, D)");
     component_benchmark_encode(
         fast_ber::Choice<fast_ber::Choices<fast_ber::Integer<>, fast_ber::OctetString<>>>(fast_ber::Integer<>(5)),
         "Choice (Integer)");
@@ -106,7 +106,7 @@ TEST_CASE("Component Performance: Decode")
                                                 fast_ber::ChoiceId<fast_ber::Identifier<fast_ber::Integer<>>,
                                                                    fast_ber::Identifier<fast_ber::OctetString<>>>,
                                                 fast_ber::StorageMode::dynamic>(fast_ber::OctetString<>("hello!")),
-                               "Choice (String, Dynamic)");
+                               "Choice (String, D)");
     component_benchmark_decode(
         fast_ber::Choice<fast_ber::Choices<fast_ber::Integer<>, fast_ber::OctetString<>>>(fast_ber::Integer<>(5)),
         "Choice (Integer)");
@@ -128,7 +128,7 @@ TEST_CASE("Component Performance: Object Construction")
     component_benchmark_construct<fast_ber::Choice<
         fast_ber::Choices<fast_ber::Integer<>, fast_ber::OctetString<>>,
         fast_ber::ChoiceId<fast_ber::Identifier<fast_ber::Integer<>>, fast_ber::Identifier<fast_ber::OctetString<>>>,
-        fast_ber::StorageMode::dynamic>>(fast_ber::OctetString<>("hello!"), "Choice (String, Dynamic)");
+        fast_ber::StorageMode::dynamic>>(fast_ber::OctetString<>("hello!"), "Choice (String, D)");
     component_benchmark_construct<fast_ber::Choice<fast_ber::Choices<fast_ber::Integer<>, fast_ber::OctetString<>>>>(
         fast_ber::Integer<>(5), "Choice (Integer)");
 }
