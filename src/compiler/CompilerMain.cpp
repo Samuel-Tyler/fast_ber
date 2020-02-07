@@ -38,7 +38,7 @@ std::string create_type_assignment(const std::string& name, const Type& assignme
     if (is_set(assignment_type) || is_sequence(assignment_type))
     {
         res += create_template_definition({"Identifier"});
-        res += "struct " + name + type_as_string(assignment_type, module, tree);
+        res += "struct " + name + type_as_string(assignment_type, module, tree, name);
     }
     else if (is_enumerated(assignment_type))
     {
@@ -49,7 +49,8 @@ std::string create_type_assignment(const std::string& name, const Type& assignme
     else
     {
         res += create_template_definition({"Identifier"});
-        res += "FAST_BER_ALIAS(" + name + ", " + type_as_string(assignment_type, module, tree, "Identifier") + ");\n";
+        res +=
+            "FAST_BER_ALIAS(" + name + ", " + type_as_string(assignment_type, module, tree, "", "Identifier") + ");\n";
     }
     return res;
 }
@@ -468,20 +469,22 @@ template <typename CollectionType>
 std::string create_collection_equality_operators(const CollectionType& collection, std::vector<std::string> parents,
                                                  const std::string& name)
 {
-    std::string name_with_template_params;
+    std::string full_namespace;
     for (const std::string& parent : parents)
     {
-        name_with_template_params += parent + "<>::template ";
+        full_namespace += parent + "<>::template ";
     }
 
-    name_with_template_params += name + create_template_arguments({"Identifier"});
+    std::string name_with_template_params   = full_namespace + name + create_template_arguments({"Identifier"});
+    std::string name_with_template_params_1 = full_namespace + name + create_template_arguments({"Identifier1"});
+    std::string name_with_template_params_2 = full_namespace + name + create_template_arguments({"Identifier2"});
 
     std::string res;
 
-    res += create_template_definition({"Identifier"});
+    res += create_template_definition({"Identifier1", "Identifier2"});
     res += "bool operator==(";
-    res += "const " + name_with_template_params + "& lhs, ";
-    res += "const " + name_with_template_params + "& rhs)\n";
+    res += "const " + name_with_template_params_1 + "& lhs, ";
+    res += "const " + name_with_template_params_2 + "& rhs)\n";
     res += "{\n";
 
     if (collection.components.size() == 0)
@@ -498,10 +501,10 @@ std::string create_collection_equality_operators(const CollectionType& collectio
     }
     res += ";\n}\n\n";
 
-    res += create_template_definition({"Identifier"});
+    res += create_template_definition({"Identifier1", "Identifier2"});
     res += "bool operator!=(";
-    res += "const " + name_with_template_params + "& lhs, ";
-    res += "const " + name_with_template_params + "& rhs)\n";
+    res += "const " + name_with_template_params_1 + "& lhs, ";
+    res += "const " + name_with_template_params_2 + "& rhs)\n";
     res += "{\n";
     res += "    return !(lhs == rhs);\n}\n\n";
 

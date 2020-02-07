@@ -5,8 +5,14 @@
 TEST_CASE("Circular Types: Optional Members")
 {
     fast_ber::Circular::CircularSequence1<> copy;
-    fast_ber::Circular::CircularSequence1<> circular = {"layer1",
-                                                        {{"layer2", {{"layer3", {{"layer4", {{"layer5", {}}}}}}}}}};
+    fast_ber::Circular::CircularSequence1<> circular = {
+        "layer1",
+        fast_ber::Circular::CircularSequence2<>{fast_ber::Circular::CircularSequence1<>{
+            "layer2",
+            fast_ber::Circular::CircularSequence2<>{fast_ber::Circular::CircularSequence1<>{
+                "layer3", fast_ber::Circular::CircularSequence2<>{fast_ber::Circular::CircularSequence1<>{
+                              "layer4", fast_ber::Circular::CircularSequence2<>{
+                                            fast_ber::Circular::CircularSequence1<>{"layer5", fast_ber::empty}}}}}}}}};
 
     REQUIRE(copy != circular);
 
@@ -66,9 +72,9 @@ TEST_CASE("Circular Types: Choice Self Reference")
     REQUIRE(copy != circular);
 
     std::vector<uint8_t>          buffer(500, 0);
-    const size_t encode_res_len = fast_ber::encoded_length(circular);
-    const fast_ber::EncodeResult& encode_res = fast_ber::encode(absl::Span<uint8_t>(buffer), circular);
-    const fast_ber::DecodeResult& decode_res = fast_ber::decode(absl::Span<uint8_t>(buffer), copy);
+    const size_t                  encode_res_len = fast_ber::encoded_length(circular);
+    const fast_ber::EncodeResult& encode_res     = fast_ber::encode(absl::Span<uint8_t>(buffer), circular);
+    const fast_ber::DecodeResult& decode_res     = fast_ber::decode(absl::Span<uint8_t>(buffer), copy);
 
     REQUIRE(encode_res.success);
     REQUIRE(decode_res.success);

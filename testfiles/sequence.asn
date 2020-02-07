@@ -1,0 +1,14 @@
+Sequence DEFINITIONS IMPLICIT TAGS ::= BEGIN
+
+Empty ::= SEQUENCE {
+}
+
+Collection ::= SEQUENCE {
+    empty   [0] Empty,
+    null    [1] NULL,
+    integer [2] INTEGER,
+    boolean [3] BOOLEAN,
+    string  [4] UTF8String
+}
+
+END

@@ -2,6 +2,8 @@
 #include "fast_ber/compiler/Identifier.hpp"
 #include "fast_ber/compiler/ResolveType.hpp"
 
+thread_local static size_t id_counter = 0;
+
 template <typename Type>
 std::string identifier_template_params(const Type&, const Module&, const Asn1Tree&,
                                        const std::string& identifier_override)
@@ -9,27 +11,231 @@ std::string identifier_template_params(const Type&, const Module&, const Asn1Tre
     return "<" + identifier_override + ">";
 }
 
-std::string type_as_string(const AnyType& type, const Module& module, const Asn1Tree& tree,
+template <typename Collection>
+std::string collection_as_string(const Collection& collection, const Module& module, const Asn1Tree& tree,
+                                 const std::string& type_name, const std::string& identifier_override,
+                                 const std::string& collection_name)
+{
+    std::string res = " {\n";
+
+    size_t tag_counter = 0;
+
+    for (const ComponentType& component : collection.components)
+    {
+        std::string component_type;
+        if (is_set(component.named_type.type) || is_sequence(component.named_type.type))
+        {
+            const std::string id_template_param = "Identifier" + std::to_string(id_counter++);
+            component_type =
+                type_as_string(component.named_type.type, module, tree, component.named_type.name + "_type");
+
+            res += create_template_definition(
+                {id_template_param + " = ExplicitId<UniversalTag::" + collection_name + ">"});
+            res += "struct " + component.named_type.name + "_type " + component_type;
+        }
+    }
+
+    std::vector<std::string> component_types;
+
+    for (const ComponentType& component : collection.components)
+    {
+        std::string component_type;
+
+        if (is_set(component.named_type.type) || is_sequence(component.named_type.type))
+        {
+            component_type = component.named_type.name + "_type<> ";
+        }
+        else if (!is_prefixed(component.named_type.type) && module.tagging_default == TaggingMode::automatic)
+        {
+            component_type = type_as_string(component.named_type.type, module, tree, "",
+                                            "Id<ctx, " + std::to_string(tag_counter++) + ">");
+        }
+        else
+        {
+            component_type = type_as_string(component.named_type.type, module, tree);
+        }
+
+        if (component.is_optional)
+        {
+            component_type = make_type_optional(component_type, tree);
+        }
+        res += "    " + component_type + " " + component.named_type.name + ";\n";
+        component_types.push_back(component_type);
+    }
+
+    res += "    " + type_name + "() = default;\n";
+    res += "    " + type_name + "(const " + type_name + "& rhs) = default;\n";
+    res += "    " + type_name + "(" + type_name + "&& rhs) = default;\n";
+    res += "    " + type_name + "& operator=(const " + type_name + "& rhs) = default;\n";
+    res += "    " + type_name + "& operator=(" + type_name + "&& rhs) = default;\n";
+    if (collection.components.size() > 0)
+    {
+        bool is_first = true;
+        res += "    " + type_name + "(";
+        for (size_t i = 0; i < collection.components.size(); i++)
+        {
+            if (!is_first)
+            {
+                res += ", ";
+            }
+            res += "const " + component_types[i] + "& t" + std::to_string(i);
+            is_first = false;
+        }
+        size_t counter = 0;
+        res += ")\n";
+        for (const ComponentType& component : collection.components)
+        {
+            res += "        ";
+            if (counter == 0)
+            {
+                res += ": ";
+            }
+            else
+            {
+                res += ", ";
+            }
+
+            res += component.named_type.name + "(t" + std::to_string(counter) + ")\n";
+            counter++;
+        }
+        res += "    {}\n";
+
+        is_first = true;
+        res += "    template <";
+        for (size_t i = 0; i < collection.components.size(); i++)
+        {
+            if (!is_first)
+            {
+                res += ", ";
+            }
+            res += "typename T" + std::to_string(i);
+            is_first = false;
+        }
+        res += ">\n";
+
+        is_first = true;
+        res += "    " + type_name + "(";
+        for (size_t i = 0; i < collection.components.size(); i++)
+        {
+            if (!is_first)
+            {
+                res += ", ";
+            }
+            res += "T" + std::to_string(i) + "&& t" + std::to_string(i);
+            is_first = false;
+        }
+        res += ")\n";
+        counter = 0;
+        for (const ComponentType& component : collection.components)
+        {
+            res += "        ";
+            if (counter == 0)
+            {
+                res += ": ";
+            }
+            else
+            {
+                res += ", ";
+            }
+
+            res += component.named_type.name + "(std::forward<T" + std::to_string(counter) + ">(t" +
+                   std::to_string(counter) + "))\n";
+            counter++;
+        }
+        res += "    {}\n";
+
+        is_first = true;
+        res += "    template <typename Identifier2>\n";
+        res += "    " + type_name + "(const " + type_name + "<Identifier2>& rhs)\n";
+        for (const ComponentType& component : collection.components)
+        {
+            res += "        ";
+            if (is_first)
+            {
+                res += ": ";
+            }
+            else
+            {
+                res += ", ";
+            }
+
+            res += component.named_type.name + "(rhs." + component.named_type.name + ")\n";
+            is_first = false;
+        }
+        res += "        {}\n";
+
+        is_first = true;
+        res += "    template <typename Identifier2>\n";
+        res += "    " + type_name + "(" + type_name + "<Identifier2>&& rhs)\n";
+        for (const ComponentType& component : collection.components)
+        {
+            res += "        ";
+            if (is_first)
+            {
+                res += ": ";
+            }
+            else
+            {
+                res += ", ";
+            }
+
+            res += component.named_type.name + "(std::move(rhs." + component.named_type.name + "))\n";
+            is_first = false;
+        }
+        res += "        {}\n";
+
+        res += "\n    template <typename Identifier2>\n";
+        res += "    " + type_name + "& operator=(const " + type_name + "<Identifier2>& rhs)\n";
+        res += "    {\n";
+        for (const ComponentType& component : collection.components)
+        {
+            res += "        " + component.named_type.name + " = rhs." + component.named_type.name + ";\n";
+        }
+        res += "        return *this;\n";
+        res += "    }\n";
+
+        res += "    template <typename Identifier2>\n";
+        res += "    " + type_name + "& operator=(" + type_name + "<Identifier2>&& rhs)\n";
+        res += "    {\n";
+        for (const ComponentType& component : collection.components)
+        {
+            res += "        " + component.named_type.name + " = std::move(rhs." + component.named_type.name + ");\n";
+        }
+        res += "        return *this;\n";
+        res += "    }\n";
+    }
+
+    res += "    using AsnId = Identifier;\n";
+    res += "};\n";
+
+    if (!identifier(collection, module, tree).is_default_tagged || !identifier_override.empty())
+    {
+        throw std::runtime_error(collection_name + " must be default tagged");
+    }
+    return res;
+}
+
+std::string type_as_string(const AnyType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
 {
     return "Any" + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const BitStringType& type, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const BitStringType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
 {
     return "BitString" + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const BooleanType& type, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const BooleanType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
 {
     return "Boolean" + identifier_template_params(type, module, tree, identifier_override);
 }
 std::string type_as_string(const CharacterStringType& type, const Module& module, const Asn1Tree& tree,
-                           const std::string& identifier_override)
+                           const std::string&, const std::string& identifier_override)
 {
     return to_string(type) + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const ChoiceType& choice, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const ChoiceType& choice, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
 {
     std::string res      = "Choice<Choices<";
@@ -63,27 +269,27 @@ std::string type_as_string(const ChoiceType& choice, const Module& module, const
     res += ">";
     return res;
 }
-std::string type_as_string(const DateType& type, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const DateType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
 {
     return "Date" + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const DateTimeType& type, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const DateTimeType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
 {
     return "DateTime" + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const DurationType& type, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const DurationType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
 {
     return "Duration" + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const EmbeddedPDVType& type, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const EmbeddedPDVType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
 {
     return "EmbeddedPDV" + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const EnumeratedType& enumerated, const Module&, const Asn1Tree&,
+std::string type_as_string(const EnumeratedType& enumerated, const Module&, const Asn1Tree&, const std::string&,
                            const std::string&    identifier_override)
 {
     std::string res = " {\n";
@@ -104,124 +310,78 @@ std::string type_as_string(const EnumeratedType& enumerated, const Module&, cons
     }
     return res;
 }
-std::string type_as_string(const ExternalType& type, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const ExternalType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
 {
     return "External" + identifier_template_params(type, module, tree, identifier_override);
 }
 std::string type_as_string(const GeneralizedTimeType& type, const Module& module, const Asn1Tree& tree,
-                           const std::string& identifier_override)
+                           const std::string&, const std::string& identifier_override)
 {
     return "GeneralizedTime" + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const InstanceOfType& type, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const InstanceOfType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
 {
     return "InstanceOf" + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const IntegerType& type, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const IntegerType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
 {
     return "Integer" + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const IRIType& type, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const IRIType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
 {
     return "IRI" + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const NullType& type, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const NullType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
 {
     return "Null" + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const ObjectClassFieldType&, const Module&, const Asn1Tree&, const std::string&)
+std::string type_as_string(const ObjectClassFieldType&, const Module&, const Asn1Tree&, const std::string&,
+                           const std::string&)
 {
     throw std::runtime_error("ObjectClassFieldType is not serializable!");
 }
 std::string type_as_string(const ObjectDescriptorType& type, const Module& module, const Asn1Tree& tree,
-                           const std::string& identifier_override)
+                           const std::string&, const std::string& identifier_override)
 {
     return "ObjectDescriptor" + identifier_template_params(type, module, tree, identifier_override);
 }
 std::string type_as_string(const ObjectIdentifierType& type, const Module& module, const Asn1Tree& tree,
-                           const std::string& identifier_override)
+                           const std::string&, const std::string& identifier_override)
 {
     return "ObjectIdentifier" + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const OctetStringType& type, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const OctetStringType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
 {
     return "OctetString" + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const RealType& type, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const RealType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
 {
     return "Real" + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const RelativeIRIType& type, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const RelativeIRIType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
 {
     return "RelativeIRI" + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const RelativeOIDType& type, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const RelativeOIDType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
 {
     return "RelativeOID" + identifier_template_params(type, module, tree, identifier_override);
 }
-
-thread_local static size_t id_counter = 0;
-
 std::string type_as_string(const SequenceType& sequence, const Module& module, const Asn1Tree& tree,
-                           const std::string& identifier_override)
+                           const std::string& type_name, const std::string& identifier_override)
 {
-    std::string res = " {\n";
-
-    size_t tag_counter = 0;
-    for (const ComponentType& component : sequence.components)
-    {
-        std::string component_type;
-
-        if (is_set(component.named_type.type) || is_sequence(component.named_type.type))
-        {
-            const std::string id_template_param = "Identifier" + std::to_string(id_counter++);
-            component_type                      = type_as_string(component.named_type.type, module, tree);
-
-            res += create_template_definition({id_template_param + " = ExplicitId<UniversalTag::sequence>"});
-            res += "struct " + component.named_type.name + "_type " + component_type;
-            res += "    " + component.named_type.name + "_type<> " + component.named_type.name + ";\n";
-        }
-        else
-        {
-            if (!is_prefixed(component.named_type.type) && module.tagging_default == TaggingMode::automatic)
-            {
-                component_type = type_as_string(component.named_type.type, module, tree,
-                                                "Id<ctx, " + std::to_string(tag_counter++) + ">");
-            }
-            else
-            {
-                component_type = type_as_string(component.named_type.type, module, tree);
-            }
-
-            if (component.is_optional)
-            {
-                component_type = make_type_optional(component_type, tree);
-            }
-            res += "    " + component_type + " " + component.named_type.name + ";\n";
-        }
-    }
-
-    res += "    using AsnId = Identifier;\n";
-    res += "};\n";
-
-    if (!identifier(sequence, module, tree).is_default_tagged || !identifier_override.empty())
-    {
-        throw std::runtime_error("Sequence must be default tagged");
-    }
-
-    return res;
+    return collection_as_string(sequence, module, tree, type_name, identifier_override, "sequence");
 }
 std::string type_as_string(const SequenceOfType& sequence, const Module& module, const Asn1Tree& tree,
-                           const std::string& identifier_override)
+                           const std::string&, const std::string& identifier_override)
 {
     const Type& type = sequence.has_name ? sequence.named_type->type : *sequence.type;
     if (is_sequence(type) || is_set(type) || is_enumerated(type))
@@ -251,56 +411,12 @@ std::string type_as_string(const SequenceOfType& sequence, const Module& module,
     res += ">";
     return res;
 }
-std::string type_as_string(const SetType& set, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const SetType& set, const Module& module, const Asn1Tree& tree, const std::string& type_name,
                            const std::string& identifier_override)
 {
-    std::string res = " {\n";
-
-    size_t tag_counter = 0;
-    for (const ComponentType& component : set.components)
-    {
-        std::string component_type;
-
-        if (is_set(component.named_type.type) || is_sequence(component.named_type.type))
-        {
-            const std::string id_template_param = "Identifier" + std::to_string(id_counter++);
-            component_type                      = type_as_string(component.named_type.type, module, tree);
-
-            res += create_template_definition({id_template_param + " = ExplicitId<UniversalTag::set>"});
-            res += "struct " + component.named_type.name + "_type " + component_type;
-            res += "    " + component.named_type.name + "_type<> " + component.named_type.name + ";\n";
-        }
-        else
-        {
-            if (!is_prefixed(component.named_type.type) && module.tagging_default == TaggingMode::automatic)
-            {
-                component_type = type_as_string(component.named_type.type, module, tree,
-                                                "Id<ctx, " + std::to_string(tag_counter++) + ">");
-            }
-            else
-            {
-                component_type = type_as_string(component.named_type.type, module, tree);
-            }
-
-            if (component.is_optional)
-            {
-                component_type = make_type_optional(component_type, tree);
-            }
-            res += "    " + component_type + " " + component.named_type.name + ";\n";
-        }
-    }
-
-    res += "    using AsnId = Identifier;\n";
-    res += "};\n";
-
-    if (!identifier(set, module, tree).is_default_tagged || !identifier_override.empty())
-    {
-        throw std::runtime_error("Set must be default tagged");
-    }
-
-    return res;
+    return collection_as_string(set, module, tree, type_name, identifier_override, "set");
 }
-std::string type_as_string(const SetOfType& set, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const SetOfType& set, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
 {
     const Type& type = set.has_name ? set.named_type->type : *set.type;
@@ -318,7 +434,7 @@ std::string type_as_string(const SetOfType& set, const Module& module, const Asn
     return res;
 }
 std::string type_as_string(const PrefixedType& prefixed_type, const Module& module, const Asn1Tree& tree,
-                           const std::string& identifier_override)
+                           const std::string&, const std::string& identifier_override)
 {
     auto id = identifier(prefixed_type, module, tree).name();
     if (!identifier_override.empty())
@@ -332,25 +448,25 @@ std::string type_as_string(const PrefixedType& prefixed_type, const Module& modu
         throw std::runtime_error("PrefixedType must not be a structure or enum");
     }
 
-    return type_as_string(prefixed_type.tagged_type->type, module, tree, id);
+    return type_as_string(prefixed_type.tagged_type->type, module, tree, "", id);
 }
-std::string type_as_string(const TimeType& type, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const TimeType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
 {
     return "Time" + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const TimeOfDayType& type, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const TimeOfDayType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
 {
     return "TimeOfDay" + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const UTCTimeType& type, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const UTCTimeType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
 {
     return "UTCTime" + identifier_template_params(type, module, tree, identifier_override);
 }
 std::string type_as_string(const DefinedType& defined_type, const Module& module, const Asn1Tree& tree,
-                           const std::string& identifier_override)
+                           const std::string&, const std::string& identifier_override)
 {
     const std::string& assigned_type =
         (defined_type.module_reference ? *defined_type.module_reference + "::" : std::string("")) +
@@ -372,23 +488,24 @@ struct ToStringHelper
     template <typename T>
     std::string operator()(const T& t)
     {
-        return type_as_string(t, module, tree, identifier_override);
+        return type_as_string(t, module, tree, type_name, identifier_override);
     }
 
     const Module&      module;
     const Asn1Tree&    tree;
+    const std::string& type_name;
     const std::string& identifier_override;
 };
 
 std::string type_as_string(const BuiltinType& type, const Module& module, const Asn1Tree& tree,
-                           const std::string& identifier_override)
+                           const std::string& type_name, const std::string& identifier_override)
 {
-    ToStringHelper string_helper{module, tree, identifier_override};
+    ToStringHelper string_helper{module, tree, type_name, identifier_override};
     return absl::visit(string_helper, type);
 }
-std::string type_as_string(const Type& type, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const Type& type, const Module& module, const Asn1Tree& tree, const std::string& type_name,
                            const std::string& identifier_override)
 {
-    ToStringHelper string_helper{module, tree, identifier_override};
+    ToStringHelper string_helper{module, tree, type_name, identifier_override};
     return absl::visit(string_helper, type);
 }
