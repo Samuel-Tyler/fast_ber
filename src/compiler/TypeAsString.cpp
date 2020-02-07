@@ -143,67 +143,88 @@ std::string collection_as_string(const Collection& collection, const Module& mod
             counter++;
         }
         res += "    {}\n";
-
-        is_first = true;
-        res += "    template <typename Identifier2>\n";
-        res += "    " + type_name + "(const " + type_name + "<Identifier2>& rhs)\n";
-        for (const ComponentType& component : collection.components)
-        {
-            res += "        ";
-            if (is_first)
-            {
-                res += ": ";
-            }
-            else
-            {
-                res += ", ";
-            }
-
-            res += component.named_type.name + "(rhs." + component.named_type.name + ")\n";
-            is_first = false;
-        }
-        res += "        {}\n";
-
-        is_first = true;
-        res += "    template <typename Identifier2>\n";
-        res += "    " + type_name + "(" + type_name + "<Identifier2>&& rhs)\n";
-        for (const ComponentType& component : collection.components)
-        {
-            res += "        ";
-            if (is_first)
-            {
-                res += ": ";
-            }
-            else
-            {
-                res += ", ";
-            }
-
-            res += component.named_type.name + "(std::move(rhs." + component.named_type.name + "))\n";
-            is_first = false;
-        }
-        res += "        {}\n";
-
-        res += "\n    template <typename Identifier2>\n";
-        res += "    " + type_name + "& operator=(const " + type_name + "<Identifier2>& rhs)\n";
-        res += "    {\n";
-        for (const ComponentType& component : collection.components)
-        {
-            res += "        " + component.named_type.name + " = rhs." + component.named_type.name + ";\n";
-        }
-        res += "        return *this;\n";
-        res += "    }\n";
-
-        res += "    template <typename Identifier2>\n";
-        res += "    " + type_name + "& operator=(" + type_name + "<Identifier2>&& rhs)\n";
-        res += "    {\n";
-        for (const ComponentType& component : collection.components)
-        {
-            res += "        " + component.named_type.name + " = std::move(rhs." + component.named_type.name + ");\n";
-        }
-        res += "        return *this;\n";
-        res += "    }\n";
     }
+    bool is_first = true;
+    res += "    template <typename Identifier2>\n";
+    res += "    " + type_name + "(const " + type_name + "<Identifier2>& rhs)\n";
+    for (const ComponentType& component : collection.components)
+    {
+        res += "        ";
+        if (is_first)
+        {
+            res += ": ";
+        }
+        else
+        {
+            res += ", ";
+        }
+
+        res += component.named_type.name + "(rhs." + component.named_type.name + ")\n";
+        is_first = false;
+    }
+    if (collection.components.size() == 0)
+    {
+        res += "        {(void)rhs;}\n";
+    }
+    else
+    {
+        res += "        {}\n";
+    }
+
+    is_first = true;
+    res += "    template <typename Identifier2>\n";
+    res += "    " + type_name + "(" + type_name + "<Identifier2>&& rhs)\n";
+    for (const ComponentType& component : collection.components)
+    {
+        res += "        ";
+        if (is_first)
+        {
+            res += ": ";
+        }
+        else
+        {
+            res += ", ";
+        }
+
+        res += component.named_type.name + "(std::move(rhs." + component.named_type.name + "))\n";
+        is_first = false;
+    }
+    if (collection.components.size() == 0)
+    {
+        res += "        {(void)rhs;}\n";
+    }
+    else
+    {
+        res += "        {}\n";
+    }
+
+    res += "\n    template <typename Identifier2>\n";
+    res += "    " + type_name + "& operator=(const " + type_name + "<Identifier2>& rhs)\n";
+    res += "    {\n";
+    if (collection.components.size() == 0)
+    {
+        res += "        (void)rhs;\n";
+    }
+    for (const ComponentType& component : collection.components)
+    {
+        res += "        " + component.named_type.name + " = rhs." + component.named_type.name + ";\n";
+    }
+    res += "        return *this;\n";
+    res += "    }\n";
+
+    res += "    template <typename Identifier2>\n";
+    res += "    " + type_name + "& operator=(" + type_name + "<Identifier2>&& rhs)\n";
+    res += "    {\n";
+    if (collection.components.size() == 0)
+    {
+        res += "        (void)rhs;\n";
+    }
+    for (const ComponentType& component : collection.components)
+    {
+        res += "        " + component.named_type.name + " = std::move(rhs." + component.named_type.name + ");\n";
+    }
+    res += "        return *this;\n";
+    res += "    }\n";
 
     res += "    using AsnId = Identifier;\n";
     res += "};\n";
