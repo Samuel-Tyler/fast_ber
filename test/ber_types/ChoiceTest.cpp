@@ -110,14 +110,17 @@ TEST_CASE("Choice: Generated choice")
     fast_ber::MakeAChoice::Collection<> collection;
     collection.the_choice = fast_ber::Integer<fast_ber::Id<fast_ber::Class::context_specific, 2>>(5);
 
-    std::vector<uint8_t> buffer(1000, 0x00);
-    size_t               length = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), collection).length;
-    buffer.resize(length);
+    std::vector<uint8_t> buffer;
+    size_t               expected_length = fast_ber::encoded_length(collection);
+    buffer.resize(expected_length);
+    size_t length = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), collection).length;
 
     fast_ber::MakeAChoice::Collection<> copy;
     bool success = fast_ber::decode(absl::MakeSpan(buffer.data(), buffer.size()), copy).success;
 
     REQUIRE(length > 0);
+    REQUIRE(length == expected_length);
+
     REQUIRE(success);
     REQUIRE(copy.the_choice == collection.the_choice);
 }
@@ -128,13 +131,15 @@ TEST_CASE("Choice: Generated choice explicit tags")
     choice = fast_ber::ExplicitChoice::MySequence<>{};
 
     std::vector<uint8_t> buffer(1000, 0x00);
-    size_t               length = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), choice).length;
-    buffer.resize(length);
+    size_t               expected_length = fast_ber::encoded_length(choice);
+    buffer.resize(expected_length);
+    size_t length = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), choice).length;
 
     fast_ber::ExplicitChoice::MyChoice<> copy;
     bool success = fast_ber::decode(absl::MakeSpan(buffer.data(), buffer.size()), copy).success;
 
     REQUIRE(length > 0);
+    REQUIRE(length == expected_length);
     REQUIRE(success);
     REQUIRE(copy == choice);
 }

@@ -40,8 +40,7 @@ TaggingInfo identifier(const ChoiceType& choice, const Module& module, const Asn
 
     for (const NamedType& named_type : choice.choices)
     {
-        auto choice_ids = identifier(named_type.type, module, tree, state).identifiers();
-        info.choice_ids.insert(info.choice_ids.end(), choice_ids.begin(), choice_ids.end());
+        info.choice_ids.push_back(identifier(named_type.type, module, tree, state));
     }
 
     absl::flat_hash_set<Identifier> outer_ids;

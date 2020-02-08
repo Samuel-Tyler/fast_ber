@@ -35,31 +35,8 @@ constexpr size_t wrap_with_ber_header_length(size_t content_length, Id<T1, T2> i
 template <typename OuterId, typename InnerId>
 constexpr size_t wrap_with_ber_header_length(size_t content_length, DoubleId<OuterId, InnerId> id)
 {
-    return wrap_with_ber_header_length(wrap_with_ber_header_length(content_length, id.inner_id()), id.outer_id) +
+    return wrap_with_ber_header_length(wrap_with_ber_header_length(content_length, id.inner_id()), id.outer_id()) +
            content_length;
-}
-
-template <typename OuterId, typename InnerId>
-EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_length, DoubleId<OuterId, InnerId> id,
-                                  size_t content_offset = 0)
-{
-    constexpr auto tag    = id.tag();
-    constexpr auto class_ = id.class_();
-
-    size_t header_length = encoded_header_length(Construction::constructed, class_, tag, content_length);
-    if (header_length + content_length > buffer.length())
-    {
-        return EncodeResult{false, 0};
-    }
-
-    assert(buffer.length() >= content_length + content_offset);
-
-    if (content_offset != header_length)
-    {
-        std::memmove(buffer.data() + header_length, buffer.data() + content_offset, content_length);
-    }
-    encode_header(absl::MakeSpan(buffer.data(), buffer.size()), Construction::constructed, class_, tag, content_length);
-    return EncodeResult{true, header_length + content_length};
 }
 
 template <Class T1, Tag T2>
@@ -83,6 +60,20 @@ EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_len
     }
     encode_header(absl::MakeSpan(buffer.data(), buffer.size()), Construction::constructed, class_, tag, content_length);
     return EncodeResult{true, header_length + content_length};
+}
+
+template <typename OuterId, typename InnerId>
+EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_length, DoubleId<OuterId, InnerId> id,
+                                  size_t content_offset = 0)
+{
+    EncodeResult res_a = wrap_with_ber_header(buffer, content_length, id.inner_id(), content_offset);
+    if (!res_a.success)
+    {
+        return res_a;
+    }
+
+    EncodeResult res_b = wrap_with_ber_header(buffer, res_a.length, id.outer_id(), 0);
+    return res_b;
 }
 
 template <typename T, Class T2, Tag T3>
@@ -114,7 +105,7 @@ EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, DoubleId<O
         return EncodeResult{false, 0};
     }
 
-    return wrap_with_ber_header(output, inner_encoding.length, id, header_length_guess);
+    return wrap_with_ber_header(output, inner_encoding.length, id.outer_id(), header_length_guess);
 }
 
 } // namespace fast_ber

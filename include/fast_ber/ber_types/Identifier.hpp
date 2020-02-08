@@ -13,11 +13,17 @@ namespace fast_ber
 
 struct RuntimeId
 {
+    RuntimeId(Class c, Tag t) : m_class(c), m_tag(t) {}
+    RuntimeId(UniversalTag t) : m_class(Class::universal), m_tag(static_cast<Tag>(t)) {}
+
     constexpr Class class_() const { return m_class; }
     constexpr Tag   tag() const { return m_tag; }
 
     Class m_class;
     Tag   m_tag;
+
+    bool operator==(const RuntimeId& rhs) const { return m_class == rhs.m_class && m_tag == rhs.m_tag; }
+    bool operator!=(const RuntimeId& rhs) const { return !(*this == rhs); }
 };
 
 template <typename OuterId, typename InnerId>
