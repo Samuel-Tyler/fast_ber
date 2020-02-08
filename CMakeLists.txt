@@ -12,7 +12,7 @@ if (NOT ${SKIP_TESTING})
   enable_testing()
 endif()
 
-set(ABSEIL_LIBS absl::base absl::container absl::strings absl::variant absl::optional absl::time)
+set(ABSEIL_LIBS absl::base absl::container absl::strings absl::variant absl::optional absl::time absl::flat_hash_set)
 if (EXISTS "${CMAKE_SOURCE_DIR}/3rd_party/abseil-cpp/CMakeLists.txt")
   add_subdirectory("3rd_party/abseil-cpp")
   set(SKIP_INSTALL TRUE)

@@ -573,13 +573,23 @@ struct Identifier
             return "ExplicitId<UniversalTag::" + to_string(universal) + ">";
         }
     }
+
+    template <typename H>
+    friend H AbslHashValue(H h, const Identifier& i)
+    {
+        return H::combine(std::move(h), i.class_, i.tag_number, i.universal);
+    }
+    bool operator==(const Identifier& rhs) const
+    {
+        return class_ == rhs.class_ && tag_number == rhs.tag_number && universal == rhs.universal;
+    }
 };
 
 struct TaggingInfo
 {
     absl::optional<Identifier> outer_tag;
     Identifier                 inner_tag;
-    std::vector<Identifier>    choice_ids;
+    std::vector<TaggingInfo>   choice_ids;
     bool                       is_default_tagged;
 
     std::string name() const
@@ -592,7 +602,7 @@ struct TaggingInfo
         {
             std::string res      = "ChoiceId<";
             bool        is_first = true;
-            for (const Identifier& id : choice_ids)
+            for (const TaggingInfo& id : choice_ids)
             {
                 if (!is_first)
                 {
@@ -609,6 +619,19 @@ struct TaggingInfo
         }
     }
 
+    std::vector<TaggingInfo> identifiers() const
+    {
+        if (outer_tag)
+        {
+            return {*this};
+        }
+        if (choice_ids.size() > 0)
+        {
+            return choice_ids;
+        }
+        return {*this};
+    }
+
     std::vector<Identifier> outer_tags() const
     {
         if (outer_tag)
@@ -617,7 +640,13 @@ struct TaggingInfo
         }
         if (choice_ids.size() > 0)
         {
-            return choice_ids;
+            std::vector<Identifier> ids;
+            for (const TaggingInfo& choice : choice_ids)
+            {
+                auto child = choice.outer_tags();
+                ids.insert(ids.end(), child.begin(), child.end());
+            }
+            return ids;
         }
         return {inner_tag};
     }

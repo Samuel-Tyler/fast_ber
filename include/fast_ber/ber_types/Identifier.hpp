@@ -55,6 +55,18 @@ constexpr Id<class_, tag> inner_identifier(Id<class_, tag>)
     return {};
 }
 
+template <typename OuterId, typename InnerId>
+constexpr OuterId outer_identifier(DoubleId<OuterId, InnerId>)
+{
+    return {};
+}
+
+template <Class class_, Tag tag>
+constexpr Id<class_, tag> outer_identifier(Id<class_, tag>)
+{
+    return {};
+}
+
 template <typename T>
 struct IdentifierType
 {

@@ -71,7 +71,14 @@ std::string collection_as_string(const Collection& collection, const Module& mod
     if (collection.components.size() > 0)
     {
         bool is_first = true;
-        res += "    " + type_name + "(";
+        if (collection.components.size() == 1)
+        {
+            res += "    explicit " + type_name + "(";
+        }
+        else
+        {
+            res += "    " + type_name + "(";
+        }
         for (size_t i = 0; i < collection.components.size(); i++)
         {
             if (!is_first)
@@ -100,31 +107,31 @@ std::string collection_as_string(const Collection& collection, const Module& mod
         }
         res += "    {}\n";
 
-        is_first = true;
-        res += "    template <";
-        for (size_t i = 0; i < collection.components.size(); i++)
-        {
-            if (!is_first)
+        /*   is_first = true;
+            res += "    template <";
+            for (size_t i = 0; i < collection.components.size(); i++)
             {
-                res += ", ";
+                if (!is_first)
+                {
+                    res += ", ";
+                }
+                res += "typename T_" + std::to_string(i);
+                is_first = false;
             }
-            res += "typename T_" + std::to_string(i);
-            is_first = false;
-        }
-        res += ">\n";
+            res += ">\n";
 
-        is_first = true;
-        res += "    " + type_name + "(";
-        for (size_t i = 0; i < collection.components.size(); i++)
-        {
-            if (!is_first)
+            is_first = true;
+            res += "    " + type_name + "(";
+            for (size_t i = 0; i < collection.components.size(); i++)
             {
-                res += ", ";
+                if (!is_first)
+                {
+                    res += ", ";
+                }
+                res += "T_" + std::to_string(i) + "&& t" + std::to_string(i);
+                is_first = false;
             }
-            res += "T_" + std::to_string(i) + "&& t" + std::to_string(i);
-            is_first = false;
-        }
-        res += ")\n";
+            res += ")\n";
         counter = 0;
         for (const ComponentType& component : collection.components)
         {
@@ -142,7 +149,7 @@ std::string collection_as_string(const Collection& collection, const Module& mod
                    std::to_string(counter) + "))\n";
             counter++;
         }
-        res += "    {}\n";
+        res += "    {}\n";*/
     }
     bool is_first = true;
     res += "    template <typename Identifier2>\n";

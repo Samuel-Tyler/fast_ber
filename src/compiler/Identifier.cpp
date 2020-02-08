@@ -1,22 +1,24 @@
 #include "fast_ber/compiler/Identifier.hpp"
 #include "fast_ber/compiler/ResolveType.hpp"
 
+#include "absl/container/flat_hash_set.h"
+
 TaggingInfo identifier(const AnyType&, const Module&, const Asn1Tree&, IdentifierState*)
 {
     TaggingInfo info;
     info.is_default_tagged = true;
 
-    info.choice_ids = {Identifier(UniversalTag::bit_string),
-                       Identifier(UniversalTag::boolean),
-                       Identifier(UniversalTag::character_string),
-                       Identifier(UniversalTag::generalized_time),
-                       Identifier(UniversalTag::integer),
-                       Identifier(UniversalTag::null),
-                       Identifier(UniversalTag::object_identifier),
-                       Identifier(UniversalTag::octet_string),
-                       Identifier(UniversalTag::real),
-                       Identifier(UniversalTag::utc_time),
-                       Identifier(UniversalTag::visible_string)};
+    info.choice_ids = {TaggingInfo{{}, Identifier(UniversalTag::bit_string), {}, true},
+                       TaggingInfo{{}, Identifier(UniversalTag::boolean), {}, true},
+                       TaggingInfo{{}, Identifier(UniversalTag::character_string), {}, true},
+                       TaggingInfo{{}, Identifier(UniversalTag::generalized_time), {}, true},
+                       TaggingInfo{{}, Identifier(UniversalTag::integer), {}, true},
+                       TaggingInfo{{}, Identifier(UniversalTag::null), {}, true},
+                       TaggingInfo{{}, Identifier(UniversalTag::object_identifier), {}, true},
+                       TaggingInfo{{}, Identifier(UniversalTag::octet_string), {}, true},
+                       TaggingInfo{{}, Identifier(UniversalTag::real), {}, true},
+                       TaggingInfo{{}, Identifier(UniversalTag::utc_time), {}, true},
+                       TaggingInfo{{}, Identifier(UniversalTag::visible_string), {}, true}};
     return info;
 }
 TaggingInfo identifier(const BitStringType&, const Module&, const Asn1Tree&, IdentifierState*)
@@ -36,22 +38,21 @@ TaggingInfo identifier(const ChoiceType& choice, const Module& module, const Asn
     TaggingInfo info;
     info.is_default_tagged = true;
 
-    IdentifierState local_state;
-
-    if (state == nullptr)
+    for (const NamedType& named_type : choice.choices)
     {
-        state = &local_state;
+        auto choice_ids = identifier(named_type.type, module, tree, state).identifiers();
+        info.choice_ids.insert(info.choice_ids.end(), choice_ids.begin(), choice_ids.end());
     }
 
-    if (state->visited_choices.count(typeid(choice).hash_code()) == 0)
+    absl::flat_hash_set<Identifier> outer_ids;
+    for (const Identifier& id : info.outer_tags())
     {
-        state->visited_choices.insert(typeid(choice).hash_code());
-
-        for (const NamedType& named_type : choice.choices)
+        if (outer_ids.count(id) > 0)
         {
-            auto outer_tags = identifier(named_type.type, module, tree, state).outer_tags();
-            info.choice_ids.insert(info.choice_ids.end(), outer_tags.begin(), outer_tags.end());
+            throw std::runtime_error("Duplicate identifier in choice " + id.name());
         }
+
+        outer_ids.insert(id);
     }
 
     return info;

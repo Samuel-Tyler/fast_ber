@@ -28,7 +28,8 @@ const fast_ber::SGSN_2009A_CDR::SGSNPDPRecord<fast_ber::Id<fast_ber::Class::cont
     fast_ber::Integer<fast_ber::Id<fast_ber::Class::context_specific, 0>>(2),
     88888888888,
     "NodeID",
-    fast_ber::SGSN_2009A_CDR::ManagementExtensions<>{{{1, 2, 3, 4}, true, {{}}}},
+    fast_ber::SGSN_2009A_CDR::ManagementExtensions<>{fast_ber::SGSN_2009A_CDR::ManagementExtension<>{
+        {1, 2, 3, 4}, true, fast_ber::SGSN_2009A_CDR::GprsSCdrExtensions<>{{}}}},
     100,
     fast_ber::SGSN_2009A_CDR::APNSelectionMode<>::Values::mSorNetworkProvidedSubscriptionVerified,
     {},

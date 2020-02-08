@@ -7,7 +7,7 @@
 TEST_CASE("Sequence Of: Encode and decode sequences")
 {
     std::array<uint8_t, 100>            buffer   = {};
-    fast_ber::Sequence_::SequenceFive<> sequence = {{{""}}};
+    fast_ber::Sequence_::SequenceFive<> sequence = {fast_ber::Sequence_::UnnamedSet0<>{{""}}};
 
     fast_ber::EncodeResult encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), sequence);
     fast_ber::DecodeResult decode_result = fast_ber::decode(absl::MakeSpan(buffer.data(), buffer.size()), sequence);

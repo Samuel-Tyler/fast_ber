@@ -29,7 +29,17 @@ TEST_CASE("Circular Types: Optional Members")
 TEST_CASE("Circular Types: Sequence Of")
 {
     fast_ber::Circular::CircularSequenceOf1<> copy;
-    fast_ber::Circular::CircularSequenceOf1<> circular = {{{{{}, {}, {}, {}}}, {}, {{{}, {}}}, {}, {{{}, {}, {}}}}};
+    fast_ber::Circular::CircularSequenceOf1<> circular{fast_ber::Circular::CircularSequenceOf2<>{
+        fast_ber::Circular::CircularSequenceOf1<>{fast_ber::Circular::CircularSequenceOf2<>{
+            fast_ber::Circular::CircularSequenceOf1<>{}, fast_ber::Circular::CircularSequenceOf1<>{},
+            fast_ber::Circular::CircularSequenceOf1<>{}, fast_ber::Circular::CircularSequenceOf1<>{}}},
+        fast_ber::Circular::CircularSequenceOf1<>{},
+        fast_ber::Circular::CircularSequenceOf1<>{fast_ber::Circular::CircularSequenceOf2<>{
+            fast_ber::Circular::CircularSequenceOf1<>{}, fast_ber::Circular::CircularSequenceOf1<>{}}},
+        fast_ber::Circular::CircularSequenceOf1<>{},
+        fast_ber::Circular::CircularSequenceOf1<>{fast_ber::Circular::CircularSequenceOf2<>{
+            fast_ber::Circular::CircularSequenceOf1<>{}, fast_ber::Circular::CircularSequenceOf1<>{},
+            fast_ber::Circular::CircularSequenceOf1<>{}}}}};
     REQUIRE(copy != circular);
 
     std::vector<uint8_t>          buffer(500, 0);
@@ -41,7 +51,7 @@ TEST_CASE("Circular Types: Sequence Of")
     REQUIRE(copy == circular);
     REQUIRE(copy.sequence[0].sequence.size() == 4);
 }
-
+/*
 TEST_CASE("Circular Types: Choice")
 {
     fast_ber::Circular::CircularChoice1<> copy;
@@ -82,3 +92,4 @@ TEST_CASE("Circular Types: Choice Self Reference")
     REQUIRE(copy == circular);
     REQUIRE(fast_ber::get<0>(fast_ber::get<1>(fast_ber::get<1>(fast_ber::get<1>(copy)))) == "Hello!");
 }
+*/
