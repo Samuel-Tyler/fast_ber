@@ -40,6 +40,10 @@ EncodeResult encode_sequence_combine(const absl::Span<uint8_t> output, ID id, co
 {
     auto   encoding_output     = output;
     size_t header_length_guess = 2;
+    if (output.length() < header_length_guess)
+    {
+        return EncodeResult{false, 0};
+    }
     encoding_output.remove_prefix(header_length_guess);
     EncodeResult result = encode_sequence_combine_impl(encoding_output, 0, args...);
     if (!result.success)

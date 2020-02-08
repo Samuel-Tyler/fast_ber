@@ -11,6 +11,8 @@ void test_type(const T& a)
 {
     using ID = fast_ber::Identifier<T>;
 
+    INFO(a);
+
     // Check that type can be default constructed
     REQUIRE(T{} == T{});
 
@@ -42,14 +44,29 @@ void test_type(const T& a)
     REQUIRE(a == f);
     REQUIRE(ID::check_id_match(fast_ber::BerView(buffer).class_(), fast_ber::BerView(buffer).tag()));
 
+    // Destructive tests - Check no undefined behaviour when using too small buffer
+    for (size_t i = 0; i < encoded_length; i++)
+    {
+        INFO(i);
+
+        fast_ber::EncodeResult destructive_encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), i), a);
+        fast_ber::DecodeResult destructive_decode_result = fast_ber::decode(absl::MakeSpan(buffer.data(), i), f);
+
+        REQUIRE(!destructive_encode_result.success);
+
+        // buffer may be valid for decoding, by chance
+        (void)destructive_decode_result;
+    }
+
     // Printing checks
     std::cout << "All test : " << a << "\n      id : " << ID{} << "\n\n";
 }
 
 TEST_CASE("AllTypes: Check all types share a unified interface")
 {
-    test_type(fast_ber::BitString<>("TestString"));
-    test_type(fast_ber::Boolean<>(true));
+    test_type(fast_ber::BitString<fast_ber::Id<fast_ber::Class::application, 20>>("TestString"));
+    test_type(fast_ber::Boolean<fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::context_specific, 4>,
+                                                   fast_ber::Id<fast_ber::Class::universal, 16>>>(true));
     test_type(fast_ber::CharacterString<>("TestString"));
     test_type(fast_ber::Choice<fast_ber::Choices<fast_ber::Boolean<>, fast_ber::Integer<>, fast_ber::OctetString<>>>(
         fast_ber::Boolean<>(true)));
@@ -59,22 +76,17 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
     // test_type(fast_ber::Date<>);
     // test_type(fast_ber::DateTime<>);
     // test_type(fast_ber::Duration<>);
-    // test_type(fast_ber::EmbeddedPDV);
     test_type(fast_ber::All::The_Enum<>(fast_ber::All::The_Enum<>::Values::pear));
     test_type(fast_ber::GeneralizedTime<>(absl::Now()));
-    // test_type(fast_ber::IRI);
     test_type(fast_ber::Integer<>(5));
     test_type(fast_ber::Null<fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::application, 20>,
                                                 fast_ber::ExplicitId<fast_ber::UniversalTag::null>>>());
-    // test_type(fast_ber::ObjectField);
     test_type(fast_ber::ObjectIdentifier<>(fast_ber::ObjectIdentifierComponents{1, 2, 500, 9999}));
     test_type(fast_ber::OctetString<>("TestString"));
     test_type(fast_ber::Optional<fast_ber::Null<>>(fast_ber::Null<>()));
     test_type(fast_ber::Optional<fast_ber::All::The_Set<fast_ber::Id<fast_ber::Class::application, 500>>>(
         fast_ber::All::The_Set<fast_ber::Id<fast_ber::Class::application, 500>>{"Hello", 42}));
     // test_type(fast_ber::Real);
-    // test_type(fast_ber::RelativeIRI);
-    // test_type(fast_ber::RelativeOID);
     test_type(fast_ber::All::The_Sequence<>{"Hello", 42});
     test_type(fast_ber::SequenceOf<fast_ber::Integer<>, fast_ber::ExplicitId<fast_ber::UniversalTag::sequence_of>,
                                    fast_ber::StorageMode::small_buffer_optimised>({1, 4, 6, 100, 2555}));

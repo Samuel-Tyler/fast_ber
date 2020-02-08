@@ -74,8 +74,12 @@ EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T, I, s>&
     const size_t header_length_guess = 2;
     auto         content_buffer      = buffer;
     size_t       combined_length     = 0;
-
+    if (content_buffer.length() < header_length_guess)
+    {
+        return EncodeResult{false, 0};
+    }
     content_buffer.remove_prefix(header_length_guess);
+
     for (const T& element : sequence)
     {
         const auto element_encode_result = encode(content_buffer, element);

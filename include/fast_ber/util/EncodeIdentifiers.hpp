@@ -124,7 +124,7 @@ inline size_t encode_identifier(absl::Span<uint8_t> output, Construction constru
 {
     if (output.size() < 1)
     {
-        return false;
+        return 0;
     }
 
     output[0] = 0;

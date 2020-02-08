@@ -538,6 +538,10 @@ EncodeResult encode(const absl::Span<uint8_t>&                               buf
 {
     const auto header_length_guess = 2;
     auto       child_buffer        = buffer;
+    if (buffer.length() < header_length_guess)
+    {
+        return EncodeResult{false, 0};
+    }
     child_buffer.remove_prefix(header_length_guess);
 
     const EncodeResult& inner_encode_result = encode_choice(child_buffer, choice);

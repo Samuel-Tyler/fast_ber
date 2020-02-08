@@ -98,6 +98,10 @@ EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, DoubleId<O
 {
     const auto header_length_guess = 2;
     auto       inner_buffer        = output;
+    if (output.length() < header_length_guess)
+    {
+        return EncodeResult{false, 0};
+    }
     inner_buffer.remove_prefix(header_length_guess);
     EncodeResult inner_encoding = encode_impl(inner_buffer, object, id.inner_id());
     if (!inner_encoding.success)
