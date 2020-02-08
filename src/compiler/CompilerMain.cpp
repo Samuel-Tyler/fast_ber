@@ -196,7 +196,7 @@ std::string create_assignment(const Asn1Tree& tree, const Module& module, const 
     }
     catch (const std::runtime_error& e)
     {
-        throw(std::runtime_error("failed: " + assignment.name + e.what()));
+        throw(std::runtime_error("failed creating assignment [" + assignment.name + "] [" + e.what() + "]"));
     }
 }
 

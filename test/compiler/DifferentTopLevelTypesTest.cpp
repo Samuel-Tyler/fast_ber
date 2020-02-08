@@ -33,18 +33,21 @@ TEST_CASE("Different Top Level Types: String as top level type")
 
 TEST_CASE("Different Top Level Types: Choice as top level type")
 {
+    using StringType  = fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 0>>;
+    using IntegerType = fast_ber::Integer<fast_ber::Id<fast_ber::Class::context_specific, 1>>;
+
     std::array<uint8_t, 5000>      buffer        = {};
     fast_ber::TopLevel::MyChoice<> my_string     = fast_ber::OctetString<>("The String");
     fast_ber::TopLevel::MyChoice<> my_new_string = 500;
 
-    REQUIRE(fast_ber::get<fast_ber::OctetString<>>(my_string) == fast_ber::OctetString<>("The String"));
-    REQUIRE(fast_ber::get<fast_ber::Integer<>>(my_new_string) == fast_ber::Integer<>(500));
+    REQUIRE(fast_ber::get<StringType>(my_string) == "The String");
+    REQUIRE(fast_ber::get<IntegerType>(my_new_string) == 500);
 
     fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), my_string);
     fast_ber::decode(absl::MakeSpan(buffer.data(), buffer.size()), my_new_string);
 
-    REQUIRE(fast_ber::get<fast_ber::OctetString<>>(my_string) == fast_ber::OctetString<>("The String"));
-    REQUIRE(fast_ber::get<fast_ber::OctetString<>>(my_new_string) == fast_ber::OctetString<>("The String"));
+    REQUIRE(fast_ber::get<StringType>(my_string) == "The String");
+    REQUIRE(fast_ber::get<StringType>(my_new_string) == "The String");
 }
 
 TEST_CASE("Different Top Level Types: Collection")

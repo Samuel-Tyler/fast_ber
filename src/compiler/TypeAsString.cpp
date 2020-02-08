@@ -18,7 +18,7 @@ std::string collection_as_string(const Collection& collection, const Module& mod
 {
     std::string res = " {\n";
 
-    size_t tag_counter = 0;
+    int64_t tag_counter = 0;
 
     for (const ComponentType& component : collection.components)
     {
@@ -48,7 +48,7 @@ std::string collection_as_string(const Collection& collection, const Module& mod
         else if (!is_prefixed(component.named_type.type) && module.tagging_default == TaggingMode::automatic)
         {
             component_type = type_as_string(component.named_type.type, module, tree, "",
-                                            "Id<ctx, " + std::to_string(tag_counter++) + ">");
+                                            Identifier(Class::context_specific, tag_counter++).name());
         }
         else
         {
@@ -269,6 +269,7 @@ std::string type_as_string(const ChoiceType& choice, const Module& module, const
     std::string res      = "Choice<Choices<";
     bool        is_first = true;
 
+    int64_t tag_counter = 0;
     for (const auto& named_type : choice.choices)
     {
         if (!is_first)
@@ -280,7 +281,15 @@ std::string type_as_string(const ChoiceType& choice, const Module& module, const
                                      type_as_string(named_type.type, module, tree));
         }
 
-        res += type_as_string(named_type.type, module, tree);
+        if (module.tagging_default == TaggingMode::automatic)
+        {
+            res += type_as_string(named_type.type, module, tree, "",
+                                  Identifier(Class::context_specific, tag_counter++).name());
+        }
+        else
+        {
+            res += type_as_string(named_type.type, module, tree);
+        }
         is_first = false;
     }
     res += ">, ";

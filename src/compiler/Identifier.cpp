@@ -38,9 +38,20 @@ TaggingInfo identifier(const ChoiceType& choice, const Module& module, const Asn
     TaggingInfo info;
     info.is_default_tagged = true;
 
-    for (const NamedType& named_type : choice.choices)
+    if (module.tagging_default == TaggingMode::automatic)
     {
-        info.choice_ids.push_back(identifier(named_type.type, module, tree, state));
+        for (size_t i = 0; i < choice.choices.size(); i++)
+        {
+            info.choice_ids.push_back(
+                TaggingInfo{{}, Identifier{Class::context_specific, static_cast<int64_t>(i)}, {}, false});
+        }
+    }
+    else
+    {
+        for (const NamedType& named_type : choice.choices)
+        {
+            info.choice_ids.push_back(identifier(named_type.type, module, tree, state));
+        }
     }
 
     absl::flat_hash_set<Identifier> outer_ids;
