@@ -453,7 +453,7 @@ struct ComponentType
 {
     NamedType             named_type;
     bool                  is_optional;
-    absl::optional<Value> value;
+    absl::optional<Value> default_value;
     absl::optional<Type>  components_of;
 };
 

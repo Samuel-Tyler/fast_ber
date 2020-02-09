@@ -2,6 +2,10 @@
 #include "fast_ber/compiler/Identifier.hpp"
 #include "fast_ber/compiler/ResolveType.hpp"
 
+#include "absl/container/flat_hash_set.h"
+
+#include <iostream>
+
 thread_local static size_t id_counter = 0;
 
 template <typename Type>
@@ -417,6 +421,36 @@ std::string type_as_string(const RelativeOIDType& type, const Module& module, co
 std::string type_as_string(const SequenceType& sequence, const Module& module, const Asn1Tree& tree,
                            const std::string& type_name, const std::string& identifier_override)
 {
+    if (module.tagging_default != TaggingMode::automatic)
+    {
+        std::vector<Identifier>     previous_optional_ids;
+        absl::optional<std::string> previous_optional_type;
+        for (const ComponentType& component : sequence.components)
+        {
+            if (component.is_optional || component.default_value)
+            {
+                auto outer_ids = identifier(component.named_type.type, module, tree).outer_tags();
+
+                for (const Identifier& previous_optional_id : previous_optional_ids)
+                {
+                    if (previous_optional_type && previous_optional_id == outer_ids.front())
+                    {
+                        std::cerr << "WARNING: SEQUENCE " << type_name
+                                  << " is ambiguous, two optional values in a row with same ID ["
+                                  << component.named_type.name << "] [" << *previous_optional_type << "] ["
+                                  << outer_ids.front().name() << "]" << std::endl;
+                    }
+                }
+                previous_optional_ids  = std::move(outer_ids);
+                previous_optional_type = component.named_type.name;
+            }
+            else
+            {
+                previous_optional_type = absl::nullopt;
+                previous_optional_ids.clear();
+            }
+        }
+    }
     return collection_as_string(sequence, module, tree, type_name, identifier_override, "sequence");
 }
 std::string type_as_string(const SequenceOfType& sequence, const Module& module, const Asn1Tree& tree,
@@ -453,6 +487,23 @@ std::string type_as_string(const SequenceOfType& sequence, const Module& module,
 std::string type_as_string(const SetType& set, const Module& module, const Asn1Tree& tree, const std::string& type_name,
                            const std::string& identifier_override)
 {
+    if (module.tagging_default != TaggingMode::automatic)
+    {
+        absl::flat_hash_set<Identifier> ids;
+        for (const ComponentType& component : set.components)
+        {
+            auto outer_ids = identifier(component.named_type.type, module, tree).outer_tags();
+            for (const Identifier& id : outer_ids)
+            {
+                if (ids.count(id) > 0)
+                {
+                    throw std::runtime_error("Identifier " + id.name() + " occurs more than once in SET " + type_name);
+                }
+                ids.insert(id);
+            }
+        }
+    }
+
     return collection_as_string(set, module, tree, type_name, identifier_override, "set");
 }
 std::string type_as_string(const SetOfType& set, const Module& module, const Asn1Tree& tree, const std::string&,
