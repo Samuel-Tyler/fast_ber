@@ -36,10 +36,10 @@ EncodeResult encode_sequence_combine_impl(absl::Span<uint8_t>& output, size_t en
 }
 
 template <typename... Args, typename ID>
-EncodeResult encode_sequence_combine(const absl::Span<uint8_t> output, ID id, const Args&... args) noexcept
+EncodeResult encode_sequence_combine(const absl::Span<uint8_t> output, ID, const Args&... args) noexcept
 {
-    auto   encoding_output     = output;
-    size_t header_length_guess = 2;
+    auto             encoding_output     = output;
+    constexpr size_t header_length_guess = encoded_length(0, ID{});
     if (output.length() < header_length_guess)
     {
         return EncodeResult{false, 0};
@@ -51,7 +51,7 @@ EncodeResult encode_sequence_combine(const absl::Span<uint8_t> output, ID id, co
         return result;
     }
 
-    return wrap_with_ber_header(output, result.length, id, header_length_guess);
+    return wrap_with_ber_header(output, result.length, ID{}, header_length_guess);
 }
 
 inline DecodeResult decode_sequence_combine_impl(BerViewIterator&, const char*) noexcept { return DecodeResult{true}; }

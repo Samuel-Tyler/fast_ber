@@ -17,20 +17,39 @@ struct EncodeResult
     size_t length;
 };
 
-// Creates a BER header with provided ID around the data currently in the buffer
-// The data of interest should be located in the buffer, with length "content_length"
+template <Class T1, Tag T2>
+EncodeResult encode_header(absl::Span<uint8_t> buffer, size_t content_length, Id<T1, T2> id)
+{
+    size_t header_length = encode_header(buffer, Construction::constructed, id.class_(), id.tag(), content_length);
+    if (header_length == 0)
+    {
+        return EncodeResult{false, 0};
+    }
+    return EncodeResult{true, header_length + content_length};
+}
 
-// A offset if the data in the buffer can specified by "content_offset"
-// Building the data at a specfic content_offset will remove the need for moving memory after the header
-// has been added.
-// Reasonable guesses for content_offset:
-// 2 for single tagged, 4 for double tagged
-// These are the samllest ID lengths, optimising for small sized ber headers.
+template <typename OuterId, typename InnerId>
+EncodeResult encode_header(absl::Span<uint8_t> buffer, size_t content_length, DoubleId<OuterId, InnerId> id)
+{
+    size_t inner_header_length = encoded_header_length(content_length, id.inner_id());
+    size_t outer_header_length = encoded_header_length(inner_header_length + content_length, id.outer_id());
+
+    if (buffer.size() < outer_header_length + inner_header_length + content_length)
+    {
+        return EncodeResult{false, 0};
+    }
+
+    auto inner = buffer;
+    inner.remove_prefix(outer_header_length);
+
+    encode_header(inner, content_length, id.inner_id());
+    return encode_header(buffer, inner_header_length + content_length, id.outer_id());
+}
 
 template <Class T1, Tag T2>
 constexpr size_t wrap_with_ber_header_length(size_t content_length, Id<T1, T2> id)
 {
-    return encoded_header_length(Construction::primitive, id.class_(), id.tag(), content_length) + content_length;
+    return encoded_header_length(content_length, id) + content_length;
 }
 template <typename OuterId, typename InnerId>
 constexpr size_t wrap_with_ber_header_length(size_t content_length, DoubleId<OuterId, InnerId> id)
@@ -39,41 +58,29 @@ constexpr size_t wrap_with_ber_header_length(size_t content_length, DoubleId<Out
            content_length;
 }
 
-template <Class T1, Tag T2>
-EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_length, Id<T1, T2>,
+// Creates a BER header with provided ID around the data currently in the buffer
+// The data of interest should be located in the buffer, with length "content_length"
+
+// An offset if the data in the buffer can specified by "content_offset"
+// Building the data at a specfic content_offset will remove the need for moving memory after the header
+// has been added.
+
+template <typename Identifier>
+EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_length, Identifier id,
                                   size_t content_offset = 0)
 {
-    constexpr auto tag    = Id<T1, T2>::tag();
-    constexpr auto class_ = Id<T1, T2>::class_();
-
-    size_t header_length = encoded_header_length(Construction::constructed, class_, tag, content_length);
+    size_t header_length = encoded_header_length(Construction::primitive, id.class_(), id.tag(), content_length);
     if (header_length + content_length > buffer.length())
     {
         return EncodeResult{false, 0};
     }
 
     assert(buffer.length() >= content_length + content_offset);
-
     if (content_offset != header_length)
     {
         std::memmove(buffer.data() + header_length, buffer.data() + content_offset, content_length);
     }
-    encode_header(absl::MakeSpan(buffer.data(), buffer.size()), Construction::constructed, class_, tag, content_length);
-    return EncodeResult{true, header_length + content_length};
-}
-
-template <typename OuterId, typename InnerId>
-EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_length, DoubleId<OuterId, InnerId> id,
-                                  size_t content_offset = 0)
-{
-    EncodeResult res_a = wrap_with_ber_header(buffer, content_length, id.inner_id(), content_offset);
-    if (!res_a.success)
-    {
-        return res_a;
-    }
-
-    EncodeResult res_b = wrap_with_ber_header(buffer, res_a.length, id.outer_id(), 0);
-    return res_b;
+    return encode_header(buffer, content_length, id);
 }
 
 template <typename T, Class T2, Tag T3>

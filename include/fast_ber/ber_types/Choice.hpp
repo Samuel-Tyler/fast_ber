@@ -536,8 +536,8 @@ template <typename... Variants, typename Identifier, StorageMode storage,
 EncodeResult encode(const absl::Span<uint8_t>&                               buffer,
                     const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
-    const auto header_length_guess = 2;
-    auto       child_buffer        = buffer;
+    constexpr size_t header_length_guess = encoded_length(0, Identifier{});
+    auto             child_buffer        = buffer;
     if (buffer.length() < header_length_guess)
     {
         return EncodeResult{false, 0};

@@ -231,7 +231,7 @@ inline EncodeResult Integer<Identifier>::encode_content_and_length(absl::Span<ui
 template <typename Identifier>
 size_t encoded_length(const Integer<Identifier>& object) noexcept
 {
-    return encoded_length(object.encoded_content_and_length_length(), Identifier{});
+    return encoded_length_from_id_and_length(object.encoded_content_and_length_length(), Identifier{});
 }
 
 template <typename Identifier>

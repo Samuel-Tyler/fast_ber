@@ -75,7 +75,7 @@ EncodeResult Null<Identifier>::encode_content_and_length(absl::Span<uint8_t> buf
 template <typename Identifier>
 constexpr size_t encoded_length(const Null<Identifier>&)
 {
-    return encoded_length(1, Identifier{});
+    return encoded_length_from_id_and_length(1, Identifier{});
 }
 
 template <typename Identifier>

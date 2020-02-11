@@ -3,13 +3,14 @@
 #include "fast_ber/util/BerLengthAndContentContainer.hpp"
 #include "fast_ber/util/DecodeHelpers.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
+//#include "fast_ber/util/FixedTagBerContainer.hpp"
 
 #include "absl/strings/string_view.h"
 #include "absl/types/span.h"
 
 #include <algorithm>
-#include <string>
 #include <cctype>
+#include <string>
 
 namespace fast_ber
 {
@@ -214,7 +215,7 @@ EncodeResult StringImpl<tag, Identifier>::encode_content_and_length(absl::Span<u
 template <UniversalTag tag, typename Identifier>
 size_t encoded_length(const StringImpl<tag, Identifier>& object) noexcept
 {
-    return encoded_length(object.container().content_and_length_length(), Identifier{});
+    return encoded_length_from_id_and_length(object.container().content_and_length_length(), Identifier{});
 }
 
 template <UniversalTag tag, typename Identifier>

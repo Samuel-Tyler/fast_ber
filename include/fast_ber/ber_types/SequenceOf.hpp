@@ -71,9 +71,9 @@ size_t encoded_length(const SequenceOf<T, I, s>& sequence) noexcept
 template <typename T, typename I, StorageMode s>
 EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T, I, s>& sequence) noexcept
 {
-    const size_t header_length_guess = 2;
-    auto         content_buffer      = buffer;
-    size_t       combined_length     = 0;
+    constexpr size_t header_length_guess = encoded_length(0, I{});
+    auto             content_buffer      = buffer;
+    size_t           combined_length     = 0;
     if (content_buffer.length() < header_length_guess)
     {
         return EncodeResult{false, 0};
