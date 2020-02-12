@@ -1,8 +1,8 @@
 #pragma once
 
-#include "fast_ber/util/BerLengthAndContentContainer.hpp"
 #include "fast_ber/util/DecodeHelpers.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
+#include "fast_ber/util/FixedIdBerContainer.hpp"
 
 #include "absl/strings/string_view.h"
 #include "absl/time/time.h"
@@ -35,9 +35,7 @@ class GeneralizedTime
     std::string string() const;
     TimeFormat  format() const;
 
-    size_t       assign_ber(const BerView& view) noexcept;
-    size_t       encoded_content_and_length_length() const noexcept { return m_contents.content_and_length_length(); }
-    EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
+    size_t assign_ber(const BerView& view) noexcept;
 
     GeneralizedTime() { set_time(absl::Time()); }
     GeneralizedTime(const GeneralizedTime&) = default;
@@ -48,10 +46,13 @@ class GeneralizedTime
     GeneralizedTime& operator=(const GeneralizedTime&) = default;
     GeneralizedTime& operator=(GeneralizedTime&&) = default;
 
+    FixedIdBerContainer<Identifier>&       container() noexcept { return m_contents; }
+    const FixedIdBerContainer<Identifier>& container() const noexcept { return m_contents; }
+
     using AsnId = Identifier;
 
   private:
-    BerLengthAndContentContainer m_contents;
+    FixedIdBerContainer<Identifier> m_contents;
 };
 
 template <typename Identifier>
@@ -168,31 +169,25 @@ size_t GeneralizedTime<Identifier>::assign_ber(const BerView& view) noexcept
     {
         return false;
     }
-    return m_contents.assign(view);
-}
-
-template <typename Identifier>
-EncodeResult GeneralizedTime<Identifier>::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
-{
-    return m_contents.content_and_length_to_raw(buffer);
+    return m_contents.assign_ber(view);
 }
 
 template <typename Identifier>
 size_t encoded_length(const GeneralizedTime<Identifier>& object)
 {
-    return encoded_length_from_id_and_length(object.encoded_content_and_length_length(), Identifier{});
+    return object.container().ber().length();
 }
 
 template <typename Identifier>
 EncodeResult encode(absl::Span<uint8_t> output, const GeneralizedTime<Identifier>& object)
 {
-    return encode_impl(output, object, Identifier{});
+    return object.container().encode(output);
 }
 
 template <typename Identifier>
 DecodeResult decode(BerViewIterator& input, GeneralizedTime<Identifier>& output) noexcept
 {
-    return decode_impl(input, output, Identifier{});
+    return output.container().decode(input);
 }
 
 template <typename Identifier>

@@ -18,9 +18,9 @@ struct EncodeResult
 };
 
 template <Class T1, Tag T2>
-EncodeResult encode_header(absl::Span<uint8_t> buffer, size_t content_length, Id<T1, T2> id)
+EncodeResult encode_header(absl::Span<uint8_t> buffer, size_t content_length, Id<T1, T2> id, Construction construction)
 {
-    size_t header_length = encode_header(buffer, Construction::constructed, id.class_(), id.tag(), content_length);
+    size_t header_length = encode_header(buffer, construction, id.class_(), id.tag(), content_length);
     if (header_length == 0)
     {
         return EncodeResult{false, 0};
@@ -29,7 +29,8 @@ EncodeResult encode_header(absl::Span<uint8_t> buffer, size_t content_length, Id
 }
 
 template <typename OuterId, typename InnerId>
-EncodeResult encode_header(absl::Span<uint8_t> buffer, size_t content_length, DoubleId<OuterId, InnerId> id)
+EncodeResult encode_header(absl::Span<uint8_t> buffer, size_t content_length, DoubleId<OuterId, InnerId> id,
+                           Construction construction)
 {
     size_t inner_header_length = encoded_header_length(content_length, id.inner_id());
     size_t outer_header_length = encoded_header_length(inner_header_length + content_length, id.outer_id());
@@ -42,8 +43,8 @@ EncodeResult encode_header(absl::Span<uint8_t> buffer, size_t content_length, Do
     auto inner = buffer;
     inner.remove_prefix(outer_header_length);
 
-    encode_header(inner, content_length, id.inner_id());
-    return encode_header(buffer, inner_header_length + content_length, id.outer_id());
+    encode_header(inner, content_length, id.inner_id(), construction);
+    return encode_header(buffer, inner_header_length + content_length, id.outer_id(), Construction::constructed);
 }
 
 template <Class T1, Tag T2>
@@ -51,6 +52,7 @@ constexpr size_t wrap_with_ber_header_length(size_t content_length, Id<T1, T2> i
 {
     return encoded_header_length(content_length, id) + content_length;
 }
+
 template <typename OuterId, typename InnerId>
 constexpr size_t wrap_with_ber_header_length(size_t content_length, DoubleId<OuterId, InnerId> id)
 {
@@ -67,7 +69,7 @@ constexpr size_t wrap_with_ber_header_length(size_t content_length, DoubleId<Out
 
 template <typename Identifier>
 EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_length, Identifier id,
-                                  size_t content_offset = 0)
+                                  size_t content_offset = 0, Construction construction = Construction::constructed)
 {
     size_t header_length = encoded_header_length(Construction::primitive, id.class_(), id.tag(), content_length);
     if (header_length + content_length > buffer.length())
@@ -80,7 +82,7 @@ EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_len
     {
         std::memmove(buffer.data() + header_length, buffer.data() + content_offset, content_length);
     }
-    return encode_header(buffer, content_length, id);
+    return encode_header(buffer, content_length, id, construction);
 }
 
 template <typename T, Class T2, Tag T3>

@@ -45,6 +45,30 @@ struct Id
     constexpr static Tag   tag() { return tag_1; }
 };
 
+template <Class class_1, Tag tag_1>
+bool operator==(Id<class_1, tag_1> lhs, const RuntimeId& rhs)
+{
+    return lhs.class_() == rhs.class_() && lhs.tag() == rhs.tag();
+}
+
+template <Class class_1, Tag tag_1>
+bool operator!=(Id<class_1, tag_1> lhs, const RuntimeId& rhs)
+{
+    return !(lhs == rhs);
+}
+
+template <Class class_1, Tag tag_1>
+bool operator==(const RuntimeId& lhs, Id<class_1, tag_1> rhs)
+{
+    return lhs.class_() == rhs.class_() && lhs.tag() == rhs.tag();
+}
+
+template <Class class_1, Tag tag_1>
+bool operator!=(const RuntimeId& lhs, Id<class_1, tag_1> rhs)
+{
+    return !(lhs == rhs);
+}
+
 // Class is always universal
 template <UniversalTag explicit_tag>
 using ExplicitId = Id<Class::universal, val(explicit_tag)>;

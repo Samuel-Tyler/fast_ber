@@ -1,8 +1,8 @@
 #pragma once
 
-#include "fast_ber/util/BerLengthAndContentContainer.hpp"
 #include "fast_ber/util/DecodeHelpers.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
+#include "fast_ber/util/FixedIdBerContainer.hpp"
 
 #include "absl/container/inlined_vector.h"
 #include "absl/types/span.h"
@@ -24,9 +24,9 @@ template <typename Identifier = ExplicitId<UniversalTag::object_identifier>>
 class ObjectIdentifier
 {
   public:
-    ObjectIdentifier() noexcept                                        = default;
-    ObjectIdentifier(const ObjectIdentifier<Identifier>& rhs) noexcept = default;
-    ObjectIdentifier(ObjectIdentifier<Identifier>&& rhs) noexcept      = default;
+    ObjectIdentifier() noexcept                                   = default;
+    ObjectIdentifier(const ObjectIdentifier<Identifier>& rhs)     = default;
+    ObjectIdentifier(ObjectIdentifier<Identifier>&& rhs) noexcept = default;
     ObjectIdentifier(const ObjectIdentifierComponents& oid) noexcept { assign(oid); }
     ObjectIdentifier(const std::initializer_list<int64_t>& oid) noexcept { assign(ObjectIdentifierComponents(oid)); }
     explicit ObjectIdentifier(BerView view) { assign_ber(view); }
@@ -55,13 +55,13 @@ class ObjectIdentifier
     size_t assign_ber(const BerContainer& container) noexcept;
     size_t assign_ber(absl::Span<const uint8_t> buffer) noexcept;
 
-    size_t       encoded_content_and_length_length() const noexcept { return m_contents.content_and_length_length(); }
-    EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
+    FixedIdBerContainer<Identifier>&       container() noexcept { return m_contents; }
+    const FixedIdBerContainer<Identifier>& container() const noexcept { return m_contents; }
 
     using AsnId = Identifier;
 
   private:
-    BerLengthAndContentContainer m_contents;
+    FixedIdBerContainer<Identifier> m_contents;
 };
 
 inline size_t encoded_object_id_length(const ObjectIdentifierComponents& input) noexcept
@@ -290,45 +290,39 @@ bool ObjectIdentifier<Identifier>::assign(const ObjectIdentifierComponents& oid)
 template <typename Identifier>
 size_t ObjectIdentifier<Identifier>::assign_ber(const BerView& view) noexcept
 {
-    m_contents.assign(view);
+    m_contents.assign_ber(view);
     return 1;
 }
 
 template <typename Identifier>
 size_t ObjectIdentifier<Identifier>::assign_ber(const BerContainer& container) noexcept
 {
-    m_contents.assign(container);
+    m_contents.assign_ber(container);
     return 1;
 }
 
 template <typename Identifier>
 size_t ObjectIdentifier<Identifier>::assign_ber(absl::Span<const uint8_t> buffer) noexcept
 {
-    return m_contents.assign(buffer);
-}
-
-template <typename Identifier>
-EncodeResult ObjectIdentifier<Identifier>::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
-{
-    return m_contents.content_and_length_to_raw(buffer);
+    return m_contents.assign_ber(buffer);
 }
 
 template <typename Identifier>
 size_t encoded_length(const ObjectIdentifier<Identifier>& object)
 {
-    return encoded_length_from_id_and_length(object.encoded_content_and_length_length(), Identifier{});
+    return object.container().ber_length();
 }
 
 template <typename Identifier>
 EncodeResult encode(absl::Span<uint8_t> output, const ObjectIdentifier<Identifier>& object)
 {
-    return encode_impl(output, object, Identifier{});
+    return object.container().encode(output);
 }
 
 template <typename Identifier>
 DecodeResult decode(BerViewIterator& input, ObjectIdentifier<Identifier>& output) noexcept
 {
-    return decode_impl(input, output, Identifier{});
+    return output.container().decode(input);
 }
 
 } // namespace fast_ber
