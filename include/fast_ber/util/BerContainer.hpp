@@ -74,12 +74,12 @@ class BerContainer
 };
 
 inline BerContainer::BerContainer() noexcept
-    : m_data{0x00, 0x00}, m_view(absl::MakeSpan(m_data.begin(), m_data.size()), 0, 1, 2, 0)
+    : m_data{0x00, 0x00}, m_view(absl::MakeSpan(m_data.data(), m_data.size()), 0, 1, 2, 0)
 {
 }
 
 inline BerContainer::BerContainer(absl::Span<const uint8_t> input_data, ConstructionMethod method) noexcept
-    : m_data(input_data.begin(), input_data.end()), m_view(absl::MakeSpan(m_data.begin(), m_data.size()))
+    : m_data(input_data.begin(), input_data.end()), m_view(absl::MakeSpan(m_data.data(), m_data.size()))
 {
     if (method == ConstructionMethod::construct_with_provided_content)
     {
@@ -217,7 +217,7 @@ inline DecodeResult BerContainer::decode_content_and_length(BerViewIterator& inp
 
     m_data.resize(input_data->content_length() + identifier_length());
     std::copy(input_data->content().begin(), input_data->content().end(), m_data.data() + identifier_length());
-    m_view.assign(absl::MakeSpan(m_data.begin(), m_data.size()));
+    m_view.assign(absl::MakeSpan(m_data.data(), m_data.size()));
 
     if (!m_view.is_valid())
     {
