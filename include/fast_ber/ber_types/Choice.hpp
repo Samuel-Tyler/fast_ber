@@ -53,7 +53,9 @@ struct ChoiceImplementation<Choices<Types...>, StorageMode::static_>
 
     template <size_t i>
     using InPlaceIndex = absl::in_place_index_t<i>;
-    using InPlace      = absl::in_place_t;
+
+    template <typename T>
+    using InPlaceType = absl::in_place_type_t<T>;
 };
 
 template <typename... Types>
@@ -321,7 +323,8 @@ struct Choice<Choices<Types...>, Identifier, storage>
     template <typename T, typename = absl::enable_if_t<!std::is_same<absl::decay_t<T>, Choice>::value &&
                                                        ExactlyOnce<AcceptedType<T&&>>::value &&
                                                        std::is_constructible<AcceptedType<T&&>, T&&>::value>>
-    Choice(T&& t) noexcept(std::is_nothrow_constructible<AcceptedType<T&&>, T&&>::value) : m_base(t)
+    Choice(T&& t) noexcept(std::is_nothrow_constructible<AcceptedType<T&&>, T&&>::value)
+        : m_base(typename Implementation::template InPlaceType<AcceptedType<T&&>>{}, t)
     {
         assert(holds_alternative<AcceptedType<T&&>>(*this));
     }
@@ -368,7 +371,7 @@ struct Choice<Choices<Types...>, Identifier, storage>
     operator=(T&& t) noexcept(std::is_nothrow_assignable<AcceptedType<T&&>&, T&&>::value&&
                                   std::is_nothrow_constructible<AcceptedType<T&&>, T&&>::value)
     {
-        m_base = t;
+        m_base.template emplace<AcceptedType<T&&>>(std::forward<T&&>(t));
         return *this;
     }
 
@@ -376,7 +379,7 @@ struct Choice<Choices<Types...>, Identifier, storage>
               typename = absl::enable_if_t<std::is_constructible<T, Args...>::value && ExactlyOnce<T>::value>>
     T& emplace(Args&&... args)
     {
-        return m_base.emplace(std::forward<Args>(args)...);
+        return m_base.template emplace<T, Args...>(std::forward<Args>(args)...);
     }
 
     template <typename T, typename U, typename... Args,
@@ -384,7 +387,7 @@ struct Choice<Choices<Types...>, Identifier, storage>
                                            ExactlyOnce<T>::value>>
     T& emplace(std::initializer_list<U> il, Args&&... args)
     {
-        return m_base.emplace(il, std::forward<Args>(args)...);
+        return m_base.template emplace<T, U, Args...>(il, std::forward<Args>(args)...);
     }
 
     template <size_t i, typename... Args>
