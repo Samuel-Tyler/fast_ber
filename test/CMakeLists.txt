@@ -36,7 +36,9 @@ fast_ber_generate2(${CMAKE_SOURCE_DIR}/testfiles/multi_file_import_1.asn
 aux_source_directory(ber_types TEST_SRC)
 aux_source_directory(util TEST_SRC)
 aux_source_directory(compiler TEST_SRC)
+aux_source_directory(compiler_logic COMPILER_TEST_SRC)
 
+add_executable(fast_ber_compiler_tests Test ${COMPILER_TEST_SRC})
 add_executable(fast_ber_tests Test ${TEST_SRC} autogen/choice.hpp
                                                autogen/simple.hpp
                                                autogen/tags.hpp
@@ -57,9 +59,11 @@ add_executable(fast_ber_tests Test ${TEST_SRC} autogen/choice.hpp
                                                autogen/circular.hpp
                                                autogen/defaults.hpp
                                                autogen/anonymous_members.hpp)
+target_include_directories(fast_ber_compiler_tests PRIVATE SYSTEM ${CMAKE_SOURCE_DIR}/3rd_party/Catch2/single_include)
 target_include_directories(fast_ber_tests PRIVATE SYSTEM ${CMAKE_SOURCE_DIR}/3rd_party/Catch2/single_include)
 target_include_directories(fast_ber_tests PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
-target_link_libraries (fast_ber_tests fast_ber_lib)
+target_link_libraries(fast_ber_compiler_tests fast_ber_compiler_lib)
+target_link_libraries(fast_ber_tests fast_ber_lib)
 
 # Generate a header file from an asn1 input spec
 # Create a library including the header
@@ -230,3 +234,4 @@ add_test(NAME fast_ber_compiler_8 COMMAND fast_ber_compiler ${CMAKE_SOURCE_DIR}/
 add_test(NAME fast_ber_compiler_9 COMMAND fast_ber_compiler ${CMAKE_SOURCE_DIR}/testfiles/class.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/class)
 add_test(NAME fast_ber_compiler_10 COMMAND fast_ber_compiler ${CMAKE_SOURCE_DIR}/testfiles/integer.asn ${CMAKE_CURRENT_BINARY_DIR}/autogen/integer)
 add_test(NAME fast_ber_tests COMMAND fast_ber_tests)
+add_test(NAME fast_ber_compiler_tests COMMAND fast_ber_compiler_tests)

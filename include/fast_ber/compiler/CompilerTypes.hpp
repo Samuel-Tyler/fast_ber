@@ -714,6 +714,8 @@ bool is_enumerated(const Type& type);
 bool is_choice(const Type& type);
 bool is_prefixed(const Type& type);
 bool is_integer(const Type& type);
+bool is_octet_string(const Type& type);
+bool is_boolean(const Type& type);
 bool is_oid(const Type& type);
 bool is_defined(const Type& type);
 

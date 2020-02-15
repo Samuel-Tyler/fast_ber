@@ -290,6 +290,18 @@ bool is_integer(const Type& type)
            absl::holds_alternative<IntegerType>(absl::get<BuiltinType>(type));
 }
 
+bool is_octet_string(const Type& type)
+{
+    return absl::holds_alternative<BuiltinType>(type) &&
+           absl::holds_alternative<OctetStringType>(absl::get<BuiltinType>(type));
+}
+
+bool is_boolean(const Type& type)
+{
+    return absl::holds_alternative<BuiltinType>(type) &&
+           absl::holds_alternative<BooleanType>(absl::get<BuiltinType>(type));
+}
+
 bool is_oid(const Type& type)
 {
     return absl::holds_alternative<BuiltinType>(type) &&

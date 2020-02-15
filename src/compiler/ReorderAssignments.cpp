@@ -229,9 +229,9 @@ std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments
     std::vector<Assignment> ordered_assignments;
     ordered_assignments.reserve(assignments.size());
 
-    for (const std::pair<std::string, Assignment>& assignment : assignment_map)
+    for (const Assignment& assignment : assignments)
     {
-        resolve_dependencies(assignment_map, assignment.first, module_reference, assigned_names, visited_names,
+        resolve_dependencies(assignment_map, assignment.name, module_reference, assigned_names, visited_names,
                              ordered_assignments, is_circular);
     }
 
