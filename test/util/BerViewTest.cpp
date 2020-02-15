@@ -21,7 +21,7 @@ TEST_CASE("BerView: Sample data")
     REQUIRE(view.tag() == 16);
 
     REQUIRE(view.ber() == sample_packet);
-    REQUIRE(view.content() == absl::MakeSpan(sample_packet.begin() + 2, sample_packet.size() - 2));
+    REQUIRE(view.content() == absl::MakeSpan(sample_packet.data() + 2, sample_packet.size() - 2));
 }
 
 TEST_CASE("BerView: Empty packet")
