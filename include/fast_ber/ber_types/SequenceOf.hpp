@@ -1,6 +1,8 @@
 #pragma once
 
-#include "fast_ber/ber_types/Sequence.hpp"
+#include "fast_ber/util/DecodeHelpers.hpp"
+#include "fast_ber/util/Definitions.hpp"
+#include "fast_ber/util/EncodeHelpers.hpp"
 
 #include "absl/container/inlined_vector.h"
 

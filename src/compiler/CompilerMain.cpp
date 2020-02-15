@@ -308,17 +308,36 @@ create_collection_encode_functions(const std::vector<std::string>& namespaces, c
     res += create_template_definition(template_args);
     res += "inline EncodeResult encode(absl::Span<uint8_t> output, const " + name + "& input) noexcept\n{\n";
 
+    res += "    constexpr size_t header_length_guess = encoded_length(0, Identifier{});\n";
+    res += "    if (output.length() < header_length_guess)\n";
+    res += "    {\n";
+    res += "        return EncodeResult{false, 0};\n";
+    res += "    }\n";
+
     if (collection.components.size() == 0)
     {
         res += "    (void)input;\n";
     }
+    else
+    {
+        res += "    EncodeResult res;\n";
+        res += "    auto content = output;\n";
+        res += "    content.remove_prefix(header_length_guess);\n";
+    }
+    res += "    size_t content_length = 0;\n";
 
-    res += "    return encode_sequence_combine(output, Identifier{}";
     for (const ComponentType& component : collection.components)
     {
-        res += ",\n                          input." + component.named_type.name;
+        res += "    res = encode(content, input." + component.named_type.name + ");\n";
+        res += "    if (!res.success)\n";
+        res += "    {\n";
+        res += "        return res;\n";
+        res += "    }\n";
+        res += "    content.remove_prefix(res.length);\n";
+        res += "    content_length += res.length;\n";
     }
-    res += ");\n}\n\n";
+    res += "    return wrap_with_ber_header(output, content_length, Identifier{}, header_length_guess);\n";
+    res += "}\n\n";
 
     res += create_template_definition(template_args);
     res += "inline size_t encoded_length(const " + name + "& input) noexcept\n{\n";
@@ -360,21 +379,35 @@ std::string create_collection_decode_functions(const std::vector<std::string>& n
 
     res += create_template_definition(template_args);
     res += "inline DecodeResult decode(BerViewIterator& input, " + name + "& output) noexcept\n{\n";
-    if (collection.components.size() == 0)
+    res += "    if (!input->is_valid()\n";
+    res += "      || input->identifier() != outer_identifier(Identifier{})\n";
+    res += "      || input->construction() != Construction::constructed)\n";
+    res += "    {\n";
+    res += "        return DecodeResult{false};\n";
+    res += "    }\n";
+
+    if (collection.components.size() > 0)
+    {
+        res += "    auto iterator = input->begin();\n";
+        res += "    DecodeResult res;\n";
+    }
+    else
     {
         res += "    (void)output;\n";
     }
 
-    res += "    DecodeResult result = decode_" + collection_name(collection) + "_combine(*input, \"" + name +
-           "\", Identifier{}";
     for (const ComponentType& component : collection.components)
     {
-        res += ",\n                          output." + component.named_type.name;
+        res += "    res = decode(iterator, output." + component.named_type.name + ");\n";
+        res += "    if (!res.success)\n";
+        res += "    {\n";
+        res += "        return res;\n";
+        res += "    }\n";
     }
-    res += ");\n";
     res += "    ++input;\n";
-    res += "    return result;\n";
+    res += "    return DecodeResult{true};\n";
     res += "}\n\n";
+
     // Make child decode functions
     for (const ComponentType& component : collection.components)
     {
