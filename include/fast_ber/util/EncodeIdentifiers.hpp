@@ -41,14 +41,16 @@ constexpr inline size_t encoded_header_length(Construction construction, Class c
                                               size_t length) noexcept;
 
 template <Class class_, Tag tag>
-size_t encoded_header_length(size_t content_length, Id<class_, tag> id) noexcept;
+constexpr size_t encoded_header_length(size_t content_length, Id<class_, tag> id) noexcept;
+template <typename Identifier1, typename Identifier2>
+constexpr size_t encoded_header_length(size_t content_length, DoubleId<Identifier1, Identifier2> id) noexcept;
 
 template <Class class_, Tag tag>
 constexpr size_t encoded_length(Id<class_, tag> id);
 template <Class class_, Tag tag>
 constexpr size_t encoded_length(size_t content_length, Id<class_, tag> id);
-template <Class class_1, Tag tag_1, Class class_2, Tag tag_2>
-constexpr size_t encoded_length(size_t content_length, DoubleId<Id<class_1, tag_1>, Id<class_2, tag_2>> id);
+template <typename Identifier1, typename Identifier2>
+constexpr size_t encoded_length(size_t content_length, DoubleId<Identifier1, Identifier2> id);
 template <Class class_, Tag tag>
 constexpr size_t encoded_length_from_id_and_length(size_t content_and_length_length, Id<class_, tag> id);
 template <Class class_1, Tag tag_1, Class class_2, Tag tag_2>
@@ -294,9 +296,16 @@ constexpr inline size_t encoded_header_length(Construction construction, Class c
 }
 
 template <Class class_, Tag tag>
-size_t encoded_header_length(size_t content_length, Id<class_, tag>) noexcept
+constexpr size_t encoded_header_length(size_t content_length, Id<class_, tag>) noexcept
 {
     return encoded_identifier_length(Construction::primitive, class_, tag) + encoded_length_length(content_length);
+}
+
+template <typename Identifier1, typename Identifier2>
+constexpr size_t encoded_header_length(size_t content_length, DoubleId<Identifier1, Identifier2>) noexcept
+{
+    return encoded_header_length(encoded_length(content_length, Identifier2{}), Identifier1{}) +
+           encoded_header_length(content_length, Identifier2{});
 }
 
 template <Class class_, Tag tag>
@@ -306,16 +315,15 @@ constexpr size_t encoded_length(Id<class_, tag> id)
 }
 
 template <Class class_, Tag tag>
-constexpr size_t encoded_length(size_t content_length, Id<class_, tag> id)
+constexpr size_t encoded_length(size_t content_length, Id<class_, tag>)
 {
-    return encoded_identifier_length(Construction::primitive, id.class_(), id.tag()) +
-           encoded_length_length(content_length) + content_length;
+    return encoded_header_length(content_length, Id<class_, tag>{}) + content_length;
 }
 
-template <Class class_1, Tag tag_1, Class class_2, Tag tag_2>
-constexpr size_t encoded_length(size_t content_length, DoubleId<Id<class_1, tag_1>, Id<class_2, tag_2>> id)
+template <typename Identifier1, typename Identifier2>
+constexpr size_t encoded_length(size_t content_length, DoubleId<Identifier1, Identifier2>)
 {
-    return encoded_length(encoded_length(content_length, id.inner_id()), id.outer_id());
+    return encoded_length(encoded_length(content_length, Identifier2{}), Identifier1{});
 }
 
 template <Class class_, Tag tag>

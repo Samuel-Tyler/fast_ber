@@ -65,8 +65,8 @@ void test_type(const T& a)
 TEST_CASE("AllTypes: Check all types share a unified interface")
 {
     test_type(fast_ber::BitString<fast_ber::Id<fast_ber::Class::application, 20>>("TestString"));
-    test_type(fast_ber::Boolean<fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::context_specific, 4>,
-                                                   fast_ber::Id<fast_ber::Class::universal, 16>>>(true));
+    test_type(fast_ber::Boolean<fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::context_specific, 400>,
+                                                   fast_ber::Id<fast_ber::Class::universal, 160>>>(true));
     test_type(fast_ber::CharacterString<>("TestString"));
     test_type(fast_ber::Choice<fast_ber::Choices<fast_ber::Boolean<>, fast_ber::Integer<>, fast_ber::OctetString<>>>(
         fast_ber::Boolean<>(true)));
@@ -77,7 +77,7 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
     // test_type(fast_ber::DateTime<>);
     // test_type(fast_ber::Duration<>);
     test_type(fast_ber::All::The_Enum<>(fast_ber::All::The_Enum<>::Values::pear));
-    test_type(fast_ber::GeneralizedTime<>(absl::Now()));
+    test_type(fast_ber::GeneralizedTime<fast_ber::Id<fast_ber::Class::application, 999999999>>(absl::Now()));
     test_type(fast_ber::Integer<>(5));
     test_type(fast_ber::Null<fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::application, 20>,
                                                 fast_ber::ExplicitId<fast_ber::UniversalTag::null>>>());

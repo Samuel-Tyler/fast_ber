@@ -74,7 +74,7 @@ class BerContainer
 };
 
 inline BerContainer::BerContainer() noexcept
-    : m_data{0x00, 0x00}, m_view(absl::MakeSpan(m_data.data(), m_data.size()), 0, 1, 2, 0)
+    : m_data{0x00, 0x00}, m_view(absl::MakeSpan(m_data.data(), m_data.size()), 0, 2, 0)
 {
 }
 
@@ -130,8 +130,8 @@ inline size_t BerContainer::assign_ber(const BerView& input_view) noexcept
     }
 
     m_data.assign(input_view.ber().begin(), input_view.ber().end());
-    m_view.assign(absl::MakeSpan(m_data.data(), m_data.size()), input_view.tag(), input_view.identifier_length(),
-                  input_view.header_length(), input_view.content_length());
+    m_view.assign(absl::MakeSpan(m_data.data(), m_data.size()), input_view.tag(), input_view.header_length(),
+                  input_view.content_length());
 
     return m_view.ber_length();
 }
@@ -150,7 +150,7 @@ inline void BerContainer::assign_content(const absl::Span<const uint8_t> input_c
 
     m_data.resize(new_header_length + input_content.length());
     std::copy(input_content.data(), input_content.end(), m_data.data() + new_header_length);
-    m_view.assign(m_data, 0, 1, new_header_length, input_content.size());
+    m_view.assign(m_data, 0, new_header_length, input_content.size());
 
     assert(m_view.is_valid());
 }

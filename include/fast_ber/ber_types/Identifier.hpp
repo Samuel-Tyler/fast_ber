@@ -26,23 +26,27 @@ struct RuntimeId
     bool operator!=(const RuntimeId& rhs) const { return !(*this == rhs); }
 };
 
-template <typename OuterId, typename InnerId>
-struct DoubleId
-{
-    constexpr static bool    check_id_match(Class c, Tag t) { return c == class_() && t == tag(); }
-    constexpr static Class   class_() { return OuterId::class_(); }
-    constexpr static Tag     tag() { return OuterId::tag(); }
-    constexpr static OuterId outer_id() { return {}; }
-    constexpr static InnerId inner_id() { return {}; }
-};
-
 // Any class or tag is valid
 template <Class class_1, Tag tag_1>
 struct Id
 {
-    constexpr static bool  check_id_match(Class c, Tag t) { return c == class_() && t == tag(); }
     constexpr static Class class_() { return class_1; }
     constexpr static Tag   tag() { return tag_1; }
+
+    constexpr static size_t depth() { return 1; }
+    constexpr static bool   check_id_match(Class c, Tag t) { return c == class_() && t == tag(); }
+};
+
+template <typename OuterId, typename InnerId>
+struct DoubleId
+{
+    constexpr static Class   class_() { return OuterId::class_(); }
+    constexpr static Tag     tag() { return OuterId::tag(); }
+    constexpr static OuterId outer_id() { return {}; }
+    constexpr static InnerId inner_id() { return {}; }
+
+    constexpr static size_t depth() { return 2; }
+    constexpr static bool   check_id_match(Class c, Tag t) { return c == class_() && t == tag(); }
 };
 
 template <Class class_1, Tag tag_1>
