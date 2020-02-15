@@ -28,8 +28,8 @@ endif()
 
 aux_source_directory(compiler SRC_LIST)
 add_library(fast_ber_lib STATIC util/BerView.cpp)
-add_library(fast_ber_compiler_lib STATIC ${SRC_LIST})
-add_executable(${PROJECT_NAME}_compiler ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp)
+add_library(fast_ber_compiler_lib STATIC ${SRC_LIST} ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp)
+add_executable(${PROJECT_NAME}_compiler compiler_main/CompilerMain.cpp)
 add_executable(${PROJECT_NAME}_view view/view.cpp)
 
 target_include_directories(fast_ber_lib PUBLIC
