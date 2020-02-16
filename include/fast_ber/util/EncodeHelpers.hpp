@@ -28,6 +28,14 @@ EncodeResult encode_header(absl::Span<uint8_t> buffer, size_t content_length, Id
     return EncodeResult{true, header_length + content_length};
 }
 
+template <typename Identifier, size_t content_length = 0>
+std::array<uint8_t, encoded_length(content_length, Identifier{})> encoded_header() noexcept
+{
+    std::array<uint8_t, encoded_length(0, Identifier{}) + content_length> data = {};
+    encode_header(absl::Span<uint8_t>(data), content_length, Identifier{}, Construction::primitive);
+    return data;
+}
+
 template <typename OuterId, typename InnerId>
 EncodeResult encode_header(absl::Span<uint8_t> buffer, size_t content_length, DoubleId<OuterId, InnerId> id,
                            Construction construction)
@@ -47,19 +55,6 @@ EncodeResult encode_header(absl::Span<uint8_t> buffer, size_t content_length, Do
     return encode_header(buffer, inner_header_length + content_length, id.outer_id(), Construction::constructed);
 }
 
-template <Class T1, Tag T2>
-constexpr size_t wrap_with_ber_header_length(size_t content_length, Id<T1, T2> id)
-{
-    return encoded_header_length(content_length, id) + content_length;
-}
-
-template <typename OuterId, typename InnerId>
-constexpr size_t wrap_with_ber_header_length(size_t content_length, DoubleId<OuterId, InnerId> id)
-{
-    return wrap_with_ber_header_length(wrap_with_ber_header_length(content_length, id.inner_id()), id.outer_id()) +
-           content_length;
-}
-
 // Creates a BER header with provided ID around the data currently in the buffer
 // The data of interest should be located in the buffer, with length "content_length"
 
@@ -71,7 +66,7 @@ template <typename Identifier>
 EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_length, Identifier id,
                                   size_t content_offset = 0, Construction construction = Construction::constructed)
 {
-    size_t header_length = encoded_header_length(Construction::primitive, id.class_(), id.tag(), content_length);
+    size_t header_length = encoded_header_length(content_length, id);
     if (header_length + content_length > buffer.length())
     {
         return EncodeResult{false, 0};

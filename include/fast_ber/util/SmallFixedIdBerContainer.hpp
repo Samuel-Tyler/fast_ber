@@ -18,10 +18,12 @@ namespace fast_ber
 // vector. Can be constructed directly from encoded ber memory (assign_ber) or by specifiyng the desired contents
 // (assign_contents)
 
-template <typename Identifier>
+template <typename Identifier, size_t max_content_length>
 class FixedIdBerContainer
 {
   public:
+    sttaic_assert(max_content_length < max_possible_content_length, "Content length must fit in one byte");
+
     FixedIdBerContainer() noexcept;
     FixedIdBerContainer(const FixedIdBerContainer&) = default;
     FixedIdBerContainer(FixedIdBerContainer&&)      = default;
@@ -75,8 +77,17 @@ class FixedIdBerContainer
     template <typename Identifier1, typename Identifier2>
     size_t assign_ber_impl(const BerView& input_view, DoubleId<Identifier1, Identifier2>) noexcept;
 
-    absl::InlinedVector<uint8_t, 100u> m_data;
-    size_t                             m_content_length;
+    constexpr static size_t max_possible_content_length =
+        (Identifier::depth == 2) ? 128 - encoded_header_length(0, Identifier{}) : 128;
+
+    void set_content_length(size_t length) const noexcept
+    {
+        assert(length < 128);
+        m_data[header_lenth - 1] = static_cast<uint8_t>(length);
+    }
+
+    constexpr static header_lenth = encoded_header_length(0, Identifier{});
+    absl::InlinedVector<header> m_data;
 };
 
 template <typename Identifier>
@@ -132,7 +143,8 @@ template <typename Identifier>
 template <Class class_1, Tag tag_1>
 size_t FixedIdBerContainer<Identifier>::assign_ber_impl(const BerView& input_view, Id<class_1, tag_1> id) noexcept
 {
-    if (!has_correct_header(input_view, id, Construction::primitive))
+    if (!(input_view.is_valid() && input_view.identifier() == id &&
+          input_view.construction() == Construction::primitive))
     {
         return 0;
     }
@@ -144,10 +156,13 @@ size_t FixedIdBerContainer<Identifier>::assign_ber_impl(const BerView& input_vie
 
 template <typename Identifier>
 template <typename Identifier1, typename Identifier2>
-size_t FixedIdBerContainer<Identifier>::assign_ber_impl(const BerView&                     input_view,
-                                                        DoubleId<Identifier1, Identifier2> id) noexcept
+size_t FixedIdBerContainer<Identifier>::assign_ber_impl(const BerView& input_view,
+                                                        DoubleId<Identifier1, Identifier2>) noexcept
 {
-    if (!has_correct_header(input_view, id, Construction::primitive))
+    if (!(input_view.is_valid() && input_view.identifier() == Identifier1{} &&
+          input_view.construction() == Construction::constructed && input_view.begin()->is_valid() &&
+          input_view.begin()->identifier() == Identifier2{} &&
+          input_view.begin()->construction() == Construction::primitive))
     {
         return 0;
     }
@@ -187,7 +202,8 @@ template <typename Identifier>
 void FixedIdBerContainer<Identifier>::resize_content(size_t size)
 {
     size_t old_header_length = m_data.size() - content_length();
-    size_t new_header_length = encoded_header_length(size, Identifier{});
+    size_t new_header_length =
+        encoded_header_length(Construction::primitive, Identifier::class_(), Identifier::tag(), size);
 
     m_data.resize(new_header_length + size);
     std::memmove(m_data.data() + new_header_length, m_data.data() + old_header_length,
@@ -214,6 +230,10 @@ EncodeResult FixedIdBerContainer<Identifier>::encode(absl::Span<uint8_t> buffer)
 template <typename Identifier>
 DecodeResult FixedIdBerContainer<Identifier>::decode(BerViewIterator& iter) noexcept
 {
+    if (!iter->is_valid())
+    {
+        return DecodeResult{false};
+    }
     size_t res = assign_ber(*iter);
     if (res == 0)
     {

@@ -5,7 +5,7 @@
 #include "fast_ber/ber_types/Tag.hpp"
 #include "fast_ber/util/Definitions.hpp"
 
-#include <iostream>
+#include <iosfwd>
 #include <tuple>
 
 namespace fast_ber
@@ -75,7 +75,7 @@ bool operator!=(const RuntimeId& lhs, Id<class_1, tag_1> rhs)
 
 // Class is always universal
 template <UniversalTag explicit_tag>
-using ExplicitId = Id<Class::universal, val(explicit_tag)>;
+using ExplicitId = Id<Class::universal, as_underlying(explicit_tag)>;
 
 template <typename OuterId, typename InnerId>
 constexpr InnerId inner_identifier(DoubleId<OuterId, InnerId>)

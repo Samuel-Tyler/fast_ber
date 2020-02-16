@@ -37,11 +37,10 @@ class ObjectIdentifier
     ObjectIdentifier&             operator=(const ObjectIdentifier&) = default;
     ObjectIdentifier&             operator=(ObjectIdentifier&&) = default;
 
-    bool operator==(const ObjectIdentifier<Identifier>& rhs) const noexcept
-    {
-        return this->m_contents == rhs.m_contents;
-    }
-    bool operator!=(const ObjectIdentifier<Identifier>& rhs) const noexcept { return !(*this == rhs); }
+    template <typename Identifier2>
+    bool operator==(const ObjectIdentifier<Identifier2>& rhs) const noexcept;
+    template <typename Identifier2>
+    bool operator!=(const ObjectIdentifier<Identifier2>& rhs) const noexcept;
     bool operator==(const ObjectIdentifierComponents& rhs) const noexcept { return this->value() == rhs; }
     bool operator!=(const ObjectIdentifierComponents& rhs) const noexcept { return !(*this == rhs); }
 
@@ -238,6 +237,20 @@ ObjectIdentifier<Identifier>& ObjectIdentifier<Identifier>::operator=(absl::Span
 }
 
 template <typename Identifier>
+template <typename Identifier2>
+bool ObjectIdentifier<Identifier>::operator==(const ObjectIdentifier<Identifier2>& rhs) const noexcept
+{
+    return this->container().content() == rhs.container().content();
+}
+
+template <typename Identifier>
+template <typename Identifier2>
+bool ObjectIdentifier<Identifier>::operator!=(const ObjectIdentifier<Identifier2>& rhs) const noexcept
+{
+    return !(*this == rhs);
+}
+
+template <typename Identifier>
 std::ostream& operator<<(std::ostream& os, const ObjectIdentifier<Identifier>& oid) noexcept
 {
     os << "[";
@@ -290,15 +303,13 @@ bool ObjectIdentifier<Identifier>::assign(const ObjectIdentifierComponents& oid)
 template <typename Identifier>
 size_t ObjectIdentifier<Identifier>::assign_ber(const BerView& view) noexcept
 {
-    m_contents.assign_ber(view);
-    return 1;
+    return m_contents.assign_ber(view);
 }
 
 template <typename Identifier>
 size_t ObjectIdentifier<Identifier>::assign_ber(const BerContainer& container) noexcept
 {
-    m_contents.assign_ber(container);
-    return 1;
+    return m_contents.assign_ber(container);
 }
 
 template <typename Identifier>
@@ -322,7 +333,18 @@ EncodeResult encode(absl::Span<uint8_t> output, const ObjectIdentifier<Identifie
 template <typename Identifier>
 DecodeResult decode(BerViewIterator& input, ObjectIdentifier<Identifier>& output) noexcept
 {
-    return output.container().decode(input);
+    DecodeResult res = output.container().decode(input);
+    if (!res.success)
+    {
+        return DecodeResult{false};
+    }
+
+    if (output.container().content_length() == 0)
+    {
+        return DecodeResult{false};
+    }
+
+    return DecodeResult{true};
 }
 
 } // namespace fast_ber

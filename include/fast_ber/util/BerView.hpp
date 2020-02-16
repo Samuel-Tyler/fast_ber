@@ -23,7 +23,7 @@ enum class End
 class BerView
 {
   public:
-    BerView() noexcept = default;
+    constexpr BerView() noexcept = default;
     BerView(absl::Span<const uint8_t> input_ber_data) noexcept { assign(input_ber_data); }
     BerView(absl::Span<const uint8_t> input_ber_data, size_t input_header_length, size_t input_content_length) noexcept;
     BerView(absl::Span<const uint8_t> input_ber_data, Tag input_tag, size_t input_header_length,
@@ -57,10 +57,10 @@ class BerView
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
   private:
-    const uint8_t* m_data = nullptr;
-    Tag            m_tag;
-    size_t         m_header_length; // Also content offset
-    size_t         m_content_length;
+    const uint8_t* m_data           = nullptr;
+    Tag            m_tag            = 0;
+    size_t         m_header_length  = 0; // Also content offset
+    size_t         m_content_length = 0;
 };
 
 class MutableBerView : public BerView
@@ -85,23 +85,18 @@ class MutableBerView : public BerView
 class BerViewIterator
 {
   public:
-    BerViewIterator(absl::Span<const uint8_t> buffer) noexcept : m_buffer(buffer), m_view(buffer)
-    {
-        if (!m_view.is_valid())
-        {
-            buffer = absl::Span<const uint8_t>();
-        }
-    }
+    BerViewIterator(absl::Span<const uint8_t> buffer) noexcept : m_buffer(buffer), m_view(buffer) {}
     BerViewIterator(End) noexcept : m_buffer(), m_view() {}
 
     BerViewIterator& operator++() noexcept
     {
-        m_buffer.remove_prefix(m_view.ber_length());
-        m_view.assign(m_buffer);
         if (!m_view.is_valid())
         {
-            m_buffer = absl::Span<const uint8_t>();
+            assert(m_view.ber_length() == 0);
         }
+        m_buffer.remove_prefix(m_view.ber_length());
+        m_view.assign(m_buffer);
+
         return *this;
     }
 
@@ -110,7 +105,7 @@ class BerViewIterator
 
     friend bool operator==(const BerViewIterator& lhs, const BerViewIterator& rhs) noexcept
     {
-        if (lhs.m_buffer.empty() && rhs.m_buffer.empty())
+        if (!lhs.m_view.is_valid() && !rhs.m_view.is_valid())
         {
             return true;
         }
@@ -136,23 +131,18 @@ class BerViewIterator
 class MutableBerViewIterator
 {
   public:
-    MutableBerViewIterator(absl::Span<uint8_t> buffer) noexcept : m_buffer(buffer), m_view(buffer)
-    {
-        if (!m_view.is_valid())
-        {
-            buffer = absl::Span<uint8_t>();
-        }
-    }
+    MutableBerViewIterator(absl::Span<uint8_t> buffer) noexcept : m_buffer(buffer), m_view(buffer) {}
     MutableBerViewIterator(End) noexcept : m_buffer(), m_view() {}
 
     MutableBerViewIterator& operator++() noexcept
     {
-        m_buffer.remove_prefix(m_view.ber_length());
-        m_view.assign(m_buffer);
         if (!m_view.is_valid())
         {
-            m_buffer = absl::Span<uint8_t>();
+            assert(m_view.ber_length() == 0);
         }
+        m_buffer.remove_prefix(m_view.ber_length());
+        m_view.assign(m_buffer);
+
         return *this;
     }
 
@@ -161,7 +151,7 @@ class MutableBerViewIterator
 
     friend bool operator==(const MutableBerViewIterator& lhs, const MutableBerViewIterator& rhs) noexcept
     {
-        if (lhs.m_buffer.empty() && rhs.m_buffer.empty())
+        if (!lhs.m_view.is_valid() && !rhs.m_view.is_valid())
         {
             return true;
         }

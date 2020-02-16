@@ -22,9 +22,18 @@ class Null
     Null(Null&&) noexcept      = default;
     explicit Null(std::nullptr_t) noexcept {}
     explicit Null(BerView view) { assign_ber(view); }
+    template <typename Identifier2>
+    Null(const Null<Identifier2>&) noexcept
+    {
+    }
 
     Null& operator=(const Null&) = default;
     Null& operator=(Null&&) = default;
+    template <typename Identifier2>
+    Null& operator=(const Null<Identifier2>&) noexcept
+    {
+        return *this;
+    }
 
     template <typename Identifier2>
     bool operator==(const Null<Identifier2>&) const noexcept
@@ -36,73 +45,80 @@ class Null
     {
         return false;
     }
-    std::nullptr_t value() { return nullptr; }
+    std::nullptr_t            value() { return nullptr; }
+    absl::Span<const uint8_t> ber() const { return absl::Span<const uint8_t>(m_data); }
 
-    size_t       assign_ber(const BerView& rhs) noexcept;
-    size_t       assign_ber(absl::Span<const uint8_t> buffer) noexcept { return assign_ber(BerView(buffer)); }
-    EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
+    size_t assign_ber(const BerView& rhs) noexcept;
+    size_t assign_ber(absl::Span<const uint8_t> buffer) noexcept { return assign_ber(BerView(buffer)); }
 
     using AsnId = Identifier;
+
+  private:
+    std::array<uint8_t, encoded_length(0, Identifier{})> m_data = encoded_header<Identifier>();
 };
 
 template <typename Identifier>
-size_t Null<Identifier>::assign_ber(const BerView& rhs) noexcept
+size_t Null<Identifier>::assign_ber(const BerView& input) noexcept
 {
-    if (rhs.is_valid())
-    {
-        return rhs.ber_length();
-    }
-    else
+    if (!has_correct_header(input, Identifier{}, Construction::primitive))
     {
         return 0;
     }
-}
 
-template <typename Identifier>
-EncodeResult Null<Identifier>::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
-{
-    if (buffer.length() > 0)
+    if (Identifier::depth() == 1)
     {
-        buffer[0] = 0x00;
-        return EncodeResult{true, 1};
+        if (input.content_length() == 0)
+        {
+            return input.ber_length();
+        }
     }
-    else
+    if (Identifier::depth() == 2)
     {
-        return EncodeResult{false, 0};
+        if (input.begin()->content_length() == 0)
+        {
+            return input.ber_length();
+        }
     }
+    return 0;
 }
 
 template <typename Identifier>
 constexpr size_t encoded_length(const Null<Identifier>&)
 {
-    return encoded_length_from_id_and_length(1, Identifier{});
+    return encoded_length(0, Identifier{});
 }
 
 template <typename Identifier>
 EncodeResult encode(absl::Span<uint8_t> output, const Null<Identifier>& object)
 {
-    return encode_impl(output, object, Identifier{});
+    if (output.size() < object.ber().size())
+    {
+        return EncodeResult{false, 0};
+    }
+
+    std::memcpy(output.data(), object.ber().data(), object.ber().size());
+    return EncodeResult{true, object.ber().size()};
 }
 
 template <typename Identifier>
-DecodeResult decode(BerViewIterator& input, Null<Identifier>& output) noexcept
+DecodeResult decode(BerViewIterator& input, Null<Identifier>&) noexcept
 {
-    return decode_impl(input, output, Identifier{});
-}
+    if (!has_correct_header(*input, Identifier{}, Construction::primitive))
+    {
+        return DecodeResult{false};
+    }
 
-template <typename Identifier>
-EncodeResult encode_content_and_length(absl::Span<uint8_t> output, const Null<Identifier>& object) noexcept
-{
-    return object.encode_content_and_length(output);
-}
-
-template <typename Identifier>
-DecodeResult decode_content_and_length(BerViewIterator& input, Null<Identifier>& output) noexcept
-{
-    (void)input;
-    (void)output;
-
-    return {};
+    if (Identifier::depth() == 1 && input->content_length() == 0)
+    {
+        ++input;
+        return DecodeResult{true};
+    }
+    if (Identifier::depth() == 2 && input->begin()->content_length() == 0)
+    {
+        ++input;
+        return DecodeResult{true};
+    }
+    return DecodeResult{false};
 }
 
 template <typename Identifier>

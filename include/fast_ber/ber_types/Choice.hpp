@@ -489,7 +489,7 @@ template <typename... Variants, typename Identifier, StorageMode storage,
 size_t encoded_length(const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
     LengthVisitor visit;
-    return wrap_with_ber_header_length(fast_ber::visit(visit, choice), Identifier{});
+    return encoded_length(fast_ber::visit(visit, choice), Identifier{});
 }
 
 template <typename... Variants, typename Identifier, StorageMode storage,
@@ -547,7 +547,7 @@ EncodeResult encode(const absl::Span<uint8_t>&                               buf
     }
     child_buffer.remove_prefix(header_length_guess);
 
-    const EncodeResult& inner_encode_result = encode_choice(child_buffer, choice);
+    EncodeResult inner_encode_result = encode_choice(child_buffer, choice);
     if (!inner_encode_result.success)
     {
         return inner_encode_result;
@@ -603,12 +603,12 @@ template <typename... Variants, typename Identifier, StorageMode storage,
           absl::enable_if_t<!std::is_same<Identifier, ChoiceId<fast_ber::Identifier<Variants>...>>::value, int> = 0>
 DecodeResult decode(BerViewIterator& input, Choice<Choices<Variants...>, Identifier, storage>& output) noexcept
 {
-    if (!input->is_valid() || input->tag() != Identifier::tag() || input->class_() != Identifier::class_())
+    if (!has_correct_header(*input, Identifier{}, Construction::constructed))
     {
         return DecodeResult{false};
     }
 
-    auto child = input->begin();
+    BerViewIterator child = (Identifier::depth() == 1) ? input->begin() : input->begin()->begin();
     if (!child->is_valid())
     {
         return DecodeResult{false};

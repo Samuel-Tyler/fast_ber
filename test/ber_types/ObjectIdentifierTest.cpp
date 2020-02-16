@@ -41,3 +41,23 @@ TEST_CASE("Object Identifier: Default value")
 {
     REQUIRE(fast_ber::ObjectIdentifier<>().value() == fast_ber::ObjectIdentifierComponents{});
 }
+
+TEST_CASE("Object Identifier: Encode decode")
+{
+    using Identifier = fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::context_specific, 2>,
+                                          fast_ber::ExplicitId<fast_ber::UniversalTag::integer>>;
+
+    fast_ber::ObjectIdentifier<Identifier> oid1 =
+        fast_ber::ObjectIdentifierComponents{1, 2, 9999999999999, 9999999999999, 999999999999999, 9999999999999};
+    fast_ber::ObjectIdentifier<Identifier> oid2;
+
+    std::vector<uint8_t> buffer(100, 0x00);
+
+    fast_ber::EncodeResult encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), oid1);
+    fast_ber::DecodeResult decode_result = fast_ber::decode(absl::MakeSpan(buffer.data(), buffer.size()), oid2);
+
+    CHECK(encode_result.success);
+    CHECK(decode_result.success);
+    CHECK(oid1 == oid2);
+    CHECK(fast_ber::has_correct_header(fast_ber::BerView(buffer), Identifier{}, fast_ber::Construction::primitive));
+}

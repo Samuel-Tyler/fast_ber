@@ -15,12 +15,13 @@ struct DecodeResult
 template <typename T, Class T2, Tag T3>
 DecodeResult decode_impl(BerViewIterator& input, T& output, Id<T2, T3> id) noexcept
 {
-    if (!input->is_valid() || val(id.tag()) != input->tag())
+    if (!input->is_valid() || id != input->identifier())
     {
         return DecodeResult{false};
     }
 
     bool success = output.assign_ber(*input) > 0;
+
     ++input;
     return DecodeResult{success};
 }
@@ -28,7 +29,7 @@ DecodeResult decode_impl(BerViewIterator& input, T& output, Id<T2, T3> id) noexc
 template <typename T, typename OuterId, typename InnerId>
 DecodeResult decode_impl(BerViewIterator& input, T& output, DoubleId<OuterId, InnerId> id) noexcept
 {
-    if (!input->is_valid() || val(id.tag()) != input->tag())
+    if (!input->is_valid() || input->identifier() != OuterId{})
     {
         return DecodeResult{false};
     }
@@ -55,6 +56,20 @@ DecodeResult decode(absl::Span<const uint8_t> input, T& output) noexcept
     }
 
     return decode(iter, output);
+}
+
+template <Class class_, Tag tag>
+bool has_correct_header(BerView input, Id<class_, tag>, Construction construction)
+{
+    return input.is_valid() && input.class_() == class_ && input.tag() == tag && input.construction() == construction;
+}
+
+template <typename Identifier1, typename Identifier2>
+bool has_correct_header(BerView input, DoubleId<Identifier1, Identifier2>, Construction construction)
+{
+    return input.is_valid() && input.identifier() == Identifier1{} &&
+           input.construction() == Construction::constructed && input.begin()->is_valid() &&
+           input.begin()->identifier() == Identifier2{} && input.begin()->construction() == construction;
 }
 
 } // namespace fast_ber

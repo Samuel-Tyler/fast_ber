@@ -6,6 +6,7 @@
 
 #include "absl/container/inlined_vector.h"
 
+#include <iosfwd>
 #include <numeric>
 #include <vector>
 
@@ -67,7 +68,7 @@ size_t encoded_length(const SequenceOf<T, I, s>& sequence) noexcept
 {
     const size_t content_length = std::accumulate(sequence.begin(), sequence.end(), size_t(0),
                                                   [](size_t count, const T& t) { return count + encoded_length(t); });
-    return wrap_with_ber_header_length(content_length, I{});
+    return encoded_length(content_length, I{});
 }
 
 template <typename T, typename I, StorageMode s>
@@ -100,13 +101,12 @@ template <typename T, typename I, StorageMode s>
 DecodeResult decode(BerViewIterator& input, SequenceOf<T, I, s>& output) noexcept
 {
     output.clear();
-    if (!(input->is_valid() && I::check_id_match(input->class_(), input->tag()) &&
-          input->construction() == Construction::constructed))
+    if (!has_correct_header(*input, I{}, Construction::constructed))
     {
         return DecodeResult{false};
     }
 
-    auto                    child = input->begin();
+    BerViewIterator         child = (I::depth() == 1) ? input->begin() : input->begin()->begin();
     constexpr Identifier<T> child_id;
 
     while (child->is_valid() && child_id.check_id_match(child->class_(), child->tag()))

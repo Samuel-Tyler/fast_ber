@@ -351,7 +351,7 @@ create_collection_encode_functions(const std::vector<std::string>& namespaces, c
     {
         res += "    content_length += encoded_length(input." + component.named_type.name + ");\n";
     }
-    res += "\n    return wrap_with_ber_header_length(content_length, Identifier{});\n";
+    res += "\n    return encoded_length(content_length, Identifier{});\n";
     res += "}\n\n";
     return res;
 }
@@ -379,16 +379,15 @@ std::string create_collection_decode_functions(const std::vector<std::string>& n
 
     res += create_template_definition(template_args);
     res += "inline DecodeResult decode(BerViewIterator& input, " + name + "& output) noexcept\n{\n";
-    res += "    if (!input->is_valid()\n";
-    res += "      || input->identifier() != outer_identifier(Identifier{})\n";
-    res += "      || input->construction() != Construction::constructed)\n";
+    res += "    if (!has_correct_header(*input, Identifier{}, Construction::constructed))\n";
     res += "    {\n";
     res += "        return DecodeResult{false};\n";
     res += "    }\n";
 
     if (collection.components.size() > 0)
     {
-        res += "    auto iterator = input->begin();\n";
+        res += "    auto iterator = (Identifier::depth() == 1) ? input->begin()\n";
+        res += "                                               : input->begin()->begin();\n";
         res += "    DecodeResult res;\n";
     }
     else

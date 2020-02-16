@@ -97,7 +97,10 @@ inline size_t encode_tag(absl::Span<uint8_t> output, Tag tag) noexcept
         return 0;
     }
 }
-inline size_t encode_tag(absl::Span<uint8_t> output, UniversalTag tag) noexcept { return encode_tag(output, val(tag)); }
+inline size_t encode_tag(absl::Span<uint8_t> output, UniversalTag tag) noexcept
+{
+    return encode_tag(output, as_underlying(tag));
+}
 constexpr inline size_t encoded_tag_length(Tag tag) noexcept
 {
     return (tag < 0ll) ? 0
@@ -119,7 +122,7 @@ constexpr inline size_t encoded_tag_length(Tag tag) noexcept
                                                                                    : (tag < 72057594037927936) ? 9 : 10;
 }
 
-constexpr inline size_t encoded_tag_length(UniversalTag tag) noexcept { return encoded_tag_length(val(tag)); }
+constexpr inline size_t encoded_tag_length(UniversalTag tag) noexcept { return encoded_tag_length(as_underlying(tag)); }
 
 constexpr inline uint8_t encode_short_identifier(Construction construction, Class class_, Tag tag)
 {
@@ -127,7 +130,7 @@ constexpr inline uint8_t encode_short_identifier(Construction construction, Clas
 }
 constexpr inline uint8_t encode_short_identifier(Construction construction, Class class_, UniversalTag tag)
 {
-    return add_short_tag(add_class(add_construction(0, construction), class_), val(tag));
+    return add_short_tag(add_class(add_construction(0, construction), class_), as_underlying(tag));
 }
 inline size_t encode_identifier(absl::Span<uint8_t> output, Construction construction, Class class_, Tag tag) noexcept
 {
@@ -146,7 +149,7 @@ inline size_t encode_identifier(absl::Span<uint8_t> output, Construction constru
 inline size_t encode_identifier(absl::Span<uint8_t> output, Construction construction, Class class_,
                                 UniversalTag tag) noexcept
 {
-    return encode_identifier(output, construction, class_, val(tag));
+    return encode_identifier(output, construction, class_, as_underlying(tag));
 }
 constexpr inline size_t encoded_identifier_length(Construction, Class, Tag tag) noexcept
 {
@@ -283,7 +286,7 @@ inline size_t encode_header(absl::Span<uint8_t> output, Construction constructio
 inline size_t encode_header(absl::Span<uint8_t> output, Construction construction, Class class_, UniversalTag tag,
                             size_t length) noexcept
 {
-    return encode_header(output, construction, class_, val(tag), length);
+    return encode_header(output, construction, class_, as_underlying(tag), length);
 }
 constexpr inline size_t encoded_header_length(Construction construction, Class class_, Tag tag, size_t length) noexcept
 {

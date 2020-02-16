@@ -22,7 +22,7 @@ template <typename Identifier = ExplicitId<UniversalTag::boolean>>
 class Boolean
 {
   public:
-    Boolean() noexcept : Boolean(false) {}
+    Boolean() noexcept = default;
     Boolean(bool val) noexcept { assign(val); }
     template <typename Identifier2>
     Boolean(const Boolean<Identifier2>& rhs) noexcept;
@@ -30,8 +30,9 @@ class Boolean
     explicit Boolean(absl::Span<const uint8_t> ber_data) noexcept { assign_ber(ber_data); }
 
     // Implicit conversion to bool
-         operator bool() const noexcept { return value(); }
-    bool value() const noexcept { return static_cast<bool>(m_data[1]); }
+                              operator bool() const noexcept { return value(); }
+    bool                      value() const noexcept { return static_cast<bool>(m_data.back()); }
+    absl::Span<const uint8_t> ber() const { return absl::Span<const uint8_t>(m_data); }
 
     Boolean& operator=(bool rhs) noexcept;
     template <typename Identifier2>
@@ -43,22 +44,20 @@ class Boolean
     size_t assign_ber(const BerView& rhs) noexcept;
     size_t assign_ber(absl::Span<const uint8_t> buffer) noexcept;
 
-    EncodeResult     encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
-    constexpr size_t encoded_content_and_length_length() const noexcept { return m_data.size(); }
-
     using AsnId = Identifier;
 
     template <typename Identifier2>
     friend class Boolean;
 
   private:
-    std::array<uint8_t, 2> m_data;
+    std::array<uint8_t, encoded_length(1, Identifier{})> m_data = encoded_header<Identifier, 1>();
 }; // namespace fast_ber
 
 template <typename Identifier>
 template <typename Identifier2>
-Boolean<Identifier>::Boolean(const Boolean<Identifier2>& rhs) noexcept : m_data(rhs.m_data)
+Boolean<Identifier>::Boolean(const Boolean<Identifier2>& rhs) noexcept
 {
+    m_data.back() = rhs.m_data.back();
 }
 
 template <typename Identifier>
@@ -72,7 +71,7 @@ template <typename Identifier>
 template <typename Identifier2>
 inline Boolean<Identifier>& Boolean<Identifier>::operator=(const Boolean<Identifier2>& rhs) noexcept
 {
-    assign(rhs);
+    m_data.back() = rhs.m_data.back();
     return *this;
 }
 
@@ -80,33 +79,41 @@ template <typename Identifier>
 inline Boolean<Identifier>& Boolean<Identifier>::operator=(const BerView& rhs) noexcept
 {
     assign_ber(rhs);
-
     return *this;
 }
 
 template <typename Identifier>
 inline void Boolean<Identifier>::assign(bool val) noexcept
 {
-    m_data = {0x1, static_cast<uint8_t>(val ? 0xFF : 0x00)};
+    m_data.back() = static_cast<uint8_t>(val ? 0xFF : 0x00);
 }
 
 template <typename Identifier>
 template <typename Identifier2>
 inline void Boolean<Identifier>::assign(const Boolean<Identifier2>& rhs) noexcept
 {
-    m_data = rhs.m_data;
+    m_data.back() = rhs.m_data.back();
 }
 
 template <typename Identifier>
-inline size_t Boolean<Identifier>::assign_ber(const BerView& rhs) noexcept
+inline size_t Boolean<Identifier>::assign_ber(const BerView& input) noexcept
 {
-    if (!rhs.is_valid() || rhs.construction() != Construction::primitive || rhs.content_length() != 1)
+    if (!has_correct_header(input, Identifier{}, Construction::primitive))
     {
         return 0;
     }
 
-    m_data = {0x1, static_cast<uint8_t>((*(rhs.content_data()) == 0) ? 0x00 : 0xFF)};
-    return 2 + rhs.identifier_length();
+    if (Identifier::depth() == 1 && input.content_length() == 1)
+    {
+        m_data.back() = *input.content_data();
+        return input.ber_length();
+    }
+    if (Identifier::depth() == 2 && input.begin()->content_length() == 1)
+    {
+        m_data.back() = *input.begin()->content_data();
+        return input.ber_length();
+    }
+    return 0;
 }
 
 template <typename Identifier>
@@ -116,34 +123,32 @@ inline size_t Boolean<Identifier>::assign_ber(absl::Span<const uint8_t> buffer) 
 }
 
 template <typename Identifier>
-inline EncodeResult Boolean<Identifier>::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
+constexpr size_t encoded_length(const Boolean<Identifier>&) noexcept
 {
-    if (buffer.size() < m_data.size())
-    {
-        return EncodeResult{false, 0};
-    }
-
-    buffer[0] = m_data[0];
-    buffer[1] = m_data[1];
-    return EncodeResult{true, m_data.size()};
-}
-
-template <typename Identifier>
-constexpr size_t encoded_length(const Boolean<Identifier>& object) noexcept
-{
-    return encoded_length_from_id_and_length(object.encoded_content_and_length_length(), Identifier{});
+    return encoded_length(1, Identifier{});
 }
 
 template <typename Identifier>
 EncodeResult encode(absl::Span<uint8_t> output, const Boolean<Identifier>& object) noexcept
 {
-    return encode_impl(output, object, Identifier{});
+    if (output.size() < object.ber().size())
+    {
+        return EncodeResult{false, 0};
+    }
+
+    std::memcpy(output.data(), object.ber().data(), object.ber().size());
+    return EncodeResult{true, object.ber().size()};
 }
 
 template <typename Identifier>
 DecodeResult decode(BerViewIterator& input, Boolean<Identifier>& output) noexcept
 {
-    return decode_impl(input, output, Identifier{});
+    bool success = output.assign_ber(*input) > 0;
+    if (success)
+    {
+        ++input;
+    }
+    return DecodeResult{success};
 }
 
 template <typename Identifier>

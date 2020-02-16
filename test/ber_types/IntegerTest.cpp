@@ -91,3 +91,21 @@ TEST_CASE("Integer: Tagging")
     static_assert(std::is_same<fast_ber::Identifier<TaggedInt>, Tag>::value, "Tagged Integer");
     static_assert(std::is_same<fast_ber::Identifier<ExplicitTaggedInt>, ExplicitTag>::value, "Tagged Identifier");
 }
+
+TEST_CASE("Integer: Encode Decode")
+{
+    using Identifier = fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::application, 2>,
+                                          fast_ber::ExplicitId<fast_ber::UniversalTag::integer>>;
+
+    fast_ber::Integer<Identifier> i1 = -100;
+    fast_ber::Integer<Identifier> i2 = +100;
+
+    std::vector<uint8_t> buffer(100, 0x00);
+
+    bool enc_success = fast_ber::encode(absl::Span<uint8_t>(buffer), i1).success;
+    bool dec_success = fast_ber::decode(absl::Span<uint8_t>(buffer), i2).success;
+
+    REQUIRE(enc_success);
+    REQUIRE(dec_success);
+    REQUIRE(i1 == i2);
+}
