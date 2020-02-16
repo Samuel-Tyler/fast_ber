@@ -2,6 +2,7 @@
 
 #include "fast_ber/ber_types/Identifier.hpp"
 #include "fast_ber/util/Definitions.hpp"
+#include "fast_ber/util/EncodeIdentifiers.hpp"
 
 #include "absl/types/span.h"
 
@@ -28,10 +29,10 @@ EncodeResult encode_header(absl::Span<uint8_t> buffer, size_t content_length, Id
     return EncodeResult{true, header_length + content_length};
 }
 
-template <typename Identifier, size_t content_length = 0>
-std::array<uint8_t, encoded_length(content_length, Identifier{})> encoded_header() noexcept
+template <typename Identifier, size_t content_length = 0, size_t encoded_length = encoded_length(content_length, Identifier{})>
+std::array<uint8_t, encoded_length> encoded_header() noexcept
 {
-    std::array<uint8_t, encoded_length(0, Identifier{}) + content_length> data = {};
+    std::array<uint8_t, encoded_length> data = {};
     encode_header(absl::Span<uint8_t>(data), content_length, Identifier{}, Construction::primitive);
     return data;
 }
