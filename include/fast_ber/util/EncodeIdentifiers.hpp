@@ -312,9 +312,9 @@ constexpr size_t encoded_header_length(size_t content_length, DoubleId<Identifie
 }
 
 template <Class class_, Tag tag>
-constexpr size_t encoded_length(Id<class_, tag> id)
+constexpr size_t encoded_length(Id<class_, tag>)
 {
-    return encoded_identifier_length(Construction::primitive, id.class_(), id.tag());
+    return encoded_identifier_length(Construction::primitive, class_, tag);
 }
 
 template <Class class_, Tag tag>
