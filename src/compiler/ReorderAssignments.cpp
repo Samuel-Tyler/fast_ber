@@ -163,9 +163,8 @@ void resolve_dependencies(std::unordered_map<std::string, Assignment>& assignmen
             get_dependencies_recursive(dependency.name, module_reference, assignment_infos, complete_depends);
         }
 
-        return std::any_of(depends.begin(), depends.end(), [&](const Dependency& depend) {
-            return assigned_names.count(depend.name) == 0 && visited_names.count(depend.name) == 1;
-        });
+        return std::any_of(complete_depends.begin(), complete_depends.end(),
+                           [&](const Dependency& depend) { return depend.name == name; });
     };
 
     if (is_type(assignment) &&
