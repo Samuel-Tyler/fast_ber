@@ -8963,447 +8963,449 @@ namespace yy {
 
   case 326:
 #line 1245 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
-    { yylhs.value.as < ComponentType > () = ComponentType{{gen_anon_member_name(), yystack_[0].value.as < Type > ()}, false, absl::nullopt, absl::nullopt}; }
-#line 8966 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+    { std::cerr << context.location << " WARNING: unnamed type\n";
+      yylhs.value.as < ComponentType > () = ComponentType{{gen_anon_member_name(), yystack_[0].value.as < Type > ()}, false, absl::nullopt, absl::nullopt, StorageMode::static_ }; }
+#line 8967 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 327:
-#line 1247 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
-    { yylhs.value.as < ComponentType > () = ComponentType{{gen_anon_member_name(), yystack_[1].value.as < Type > ()}, true, absl::nullopt, absl::nullopt}; }
-#line 8972 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 1248 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+    { std::cerr << context.location << " WARNING: unnamed type\n";
+      yylhs.value.as < ComponentType > () = ComponentType{{gen_anon_member_name(), yystack_[1].value.as < Type > ()}, true, absl::nullopt, absl::nullopt, StorageMode::static_ }; }
+#line 8974 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 328:
-#line 1249 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
-    { yylhs.value.as < ComponentType > () = ComponentType{{gen_anon_member_name(), yystack_[2].value.as < Type > ()}, false, yystack_[0].value.as < Value > (), absl::nullopt}; 
+#line 1251 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+    { yylhs.value.as < ComponentType > () = ComponentType{{gen_anon_member_name(), yystack_[2].value.as < Type > ()}, false, yystack_[0].value.as < Value > (), absl::nullopt, StorageMode::static_ }; 
       feature_not_implemented(context.location, context.asn1_tree, "DEFAULT", "Not yet specifying default. ");
-      std::cerr << context.location << "WARNING: unnamed type"; }
-#line 8980 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+      std::cerr << context.location << " WARNING: unnamed type\n"; }
+#line 8982 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 329:
-#line 1253 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
-    { yylhs.value.as < ComponentType > () = ComponentType{yystack_[0].value.as < NamedType > (), false, absl::nullopt, absl::nullopt}; }
-#line 8986 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 1255 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+    { yylhs.value.as < ComponentType > () = ComponentType{yystack_[0].value.as < NamedType > (), false, absl::nullopt, absl::nullopt, StorageMode::static_ }; }
+#line 8988 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 330:
-#line 1255 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
-    { yylhs.value.as < ComponentType > () = ComponentType{yystack_[1].value.as < NamedType > (), true, absl::nullopt, absl::nullopt}; }
-#line 8992 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 1257 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+    { yylhs.value.as < ComponentType > () = ComponentType{yystack_[1].value.as < NamedType > (), true, absl::nullopt, absl::nullopt, StorageMode::static_ }; }
+#line 8994 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 331:
-#line 1257 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
-    { yylhs.value.as < ComponentType > () = ComponentType{yystack_[2].value.as < NamedType > (), false, yystack_[0].value.as < Value > (), absl::nullopt};
+#line 1259 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+    { yylhs.value.as < ComponentType > () = ComponentType{yystack_[2].value.as < NamedType > (), false, yystack_[0].value.as < Value > (), absl::nullopt, StorageMode::static_ };
       feature_not_implemented(context.location, context.asn1_tree, "DEFAULT", "Not yet specifying default. "); }
-#line 8999 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9001 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 332:
-#line 1260 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
-    { yylhs.value.as < ComponentType > () = ComponentType{{}, false, absl::nullopt, yystack_[0].value.as < Type > ()}; }
-#line 9005 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 1262 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+    { yylhs.value.as < ComponentType > () = ComponentType{{}, false, absl::nullopt, yystack_[0].value.as < Type > (), StorageMode::static_}; }
+#line 9007 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 333:
-#line 1272 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1274 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < SequenceOfType > () = SequenceOfType{ false, nullptr, std::unique_ptr<Type>(new Type(yystack_[0].value.as < Type > ())) }; }
-#line 9011 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9013 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 334:
-#line 1274 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1276 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < SequenceOfType > () = SequenceOfType{ true, std::unique_ptr<NamedType>(new NamedType(yystack_[0].value.as < NamedType > ())), nullptr }; }
-#line 9017 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9019 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 335:
-#line 1278 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1280 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < SetType > () = SetType{}; }
-#line 9023 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9025 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 336:
-#line 1280 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1282 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < SetType > () = SetType{yystack_[1].value.as < ComponentTypeList > ()}; }
-#line 9029 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9031 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 337:
-#line 1284 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1286 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < SetOfType > () = SetOfType{ false, nullptr, std::unique_ptr<Type>(new Type(yystack_[0].value.as < Type > ())) }; }
-#line 9035 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9037 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 338:
-#line 1286 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1288 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < SetOfType > () = SetOfType{ true, std::unique_ptr<NamedType>(new NamedType(yystack_[0].value.as < NamedType > ())), nullptr }; }
-#line 9041 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9043 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 339:
-#line 1290 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
-    { yylhs.value.as < ChoiceType > () = ChoiceType{ yystack_[1].value.as < std::vector<NamedType> > () }; }
-#line 9047 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 1292 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+    { yylhs.value.as < ChoiceType > () = ChoiceType{ yystack_[1].value.as < std::vector<NamedType> > (), StorageMode::static_ }; }
+#line 9049 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 340:
-#line 1294 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1296 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < std::vector<NamedType> > () = yystack_[0].value.as < std::vector<NamedType> > (); }
-#line 9053 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9055 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 341:
-#line 1298 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1300 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < std::vector<NamedType> > () = yystack_[0].value.as < std::vector<NamedType> > (); }
-#line 9059 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9061 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 342:
-#line 1300 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1302 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < std::vector<NamedType> > () = yystack_[2].value.as < std::vector<NamedType> > (); }
-#line 9065 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9067 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 343:
-#line 1302 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1304 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < std::vector<NamedType> > () = yystack_[4].value.as < std::vector<NamedType> > (); yylhs.value.as < std::vector<NamedType> > ().insert(yylhs.value.as < std::vector<NamedType> > ().begin(), yystack_[0].value.as < std::vector<NamedType> > ().begin(), yystack_[0].value.as < std::vector<NamedType> > ().end()); }
-#line 9071 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9073 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 344:
-#line 1306 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1308 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < std::vector<NamedType> > () = std::vector<NamedType> { yystack_[0].value.as < NamedType > () }; }
-#line 9077 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9079 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 345:
-#line 1308 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1310 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yystack_[2].value.as < std::vector<NamedType> > ().push_back( yystack_[0].value.as < NamedType > () ); yylhs.value.as < std::vector<NamedType> > () = yystack_[2].value.as < std::vector<NamedType> > (); }
-#line 9083 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9085 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 347:
-#line 1318 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1320 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < PrefixedType > () = PrefixedType(yystack_[0].value.as < TaggedType > ()); }
-#line 9089 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9091 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 348:
-#line 1322 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1324 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < TaggedType > () = TaggedType{ yystack_[1].value.as < Tag > (), TaggingMode::automatic, yystack_[0].value.as < Type > () }; }
-#line 9095 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9097 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 349:
-#line 1324 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1326 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < TaggedType > () = TaggedType{ yystack_[2].value.as < Tag > (), TaggingMode::implicit, yystack_[0].value.as < Type > () }; }
-#line 9101 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9103 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 350:
-#line 1326 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1328 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < TaggedType > () = TaggedType{ yystack_[2].value.as < Tag > (), TaggingMode::explicit_, yystack_[0].value.as < Type > () }; }
-#line 9107 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9109 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 351:
-#line 1330 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1332 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < Tag > () = Tag{ yystack_[2].value.as < Class > (), yystack_[1].value.as < int > () }; }
-#line 9113 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9115 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 354:
-#line 1338 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1340 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < int > () = yystack_[0].value.as < long long > (); }
-#line 9119 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9121 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 356:
-#line 1343 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1345 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < Class > () = Class::universal; }
-#line 9125 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9127 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 357:
-#line 1345 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1347 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < Class > () = Class::application; }
-#line 9131 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9133 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 358:
-#line 1347 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1349 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < Class > () = Class::private_; }
-#line 9137 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9139 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 359:
-#line 1349 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1351 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < Class > () = Class::context_specific; }
-#line 9143 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9145 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 361:
-#line 1362 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1364 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < std::vector<ObjectIdComponentValue> > () = yystack_[1].value.as < std::vector<ObjectIdComponentValue> > (); std::reverse(yylhs.value.as < std::vector<ObjectIdComponentValue> > ().begin(), yylhs.value.as < std::vector<ObjectIdComponentValue> > ().end()); }
-#line 9149 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9151 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 362:
-#line 1364 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1366 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < std::vector<ObjectIdComponentValue> > () = yystack_[1].value.as < std::vector<ObjectIdComponentValue> > (); std::reverse(yylhs.value.as < std::vector<ObjectIdComponentValue> > ().begin(), yylhs.value.as < std::vector<ObjectIdComponentValue> > ().end()); }
-#line 9155 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9157 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 363:
-#line 1368 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1370 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < std::vector<ObjectIdComponentValue> > ().push_back(yystack_[0].value.as < ObjectIdComponentValue > ()); }
-#line 9161 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9163 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 364:
-#line 1370 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1372 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < std::vector<ObjectIdComponentValue> > () = yystack_[0].value.as < std::vector<ObjectIdComponentValue> > (); yylhs.value.as < std::vector<ObjectIdComponentValue> > ().push_back(yystack_[1].value.as < ObjectIdComponentValue > ()); }
-#line 9167 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9169 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 365:
-#line 1374 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1376 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < ObjectIdComponentValue > () = yystack_[0].value.as < ObjectIdComponentValue > (); }
-#line 9173 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9175 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 366:
-#line 1376 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1378 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < ObjectIdComponentValue > () = yystack_[0].value.as < ObjectIdComponentValue > (); }
-#line 9179 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9181 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 367:
-#line 1378 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1380 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < ObjectIdComponentValue > () = yystack_[0].value.as < ObjectIdComponentValue > (); }
-#line 9185 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9187 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 368:
-#line 1382 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1384 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < ObjectIdComponentValue > ().name = yystack_[0].value.as < std::string > (); }
-#line 9191 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9193 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 369:
-#line 1386 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1388 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < ObjectIdComponentValue > ().value = yystack_[0].value.as < long long > (); }
-#line 9197 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9199 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 371:
-#line 1391 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1393 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < ObjectIdComponentValue > () = yystack_[1].value.as < ObjectIdComponentValue > (); yylhs.value.as < ObjectIdComponentValue > ().name = yystack_[3].value.as < std::string > (); }
-#line 9203 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9205 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 389:
-#line 1464 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1466 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < CharacterStringType > () = yystack_[0].value.as < CharacterStringType > (); }
-#line 9209 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9211 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 390:
-#line 1466 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1468 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < CharacterStringType > () = yystack_[0].value.as < CharacterStringType > (); }
-#line 9215 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9217 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 391:
-#line 1470 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1472 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < CharacterStringType > () = CharacterStringType::bmp_string; }
-#line 9221 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9223 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 392:
-#line 1472 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1474 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < CharacterStringType > () = CharacterStringType::general_string; }
-#line 9227 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9229 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 393:
-#line 1474 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1476 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < CharacterStringType > () = CharacterStringType::graphic_string; }
-#line 9233 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9235 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 394:
-#line 1476 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1478 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < CharacterStringType > () = CharacterStringType::ia5_string; }
-#line 9239 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9241 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 395:
-#line 1478 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1480 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < CharacterStringType > () = CharacterStringType::iso646_string; }
-#line 9245 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9247 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 396:
-#line 1480 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1482 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < CharacterStringType > () = CharacterStringType::numeric_string; }
-#line 9251 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9253 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 397:
-#line 1482 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1484 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < CharacterStringType > () = CharacterStringType::printable_string; }
-#line 9257 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9259 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 398:
-#line 1484 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1486 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < CharacterStringType > () = CharacterStringType::teletex_string; }
-#line 9263 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9265 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 399:
-#line 1486 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1488 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < CharacterStringType > () = CharacterStringType::t61_string; }
-#line 9269 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9271 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 400:
-#line 1488 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1490 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < CharacterStringType > () = CharacterStringType::universal_string; }
-#line 9275 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9277 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 401:
-#line 1490 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1492 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < CharacterStringType > () = CharacterStringType::utf8_string; }
-#line 9281 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9283 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 402:
-#line 1492 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1494 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < CharacterStringType > () = CharacterStringType::videotex_string; }
-#line 9287 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9289 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 403:
-#line 1494 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1496 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < CharacterStringType > () = CharacterStringType::visible_string; }
-#line 9293 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9295 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 404:
-#line 1498 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1500 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < CharacterStringType > () = CharacterStringType::character_string; }
-#line 9299 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9301 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 405:
-#line 1502 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1504 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < Type > () = yystack_[1].value.as < Type > (); }
-#line 9305 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9307 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 406:
-#line 1504 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1506 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < Type > () = yystack_[0].value.as < Type > (); feature_not_implemented(context.location, context.asn1_tree, "TypeWithConstraint", "Not yet checking contraints. ");  }
-#line 9311 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9313 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 407:
-#line 1508 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1510 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < Type > () = SetOfType{ false, nullptr, std::unique_ptr<Type>(new Type(yystack_[0].value.as < Type > ())) }; }
-#line 9317 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9319 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 408:
-#line 1510 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1512 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < Type > () = SetOfType{ false, nullptr, std::unique_ptr<Type>(new Type(yystack_[0].value.as < Type > ())) }; }
-#line 9323 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9325 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 409:
-#line 1512 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1514 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < Type > () = SequenceOfType{ false, nullptr, std::unique_ptr<Type>(new Type(yystack_[0].value.as < Type > ())) }; }
-#line 9329 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9331 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 410:
-#line 1514 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1516 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < Type > () = SequenceOfType{ false, nullptr, std::unique_ptr<Type>(new Type(yystack_[0].value.as < Type > ())) }; }
-#line 9335 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9337 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 411:
-#line 1516 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1518 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < Type > () = SetOfType{ true, std::unique_ptr<NamedType>(new NamedType(yystack_[0].value.as < NamedType > ())), nullptr }; }
-#line 9341 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9343 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 412:
-#line 1518 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1520 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < Type > () = SetOfType{ true, std::unique_ptr<NamedType>(new NamedType(yystack_[0].value.as < NamedType > ())), nullptr }; }
-#line 9347 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9349 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 413:
-#line 1520 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1522 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < Type > () = SequenceOfType{ true, std::unique_ptr<NamedType>(new NamedType(yystack_[0].value.as < NamedType > ())), nullptr }; }
-#line 9353 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9355 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 414:
-#line 1522 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1524 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < Type > () = SequenceOfType{ true, std::unique_ptr<NamedType>(new NamedType(yystack_[0].value.as < NamedType > ())), nullptr }; }
-#line 9359 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9361 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 415:
-#line 1526 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1528 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { feature_not_implemented(context.location, context.asn1_tree, "ConstraintSpec", "Not yet checking contraints. "); }
-#line 9365 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9367 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 497:
-#line 1691 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1693 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
-#line 9371 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9373 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 498:
-#line 1695 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1697 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
-#line 9377 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9379 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 499:
-#line 1699 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1701 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
-#line 9383 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9385 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 500:
-#line 1703 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1705 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
-#line 9389 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9391 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 501:
-#line 1707 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1709 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
-#line 9395 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9397 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
   case 502:
-#line 1710 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
+#line 1712 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:919
     { yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > (); }
-#line 9401 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9403 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
     break;
 
 
-#line 9405 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
+#line 9407 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:919
             default:
               break;
             }
@@ -11242,32 +11244,32 @@ namespace yy {
     1129,  1133,  1135,  1139,  1141,  1145,  1149,  1152,  1155,  1159,
     1162,  1164,  1168,  1170,  1178,  1181,  1183,  1187,  1188,  1191,
     1192,  1206,  1209,  1212,  1214,  1218,  1220,  1222,  1224,  1226,
-    1228,  1230,  1232,  1234,  1238,  1240,  1244,  1246,  1248,  1252,
-    1254,  1256,  1259,  1271,  1273,  1277,  1279,  1283,  1285,  1289,
-    1293,  1297,  1299,  1301,  1305,  1307,  1314,  1317,  1321,  1323,
-    1325,  1329,  1333,  1334,  1337,  1339,  1342,  1344,  1346,  1348,
-    1358,  1361,  1363,  1367,  1369,  1373,  1375,  1377,  1381,  1385,
-    1387,  1390,  1394,  1406,  1409,  1415,  1418,  1419,  1422,  1423,
-    1426,  1432,  1439,  1445,  1448,  1451,  1454,  1457,  1460,  1463,
-    1465,  1469,  1471,  1473,  1475,  1477,  1479,  1481,  1483,  1485,
-    1487,  1489,  1491,  1493,  1497,  1501,  1503,  1507,  1509,  1511,
-    1513,  1515,  1517,  1519,  1521,  1525,  1529,  1530,  1533,  1536,
-    1537,  1538,  1541,  1542,  1545,  1546,  1549,  1552,  1553,  1556,
-    1559,  1560,  1563,  1566,  1569,  1570,  1573,  1574,  1577,  1579,
-    1582,  1583,  1584,  1585,  1586,  1587,  1588,  1589,  1590,  1596,
-    1598,  1599,  1600,  1601,  1602,  1603,  1604,  1605,  1606,  1609,
-    1612,  1615,  1618,  1619,  1622,  1623,  1626,  1627,  1630,  1631,
-    1634,  1637,  1640,  1643,  1644,  1647,  1649,  1650,  1651,  1652,
-    1655,  1656,  1659,  1662,  1665,  1666,  1669,  1670,  1671,  1672,
-    1675,  1678,  1681,  1682,  1685,  1686,  1687,  1690,  1694,  1698,
-    1702,  1706,  1710,  1711,  1712,  1713,  1714,  1715,  1716,  1717,
-    1718,  1719,  1720,  1721,  1722,  1723,  1724,  1725,  1726,  1727,
-    1728,  1729,  1730,  1731,  1732,  1733,  1734,  1735,  1736,  1737,
-    1738,  1739,  1740,  1741,  1742,  1743,  1744,  1745,  1746,  1747,
-    1748,  1749,  1750,  1751,  1752,  1753,  1754,  1755,  1756,  1757,
-    1758,  1759,  1760,  1761,  1762,  1763,  1764,  1765,  1766,  1767,
-    1768,  1769,  1770,  1771,  1772,  1773,  1774,  1775,  1776,  1777,
-    1778,  1779,  1780,  1781,  1782,  1783,  1784,  1785,  1786
+    1228,  1230,  1232,  1234,  1238,  1240,  1244,  1247,  1250,  1254,
+    1256,  1258,  1261,  1273,  1275,  1279,  1281,  1285,  1287,  1291,
+    1295,  1299,  1301,  1303,  1307,  1309,  1316,  1319,  1323,  1325,
+    1327,  1331,  1335,  1336,  1339,  1341,  1344,  1346,  1348,  1350,
+    1360,  1363,  1365,  1369,  1371,  1375,  1377,  1379,  1383,  1387,
+    1389,  1392,  1396,  1408,  1411,  1417,  1420,  1421,  1424,  1425,
+    1428,  1434,  1441,  1447,  1450,  1453,  1456,  1459,  1462,  1465,
+    1467,  1471,  1473,  1475,  1477,  1479,  1481,  1483,  1485,  1487,
+    1489,  1491,  1493,  1495,  1499,  1503,  1505,  1509,  1511,  1513,
+    1515,  1517,  1519,  1521,  1523,  1527,  1531,  1532,  1535,  1538,
+    1539,  1540,  1543,  1544,  1547,  1548,  1551,  1554,  1555,  1558,
+    1561,  1562,  1565,  1568,  1571,  1572,  1575,  1576,  1579,  1581,
+    1584,  1585,  1586,  1587,  1588,  1589,  1590,  1591,  1592,  1598,
+    1600,  1601,  1602,  1603,  1604,  1605,  1606,  1607,  1608,  1611,
+    1614,  1617,  1620,  1621,  1624,  1625,  1628,  1629,  1632,  1633,
+    1636,  1639,  1642,  1645,  1646,  1649,  1651,  1652,  1653,  1654,
+    1657,  1658,  1661,  1664,  1667,  1668,  1671,  1672,  1673,  1674,
+    1677,  1680,  1683,  1684,  1687,  1688,  1689,  1692,  1696,  1700,
+    1704,  1708,  1712,  1713,  1714,  1715,  1716,  1717,  1718,  1719,
+    1720,  1721,  1722,  1723,  1724,  1725,  1726,  1727,  1728,  1729,
+    1730,  1731,  1732,  1733,  1734,  1735,  1736,  1737,  1738,  1739,
+    1740,  1741,  1742,  1743,  1744,  1745,  1746,  1747,  1748,  1749,
+    1750,  1751,  1752,  1753,  1754,  1755,  1756,  1757,  1758,  1759,
+    1760,  1761,  1762,  1763,  1764,  1765,  1766,  1767,  1768,  1769,
+    1770,  1771,  1772,  1773,  1774,  1775,  1776,  1777,  1778,  1779,
+    1780,  1781,  1782,  1783,  1784,  1785,  1786,  1787,  1788
   };
 
   // Print the state stack on the debug stream.
@@ -11302,8 +11304,8 @@ namespace yy {
 
 
 } // yy
-#line 11304 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:1242
-#line 1788 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:1243
+#line 11306 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re" // lalr1.cc:1242
+#line 1790 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc" // lalr1.cc:1243
 
 
 
@@ -11316,7 +11318,7 @@ namespace yy {
         context.location.step();
         // Lexer
 
-#line 11320 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11322 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 {
 	char yych;
 	unsigned int yyaccept = 0;
@@ -11416,25 +11418,25 @@ namespace yy {
 	}
 yy2:
 	++context.cursor;
-#line 11439 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11441 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_END_OF_FILE(context.location); }
-#line 11422 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11424 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy4:
 	++context.cursor;
 yy5:
-#line 11465 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11467 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ std::cerr << "Ignoring unknown symbol: " <<  static_cast<int>(*start) << std::endl; return yylex(context); }
-#line 11428 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11430 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy6:
 	++context.cursor;
-#line 11443 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11445 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); context.location.columns(); return yylex(context); }
-#line 11433 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11435 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy8:
 	++context.cursor;
-#line 11442 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11444 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); context.location.lines();   return yylex(context); }
-#line 11438 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11440 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy10:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -11443,9 +11445,9 @@ yy10:
 	}
 yy11:
 	++context.cursor;
-#line 11461 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11463 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXCLAMATION_MARK (context.location); }
-#line 11449 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11451 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy13:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -11543,19 +11545,19 @@ yy16:
 	}
 yy18:
 	++context.cursor;
-#line 11451 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11453 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OPEN_PARENTHESIS (context.location); }
-#line 11549 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11551 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy20:
 	++context.cursor;
-#line 11452 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11454 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CLOSE_PARENTHESIS (context.location); }
-#line 11554 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11556 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy22:
 	++context.cursor;
-#line 11457 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11459 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_COMMA (context.location); }
-#line 11559 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11561 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy24:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -11573,9 +11575,9 @@ yy24:
 	default:	goto yy25;
 	}
 yy25:
-#line 11458 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11460 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_HYPHEN_MINUS (context.location); }
-#line 11579 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11581 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy26:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -11583,9 +11585,9 @@ yy26:
 	default:	goto yy27;
 	}
 yy27:
-#line 11459 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11461 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_FULL_STOP (context.location); }
-#line 11589 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11591 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy28:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -11610,9 +11612,9 @@ yy29:
 	default:	goto yy31;
 	}
 yy31:
-#line 11425 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11427 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_number(std::stoll(std::string(start, context.cursor)), context.location); }
-#line 11616 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11618 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy32:
 	yyaccept = 1;
 	yych = *(YYMARKER = ++context.cursor);
@@ -11621,24 +11623,24 @@ yy32:
 	default:	goto yy33;
 	}
 yy33:
-#line 11455 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11457 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_COLON (context.location); }
-#line 11627 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11629 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy34:
 	++context.cursor;
-#line 11456 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11458 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_SEMICOLON (context.location); }
-#line 11632 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11634 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy36:
 	++context.cursor;
-#line 11462 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11464 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_LESS_THAN (context.location); }
-#line 11637 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11639 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy38:
 	++context.cursor;
-#line 11464 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11466 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_AT (context.location); }
-#line 11642 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11644 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy40:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -11651,9 +11653,9 @@ yy40:
 	default:	goto yy49;
 	}
 yy41:
-#line 11433 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11435 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(santize_name(std::string(start, context.cursor)), context.location); }
-#line 11657 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11659 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy42:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -11884,19 +11886,19 @@ yy60:
 	}
 yy61:
 	++context.cursor;
-#line 11453 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11455 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OPEN_SQUARE_BRACKET (context.location); }
-#line 11890 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11892 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy63:
 	++context.cursor;
-#line 11454 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11456 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CLOSE_SQUARE_BRACKET (context.location); }
-#line 11895 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11897 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy65:
 	++context.cursor;
-#line 11463 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11465 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ACCENT (context.location); }
-#line 11900 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11902 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy67:
 	yyaccept = 3;
 	yych = *(YYMARKER = ++context.cursor);
@@ -11968,24 +11970,24 @@ yy67:
 	default:	goto yy69;
 	}
 yy69:
-#line 11434 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11436 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(santize_name(std::string(start, context.cursor)), context.location); }
-#line 11974 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11976 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy70:
 	++context.cursor;
-#line 11449 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11451 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OPEN_BRACE (context.location); }
-#line 11979 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11981 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy72:
 	++context.cursor;
-#line 11460 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11462 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_VERTICAL_LINE (context.location); }
-#line 11984 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11986 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy74:
 	++context.cursor;
-#line 11450 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11452 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CLOSE_BRACE (context.location); }
-#line 11989 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 11991 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy76:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -11993,9 +11995,9 @@ yy76:
 	default:	goto yy77;
 	}
 yy77:
-#line 11428 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11430 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_cstring(std::string(start, context.cursor), context.location); }
-#line 11999 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12001 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy78:
 	++context.cursor;
 	goto yy77;
@@ -12077,9 +12079,9 @@ yy81:
 	default:	goto yy83;
 	}
 yy83:
-#line 11435 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11437 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_typefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
-#line 12083 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12085 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy84:
 	yyaccept = 5;
 	yych = *(YYMARKER = ++context.cursor);
@@ -12151,9 +12153,9 @@ yy84:
 	default:	goto yy86;
 	}
 yy86:
-#line 11436 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11438 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_valuefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
-#line 12157 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12159 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy87:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -12200,9 +12202,9 @@ yy90:
 	default:	goto yy90;
 	}
 yy92:
-#line 11419 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11421 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return yylex(context); }
-#line 12206 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12208 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy93:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -12219,9 +12221,9 @@ yy93:
 	default:	goto yy95;
 	}
 yy95:
-#line 11426 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11428 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_negativenumber(std::stoll(std::string(start, context.cursor)), context.location); }
-#line 12225 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12227 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy96:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -12229,9 +12231,9 @@ yy96:
 	default:	goto yy97;
 	}
 yy97:
-#line 11448 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11450 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_RANGE (context.location); }
-#line 12235 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12237 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy98:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -12563,9 +12565,9 @@ yy113:
 	default:	goto yy114;
 	}
 yy114:
-#line 11332 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11334 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_BY (context.location); }
-#line 12569 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12571 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy115:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -12820,9 +12822,9 @@ yy140:
 	default:	goto yy141;
 	}
 yy141:
-#line 11380 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11382 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OF (context.location); }
-#line 12826 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 12828 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy142:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -13210,14 +13212,14 @@ yy170:
 	}
 yy171:
 	++context.cursor;
-#line 11430 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11432 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_bstring(std::string(start + 1, context.cursor - 2), context.location); }
-#line 13216 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13218 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy173:
 	++context.cursor;
-#line 11432 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11434 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_hstring(std::string(start + 1, context.cursor - 2), context.location); }
-#line 13221 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13223 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy175:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -13234,9 +13236,9 @@ yy176:
 	}
 yy177:
 	++context.cursor;
-#line 11447 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11449 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ELIPSIS (context.location); }
-#line 13240 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13242 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy179:
 	yych = *++context.cursor;
 	switch (yych) {
@@ -13259,14 +13261,14 @@ yy180:
 	default:	goto yy182;
 	}
 yy182:
-#line 11424 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11426 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context.cursor)), context.location); }
-#line 13265 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13267 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy183:
 	++context.cursor;
-#line 11446 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11448 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_DEFINED_AS (context.location); }
-#line 13270 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13272 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy185:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -13346,9 +13348,9 @@ yy186:
 	default:	goto yy187;
 	}
 yy187:
-#line 11324 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11326 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ALL (context.location); }
-#line 13352 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13354 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy188:
 	yyaccept = 9;
 	yych = *(YYMARKER = ++context.cursor);
@@ -13420,9 +13422,9 @@ yy188:
 	default:	goto yy189;
 	}
 yy189:
-#line 11325 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11327 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ANY (context.location); }
-#line 13426 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13428 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy190:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -13515,9 +13517,9 @@ yy193:
 	default:	goto yy194;
 	}
 yy194:
-#line 11329 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11331 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_BIT (context.location); }
-#line 13521 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13523 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy195:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -13675,9 +13677,9 @@ yy207:
 	default:	goto yy208;
 	}
 yy208:
-#line 11348 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11350 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_END (context.location); }
-#line 13681 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13683 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy209:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -13856,9 +13858,9 @@ yy224:
 	default:	goto yy225;
 	}
 yy225:
-#line 11371 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11373 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_MAX (context.location); }
-#line 13862 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13864 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy226:
 	yyaccept = 13;
 	yych = *(YYMARKER = ++context.cursor);
@@ -13930,9 +13932,9 @@ yy226:
 	default:	goto yy227;
 	}
 yy227:
-#line 11372 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11374 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_MIN (context.location); }
-#line 13936 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 13938 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy228:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -14067,9 +14069,9 @@ yy237:
 	default:	goto yy238;
 	}
 yy238:
-#line 11384 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11386 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_PDV (context.location); }
-#line 14073 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14075 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy239:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -14190,9 +14192,9 @@ yy246:
 	default:	goto yy247;
 	}
 yy247:
-#line 11393 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11395 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_SET (context.location); }
-#line 14196 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14198 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy248:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -14309,14 +14311,14 @@ yy263:
 	}
 yy264:
 	++context.cursor;
-#line 11417 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11419 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return yylex(context); }
-#line 14315 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14317 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy266:
 	++context.cursor;
-#line 11421 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11423 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ for (char c: std::string(start, context.cursor)) { context.location.columns(); if (c == '\n') context.location.lines(); } return yylex(context); }
-#line 14320 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14322 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy268:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -14479,9 +14481,9 @@ yy281:
 	default:	goto yy282;
 	}
 yy282:
-#line 11340 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11342 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_DATE (context.location); }
-#line 14485 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14487 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy283:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -14631,9 +14633,9 @@ yy294:
 	default:	goto yy295;
 	}
 yy295:
-#line 11356 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11358 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_FROM (context.location); }
-#line 14637 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14639 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy296:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -14852,9 +14854,9 @@ yy308:
 	default:	goto yy309;
 	}
 yy309:
-#line 11375 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11377 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ASN_NULL (context.location); }
-#line 14858 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 14860 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy310:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -15003,9 +15005,9 @@ yy321:
 	default:	goto yy322;
 	}
 yy322:
-#line 11389 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11391 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_REAL (context.location); }
-#line 15009 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15011 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy323:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -15098,9 +15100,9 @@ yy326:
 	default:	goto yy327;
 	}
 yy327:
-#line 11395 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11397 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_SIZE (context.location); }
-#line 15104 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15106 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy328:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -15193,9 +15195,9 @@ yy331:
 	default:	goto yy332;
 	}
 yy332:
-#line 11399 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11401 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_TAGS (context.location); }
-#line 15199 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15201 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy333:
 	yyaccept = 22;
 	yych = *(YYMARKER = ++context.cursor);
@@ -15267,9 +15269,9 @@ yy333:
 	default:	goto yy334;
 	}
 yy334:
-#line 11401 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11403 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_TIME (context.location); }
-#line 15273 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15275 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy335:
 	yyaccept = 23;
 	yych = *(YYMARKER = ++context.cursor);
@@ -15341,9 +15343,9 @@ yy335:
 	default:	goto yy336;
 	}
 yy336:
-#line 11403 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11405 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_TRUE (context.location); }
-#line 15347 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15349 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy337:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -15485,9 +15487,9 @@ yy347:
 	default:	goto yy348;
 	}
 yy348:
-#line 11413 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11415 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_WITH (context.location); }
-#line 15491 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15493 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy349:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -15587,9 +15589,9 @@ yy353:
 	default:	goto yy354;
 	}
 yy354:
-#line 11328 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11330 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_BEGIN (context.location); }
-#line 15593 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15595 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy355:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -15689,9 +15691,9 @@ yy359:
 	default:	goto yy360;
 	}
 yy360:
-#line 11335 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11337 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CLASS (context.location); }
-#line 15695 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15697 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy361:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -15930,9 +15932,9 @@ yy376:
 	default:	goto yy377;
 	}
 yy377:
-#line 11355 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11357 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_FALSE (context.location); }
-#line 15936 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 15938 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy378:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -16117,9 +16119,9 @@ yy394:
 	default:	goto yy395;
 	}
 yy395:
-#line 11379 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11381 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OCTET (context.location); }
-#line 16123 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16125 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy396:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -16432,9 +16434,9 @@ yy413:
 	default:	goto yy414;
 	}
 yy414:
-#line 11405 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11407 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_UNION (context.location); }
-#line 16438 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16440 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy415:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -16555,9 +16557,9 @@ yy422:
 	default:	goto yy423;
 	}
 yy423:
-#line 11322 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11324 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ABSENT (context.location); }
-#line 16561 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16563 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy424:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -16671,9 +16673,9 @@ yy430:
 	default:	goto yy431;
 	}
 yy431:
-#line 11334 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11336 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CHOICE (context.location); }
-#line 16677 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16679 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy432:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -16822,9 +16824,9 @@ yy443:
 	default:	goto yy444;
 	}
 yy444:
-#line 11350 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11352 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXCEPT (context.location); }
-#line 16828 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 16830 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy445:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -17158,9 +17160,9 @@ yy465:
 	default:	goto yy466;
 	}
 yy466:
-#line 11377 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11379 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OBJECT (context.location); }
-#line 17164 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17166 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy467:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -17309,9 +17311,9 @@ yy478:
 	default:	goto yy479;
 	}
 yy479:
-#line 11396 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11398 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_STRING (context.location); }
-#line 17315 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17317 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy480:
 	yyaccept = 35;
 	yych = *(YYMARKER = ++context.cursor);
@@ -17383,9 +17385,9 @@ yy480:
 	default:	goto yy481;
 	}
 yy481:
-#line 11397 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11399 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_SYNTAX (context.location); }
-#line 17389 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17391 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy482:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -17485,9 +17487,9 @@ yy486:
 	default:	goto yy487;
 	}
 yy487:
-#line 11406 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11408 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_UNIQUE (context.location); }
-#line 17491 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17493 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy488:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -17629,9 +17631,9 @@ yy498:
 	default:	goto yy499;
 	}
 yy499:
-#line 11331 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11333 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_BOOLEAN (context.location); }
-#line 17635 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17637 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy500:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -17738,9 +17740,9 @@ yy505:
 	default:	goto yy506;
 	}
 yy506:
-#line 11342 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11344 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_DEFAULT (context.location); }
-#line 17744 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17746 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy507:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -17833,9 +17835,9 @@ yy510:
 	default:	goto yy511;
 	}
 yy511:
-#line 11346 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11348 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ENCODED (context.location); }
-#line 17839 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17841 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy512:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -17928,9 +17930,9 @@ yy515:
 	default:	goto yy516;
 	}
 yy516:
-#line 11352 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11354 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXPORTS (context.location); }
-#line 17934 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 17936 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy517:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -18052,9 +18054,9 @@ yy524:
 	default:	goto yy525;
 	}
 yy525:
-#line 11363 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11365 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_IMPLIED (context.location); }
-#line 18058 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18060 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy526:
 	yyaccept = 42;
 	yych = *(YYMARKER = ++context.cursor);
@@ -18126,9 +18128,9 @@ yy526:
 	default:	goto yy527;
 	}
 yy527:
-#line 11364 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11366 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_IMPORTS (context.location); }
-#line 18132 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18134 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy528:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -18221,9 +18223,9 @@ yy531:
 	default:	goto yy532;
 	}
 yy532:
-#line 11368 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11370 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_INTEGER (context.location); }
-#line 18227 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18229 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy533:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -18330,9 +18332,9 @@ yy538:
 	default:	goto yy539;
 	}
 yy539:
-#line 11381 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11383 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OID_IRI (context.location); }
-#line 18336 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18338 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy540:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -18418,9 +18420,9 @@ yy542:
 	default:	goto yy543;
 	}
 yy543:
-#line 11383 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11385 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_PATTERN (context.location); }
-#line 18424 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18426 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy544:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -18499,9 +18501,9 @@ yy545:
 	default:	goto yy546;
 	}
 yy546:
-#line 11386 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11388 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_PRESENT (context.location); }
-#line 18505 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18507 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy547:
 	yyaccept = 47;
 	yych = *(YYMARKER = ++context.cursor);
@@ -18573,9 +18575,9 @@ yy547:
 	default:	goto yy548;
 	}
 yy548:
-#line 11388 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11390 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_PRIVATE (context.location); }
-#line 18579 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18581 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy549:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -18710,9 +18712,9 @@ yy558:
 	default:	goto yy559;
 	}
 yy559:
-#line 11409 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11411 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_UTCTime (context.location); }
-#line 18716 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18718 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy560:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -18882,9 +18884,9 @@ yy574:
 	default:	goto yy575;
 	}
 yy575:
-#line 11344 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11346 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_DURATION (context.location); }
-#line 18888 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18890 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy576:
 	yyaccept = 50;
 	yych = *(YYMARKER = ++context.cursor);
@@ -18956,9 +18958,9 @@ yy576:
 	default:	goto yy577;
 	}
 yy577:
-#line 11345 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11347 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_EMBEDDED (context.location); }
-#line 18962 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 18964 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy578:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -19044,9 +19046,9 @@ yy580:
 	default:	goto yy581;
 	}
 yy581:
-#line 11351 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11353 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXPLICIT (context.location); }
-#line 19050 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 19052 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy582:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -19125,9 +19127,9 @@ yy583:
 	default:	goto yy584;
 	}
 yy584:
-#line 11354 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11356 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXTERNAL (context.location); }
-#line 19131 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 19133 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy585:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -19234,9 +19236,9 @@ yy590:
 	default:	goto yy591;
 	}
 yy591:
-#line 11362 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11364 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_IMPLICIT (context.location); }
-#line 19240 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 19242 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy592:
 	yyaccept = 54;
 	yych = *(YYMARKER = ++context.cursor);
@@ -19308,9 +19310,9 @@ yy592:
 	default:	goto yy593;
 	}
 yy593:
-#line 11365 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11367 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_INCLUDES (context.location); }
-#line 19314 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 19316 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy594:
 	yyaccept = 55;
 	yych = *(YYMARKER = ++context.cursor);
@@ -19382,9 +19384,9 @@ yy594:
 	default:	goto yy595;
 	}
 yy595:
-#line 11366 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11368 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_INSTANCE (context.location); }
-#line 19388 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 19390 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy596:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -19498,9 +19500,9 @@ yy602:
 	default:	goto yy603;
 	}
 yy603:
-#line 11382 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11384 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_OPTIONAL (context.location); }
-#line 19504 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 19506 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy604:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -19600,9 +19602,9 @@ yy608:
 	default:	goto yy609;
 	}
 yy609:
-#line 11392 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11394 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_SEQUENCE (context.location); }
-#line 19606 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 19608 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy610:
 	yyaccept = 58;
 	yych = *(YYMARKER = ++context.cursor);
@@ -19674,9 +19676,9 @@ yy610:
 	default:	goto yy611;
 	}
 yy611:
-#line 11394 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11396 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_SETTINGS (context.location); }
-#line 19680 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 19682 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy612:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -19947,9 +19949,9 @@ yy623:
 	default:	goto yy624;
 	}
 yy624:
-#line 11327 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11329 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_AUTOMATIC (context.location); }
-#line 19953 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 19955 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy625:
 	yyaccept = 60;
 	yych = *(YYMARKER = ++context.cursor);
@@ -20021,9 +20023,9 @@ yy625:
 	default:	goto yy626;
 	}
 yy626:
-#line 11330 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11332 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_BMPString (context.location); }
-#line 20027 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 20029 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy627:
 	yyaccept = 61;
 	yych = *(YYMARKER = ++context.cursor);
@@ -20095,9 +20097,9 @@ yy627:
 	default:	goto yy628;
 	}
 yy628:
-#line 11333 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11335 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CHARACTER (context.location); }
-#line 20101 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 20103 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy629:
 	yyaccept = 62;
 	yych = *(YYMARKER = ++context.cursor);
@@ -20169,9 +20171,9 @@ yy629:
 	default:	goto yy630;
 	}
 yy630:
-#line 11336 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11338 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_COMPONENT (context.location); }
-#line 20175 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 20177 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy631:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -20257,9 +20259,9 @@ yy633:
 	default:	goto yy634;
 	}
 yy634:
-#line 11341 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11343 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_DATE_TIME (context.location); }
-#line 20263 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 20265 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy635:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -20380,9 +20382,9 @@ yy642:
 	default:	goto yy643;
 	}
 yy643:
-#line 11360 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11362 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_IA5String (context.location); }
-#line 20386 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 20388 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy644:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -20592,9 +20594,9 @@ yy655:
 	default:	goto yy656;
 	}
 yy656:
-#line 11398 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11400 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_T61String (context.location); }
-#line 20598 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 20600 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy657:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -20687,9 +20689,9 @@ yy660:
 	default:	goto yy661;
 	}
 yy661:
-#line 11407 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11409 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_UNIVERSAL (context.location); }
-#line 20693 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 20695 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy662:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -20803,9 +20805,9 @@ yy668:
 	default:	goto yy669;
 	}
 yy669:
-#line 11337 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11339 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_COMPONENTS (context.location); }
-#line 20809 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 20811 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy670:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -20884,9 +20886,9 @@ yy671:
 	default:	goto yy672;
 	}
 yy672:
-#line 11339 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11341 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CONTAINING (context.location); }
-#line 20890 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 20892 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy673:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -20972,9 +20974,9 @@ yy675:
 	default:	goto yy676;
 	}
 yy676:
-#line 11349 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11351 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ENUMERATED (context.location); }
-#line 20978 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 20980 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy677:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -21074,9 +21076,9 @@ yy681:
 	default:	goto yy682;
 	}
 yy682:
-#line 11361 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11363 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_IDENTIFIER (context.location); }
-#line 21080 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 21082 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy683:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -21239,9 +21241,9 @@ yy696:
 	default:	goto yy697;
 	}
 yy697:
-#line 11410 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11412 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_UTF8String (context.location); }
-#line 21245 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 21247 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy698:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -21341,9 +21343,9 @@ yy702:
 	default:	goto yy703;
 	}
 yy703:
-#line 11326 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11328 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_APPLICATION (context.location); }
-#line 21347 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 21349 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy704:
 	yyaccept = 73;
 	yych = *(YYMARKER = ++context.cursor);
@@ -21415,9 +21417,9 @@ yy704:
 	default:	goto yy705;
 	}
 yy705:
-#line 11338 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11340 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_CONSTRAINED (context.location); }
-#line 21421 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 21423 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy706:
 	yyaccept = 74;
 	yych = *(YYMARKER = ++context.cursor);
@@ -21489,9 +21491,9 @@ yy706:
 	default:	goto yy707;
 	}
 yy707:
-#line 11343 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11345 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_DEFINITIONS (context.location); }
-#line 21495 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 21497 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy708:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -21668,9 +21670,9 @@ yy723:
 	default:	goto yy724;
 	}
 yy724:
-#line 11402 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11404 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_TIME_OF_DAY (context.location); }
-#line 21674 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 21676 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy725:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -21819,9 +21821,9 @@ yy736:
 	default:	goto yy737;
 	}
 yy737:
-#line 11367 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11369 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_INSTRUCTIONS (context.location); }
-#line 21825 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 21827 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy738:
 	yyaccept = 77;
 	yych = *(YYMARKER = ++context.cursor);
@@ -21893,9 +21895,9 @@ yy738:
 	default:	goto yy739;
 	}
 yy739:
-#line 11369 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11371 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_INTERSECTION (context.location); }
-#line 21899 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 21901 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy740:
 	yyaccept = 78;
 	yych = *(YYMARKER = ++context.cursor);
@@ -21967,9 +21969,9 @@ yy740:
 	default:	goto yy741;
 	}
 yy741:
-#line 11370 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11372 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ISO646String (context.location); }
-#line 21973 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 21975 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy742:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -22048,9 +22050,9 @@ yy743:
 	default:	goto yy744;
 	}
 yy744:
-#line 11374 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11376 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_NOT_A_NUMBER (context.location); }
-#line 22054 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 22056 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy745:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -22150,9 +22152,9 @@ yy749:
 	default:	goto yy750;
 	}
 yy750:
-#line 11390 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11392 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_RELATIVE_OID (context.location); }
-#line 22156 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 22158 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy751:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -22273,9 +22275,9 @@ yy758:
 	default:	goto yy759;
 	}
 yy759:
-#line 11353 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11355 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_EXTENSIBILITY (context.location); }
-#line 22279 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 22281 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy760:
 	yyaccept = 82;
 	yych = *(YYMARKER = ++context.cursor);
@@ -22347,9 +22349,9 @@ yy760:
 	default:	goto yy761;
 	}
 yy761:
-#line 11358 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11360 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_GeneralString (context.location); }
-#line 22353 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 22355 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy762:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -22428,9 +22430,9 @@ yy763:
 	default:	goto yy764;
 	}
 yy764:
-#line 11359 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11361 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_GraphicString (context.location); }
-#line 22434 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 22436 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy765:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -22509,9 +22511,9 @@ yy766:
 	default:	goto yy767;
 	}
 yy767:
-#line 11376 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11378 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_NumericString (context.location); }
-#line 22515 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 22517 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy768:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -22590,9 +22592,9 @@ yy769:
 	default:	goto yy770;
 	}
 yy770:
-#line 11385 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11387 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_PLUS_INFINITY (context.location); }
-#line 22596 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 22598 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy771:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -22746,9 +22748,9 @@ yy774:
 	default:	goto yy775;
 	}
 yy775:
-#line 11400 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11402 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_TeletexString (context.location); }
-#line 22752 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 22754 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy776:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -22834,9 +22836,9 @@ yy778:
 	default:	goto yy779;
 	}
 yy779:
-#line 11412 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11414 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_VisibleString (context.location); }
-#line 22840 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 22842 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy780:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -22929,9 +22931,9 @@ yy783:
 	default:	goto yy784;
 	}
 yy784:
-#line 11373 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11375 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_MINUS_INFINITY (context.location); }
-#line 22935 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 22937 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy785:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -23038,9 +23040,9 @@ yy790:
 	default:	goto yy791;
 	}
 yy791:
-#line 11411 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11413 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_VideotexString (context.location); }
-#line 23044 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 23046 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy792:
 	yyaccept = 90;
 	yych = *(YYMARKER = ++context.cursor);
@@ -23112,9 +23114,9 @@ yy792:
 	default:	goto yy793;
 	}
 yy793:
-#line 11323 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11325 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ABSTRACT_SYNTAX (context.location); }
-#line 23118 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 23120 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy794:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -23193,9 +23195,9 @@ yy795:
 	default:	goto yy796;
 	}
 yy796:
-#line 11357 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11359 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_GeneralizedTime (context.location); }
-#line 23199 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 23201 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy797:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -23274,9 +23276,9 @@ yy798:
 	default:	goto yy799;
 	}
 yy799:
-#line 11387 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11389 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_PrintableString (context.location); }
-#line 23280 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 23282 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy800:
 	yyaccept = 2;
 	yych = *(YYMARKER = ++context.cursor);
@@ -23355,9 +23357,9 @@ yy801:
 	default:	goto yy802;
 	}
 yy802:
-#line 11404 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11406 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_TYPE_IDENTIFIER (context.location); }
-#line 23361 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 23363 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy803:
 	yyaccept = 94;
 	yych = *(YYMARKER = ++context.cursor);
@@ -23429,9 +23431,9 @@ yy803:
 	default:	goto yy804;
 	}
 yy804:
-#line 11408 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11410 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_UniversalString (context.location); }
-#line 23435 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 23437 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy805:
 	yyaccept = 95;
 	yych = *(YYMARKER = ++context.cursor);
@@ -23503,9 +23505,9 @@ yy805:
 	default:	goto yy806;
 	}
 yy806:
-#line 11347 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11349 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ENCODING_CONTROL (context.location); }
-#line 23509 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 23511 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy807:
 	yyaccept = 96;
 	yych = *(YYMARKER = ++context.cursor);
@@ -23577,9 +23579,9 @@ yy807:
 	default:	goto yy808;
 	}
 yy808:
-#line 11378 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11380 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_ObjectDescriptor (context.location); }
-#line 23583 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 23585 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy809:
 	yyaccept = 97;
 	yych = *(YYMARKER = ++context.cursor);
@@ -23651,11 +23653,11 @@ yy809:
 	default:	goto yy810;
 	}
 yy810:
-#line 11391 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11393 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 	{ context.location.columns(context.cursor - start); return asn1_parser::make_RELATIVE_OID_IRI (context.location); }
-#line 23657 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 23659 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 }
-#line 11466 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
+#line 11468 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.re"
 
     }
 }

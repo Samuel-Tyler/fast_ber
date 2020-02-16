@@ -812,8 +812,7 @@ int main(int argc, char** argv)
             module.assignments = split_definitions(module.assignments);
             check_duplicated_names(module.assignments, module.module_reference);
             module.assignments = split_nested_structures(module);
-            module.assignments =
-                reorder_assignments(module.assignments, module.module_reference, context.asn1_tree.is_circular);
+            module.assignments = reorder_assignments(module.assignments, module.module_reference);
         }
 
         resolve_components_of(context.asn1_tree);

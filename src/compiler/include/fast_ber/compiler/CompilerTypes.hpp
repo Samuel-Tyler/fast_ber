@@ -34,7 +34,15 @@ enum class Class
     private_,
 };
 
+enum class StorageMode
+{
+    static_,
+    small_buffer_optimised,
+    dynamic,
+};
+
 std::string to_string(Class class_, bool abbreviated);
+std::string to_string(StorageMode mode);
 
 struct ComponentType;
 struct TaggedType;
@@ -380,6 +388,7 @@ struct SequenceOfType
     bool                       has_name;
     std::unique_ptr<NamedType> named_type;
     std::unique_ptr<Type>      type;
+    StorageMode                storage = StorageMode::small_buffer_optimised;
 
     SequenceOfType() = default;
     SequenceOfType(bool, std::unique_ptr<NamedType>&&, std::unique_ptr<Type>&&);
@@ -392,6 +401,7 @@ struct SetOfType
     bool                       has_name;
     std::unique_ptr<NamedType> named_type;
     std::unique_ptr<Type>      type;
+    StorageMode                storage = StorageMode::small_buffer_optimised;
 
     SetOfType() = default;
     SetOfType(bool, std::unique_ptr<NamedType>&&, std::unique_ptr<Type>&&);
@@ -402,6 +412,7 @@ struct SetOfType
 struct ChoiceType
 {
     std::vector<NamedType> choices;
+    StorageMode            storage;
 };
 
 struct DefinedValue
@@ -455,6 +466,7 @@ struct ComponentType
     bool                  is_optional;
     absl::optional<Value> default_value;
     absl::optional<Type>  components_of;
+    StorageMode           optional_storage;
 };
 
 struct Tag
@@ -515,7 +527,16 @@ struct Dependency
 {
     std::string                 name;
     absl::optional<std::string> module_reference;
-    //   bool        optional;
+
+    template <typename H>
+    friend H AbslHashValue(H h, const Dependency& d)
+    {
+        return H::combine(std::move(h), d.name, d.module_reference);
+    }
+    bool operator==(const Dependency& rhs) const
+    {
+        return name == rhs.name && module_reference == rhs.module_reference;
+    }
 };
 
 struct Assignment
@@ -549,7 +570,6 @@ struct Module
 struct Asn1Tree
 {
     std::vector<Module> modules;
-    bool                is_circular = false;
 };
 
 struct Identifier
@@ -703,7 +723,7 @@ struct ObjectIdComponents
 // Rename any names which are reserved in C++
 std::string santize_name(const std::string& name);
 
-std::string make_type_optional(const std::string& type, const Asn1Tree& tree);
+std::string make_type_optional(const std::string& type, StorageMode mode);
 
 bool is_bit_string(const Type& type);
 bool is_set(const Type& type);

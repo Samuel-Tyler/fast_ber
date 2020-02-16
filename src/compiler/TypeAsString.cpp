@@ -61,7 +61,7 @@ std::string collection_as_string(const Collection& collection, const Module& mod
 
         if (component.is_optional)
         {
-            component_type = make_type_optional(component_type, tree);
+            component_type = make_type_optional(component_type, component.optional_storage);
         }
         res += "    " + component_type + " " + component.named_type.name + ";\n";
         component_types.push_back(component_type);
@@ -307,8 +307,7 @@ std::string type_as_string(const ChoiceType& choice, const Module& module, const
         res += identifier_override;
     }
 
-    res += (tree.is_circular ? std::string(", StorageMode::dynamic") : std::string(", StorageMode::static_"));
-
+    res += ", " + to_string(choice.storage);
     res += ">";
     return res;
 }
@@ -472,16 +471,9 @@ std::string type_as_string(const SequenceOfType& sequence, const Module& module,
         res += ", " + identifier_override;
     }
 
-    if (tree.is_circular)
-    {
-        res += ", StorageMode::dynamic";
-    }
-    else
-    {
-        res += ", StorageMode::small_buffer_optimised";
-    }
-
+    res += ", " + to_string(sequence.storage);
     res += ">";
+
     return res;
 }
 std::string type_as_string(const SetType& set, const Module& module, const Asn1Tree& tree, const std::string& type_name,
@@ -516,11 +508,18 @@ std::string type_as_string(const SetOfType& set, const Module& module, const Asn
     }
 
     std::string res = "SetOf<" + type_as_string(type, module, tree);
-    if (!identifier_override.empty())
+    if (identifier_override.empty())
+    {
+        res += ", ExplicitId<UniversalTag::sequence>";
+    }
+    else
     {
         res += ", " + identifier_override;
     }
+
+    res += ", " + to_string(set.storage);
     res += ">";
+
     return res;
 }
 std::string type_as_string(const PrefixedType& prefixed_type, const Module& module, const Asn1Tree& tree,

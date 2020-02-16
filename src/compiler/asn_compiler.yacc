@@ -1242,22 +1242,24 @@ ComponentTypeList:
 
 ComponentType:
     Type
-    { $$ = ComponentType{{gen_anon_member_name(), $1}, false, absl::nullopt, absl::nullopt}; }
+    { std::cerr << context.location << " WARNING: unnamed type\n";
+      $$ = ComponentType{{gen_anon_member_name(), $1}, false, absl::nullopt, absl::nullopt, StorageMode::static_ }; }
 |   Type OPTIONAL
-    { $$ = ComponentType{{gen_anon_member_name(), $1}, true, absl::nullopt, absl::nullopt}; }
+    { std::cerr << context.location << " WARNING: unnamed type\n";
+      $$ = ComponentType{{gen_anon_member_name(), $1}, true, absl::nullopt, absl::nullopt, StorageMode::static_ }; }
 |   Type DEFAULT SingleValue
-    { $$ = ComponentType{{gen_anon_member_name(), $1}, false, $3, absl::nullopt}; 
+    { $$ = ComponentType{{gen_anon_member_name(), $1}, false, $3, absl::nullopt, StorageMode::static_ }; 
       feature_not_implemented(context.location, context.asn1_tree, "DEFAULT", "Not yet specifying default. ");
-      std::cerr << context.location << "WARNING: unnamed type"; }
+      std::cerr << context.location << " WARNING: unnamed type\n"; }
 |   NamedType
-    { $$ = ComponentType{$1, false, absl::nullopt, absl::nullopt}; }
+    { $$ = ComponentType{$1, false, absl::nullopt, absl::nullopt, StorageMode::static_ }; }
 |   NamedType OPTIONAL
-    { $$ = ComponentType{$1, true, absl::nullopt, absl::nullopt}; }
+    { $$ = ComponentType{$1, true, absl::nullopt, absl::nullopt, StorageMode::static_ }; }
 |   NamedType DEFAULT SingleValue
-    { $$ = ComponentType{$1, false, $3, absl::nullopt};
+    { $$ = ComponentType{$1, false, $3, absl::nullopt, StorageMode::static_ };
       feature_not_implemented(context.location, context.asn1_tree, "DEFAULT", "Not yet specifying default. "); }
 |   COMPONENTS OF Type
-    { $$ = ComponentType{{}, false, absl::nullopt, $3}; }
+    { $$ = ComponentType{{}, false, absl::nullopt, $3, StorageMode::static_}; }
 
 SequenceValue:
     "{" ComponentValueList "}"
@@ -1287,7 +1289,7 @@ SetOfType:
 
 ChoiceType:
     CHOICE "{" AlternativeTypeLists "}"
-    { $$ = ChoiceType{ $3 }; }
+    { $$ = ChoiceType{ $3, StorageMode::static_ }; }
 
 AlternativeTypeLists:
     RootAlternativeTypeList

@@ -123,3 +123,27 @@ std::vector<Dependency> dependencies(const Assignment& assignment)
     }
     return {};
 }
+
+// Finds dependencies, and dependencies of dependencies. Stops if dependency has already been found
+// Limited to single module
+void get_dependencies_recursive(const std::string& type_name, const std::string& module_name,
+                                const std::unordered_map<std::string, Assignment>& assignment_map,
+                                absl::flat_hash_set<Dependency>&                   depends)
+{
+    if (assignment_map.count(type_name) == 0)
+    {
+        throw std::runtime_error("Unknown item in get_dependencies_recursive :" + type_name);
+    }
+
+    for (const Dependency& dependency : assignment_map.find(type_name)->second.depends_on)
+    {
+        if (!dependency.module_reference || dependency.module_reference == module_name)
+        {
+            if (depends.count(dependency) == 0)
+            {
+                depends.insert(dependency);
+                get_dependencies_recursive(dependency.name, module_name, assignment_map, depends);
+            }
+        }
+    }
+}

@@ -45,7 +45,7 @@ if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX OR "${CMAKE_CXX_COMPILER
       #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=undefined -static-libsan")
     endif()
   else()
-    add_definitions("-DNDEBUG")
+    add_definitions("-DNDEBUG -march=native")
     if (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
       # Link time optimisation. Disabled on clang due to issue on travis
       set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -flto")

@@ -13,8 +13,7 @@ void resolve_dependencies(const std::unordered_map<std::string, Assignment>& ass
 
 // Reorder assignments, defining
 // Should be able to detect missing assignments and circular dependencies
-std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments, const std::string& module_reference,
-                                            bool& is_circular);
+std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments, const std::string& module_reference);
 
 // Finds any sequence or set types nested within a type
 void find_nested_structs(const Module& module, const Type& type, std::vector<NamedType>& nested_structs);
