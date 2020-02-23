@@ -1,5 +1,6 @@
 #include "fast_ber/util/BerContainer.hpp"
 #include "fast_ber/util/FixedIdBerContainer.hpp"
+#include "fast_ber/util/SmallFixedIdBerContainer.hpp"
 
 #include <catch2/catch.hpp>
 
@@ -21,12 +22,10 @@ void empty_construction()
 }
 
 template <typename Container>
-void resize_larger()
+void resize_larger(size_t new_size = 99999)
 {
     const auto test_data = std::array<uint8_t, 3>({'a', 'b', 'c'});
     Container  container(test_data, fast_ber::ConstructionMethod::construct_with_provided_content);
-
-    size_t new_size = 99999;
 
     CHECK(container.view().is_valid());
     CHECK(container.tag() == 0);
@@ -149,6 +148,7 @@ TEST_CASE("BerContainer: Empty construction")
 {
     empty_construction<fast_ber::BerContainer>();
     empty_construction<fast_ber::FixedIdBerContainer<SingleTestId>>();
+    empty_construction<fast_ber::SmallFixedIdBerContainer<SingleTestId, 0>>();
 }
 
 TEST_CASE("BerContainer: Resize larger")
@@ -156,7 +156,10 @@ TEST_CASE("BerContainer: Resize larger")
     resize_larger<fast_ber::BerContainer>();
     resize_larger<fast_ber::FixedIdBerContainer<SingleTestId>>();
     resize_larger<fast_ber::FixedIdBerContainer<DoubleTestId>>();
-    resize_larger<fast_ber::FixedIdBerContainer<DoubleTestId>>();
+    resize_larger<fast_ber::FixedIdBerContainer<LongTestId>>();
+    resize_larger<fast_ber::SmallFixedIdBerContainer<SingleTestId, 75>>(75);
+    resize_larger<fast_ber::SmallFixedIdBerContainer<DoubleTestId, 75>>(73);
+    resize_larger<fast_ber::SmallFixedIdBerContainer<LongTestId, 75>>(66);
 }
 
 TEST_CASE("BerContainer: Resize smaller")
@@ -165,6 +168,9 @@ TEST_CASE("BerContainer: Resize smaller")
     resize_smaller<fast_ber::FixedIdBerContainer<SingleTestId>>();
     resize_smaller<fast_ber::FixedIdBerContainer<DoubleTestId>>();
     resize_smaller<fast_ber::FixedIdBerContainer<LongTestId>>();
+    resize_smaller<fast_ber::SmallFixedIdBerContainer<SingleTestId, 9>>();
+    resize_smaller<fast_ber::SmallFixedIdBerContainer<DoubleTestId, 9>>();
+    resize_smaller<fast_ber::SmallFixedIdBerContainer<LongTestId, 9>>();
 }
 
 TEST_CASE("BerContainer: Resize same size")
@@ -173,6 +179,9 @@ TEST_CASE("BerContainer: Resize same size")
     resize_same_size<fast_ber::FixedIdBerContainer<SingleTestId>>();
     resize_same_size<fast_ber::FixedIdBerContainer<DoubleTestId>>();
     resize_same_size<fast_ber::FixedIdBerContainer<LongTestId>>();
+    resize_same_size<fast_ber::SmallFixedIdBerContainer<SingleTestId, 11>>();
+    resize_same_size<fast_ber::SmallFixedIdBerContainer<DoubleTestId, 11>>();
+    resize_same_size<fast_ber::SmallFixedIdBerContainer<LongTestId, 11>>();
 }
 
 TEST_CASE("BerContainer: Assign")
@@ -181,6 +190,9 @@ TEST_CASE("BerContainer: Assign")
     assign<fast_ber::FixedIdBerContainer<SingleTestId>>();
     assign<fast_ber::FixedIdBerContainer<DoubleTestId>>();
     assign<fast_ber::FixedIdBerContainer<LongTestId>>();
+    assign<fast_ber::SmallFixedIdBerContainer<SingleTestId, 11>>();
+    assign<fast_ber::SmallFixedIdBerContainer<DoubleTestId, 11>>();
+    assign<fast_ber::SmallFixedIdBerContainer<LongTestId, 11>>();
 }
 
 TEST_CASE("BerContainer: Encode and Decode")
@@ -189,9 +201,12 @@ TEST_CASE("BerContainer: Encode and Decode")
     encode_decode<fast_ber::FixedIdBerContainer<SingleTestId>>();
     encode_decode<fast_ber::FixedIdBerContainer<DoubleTestId>>();
     encode_decode<fast_ber::FixedIdBerContainer<LongTestId>>();
+    encode_decode<fast_ber::SmallFixedIdBerContainer<SingleTestId, 50>>();
+    encode_decode<fast_ber::SmallFixedIdBerContainer<DoubleTestId, 50>>();
+    encode_decode<fast_ber::SmallFixedIdBerContainer<LongTestId, 50>>();
 }
 
-TEST_CASE("BerContainer: IDs")
+TEST_CASE("BerContainer: FixedIdBerContainer IDs")
 {
     fast_ber::FixedIdBerContainer<SingleTestId> single_id;
     fast_ber::FixedIdBerContainer<DoubleTestId> double_id;
@@ -206,11 +221,54 @@ TEST_CASE("BerContainer: IDs")
     CHECK(LongTestId{}.inner_id() == long_id.view().begin()->identifier());
 }
 
-TEST_CASE("BerContainer: Diff Id assign")
+TEST_CASE("BerContainer: SmallFixedIdBerContainer IDs")
+{
+    fast_ber::SmallFixedIdBerContainer<SingleTestId, 5> single_id;
+    fast_ber::SmallFixedIdBerContainer<DoubleTestId, 5> double_id;
+    fast_ber::SmallFixedIdBerContainer<LongTestId, 5>   long_id;
+
+    CHECK(SingleTestId{} == fast_ber::BerView(single_id.ber()).identifier());
+
+    CHECK(DoubleTestId{}.outer_id() == double_id.view().identifier());
+    CHECK(DoubleTestId{}.inner_id() == double_id.view().begin()->identifier());
+
+    CHECK(LongTestId{}.outer_id() == long_id.view().identifier());
+    CHECK(LongTestId{}.inner_id() == long_id.view().begin()->identifier());
+}
+
+TEST_CASE("BerContainer: FixedIdBerContainer Different ID Assign")
 {
     fast_ber::FixedIdBerContainer<SingleTestId> single_id;
     fast_ber::FixedIdBerContainer<DoubleTestId> double_id;
     fast_ber::FixedIdBerContainer<LongTestId>   long_id;
+
+    single_id.assign_content(std::vector<uint8_t>(100, 'a'));
+    double_id.assign_content(std::vector<uint8_t>(50, 'f'));
+    long_id.assign_content(std::vector<uint8_t>(10, 'z'));
+
+    CHECK(SingleTestId{} == fast_ber::BerView(single_id.ber()).identifier());
+    CHECK(DoubleTestId{}.outer_id() == double_id.view().identifier());
+    CHECK(DoubleTestId{}.inner_id() == double_id.view().begin()->identifier());
+    CHECK(LongTestId{}.outer_id() == long_id.view().identifier());
+    CHECK(LongTestId{}.inner_id() == long_id.view().begin()->identifier());
+
+    double_id = long_id = single_id;
+
+    CHECK(SingleTestId{} == fast_ber::BerView(single_id.ber()).identifier());
+    CHECK(DoubleTestId{}.outer_id() == double_id.view().identifier());
+    CHECK(DoubleTestId{}.inner_id() == double_id.view().begin()->identifier());
+    CHECK(LongTestId{}.outer_id() == long_id.view().identifier());
+    CHECK(LongTestId{}.inner_id() == long_id.view().begin()->identifier());
+
+    CHECK(double_id.content() == single_id.content());
+    CHECK(long_id.content() == single_id.content());
+}
+
+TEST_CASE("BerContainer: SmallFixedIdBerContainer Different ID Assign")
+{
+    fast_ber::SmallFixedIdBerContainer<SingleTestId, 128> single_id;
+    fast_ber::SmallFixedIdBerContainer<DoubleTestId, 126> double_id;
+    fast_ber::SmallFixedIdBerContainer<LongTestId, 119>   long_id;
 
     single_id.assign_content(std::vector<uint8_t>(100, 'a'));
     double_id.assign_content(std::vector<uint8_t>(50, 'f'));

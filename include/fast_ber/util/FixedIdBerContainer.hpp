@@ -64,7 +64,9 @@ class FixedIdBerContainer
 
     BerView view() const noexcept { return BerView(m_data); }
 
+    size_t       encoded_length() const noexcept { return m_data.size(); }
     EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
+    DecodeResult decode(BerView view) noexcept;
     DecodeResult decode(BerViewIterator& iter) noexcept;
 
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
@@ -82,7 +84,7 @@ class FixedIdBerContainer
 template <typename Identifier>
 FixedIdBerContainer<Identifier>::FixedIdBerContainer() noexcept : m_data(), m_content_length(0)
 {
-    m_data.resize(encoded_length(0, Identifier{}));
+    m_data.resize(fast_ber::encoded_length(0, Identifier{}));
     encode_header(absl::Span<uint8_t>(m_data), 0, Identifier{}, Construction::primitive);
 }
 
@@ -172,7 +174,7 @@ size_t FixedIdBerContainer<Identifier>::assign_ber(const absl::Span<const uint8_
 template <typename Identifier>
 void FixedIdBerContainer<Identifier>::assign_content(const absl::Span<const uint8_t> input_content) noexcept
 {
-    const size_t encoded_len = encoded_length(input_content.length(), Identifier{});
+    const size_t encoded_len = fast_ber::encoded_length(input_content.length(), Identifier{});
     const size_t header_len  = encoded_len - input_content.length();
 
     m_data.resize(encoded_len);
@@ -209,6 +211,12 @@ EncodeResult FixedIdBerContainer<Identifier>::encode(absl::Span<uint8_t> buffer)
 
     memcpy(buffer.data(), m_data.data(), m_data.size());
     return EncodeResult{true, m_data.size()};
+}
+
+template <typename Identifier>
+DecodeResult FixedIdBerContainer<Identifier>::decode(BerView view) noexcept
+{
+    return DecodeResult{assign_ber(view) > 0};
 }
 
 template <typename Identifier>
