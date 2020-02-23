@@ -60,7 +60,7 @@ TEST_CASE("Identifier: Decode ExplicitIdentifier")
 
 TEST_CASE("Identifier: Decode TaggedExplicitIdentifier")
 {
-    std::array<uint8_t, 5> data     = {0x94, 0x03, 0x02, 0x01, 0x04};
+    std::array<uint8_t, 5> data     = {0xB4, 0x03, 0x02, 0x01, 0x04};
     auto                   iterator = fast_ber::BerViewIterator(absl::Span<uint8_t>(data.data(), data.size()));
     fast_ber::Integer<fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::context_specific, 20>,
                                          fast_ber::ExplicitId<fast_ber::UniversalTag::integer>>>

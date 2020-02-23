@@ -69,8 +69,6 @@ class FixedIdBerContainer
     DecodeResult decode(BerView view) noexcept;
     DecodeResult decode(BerViewIterator& iter) noexcept;
 
-    EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
-
   private:
     template <Class class_1, Tag tag_1>
     size_t assign_ber_impl(const BerView& input_view, Id<class_1, tag_1>) noexcept;
@@ -229,12 +227,6 @@ DecodeResult FixedIdBerContainer<Identifier>::decode(BerViewIterator& iter) noex
     }
     ++iter;
     return DecodeResult{true};
-}
-
-template <typename Identifier>
-EncodeResult FixedIdBerContainer<Identifier>::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
-{
-    return view().encode_content_and_length(buffer);
 }
 
 } // namespace fast_ber

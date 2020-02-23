@@ -29,7 +29,8 @@ EncodeResult encode_header(absl::Span<uint8_t> buffer, size_t content_length, Id
     return EncodeResult{true, header_length + content_length};
 }
 
-template <typename Identifier, size_t content_length = 0, size_t encoded_length = encoded_length(content_length, Identifier{})>
+template <typename Identifier, size_t content_length = 0,
+          size_t encoded_length = encoded_length(content_length, Identifier{})>
 std::array<uint8_t, encoded_length> encoded_header() noexcept
 {
     std::array<uint8_t, encoded_length> data = {};
@@ -79,42 +80,6 @@ EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_len
         std::memmove(buffer.data() + header_length, buffer.data() + content_offset, content_length);
     }
     return encode_header(buffer, content_length, id, construction);
-}
-
-template <typename T, Class T2, Tag T3>
-EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, Id<T2, T3> id)
-{
-    size_t id_length = encode_identifier(output, Construction::primitive, id.class_(), id.tag());
-    if (id_length == 0)
-    {
-        return EncodeResult{false, 0};
-    }
-    assert(id_length <= output.size());
-
-    output.remove_prefix(id_length);
-
-    EncodeResult encode_res = object.encode_content_and_length(output);
-    encode_res.length += id_length;
-    return encode_res;
-}
-
-template <typename T, typename OuterId, typename InnerId>
-EncodeResult encode_impl(absl::Span<uint8_t> output, const T& object, DoubleId<OuterId, InnerId> id)
-{
-    const auto header_length_guess = 2;
-    auto       inner_buffer        = output;
-    if (output.length() < header_length_guess)
-    {
-        return EncodeResult{false, 0};
-    }
-    inner_buffer.remove_prefix(header_length_guess);
-    EncodeResult inner_encoding = encode_impl(inner_buffer, object, id.inner_id());
-    if (!inner_encoding.success)
-    {
-        return EncodeResult{false, 0};
-    }
-
-    return wrap_with_ber_header(output, inner_encoding.length, id.outer_id(), header_length_guess);
 }
 
 } // namespace fast_ber

@@ -69,10 +69,10 @@ TEST_CASE("Integer: Encoding")
 TEST_CASE("Integer: Assign from raw")
 {
     fast_ber::Integer<>    i(100);
-    std::array<uint8_t, 4> test_data = {0x00, 0x02, 0x12, 0x34};
+    std::array<uint8_t, 4> test_data = {0x02, 0x02, 0x12, 0x34};
 
-    size_t size = i.assign_ber(absl::MakeSpan(test_data.data(), test_data.size()));
-    REQUIRE(size == 4);
+    fast_ber::DecodeResult res = i.decode(fast_ber::BerView(absl::MakeSpan(test_data.data(), test_data.size())));
+    REQUIRE(res.success);
     REQUIRE(i == 0x1234);
 }
 
