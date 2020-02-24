@@ -27,14 +27,29 @@ constexpr bool is_an_identifier_choice(Class class_, Tag tag, Identifier id, Ide
 template <typename... Identifiers>
 struct ChoiceId
 {
-    static std::tuple<Identifiers...> choice_ids() { return {}; };
     constexpr static bool check_id_match(Class c, Tag t) { return is_an_identifier_choice(c, t, Identifiers{}...); }
+};
+
+template <typename T>
+struct IsChoiceId : std::false_type
+{
+};
+
+template <typename... Types>
+struct IsChoiceId<ChoiceId<Types...>> : std::true_type
+{
+};
+
+template <typename... Identifiers>
+struct OuterIdentifierT<ChoiceId<Identifiers...>>
+{
+    using Type = ChoiceId<Identifiers...>;
 };
 
 template <typename... Types>
 struct Choices
 {
-    using DefaultIdentifier = ChoiceId<Identifier<Types>...>;
+    using DefaultIdentifier = ChoiceId<OuterIdentifier<Identifier<Types>>...>;
 };
 
 template <typename Choices, typename Identifier = typename Choices::DefaultIdentifier,
@@ -485,7 +500,7 @@ struct LengthVisitor
 };
 
 template <typename... Variants, typename Identifier, StorageMode storage,
-          absl::enable_if_t<!std::is_same<Identifier, ChoiceId<fast_ber::Identifier<Variants>...>>::value, int> = 0>
+          absl::enable_if_t<!IsChoiceId<Identifier>::value, int> = 0>
 size_t encoded_length(const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
     LengthVisitor visit;
@@ -493,7 +508,7 @@ size_t encoded_length(const Choice<Choices<Variants...>, Identifier, storage>& c
 }
 
 template <typename... Variants, typename Identifier, StorageMode storage,
-          absl::enable_if_t<std::is_same<Identifier, ChoiceId<fast_ber::Identifier<Variants>...>>::value, int> = 0>
+          absl::enable_if_t<IsChoiceId<Identifier>::value, int> = 0>
 size_t encoded_length(const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
     LengthVisitor visit;
@@ -535,7 +550,7 @@ EncodeResult encode_choice(const absl::Span<uint8_t>&                           
 }
 
 template <typename... Variants, typename Identifier, StorageMode storage,
-          absl::enable_if_t<!std::is_same<Identifier, ChoiceId<fast_ber::Identifier<Variants>...>>::value, int> = 0>
+          absl::enable_if_t<!IsChoiceId<Identifier>::value, int> = 0>
 EncodeResult encode(const absl::Span<uint8_t>&                               buffer,
                     const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
@@ -557,7 +572,7 @@ EncodeResult encode(const absl::Span<uint8_t>&                               buf
 }
 
 template <typename... Variants, typename Identifier, StorageMode storage,
-          absl::enable_if_t<std::is_same<Identifier, ChoiceId<fast_ber::Identifier<Variants>...>>::value, int> = 0>
+          absl::enable_if_t<IsChoiceId<Identifier>::value, int> = 0>
 EncodeResult encode(const absl::Span<uint8_t>&                               buffer,
                     const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
@@ -590,7 +605,7 @@ DecodeResult decode_if(BerViewIterator& input, Choice<Choices<Variants...>, ID, 
 }
 
 template <typename... Variants, typename Identifier, StorageMode storage,
-          absl::enable_if_t<std::is_same<Identifier, ChoiceId<fast_ber::Identifier<Variants>...>>::value, int> = 0>
+          absl::enable_if_t<IsChoiceId<Identifier>::value, int> = 0>
 DecodeResult decode(BerViewIterator& input, Choice<Choices<Variants...>, Identifier, storage>& output) noexcept
 {
     if (!input->is_valid())
@@ -599,12 +614,11 @@ DecodeResult decode(BerViewIterator& input, Choice<Choices<Variants...>, Identif
     }
     constexpr auto     depth  = sizeof...(Variants);
     const DecodeResult result = decode_if<0, depth>(input, output);
-    ++input;
     return result;
 }
 
 template <typename... Variants, typename Identifier, StorageMode storage,
-          absl::enable_if_t<!std::is_same<Identifier, ChoiceId<fast_ber::Identifier<Variants>...>>::value, int> = 0>
+          absl::enable_if_t<!IsChoiceId<Identifier>::value, int> = 0>
 DecodeResult decode(BerViewIterator& input, Choice<Choices<Variants...>, Identifier, storage>& output) noexcept
 {
     if (!has_correct_header(*input, Identifier{}, Construction::constructed))

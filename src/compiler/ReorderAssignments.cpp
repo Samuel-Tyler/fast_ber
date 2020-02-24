@@ -178,7 +178,27 @@ void resolve_dependencies(std::unordered_map<std::string, Assignment>& assignmen
 
             if (is_choice(type(assignment)))
             {
-                absl::get<ChoiceType>(absl::get<BuiltinType>(type(assignment))).storage = StorageMode::dynamic;
+                ChoiceType& choice = absl::get<ChoiceType>(absl::get<BuiltinType>(type(assignment)));
+                choice.storage     = StorageMode::dynamic;
+
+                // Also mark self referential children as dynamic (Sizeof choice cannot yet be determined)
+                // TODO: should only be dynamic if refer to choice
+                for (NamedType& child : choice.choices)
+                {
+                    Type& child_type =
+                        is_prefixed(child.type)
+                            ? absl::get<PrefixedType>(absl::get<BuiltinType>(child.type)).tagged_type->type
+                            : child.type;
+
+                    if (is_set_of(child_type))
+                    {
+                        absl::get<SetOfType>(absl::get<BuiltinType>(child_type)).storage = StorageMode::dynamic;
+                    }
+                    if (is_sequence_of(child_type))
+                    {
+                        absl::get<SequenceOfType>(absl::get<BuiltinType>(child_type)).storage = StorageMode::dynamic;
+                    }
+                }
             }
             else if (is_set_of(type(assignment)))
             {
@@ -312,7 +332,7 @@ void find_nested_structs(const Module& module, Type& type, std::vector<NamedType
             {
                 const std::string& name = "UnnamedEnum" + std::to_string(unnamed_definition_num++);
                 nested_structs.push_back(NamedType{name, component.named_type.type});
-                component.named_type.type = DefinedType{module.module_reference, name, {}};
+                component.named_type.type = DefinedType{{}, name, {}};
             }
             else
             {
@@ -328,7 +348,7 @@ void find_nested_structs(const Module& module, Type& type, std::vector<NamedType
             {
                 const std::string& name = "UnnamedEnum" + std::to_string(unnamed_definition_num++);
                 nested_structs.push_back(NamedType{name, component.named_type.type});
-                component.named_type.type = DefinedType{module.module_reference, name, {}};
+                component.named_type.type = DefinedType{{}, name, {}};
             }
             else
             {

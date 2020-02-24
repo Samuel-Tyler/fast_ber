@@ -609,7 +609,7 @@ struct TaggingInfo
 {
     absl::optional<Identifier> outer_tag;
     Identifier                 inner_tag;
-    std::vector<TaggingInfo>   choice_ids;
+    std::vector<Identifier>    choice_ids;
     bool                       is_default_tagged;
 
     std::string name() const
@@ -622,12 +622,13 @@ struct TaggingInfo
         {
             std::string res      = "ChoiceId<";
             bool        is_first = true;
-            for (const TaggingInfo& id : choice_ids)
+            for (const Identifier& id : choice_ids)
             {
                 if (!is_first)
                 {
                     res += ", ";
                 }
+
                 res += id.name();
                 is_first = false;
             }
@@ -639,19 +640,6 @@ struct TaggingInfo
         }
     }
 
-    std::vector<TaggingInfo> identifiers() const
-    {
-        if (outer_tag)
-        {
-            return {*this};
-        }
-        if (choice_ids.size() > 0)
-        {
-            return choice_ids;
-        }
-        return {*this};
-    }
-
     std::vector<Identifier> outer_tags() const
     {
         if (outer_tag)
@@ -660,13 +648,7 @@ struct TaggingInfo
         }
         if (choice_ids.size() > 0)
         {
-            std::vector<Identifier> ids;
-            for (const TaggingInfo& choice : choice_ids)
-            {
-                auto child = choice.outer_tags();
-                ids.insert(ids.end(), child.begin(), child.end());
-            }
-            return ids;
+            return choice_ids;
         }
         return {inner_tag};
     }

@@ -51,7 +51,7 @@ std::vector<Dependency> depends_on(const SequenceOfType& sequence)
     else
     {
         return depends_on(*sequence.type);
-    };
+    }
 }
 std::vector<Dependency> depends_on(const SetType& set)
 {

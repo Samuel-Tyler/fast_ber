@@ -220,17 +220,11 @@ TEST_CASE("Choice: Explicit Tags")
 {
     fast_ber::ExplicitChoice::MyChoice<> c;
     CHECK(std::is_same<
-          fast_ber::Identifier<decltype(c)>,
-          fast_ber::ChoiceId<fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::context_specific, 0>,
-                                                fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>>,
-                             fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::context_specific, 1>,
-                                                fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>>,
-                             fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::context_specific, 2>,
-                                                fast_ber::ExplicitId<fast_ber::UniversalTag::integer>>,
-                             fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::context_specific, 3>,
-                                                fast_ber::ExplicitId<fast_ber::UniversalTag::boolean>>,
-                             fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::context_specific, 4>,
-                                                fast_ber::ExplicitId<fast_ber::UniversalTag::sequence>>>>::value);
+          fast_ber::Identifier<absl::remove_reference_t<decltype(c)>>,
+          fast_ber::ChoiceId<
+              fast_ber::Id<fast_ber::Class::context_specific, 0>, fast_ber::Id<fast_ber::Class::context_specific, 1>,
+              fast_ber::Id<fast_ber::Class::context_specific, 2>, fast_ber::Id<fast_ber::Class::context_specific, 3>,
+              fast_ber::Id<fast_ber::Class::context_specific, 4>>>::value);
 
     CHECK(std::is_same<fast_ber::Identifier<fast_ber::variant_alternative_t<0, decltype(c)::AliasedType>>,
                        fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::context_specific, 0>,
