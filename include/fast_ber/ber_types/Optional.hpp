@@ -86,7 +86,7 @@ EncodeResult encode(absl::Span<uint8_t> buffer, const Optional<T, s1>& optional_
 template <typename T, StorageMode s1>
 DecodeResult decode(BerViewIterator& input, Optional<T, s1>& output) noexcept
 {
-    if (input->is_valid() && input->tag() == Identifier<T>::tag() && input->class_() == Identifier<T>::class_())
+    if (input->is_valid() && Identifier<T>::check_id_match(input->class_(), input->tag()))
     {
         output.emplace();
         return decode(input, *output);
