@@ -593,6 +593,10 @@ template <typename... Variants, typename Identifier, StorageMode storage,
           absl::enable_if_t<std::is_same<Identifier, ChoiceId<fast_ber::Identifier<Variants>...>>::value, int> = 0>
 DecodeResult decode(BerViewIterator& input, Choice<Choices<Variants...>, Identifier, storage>& output) noexcept
 {
+    if (!input->is_valid())
+    {
+        return DecodeResult{false};
+    }
     constexpr auto     depth  = sizeof...(Variants);
     const DecodeResult result = decode_if<0, depth>(input, output);
     ++input;
