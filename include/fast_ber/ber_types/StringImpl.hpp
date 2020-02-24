@@ -32,7 +32,7 @@ class StringImpl
     StringImpl(const char* input_data) noexcept { assign(absl::string_view(input_data)); }
     StringImpl(const std::string& input_data) noexcept { assign(absl::string_view(input_data)); }
     explicit StringImpl(absl::Span<const uint8_t> input_data) noexcept { assign(input_data); }
-    explicit StringImpl(const BerView& view) noexcept { assign_ber(view); }
+    explicit StringImpl(BerView view) noexcept { assign_ber(view); }
 
     template <UniversalTag tag2, typename Identifier2>
     StringImpl& operator=(const StringImpl<tag2, Identifier2>& rhs) noexcept;
@@ -82,8 +82,9 @@ class StringImpl
 
     using AsnId = Identifier;
 
-    FixedIdBerContainer<Identifier>&       container() noexcept { return m_contents; }
-    const FixedIdBerContainer<Identifier>& container() const noexcept { return m_contents; }
+    size_t       encoded_length() const noexcept { return m_contents.ber().length(); }
+    EncodeResult encode(absl::Span<uint8_t> output) const noexcept { return m_contents.encode(output); }
+    DecodeResult decode(BerView input) noexcept { return m_contents.decode(input); }
 
   private:
     FixedIdBerContainer<Identifier> m_contents;
@@ -193,19 +194,21 @@ size_t StringImpl<tag, Identifier>::assign_ber(absl::Span<const uint8_t> buffer)
 template <UniversalTag tag, typename Identifier>
 size_t encoded_length(const StringImpl<tag, Identifier>& object) noexcept
 {
-    return object.container().ber().length();
+    return object.encoded_length();
 }
 
 template <UniversalTag tag, typename Identifier>
-EncodeResult encode(absl::Span<uint8_t> output, const StringImpl<tag, Identifier>& object)
+EncodeResult encode(absl::Span<uint8_t> output, const StringImpl<tag, Identifier>& object) noexcept
 {
-    return object.container().encode(output);
+    return object.encode(output);
 }
 
 template <UniversalTag tag, typename Identifier>
 DecodeResult decode(BerViewIterator& input, StringImpl<tag, Identifier>& output) noexcept
 {
-    return output.container().decode(input);
+    DecodeResult res = output.decode(*input);
+    ++input;
+    return res;
 }
 
 } // namespace fast_ber
