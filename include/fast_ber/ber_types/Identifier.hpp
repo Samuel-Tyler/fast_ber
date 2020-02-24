@@ -77,6 +77,42 @@ bool operator!=(const RuntimeId& lhs, Id<class_1, tag_1> rhs)
 template <UniversalTag explicit_tag>
 using ExplicitId = Id<Class::universal, as_underlying(explicit_tag)>;
 
+template <typename Identifier>
+struct InnerIdentifierT;
+
+template <typename Identifier>
+struct OuterIdentifierT;
+
+template <typename OuterId, typename InnerId>
+struct InnerIdentifierT<DoubleId<OuterId, InnerId>>
+{
+    using Type = InnerId;
+};
+
+template <Class class_, Tag tag>
+struct InnerIdentifierT<Id<class_, tag>>
+{
+    using Type = Id<class_, tag>;
+};
+
+template <typename OuterId, typename InnerId>
+struct OuterIdentifierT<DoubleId<OuterId, InnerId>>
+{
+    using Type = OuterId;
+};
+
+template <Class class_, Tag tag>
+struct OuterIdentifierT<Id<class_, tag>>
+{
+    using Type = Id<class_, tag>;
+};
+
+template <typename Identifier>
+using InnerIdentifier = typename InnerIdentifierT<Identifier>::Type;
+
+template <typename Identifier>
+using OuterIdentifier = typename OuterIdentifierT<Identifier>::Type;
+
 template <typename OuterId, typename InnerId>
 constexpr InnerId inner_identifier(DoubleId<OuterId, InnerId>)
 {
