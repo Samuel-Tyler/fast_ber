@@ -65,8 +65,6 @@ class BerContainer
 
     EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
     DecodeResult decode(BerViewIterator& input_data) noexcept;
-    EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
-    DecodeResult decode_content_and_length(BerViewIterator& input_data) noexcept;
 
   private:
     absl::InlinedVector<uint8_t, 100u> m_data;
@@ -196,36 +194,6 @@ inline DecodeResult BerContainer::decode(BerViewIterator& input_data) noexcept
     bool success = assign_ber(*input_data) > 0;
     ++input_data;
     return DecodeResult{success};
-}
-
-inline EncodeResult BerContainer::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
-{
-    return m_view.encode_content_and_length(buffer);
-}
-
-inline DecodeResult BerContainer::decode_content_and_length(BerViewIterator& input_data) noexcept
-{
-    if (!input_data->is_valid())
-    {
-        return DecodeResult{false};
-    }
-
-    if (!m_view.is_valid())
-    {
-        *this = BerContainer();
-    }
-
-    m_data.resize(input_data->content_length() + identifier_length());
-    std::copy(input_data->content().begin(), input_data->content().end(), m_data.data() + identifier_length());
-    m_view.assign(absl::MakeSpan(m_data.data(), m_data.size()));
-
-    if (!m_view.is_valid())
-    {
-        return DecodeResult{false};
-    }
-
-    ++input_data;
-    return DecodeResult{true};
 }
 
 } // namespace fast_ber

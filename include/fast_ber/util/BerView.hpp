@@ -54,7 +54,6 @@ class BerView
     BerViewIterator end() const noexcept;
 
     EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
-    EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
   private:
     const uint8_t* m_data           = nullptr;
@@ -243,19 +242,6 @@ inline EncodeResult BerView::encode(absl::Span<uint8_t> buffer) const noexcept
 
     std::memcpy(buffer.data(), ber_data(), ber_length());
     return EncodeResult{true, ber_length()};
-}
-
-inline EncodeResult BerView::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
-{
-    auto ber_span = this->ber();
-    ber_span.remove_prefix(identifier_length());
-    if (ber_span.size() > buffer.size())
-    {
-        return EncodeResult{false, 0};
-    }
-
-    std::memcpy(buffer.data(), ber_span.data(), ber_span.size());
-    return EncodeResult{true, ber_span.length()};
 }
 
 std::ostream& operator<<(std::ostream& os, BerView view) noexcept;
