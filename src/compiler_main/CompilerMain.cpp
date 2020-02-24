@@ -812,11 +812,15 @@ int main(int argc, char** argv)
             module.assignments = split_definitions(module.assignments);
             check_duplicated_names(module.assignments, module.module_reference);
             module.assignments = split_nested_structures(module);
-            module.assignments = reorder_assignments(module.assignments, module.module_reference);
         }
 
         resolve_components_of(context.asn1_tree);
         resolve_object_classes(context.asn1_tree);
+
+        for (auto& module : context.asn1_tree.modules)
+        {
+            module.assignments = reorder_assignments(module.assignments, module.module_reference);
+        }
 
         output_file << create_output_file(context.asn1_tree, fwd_filame, detail_filame);
         fwd_output_file << create_fwd_body(context.asn1_tree);
