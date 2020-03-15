@@ -1,4 +1,4 @@
-# fast_ber ![version](https://img.shields.io/github/tag/samuel-tyler/fast_ber.svg) [![Travis status](https://ci.appveyor.com/api/projects/status/github/Samuel-Tyler/fast_ber?branch=master&svg=true)](https://ci.appveyor.com/project/Samuel-Tyler/fast-ber) [![Appveyor status](https://travis-ci.org/Samuel-Tyler/fast_ber.svg?branch=master)](https://travis-ci.org/Samuel-Tyler/fast_ber)
+# fast_ber ![version](https://img.shields.io/github/tag/samuel-tyler/fast_ber.svg) [![Travis status](https://ci.appveyor.com/api/projects/status/github/Samuel-Tyler/fast_ber?branch=master&svg=true)](https://ci.appveyor.com/project/Samuel-Tyler/fast-ber) [![Appveyor status](https://travis-ci.org/Samuel-Tyler/fast_ber.svg?branch=master)](https://travis-ci.org/Samuel-Tyler/fast_ber) ![C++11](https://img.shields.io/badge/language-C%2B%2B11-green.svg) ![C++14](https://img.shields.io/badge/language-C%2B%2B14-green.svg) ![C++17](https://img.shields.io/badge/language-C%2B%2B17-green.svg) ![C++20](https://img.shields.io/badge/language-C%2B%2B20-green.svg)
 A performant ASN.1 BER encoding and decoding library written in C++11
 
 ## Introduction
@@ -20,6 +20,9 @@ fast_ber is a small, lightweight library for BER encoding and decoding. Fast ber
 
 ## Call for Test Data
 Test data is wanted to improve this project! If you have any test ASN.1 specs or BER files please share them. More test data will improve parsing and help find any issues with the library.
+
+## Example Project
+`fast_ber` is designed to be easy to consume via CMake. This is demonstrated in [`fast_ber_ldap3`](https://github.com/Samuel-Tyler/fast_ber_ldap3), an example project using `fast_ber` to create and dissect LDAP3 certificates.
 
 ## Usage
 1. Build the compiler:
@@ -145,6 +148,8 @@ int main()
 }
 ```
 
+Take a look at [`fast_ber_ldap3`](https://github.com/Samuel-Tyler/fast_ber_ldap3) for an example of these steps in action.
+
 ## Features
 fast_ber is in development. The following table documents what has been implemented and what features are coming soon
 
@@ -195,10 +200,10 @@ Benchmark: Decode Performance
 
 benchmark name                                  iters   elapsed ns      average
 -------------------------------------------------------------------------------
-fast_ber        - decode 2107 byte packet           1    465768155   465.768 ms
-asn1c           - decode 2107 byte packet           1   5963799719     5.9638 s
-fast_ber        - decode 64 byte packet             1    116247675   116.248 ms
-asn1c           - decode 64 byte packet             1   3068504188     3.0685 s
+fast_ber        - 1,000,000 x decode 2107B pdu      1    516381442   516.381 ms
+asn1c           - 1,000,000 x decode 2107B pdu      1   4996255249    4.99626 s
+fast_ber        - 1,000,000 x decode 64B pdu        1    192230063    192.23 ms
+asn1c           - 1,000,000 x decode 64B pdu        1   2581069031    2.58107 s
 
 -------------------------------------------------------------------------------
 Benchmark: Encode Performance
@@ -207,8 +212,8 @@ Benchmark: Encode Performance
 
 benchmark name                                  iters   elapsed ns      average
 -------------------------------------------------------------------------------
-fast_ber        - encode                            1    309072302   309.072 ms
-asn1c           - encode                            1   8936055854    8.93606 s
+fast_ber        - 1,000,000 x encode 2107B pdu      1    191266512   191.267 ms
+asn1c           - 1,000,000 x encode 2107B pdu      1   7349946740    7.34995 s
 
 -------------------------------------------------------------------------------
 Benchmark: Object Construction Performance
@@ -217,9 +222,18 @@ Benchmark: Object Construction Performance
 
 benchmark name                                  iters   elapsed ns      average
 -------------------------------------------------------------------------------
-fast_ber        - construct                         1    664078025   664.078 ms
-asn1c           - construct                         1    671927051   671.927 ms
+fast_ber        - 1,000,000 x construct data        1   1005938231    1.00594 s
+asn1c           - 1,000,000 x construct data        1    511881940   511.882 ms
+
+-------------------------------------------------------------------------------
+Benchmark: Calculate Encoded Length Performance
+-------------------------------------------------------------------------------
+...............................................................................
+
+benchmark name                                  iters   elapsed ns      average
+-------------------------------------------------------------------------------
+fast_ber        - 1,000,000 x encoded length        1     17084558   17.0846 ms
 
 ===============================================================================
-All tests passed (28 assertions in 7 test cases)
+All tests passed (31 assertions in 8 test cases)
 ```
