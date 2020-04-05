@@ -110,50 +110,6 @@ std::string collection_as_string(const Collection& collection, const Module& mod
             counter++;
         }
         res += "    {}\n";
-
-        /*   is_first = true;
-            res += "    template <";
-            for (size_t i = 0; i < collection.components.size(); i++)
-            {
-                if (!is_first)
-                {
-                    res += ", ";
-                }
-                res += "typename T_" + std::to_string(i);
-                is_first = false;
-            }
-            res += ">\n";
-
-            is_first = true;
-            res += "    " + type_name + "(";
-            for (size_t i = 0; i < collection.components.size(); i++)
-            {
-                if (!is_first)
-                {
-                    res += ", ";
-                }
-                res += "T_" + std::to_string(i) + "&& t" + std::to_string(i);
-                is_first = false;
-            }
-            res += ")\n";
-        counter = 0;
-        for (const ComponentType& component : collection.components)
-        {
-            res += "        ";
-            if (counter == 0)
-            {
-                res += ": ";
-            }
-            else
-            {
-                res += ", ";
-            }
-
-            res += component.named_type.name + "(std::forward<T_" + std::to_string(counter) + ">(t" +
-                   std::to_string(counter) + "))\n";
-            counter++;
-        }
-        res += "    {}\n";*/
     }
     bool is_first = true;
     res += "    template <typename Identifier2>\n";
@@ -238,7 +194,7 @@ std::string collection_as_string(const Collection& collection, const Module& mod
     res += "    }\n";
     res += "    size_t encoded_length() const noexcept;\n";
     res += "    EncodeResult encode(absl::Span<uint8_t>) const noexcept;\n";
-    res += "    DecodeResult decode(absl::Span<const uint8_t>) const noexcept;\n";
+    res += "    DecodeResult decode(BerView) noexcept;\n";
     res += "    using AsnId = Identifier;\n";
     res += "};\n";
 

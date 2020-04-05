@@ -98,12 +98,12 @@ void assign()
     Container container6;
     Container container7;
 
-    size_t len1 = container4.assign_ber(container1.ber());
+    fast_ber::DecodeResult res = container4.decode(fast_ber::BerView(container1.ber()));
     container5.assign_content(container1.content());
     container6 = container1;
     container7 = std::move(Container{container1});
 
-    CHECK(len1 == container1.ber().length());
+    CHECK(res.success);
     CHECK(container1.content() == test_pdu);
     CHECK(container2.content() == test_pdu);
     CHECK(container3.content() == test_pdu);
@@ -130,8 +130,7 @@ void encode_decode()
     container.assign_content(std::vector<uint8_t>(50, 0));
 
     fast_ber::EncodeResult    encode_res = container.encode(absl::Span<uint8_t>(buffer));
-    fast_ber::BerViewIterator iter(buffer);
-    fast_ber::DecodeResult    decode_res = container.decode(iter);
+    fast_ber::DecodeResult    decode_res = container.decode(fast_ber::BerView(buffer));
 
     REQUIRE(encode_res.success);
     REQUIRE(decode_res.success);

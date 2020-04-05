@@ -29,7 +29,7 @@ class Integer
   public:
     Integer() noexcept : m_contents{{0x00}, ConstructionMethod::construct_with_provided_content} {}
     Integer(int64_t num) noexcept { assign(num); }
-    Integer(const BerView& view) noexcept { decode(view); }
+    Integer(BerView view) noexcept { decode(view); }
     template <typename Identifier2>
     Integer(const Integer<Identifier2>& rhs) noexcept;
 
@@ -38,7 +38,6 @@ class Integer
     Integer<Identifier>& operator=(int64_t rhs) noexcept;
     template <typename Identifier2>
     Integer<Identifier>& operator=(const Integer<Identifier2>& rhs) noexcept;
-    Integer<Identifier>& operator=(const BerView& rhs) noexcept;
 
     template <typename Identifier2>
     bool operator==(const Integer<Identifier2>& rhs) const
@@ -64,7 +63,7 @@ class Integer
 
     size_t       encoded_length() const noexcept { return m_contents.ber_length(); }
     EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept { return m_contents.encode(buffer); }
-    DecodeResult decode(const BerView& rhs) noexcept { return m_contents.decode(rhs); }
+    DecodeResult decode(BerView rhs) noexcept { return m_contents.decode(rhs); }
 
     template <typename Identifier2>
     friend class Integer;

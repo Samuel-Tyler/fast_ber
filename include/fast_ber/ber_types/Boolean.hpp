@@ -26,7 +26,7 @@ class Boolean
     Boolean(bool val) noexcept { assign(val); }
     template <typename Identifier2>
     Boolean(const Boolean<Identifier2>& rhs) noexcept;
-    explicit Boolean(const BerView& view) noexcept { assign_ber(view); }
+    explicit Boolean(BerView view) noexcept { decode(view); }
 
     // Implicit conversion to bool
                               operator bool() const noexcept { return value(); }
@@ -36,16 +36,14 @@ class Boolean
     Boolean& operator=(bool rhs) noexcept;
     template <typename Identifier2>
     Boolean& operator=(const Boolean<Identifier2>& rhs) noexcept;
-    Boolean& operator=(const BerView& rhs) noexcept;
-    void     assign(bool val) noexcept;
+
+    void assign(bool val) noexcept;
     template <typename Identifier2>
-    void   assign(const Boolean<Identifier2>& rhs) noexcept;
-    size_t assign_ber(const BerView& rhs) noexcept;
-    size_t assign_ber(absl::Span<const uint8_t> buffer) noexcept;
+    void assign(const Boolean<Identifier2>& rhs) noexcept;
 
     constexpr static size_t encoded_length() noexcept;
     EncodeResult            encode(absl::Span<uint8_t> buffer) const noexcept;
-    DecodeResult            decode(absl::Span<const uint8_t> buffer) noexcept;
+    DecodeResult            decode(BerView input) noexcept;
 
     using AsnId = Identifier;
 
@@ -79,13 +77,6 @@ inline Boolean<Identifier>& Boolean<Identifier>::operator=(const Boolean<Identif
 }
 
 template <typename Identifier>
-inline Boolean<Identifier>& Boolean<Identifier>::operator=(const BerView& rhs) noexcept
-{
-    assign_ber(rhs);
-    return *this;
-}
-
-template <typename Identifier>
 inline void Boolean<Identifier>::assign(bool val) noexcept
 {
     m_data.back() = static_cast<uint8_t>(val ? 0xFF : 0x00);
@@ -96,33 +87,6 @@ template <typename Identifier2>
 inline void Boolean<Identifier>::assign(const Boolean<Identifier2>& rhs) noexcept
 {
     m_data.back() = rhs.m_data.back();
-}
-
-template <typename Identifier>
-inline size_t Boolean<Identifier>::assign_ber(const BerView& input) noexcept
-{
-    if (!has_correct_header(input, Identifier{}, Construction::primitive))
-    {
-        return 0;
-    }
-
-    if (Identifier::depth() == 1 && input.content_length() == 1)
-    {
-        m_data.back() = *input.content_data();
-        return input.ber_length();
-    }
-    if (Identifier::depth() == 2 && input.begin()->content_length() == 1)
-    {
-        m_data.back() = *input.begin()->content_data();
-        return input.ber_length();
-    }
-    return 0;
-}
-
-template <typename Identifier>
-inline size_t Boolean<Identifier>::assign_ber(absl::Span<const uint8_t> buffer) noexcept
-{
-    return assign_ber(BerView(buffer));
 }
 
 template <typename Identifier>
@@ -144,14 +108,24 @@ EncodeResult Boolean<Identifier>::encode(absl::Span<uint8_t> output) const noexc
 }
 
 template <typename Identifier>
-DecodeResult decode(BerViewIterator& input, Boolean<Identifier>& output) noexcept
+DecodeResult Boolean<Identifier>::decode(BerView input) noexcept
 {
-    bool success = output.assign_ber(*input) > 0;
-    if (success)
+    if (!has_correct_header(input, Identifier{}, Construction::primitive))
     {
-        ++input;
+        return DecodeResult{false};
     }
-    return DecodeResult{success};
+
+    if (Identifier::depth() == 1 && input.content_length() == 1)
+    {
+        m_data.back() = *input.content_data();
+        return DecodeResult{true};
+    }
+    if (Identifier::depth() == 2 && input.begin()->content_length() == 1)
+    {
+        m_data.back() = *input.begin()->content_data();
+        return DecodeResult{true};
+    }
+    return DecodeResult{false};
 }
 
 template <typename Identifier>

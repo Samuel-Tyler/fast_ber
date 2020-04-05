@@ -32,9 +32,9 @@ TEST_CASE("Object Identifier: Assign from raw")
     fast_ber::ObjectIdentifier<> oid;
     std::array<uint8_t, 8>       test_data = {0x06, 0x06, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d};
 
-    size_t size = oid.assign_ber(absl::MakeSpan(test_data.data(), test_data.size()));
+    fast_ber::DecodeResult res = oid.decode(fast_ber::BerView(test_data));
     REQUIRE(oid.value() == fast_ber::ObjectIdentifierComponents{1, 2, 840, 113549});
-    REQUIRE(size == test_data.size());
+    REQUIRE(res.success);
 }
 
 TEST_CASE("Object Identifier: Default value")

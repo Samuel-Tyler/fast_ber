@@ -99,20 +99,9 @@ DecodeResult Default<T, DefaultValue>::decode(BerView input) noexcept
     }
     else
     {
-        return DecodeResult{false};
+        this->set_to_default();
+        return DecodeResult{true};
     }
-}
-
-template <typename T, typename DefaultValue>
-size_t encoded_length(const Default<T, DefaultValue>& default_type) noexcept
-{
-    return default_type.encoded_length();
-}
-
-template <typename T, typename DefaultValue>
-EncodeResult encode(absl::Span<uint8_t> buffer, const Default<T, DefaultValue>& default_type) noexcept
-{
-    return default_type.encode(buffer);
 }
 
 template <typename T, typename DefaultValue>
@@ -170,18 +159,5 @@ bool operator!=(const Default<T, DefaultValue>& lhs, const Default<T2, DefaultVa
 {
     return lhs.get() != rhs.get();
 }
-  /*
-template <typename T, typename U>
-EncodeResult encode(absl::Span<uint8_t> output, const Default<T, U>& object) noexcept
-{
-    return object.encode(output);
-}
 
-template <typename T, typename U>
-DecodeResult decode(BerViewIterator& input, Default<T, U>& output) noexcept
-{
-    DecodeResult res = output.decode(*input);
-    ++input;
-    return res;
-}*/
 } // namespace fast_ber

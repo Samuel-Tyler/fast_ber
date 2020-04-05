@@ -52,7 +52,7 @@ struct Optional : public OptionalImplementation<T, storage>::Type
 
     size_t       encoded_length() const noexcept;
     EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
-    DecodeResult decode(absl::Span<const uint8_t> buffer) noexcept;
+    DecodeResult decode(BerView input) noexcept;
 };
 
 template <typename T, StorageMode s1>
@@ -98,6 +98,21 @@ DecodeResult decode(BerViewIterator& input, Optional<T, s1>& output) noexcept
     else
     {
         output = empty;
+        return DecodeResult{true};
+    }
+}
+
+template <typename T, StorageMode s1>
+DecodeResult Optional<T, s1>::decode(BerView input) noexcept
+{
+    if (input.is_valid() && Identifier<T>::check_id_match(input.class_(), input.tag()))
+    {
+        this->emplace();
+        return (*this)->decode(input);
+    }
+    else
+    {
+        *this = empty;
         return DecodeResult{true};
     }
 }

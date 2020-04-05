@@ -39,7 +39,7 @@ class Real
 
     constexpr static size_t encoded_length() noexcept;
     EncodeResult            encode(absl::Span<uint8_t> buffer) const noexcept;
-    DecodeResult            decode(absl::Span<const uint8_t> buffer) noexcept;
+    DecodeResult            decode(BerView input) noexcept;
 
     using AsnId = Identifier;
 

@@ -50,7 +50,7 @@ struct SequenceOf : public SequenceOfImplementation<T, s>::Type
 
     size_t       encoded_length() const noexcept;
     EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
-    DecodeResult decode(absl::Span<const uint8_t> buffer) noexcept;
+    DecodeResult decode(BerView input) noexcept;
 
     using AsnId = I;
 };
@@ -102,28 +102,32 @@ EncodeResult SequenceOf<T, I, s>::encode(const absl::Span<uint8_t> buffer) const
 }
 
 template <typename T, typename I, StorageMode s>
-DecodeResult decode(BerViewIterator& input, SequenceOf<T, I, s>& output) noexcept
+DecodeResult SequenceOf<T, I, s>::decode(BerView input) noexcept
 {
-    output.clear();
-    if (!has_correct_header(*input, I{}, Construction::constructed))
+    this->clear();
+    if (!has_correct_header(input, I{}, Construction::constructed))
     {
         return DecodeResult{false};
     }
 
-    BerViewIterator         child = (I::depth() == 1) ? input->begin() : input->begin()->begin();
-    constexpr Identifier<T> child_id;
-
-    while (child->is_valid() && child_id.check_id_match(child->class_(), child->tag()))
+    BerView child_range = (I::depth() == 1) ? input : *input.begin();
+    for (const BerView child : child_range)
     {
-        output.emplace_back();
-        bool success = decode(child, output.back()).success;
-        if (!success)
+        constexpr Identifier<T> child_id;
+        if (child_id.check_id_match(child.class_(), child.tag()))
+        {
+            this->emplace_back();
+            bool success = this->back().decode(child).success;
+            if (!success)
+            {
+                return DecodeResult{false};
+            }
+        }
+        else
         {
             return DecodeResult{false};
         }
     }
-    ++input;
-
     return DecodeResult{true};
 }
 

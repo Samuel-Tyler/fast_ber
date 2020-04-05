@@ -32,12 +32,10 @@ class StringImpl
     StringImpl(const char* input_data) noexcept { assign(absl::string_view(input_data)); }
     StringImpl(const std::string& input_data) noexcept { assign(absl::string_view(input_data)); }
     explicit StringImpl(absl::Span<const uint8_t> input_data) noexcept { assign(input_data); }
-    explicit StringImpl(BerView view) noexcept { assign_ber(view); }
+    explicit StringImpl(BerView view) noexcept { decode(view); }
 
     template <UniversalTag tag2, typename Identifier2>
     StringImpl& operator=(const StringImpl<tag2, Identifier2>& rhs) noexcept;
-    StringImpl& operator=(const BerView& view) noexcept;
-    StringImpl& operator=(const BerContainer& rhs) noexcept;
     StringImpl& operator=(const char* rhs) noexcept;
     StringImpl& operator=(const std::string& rhs) noexcept;
 
@@ -72,9 +70,6 @@ class StringImpl
     void   assign(const StringImpl<tag2, Identifier2>& rhs) noexcept;
     void   assign(absl::string_view buffer) noexcept;
     void   assign(absl::Span<const uint8_t> buffer) noexcept;
-    size_t assign_ber(const BerView& view) noexcept;
-    size_t assign_ber(const BerContainer& container) noexcept;
-    size_t assign_ber(absl::Span<const uint8_t> buffer) noexcept;
     void   resize(size_t i) noexcept { m_contents.resize_content(i); }
 
     template <UniversalTag tag2, typename Identifier2>
@@ -173,22 +168,6 @@ template <UniversalTag tag2, typename Identifier2>
 void StringImpl<tag, Identifier>::assign(const StringImpl<tag2, Identifier2>& rhs) noexcept
 {
     assign(rhs.span());
-}
-
-template <UniversalTag tag, typename Identifier>
-size_t StringImpl<tag, Identifier>::assign_ber(const BerView& view) noexcept
-{
-    if (!view.is_valid() || view.construction() != Construction::primitive)
-    {
-        return false;
-    }
-    return m_contents.assign_ber(view);
-}
-
-template <UniversalTag tag, typename Identifier>
-size_t StringImpl<tag, Identifier>::assign_ber(absl::Span<const uint8_t> buffer) noexcept
-{
-    return m_contents.assign_ber(buffer);
 }
 
 template <UniversalTag tag, typename Identifier>

@@ -15,18 +15,15 @@ struct DecodeResult
 template <typename T>
 DecodeResult decode(absl::Span<const uint8_t> input, T& output) noexcept
 {
-    BerViewIterator iter(input);
-    return decode(iter, output);
+    return output.decode(BerView(input));
 }
 
 template <typename T>
 DecodeResult decode(BerView input, T& output) noexcept
 {
-    BerViewIterator iter(input.ber());
-    return decode(iter, output);
+    return output.decode(input);
 }
 
-/*
 template <typename T>
 DecodeResult decode(BerViewIterator& input, T& output) noexcept
 {
@@ -34,7 +31,7 @@ DecodeResult decode(BerViewIterator& input, T& output) noexcept
     ++input;
     return res;
 }
-*/
+
 template <Class class_, Tag tag>
 bool has_correct_header(BerView input, Id<class_, tag>, Construction construction)
 {

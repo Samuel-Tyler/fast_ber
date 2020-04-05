@@ -74,7 +74,7 @@ void test_type(const T& a)
     std::array<uint8_t, 1000> buffer         = {};
     size_t                    encoded_length = a.encoded_length();
     fast_ber::EncodeResult    encode_result  = a.encode(absl::Span<uint8_t>(buffer));
-    fast_ber::DecodeResult    decode_result  = fast_ber::decode(absl::Span<uint8_t>(buffer), f);
+    fast_ber::DecodeResult    decode_result  = f.decode(fast_ber::BerView(buffer));
     CHECK(encode_result.success);
     CHECK(decode_result.success);
     CHECK(encode_result.length == encoded_length);
@@ -93,7 +93,7 @@ void test_type(const T& a)
     {
         INFO(i);
 
-        fast_ber::EncodeResult destructive_encode_result = a.encode(absl::MakeSpan(buffer.data(), i));
+        fast_ber::EncodeResult destructive_encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), i), a);
         fast_ber::DecodeResult destructive_decode_result = fast_ber::decode(absl::MakeSpan(buffer.data(), i), f);
 
         CHECK(!destructive_encode_result.success);

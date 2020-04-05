@@ -360,37 +360,37 @@ create_collection_decode_functions(const std::vector<std::string>& namespaces, c
                                    const std::vector<Parameter>& parameters, const CollectionType& collection,
                                    const Module& module, const Asn1Tree tree)
 {
-    std::string namespace_name = module.module_reference + "::template ";
+    std::string namespace_name = module.module_reference + "::";
 
     std::vector<std::string> child_namespaces = namespaces;
     child_namespaces.push_back(assignment_name);
 
+    int count = 0;
     for (const std::string& ns : namespaces)
     {
-        namespace_name += ns + "<>::template ";
+        namespace_name += ns + "<Identifier" + std::to_string(count++) + ">::";
     }
 
-    std::string       res;
-    const std::string name = namespace_name + assignment_name + create_template_arguments({"Identifier"});
+    const std::string type_identifier = "Identifier" + std::to_string(count);
+    const std::string name =
+        "fast_ber::" + namespace_name + assignment_name + create_template_arguments({type_identifier});
 
-    std::vector<std::string> template_args = {"Identifier"};
-
-    res += create_template_definition(template_args);
-    res += "inline DecodeResult decode(BerViewIterator& input, " + name + "& output) noexcept\n{\n";
-    res += "    if (!has_correct_header(*input, Identifier{}, Construction::constructed))\n";
+    std::string res;
+    for (int i = 0; i <= count; i++)
+    {
+        res += create_template_definition({"Identifier" + std::to_string(i)});
+    }
+    res += "DecodeResult " + name + "::decode(BerView input) noexcept\n{\n";
+    res += "    if (!has_correct_header(input, " + type_identifier + "{}, Construction::constructed))\n";
     res += "    {\n";
     res += "        return DecodeResult{false};\n";
     res += "    }\n";
 
     if (collection.components.size() > 0)
     {
-        res += "    auto iterator = (Identifier::depth() == 1) ? input->begin()\n";
-        res += "                                               : input->begin()->begin();\n";
+        res += "    auto iterator = (" + type_identifier + "::depth() == 1) ? input.begin()\n";
+        res += "                                                : input.begin()->begin();\n";
         res += "    DecodeResult res;\n";
-    }
-    else
-    {
-        res += "    (void)output;\n";
     }
 
     for (const ComponentType& component : collection.components)
@@ -404,7 +404,7 @@ create_collection_decode_functions(const std::vector<std::string>& namespaces, c
             }
             res += "))\n";
             res += "    {\n";
-            res += "        res = decode(*iterator, output." + component.named_type.name + ");\n";
+            res += "        res = this->" + component.named_type.name + ".decode(*iterator);\n";
             res += "        if (!res.success)\n";
             res += "        {\n";
             res += "            return res;\n";
@@ -413,12 +413,12 @@ create_collection_decode_functions(const std::vector<std::string>& namespaces, c
             res += "    }\n";
             res += "    else\n";
             res += "    {\n";
-            res += "        output." + component.named_type.name + " = fast_ber::empty;\n";
+            res += "        this->" + component.named_type.name + " = fast_ber::empty;\n";
             res += "    }\n";
         }
         else
         {
-            res += "    res = decode(*iterator, output." + component.named_type.name + ");\n";
+            res += "    res = this->" + component.named_type.name + ".decode(*iterator);\n";
             res += "    if (!res.success)\n";
             res += "    {\n";
             res += "        return res;\n";
@@ -426,9 +426,8 @@ create_collection_decode_functions(const std::vector<std::string>& namespaces, c
             res += "    ++iterator;\n";
         }
     }
-    res += "    ++input;\n";
     res += "    return DecodeResult{true};\n";
-    res += "}\n\n";
+    res += "}\n";
 
     // Make child decode functions
     for (const ComponentType& component : collection.components)
@@ -735,7 +734,7 @@ std::string create_detail_body(const Asn1Tree& tree)
         for (const Assignment& assignment : module.assignments)
         {
             body += create_encode_functions(assignment, module, tree);
-            body += create_decode_functions(assignment, module, tree) + "\n";
+            body += create_decode_functions(assignment, module, tree);
             helpers += create_helper_functions(assignment);
         }
 

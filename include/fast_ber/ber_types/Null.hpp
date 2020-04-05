@@ -21,7 +21,7 @@ class Null
     Null(const Null&) noexcept = default;
     Null(Null&&) noexcept      = default;
     explicit Null(std::nullptr_t) noexcept {}
-    explicit Null(BerView view) { assign_ber(view); }
+    explicit Null(BerView view) { decode(view); }
     template <typename Identifier2>
     Null(const Null<Identifier2>&) noexcept
     {
@@ -48,43 +48,15 @@ class Null
     std::nullptr_t            value() { return nullptr; }
     absl::Span<const uint8_t> ber() const { return absl::Span<const uint8_t>(m_data); }
 
-    size_t assign_ber(const BerView& rhs) noexcept;
-    size_t assign_ber(absl::Span<const uint8_t> buffer) noexcept { return assign_ber(BerView(buffer)); }
-
     constexpr static size_t encoded_length() noexcept;
     EncodeResult            encode(absl::Span<uint8_t> buffer) const noexcept;
-    DecodeResult            decode(absl::Span<const uint8_t> buffer) noexcept;
+    DecodeResult            decode(BerView buffer) noexcept;
 
     using AsnId = Identifier;
 
   private:
     std::array<uint8_t, fast_ber::encoded_length(0, Identifier{})> m_data = encoded_header<Identifier>();
 };
-
-template <typename Identifier>
-size_t Null<Identifier>::assign_ber(const BerView& input) noexcept
-{
-    if (!has_correct_header(input, Identifier{}, Construction::primitive))
-    {
-        return 0;
-    }
-
-    if (Identifier::depth() == 1)
-    {
-        if (input.content_length() == 0)
-        {
-            return input.ber_length();
-        }
-    }
-    if (Identifier::depth() == 2)
-    {
-        if (input.begin()->content_length() == 0)
-        {
-            return input.ber_length();
-        }
-    }
-    return 0;
-}
 
 template <typename Identifier>
 constexpr size_t Null<Identifier>::encoded_length() noexcept
@@ -105,21 +77,19 @@ EncodeResult Null<Identifier>::encode(absl::Span<uint8_t> output) const noexcept
 }
 
 template <typename Identifier>
-DecodeResult decode(BerViewIterator& input, Null<Identifier>&) noexcept
+DecodeResult Null<Identifier>::decode(BerView input) noexcept
 {
-    if (!has_correct_header(*input, Identifier{}, Construction::primitive))
+    if (!has_correct_header(input, Identifier{}, Construction::primitive))
     {
         return DecodeResult{false};
     }
 
-    if (Identifier::depth() == 1 && input->content_length() == 0)
+    if (Identifier::depth() == 1 && input.content_length() == 0)
     {
-        ++input;
         return DecodeResult{true};
     }
-    if (Identifier::depth() == 2 && input->begin()->content_length() == 0)
+    if (Identifier::depth() == 2 && input.begin()->content_length() == 0)
     {
-        ++input;
         return DecodeResult{true};
     }
     return DecodeResult{false};

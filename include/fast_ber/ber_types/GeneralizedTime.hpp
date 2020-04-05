@@ -35,23 +35,18 @@ class GeneralizedTime
     std::string string() const;
     TimeFormat  format() const;
 
-    size_t assign_ber(const BerView& view) noexcept;
-
     GeneralizedTime() { set_time(absl::Time()); }
     GeneralizedTime(const GeneralizedTime&) = default;
     GeneralizedTime(GeneralizedTime&&)      = default;
     GeneralizedTime(const absl::Time& time) { set_time(time); }
-    explicit GeneralizedTime(BerView view) { assign_ber(view); }
+    explicit GeneralizedTime(BerView view) { decode(view); }
 
     GeneralizedTime& operator=(const GeneralizedTime&) = default;
     GeneralizedTime& operator=(GeneralizedTime&&) = default;
 
-    FixedIdBerContainer<Identifier>&       container() noexcept { return m_contents; }
-    const FixedIdBerContainer<Identifier>& container() const noexcept { return m_contents; }
-
     size_t       encoded_length() const noexcept;
     EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
-    DecodeResult decode(absl::Span<const uint8_t> buffer) noexcept;
+    DecodeResult decode(BerView buffer) noexcept;
 
     using AsnId = Identifier;
 
@@ -163,20 +158,6 @@ std::string GeneralizedTime<Identifier>::string() const
 }
 
 template <typename Identifier>
-size_t GeneralizedTime<Identifier>::assign_ber(const BerView& view) noexcept
-{
-    if (!view.is_valid() || view.construction() != Construction::primitive)
-    {
-        return false;
-    }
-    if (view.content_length() < minimum_timestamp_length || view.content_length() > max_timestamp_length)
-    {
-        return false;
-    }
-    return m_contents.assign_ber(view);
-}
-
-template <typename Identifier>
 size_t GeneralizedTime<Identifier>::encoded_length() const noexcept
 {
     return this->m_contents.ber().length();
@@ -189,9 +170,14 @@ EncodeResult GeneralizedTime<Identifier>::encode(absl::Span<uint8_t> output) con
 }
 
 template <typename Identifier>
-DecodeResult decode(BerViewIterator& input, GeneralizedTime<Identifier>& output) noexcept
+DecodeResult GeneralizedTime<Identifier>::decode(BerView view) noexcept
 {
-    return output.container().decode(input);
+    DecodeResult res = m_contents.decode(view);
+    if (m_contents.content_length() < minimum_timestamp_length || m_contents.content_length() > max_timestamp_length)
+    {
+        return DecodeResult{false};
+    }
+    return res;
 }
 
 template <typename Identifier>

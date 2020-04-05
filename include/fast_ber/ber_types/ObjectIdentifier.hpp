@@ -29,11 +29,9 @@ class ObjectIdentifier
     ObjectIdentifier(ObjectIdentifier<Identifier>&& rhs) noexcept = default;
     ObjectIdentifier(const ObjectIdentifierComponents& oid) noexcept { assign(oid); }
     ObjectIdentifier(const std::initializer_list<int64_t>& oid) noexcept { assign(ObjectIdentifierComponents(oid)); }
-    explicit ObjectIdentifier(BerView view) { assign_ber(view); }
+    explicit ObjectIdentifier(BerView view) { decode(view); }
 
-    ObjectIdentifier<Identifier>& operator=(const BerView& view) noexcept;
     ObjectIdentifier<Identifier>& operator=(const ObjectIdentifierComponents& rhs) noexcept;
-    ObjectIdentifier<Identifier>& operator=(absl::Span<const uint8_t> buffer) noexcept;
     ObjectIdentifier&             operator=(const ObjectIdentifier&) = default;
     ObjectIdentifier&             operator=(ObjectIdentifier&&) = default;
 
@@ -49,17 +47,11 @@ class ObjectIdentifier
 
     ObjectIdentifierComponents value() const noexcept;
 
-    bool   assign(const ObjectIdentifierComponents& oid) noexcept;
-    size_t assign_ber(const BerView& view) noexcept;
-    size_t assign_ber(const BerContainer& container) noexcept;
-    size_t assign_ber(absl::Span<const uint8_t> buffer) noexcept;
-
-    FixedIdBerContainer<Identifier>&       container() noexcept { return m_contents; }
-    const FixedIdBerContainer<Identifier>& container() const noexcept { return m_contents; }
+    bool assign(const ObjectIdentifierComponents& oid) noexcept;
 
     size_t       encoded_length() const noexcept;
     EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
-    DecodeResult decode(absl::Span<const uint8_t> buffer) noexcept;
+    DecodeResult decode(BerView buffer) noexcept;
 
     using AsnId = Identifier;
 
@@ -221,12 +213,6 @@ inline size_t get_number_of_components(absl::Span<const uint8_t> input) noexcept
 }
 
 template <typename Identifier>
-ObjectIdentifier<Identifier>& ObjectIdentifier<Identifier>::operator=(const BerView& view) noexcept
-{
-    assign_ber(view);
-    return *this;
-}
-template <typename Identifier>
 ObjectIdentifier<Identifier>& ObjectIdentifier<Identifier>::operator=(const ObjectIdentifierComponents& rhs) noexcept
 {
     assign(rhs);
@@ -234,17 +220,10 @@ ObjectIdentifier<Identifier>& ObjectIdentifier<Identifier>::operator=(const Obje
 }
 
 template <typename Identifier>
-ObjectIdentifier<Identifier>& ObjectIdentifier<Identifier>::operator=(absl::Span<const uint8_t> buffer) noexcept
-{
-    assign_ber(buffer);
-    return *this;
-}
-
-template <typename Identifier>
 template <typename Identifier2>
 bool ObjectIdentifier<Identifier>::operator==(const ObjectIdentifier<Identifier2>& rhs) const noexcept
 {
-    return this->container().content() == rhs.container().content();
+    return this->m_contents.content() == rhs.m_contents.content();
 }
 
 template <typename Identifier>
@@ -305,24 +284,6 @@ bool ObjectIdentifier<Identifier>::assign(const ObjectIdentifierComponents& oid)
 }
 
 template <typename Identifier>
-size_t ObjectIdentifier<Identifier>::assign_ber(const BerView& view) noexcept
-{
-    return m_contents.assign_ber(view);
-}
-
-template <typename Identifier>
-size_t ObjectIdentifier<Identifier>::assign_ber(const BerContainer& container) noexcept
-{
-    return m_contents.assign_ber(container);
-}
-
-template <typename Identifier>
-size_t ObjectIdentifier<Identifier>::assign_ber(absl::Span<const uint8_t> buffer) noexcept
-{
-    return m_contents.assign_ber(buffer);
-}
-
-template <typename Identifier>
 size_t ObjectIdentifier<Identifier>::encoded_length() const noexcept
 {
     return this->m_contents.ber_length();
@@ -335,20 +296,9 @@ EncodeResult ObjectIdentifier<Identifier>::encode(absl::Span<uint8_t> output) co
 }
 
 template <typename Identifier>
-DecodeResult decode(BerViewIterator& input, ObjectIdentifier<Identifier>& output) noexcept
+DecodeResult ObjectIdentifier<Identifier>::decode(BerView input) noexcept
 {
-    DecodeResult res = output.container().decode(input);
-    if (!res.success)
-    {
-        return DecodeResult{false};
-    }
-
-    if (output.container().content_length() == 0)
-    {
-        return DecodeResult{false};
-    }
-
-    return DecodeResult{true};
+    return this->m_contents.decode(input);
 }
 
 } // namespace fast_ber

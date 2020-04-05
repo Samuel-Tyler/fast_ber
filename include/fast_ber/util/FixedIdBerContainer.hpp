@@ -15,7 +15,7 @@ namespace fast_ber
 {
 
 // Owning container of a ber packet. Contents may or may not be valid. Memory is stored in a small buffer optimized
-// vector. Can be constructed directly from encoded ber memory (assign_ber) or by specifiyng the desired contents
+// vector. Can be constructed directly from encoded ber memory (decode()) or by specifiyng the desired contents
 // (assign_contents)
 
 template <typename Identifier>
@@ -25,7 +25,7 @@ class FixedIdBerContainer
     FixedIdBerContainer() noexcept;
     FixedIdBerContainer(const FixedIdBerContainer&) = default;
     FixedIdBerContainer(FixedIdBerContainer&&)      = default;
-    FixedIdBerContainer(const BerView& input_view) noexcept { assign_ber(input_view); }
+    FixedIdBerContainer(BerView input_view) noexcept { decode(input_view); }
     FixedIdBerContainer(absl::Span<const uint8_t> input_data, ConstructionMethod method) noexcept;
     FixedIdBerContainer(Construction input_construction, Class input_class, Tag input_tag,
                         absl::Span<const uint8_t> input_content) noexcept;
@@ -35,16 +35,14 @@ class FixedIdBerContainer
         assign_content(rhs.content());
     }
 
-    FixedIdBerContainer& operator=(const BerView& input_view) noexcept;
+    FixedIdBerContainer& operator=(BerView input_view) noexcept;
     FixedIdBerContainer& operator=(const FixedIdBerContainer& input_container) = default;
     FixedIdBerContainer& operator=(FixedIdBerContainer&& input_container) = default;
     template <typename Identifier2>
     FixedIdBerContainer& operator=(const FixedIdBerContainer<Identifier2>& rhs) noexcept;
 
-    size_t assign_ber(const BerView& input_view) noexcept;
-    size_t assign_ber(const absl::Span<const uint8_t> input_data) noexcept;
-    void   assign_content(const absl::Span<const uint8_t> input_content) noexcept;
-    void   resize_content(size_t size);
+    void assign_content(const absl::Span<const uint8_t> input_content) noexcept;
+    void resize_content(size_t size);
 
     constexpr static Class class_() noexcept { return Identifier::class_(); }
     constexpr static Tag   tag() noexcept { return Identifier::tag(); }
@@ -67,13 +65,12 @@ class FixedIdBerContainer
     size_t       encoded_length() const noexcept { return m_data.size(); }
     EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
     DecodeResult decode(BerView view) noexcept;
-    DecodeResult decode(BerViewIterator& iter) noexcept;
 
   private:
     template <Class class_1, Tag tag_1>
-    size_t assign_ber_impl(const BerView& input_view, Id<class_1, tag_1>) noexcept;
+    DecodeResult decode_impl(BerView input_view, Id<class_1, tag_1>) noexcept;
     template <typename Identifier1, typename Identifier2>
-    size_t assign_ber_impl(const BerView& input_view, DoubleId<Identifier1, Identifier2>) noexcept;
+    DecodeResult decode_impl(BerView input_view, DoubleId<Identifier1, Identifier2>) noexcept;
 
     absl::InlinedVector<uint8_t, 100u> m_data;
     size_t                             m_content_length;
@@ -97,7 +94,7 @@ FixedIdBerContainer<Identifier>::FixedIdBerContainer(absl::Span<const uint8_t> i
     }
     else if (method == ConstructionMethod::construct_from_ber_packet)
     {
-        assign_ber(input_data);
+        decode(input_data);
     }
     else
     {
@@ -113,9 +110,9 @@ FixedIdBerContainer<Identifier>::FixedIdBerContainer(Construction input_construc
 }
 
 template <typename Identifier>
-FixedIdBerContainer<Identifier>& FixedIdBerContainer<Identifier>::operator=(const BerView& input_view) noexcept
+FixedIdBerContainer<Identifier>& FixedIdBerContainer<Identifier>::operator=(BerView input_view) noexcept
 {
-    assign_ber(input_view);
+    decode(input_view);
     return *this;
 }
 
@@ -130,43 +127,31 @@ FixedIdBerContainer<Identifier1>& FixedIdBerContainer<Identifier1>::
 
 template <typename Identifier>
 template <Class class_1, Tag tag_1>
-size_t FixedIdBerContainer<Identifier>::assign_ber_impl(const BerView& input_view, Id<class_1, tag_1> id) noexcept
+DecodeResult FixedIdBerContainer<Identifier>::decode_impl(BerView input_view, Id<class_1, tag_1> id) noexcept
 {
     if (!has_correct_header(input_view, id, Construction::primitive))
     {
-        return 0;
+        return DecodeResult{false};
     }
 
     m_data.assign(input_view.ber().begin(), input_view.ber().end());
     m_content_length = input_view.content_length();
-    return input_view.ber_length();
+    return DecodeResult{true};
 }
 
 template <typename Identifier>
 template <typename Identifier1, typename Identifier2>
-size_t FixedIdBerContainer<Identifier>::assign_ber_impl(const BerView&                     input_view,
-                                                        DoubleId<Identifier1, Identifier2> id) noexcept
+DecodeResult FixedIdBerContainer<Identifier>::decode_impl(BerView                            input_view,
+                                                          DoubleId<Identifier1, Identifier2> id) noexcept
 {
     if (!has_correct_header(input_view, id, Construction::primitive))
     {
-        return 0;
+        return DecodeResult{false};
     }
 
     m_data.assign(input_view.ber().begin(), input_view.ber().end());
     m_content_length = input_view.begin()->content_length();
-    return input_view.ber_length();
-}
-
-template <typename Identifier>
-size_t FixedIdBerContainer<Identifier>::assign_ber(const BerView& input_view) noexcept
-{
-    return assign_ber_impl(input_view, Identifier{});
-}
-
-template <typename Identifier>
-size_t FixedIdBerContainer<Identifier>::assign_ber(const absl::Span<const uint8_t> input_data) noexcept
-{
-    return assign_ber(BerView(input_data));
+    return DecodeResult{true};
 }
 
 template <typename Identifier>
@@ -214,19 +199,7 @@ EncodeResult FixedIdBerContainer<Identifier>::encode(absl::Span<uint8_t> buffer)
 template <typename Identifier>
 DecodeResult FixedIdBerContainer<Identifier>::decode(BerView view) noexcept
 {
-    return DecodeResult{assign_ber(view) > 0};
-}
-
-template <typename Identifier>
-DecodeResult FixedIdBerContainer<Identifier>::decode(BerViewIterator& iter) noexcept
-{
-    size_t res = assign_ber(*iter);
-    if (res == 0)
-    {
-        return DecodeResult{false};
-    }
-    ++iter;
-    return DecodeResult{true};
+    return decode_impl(view, Identifier{});
 }
 
 } // namespace fast_ber
