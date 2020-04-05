@@ -92,11 +92,10 @@ EncodeResult Default<T, DefaultValue>::encode(absl::Span<uint8_t> buffer) const 
 template <typename T, typename DefaultValue>
 DecodeResult Default<T, DefaultValue>::decode(BerView input) noexcept
 {
-    if (input.is_valid() && Identifier<T>::check_id_match(input.class_(), input.tag()) &&
-        input.construction() == Construction::constructed)
+    if (input.is_valid() && Identifier<T>::check_id_match(input.class_(), input.tag()))
     {
         m_item = T();
-        return decode(input, *m_item);
+        return m_item->decode(input);
     }
     else
     {
@@ -119,8 +118,7 @@ EncodeResult encode(absl::Span<uint8_t> buffer, const Default<T, DefaultValue>& 
 template <typename T, typename DefaultValue>
 DecodeResult decode(BerViewIterator& input, Default<T, DefaultValue>& output) noexcept
 {
-    if (input->is_valid() && Identifier<T>::check_id_match(input->class_(), input->tag()) &&
-        input->construction() == Construction::constructed)
+    if (input->is_valid() && Identifier<T>::check_id_match(input->class_(), input->tag()))
     {
         return output.decode(*input);
     }
@@ -172,5 +170,18 @@ bool operator!=(const Default<T, DefaultValue>& lhs, const Default<T2, DefaultVa
 {
     return lhs.get() != rhs.get();
 }
+  /*
+template <typename T, typename U>
+EncodeResult encode(absl::Span<uint8_t> output, const Default<T, U>& object) noexcept
+{
+    return object.encode(output);
+}
 
+template <typename T, typename U>
+DecodeResult decode(BerViewIterator& input, Default<T, U>& output) noexcept
+{
+    DecodeResult res = output.decode(*input);
+    ++input;
+    return res;
+}*/
 } // namespace fast_ber

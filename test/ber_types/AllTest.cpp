@@ -6,6 +6,42 @@
 
 #include "absl/time/clock.h"
 
+namespace dflt
+{
+struct StringDefault
+{
+    constexpr static const char* const value = "Hello";
+};
+
+struct IntDefault
+{
+    constexpr static const int value = 10;
+};
+
+constexpr const char* const StringDefault::value;
+constexpr const int         IntDefault::value;
+} // namespace dflt
+
+template <typename T>
+struct IsOptional : std::false_type
+{
+};
+
+template <typename T>
+struct IsOptional<fast_ber::Optional<T>> : std::true_type
+{
+};
+
+template <typename T>
+struct IsDefault : std::false_type
+{
+};
+
+template <typename T, typename U>
+struct IsDefault<fast_ber::Default<T, U>> : std::true_type
+{
+};
+
 template <typename T>
 void test_type(const T& a)
 {
@@ -43,7 +79,14 @@ void test_type(const T& a)
     CHECK(decode_result.success);
     CHECK(encode_result.length == encoded_length);
     CHECK(a == f);
-    CHECK(ID::check_id_match(fast_ber::BerView(buffer).class_(), fast_ber::BerView(buffer).tag()));
+    if ((!IsDefault<T>::value && !IsOptional<T>::value)) // Default / Optional types may have empty encoding
+    {
+        CHECK(encoded_length > 0);
+    }
+    if (encoded_length > 0)
+    {
+        CHECK(ID::check_id_match(fast_ber::BerView(buffer).class_(), fast_ber::BerView(buffer).tag()));
+    }
 
     // Destructive tests - Check for undefined behaviour when using too small buffer
     for (size_t i = 0; i < encoded_length; i++)
@@ -75,6 +118,10 @@ void test_type_with_id()
                                fast_ber::StorageMode::dynamic>(fast_ber::Boolean<>(true)));
     // test_type(fast_ber::Date<>);
     // test_type(fast_ber::DateTime<>);
+    test_type(fast_ber::Default<fast_ber::Integer<Identifier>, dflt::IntDefault>(dflt::IntDefault::value));
+    test_type(fast_ber::Default<fast_ber::Integer<Identifier>, dflt::IntDefault>(-123456));
+    test_type(fast_ber::Default<fast_ber::OctetString<Identifier>, dflt::StringDefault>(dflt::StringDefault::value));
+    test_type(fast_ber::Default<fast_ber::OctetString<Identifier>, dflt::StringDefault>("Non default string value"));
     // test_type(fast_ber::Duration<>);
     test_type(fast_ber::All::The_Enum<Identifier>(fast_ber::All::The_Enum<>::Values::pear));
     test_type(fast_ber::GeneralizedTime<Identifier>(absl::Now()));
@@ -131,6 +178,7 @@ TEST_CASE("AllTypes: Default Id")
     test_type(fast_ber::Null<>());
     test_type(fast_ber::ObjectIdentifier<>(fast_ber::ObjectIdentifierComponents{1, 2, 500, 9999}));
     test_type(fast_ber::OctetString<>("TestString"));
+    test_type(fast_ber::Optional<fast_ber::Null<>>());
     test_type(fast_ber::Optional<fast_ber::Null<>>(fast_ber::Null<>()));
     test_type(fast_ber::Optional<fast_ber::All::The_Set<>>(fast_ber::All::The_Set<>{"Hello", 42}));
     // test_type(fast_ber::Real);

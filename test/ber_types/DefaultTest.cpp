@@ -15,6 +15,9 @@ struct IntDefault
     constexpr static const int value = 10;
 };
 
+constexpr const char* const StringDefault::value;
+constexpr const int IntDefault::value;
+
 TEST_CASE("Default: Construct")
 {
     fast_ber::Default<fast_ber::OctetString<>, StringDefault> default_str;
@@ -100,4 +103,41 @@ TEST_CASE("Default: Encode non default")
 
     CHECK(encode_res_1.length == encode_res_3.length);
     CHECK(encode_res_2.length == encode_res_4.length);
+}
+
+TEST_CASE("Default: Decode default")
+{
+    fast_ber::Default<fast_ber::OctetString<>, StringDefault> default_str;
+    fast_ber::Default<fast_ber::Integer<>, IntDefault>        default_int;
+    std::array<uint8_t, 100>                                  buffer;
+
+    fast_ber::DecodeResult decode_res_1 = fast_ber::decode(absl::Span<uint8_t>(buffer.data(), 0), default_str);
+    fast_ber::DecodeResult decode_res_2 = fast_ber::decode(absl::Span<uint8_t>(buffer.data(), 0), default_int);
+
+    CHECK(decode_res_1.success);
+    CHECK(decode_res_2.success);
+
+    CHECK(default_str == StringDefault::value);
+    CHECK(default_int == IntDefault::value);
+}
+
+TEST_CASE("Default: Decode non default")
+{
+    fast_ber::Default<fast_ber::OctetString<>, StringDefault> default_str;
+    fast_ber::Default<fast_ber::Integer<>, IntDefault>        default_int;
+    std::array<uint8_t, 100>                                  buffer;
+
+    fast_ber::OctetString<>("Unexpected string!").encode(absl::Span<uint8_t>(buffer));
+    fast_ber::DecodeResult decode_res_1 = fast_ber::decode(absl::Span<uint8_t>(buffer), default_str);
+
+    fast_ber::Integer<>(-99999999).encode(absl::Span<uint8_t>(buffer));
+    fast_ber::DecodeResult decode_res_2 = fast_ber::decode(absl::Span<uint8_t>(buffer), default_int);
+
+    CHECK(decode_res_1.success);
+    CHECK(decode_res_2.success);
+
+    CHECK(default_str == "Unexpected string!");
+    CHECK(default_int == -99999999);
+    CHECK(default_str != StringDefault::value);
+    CHECK(default_int != IntDefault::value);
 }

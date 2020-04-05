@@ -82,4 +82,10 @@ EncodeResult wrap_with_ber_header(absl::Span<uint8_t> buffer, size_t content_len
     return encode_header(buffer, content_length, id, construction);
 }
 
+/*template <typename T>
+EncodeResult encode(absl::Span<uint8_t> output, const T& object) noexcept
+{
+    return object.encode(output);
+}
+*/
 } // namespace fast_ber

@@ -18,7 +18,15 @@ DecodeResult decode(absl::Span<const uint8_t> input, T& output) noexcept
     BerViewIterator iter(input);
     return decode(iter, output);
 }
-
+/*
+template <typename T>
+DecodeResult decode(BerViewIterator& input, T& output) noexcept
+{
+    DecodeResult res = output.decode(*input);
+    ++input;
+    return res;
+}
+*/
 template <Class class_, Tag tag>
 bool has_correct_header(BerView input, Id<class_, tag>, Construction construction)
 {

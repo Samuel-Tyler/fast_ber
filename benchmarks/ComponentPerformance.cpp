@@ -4,6 +4,16 @@
 
 #include <vector>
 
+struct IntegerDefault
+{
+    constexpr static auto value = 100;
+};
+
+struct StringDefault
+{
+    constexpr static auto value = "Test string!";
+};
+
 const int iterations = 1000000;
 
 template <typename T>
@@ -67,8 +77,11 @@ void component_benchmark_default_construct(const std::string& type_name)
 TEST_CASE("Component Performance: Encode")
 {
     component_benchmark_encode(fast_ber::Integer<>(-99999999), "Integer");
+    component_benchmark_encode(fast_ber::Default<fast_ber::Integer<>, IntegerDefault>(-99999999), "Default Integer");
     component_benchmark_encode(fast_ber::Boolean<>(true), "Boolean");
     component_benchmark_encode(fast_ber::OctetString<>("Test string!"), "OctetString");
+    component_benchmark_encode(fast_ber::Default<fast_ber::OctetString<>, StringDefault>("Test string!"),
+                               "Default OctetString");
     component_benchmark_encode(fast_ber::Null<>(), "Null");
     component_benchmark_encode(fast_ber::ObjectIdentifier<>(fast_ber::ObjectIdentifierComponents{1, 2, 840, 113549}),
                                "ObjectIdentifier");
@@ -91,8 +104,11 @@ TEST_CASE("Component Performance: Encode")
 TEST_CASE("Component Performance: Decode")
 {
     component_benchmark_decode(fast_ber::Integer<>(-99999999), "Integer");
+    component_benchmark_decode(fast_ber::Default<fast_ber::Integer<>, IntegerDefault>(-99999999), "Default Integer");
     component_benchmark_decode(fast_ber::Boolean<>(true), "Boolean");
     component_benchmark_decode(fast_ber::OctetString<>("Test string!"), "OctetString");
+    component_benchmark_decode(fast_ber::Default<fast_ber::OctetString<>, StringDefault>("Test string!"),
+                               "Default OctetString");
     component_benchmark_decode(fast_ber::Null<>(), "Null");
     component_benchmark_decode(fast_ber::ObjectIdentifier<>(fast_ber::ObjectIdentifierComponents{1, 2, 840, 113549}),
                                "ObjectIdentifier");
@@ -115,8 +131,11 @@ TEST_CASE("Component Performance: Decode")
 TEST_CASE("Component Performance: Object Construction")
 {
     component_benchmark_construct<fast_ber::Integer<>>(-99999999, "Integer");
+    component_benchmark_construct<fast_ber::Default<fast_ber::Integer<>, IntegerDefault>>(-99999999, "Default Integer");
     component_benchmark_construct<fast_ber::Boolean<>>(true, "Boolean");
     component_benchmark_construct<fast_ber::OctetString<>>("Test string!", "OctetString");
+    component_benchmark_construct<fast_ber::Default<fast_ber::OctetString<>, StringDefault>>("Test string!",
+                                                                                             "Default String");
     component_benchmark_construct<fast_ber::Null<>>(fast_ber::Null<>{}, "Null");
     component_benchmark_construct<fast_ber::ObjectIdentifier<>>(fast_ber::ObjectIdentifierComponents{1, 2, 840, 113549},
                                                                 "ObjectIdentifier");
@@ -136,8 +155,10 @@ TEST_CASE("Component Performance: Object Construction")
 TEST_CASE("Component Performance: Default Construction")
 {
     component_benchmark_default_construct<fast_ber::Integer<>>("Integer");
+    component_benchmark_default_construct<fast_ber::Default<fast_ber::Integer<>, IntegerDefault>>("Default Int");
     component_benchmark_default_construct<fast_ber::Boolean<>>("Boolean");
     component_benchmark_default_construct<fast_ber::OctetString<>>("OctetString");
+    component_benchmark_default_construct<fast_ber::Default<fast_ber::OctetString<>, StringDefault>>("Default Str");
     component_benchmark_default_construct<fast_ber::Null<>>("Null");
     component_benchmark_default_construct<fast_ber::ObjectIdentifier<>>("ObjectId");
     component_benchmark_default_construct<fast_ber::Optional<fast_ber::Integer<>>>("Optional");
