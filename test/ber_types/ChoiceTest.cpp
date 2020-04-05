@@ -118,4 +118,3 @@ TEST_CASE("Choice: Choice of choices")
     CHECK(choice_orig == choice_copy);
     CHECK(std::is_same<fast_ber::Identifier<Choice3>, ExpectedId>::value);
 }
-

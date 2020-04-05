@@ -51,10 +51,14 @@ class Null
     size_t assign_ber(const BerView& rhs) noexcept;
     size_t assign_ber(absl::Span<const uint8_t> buffer) noexcept { return assign_ber(BerView(buffer)); }
 
+    constexpr static size_t encoded_length() noexcept;
+    EncodeResult            encode(absl::Span<uint8_t> buffer) const noexcept;
+    DecodeResult            decode(absl::Span<const uint8_t> buffer) noexcept;
+
     using AsnId = Identifier;
 
   private:
-    std::array<uint8_t, encoded_length(0, Identifier{})> m_data = encoded_header<Identifier>();
+    std::array<uint8_t, fast_ber::encoded_length(0, Identifier{})> m_data = encoded_header<Identifier>();
 };
 
 template <typename Identifier>
@@ -83,21 +87,21 @@ size_t Null<Identifier>::assign_ber(const BerView& input) noexcept
 }
 
 template <typename Identifier>
-constexpr size_t encoded_length(const Null<Identifier>&)
+constexpr size_t Null<Identifier>::encoded_length() noexcept
 {
-    return encoded_length(0, Identifier{});
+    return fast_ber::encoded_length(0, Identifier{});
 }
 
 template <typename Identifier>
-EncodeResult encode(absl::Span<uint8_t> output, const Null<Identifier>& object)
+EncodeResult Null<Identifier>::encode(absl::Span<uint8_t> output) const noexcept
 {
-    if (output.size() < object.ber().size())
+    if (output.size() < this->m_data.size())
     {
         return EncodeResult{false, 0};
     }
 
-    std::memcpy(output.data(), object.ber().data(), object.ber().size());
-    return EncodeResult{true, object.ber().size()};
+    std::memcpy(output.data(), m_data.data(), this->m_data.size());
+    return EncodeResult{true, this->m_data.size()};
 }
 
 template <typename Identifier>

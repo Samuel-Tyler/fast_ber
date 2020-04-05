@@ -154,6 +154,8 @@ static const std::unordered_set<std::string> reserved_keywords = {
     "IA5String",
     "IRI",
     "ISO646String",
+    "Id",
+    "Identifier",
     "InstanceOf",
     "Integer",
     "Null",
@@ -179,8 +181,9 @@ static const std::unordered_set<std::string> reserved_keywords = {
     "UniversalString",
     "VideotexString",
     "VisibleString",
-    "Id",
-    "Identifier"};
+    "decode",
+    "encode",
+    "encoded_length"};
 
 // Switch asn '-' for C++ '_'
 // Rename any names which are reserved in C++

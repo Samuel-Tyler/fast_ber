@@ -185,18 +185,6 @@ inline void Integer<Identifier>::assign(const Integer<Identifier2>& rhs) noexcep
 }
 
 template <typename Identifier>
-size_t encoded_length(const Integer<Identifier>& object) noexcept
-{
-    return object.encoded_length();
-}
-
-template <typename Identifier>
-EncodeResult encode(absl::Span<uint8_t> output, const Integer<Identifier>& object) noexcept
-{
-    return object.encode(output);
-}
-
-template <typename Identifier>
 DecodeResult decode(BerViewIterator& input, Integer<Identifier>& output) noexcept
 {
     DecodeResult res = output.decode(*input);

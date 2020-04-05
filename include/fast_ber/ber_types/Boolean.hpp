@@ -27,7 +27,6 @@ class Boolean
     template <typename Identifier2>
     Boolean(const Boolean<Identifier2>& rhs) noexcept;
     explicit Boolean(const BerView& view) noexcept { assign_ber(view); }
-    explicit Boolean(absl::Span<const uint8_t> ber_data) noexcept { assign_ber(ber_data); }
 
     // Implicit conversion to bool
                               operator bool() const noexcept { return value(); }
@@ -44,13 +43,17 @@ class Boolean
     size_t assign_ber(const BerView& rhs) noexcept;
     size_t assign_ber(absl::Span<const uint8_t> buffer) noexcept;
 
+    constexpr static size_t encoded_length() noexcept;
+    EncodeResult            encode(absl::Span<uint8_t> buffer) const noexcept;
+    DecodeResult            decode(absl::Span<const uint8_t> buffer) noexcept;
+
     using AsnId = Identifier;
 
     template <typename Identifier2>
     friend class Boolean;
 
   private:
-    std::array<uint8_t, encoded_length(1, Identifier{})> m_data = encoded_header<Identifier, 1>();
+    std::array<uint8_t, fast_ber::encoded_length(1, Identifier{})> m_data = encoded_header<Identifier, 1>();
 }; // namespace fast_ber
 
 template <typename Identifier>
@@ -123,21 +126,21 @@ inline size_t Boolean<Identifier>::assign_ber(absl::Span<const uint8_t> buffer) 
 }
 
 template <typename Identifier>
-constexpr size_t encoded_length(const Boolean<Identifier>&) noexcept
+constexpr size_t Boolean<Identifier>::encoded_length() noexcept
 {
-    return encoded_length(1, Identifier{});
+    return fast_ber::encoded_length(1, Identifier{});
 }
 
 template <typename Identifier>
-EncodeResult encode(absl::Span<uint8_t> output, const Boolean<Identifier>& object) noexcept
+EncodeResult Boolean<Identifier>::encode(absl::Span<uint8_t> output) const noexcept
 {
-    if (output.size() < object.ber().size())
+    if (output.size() < this->ber().size())
     {
         return EncodeResult{false, 0};
     }
 
-    std::memcpy(output.data(), object.ber().data(), object.ber().size());
-    return EncodeResult{true, object.ber().size()};
+    std::memcpy(output.data(), this->ber().data(), this->ber().size());
+    return EncodeResult{true, this->ber().size()};
 }
 
 template <typename Identifier>

@@ -65,20 +65,24 @@ class Enumerated
     const Integer<Identifier>& container() const noexcept { return m_val; }
     Integer<Identifier>&       container() noexcept { return m_val; }
 
+    size_t       encoded_length() const noexcept;
+    EncodeResult encode(absl::Span<uint8_t> output) const noexcept;
+    DecodeResult decode(absl::Span<const uint8_t> input) noexcept;
+
   private:
     Integer<Identifier> m_val;
 };
 
 template <typename EnumeratedType, typename Identifier>
-size_t encoded_length(const Enumerated<EnumeratedType, Identifier>& object)
+size_t Enumerated<EnumeratedType, Identifier>::encoded_length() const noexcept
 {
-    return encoded_length(object.container());
+    return this->m_val.encoded_length();
 }
 
 template <typename EnumeratedType, typename Identifier>
-EncodeResult encode(absl::Span<uint8_t> output, const Enumerated<EnumeratedType, Identifier>& object)
+EncodeResult Enumerated<EnumeratedType, Identifier>::encode(absl::Span<uint8_t> output) const noexcept
 {
-    return encode(output, object.container());
+    return this->m_val.encode(output);
 }
 
 template <typename EnumeratedType, typename Identifier>

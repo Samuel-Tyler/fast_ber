@@ -428,6 +428,10 @@ struct Choice<Choices<Types...>, Identifier, storage>
 
     void swap(Choice& rhs) noexcept { return m_base.swap(rhs.base()); }
 
+    size_t       encoded_length() const noexcept;
+    EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
+    DecodeResult decode(absl::Span<const uint8_t> buffer) noexcept;
+
     using AsnId = Identifier;
 
   private:
@@ -501,7 +505,7 @@ struct LengthVisitor
 
 template <typename... Variants, typename Identifier, StorageMode storage,
           absl::enable_if_t<!IsChoiceId<Identifier>::value, int> = 0>
-size_t encoded_length(const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
+size_t encoded_length_impl(const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
     LengthVisitor visit;
     return encoded_length(fast_ber::visit(visit, choice), Identifier{});
@@ -509,15 +513,21 @@ size_t encoded_length(const Choice<Choices<Variants...>, Identifier, storage>& c
 
 template <typename... Variants, typename Identifier, StorageMode storage,
           absl::enable_if_t<IsChoiceId<Identifier>::value, int> = 0>
-size_t encoded_length(const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
+size_t encoded_length_impl(const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
     LengthVisitor visit;
     return fast_ber::visit(visit, choice);
 }
 
+template <typename... Variants, typename Identifier, StorageMode storage>
+size_t Choice<Choices<Variants...>, Identifier, storage>::encoded_length() const noexcept
+{
+    return encoded_length_impl(*this);
+}
+
 template <size_t index, size_t max_depth, typename... Variants, typename Identifier, StorageMode storage,
           typename std::enable_if<(!(index < max_depth)), int>::type = 0>
-EncodeResult encode_if(const absl::Span<uint8_t>&, const Choice<Choices<Variants...>, Identifier, storage>&) noexcept
+EncodeResult encode_if(absl::Span<uint8_t>, const Choice<Choices<Variants...>, Identifier, storage>&) noexcept
 {
     // No substitutions found, fail
     return EncodeResult{false, 0};
@@ -525,7 +535,7 @@ EncodeResult encode_if(const absl::Span<uint8_t>&, const Choice<Choices<Variants
 
 template <size_t index, size_t max_depth, typename... Variants, typename Identifier, StorageMode storage,
           typename std::enable_if<(index < max_depth), int>::type = 0>
-EncodeResult encode_if(const absl::Span<uint8_t>&                               buffer,
+EncodeResult encode_if(absl::Span<uint8_t>                                      buffer,
                        const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
     if (choice.index() == index)
@@ -542,7 +552,7 @@ EncodeResult encode_if(const absl::Span<uint8_t>&                               
 }
 
 template <typename... Variants, typename Identifier, StorageMode storage>
-EncodeResult encode_choice(const absl::Span<uint8_t>&                               buffer,
+EncodeResult encode_choice(absl::Span<uint8_t>                                      buffer,
                            const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
     constexpr size_t depth = sizeof...(Variants);
@@ -551,8 +561,8 @@ EncodeResult encode_choice(const absl::Span<uint8_t>&                           
 
 template <typename... Variants, typename Identifier, StorageMode storage,
           absl::enable_if_t<!IsChoiceId<Identifier>::value, int> = 0>
-EncodeResult encode(const absl::Span<uint8_t>&                               buffer,
-                    const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
+EncodeResult encode_impl(absl::Span<uint8_t>                                      buffer,
+                         const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
     constexpr size_t header_length_guess = encoded_length(0, Identifier{});
     auto             child_buffer        = buffer;
@@ -573,10 +583,16 @@ EncodeResult encode(const absl::Span<uint8_t>&                               buf
 
 template <typename... Variants, typename Identifier, StorageMode storage,
           absl::enable_if_t<IsChoiceId<Identifier>::value, int> = 0>
-EncodeResult encode(const absl::Span<uint8_t>&                               buffer,
-                    const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
+EncodeResult encode_impl(absl::Span<uint8_t>                                      buffer,
+                         const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
     return encode_choice(buffer, choice);
+}
+
+template <typename... Variants, typename Identifier, StorageMode storage>
+EncodeResult Choice<Choices<Variants...>, Identifier, storage>::encode(absl::Span<uint8_t> buffer) const noexcept
+{
+    return encode_impl(buffer, *this);
 }
 
 template <int index, int max_depth, typename... Variants, typename Identifier, StorageMode storage,

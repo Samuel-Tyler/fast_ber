@@ -57,6 +57,10 @@ class ObjectIdentifier
     FixedIdBerContainer<Identifier>&       container() noexcept { return m_contents; }
     const FixedIdBerContainer<Identifier>& container() const noexcept { return m_contents; }
 
+    size_t       encoded_length() const noexcept;
+    EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
+    DecodeResult decode(absl::Span<const uint8_t> buffer) noexcept;
+
     using AsnId = Identifier;
 
   private:
@@ -319,15 +323,15 @@ size_t ObjectIdentifier<Identifier>::assign_ber(absl::Span<const uint8_t> buffer
 }
 
 template <typename Identifier>
-size_t encoded_length(const ObjectIdentifier<Identifier>& object)
+size_t ObjectIdentifier<Identifier>::encoded_length() const noexcept
 {
-    return object.container().ber_length();
+    return this->m_contents.ber_length();
 }
 
 template <typename Identifier>
-EncodeResult encode(absl::Span<uint8_t> output, const ObjectIdentifier<Identifier>& object)
+EncodeResult ObjectIdentifier<Identifier>::encode(absl::Span<uint8_t> output) const noexcept
 {
-    return object.container().encode(output);
+    return this->m_contents.encode(output);
 }
 
 template <typename Identifier>

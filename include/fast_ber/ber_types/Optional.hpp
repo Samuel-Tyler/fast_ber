@@ -49,6 +49,10 @@ struct Optional : public OptionalImplementation<T, storage>::Type
     Optional(Optional&& rhs)      = default;
     Optional& operator=(const Optional& rhs) = default;
     Optional& operator=(Optional&& rhs) = default;
+
+    size_t       encoded_length() const noexcept;
+    EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
+    DecodeResult decode(absl::Span<const uint8_t> buffer) noexcept;
 };
 
 template <typename T, StorageMode s1>
@@ -58,11 +62,11 @@ struct IdentifierType<Optional<T, s1>>
 };
 
 template <typename T, StorageMode s1>
-size_t encoded_length(const Optional<T, s1>& optional_type) noexcept
+size_t Optional<T, s1>::encoded_length() const noexcept
 {
-    if (optional_type.has_value())
+    if (this->has_value())
     {
-        return encoded_length(*optional_type);
+        return (*this)->encoded_length();
     }
     else
     {
@@ -71,11 +75,11 @@ size_t encoded_length(const Optional<T, s1>& optional_type) noexcept
 }
 
 template <typename T, StorageMode s1>
-EncodeResult encode(absl::Span<uint8_t> buffer, const Optional<T, s1>& optional_type) noexcept
+EncodeResult Optional<T, s1>::encode(absl::Span<uint8_t> buffer) const noexcept
 {
-    if (optional_type.has_value())
+    if (this->has_value())
     {
-        return encode(buffer, *optional_type);
+        return (*this)->encode(buffer);
     }
     else
     {

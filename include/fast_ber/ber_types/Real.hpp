@@ -1,6 +1,7 @@
 #pragma once
 
 #include "fast_ber/util/BerView.hpp"
+#include "fast_ber/util/DecodeHelpers.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
 
 namespace fast_ber
@@ -36,6 +37,10 @@ class Real
 
     EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
 
+    constexpr static size_t encoded_length() noexcept;
+    EncodeResult            encode(absl::Span<uint8_t> buffer) const noexcept;
+    DecodeResult            decode(absl::Span<const uint8_t> buffer) noexcept;
+
     using AsnId = Identifier;
 
   private:
@@ -45,7 +50,6 @@ class Real
         m_data[0] = static_cast<uint8_t>(length);
     }
     uint8_t content_length() const noexcept { return m_data[0]; }
-    size_t  encoded_length() const noexcept { return 1 + content_length(); }
 
     std::array<uint8_t, sizeof(int64_t) + sizeof(uint8_t)> m_data;
 };

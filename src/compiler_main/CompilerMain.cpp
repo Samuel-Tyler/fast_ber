@@ -295,30 +295,29 @@ create_collection_encode_functions(const std::vector<std::string>& namespaces, c
         }
     }
 
-    std::string namespace_name = module.module_reference + "::template ";
+    std::string namespace_name = module.module_reference + ":: ";
 
+    int count = 0;
     for (const std::string& ns : namespaces)
     {
-        namespace_name += ns + "<>::template ";
+        namespace_name += ns + "<Identifier" + std::to_string(count++) + ">::";
     }
 
-    std::vector<std::string> template_args = {"Identifier"};
-    const std::string        name = namespace_name + assignment_name + create_template_arguments(template_args);
+    const std::string type_identifier = "Identifier" + std::to_string(count);
+    const std::string name            = namespace_name + assignment_name + create_template_arguments({type_identifier});
 
-    res += create_template_definition(template_args);
-    res += "inline EncodeResult encode(absl::Span<uint8_t> output, const " + name + "& input) noexcept\n{\n";
-
-    res += "    constexpr size_t header_length_guess = encoded_length(0, Identifier{});\n";
+    for (int i = 0; i <= count; i++)
+    {
+        res += create_template_definition({"Identifier" + std::to_string(i)});
+    }
+    res += "inline EncodeResult " + name + "::encode(absl::Span<uint8_t> output) const noexcept\n{\n";
+    res += "    constexpr size_t header_length_guess = fast_ber::encoded_length(0," + type_identifier + "{});\n";
     res += "    if (output.length() < header_length_guess)\n";
     res += "    {\n";
     res += "        return EncodeResult{false, 0};\n";
     res += "    }\n";
 
-    if (collection.components.size() == 0)
-    {
-        res += "    (void)input;\n";
-    }
-    else
+    if (collection.components.size() != 0)
     {
         res += "    EncodeResult res;\n";
         res += "    auto content = output;\n";
@@ -328,7 +327,7 @@ create_collection_encode_functions(const std::vector<std::string>& namespaces, c
 
     for (const ComponentType& component : collection.components)
     {
-        res += "    res = encode(content, input." + component.named_type.name + ");\n";
+        res += "    res = fast_ber::encode(content, this->" + component.named_type.name + ");\n";
         res += "    if (!res.success)\n";
         res += "    {\n";
         res += "        return res;\n";
@@ -336,22 +335,20 @@ create_collection_encode_functions(const std::vector<std::string>& namespaces, c
         res += "    content.remove_prefix(res.length);\n";
         res += "    content_length += res.length;\n";
     }
-    res += "    return wrap_with_ber_header(output, content_length, Identifier{}, header_length_guess);\n";
+    res += "    return wrap_with_ber_header(output, content_length, " + type_identifier + "{}, header_length_guess);\n";
     res += "}\n\n";
 
-    res += create_template_definition(template_args);
-    res += "inline size_t encoded_length(const " + name + "& input) noexcept\n{\n";
-    if (collection.components.size() == 0)
+    for (int i = 0; i <= count; i++)
     {
-        res += "    (void)input;\n";
+        res += create_template_definition({"Identifier" + std::to_string(i)});
     }
-
+    res += "size_t " + name + "::encoded_length() const noexcept\n{\n";
     res += "    size_t content_length = 0;\n\n";
     for (const ComponentType& component : collection.components)
     {
-        res += "    content_length += encoded_length(input." + component.named_type.name + ");\n";
+        res += "    content_length += " + component.named_type.name + ".encoded_length();\n";
     }
-    res += "\n    return encoded_length(content_length, Identifier{});\n";
+    res += "\n    return fast_ber::encoded_length(content_length, " + type_identifier + "{});\n";
     res += "}\n\n";
     return res;
 }

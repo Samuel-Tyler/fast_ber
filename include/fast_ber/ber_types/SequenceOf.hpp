@@ -48,6 +48,10 @@ struct SequenceOf : public SequenceOfImplementation<T, s>::Type
     {
     }
 
+    size_t       encoded_length() const noexcept;
+    EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
+    DecodeResult decode(absl::Span<const uint8_t> buffer) noexcept;
+
     using AsnId = I;
 };
 
@@ -64,17 +68,17 @@ bool operator!=(const SequenceOf<T, I1, s1>& lhs, const SequenceOf<T, I2, s2>& r
 }
 
 template <typename T, typename I, StorageMode s>
-size_t encoded_length(const SequenceOf<T, I, s>& sequence) noexcept
+size_t SequenceOf<T, I, s>::encoded_length() const noexcept
 {
-    const size_t content_length = std::accumulate(sequence.begin(), sequence.end(), size_t(0),
-                                                  [](size_t count, const T& t) { return count + encoded_length(t); });
-    return encoded_length(content_length, I{});
+    const size_t content_length = std::accumulate(this->begin(), this->end(), size_t(0),
+                                                  [](size_t count, const T& t) { return count + t.encoded_length(); });
+    return fast_ber::encoded_length(content_length, I{});
 }
 
 template <typename T, typename I, StorageMode s>
-EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T, I, s>& sequence) noexcept
+EncodeResult SequenceOf<T, I, s>::encode(const absl::Span<uint8_t> buffer) const noexcept
 {
-    constexpr size_t header_length_guess = encoded_length(0, I{});
+    constexpr size_t header_length_guess = fast_ber::encoded_length(0, I{});
     auto             content_buffer      = buffer;
     size_t           combined_length     = 0;
     if (content_buffer.length() < header_length_guess)
@@ -83,9 +87,9 @@ EncodeResult encode(const absl::Span<uint8_t> buffer, const SequenceOf<T, I, s>&
     }
     content_buffer.remove_prefix(header_length_guess);
 
-    for (const T& element : sequence)
+    for (const T& element : *this)
     {
-        const auto element_encode_result = encode(content_buffer, element);
+        const auto element_encode_result = element.encode(content_buffer);
         if (!element_encode_result.success)
         {
             return {false, 0};

@@ -72,8 +72,8 @@ void test_type(const T& a)
     // Check that type can be serialized
     T                         f;
     std::array<uint8_t, 1000> buffer         = {};
-    size_t                    encoded_length = fast_ber::encoded_length(a);
-    fast_ber::EncodeResult    encode_result  = fast_ber::encode(absl::Span<uint8_t>(buffer), a);
+    size_t                    encoded_length = a.encoded_length();
+    fast_ber::EncodeResult    encode_result  = a.encode(absl::Span<uint8_t>(buffer));
     fast_ber::DecodeResult    decode_result  = fast_ber::decode(absl::Span<uint8_t>(buffer), f);
     CHECK(encode_result.success);
     CHECK(decode_result.success);
@@ -93,7 +93,7 @@ void test_type(const T& a)
     {
         INFO(i);
 
-        fast_ber::EncodeResult destructive_encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), i), a);
+        fast_ber::EncodeResult destructive_encode_result = a.encode(absl::MakeSpan(buffer.data(), i));
         fast_ber::DecodeResult destructive_decode_result = fast_ber::decode(absl::MakeSpan(buffer.data(), i), f);
 
         CHECK(!destructive_encode_result.success);

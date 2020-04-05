@@ -49,6 +49,10 @@ class GeneralizedTime
     FixedIdBerContainer<Identifier>&       container() noexcept { return m_contents; }
     const FixedIdBerContainer<Identifier>& container() const noexcept { return m_contents; }
 
+    size_t       encoded_length() const noexcept;
+    EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
+    DecodeResult decode(absl::Span<const uint8_t> buffer) noexcept;
+
     using AsnId = Identifier;
 
   private:
@@ -173,15 +177,15 @@ size_t GeneralizedTime<Identifier>::assign_ber(const BerView& view) noexcept
 }
 
 template <typename Identifier>
-size_t encoded_length(const GeneralizedTime<Identifier>& object)
+size_t GeneralizedTime<Identifier>::encoded_length() const noexcept
 {
-    return object.container().ber().length();
+    return this->m_contents.ber().length();
 }
 
 template <typename Identifier>
-EncodeResult encode(absl::Span<uint8_t> output, const GeneralizedTime<Identifier>& object)
+EncodeResult GeneralizedTime<Identifier>::encode(absl::Span<uint8_t> output) const noexcept
 {
-    return object.container().encode(output);
+    return this->m_contents.encode(output);
 }
 
 template <typename Identifier>

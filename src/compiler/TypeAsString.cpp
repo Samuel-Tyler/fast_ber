@@ -236,7 +236,9 @@ std::string collection_as_string(const Collection& collection, const Module& mod
     }
     res += "        return *this;\n";
     res += "    }\n";
-
+    res += "    size_t encoded_length() const noexcept;\n";
+    res += "    EncodeResult encode(absl::Span<uint8_t>) const noexcept;\n";
+    res += "    DecodeResult decode(absl::Span<const uint8_t>) const noexcept;\n";
     res += "    using AsnId = Identifier;\n";
     res += "};\n";
 
