@@ -33,15 +33,15 @@ fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/SGSN-CDR-def-v2009A.asn real_sch
 fast_ber_generate2(${CMAKE_SOURCE_DIR}/testfiles/multi_file_import_1.asn
                    ${CMAKE_SOURCE_DIR}/testfiles/multi_file_import_2.asn multi_file_import)
 
-aux_source_directory(compiler_logic COMPILER_TEST_SRC)
-aux_source_directory(ber_types      BER_TYPES_TEST_SRC)
-aux_source_directory(util           UTIL_TEST_SRC)
-aux_source_directory(compiler       GENERATED_TEST_SRC)
+aux_source_directory(compiler  COMPILER_TEST_SRC)
+aux_source_directory(ber_types BER_TYPES_TEST_SRC)
+aux_source_directory(util      UTIL_TEST_SRC)
+aux_source_directory(generated GENERATED_TEST_SRC)
 
 add_executable(fast_ber_compiler_tests  Test ${COMPILER_TEST_SRC})
 add_executable(fast_ber_ber_types_tests Test ${BER_TYPES_TEST_SRC})
 add_executable(fast_ber_util_tests      Test ${UTIL_TEST_SRC})
-add_executable(fast_ber_generated_tests Test ${GEMERATED_TEST_SRC}
+add_executable(fast_ber_generated_tests Test ${GENERATED_TEST_SRC}
                                                  autogen/choice.hpp
                                                  autogen/simple.hpp
                                                  autogen/tags.hpp
