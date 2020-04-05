@@ -295,7 +295,7 @@ create_collection_encode_functions(const std::vector<std::string>& namespaces, c
         }
     }
 
-    std::string namespace_name = module.module_reference + ":: ";
+    std::string namespace_name = module.module_reference + "::";
 
     int count = 0;
     for (const std::string& ns : namespaces)
@@ -304,7 +304,8 @@ create_collection_encode_functions(const std::vector<std::string>& namespaces, c
     }
 
     const std::string type_identifier = "Identifier" + std::to_string(count);
-    const std::string name            = namespace_name + assignment_name + create_template_arguments({type_identifier});
+    const std::string name =
+        "fast_ber::" + namespace_name + assignment_name + create_template_arguments({type_identifier});
 
     for (int i = 0; i <= count; i++)
     {
