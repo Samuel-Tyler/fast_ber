@@ -18,6 +18,14 @@ DecodeResult decode(absl::Span<const uint8_t> input, T& output) noexcept
     BerViewIterator iter(input);
     return decode(iter, output);
 }
+
+template <typename T>
+DecodeResult decode(BerView input, T& output) noexcept
+{
+    BerViewIterator iter(input.ber());
+    return decode(iter, output);
+}
+
 /*
 template <typename T>
 DecodeResult decode(BerViewIterator& input, T& output) noexcept

@@ -355,10 +355,10 @@ create_collection_encode_functions(const std::vector<std::string>& namespaces, c
 }
 
 template <typename CollectionType>
-std::string create_collection_decode_functions(const std::vector<std::string>& namespaces,
-                                               const std::string&              assignment_name,
-                                               const std::vector<Parameter>&   parameters,
-                                               const CollectionType& collection, const Module& module)
+std::string
+create_collection_decode_functions(const std::vector<std::string>& namespaces, const std::string& assignment_name,
+                                   const std::vector<Parameter>& parameters, const CollectionType& collection,
+                                   const Module& module, const Asn1Tree tree)
 {
     std::string namespace_name = module.module_reference + "::template ";
 
@@ -395,11 +395,36 @@ std::string create_collection_decode_functions(const std::vector<std::string>& n
 
     for (const ComponentType& component : collection.components)
     {
-        res += "    res = decode(iterator, output." + component.named_type.name + ");\n";
-        res += "    if (!res.success)\n";
-        res += "    {\n";
-        res += "        return res;\n";
-        res += "    }\n";
+        if (component.is_optional || component.default_value)
+        {
+            res += "    if (iterator->is_valid() && (false ";
+            for (const Identifier& id : outer_identifiers(component.named_type.type, module, tree))
+            {
+                res += " || " + id.name() + "::check_id_match(iterator->class_(), iterator->tag())";
+            }
+            res += "))\n";
+            res += "    {\n";
+            res += "        res = decode(*iterator, output." + component.named_type.name + ");\n";
+            res += "        if (!res.success)\n";
+            res += "        {\n";
+            res += "            return res;\n";
+            res += "        }\n";
+            res += "        ++iterator;\n";
+            res += "    }\n";
+            res += "    else\n";
+            res += "    {\n";
+            res += "        output." + component.named_type.name + " = fast_ber::empty;\n";
+            res += "    }\n";
+        }
+        else
+        {
+            res += "    res = decode(*iterator, output." + component.named_type.name + ");\n";
+            res += "    if (!res.success)\n";
+            res += "    {\n";
+            res += "        return res;\n";
+            res += "    }\n";
+            res += "    ++iterator;\n";
+        }
     }
     res += "    ++input;\n";
     res += "    return DecodeResult{true};\n";
@@ -413,14 +438,14 @@ std::string create_collection_decode_functions(const std::vector<std::string>& n
             const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(component.named_type.type));
 
             res += create_collection_decode_functions(child_namespaces, component.named_type.name + "_type", parameters,
-                                                      sequence, module);
+                                                      sequence, module, tree);
         }
         else if (is_set(component.named_type.type))
         {
             const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(component.named_type.type));
 
             res += create_collection_decode_functions(child_namespaces, component.named_type.name + "_type", parameters,
-                                                      set, module);
+                                                      set, module, tree);
         }
     }
     return res;
@@ -447,7 +472,7 @@ std::string create_encode_functions(const Assignment& assignment, const Module& 
     return "";
 }
 
-std::string create_decode_functions(const Assignment& assignment, const Module& module, const Asn1Tree&)
+std::string create_decode_functions(const Assignment& assignment, const Module& module, const Asn1Tree& tree)
 {
     if (absl::holds_alternative<TypeAssignment>(assignment.specific))
     {
@@ -456,12 +481,13 @@ std::string create_decode_functions(const Assignment& assignment, const Module& 
         if (is_sequence(type_assignment.type))
         {
             const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(type_assignment.type));
-            return create_collection_decode_functions({}, assignment.name, assignment.parameters, sequence, module);
+            return create_collection_decode_functions({}, assignment.name, assignment.parameters, sequence, module,
+                                                      tree);
         }
         else if (is_set(type_assignment.type))
         {
             const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(type_assignment.type));
-            return create_collection_decode_functions({}, assignment.name, assignment.parameters, set, module);
+            return create_collection_decode_functions({}, assignment.name, assignment.parameters, set, module, tree);
         }
     }
     return "";
