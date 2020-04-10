@@ -20,7 +20,7 @@ struct Default
     Default(Default&& rhs)      = default;
     Default(BerView view) { decode(view); }
     template <typename T2>
-    Default(const T2& val) : m_item((val == DefaultValue::value) ? absl::optional<T>() : absl::optional<T>(val))
+    Default(const T2& val) : m_item((T(DefaultValue::value) == val) ? absl::optional<T>() : absl::optional<T>(val))
     {
     }
 
@@ -52,7 +52,7 @@ template <typename T, typename DefaultValue>
 template <typename T2>
 Default<T, DefaultValue>& Default<T, DefaultValue>::operator=(const T2& val)
 {
-    if (val == DefaultValue::value)
+    if (T(DefaultValue::value) == val)
     {
         m_item = absl::nullopt;
     }
