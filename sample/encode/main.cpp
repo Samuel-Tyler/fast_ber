@@ -24,7 +24,7 @@ int main()
         return -1;
     }
 
-    std::ofstream output("pokemon.ber");
+    std::ofstream output("pokemon.ber", std::ios::binary);
     if (!output.good())
     {
         std::cout << "Failed to open output file: pokemon.ber\n";
