@@ -35,7 +35,7 @@ template <typename T>
 void component_benchmark_decode(const T& type, const std::string& type_name)
 {
     std::array<uint8_t, 1000> buffer{};
-    fast_ber::encode(absl::Span<uint8_t>(buffer), type);
+    fast_ber::EncodeResult encode_result = fast_ber::encode(absl::Span<uint8_t>(buffer), type);
 
     T decoded_copy;
 
@@ -44,7 +44,7 @@ void component_benchmark_decode(const T& type, const std::string& type_name)
     {
         for (int i = 0; i < iterations; i++)
         {
-            res = fast_ber::decode(absl::Span<uint8_t>(buffer), decoded_copy);
+            res = fast_ber::decode(absl::Span<uint8_t>(buffer.data(), encode_result.length), decoded_copy);
         }
     }
     REQUIRE(res.success);

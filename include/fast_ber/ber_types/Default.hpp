@@ -97,10 +97,14 @@ DecodeResult Default<T, DefaultValue>::decode(BerView input) noexcept
         m_item = T();
         return m_item->decode(input);
     }
-    else
+    else if (!input.is_valid())
     {
         this->set_to_default();
         return DecodeResult{true};
+    }
+    else
+    {
+        return DecodeResult{false};
     }
 }
 

@@ -71,25 +71,25 @@ void test_type(const T& a)
 
     // Check that type can be serialized
     T                         f;
-    std::array<uint8_t, 1000> buffer         = {};
-    size_t                    encoded_length = a.encoded_length();
-    fast_ber::EncodeResult    encode_result  = a.encode(absl::Span<uint8_t>(buffer));
-    fast_ber::DecodeResult    decode_result  = f.decode(fast_ber::BerView(buffer));
+    std::array<uint8_t, 1000> buffer        = {};
+    size_t                    encoded_len   = a.encoded_length();
+    fast_ber::EncodeResult    encode_result = a.encode(absl::Span<uint8_t>(buffer));
+    fast_ber::DecodeResult    decode_result = f.decode(fast_ber::BerView(absl::MakeSpan(buffer.data(), encoded_len)));
     CHECK(encode_result.success);
     CHECK(decode_result.success);
-    CHECK(encode_result.length == encoded_length);
+    CHECK(encode_result.length == encoded_len);
     CHECK(a == f);
     if ((!IsDefault<T>::value && !IsOptional<T>::value)) // Default / Optional types may have empty encoding
     {
-        CHECK(encoded_length > 0);
+        CHECK(encoded_len > 0);
     }
-    if (encoded_length > 0)
+    if (encoded_len > 0)
     {
         CHECK(ID::check_id_match(fast_ber::BerView(buffer).class_(), fast_ber::BerView(buffer).tag()));
     }
 
     // Destructive tests - Check for undefined behaviour when using too small buffer
-    for (size_t i = 0; i < encoded_length; i++)
+    for (size_t i = 0; i < encoded_len; i++)
     {
         INFO(i);
 

@@ -110,10 +110,14 @@ DecodeResult Optional<T, s1>::decode(BerView input) noexcept
         this->emplace();
         return (*this)->decode(input);
     }
-    else
+    else if (!input.is_valid())
     {
         *this = empty;
         return DecodeResult{true};
+    }
+    else
+    {
+        return DecodeResult{false};
     }
 }
 
