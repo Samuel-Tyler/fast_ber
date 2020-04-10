@@ -170,24 +170,4 @@ void StringImpl<tag, Identifier>::assign(const StringImpl<tag2, Identifier2>& rh
     assign(rhs.span());
 }
 
-template <UniversalTag tag, typename Identifier>
-size_t encoded_length(const StringImpl<tag, Identifier>& object) noexcept
-{
-    return object.encoded_length();
-}
-
-template <UniversalTag tag, typename Identifier>
-EncodeResult encode(absl::Span<uint8_t> output, const StringImpl<tag, Identifier>& object) noexcept
-{
-    return object.encode(output);
-}
-
-template <UniversalTag tag, typename Identifier>
-DecodeResult decode(BerViewIterator& input, StringImpl<tag, Identifier>& output) noexcept
-{
-    DecodeResult res = output.decode(*input);
-    ++input;
-    return res;
-}
-
 } // namespace fast_ber
