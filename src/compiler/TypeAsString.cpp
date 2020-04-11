@@ -68,7 +68,7 @@ std::string collection_as_string(const Collection& collection, const Module& mod
     }
 
     res += "\n\n";
-    res += "    " + type_name + "() noexcept = default;\n";
+    res += "    " + type_name + "() noexcept {}\n";
     if (collection.components.size() > 0)
     {
         bool is_first = true;
