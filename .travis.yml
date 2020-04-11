@@ -36,5 +36,5 @@ script:
   - mkdir build
   - cd build
   - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_STANDARD=$CXX_STANDARD
-  - make
+  - cmake --build . -- -j8
   - ctest
