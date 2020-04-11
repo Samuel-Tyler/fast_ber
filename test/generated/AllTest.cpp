@@ -122,7 +122,8 @@ void test_type_with_id()
     // test_type(fast_ber::DateTime<>);
     test_type(fast_ber::Default<fast_ber::Integer<Identifier>, dflt::IntDefault>(dflt::IntDefault::get_value()));
     test_type(fast_ber::Default<fast_ber::Integer<Identifier>, dflt::IntDefault>(-123456));
-    test_type(fast_ber::Default<fast_ber::OctetString<Identifier>, dflt::StringDefault>(dflt::StringDefault::get_value()));
+    test_type(
+        fast_ber::Default<fast_ber::OctetString<Identifier>, dflt::StringDefault>(dflt::StringDefault::get_value()));
     test_type(fast_ber::Default<fast_ber::OctetString<Identifier>, dflt::StringDefault>("Non default string value"));
     // test_type(fast_ber::Duration<>);
     test_type(fast_ber::All::The_Enum<Identifier>(fast_ber::All::The_Enum<>::Values::pear));
