@@ -7,7 +7,7 @@
 TEST_CASE("BerContainer: Empty construction")
 {
     fast_ber::BerContainer container;
-    const auto expected = std::array<uint8_t, 2>({0x80, 0x00});
+    const auto             expected = std::array<uint8_t, 2>({0x80, 0x00});
 
     REQUIRE(container.is_valid());
     REQUIRE(container.tag() == 0);

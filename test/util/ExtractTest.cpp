@@ -7,9 +7,9 @@
 struct TestPacket
 {
     TestPacket(const std::vector<uint8_t>& d, fast_ber::Tag t, uint64_t l) noexcept : data(d), tag(t), length(l) {}
-    std::vector<uint8_t>         data;
-    fast_ber::Tag                tag;
-    uint64_t                     length;
+    std::vector<uint8_t> data;
+    fast_ber::Tag        tag;
+    uint64_t             length;
 };
 
 const static std::vector<TestPacket> packets = {TestPacket{std::vector<uint8_t>{0x00, 0x00}, 0, 0},

@@ -227,7 +227,7 @@ DecodeResult decode_if(BerViewIterator& input, TaggedChoice<ID, Variants...>& ou
 template <typename Identifier, typename... Variants>
 DecodeResult decode(BerViewIterator& input, TaggedChoice<Identifier, Variants...>& output) noexcept
 {
-    constexpr auto     depth  = fast_ber::variant_size<typename std::remove_reference<decltype(output)>::type>::value;
+    constexpr auto depth = fast_ber::variant_size<typename std::remove_reference<decltype(output)>::type>::value;
     if (is_choid_id(Identifier{}))
     {
         const DecodeResult result = decode_if<0, depth>(input, output);

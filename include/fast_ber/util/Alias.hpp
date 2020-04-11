@@ -9,8 +9,8 @@
         X()                        = default;                                                                          \
         X(const X&)                = default;                                                                          \
         X(X&&)                     = default;                                                                          \
-        X& operator=(const X&)     = default;                                                                          \
-        using AsnId                = fast_ber::Identifier<AliasedType>;                                                \
+        X& operator=(const X&) = default;                                                                              \
+        using AsnId            = fast_ber::Identifier<AliasedType>;                                                    \
         AliasedType&       get_base() { return *this; }                                                                \
         const AliasedType& get_base() const { return *this; }                                                          \
     }
