@@ -10,16 +10,13 @@ namespace dflt
 {
 struct StringDefault
 {
-    constexpr static const char* const value = "Hello";
+    constexpr static const char* get_value() noexcept { return "Hello"; }
 };
 
 struct IntDefault
 {
-    constexpr static const int value = 10;
+    constexpr static int get_value() noexcept { return 10; }
 };
-
-constexpr const char* const StringDefault::value;
-constexpr const int         IntDefault::value;
 } // namespace dflt
 
 template <typename T>
@@ -123,9 +120,9 @@ void test_type_with_id()
                                fast_ber::StorageMode::dynamic>(fast_ber::Boolean<>(true)));
     // test_type(fast_ber::Date<>);
     // test_type(fast_ber::DateTime<>);
-    test_type(fast_ber::Default<fast_ber::Integer<Identifier>, dflt::IntDefault>(dflt::IntDefault::value));
+    test_type(fast_ber::Default<fast_ber::Integer<Identifier>, dflt::IntDefault>(dflt::IntDefault::get_value()));
     test_type(fast_ber::Default<fast_ber::Integer<Identifier>, dflt::IntDefault>(-123456));
-    test_type(fast_ber::Default<fast_ber::OctetString<Identifier>, dflt::StringDefault>(dflt::StringDefault::value));
+    test_type(fast_ber::Default<fast_ber::OctetString<Identifier>, dflt::StringDefault>(dflt::StringDefault::get_value()));
     test_type(fast_ber::Default<fast_ber::OctetString<Identifier>, dflt::StringDefault>("Non default string value"));
     // test_type(fast_ber::Duration<>);
     test_type(fast_ber::All::The_Enum<Identifier>(fast_ber::All::The_Enum<>::Values::pear));

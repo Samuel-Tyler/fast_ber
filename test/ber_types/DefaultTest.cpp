@@ -7,16 +7,13 @@
 
 struct StringDefault
 {
-    constexpr static const char* const value = "Hello";
+    constexpr static absl::string_view get_value() noexcept { return "Hello"; }
 };
 
 struct IntDefault
 {
-    constexpr static const int value = 10;
+    constexpr static int get_value() noexcept { return 10; }
 };
-
-constexpr const char* const StringDefault::value;
-constexpr const int         IntDefault::value;
 
 TEST_CASE("Default: Construct")
 {
@@ -117,8 +114,8 @@ TEST_CASE("Default: Decode default")
     CHECK(decode_res_1.success);
     CHECK(decode_res_2.success);
 
-    CHECK(default_str == StringDefault::value);
-    CHECK(default_int == IntDefault::value);
+    CHECK(default_str == StringDefault::get_value());
+    CHECK(default_int == IntDefault::get_value());
 }
 
 TEST_CASE("Default: Decode non default")
@@ -138,6 +135,6 @@ TEST_CASE("Default: Decode non default")
 
     CHECK(default_str == "Unexpected string!");
     CHECK(default_int == -99999999);
-    CHECK(default_str != StringDefault::value);
-    CHECK(default_int != IntDefault::value);
+    CHECK(default_str != StringDefault::get_value());
+    CHECK(default_int != IntDefault::get_value());
 }

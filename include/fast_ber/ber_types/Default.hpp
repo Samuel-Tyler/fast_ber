@@ -14,29 +14,33 @@ namespace fast_ber
 template <typename T, typename DefaultValue>
 struct Default
 {
-    static_assert(std::is_convertible<decltype(DefaultValue::value), T>::value, "Must be convertible");
+    static_assert(std::is_constructible<T, decltype(DefaultValue::get_value())>::value, "Must be convertible");
 
-    Default() noexcept          = default;
-    Default(const Default& rhs) = default;
+    Default() noexcept = default;
+    Default(const Default& rhs);
     Default(Default&& rhs) noexcept;
     Default(BerView view) { decode(view); }
+
+    Default(const T& val) : m_item((m_default == val) ? absl::optional<T>() : absl::optional<T>(val)) {}
     template <typename T2>
-    Default(const T2& val) : m_item((DefaultValue::value == val) ? absl::optional<T>() : absl::optional<T>(val))
+    Default(const T2& val) : m_item((DefaultValue::get_value() == val) ? absl::optional<T>() : absl::optional<T>(val))
     {
     }
+
     Default(const char* val) : Default(absl::string_view(val)) // Avoid pointer comparisons for const char*
     {
     }
 
     ~Default() noexcept = default;
 
-    Default& operator=(const Default&) = default;
-    Default& operator                  =(Default&&) noexcept;
+    Default& operator=(const Default&);
+    Default& operator=(Default&&) noexcept;
+    Default& operator=(const T& val);
     template <typename T2>
     Default& operator=(const T2& val);
     Default& operator=(const char* val);
 
-    T                     get() const noexcept { return is_default() ? T(DefaultValue::value) : *m_item; }
+    const T&              get() const noexcept { return is_default() ? m_default : *m_item; }
     decltype(T{}.value()) value() const noexcept(T{}.value()) { return get()->value(); }
     bool                  is_default() const noexcept { return !m_item; }
     void                  set_to_default() noexcept { m_item = absl::nullopt; }
@@ -47,6 +51,7 @@ struct Default
 
   private:
     absl::optional<T> m_item;
+    const T           m_default = T(DefaultValue::get_value());
 };
 
 template <typename T, typename DefaultValue>
@@ -56,8 +61,20 @@ struct IdentifierType<Default<T, DefaultValue>>
 };
 
 template <typename T, typename DefaultValue>
+Default<T, DefaultValue>::Default(const Default<T, DefaultValue>& rhs) : m_item(rhs.m_item)
+{
+}
+
+template <typename T, typename DefaultValue>
 Default<T, DefaultValue>::Default(Default<T, DefaultValue>&& rhs) noexcept : m_item(std::move(rhs.m_item))
 {
+}
+
+template <typename T, typename DefaultValue>
+Default<T, DefaultValue>& Default<T, DefaultValue>::operator=(const Default<T, DefaultValue>& rhs)
+{
+    m_item = rhs.m_item;
+    return *this;
 }
 
 template <typename T, typename DefaultValue>
@@ -71,7 +88,21 @@ template <typename T, typename DefaultValue>
 template <typename T2>
 Default<T, DefaultValue>& Default<T, DefaultValue>::operator=(const T2& val)
 {
-    if (DefaultValue::value == val)
+    if (DefaultValue::get_value() == val)
+    {
+        m_item = absl::nullopt;
+    }
+    else
+    {
+        m_item = val;
+    }
+    return *this;
+}
+
+template <typename T, typename DefaultValue>
+Default<T, DefaultValue>& Default<T, DefaultValue>::operator=(const T& val)
+{
+    if (m_default == val)
     {
         m_item = absl::nullopt;
     }

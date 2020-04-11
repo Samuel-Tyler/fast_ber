@@ -6,12 +6,12 @@
 
 struct IntegerDefault
 {
-    constexpr static auto value = 100;
+    constexpr static int get_value() noexcept { return 100; }
 };
 
 struct StringDefault
 {
-    constexpr static auto value = "Test string!";
+    constexpr static const char* get_value() noexcept { return "Test string!"; }
 };
 
 const int iterations = 1000000;
