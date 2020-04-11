@@ -19,11 +19,12 @@ struct RuntimeId
     constexpr Class class_() const { return m_class; }
     constexpr Tag   tag() const { return m_tag; }
 
+    constexpr bool operator==(const RuntimeId& rhs) const { return m_class == rhs.m_class && m_tag == rhs.m_tag; }
+    constexpr bool operator!=(const RuntimeId& rhs) const { return !(*this == rhs); }
+
+  private:
     Class m_class;
     Tag   m_tag;
-
-    bool operator==(const RuntimeId& rhs) const { return m_class == rhs.m_class && m_tag == rhs.m_tag; }
-    bool operator!=(const RuntimeId& rhs) const { return !(*this == rhs); }
 };
 
 // Any class or tag is valid
@@ -150,10 +151,10 @@ inline std::ostream& operator<<(std::ostream& os, RuntimeId id) noexcept
 {
     if (id.class_() == Class::universal)
     {
-        UniversalTag tag = static_cast<UniversalTag>(id.tag());
-        return os << "{ \"class\": \"" << id.class_() << "\", \"tag\": \"" << tag << "\"}";
+        auto tag = static_cast<UniversalTag>(id.tag());
+        return os << R"({ "class": ")" << id.class_() << R"(", "tag": ")" << tag << "\"}";
     }
-    return os << "{ \"class\": \"" << id.class_() << "\", \"tag\": " << id.tag() << "}";
+    return os << R"({ "class": ")" << id.class_() << R"(", "tag": )" << id.tag() << "}";
 }
 
 template <Class class_1, Tag tag_1>

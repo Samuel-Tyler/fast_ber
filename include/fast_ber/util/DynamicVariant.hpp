@@ -34,11 +34,8 @@ struct in_place_index_t
     explicit in_place_index_t() = default;
 };
 
-class BadVariantAccess : public std::exception
+struct BadVariantAccess : public std::exception
 {
-  public:
-    BadVariantAccess() noexcept  = default;
-    ~BadVariantAccess() override = default;
     const char* what() const noexcept override { return "Bad variant access;"; }
 };
 
@@ -332,7 +329,7 @@ class DynamicVariant
     template <typename T>
     using AcceptedType = ToType<AcceptedIndex<T>::value>;
 
-    DynamicVariant() : m_index(0), m_data(new ToType<0>()) {}
+    DynamicVariant() noexcept : m_data(new ToType<0>()) {}
     DynamicVariant(const DynamicVariant& other)
         : m_index(other.m_index), m_data(fast_ber::dynamic::visit(CopyVisitor{}, other))
     {
@@ -420,19 +417,19 @@ class DynamicVariant
         return *this;
     }
 
-    template <typename T, typename = absl::enable_if_t<!std::is_same<absl::decay_t<T>, DynamicVariant>::value>>
-    absl::enable_if_t<ExactlyOnce<AcceptedType<T&&>>::value && std::is_constructible<AcceptedType<T&&>, T&&>::value &&
-                          std::is_assignable<AcceptedType<T&&>&, T&&>::value,
-                      DynamicVariant&>
-    operator=(T&& t) noexcept(std::is_nothrow_assignable<AcceptedType<T&&>&, T&&>::value&&
-                                  std::is_nothrow_constructible<AcceptedType<T&&>, T&&>::value)
+    template <typename T, typename = absl::enable_if_t<!std::is_same<absl::decay_t<T>, DynamicVariant>::value &&
+                                                       ExactlyOnce<AcceptedType<T&&>>::value &&
+                                                       std::is_constructible<AcceptedType<T&&>, T&&>::value &&
+                                                       std::is_assignable<AcceptedType<T&&>&, T&&>::value>>
+    DynamicVariant& operator=(T&& t) noexcept(std::is_nothrow_assignable<AcceptedType<T&&>&, T&&>::value&&
+                                                  std::is_nothrow_constructible<AcceptedType<T&&>, T&&>::value)
     {
         if (!valueless_by_exception() && m_data != nullptr)
         {
             fast_ber::dynamic::visit(DeleteVisitor(), *this);
         }
         m_index = AcceptedIndex<T>::value;
-        m_data  = new AcceptedType<T>(t);
+        m_data  = new AcceptedType<T>(std::move(t));
         return *this;
     }
 
@@ -543,7 +540,7 @@ class DynamicVariant
     }
 
   private:
-    size_t m_index;
+    size_t m_index{0};
     void*  m_data;
 }; // namespace fast_ber
 

@@ -87,7 +87,7 @@ TEST_CASE("EncodeIdentifiers: Creating lengths")
 
 TEST_CASE("EncodeIdentifiers: Tags - round trip")
 {
-    std::array<uint8_t, 100> buffer;
+    std::array<uint8_t, 100> buffer{};
     for (fast_ber::Tag i = 0; i < 10000; i++)
     {
         fast_ber::Tag out = -1;

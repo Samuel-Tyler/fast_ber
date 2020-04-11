@@ -11,9 +11,12 @@ template <typename Identifier = ExplicitId<UniversalTag::real>>
 class Real
 {
   public:
-    Real() noexcept : m_data{} {}
+    Real() noexcept = default;
     Real(double num) noexcept { assign(num); }
     Real(BerView& view) noexcept { assign_ber(view); }
+    Real(const Real&) noexcept;
+    Real(Real&&) noexcept;
+    ~Real() noexcept = default;
 
     explicit Real(absl::Span<const uint8_t> ber_data) noexcept { assign_ber(ber_data); }
 
@@ -22,6 +25,7 @@ class Real
 
     Real&  operator=(double rhs) noexcept;
     Real&  operator=(const Real& rhs) noexcept;
+    Real&  operator=(Real&& rhs) noexcept;
     Real&  operator=(const BerView& rhs) noexcept;
     void   assign(double val) noexcept;
     void   assign(const Real& rhs) noexcept;
@@ -51,7 +55,7 @@ class Real
     }
     uint8_t content_length() const noexcept { return m_data[0]; }
 
-    std::array<uint8_t, sizeof(int64_t) + sizeof(uint8_t)> m_data;
+    std::array<uint8_t, sizeof(int64_t) + sizeof(uint8_t)> m_data{};
 };
 
 } // namespace fast_ber

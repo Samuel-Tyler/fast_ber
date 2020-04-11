@@ -328,12 +328,16 @@ struct Choice<Choices<Types...>, Identifier, storage>
     using AcceptedType = typename dynamic::DynamicVariant<Types...>::template AcceptedType<T>;
 
   public:
-    Choice()                    = default;
+    Choice() noexcept           = default;
     ~Choice()                   = default;
     Choice(const Choice& other) = default;
-    Choice(Choice&& other)      = default;
+    Choice(Choice&& other) noexcept : m_base(std::move(other.m_base)) {}
     Choice& operator=(const Choice& other) = default;
-    Choice& operator=(Choice&& other) = default;
+    Choice& operator                       =(Choice&& other) noexcept
+    {
+        m_base = std::move(other.m_base);
+        return *this;
+    };
 
     template <typename T, typename = absl::enable_if_t<!std::is_same<absl::decay_t<T>, Choice>::value &&
                                                        ExactlyOnce<AcceptedType<T&&>>::value &&
@@ -379,12 +383,12 @@ struct Choice<Choices<Types...>, Identifier, storage>
         assert(index() == i);
     }
 
-    template <typename T, typename = absl::enable_if_t<!std::is_same<absl::decay_t<T>, Choice>::value>>
-    absl::enable_if_t<ExactlyOnce<AcceptedType<T&&>>::value && std::is_constructible<AcceptedType<T&&>, T&&>::value &&
-                          std::is_assignable<AcceptedType<T&&>&, T&&>::value,
-                      Choice&>
-    operator=(T&& t) noexcept(std::is_nothrow_assignable<AcceptedType<T&&>&, T&&>::value&&
-                                  std::is_nothrow_constructible<AcceptedType<T&&>, T&&>::value)
+    template <typename T, typename = absl::enable_if_t<!std::is_same<absl::decay_t<T>, Choice>::value &&
+                                                       ExactlyOnce<AcceptedType<T&&>>::value &&
+                                                       std::is_constructible<AcceptedType<T&&>, T&&>::value &&
+                                                       std::is_assignable<AcceptedType<T&&>&, T&&>::value>>
+    Choice& operator=(T&& t) noexcept(std::is_nothrow_assignable<AcceptedType<T&&>&, T&&>::value&&
+                                          std::is_nothrow_constructible<AcceptedType<T&&>, T&&>::value)
     {
         m_base.template emplace<AcceptedType<T&&>>(std::forward<T&&>(t));
         return *this;

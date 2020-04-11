@@ -32,6 +32,7 @@ class BerContainer
     BerContainer(absl::Span<const uint8_t> input_data, ConstructionMethod method) noexcept;
     BerContainer(Construction input_construction, Class input_class, Tag input_tag,
                  absl::Span<const uint8_t> input_content) noexcept;
+    ~BerContainer() noexcept = default;
 
     BerContainer& operator=(const BerView input_view) noexcept;
     BerContainer& operator=(const BerContainer& input_container) noexcept;
@@ -99,7 +100,7 @@ inline BerContainer::BerContainer(Construction input_construction, Class input_c
 
 inline BerContainer& BerContainer::operator=(const BerContainer& container) noexcept
 {
-    m_data = std::move(container.m_data);
+    m_data = container.m_data;
     m_view.assign(m_data, container.tag(), container.header_length(), container.content_length());
     return *this;
 }
@@ -141,7 +142,7 @@ inline void BerContainer::assign_content(Construction input_construction, Class 
 
 inline void BerContainer::resize_content(size_t size)
 {
-    std::array<uint8_t, 20> length_buffer;
+    std::array<uint8_t, 20> length_buffer{};
 
     size_t old_header_length   = view().header_length();
     size_t old_size            = view().content_length();

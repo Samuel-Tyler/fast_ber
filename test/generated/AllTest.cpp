@@ -52,18 +52,23 @@ void test_type(const T& a)
 
     // Check that type can be default constructed
     CHECK(T{} == T{});
+    CHECK(std::is_nothrow_constructible<T>::value);
 
     // Check that type can be copied
     T b = a;
     b   = a;
     T c(b);
     CHECK(c == a);
+    CHECK(std::is_copy_constructible<T>::value);
+    CHECK(std::is_copy_assignable<T>::value);
 
     // Check that type can be moved
     T d = std::move(b);
     d   = std::move(c);
     T e(std::move(d));
     CHECK(e == a);
+    CHECK(std::is_nothrow_move_constructible<T>::value);
+    CHECK(std::is_nothrow_move_assignable<T>::value);
 
     // Check that type can be compared
     CHECK(e == a);

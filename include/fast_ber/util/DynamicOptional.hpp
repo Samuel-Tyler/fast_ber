@@ -13,12 +13,13 @@ template <typename T>
 class DynamicOptional
 {
   public:
-    DynamicOptional() = default;
+    DynamicOptional() noexcept = default;
     DynamicOptional(const DynamicOptional& rhs) : m_val(nullptr) { *this = rhs; }
-    DynamicOptional(DynamicOptional&&) = default;
-    DynamicOptional(Empty) {}
+    DynamicOptional(DynamicOptional&&) noexcept = default;
+    DynamicOptional(Empty) noexcept {}
     DynamicOptional(const T& t) : m_val(new T(t)) {}
     DynamicOptional(T&& t) : m_val(new T(std::move(t))) {}
+    ~DynamicOptional() noexcept = default;
 
     template <typename U = T,
               typename std::enable_if<
@@ -58,7 +59,7 @@ class DynamicOptional
         m_val.reset(new T(t));
         return *this;
     }
-    DynamicOptional& operator=(DynamicOptional&&) = default;
+    DynamicOptional& operator=(DynamicOptional&&) noexcept = default;
 
     T&       operator*() { return *m_val; }
     T*       operator->() { return m_val.get(); }

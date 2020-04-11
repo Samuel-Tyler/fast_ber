@@ -75,7 +75,7 @@ class MutableBerView : public BerView
     MutableBerViewIterator begin() noexcept;
     MutableBerViewIterator end() noexcept;
 
-    uint8_t*                  content_data() noexcept { return const_cast<uint8_t*>(BerView::content_data()); }
+    uint8_t*                  content_data() noexcept { return const_cast<uint8_t*>(BerView::content_data()); } // NOLINT(cppcoreguidelines-pro-type-const-cast)
     const uint8_t*            content_data() const noexcept { return BerView::content_data(); }
     absl::Span<uint8_t>       content() noexcept { return absl::MakeSpan(content_data(), BerView::content().size()); }
     absl::Span<const uint8_t> content() const noexcept { return BerView::content(); }

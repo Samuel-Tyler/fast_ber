@@ -22,13 +22,15 @@ class Null
     Null(Null&&) noexcept      = default;
     explicit Null(std::nullptr_t) noexcept {}
     explicit Null(BerView view) { decode(view); }
+    ~Null() = default;
+
     template <typename Identifier2>
     Null(const Null<Identifier2>&) noexcept
     {
     }
 
     Null& operator=(const Null&) = default;
-    Null& operator=(Null&&) = default;
+    Null& operator=(Null&&) noexcept = default;
     template <typename Identifier2>
     Null& operator=(const Null<Identifier2>&) noexcept
     {

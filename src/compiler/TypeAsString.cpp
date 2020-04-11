@@ -67,11 +67,8 @@ std::string collection_as_string(const Collection& collection, const Module& mod
         component_types.push_back(component_type);
     }
 
-    res += "    " + type_name + "() = default;\n";
-    res += "    " + type_name + "(const " + type_name + "& rhs) = default;\n";
-    res += "    " + type_name + "(" + type_name + "&& rhs) = default;\n";
-    res += "    " + type_name + "& operator=(const " + type_name + "& rhs) = default;\n";
-    res += "    " + type_name + "& operator=(" + type_name + "&& rhs) = default;\n";
+    res += "\n\n";
+    res += "    " + type_name + "() noexcept = default;\n";
     if (collection.components.size() > 0)
     {
         bool is_first = true;
@@ -140,7 +137,7 @@ std::string collection_as_string(const Collection& collection, const Module& mod
 
     is_first = true;
     res += "    template <typename Identifier2>\n";
-    res += "    " + type_name + "(" + type_name + "<Identifier2>&& rhs)\n";
+    res += "    " + type_name + "(" + type_name + "<Identifier2>&& rhs) noexcept\n";
     for (const ComponentType& component : collection.components)
     {
         res += "        ";
@@ -180,7 +177,7 @@ std::string collection_as_string(const Collection& collection, const Module& mod
     res += "    }\n";
 
     res += "    template <typename Identifier2>\n";
-    res += "    " + type_name + "& operator=(" + type_name + "<Identifier2>&& rhs)\n";
+    res += "    " + type_name + "& operator=(" + type_name + "<Identifier2>&& rhs) noexcept\n";
     res += "    {\n";
     if (collection.components.size() == 0)
     {

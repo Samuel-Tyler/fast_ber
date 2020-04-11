@@ -55,7 +55,7 @@ TEST_CASE("Default: Encode default")
 {
     fast_ber::Default<fast_ber::OctetString<>, StringDefault> default_str;
     fast_ber::Default<fast_ber::Integer<>, IntDefault>        default_int;
-    std::array<uint8_t, 100>                                  buffer;
+    std::array<uint8_t, 100>                                  buffer{};
 
     size_t encoded_length_1 = fast_ber::encoded_length(default_str);
     size_t encoded_length_2 = fast_ber::encoded_length(default_int);
@@ -77,10 +77,10 @@ TEST_CASE("Default: Encode non default")
 {
     fast_ber::Default<fast_ber::OctetString<>, StringDefault> default_str = "racoon";
     fast_ber::Default<fast_ber::Integer<>, IntDefault>        default_int = -20;
-    std::array<uint8_t, 100>                                  buffer1;
-    std::array<uint8_t, 100>                                  buffer2;
-    std::array<uint8_t, 100>                                  buffer3;
-    std::array<uint8_t, 100>                                  buffer4;
+    std::array<uint8_t, 100>                                  buffer1{};
+    std::array<uint8_t, 100>                                  buffer2{};
+    std::array<uint8_t, 100>                                  buffer3{};
+    std::array<uint8_t, 100>                                  buffer4{};
 
     size_t encoded_length_1 = fast_ber::encoded_length(default_str);
     size_t encoded_length_2 = fast_ber::encoded_length(default_int);
@@ -109,7 +109,7 @@ TEST_CASE("Default: Decode default")
 {
     fast_ber::Default<fast_ber::OctetString<>, StringDefault> default_str;
     fast_ber::Default<fast_ber::Integer<>, IntDefault>        default_int;
-    std::array<uint8_t, 100>                                  buffer;
+    std::array<uint8_t, 100>                                  buffer{};
 
     fast_ber::DecodeResult decode_res_1 = fast_ber::decode(absl::Span<uint8_t>(buffer.data(), 0), default_str);
     fast_ber::DecodeResult decode_res_2 = fast_ber::decode(absl::Span<uint8_t>(buffer.data(), 0), default_int);
@@ -125,7 +125,7 @@ TEST_CASE("Default: Decode non default")
 {
     fast_ber::Default<fast_ber::OctetString<>, StringDefault> default_str;
     fast_ber::Default<fast_ber::Integer<>, IntDefault>        default_int;
-    std::array<uint8_t, 100>                                  buffer;
+    std::array<uint8_t, 100>                                  buffer{};
 
     fast_ber::OctetString<>("Unexpected string!").encode(absl::Span<uint8_t>(buffer));
     fast_ber::DecodeResult decode_res_1 = fast_ber::decode(absl::Span<uint8_t>(buffer), default_str);

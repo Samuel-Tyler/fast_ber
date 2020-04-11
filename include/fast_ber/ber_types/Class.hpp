@@ -14,11 +14,14 @@ enum class Class
     private_         = 3
 };
 
-constexpr inline Class get_class(uint8_t first_byte) { return static_cast<Class>(first_byte >> 6); }
+constexpr size_t class_offset = 6;
+constexpr size_t class_mask = 0xC0;
+
+constexpr inline Class get_class(uint8_t first_byte) { return static_cast<Class>(first_byte >> class_offset); }
 
 constexpr inline uint8_t add_class(uint8_t first_byte, Class class_)
 {
-    return static_cast<uint8_t>((static_cast<uint8_t>(class_) << 6) | (first_byte & 0x3F));
+    return static_cast<uint8_t>((static_cast<uint8_t>(class_) << class_offset) | (first_byte & ~class_mask));
 }
 
 inline std::ostream& operator<<(std::ostream& os, const Class& c) noexcept

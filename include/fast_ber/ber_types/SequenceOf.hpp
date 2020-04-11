@@ -40,13 +40,19 @@ struct SequenceOf : public SequenceOfImplementation<T, s>::Type
     using Implementation = typename SequenceOfImplementation<T, s>::Type;
 
     using Implementation::Implementation;
-    SequenceOf() = default;
+    SequenceOf()                  = default;
+    SequenceOf(const SequenceOf&) = default;
+    SequenceOf(SequenceOf&&) noexcept;
     SequenceOf(const Implementation& t) : Implementation(t) {}
-    SequenceOf(Implementation&& t) : Implementation(std::move(t)) {}
+    SequenceOf(Implementation&& t) noexcept : Implementation(std::move(t)) {}
     template <typename I2, StorageMode s2>
     SequenceOf(const SequenceOf<T, I2, s2>& t) : Implementation(t.begin(), t.end())
     {
     }
+    ~SequenceOf() noexcept = default;
+
+    SequenceOf& operator=(const SequenceOf&) = default;
+    SequenceOf& operator                     =(SequenceOf&&) noexcept;
 
     size_t       encoded_length() const noexcept;
     EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
@@ -54,6 +60,18 @@ struct SequenceOf : public SequenceOfImplementation<T, s>::Type
 
     using AsnId = I;
 };
+
+template <typename T, typename I, StorageMode s>
+SequenceOf<T, I, s>::SequenceOf(SequenceOf<T, I, s>&& rhs) noexcept : Implementation(std::move(rhs))
+{
+}
+
+template <typename T, typename I, StorageMode s>
+SequenceOf<T, I, s>& SequenceOf<T, I, s>::operator=(SequenceOf<T, I, s>&& rhs) noexcept
+{
+    Implementation::operator=(rhs);
+    return *this;
+}
 
 template <typename T, typename I1, StorageMode s1, typename I2, StorageMode s2>
 bool operator==(const SequenceOf<T, I1, s1>& lhs, const SequenceOf<T, I2, s2>& rhs) noexcept

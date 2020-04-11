@@ -30,10 +30,11 @@ class ObjectIdentifier
     ObjectIdentifier(const ObjectIdentifierComponents& oid) noexcept { assign(oid); }
     ObjectIdentifier(const std::initializer_list<int64_t>& oid) noexcept { assign(ObjectIdentifierComponents(oid)); }
     explicit ObjectIdentifier(BerView view) { decode(view); }
+    ~ObjectIdentifier() noexcept = default;
 
     ObjectIdentifier<Identifier>& operator=(const ObjectIdentifierComponents& rhs) noexcept;
     ObjectIdentifier&             operator=(const ObjectIdentifier&) = default;
-    ObjectIdentifier&             operator=(ObjectIdentifier&&) = default;
+    ObjectIdentifier&             operator=(ObjectIdentifier&&) noexcept = default;
 
     template <typename Identifier2>
     bool operator==(const ObjectIdentifier<Identifier2>& rhs) const noexcept;

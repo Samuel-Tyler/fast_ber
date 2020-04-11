@@ -31,6 +31,7 @@ class StringImpl
 
     StringImpl(const char* input_data) noexcept { assign(absl::string_view(input_data)); }
     StringImpl(const std::string& input_data) noexcept { assign(absl::string_view(input_data)); }
+    explicit StringImpl(absl::string_view input_data) noexcept { assign(input_data); }
     explicit StringImpl(absl::Span<const uint8_t> input_data) noexcept { assign(input_data); }
     explicit StringImpl(BerView view) noexcept { decode(view); }
 
@@ -38,6 +39,7 @@ class StringImpl
     StringImpl& operator=(const StringImpl<tag2, Identifier2>& rhs) noexcept;
     StringImpl& operator=(const char* rhs) noexcept;
     StringImpl& operator=(const std::string& rhs) noexcept;
+    StringImpl& operator=(absl::string_view rhs) noexcept;
 
     StringImpl&    operator=(absl::Span<const uint8_t> buffer) noexcept;
     bool           operator==(absl::string_view view) const noexcept { return absl::string_view(*this) == view; }
@@ -109,6 +111,13 @@ template <UniversalTag tag, typename Identifier>
 StringImpl<tag, Identifier>& StringImpl<tag, Identifier>::operator=(const std::string& rhs) noexcept
 {
     assign(absl::string_view(rhs));
+    return *this;
+}
+
+template <UniversalTag tag, typename Identifier>
+StringImpl<tag, Identifier>& StringImpl<tag, Identifier>::operator=(absl::string_view rhs) noexcept
+{
+    assign(rhs);
     return *this;
 }
 

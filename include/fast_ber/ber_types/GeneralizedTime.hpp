@@ -35,14 +35,15 @@ class GeneralizedTime
     std::string string() const;
     TimeFormat  format() const;
 
-    GeneralizedTime() { set_time(absl::Time()); }
-    GeneralizedTime(const GeneralizedTime&) = default;
-    GeneralizedTime(GeneralizedTime&&)      = default;
+    GeneralizedTime() noexcept { set_time(absl::Time()); }
+    GeneralizedTime(const GeneralizedTime&)     = default;
+    GeneralizedTime(GeneralizedTime&&) noexcept = default;
     GeneralizedTime(const absl::Time& time) { set_time(time); }
     explicit GeneralizedTime(BerView view) { decode(view); }
+    ~GeneralizedTime() noexcept = default;
 
     GeneralizedTime& operator=(const GeneralizedTime&) = default;
-    GeneralizedTime& operator=(GeneralizedTime&&) = default;
+    GeneralizedTime& operator=(GeneralizedTime&&) noexcept = default;
 
     size_t       encoded_length() const noexcept;
     EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
@@ -91,7 +92,7 @@ void GeneralizedTime<Identifier>::set_time(const absl::Time& time, int timezone_
     std::string time_str = absl::FormatTime(g_universal_time_with_time_zone_format, time, absl::UTCTimeZone());
 
     std::string timezone_extension = std::string(5, '\0');
-    snprintf(&timezone_extension[0], timezone_extension.length() + 1, "%c%2.2d%2.2d",
+    snprintf(&timezone_extension[0], timezone_extension.length() + 1, "%c%2.2d%2.2d", // NOLINT(cppcoreguidelines-pro-type-vararg)
              (timezone_offset_minutes >= 0) ? '+' : '-', std::abs(timezone_offset_minutes) / 60,
              std::abs(timezone_offset_minutes) % 60);
     time_str += timezone_extension;

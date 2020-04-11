@@ -46,8 +46,8 @@ class Enumerated
         return !(*this == rhs);
     }
 
-    bool operator==(EnumeratedType rhs) const { return this->value() == rhs; }
-    bool operator!=(EnumeratedType rhs) const { return !(*this == rhs); }
+    bool operator==(EnumeratedType rhs) const noexcept { return this->value() == rhs; }
+    bool operator!=(EnumeratedType rhs) const noexcept { return !(*this == rhs); }
 
     template <typename Identifier2>
     void assign(const Enumerated<EnumeratedType, Identifier2>& rhs) noexcept
