@@ -32,15 +32,10 @@ class Integer
     Integer(BerView view) noexcept { decode(view); }
     template <typename Identifier2>
     Integer(const Integer<Identifier2>& rhs) noexcept;
-    Integer(const Integer& rhs) noexcept = default;
-    Integer(Integer&& rhs) noexcept      = default;
-    ~Integer() noexcept                  = default;
 
     int64_t value() const noexcept;
 
     Integer& operator=(int64_t rhs) noexcept;
-    Integer& operator=(Integer&& rhs) noexcept = default;
-    Integer& operator=(const Integer& rhs) noexcept = default;
     template <typename Identifier2>
     Integer<Identifier>& operator=(const Integer<Identifier2>& rhs) noexcept;
 
