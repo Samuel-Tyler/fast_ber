@@ -44,11 +44,12 @@ struct Optional : public OptionalImplementation<T, storage>::Type
 
     const Implementation& base() const { return *static_cast<const Implementation*>(this); }
 
-    Optional()                    = default;
+    Optional() noexcept           = default;
     Optional(const Optional& rhs) = default;
-    Optional(Optional&& rhs)      = default;
+    Optional(Optional&& rhs) noexcept;
     Optional& operator=(const Optional& rhs) = default;
-    Optional& operator=(Optional&& rhs) = default;
+    Optional& operator                       =(Optional&& rhs) noexcept;
+    ~Optional() noexcept                     = default;
 
     size_t       encoded_length() const noexcept;
     EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
@@ -60,6 +61,18 @@ struct IdentifierType<Optional<T, s1>>
 {
     using type = Identifier<T>;
 };
+
+template <typename T, StorageMode s1>
+Optional<T, s1>::Optional(Optional<T, s1>&& rhs) noexcept : Implementation(std::move(rhs))
+{
+}
+
+template <typename T, StorageMode s1>
+Optional<T, s1>& Optional<T, s1>::operator=(Optional<T, s1>&& rhs) noexcept
+{
+    this->Implementation::operator=(std::move(rhs));
+    return *this;
+}
 
 template <typename T, StorageMode s1>
 size_t Optional<T, s1>::encoded_length() const noexcept
