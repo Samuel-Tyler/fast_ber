@@ -331,9 +331,13 @@ struct Choice<Choices<Types...>, Identifier, storage>
     Choice()                    = default;
     ~Choice()                   = default;
     Choice(const Choice& other) = default;
-    Choice(Choice&& other)      = default;
+    Choice(Choice&& other) noexcept : m_base(std::move(other.m_base)) {}
     Choice& operator=(const Choice& other) = default;
-    Choice& operator=(Choice&& other) = default;
+    Choice& operator                       =(Choice&& other) noexcept
+    {
+        m_base = std::move(other.m_base);
+        return *this;
+    };
 
     template <typename T, typename = absl::enable_if_t<!std::is_same<absl::decay_t<T>, Choice>::value &&
                                                        ExactlyOnce<AcceptedType<T&&>>::value &&
