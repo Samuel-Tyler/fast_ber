@@ -35,18 +35,18 @@ class Integer
 
     int64_t value() const noexcept;
 
-    Integer& operator=(int64_t rhs) noexcept;
+    Integer<Identifier>& operator=(int64_t rhs) noexcept;
     template <typename Identifier2>
     Integer<Identifier>& operator=(const Integer<Identifier2>& rhs) noexcept;
 
     template <typename Identifier2>
-    bool operator==(const Integer<Identifier2>& rhs) const noexcept
+    bool operator==(const Integer<Identifier2>& rhs) const
     {
         return this->value() == rhs.value();
     }
 
     template <typename Identifier2>
-    bool operator!=(const Integer<Identifier2>& rhs) const noexcept
+    bool operator!=(const Integer<Identifier2>& rhs) const
     {
         return !(*this == rhs);
     }
@@ -88,7 +88,7 @@ inline bool decode_integer(absl::Span<const uint8_t> input, int64_t& output) noe
         output = 0;
     }
 
-    std::array<uint8_t, sizeof(int64_t)> buffer{};
+    std::array<uint8_t, sizeof(int64_t)> buffer;
     const auto                           offset = sizeof(int64_t) - input.size();
     memcpy(buffer.data(), &output, sizeof(int64_t));
     for (size_t i = 0; i < input.size(); i++)
@@ -102,7 +102,7 @@ inline bool decode_integer(absl::Span<const uint8_t> input, int64_t& output) noe
 
 inline size_t encode_integer(absl::Span<uint8_t> output, int64_t input) noexcept
 {
-    std::array<uint8_t, sizeof(int64_t)> buffer{};
+    std::array<uint8_t, sizeof(int64_t)> buffer;
     std::memcpy(buffer.data(), &input, sizeof(int64_t));
     std::reverse(buffer.begin(), buffer.end());
 
