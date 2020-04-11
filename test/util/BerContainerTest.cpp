@@ -129,8 +129,8 @@ void encode_decode()
     Container container;
     container.assign_content(std::vector<uint8_t>(50, 0));
 
-    fast_ber::EncodeResult    encode_res = container.encode(absl::Span<uint8_t>(buffer));
-    fast_ber::DecodeResult    decode_res = container.decode(fast_ber::BerView(buffer));
+    fast_ber::EncodeResult encode_res = container.encode(absl::Span<uint8_t>(buffer));
+    fast_ber::DecodeResult decode_res = container.decode(fast_ber::BerView(buffer));
 
     REQUIRE(encode_res.success);
     REQUIRE(decode_res.success);

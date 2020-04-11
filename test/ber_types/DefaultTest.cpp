@@ -16,7 +16,7 @@ struct IntDefault
 };
 
 constexpr const char* const StringDefault::value;
-constexpr const int IntDefault::value;
+constexpr const int         IntDefault::value;
 
 TEST_CASE("Default: Construct")
 {

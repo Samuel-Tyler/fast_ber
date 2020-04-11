@@ -1,8 +1,8 @@
 #include "fast_ber/util/BerView.hpp"
 
-#include <vector>
 #include <fstream>
 #include <iostream>
+#include <vector>
 
 void usage()
 {

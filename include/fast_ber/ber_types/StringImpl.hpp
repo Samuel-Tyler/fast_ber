@@ -69,10 +69,10 @@ class StringImpl
     std::string               value() const noexcept { return std::string(c_str(), length()); }
 
     template <UniversalTag tag2, typename Identifier2>
-    void   assign(const StringImpl<tag2, Identifier2>& rhs) noexcept;
-    void   assign(absl::string_view buffer) noexcept;
-    void   assign(absl::Span<const uint8_t> buffer) noexcept;
-    void   resize(size_t i) noexcept { m_contents.resize_content(i); }
+    void assign(const StringImpl<tag2, Identifier2>& rhs) noexcept;
+    void assign(absl::string_view buffer) noexcept;
+    void assign(absl::Span<const uint8_t> buffer) noexcept;
+    void resize(size_t i) noexcept { m_contents.resize_content(i); }
 
     template <UniversalTag tag2, typename Identifier2>
     friend class StringImpl;

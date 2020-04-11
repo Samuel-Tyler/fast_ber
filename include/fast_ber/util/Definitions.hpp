@@ -16,4 +16,4 @@ enum class StorageMode
     dynamic,
 };
 
-}
+} // namespace fast_ber

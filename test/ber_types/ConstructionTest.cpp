@@ -19,7 +19,7 @@ TEST_CASE("Construction: set primitive")
     REQUIRE(fast_ber::get_construction(test_byte_1) == fast_ber::Construction::primitive);
 
     uint8_t test_byte_2 = 0xFF;
-    test_byte_2 = fast_ber::add_construction(test_byte_2, fast_ber::Construction::primitive);
+    test_byte_2         = fast_ber::add_construction(test_byte_2, fast_ber::Construction::primitive);
     REQUIRE(fast_ber::get_construction(test_byte_2) == fast_ber::Construction::primitive);
 }
 
@@ -30,6 +30,6 @@ TEST_CASE("Construction: set constructed")
     REQUIRE(fast_ber::get_construction(test_byte_1) == fast_ber::Construction::constructed);
 
     uint8_t test_byte_2 = 0xFF;
-    test_byte_2 = fast_ber::add_construction(test_byte_2, fast_ber::Construction::constructed);
+    test_byte_2         = fast_ber::add_construction(test_byte_2, fast_ber::Construction::constructed);
     REQUIRE(fast_ber::get_construction(test_byte_2) == fast_ber::Construction::constructed);
 }

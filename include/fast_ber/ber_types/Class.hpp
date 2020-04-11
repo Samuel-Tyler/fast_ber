@@ -15,7 +15,7 @@ enum class Class
 };
 
 constexpr size_t class_offset = 6;
-constexpr size_t class_mask = 0xC0;
+constexpr size_t class_mask   = 0xC0;
 
 constexpr inline Class get_class(uint8_t first_byte) { return static_cast<Class>(first_byte >> class_offset); }
 

@@ -16,9 +16,9 @@ struct Default
 {
     static_assert(std::is_convertible<decltype(DefaultValue::value), T>::value, "Must be convertible");
 
-    Default() noexcept              = default;
-    Default(const Default& rhs)     = default;
-    Default(Default&& rhs) noexcept = default;
+    Default() noexcept          = default;
+    Default(const Default& rhs) = default;
+    Default(Default&& rhs) noexcept;
     Default(BerView view) { decode(view); }
     template <typename T2>
     Default(const T2& val) : m_item((DefaultValue::value == val) ? absl::optional<T>() : absl::optional<T>(val))
@@ -31,7 +31,7 @@ struct Default
     ~Default() noexcept = default;
 
     Default& operator=(const Default&) = default;
-    Default& operator=(Default&&) noexcept = default;
+    Default& operator                  =(Default&&) noexcept;
     template <typename T2>
     Default& operator=(const T2& val);
     Default& operator=(const char* val);
@@ -54,6 +54,18 @@ struct IdentifierType<Default<T, DefaultValue>>
 {
     using type = Identifier<T>;
 };
+
+template <typename T, typename DefaultValue>
+Default<T, DefaultValue>::Default(Default<T, DefaultValue>&& rhs) noexcept : m_item(std::move(rhs.m_item))
+{
+}
+
+template <typename T, typename DefaultValue>
+Default<T, DefaultValue>& Default<T, DefaultValue>::operator=(Default<T, DefaultValue>&& rhs) noexcept
+{
+    m_item = std::move(rhs.m_item);
+    return *this;
+}
 
 template <typename T, typename DefaultValue>
 template <typename T2>
@@ -191,7 +203,7 @@ bool operator!=(const Default<T, DefaultValue>& lhs, const Default<T2, DefaultVa
     return !(lhs == rhs);
 }
 
-  template <typename T, typename DefaultValue>
+template <typename T, typename DefaultValue>
 bool operator!=(const Default<T, DefaultValue>& lhs, const char* rhs)
 {
     return !(lhs == rhs);

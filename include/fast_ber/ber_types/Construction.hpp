@@ -13,7 +13,7 @@ enum class Construction
 };
 
 constexpr size_t construction_offset = 5;
-constexpr size_t construction_mask = 0x20;
+constexpr size_t construction_mask   = 0x20;
 
 constexpr inline Construction get_construction(uint8_t first_byte)
 {
@@ -23,7 +23,8 @@ constexpr inline Construction get_construction(uint8_t first_byte)
 constexpr inline uint8_t add_construction(uint8_t first_byte, Construction construction)
 
 {
-    return static_cast<uint8_t>((static_cast<uint8_t>(construction) << construction_offset) | (first_byte & ~construction_mask));
+    return static_cast<uint8_t>((static_cast<uint8_t>(construction) << construction_offset) |
+                                (first_byte & ~construction_mask));
 }
 
 inline std::ostream& operator<<(std::ostream& os, const Construction& c) noexcept

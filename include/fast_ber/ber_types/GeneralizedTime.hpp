@@ -92,7 +92,8 @@ void GeneralizedTime<Identifier>::set_time(const absl::Time& time, int timezone_
     std::string time_str = absl::FormatTime(g_universal_time_with_time_zone_format, time, absl::UTCTimeZone());
 
     std::string timezone_extension = std::string(5, '\0');
-    snprintf(&timezone_extension[0], timezone_extension.length() + 1, "%c%2.2d%2.2d", // NOLINT(cppcoreguidelines-pro-type-vararg)
+    snprintf(&timezone_extension[0], timezone_extension.length() + 1,
+             "%c%2.2d%2.2d", // NOLINT(cppcoreguidelines-pro-type-vararg)
              (timezone_offset_minutes >= 0) ? '+' : '-', std::abs(timezone_offset_minutes) / 60,
              std::abs(timezone_offset_minutes) % 60);
     time_str += timezone_extension;

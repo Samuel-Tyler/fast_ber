@@ -54,7 +54,7 @@ class Enumerated
     {
         m_val.assign(rhs.m_val);
     }
-    void   assign(EnumeratedType val) noexcept { m_val.assign(static_cast<int64_t>(val)); }
+    void assign(EnumeratedType val) noexcept { m_val.assign(static_cast<int64_t>(val)); }
 
     using AsnId = Identifier;
 
