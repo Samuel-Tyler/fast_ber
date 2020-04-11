@@ -27,9 +27,7 @@ class SmallFixedIdBerContainer
 
     static_assert(max_content_length <= max_possible_content_length, "Content length must fit in one byte");
 
-    SmallFixedIdBerContainer() noexcept;
-    SmallFixedIdBerContainer(const SmallFixedIdBerContainer&) = default;
-    SmallFixedIdBerContainer(SmallFixedIdBerContainer&&)      = default;
+    SmallFixedIdBerContainer() noexcept {}
     SmallFixedIdBerContainer(const BerView input_view) noexcept { decode(input_view); }
     SmallFixedIdBerContainer(absl::Span<const uint8_t> input_data, ConstructionMethod method) noexcept;
     SmallFixedIdBerContainer(Construction input_construction, Class input_class, Tag input_tag,
@@ -41,8 +39,6 @@ class SmallFixedIdBerContainer
     }
 
     SmallFixedIdBerContainer& operator=(const BerView input_view) noexcept;
-    SmallFixedIdBerContainer& operator=(const SmallFixedIdBerContainer& input_container) = default;
-    SmallFixedIdBerContainer& operator=(SmallFixedIdBerContainer&& input_container) = default;
     template <typename Identifier2, size_t max_content_length_2>
     SmallFixedIdBerContainer&
     operator=(const SmallFixedIdBerContainer<Identifier2, max_content_length_2>& rhs) noexcept;
@@ -63,8 +59,8 @@ class SmallFixedIdBerContainer
     const uint8_t*            ber_data() const noexcept { return m_data.data(); }
     size_t                    ber_length() const noexcept { return m_header_length + content_length(); }
 
-    bool operator==(const SmallFixedIdBerContainer& rhs) const { return content() == rhs.content(); }
-    bool operator!=(const SmallFixedIdBerContainer& rhs) const { return !(*this == rhs); }
+    bool operator==(const SmallFixedIdBerContainer& rhs) const noexcept { return content() == rhs.content(); }
+    bool operator!=(const SmallFixedIdBerContainer& rhs) const noexcept { return !(*this == rhs); }
 
     BerView view() const noexcept { return BerView(m_data); }
 
@@ -80,16 +76,11 @@ class SmallFixedIdBerContainer
 
     constexpr static size_t                                   m_header_length = encoded_header_length(0, Identifier{});
     std::array<uint8_t, m_header_length + max_content_length> m_data          = [] {
-        std::array<uint8_t, m_header_length + max_content_length> data;
+        std::array<uint8_t, m_header_length + max_content_length> data{};
         encode_header(absl::Span<uint8_t>(data), 0, Identifier{}, Construction::primitive);
         return data;
     }();
 };
-
-template <typename Identifier, size_t max_content_length>
-SmallFixedIdBerContainer<Identifier, max_content_length>::SmallFixedIdBerContainer() noexcept
-{
-}
 
 template <typename Identifier, size_t max_content_length>
 SmallFixedIdBerContainer<Identifier, max_content_length>::SmallFixedIdBerContainer(absl::Span<const uint8_t> input_data,
