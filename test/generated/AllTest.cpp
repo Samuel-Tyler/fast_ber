@@ -134,7 +134,7 @@ void test_type_with_id()
     test_type(fast_ber::OctetString<Identifier>("TestString"));
     test_type(fast_ber::Optional<fast_ber::Null<Identifier>>(fast_ber::Null<>()));
     test_type(fast_ber::Optional<fast_ber::All::The_Set<Identifier>>(fast_ber::All::The_Set<>{"Hello", 42}));
-    // test_type(fast_ber::Real);
+    test_type(fast_ber::Real<Identifier>(0.7774750819971197));
     test_type(fast_ber::All::The_Sequence<Identifier>{"Hello", 42});
     test_type(fast_ber::SequenceOf<fast_ber::Integer<>, Identifier, fast_ber::StorageMode::small_buffer_optimised>(
         {1, 4, 6, 100, 2555}));
@@ -184,7 +184,7 @@ TEST_CASE("AllTypes: Default Id")
     test_type(fast_ber::Optional<fast_ber::Null<>>());
     test_type(fast_ber::Optional<fast_ber::Null<>>(fast_ber::Null<>()));
     test_type(fast_ber::Optional<fast_ber::All::The_Set<>>(fast_ber::All::The_Set<>{"Hello", 42}));
-    // test_type(fast_ber::Real);
+    test_type(fast_ber::Real<>(-9999.456));
     test_type(fast_ber::All::The_Sequence<>{"Hello", 42});
     test_type(fast_ber::SequenceOf<fast_ber::Integer<>>({1, 4, 6, 100, 2555}));
     test_type(fast_ber::All::The_Set<>{"Hello", 42});

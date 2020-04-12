@@ -64,7 +64,6 @@ class Real
     double   value() const noexcept;
 
     Real& operator=(double rhs) noexcept;
-    Real& operator=(const Real& rhs) noexcept;
     Real& operator=(const BerView& rhs) noexcept;
     template <typename Identifier2>
     Real& operator=(const Real<Identifier2>& rhs) noexcept;
@@ -674,7 +673,7 @@ inline void Real<Identifier>::assign(const Real<Identifier>& rhs) noexcept
 template <typename Identifier>
 size_t Real<Identifier>::encoded_length() const noexcept
 {
-    return m_contents.encoded_length();
+    return m_contents.ber_length();
 }
 
 template <typename Identifier>
