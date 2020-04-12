@@ -82,7 +82,8 @@ TEST_CASE("Real: Assign from raw")
     fast_ber::Real<>        r(100);
     std::array<uint8_t, 11> test_data{0x09, 0x09, 0x80, 0xd8, 0x12, 0x34, 0x00, 0x00, 0x00, 0x00, 0x00};
 
-    fast_ber::DecodeResult decoded_res = r.decode(fast_ber::BerView(absl::MakeSpan(test_data.data(), test_data.size())));
+    fast_ber::DecodeResult decoded_res =
+        r.decode(fast_ber::BerView(absl::MakeSpan(test_data.data(), test_data.size())));
     REQUIRE(decoded_res.success);
     REQUIRE(r == 0x1234);
 }
