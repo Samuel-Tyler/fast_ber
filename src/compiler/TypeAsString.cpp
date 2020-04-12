@@ -2,6 +2,10 @@
 #include "fast_ber/compiler/Identifier.hpp"
 #include "fast_ber/compiler/ResolveType.hpp"
 
+#include "absl/container/flat_hash_set.h"
+
+#include <iostream>
+
 thread_local static size_t id_counter = 0;
 
 template <typename Type>
@@ -57,17 +61,14 @@ std::string collection_as_string(const Collection& collection, const Module& mod
 
         if (component.is_optional)
         {
-            component_type = make_type_optional(component_type, tree);
+            component_type = make_type_optional(component_type, component.optional_storage);
         }
         res += "    " + component_type + " " + component.named_type.name + ";\n";
         component_types.push_back(component_type);
     }
 
-    res += "    " + type_name + "() = default;\n";
-    res += "    " + type_name + "(const " + type_name + "& rhs) = default;\n";
-    res += "    " + type_name + "(" + type_name + "&& rhs) = default;\n";
-    res += "    " + type_name + "& operator=(const " + type_name + "& rhs) = default;\n";
-    res += "    " + type_name + "& operator=(" + type_name + "&& rhs) = default;\n";
+    res += "\n\n";
+    res += "    " + type_name + "() noexcept {}\n";
     if (collection.components.size() > 0)
     {
         bool is_first = true;
@@ -106,50 +107,6 @@ std::string collection_as_string(const Collection& collection, const Module& mod
             counter++;
         }
         res += "    {}\n";
-
-        /*   is_first = true;
-            res += "    template <";
-            for (size_t i = 0; i < collection.components.size(); i++)
-            {
-                if (!is_first)
-                {
-                    res += ", ";
-                }
-                res += "typename T_" + std::to_string(i);
-                is_first = false;
-            }
-            res += ">\n";
-
-            is_first = true;
-            res += "    " + type_name + "(";
-            for (size_t i = 0; i < collection.components.size(); i++)
-            {
-                if (!is_first)
-                {
-                    res += ", ";
-                }
-                res += "T_" + std::to_string(i) + "&& t" + std::to_string(i);
-                is_first = false;
-            }
-            res += ")\n";
-        counter = 0;
-        for (const ComponentType& component : collection.components)
-        {
-            res += "        ";
-            if (counter == 0)
-            {
-                res += ": ";
-            }
-            else
-            {
-                res += ", ";
-            }
-
-            res += component.named_type.name + "(std::forward<T_" + std::to_string(counter) + ">(t" +
-                   std::to_string(counter) + "))\n";
-            counter++;
-        }
-        res += "    {}\n";*/
     }
     bool is_first = true;
     res += "    template <typename Identifier2>\n";
@@ -180,7 +137,7 @@ std::string collection_as_string(const Collection& collection, const Module& mod
 
     is_first = true;
     res += "    template <typename Identifier2>\n";
-    res += "    " + type_name + "(" + type_name + "<Identifier2>&& rhs)\n";
+    res += "    " + type_name + "(" + type_name + "<Identifier2>&& rhs) noexcept\n";
     for (const ComponentType& component : collection.components)
     {
         res += "        ";
@@ -220,7 +177,7 @@ std::string collection_as_string(const Collection& collection, const Module& mod
     res += "    }\n";
 
     res += "    template <typename Identifier2>\n";
-    res += "    " + type_name + "& operator=(" + type_name + "<Identifier2>&& rhs)\n";
+    res += "    " + type_name + "& operator=(" + type_name + "<Identifier2>&& rhs) noexcept\n";
     res += "    {\n";
     if (collection.components.size() == 0)
     {
@@ -232,7 +189,9 @@ std::string collection_as_string(const Collection& collection, const Module& mod
     }
     res += "        return *this;\n";
     res += "    }\n";
-
+    res += "    size_t encoded_length() const noexcept;\n";
+    res += "    EncodeResult encode(absl::Span<uint8_t>) const noexcept;\n";
+    res += "    DecodeResult decode(BerView) noexcept;\n";
     res += "    using AsnId = Identifier;\n";
     res += "};\n";
 
@@ -303,8 +262,7 @@ std::string type_as_string(const ChoiceType& choice, const Module& module, const
         res += identifier_override;
     }
 
-    res += (tree.is_circular ? std::string(", StorageMode::dynamic") : std::string(", StorageMode::static_"));
-
+    res += ", " + to_string(choice.storage);
     res += ">";
     return res;
 }
@@ -417,6 +375,36 @@ std::string type_as_string(const RelativeOIDType& type, const Module& module, co
 std::string type_as_string(const SequenceType& sequence, const Module& module, const Asn1Tree& tree,
                            const std::string& type_name, const std::string& identifier_override)
 {
+    if (module.tagging_default != TaggingMode::automatic)
+    {
+        std::vector<Identifier>     previous_optional_ids;
+        absl::optional<std::string> previous_optional_type;
+        for (const ComponentType& component : sequence.components)
+        {
+            if (component.is_optional || component.default_value)
+            {
+                auto outer_ids = identifier(component.named_type.type, module, tree).outer_tags();
+
+                for (const Identifier& previous_optional_id : previous_optional_ids)
+                {
+                    if (previous_optional_type && previous_optional_id == outer_ids.front())
+                    {
+                        std::cerr << "WARNING: SEQUENCE " << type_name
+                                  << " is ambiguous, two optional values in a row with same ID ["
+                                  << component.named_type.name << "] [" << *previous_optional_type << "] ["
+                                  << outer_ids.front().name() << "]" << std::endl;
+                    }
+                }
+                previous_optional_ids  = std::move(outer_ids);
+                previous_optional_type = component.named_type.name;
+            }
+            else
+            {
+                previous_optional_type = absl::nullopt;
+                previous_optional_ids.clear();
+            }
+        }
+    }
     return collection_as_string(sequence, module, tree, type_name, identifier_override, "sequence");
 }
 std::string type_as_string(const SequenceOfType& sequence, const Module& module, const Asn1Tree& tree,
@@ -438,21 +426,31 @@ std::string type_as_string(const SequenceOfType& sequence, const Module& module,
         res += ", " + identifier_override;
     }
 
-    if (tree.is_circular)
-    {
-        res += ", StorageMode::dynamic";
-    }
-    else
-    {
-        res += ", StorageMode::small_buffer_optimised";
-    }
-
+    res += ", " + to_string(sequence.storage);
     res += ">";
+
     return res;
 }
 std::string type_as_string(const SetType& set, const Module& module, const Asn1Tree& tree, const std::string& type_name,
                            const std::string& identifier_override)
 {
+    if (module.tagging_default != TaggingMode::automatic)
+    {
+        absl::flat_hash_set<Identifier> ids;
+        for (const ComponentType& component : set.components)
+        {
+            auto outer_ids = identifier(component.named_type.type, module, tree).outer_tags();
+            for (const Identifier& id : outer_ids)
+            {
+                if (ids.count(id) > 0)
+                {
+                    throw std::runtime_error("Identifier " + id.name() + " occurs more than once in SET " + type_name);
+                }
+                ids.insert(id);
+            }
+        }
+    }
+
     return collection_as_string(set, module, tree, type_name, identifier_override, "set");
 }
 std::string type_as_string(const SetOfType& set, const Module& module, const Asn1Tree& tree, const std::string&,
@@ -465,11 +463,18 @@ std::string type_as_string(const SetOfType& set, const Module& module, const Asn
     }
 
     std::string res = "SetOf<" + type_as_string(type, module, tree);
-    if (!identifier_override.empty())
+    if (identifier_override.empty())
+    {
+        res += ", ExplicitId<UniversalTag::sequence>";
+    }
+    else
     {
         res += ", " + identifier_override;
     }
+
+    res += ", " + to_string(set.storage);
     res += ">";
+
     return res;
 }
 std::string type_as_string(const PrefixedType& prefixed_type, const Module& module, const Asn1Tree& tree,

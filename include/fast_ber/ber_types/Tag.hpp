@@ -47,7 +47,7 @@ enum class UniversalTag : Tag
 };
 
 template <typename T>
-constexpr int val(T t) noexcept
+constexpr typename std::underlying_type<T>::type as_underlying(T t) noexcept
 {
     return static_cast<int>(t);
 }

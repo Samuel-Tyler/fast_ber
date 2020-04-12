@@ -9,6 +9,7 @@
 #include "Choice.hpp"
 #include "Date.hpp"
 #include "DateTime.hpp"
+#include "Default.hpp"
 #include "Duration.hpp"
 #include "EmbeddedPDV.hpp"
 #include "Enumerated.hpp"

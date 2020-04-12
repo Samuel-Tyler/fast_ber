@@ -97,17 +97,17 @@ std::ostream& operator<<(std::ostream& os, BerView view) noexcept
                 case UniversalTag::object_descriptor:
                 case UniversalTag::instance_of:
                 default:
-                    os << OctetString<>(view);
+                    os << OctetString<>(view.content());
                 }
             }
             catch (const std::exception& e)
             {
-                os << OctetString<>(view);
+                os << OctetString<>(view.content());
             }
         }
         else
         {
-            os << OctetString<>(view);
+            os << OctetString<>(view.content());
         }
     }
     else

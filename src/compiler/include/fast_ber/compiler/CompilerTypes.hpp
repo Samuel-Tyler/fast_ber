@@ -34,7 +34,15 @@ enum class Class
     private_,
 };
 
+enum class StorageMode
+{
+    static_,
+    small_buffer_optimised,
+    dynamic,
+};
+
 std::string to_string(Class class_, bool abbreviated);
+std::string to_string(StorageMode mode);
 
 struct ComponentType;
 struct TaggedType;
@@ -380,6 +388,7 @@ struct SequenceOfType
     bool                       has_name;
     std::unique_ptr<NamedType> named_type;
     std::unique_ptr<Type>      type;
+    StorageMode                storage = StorageMode::small_buffer_optimised;
 
     SequenceOfType() = default;
     SequenceOfType(bool, std::unique_ptr<NamedType>&&, std::unique_ptr<Type>&&);
@@ -392,6 +401,7 @@ struct SetOfType
     bool                       has_name;
     std::unique_ptr<NamedType> named_type;
     std::unique_ptr<Type>      type;
+    StorageMode                storage = StorageMode::small_buffer_optimised;
 
     SetOfType() = default;
     SetOfType(bool, std::unique_ptr<NamedType>&&, std::unique_ptr<Type>&&);
@@ -402,6 +412,7 @@ struct SetOfType
 struct ChoiceType
 {
     std::vector<NamedType> choices;
+    StorageMode            storage;
 };
 
 struct DefinedValue
@@ -453,8 +464,9 @@ struct ComponentType
 {
     NamedType             named_type;
     bool                  is_optional;
-    absl::optional<Value> value;
+    absl::optional<Value> default_value;
     absl::optional<Type>  components_of;
+    StorageMode           optional_storage;
 };
 
 struct Tag
@@ -515,7 +527,16 @@ struct Dependency
 {
     std::string                 name;
     absl::optional<std::string> module_reference;
-    //   bool        optional;
+
+    template <typename H>
+    friend H AbslHashValue(H h, const Dependency& d)
+    {
+        return H::combine(std::move(h), d.name, d.module_reference);
+    }
+    bool operator==(const Dependency& rhs) const
+    {
+        return name == rhs.name && module_reference == rhs.module_reference;
+    }
 };
 
 struct Assignment
@@ -549,7 +570,6 @@ struct Module
 struct Asn1Tree
 {
     std::vector<Module> modules;
-    bool                is_circular = false;
 };
 
 struct Identifier
@@ -589,7 +609,7 @@ struct TaggingInfo
 {
     absl::optional<Identifier> outer_tag;
     Identifier                 inner_tag;
-    std::vector<TaggingInfo>   choice_ids;
+    std::vector<Identifier>    choice_ids;
     bool                       is_default_tagged;
 
     std::string name() const
@@ -602,12 +622,13 @@ struct TaggingInfo
         {
             std::string res      = "ChoiceId<";
             bool        is_first = true;
-            for (const TaggingInfo& id : choice_ids)
+            for (const Identifier& id : choice_ids)
             {
                 if (!is_first)
                 {
                     res += ", ";
                 }
+
                 res += id.name();
                 is_first = false;
             }
@@ -619,19 +640,6 @@ struct TaggingInfo
         }
     }
 
-    std::vector<TaggingInfo> identifiers() const
-    {
-        if (outer_tag)
-        {
-            return {*this};
-        }
-        if (choice_ids.size() > 0)
-        {
-            return choice_ids;
-        }
-        return {*this};
-    }
-
     std::vector<Identifier> outer_tags() const
     {
         if (outer_tag)
@@ -640,13 +648,7 @@ struct TaggingInfo
         }
         if (choice_ids.size() > 0)
         {
-            std::vector<Identifier> ids;
-            for (const TaggingInfo& choice : choice_ids)
-            {
-                auto child = choice.outer_tags();
-                ids.insert(ids.end(), child.begin(), child.end());
-            }
-            return ids;
+            return choice_ids;
         }
         return {inner_tag};
     }
@@ -703,7 +705,7 @@ struct ObjectIdComponents
 // Rename any names which are reserved in C++
 std::string santize_name(const std::string& name);
 
-std::string make_type_optional(const std::string& type, const Asn1Tree& tree);
+std::string make_type_optional(const std::string& type, StorageMode mode);
 
 bool is_bit_string(const Type& type);
 bool is_set(const Type& type);
@@ -714,6 +716,8 @@ bool is_enumerated(const Type& type);
 bool is_choice(const Type& type);
 bool is_prefixed(const Type& type);
 bool is_integer(const Type& type);
+bool is_octet_string(const Type& type);
+bool is_boolean(const Type& type);
 bool is_oid(const Type& type);
 bool is_defined(const Type& type);
 

@@ -27,14 +27,29 @@ constexpr bool is_an_identifier_choice(Class class_, Tag tag, Identifier id, Ide
 template <typename... Identifiers>
 struct ChoiceId
 {
-    static std::tuple<Identifiers...> choice_ids() { return {}; };
     constexpr static bool check_id_match(Class c, Tag t) { return is_an_identifier_choice(c, t, Identifiers{}...); }
+};
+
+template <typename T>
+struct IsChoiceId : std::false_type
+{
+};
+
+template <typename... Types>
+struct IsChoiceId<ChoiceId<Types...>> : std::true_type
+{
+};
+
+template <typename... Identifiers>
+struct OuterIdentifierT<ChoiceId<Identifiers...>>
+{
+    using Type = ChoiceId<Identifiers...>;
 };
 
 template <typename... Types>
 struct Choices
 {
-    using DefaultIdentifier = ChoiceId<Identifier<Types>...>;
+    using DefaultIdentifier = ChoiceId<OuterIdentifier<Identifier<Types>>...>;
 };
 
 template <typename Choices, typename Identifier = typename Choices::DefaultIdentifier,
@@ -53,7 +68,9 @@ struct ChoiceImplementation<Choices<Types...>, StorageMode::static_>
 
     template <size_t i>
     using InPlaceIndex = absl::in_place_index_t<i>;
-    using InPlace      = absl::in_place_t;
+
+    template <typename T>
+    using InPlaceType = absl::in_place_type_t<T>;
 };
 
 template <typename... Types>
@@ -314,14 +331,19 @@ struct Choice<Choices<Types...>, Identifier, storage>
     Choice()                    = default;
     ~Choice()                   = default;
     Choice(const Choice& other) = default;
-    Choice(Choice&& other)      = default;
+    Choice(Choice&& other) noexcept : m_base(std::move(other.m_base)) {}
     Choice& operator=(const Choice& other) = default;
-    Choice& operator=(Choice&& other) = default;
+    Choice& operator                       =(Choice&& other) noexcept
+    {
+        m_base = std::move(other.m_base);
+        return *this;
+    };
 
     template <typename T, typename = absl::enable_if_t<!std::is_same<absl::decay_t<T>, Choice>::value &&
                                                        ExactlyOnce<AcceptedType<T&&>>::value &&
                                                        std::is_constructible<AcceptedType<T&&>, T&&>::value>>
-    Choice(T&& t) noexcept(std::is_nothrow_constructible<AcceptedType<T&&>, T&&>::value) : m_base(t)
+    Choice(T&& t) noexcept(std::is_nothrow_constructible<AcceptedType<T&&>, T&&>::value)
+        : m_base(typename Implementation::template InPlaceType<AcceptedType<T&&>>{}, t)
     {
         assert(holds_alternative<AcceptedType<T&&>>(*this));
     }
@@ -368,7 +390,7 @@ struct Choice<Choices<Types...>, Identifier, storage>
     operator=(T&& t) noexcept(std::is_nothrow_assignable<AcceptedType<T&&>&, T&&>::value&&
                                   std::is_nothrow_constructible<AcceptedType<T&&>, T&&>::value)
     {
-        m_base = t;
+        m_base.template emplace<AcceptedType<T&&>>(std::forward<T&&>(t));
         return *this;
     }
 
@@ -376,7 +398,7 @@ struct Choice<Choices<Types...>, Identifier, storage>
               typename = absl::enable_if_t<std::is_constructible<T, Args...>::value && ExactlyOnce<T>::value>>
     T& emplace(Args&&... args)
     {
-        return m_base.emplace(std::forward<Args>(args)...);
+        return m_base.template emplace<T, Args...>(std::forward<Args>(args)...);
     }
 
     template <typename T, typename U, typename... Args,
@@ -384,7 +406,7 @@ struct Choice<Choices<Types...>, Identifier, storage>
                                            ExactlyOnce<T>::value>>
     T& emplace(std::initializer_list<U> il, Args&&... args)
     {
-        return m_base.emplace(il, std::forward<Args>(args)...);
+        return m_base.template emplace<T, U, Args...>(il, std::forward<Args>(args)...);
     }
 
     template <size_t i, typename... Args>
@@ -409,6 +431,10 @@ struct Choice<Choices<Types...>, Identifier, storage>
     constexpr std::size_t index() const noexcept { return m_base.index(); }
 
     void swap(Choice& rhs) noexcept { return m_base.swap(rhs.base()); }
+
+    size_t       encoded_length() const noexcept;
+    EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
+    DecodeResult decode(BerView input) noexcept;
 
     using AsnId = Identifier;
 
@@ -482,24 +508,30 @@ struct LengthVisitor
 };
 
 template <typename... Variants, typename Identifier, StorageMode storage,
-          absl::enable_if_t<!std::is_same<Identifier, ChoiceId<fast_ber::Identifier<Variants>...>>::value, int> = 0>
-size_t encoded_length(const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
+          absl::enable_if_t<!IsChoiceId<Identifier>::value, int> = 0>
+size_t encoded_length_impl(const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
     LengthVisitor visit;
-    return wrap_with_ber_header_length(fast_ber::visit(visit, choice), Identifier{});
+    return encoded_length(fast_ber::visit(visit, choice), Identifier{});
 }
 
 template <typename... Variants, typename Identifier, StorageMode storage,
-          absl::enable_if_t<std::is_same<Identifier, ChoiceId<fast_ber::Identifier<Variants>...>>::value, int> = 0>
-size_t encoded_length(const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
+          absl::enable_if_t<IsChoiceId<Identifier>::value, int> = 0>
+size_t encoded_length_impl(const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
     LengthVisitor visit;
     return fast_ber::visit(visit, choice);
 }
 
+template <typename... Variants, typename Identifier, StorageMode storage>
+size_t Choice<Choices<Variants...>, Identifier, storage>::encoded_length() const noexcept
+{
+    return encoded_length_impl(*this);
+}
+
 template <size_t index, size_t max_depth, typename... Variants, typename Identifier, StorageMode storage,
           typename std::enable_if<(!(index < max_depth)), int>::type = 0>
-EncodeResult encode_if(const absl::Span<uint8_t>&, const Choice<Choices<Variants...>, Identifier, storage>&) noexcept
+EncodeResult encode_if(absl::Span<uint8_t>, const Choice<Choices<Variants...>, Identifier, storage>&) noexcept
 {
     // No substitutions found, fail
     return EncodeResult{false, 0};
@@ -507,7 +539,7 @@ EncodeResult encode_if(const absl::Span<uint8_t>&, const Choice<Choices<Variants
 
 template <size_t index, size_t max_depth, typename... Variants, typename Identifier, StorageMode storage,
           typename std::enable_if<(index < max_depth), int>::type = 0>
-EncodeResult encode_if(const absl::Span<uint8_t>&                               buffer,
+EncodeResult encode_if(absl::Span<uint8_t>                                      buffer,
                        const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
     if (choice.index() == index)
@@ -524,7 +556,7 @@ EncodeResult encode_if(const absl::Span<uint8_t>&                               
 }
 
 template <typename... Variants, typename Identifier, StorageMode storage>
-EncodeResult encode_choice(const absl::Span<uint8_t>&                               buffer,
+EncodeResult encode_choice(absl::Span<uint8_t>                                      buffer,
                            const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
     constexpr size_t depth = sizeof...(Variants);
@@ -532,19 +564,19 @@ EncodeResult encode_choice(const absl::Span<uint8_t>&                           
 }
 
 template <typename... Variants, typename Identifier, StorageMode storage,
-          absl::enable_if_t<!std::is_same<Identifier, ChoiceId<fast_ber::Identifier<Variants>...>>::value, int> = 0>
-EncodeResult encode(const absl::Span<uint8_t>&                               buffer,
-                    const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
+          absl::enable_if_t<!IsChoiceId<Identifier>::value, int> = 0>
+EncodeResult encode_impl(absl::Span<uint8_t>                                      buffer,
+                         const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
-    const auto header_length_guess = 2;
-    auto       child_buffer        = buffer;
+    constexpr size_t header_length_guess = encoded_length(0, Identifier{});
+    auto             child_buffer        = buffer;
     if (buffer.length() < header_length_guess)
     {
         return EncodeResult{false, 0};
     }
     child_buffer.remove_prefix(header_length_guess);
 
-    const EncodeResult& inner_encode_result = encode_choice(child_buffer, choice);
+    EncodeResult inner_encode_result = encode_choice(child_buffer, choice);
     if (!inner_encode_result.success)
     {
         return inner_encode_result;
@@ -554,16 +586,22 @@ EncodeResult encode(const absl::Span<uint8_t>&                               buf
 }
 
 template <typename... Variants, typename Identifier, StorageMode storage,
-          absl::enable_if_t<std::is_same<Identifier, ChoiceId<fast_ber::Identifier<Variants>...>>::value, int> = 0>
-EncodeResult encode(const absl::Span<uint8_t>&                               buffer,
-                    const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
+          absl::enable_if_t<IsChoiceId<Identifier>::value, int> = 0>
+EncodeResult encode_impl(absl::Span<uint8_t>                                      buffer,
+                         const Choice<Choices<Variants...>, Identifier, storage>& choice) noexcept
 {
     return encode_choice(buffer, choice);
 }
 
+template <typename... Variants, typename Identifier, StorageMode storage>
+EncodeResult Choice<Choices<Variants...>, Identifier, storage>::encode(absl::Span<uint8_t> buffer) const noexcept
+{
+    return encode_impl(buffer, *this);
+}
+
 template <int index, int max_depth, typename... Variants, typename Identifier, StorageMode storage,
           absl::enable_if_t<(!(index < max_depth)), int> = 0>
-DecodeResult decode_if(BerViewIterator&, Choice<Choices<Variants...>, Identifier, storage>&) noexcept
+DecodeResult decode_if(BerView, Choice<Choices<Variants...>, Identifier, storage>&) noexcept
 {
     // No substitutions found, fail
     return DecodeResult{false};
@@ -571,14 +609,14 @@ DecodeResult decode_if(BerViewIterator&, Choice<Choices<Variants...>, Identifier
 
 template <size_t index, size_t max_depth, typename ID, typename... Variants, StorageMode storage,
           absl::enable_if_t<(index < max_depth), int> = 0>
-DecodeResult decode_if(BerViewIterator& input, Choice<Choices<Variants...>, ID, storage>& output) noexcept
+DecodeResult decode_if(BerView input, Choice<Choices<Variants...>, ID, storage>& output) noexcept
 {
     using T = typename fast_ber::variant_alternative<index, Choice<Choices<Variants...>, ID>>::type;
 
-    if (Identifier<T>::check_id_match(input->class_(), input->tag()))
+    if (Identifier<T>::check_id_match(input.class_(), input.tag()))
     {
-        T* child = &output.template emplace<index>();
-        return decode(input, *child);
+        T& child = output.template emplace<index>();
+        return child.decode(input);
     }
     else
     {
@@ -587,34 +625,41 @@ DecodeResult decode_if(BerViewIterator& input, Choice<Choices<Variants...>, ID, 
 }
 
 template <typename... Variants, typename Identifier, StorageMode storage,
-          absl::enable_if_t<std::is_same<Identifier, ChoiceId<fast_ber::Identifier<Variants>...>>::value, int> = 0>
-DecodeResult decode(BerViewIterator& input, Choice<Choices<Variants...>, Identifier, storage>& output) noexcept
+          absl::enable_if_t<IsChoiceId<Identifier>::value, int> = 0>
+DecodeResult decode_impl(BerView input, Choice<Choices<Variants...>, Identifier, storage>& output) noexcept
 {
-    constexpr auto     depth  = sizeof...(Variants);
-    const DecodeResult result = decode_if<0, depth>(input, output);
-    ++input;
-    return result;
-}
-
-template <typename... Variants, typename Identifier, StorageMode storage,
-          absl::enable_if_t<!std::is_same<Identifier, ChoiceId<fast_ber::Identifier<Variants>...>>::value, int> = 0>
-DecodeResult decode(BerViewIterator& input, Choice<Choices<Variants...>, Identifier, storage>& output) noexcept
-{
-    if (!input->is_valid() || input->tag() != Identifier::tag() || input->class_() != Identifier::class_())
+    if (!input.is_valid())
     {
         return DecodeResult{false};
     }
 
-    auto child = input->begin();
+    constexpr auto depth = sizeof...(Variants);
+    return decode_if<0, depth>(input, output);
+}
+
+template <typename... Variants, typename Identifier, StorageMode storage,
+          absl::enable_if_t<!IsChoiceId<Identifier>::value, int> = 0>
+DecodeResult decode_impl(BerView input, Choice<Choices<Variants...>, Identifier, storage>& output) noexcept
+{
+    if (!has_correct_header(input, Identifier{}, Construction::constructed))
+    {
+        return DecodeResult{false};
+    }
+
+    BerViewIterator child = (Identifier::depth() == 1) ? input.begin() : input.begin()->begin();
     if (!child->is_valid())
     {
         return DecodeResult{false};
     }
 
-    constexpr auto     depth  = sizeof...(Variants);
-    const DecodeResult result = decode_if<0, depth>(child, output);
-    ++input;
-    return result;
+    constexpr auto depth = sizeof...(Variants);
+    return decode_if<0, depth>(*child, output);
+}
+
+template <typename... Variants, typename Identifier, StorageMode storage>
+DecodeResult Choice<Choices<Variants...>, Identifier, storage>::decode(BerView input) noexcept
+{
+    return decode_impl(input, *this);
 }
 
 template <typename... Variants, typename Identifier, StorageMode storage>

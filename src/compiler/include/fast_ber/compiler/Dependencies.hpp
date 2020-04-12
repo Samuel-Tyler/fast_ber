@@ -2,6 +2,8 @@
 
 #include "fast_ber/compiler/CompilerTypes.hpp"
 
+#include "absl/container/flat_hash_set.h"
+
 std::vector<Dependency> depends_on(const AnyType&);
 std::vector<Dependency> depends_on(const BitStringType&);
 std::vector<Dependency> depends_on(const BooleanType&);
@@ -39,3 +41,7 @@ std::vector<Dependency> depends_on(const Type& type);
 
 std::vector<Dependency> dependencies(const Type& type);
 std::vector<Dependency> dependencies(const Assignment& assignment);
+
+void get_dependencies_recursive(const std::string& type_name, const std::string& module_name,
+                                const std::unordered_map<std::string, Assignment>& assignment_map,
+                                absl::flat_hash_set<Dependency>&                   depends);

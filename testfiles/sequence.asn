@@ -11,4 +11,21 @@ Collection ::= SEQUENCE {
     string  [4] UTF8String
 }
 
+Contents ::= SEQUENCE {
+    seq   SEQUENCE {
+        enu   ENUMERATED {
+            value   (5)
+        },
+        integer INTEGER
+    },
+    cho   CHOICE {
+        boolean BOOLEAN,
+        string  UTF8String
+    }
+}
+
+Components ::= SEQUENCE {
+    COMPONENTS OF Contents
+}
+
 END

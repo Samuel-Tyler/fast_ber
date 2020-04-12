@@ -14,7 +14,7 @@ TEST_CASE("TaggedType: Assign")
     TaggedInt           b = a;
 
     REQUIRE(b == 4);
-    REQUIRE(fast_ber::val(fast_ber::Identifier<TaggedInt>::tag()) == 5);
+    REQUIRE(fast_ber::Identifier<TaggedInt>::tag() == 5);
 
     static_assert(std::is_same<fast_ber::Identifier<TaggedInt>, Tag>::value, "Double Tagged Identifier");
 }

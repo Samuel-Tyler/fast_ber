@@ -21,10 +21,21 @@ class Null
     Null(const Null&) noexcept = default;
     Null(Null&&) noexcept      = default;
     explicit Null(std::nullptr_t) noexcept {}
-    explicit Null(BerView view) { assign_ber(view); }
+    explicit Null(BerView view) { decode(view); }
+    ~Null() = default;
+
+    template <typename Identifier2>
+    Null(const Null<Identifier2>&) noexcept
+    {
+    }
 
     Null& operator=(const Null&) = default;
-    Null& operator=(Null&&) = default;
+    Null& operator=(Null&&) noexcept = default;
+    template <typename Identifier2>
+    Null& operator=(const Null<Identifier2>&) noexcept
+    {
+        return *this;
+    }
 
     template <typename Identifier2>
     bool operator==(const Null<Identifier2>&) const noexcept
@@ -36,73 +47,54 @@ class Null
     {
         return false;
     }
-    std::nullptr_t value() { return nullptr; }
+    std::nullptr_t            value() { return nullptr; }
+    absl::Span<const uint8_t> ber() const { return absl::Span<const uint8_t>(m_data); }
 
-    size_t       assign_ber(const BerView& rhs) noexcept;
-    size_t       assign_ber(absl::Span<const uint8_t> buffer) noexcept { return assign_ber(BerView(buffer)); }
-    EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
+    constexpr static size_t encoded_length() noexcept;
+    EncodeResult            encode(absl::Span<uint8_t> buffer) const noexcept;
+    DecodeResult            decode(BerView buffer) noexcept;
 
     using AsnId = Identifier;
+
+  private:
+    std::array<uint8_t, fast_ber::encoded_length(0, Identifier{})> m_data = encoded_header<Identifier>();
 };
 
 template <typename Identifier>
-size_t Null<Identifier>::assign_ber(const BerView& rhs) noexcept
+constexpr size_t Null<Identifier>::encoded_length() noexcept
 {
-    if (rhs.is_valid())
-    {
-        return rhs.ber_length();
-    }
-    else
-    {
-        return 0;
-    }
+    return fast_ber::encoded_length(0, Identifier{});
 }
 
 template <typename Identifier>
-EncodeResult Null<Identifier>::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
+EncodeResult Null<Identifier>::encode(absl::Span<uint8_t> output) const noexcept
 {
-    if (buffer.length() > 0)
-    {
-        buffer[0] = 0x00;
-        return EncodeResult{true, 1};
-    }
-    else
+    if (output.size() < this->m_data.size())
     {
         return EncodeResult{false, 0};
     }
+
+    std::memcpy(output.data(), m_data.data(), this->m_data.size());
+    return EncodeResult{true, this->m_data.size()};
 }
 
 template <typename Identifier>
-constexpr size_t encoded_length(const Null<Identifier>&)
+DecodeResult Null<Identifier>::decode(BerView input) noexcept
 {
-    return encoded_length(1, Identifier{});
-}
+    if (!has_correct_header(input, Identifier{}, Construction::primitive))
+    {
+        return DecodeResult{false};
+    }
 
-template <typename Identifier>
-EncodeResult encode(absl::Span<uint8_t> output, const Null<Identifier>& object)
-{
-    return encode_impl(output, object, Identifier{});
-}
-
-template <typename Identifier>
-DecodeResult decode(BerViewIterator& input, Null<Identifier>& output) noexcept
-{
-    return decode_impl(input, output, Identifier{});
-}
-
-template <typename Identifier>
-EncodeResult encode_content_and_length(absl::Span<uint8_t> output, const Null<Identifier>& object) noexcept
-{
-    return object.encode_content_and_length(output);
-}
-
-template <typename Identifier>
-DecodeResult decode_content_and_length(BerViewIterator& input, Null<Identifier>& output) noexcept
-{
-    (void)input;
-    (void)output;
-
-    return {};
+    if (Identifier::depth() == 1 && input.content_length() == 0)
+    {
+        return DecodeResult{true};
+    }
+    if (Identifier::depth() == 2 && input.begin()->content_length() == 0)
+    {
+        return DecodeResult{true};
+    }
+    return DecodeResult{false};
 }
 
 template <typename Identifier>

@@ -51,11 +51,12 @@ TEST_CASE("Circular Types: Sequence Of")
     REQUIRE(copy == circular);
     REQUIRE(copy.sequence[0].sequence.size() == 4);
 }
-/*
+
 TEST_CASE("Circular Types: Choice")
 {
     fast_ber::Circular::CircularChoice1<> copy;
-    fast_ber::Circular::CircularChoice1<> circular = fast_ber::Circular::CircularChoice2<>{"bla", {}};
+    fast_ber::Circular::CircularChoice1<> circular;
+    circular.emplace<1>("bla", fast_ber::Circular::CircularChoice1<>{});
 
     REQUIRE(copy != circular);
 
@@ -92,4 +93,3 @@ TEST_CASE("Circular Types: Choice Self Reference")
     REQUIRE(copy == circular);
     REQUIRE(fast_ber::get<0>(fast_ber::get<1>(fast_ber::get<1>(fast_ber::get<1>(copy)))) == "Hello!");
 }
-*/

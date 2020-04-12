@@ -19,6 +19,23 @@ TEST_CASE("Null: Assign from raw")
     fast_ber::Null<>       null;
     std::array<uint8_t, 2> test_data = {0x05, 0x00};
 
-    size_t size = null.assign_ber(absl::MakeSpan(test_data.data(), test_data.size()));
-    REQUIRE(size == 2);
+    fast_ber::DecodeResult res = null.decode(fast_ber::BerView(test_data));
+    REQUIRE(res.success);
+}
+
+TEST_CASE("Null: Double id")
+{
+    fast_ber::Null<fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::context_specific, 1000000>,
+                                      fast_ber::Id<fast_ber::Class::context_specific, 1000001>>>
+                            null;
+    std::array<uint8_t, 10> buffer{};
+
+    constexpr size_t       encoded_length = fast_ber::encoded_length(null);
+    fast_ber::EncodeResult encode_result  = fast_ber::encode(absl::Span<uint8_t>(buffer), null);
+    fast_ber::DecodeResult decode_result  = fast_ber::decode(buffer, null);
+
+    REQUIRE(encode_result.success);
+    REQUIRE(decode_result.success);
+    REQUIRE(encode_result.length == 10);
+    REQUIRE(encoded_length == 10);
 }

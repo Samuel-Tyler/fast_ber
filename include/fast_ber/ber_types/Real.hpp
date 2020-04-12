@@ -6,6 +6,7 @@
 #include "fast_ber/util/BerView.hpp"
 #include "fast_ber/util/DecodeHelpers.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
+#include "fast_ber/util/SmallFixedIdBerContainer.hpp"
 
 #include <algorithm>
 #include <array>
@@ -53,13 +54,11 @@ template <typename Identifier = ExplicitId<UniversalTag::real>>
 class Real
 {
   public:
-    Real() noexcept : m_data{} {}
+    Real() noexcept : m_contents{} {}
     Real(double num) noexcept { assign(num); }
-    Real(const BerView& view) noexcept { assign_ber(view); }
+    Real(BerView view) noexcept { decode(view); }
     template <typename Identifier2>
     Real(const Real<Identifier2>& rhs) noexcept;
-
-    explicit Real(absl::Span<const uint8_t> ber_data) noexcept { assign_ber(ber_data); }
 
     explicit operator double() const noexcept { return value(); }
     double   value() const noexcept;
@@ -70,13 +69,11 @@ class Real
     template <typename Identifier2>
     Real& operator=(const Real<Identifier2>& rhs) noexcept;
 
-    void   assign(double val) noexcept;
-    void   assign(const Real& rhs) noexcept;
-    size_t assign_ber(const BerView& view) noexcept;
-    size_t assign_ber(absl::Span<const uint8_t> buffer) noexcept;
+    void assign(double val) noexcept;
+    void assign(const Real& rhs) noexcept;
 
     /* Inspired from https://www.embeddeduse.com/2019/08/26/qt-compare-two-floats/ */
-    bool operator==(const Real& rhs) const
+    bool operator==(const Real& rhs) const noexcept
     {
         /* Cannot compare NAN */
         if (std::isnan(this->value()) || std::isnan(rhs.value()))
@@ -107,9 +104,11 @@ class Real
                std::numeric_limits<double>::epsilon() * std::max(std::abs(this->value()), std::abs(rhs.value()));
     }
 
-    bool operator!=(const Real& rhs) const { return !(*this == rhs); }
+    bool operator!=(const Real& rhs) const noexcept { return !(*this == rhs); }
 
-    EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
+    size_t       encoded_length() const noexcept;
+    EncodeResult encode(absl::Span<uint8_t> output) const noexcept;
+    DecodeResult decode(BerView input) noexcept;
 
     using AsnId = Identifier;
 
@@ -117,15 +116,7 @@ class Real
     friend class Real;
 
   private:
-    void set_content_length(uint64_t length) noexcept
-    {
-        assert(length <= std::numeric_limits<uint8_t>::max());
-        m_data[0] = static_cast<uint8_t>(length);
-    }
-    uint8_t content_length() const noexcept { return m_data[0]; }
-    size_t  encoded_length() const noexcept { return 1 + content_length(); }
-
-    std::array<uint8_t, detail::MaxEncodedLength> m_data;
+    SmallFixedIdBerContainer<Identifier, detail::MaxEncodedLength> m_contents;
 };
 
 /**
@@ -640,7 +631,7 @@ inline size_t encode_real(absl::Span<uint8_t> output, double input) noexcept
 
 template <typename Identifier>
 template <typename Identifier2>
-Real<Identifier>::Real(const Real<Identifier2>& rhs) noexcept : m_data(rhs.m_data)
+Real<Identifier>::Real(const Real<Identifier2>& rhs) noexcept : m_contents(rhs.m_contents)
 {
 }
 
@@ -648,7 +639,7 @@ template <typename Identifier>
 inline double Real<Identifier>::value() const noexcept
 {
     double ret = 0;
-    decode_real(absl::MakeSpan(m_data.data() + 1, content_length()), ret);
+    decode_real(m_contents.content(), ret);
     return ret;
 }
 
@@ -670,59 +661,31 @@ inline Real<Identifier>& Real<Identifier>::operator=(const Real<Identifier2>& rh
 template <typename Identifier>
 inline void Real<Identifier>::assign(double val) noexcept
 {
-    set_content_length(encode_real(absl::Span<uint8_t>(m_data.data() + 1, m_data.size() - 1), val));
+    m_contents.resize_content(encode_real(absl::Span<uint8_t>(m_contents.content_data(), detail::MaxEncodedLength), val));
 }
 
 template <typename Identifier>
 inline void Real<Identifier>::assign(const Real<Identifier>& rhs) noexcept
 {
-    m_data = rhs.m_data;
+    m_contents = rhs.m_contents;
 }
 
 template <typename Identifier>
-inline size_t Real<Identifier>::assign_ber(const BerView& view) noexcept
+size_t Real<Identifier>::encoded_length() const noexcept
 {
-    if (!view.is_valid() || view.construction() != Construction::primitive)
-    {
-        return false;
-    }
-    if (view.ber_length() - view.identifier_length() > m_data.size())
-    {
-        return false;
-    }
-
-    std::copy(view.ber_data() + view.identifier_length(), view.ber_data() + view.ber_length(), m_data.begin());
-    return view.ber_length();
+    return m_contents.encoded_length();
 }
 
 template <typename Identifier>
-inline size_t Real<Identifier>::assign_ber(absl::Span<const uint8_t> buffer) noexcept
+EncodeResult Real<Identifier>::encode(absl::Span<uint8_t> output) const noexcept
 {
-    return assign_ber(BerView(buffer));
+    return m_contents.encode(output);
 }
 
 template <typename Identifier>
-inline EncodeResult Real<Identifier>::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
+DecodeResult Real<Identifier>::decode(BerView input) noexcept
 {
-    if (buffer.size() < encoded_length())
-    {
-        return EncodeResult{false, 0};
-    }
-
-    std::copy(m_data.begin(), m_data.begin() + encoded_length(), buffer.data());
-    return EncodeResult{true, encoded_length()};
-}
-
-template <typename Identifier>
-EncodeResult encode(absl::Span<uint8_t> output, const Real<Identifier>& object) noexcept
-{
-    return encode_impl(output, object, Identifier{});
-}
-
-template <typename Identifier>
-DecodeResult decode(BerViewIterator& input, Real<Identifier>& output) noexcept
-{
-    return decode_impl(input, output, Identifier{});
+    return m_contents.decode(input);
 }
 
 template <typename Identifier>

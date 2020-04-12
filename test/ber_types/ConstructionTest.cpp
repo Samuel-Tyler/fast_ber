@@ -14,22 +14,22 @@ TEST_CASE("Construction: get constructed")
 
 TEST_CASE("Construction: set primitive")
 {
-    uint8_t first = 0x00;
-    first         = fast_ber::add_construction(first, fast_ber::Construction::primitive);
-    REQUIRE(fast_ber::get_construction(first) == fast_ber::Construction::primitive);
+    uint8_t test_byte_1 = 0x00;
+    test_byte_1         = fast_ber::add_construction(test_byte_1, fast_ber::Construction::primitive);
+    REQUIRE(fast_ber::get_construction(test_byte_1) == fast_ber::Construction::primitive);
 
-    first = 0xFF;
-    first = fast_ber::add_construction(first, fast_ber::Construction::primitive);
-    REQUIRE(fast_ber::get_construction(first) == fast_ber::Construction::primitive);
+    uint8_t test_byte_2 = 0xFF;
+    test_byte_2         = fast_ber::add_construction(test_byte_2, fast_ber::Construction::primitive);
+    REQUIRE(fast_ber::get_construction(test_byte_2) == fast_ber::Construction::primitive);
 }
 
 TEST_CASE("Construction: set constructed")
 {
-    uint8_t first = 0x00;
-    first         = fast_ber::add_construction(first, fast_ber::Construction::constructed);
-    REQUIRE(fast_ber::get_construction(first) == fast_ber::Construction::constructed);
+    uint8_t test_byte_1 = 0x00;
+    test_byte_1         = fast_ber::add_construction(test_byte_1, fast_ber::Construction::constructed);
+    REQUIRE(fast_ber::get_construction(test_byte_1) == fast_ber::Construction::constructed);
 
-    first = 0xFF;
-    first = fast_ber::add_construction(first, fast_ber::Construction::constructed);
-    REQUIRE(fast_ber::get_construction(first) == fast_ber::Construction::constructed);
+    uint8_t test_byte_2 = 0xFF;
+    test_byte_2         = fast_ber::add_construction(test_byte_2, fast_ber::Construction::constructed);
+    REQUIRE(fast_ber::get_construction(test_byte_2) == fast_ber::Construction::constructed);
 }

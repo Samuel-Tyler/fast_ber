@@ -44,11 +44,16 @@ struct Optional : public OptionalImplementation<T, storage>::Type
 
     const Implementation& base() const { return *static_cast<const Implementation*>(this); }
 
-    Optional()                    = default;
+    Optional() noexcept           = default;
     Optional(const Optional& rhs) = default;
-    Optional(Optional&& rhs)      = default;
+    Optional(Optional&& rhs) noexcept;
     Optional& operator=(const Optional& rhs) = default;
-    Optional& operator=(Optional&& rhs) = default;
+    Optional& operator                       =(Optional&& rhs) noexcept;
+    ~Optional() noexcept                     = default;
+
+    size_t       encoded_length() const noexcept;
+    EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
+    DecodeResult decode(BerView input) noexcept;
 };
 
 template <typename T, StorageMode s1>
@@ -58,11 +63,23 @@ struct IdentifierType<Optional<T, s1>>
 };
 
 template <typename T, StorageMode s1>
-size_t encoded_length(const Optional<T, s1>& optional_type) noexcept
+Optional<T, s1>::Optional(Optional<T, s1>&& rhs) noexcept : Implementation(std::move(rhs))
 {
-    if (optional_type.has_value())
+}
+
+template <typename T, StorageMode s1>
+Optional<T, s1>& Optional<T, s1>::operator=(Optional<T, s1>&& rhs) noexcept
+{
+    this->Implementation::operator=(std::move(rhs));
+    return *this;
+}
+
+template <typename T, StorageMode s1>
+size_t Optional<T, s1>::encoded_length() const noexcept
+{
+    if (this->has_value())
     {
-        return encoded_length(*optional_type);
+        return (*this)->encoded_length();
     }
     else
     {
@@ -71,11 +88,11 @@ size_t encoded_length(const Optional<T, s1>& optional_type) noexcept
 }
 
 template <typename T, StorageMode s1>
-EncodeResult encode(absl::Span<uint8_t> buffer, const Optional<T, s1>& optional_type) noexcept
+EncodeResult Optional<T, s1>::encode(absl::Span<uint8_t> buffer) const noexcept
 {
-    if (optional_type.has_value())
+    if (this->has_value())
     {
-        return encode(buffer, *optional_type);
+        return (*this)->encode(buffer);
     }
     else
     {
@@ -86,7 +103,7 @@ EncodeResult encode(absl::Span<uint8_t> buffer, const Optional<T, s1>& optional_
 template <typename T, StorageMode s1>
 DecodeResult decode(BerViewIterator& input, Optional<T, s1>& output) noexcept
 {
-    if (input->is_valid() && input->tag() == Identifier<T>::tag() && input->class_() == Identifier<T>::class_())
+    if (input->is_valid() && Identifier<T>::check_id_match(input->class_(), input->tag()))
     {
         output.emplace();
         return decode(input, *output);
@@ -95,6 +112,25 @@ DecodeResult decode(BerViewIterator& input, Optional<T, s1>& output) noexcept
     {
         output = empty;
         return DecodeResult{true};
+    }
+}
+
+template <typename T, StorageMode s1>
+DecodeResult Optional<T, s1>::decode(BerView input) noexcept
+{
+    if (input.is_valid() && Identifier<T>::check_id_match(input.class_(), input.tag()))
+    {
+        this->emplace();
+        return (*this)->decode(input);
+    }
+    else if (!input.is_valid())
+    {
+        *this = empty;
+        return DecodeResult{true};
+    }
+    else
+    {
+        return DecodeResult{false};
     }
 }
 

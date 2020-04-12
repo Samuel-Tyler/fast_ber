@@ -1,15 +1,15 @@
 #pragma once
 
-#include "fast_ber/util/BerLengthAndContentContainer.hpp"
 #include "fast_ber/util/DecodeHelpers.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
+#include "fast_ber/util/FixedIdBerContainer.hpp"
 
 #include "absl/strings/string_view.h"
 #include "absl/types/span.h"
 
 #include <algorithm>
-#include <string>
 #include <cctype>
+#include <string>
 
 namespace fast_ber
 {
@@ -31,16 +31,15 @@ class StringImpl
 
     StringImpl(const char* input_data) noexcept { assign(absl::string_view(input_data)); }
     StringImpl(const std::string& input_data) noexcept { assign(absl::string_view(input_data)); }
+    explicit StringImpl(absl::string_view input_data) noexcept { assign(input_data); }
     explicit StringImpl(absl::Span<const uint8_t> input_data) noexcept { assign(input_data); }
-    explicit StringImpl(const BerView& view) noexcept { assign_ber(view); }
-    explicit StringImpl(const BerContainer& container) noexcept { assign_ber(container); }
+    explicit StringImpl(BerView view) noexcept { decode(view); }
 
     template <UniversalTag tag2, typename Identifier2>
     StringImpl& operator=(const StringImpl<tag2, Identifier2>& rhs) noexcept;
-    StringImpl& operator=(const BerView& view) noexcept;
-    StringImpl& operator=(const BerContainer& rhs) noexcept;
     StringImpl& operator=(const char* rhs) noexcept;
     StringImpl& operator=(const std::string& rhs) noexcept;
+    StringImpl& operator=(absl::string_view rhs) noexcept;
 
     StringImpl&    operator=(absl::Span<const uint8_t> buffer) noexcept;
     bool           operator==(absl::string_view view) const noexcept { return absl::string_view(*this) == view; }
@@ -70,25 +69,22 @@ class StringImpl
     std::string               value() const noexcept { return std::string(c_str(), length()); }
 
     template <UniversalTag tag2, typename Identifier2>
-    void   assign(const StringImpl<tag2, Identifier2>& rhs) noexcept;
-    void   assign(absl::string_view buffer) noexcept;
-    void   assign(absl::Span<const uint8_t> buffer) noexcept;
-    size_t assign_ber(const BerView& view) noexcept;
-    size_t assign_ber(const BerContainer& container) noexcept;
-    size_t assign_ber(absl::Span<const uint8_t> buffer) noexcept;
-    void   resize(size_t i) noexcept { m_contents.resize_content(i); }
-
-    EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
+    void assign(const StringImpl<tag2, Identifier2>& rhs) noexcept;
+    void assign(absl::string_view buffer) noexcept;
+    void assign(absl::Span<const uint8_t> buffer) noexcept;
+    void resize(size_t i) noexcept { m_contents.resize_content(i); }
 
     template <UniversalTag tag2, typename Identifier2>
     friend class StringImpl;
 
     using AsnId = Identifier;
 
-    const BerLengthAndContentContainer& container() const noexcept { return m_contents; }
+    size_t       encoded_length() const noexcept { return m_contents.ber().length(); }
+    EncodeResult encode(absl::Span<uint8_t> output) const noexcept { return m_contents.encode(output); }
+    DecodeResult decode(BerView input) noexcept { return m_contents.decode(input); }
 
   private:
-    BerLengthAndContentContainer m_contents;
+    FixedIdBerContainer<Identifier> m_contents;
 }; // namespace fast_ber
 
 template <UniversalTag tag, typename Identifier>
@@ -115,6 +111,13 @@ template <UniversalTag tag, typename Identifier>
 StringImpl<tag, Identifier>& StringImpl<tag, Identifier>::operator=(const std::string& rhs) noexcept
 {
     assign(absl::string_view(rhs));
+    return *this;
+}
+
+template <UniversalTag tag, typename Identifier>
+StringImpl<tag, Identifier>& StringImpl<tag, Identifier>::operator=(absl::string_view rhs) noexcept
+{
+    assign(rhs);
     return *this;
 }
 
@@ -174,59 +177,6 @@ template <UniversalTag tag2, typename Identifier2>
 void StringImpl<tag, Identifier>::assign(const StringImpl<tag2, Identifier2>& rhs) noexcept
 {
     assign(rhs.span());
-}
-
-template <UniversalTag tag, typename Identifier>
-size_t StringImpl<tag, Identifier>::assign_ber(const BerView& view) noexcept
-{
-    if (!view.is_valid() || view.construction() != Construction::primitive)
-    {
-        return false;
-    }
-    m_contents.assign(view);
-    return 1;
-}
-
-template <UniversalTag tag, typename Identifier>
-size_t StringImpl<tag, Identifier>::assign_ber(const BerContainer& container) noexcept
-{
-    if (!container.is_valid() || container.construction() != Construction::primitive)
-    {
-        return false;
-    }
-    m_contents.assign(container);
-    return 1;
-}
-
-template <UniversalTag tag, typename Identifier>
-size_t StringImpl<tag, Identifier>::assign_ber(absl::Span<const uint8_t> buffer) noexcept
-{
-    m_contents.assign(buffer);
-    return 1;
-}
-
-template <UniversalTag tag, typename Identifier>
-EncodeResult StringImpl<tag, Identifier>::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
-{
-    return m_contents.content_and_length_to_raw(buffer);
-}
-
-template <UniversalTag tag, typename Identifier>
-size_t encoded_length(const StringImpl<tag, Identifier>& object) noexcept
-{
-    return encoded_length(object.container().content_and_length_length(), Identifier{});
-}
-
-template <UniversalTag tag, typename Identifier>
-EncodeResult encode(absl::Span<uint8_t> output, const StringImpl<tag, Identifier>& object)
-{
-    return encode_impl(output, object, Identifier{});
-}
-
-template <UniversalTag tag, typename Identifier>
-DecodeResult decode(BerViewIterator& input, StringImpl<tag, Identifier>& output) noexcept
-{
-    return decode_impl(input, output, Identifier{});
 }
 
 } // namespace fast_ber
