@@ -420,10 +420,10 @@ std::string type_as_string(const SequenceType& sequence, const Module& module, c
                 {
                     if (previous_optional_type && previous_optional_id == outer_ids.front())
                     {
-                        std::cerr << "WARNING: SEQUENCE " << type_name
-                                  << " is ambiguous, two optional values in a row with same ID ["
-                                  << component.named_type.name << "] [" << *previous_optional_type << "] ["
-                                  << outer_ids.front().name() << "]" << std::endl;
+                        throw std::runtime_error("SEQUENCE " + type_name +
+                                                 " is ambiguous, two optional values in a row with same ID [" +
+                                                 component.named_type.name + "] [" + *previous_optional_type + "] [" +
+                                                 outer_ids.front().name() + "]");
                     }
                 }
                 previous_optional_ids  = std::move(outer_ids);

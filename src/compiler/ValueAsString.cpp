@@ -27,7 +27,7 @@ std::string cpp_value(const HexStringValue& hex)
 
 std::string value_as_string(const NamedType& value_type, const Value& value)
 {
-    assert(!is_defined(value_type)); // value_type should be concrete
+    assert(!is_defined(value_type.type)); // value_type should be concrete
 
     std::string result;
     if (is_oid(value_type.type))
