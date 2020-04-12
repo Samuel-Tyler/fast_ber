@@ -55,7 +55,7 @@ std::string value_type(const EmbeddedPDVType&, const Module&, const Asn1Tree&, c
 {
     return "EmbeddedPDV" + identifier_template_params(identifier_override);
 }
-std::string value_type(const EnumeratedType& , const Module&, const Asn1Tree&, const std::string& assigned_type,
+std::string value_type(const EnumeratedType&, const Module&, const Asn1Tree&, const std::string& assigned_type,
                        const std::string&)
 {
     return assigned_type + "Values";
@@ -202,7 +202,7 @@ std::string value_type(const DefinedType& defined_type, const Module& module, co
                        const std::string& identifier_override)
 {
     const NamedType& referenced = resolve_type(tree, module.module_reference, defined_type);
-    return value_type(referenced.type, module,tree, referenced.name, identifier_override);
+    return value_type(referenced.type, module, tree, referenced.name, identifier_override);
 }
 
 struct ValueTypeHelper

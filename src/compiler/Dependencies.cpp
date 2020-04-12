@@ -40,8 +40,9 @@ std::vector<Dependency> depends_on(const SequenceType& sequence)
         const auto& additional = depends_on(component.named_type.type);
         depends.insert(depends.end(), additional.begin(), additional.end());
 
-        if (component.default_value && absl::holds_alternative<DefinedValue>(component.default_value->value_selection)
-                && !is_enumerated(component.named_type.type))
+        if (component.default_value &&
+            absl::holds_alternative<DefinedValue>(component.default_value->value_selection) &&
+            !is_enumerated(component.named_type.type))
         {
             const DefinedValue& defined = absl::get<DefinedValue>(component.default_value->value_selection);
             depends.push_back(Dependency{defined.reference, absl::nullopt});

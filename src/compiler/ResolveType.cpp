@@ -151,7 +151,7 @@ const Assignment& resolve(const Asn1Tree& tree, const std::string& current_modul
 }
 
 NamedType resolve_type(const Asn1Tree& tree, const std::string& current_module_reference,
-                         const DefinedType& original_defined)
+                       const DefinedType& original_defined)
 {
     DefinedType defined = original_defined;
     std::string module  = current_module_reference;

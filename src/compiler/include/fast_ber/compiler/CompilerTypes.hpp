@@ -448,7 +448,6 @@ struct BooleanValue
 
 struct NullValue
 {
-
 };
 
 struct TimeValue
