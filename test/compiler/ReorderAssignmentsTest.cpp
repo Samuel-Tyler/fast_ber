@@ -17,7 +17,7 @@ TEST_CASE("ReorderAssignments: No depdendencies")
     REQUIRE(is_octet_string(absl::get<TypeAssignment>(assignments[1].specific).type));
     REQUIRE(is_boolean(absl::get<TypeAssignment>(assignments[2].specific).type));
 
-    auto reordered = reorder_assignments(assignments, "module");
+    auto reordered = reorder_assignments(assignments, Asn1Tree{}, Module{"module"});
 
     REQUIRE(assignments.size() == reordered.size());
 
@@ -40,7 +40,7 @@ TEST_CASE("ReorderAssignments: Defined")
     REQUIRE(is_defined(absl::get<TypeAssignment>(assignments[0].specific).type));
     REQUIRE(is_boolean(absl::get<TypeAssignment>(assignments[1].specific).type));
 
-    auto reordered = reorder_assignments(assignments, "module");
+    auto reordered = reorder_assignments(assignments, Asn1Tree{}, Module{"module"});
 
     REQUIRE(assignments.size() == reordered.size());
 
@@ -67,7 +67,7 @@ TEST_CASE("ReorderAssignments: Sequence")
     REQUIRE(is_sequence(absl::get<TypeAssignment>(assignments[0].specific).type));
     REQUIRE(is_boolean(absl::get<TypeAssignment>(assignments[1].specific).type));
 
-    auto reordered = reorder_assignments(assignments, "module");
+    auto reordered = reorder_assignments(assignments, Asn1Tree{}, Module{"module"});
 
     REQUIRE(assignments.size() == reordered.size());
 
@@ -98,7 +98,7 @@ TEST_CASE("ReorderAssignments: Circular Sequence")
     // Reference is optional, Should reorder and specify ciruclar ok
     REQUIRE(is_sequence(absl::get<TypeAssignment>(assignments[0].specific).type));
 
-    auto reordered = reorder_assignments(assignments, "module");
+    auto reordered = reorder_assignments(assignments, Asn1Tree{}, Module{"module"});
 
     REQUIRE(assignments.size() == reordered.size());
     REQUIRE(is_sequence(absl::get<TypeAssignment>(reordered[0].specific).type));
@@ -111,5 +111,5 @@ TEST_CASE("ReorderAssignments: Circular Sequence")
         .is_optional = false;
 
     // Reference is not optional, should throw
-    CHECK_THROWS(reorder_assignments(assignments, "module"));
+    CHECK_THROWS(reorder_assignments(assignments, Asn1Tree{}, Module{"module"}));
 }

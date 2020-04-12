@@ -151,6 +151,7 @@ void test_type_with_id()
 TEST_CASE("AllTypes: Check all types share a unified interface")
 {
     test_type_with_id<fast_ber::Id<fast_ber::Class::private_, 200>>();
+#if 0 // Commented out to reduce compile time (Heavy Templating)
     test_type_with_id<fast_ber::Id<fast_ber::Class::application, 999999999>>();
     test_type_with_id<fast_ber::Id<fast_ber::Class::context_specific, 4000>>();
     test_type_with_id<fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>>();
@@ -163,7 +164,8 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
         fast_ber::Boolean<>(true)));
     test_type(fast_ber::Choice<fast_ber::Choices<fast_ber::Boolean<>, fast_ber::Integer<>, fast_ber::OctetString<>>,
                                fast_ber::Id<fast_ber::Class::application, 20>, fast_ber::StorageMode::dynamic>(
-        fast_ber::Boolean<>(true)));
+        fast_ber::Boolean<>(false)));
+#endif
 }
 
 TEST_CASE("AllTypes: Default Id")

@@ -2,7 +2,7 @@
 #include "fast_ber/compiler/Dependencies.hpp"
 #include "fast_ber/compiler/Logging.hpp"
 #include "fast_ber/compiler/ResolveType.hpp"
-
+#include "fast_ber/compiler/TypeAsString.hpp"
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -130,7 +130,7 @@ void resolve_components_of(Asn1Tree& tree)
 }
 
 void resolve_dependencies(std::unordered_map<std::string, Assignment>& assignment_infos, const std::string& name,
-                          const std::string& module_reference, std::unordered_set<std::string>& assigned_names,
+                          const Asn1Tree& tree, const Module& module, std::unordered_set<std::string>& assigned_names,
                           std::unordered_set<std::string>& visited_names,
                           std::vector<Assignment>&         ordered_assignment_infos)
 {
@@ -160,7 +160,7 @@ void resolve_dependencies(std::unordered_map<std::string, Assignment>& assignmen
         for (const Dependency& dependency : depends)
         {
             // If circular dependancy, use dynamic storage. Else, resolve and use static storage
-            get_dependencies_recursive(dependency.name, module_reference, assignment_infos, complete_depends);
+            get_dependencies_recursive(dependency.name, module.module_reference, assignment_infos, complete_depends);
         }
 
         return std::any_of(complete_depends.begin(), complete_depends.end(),
@@ -171,7 +171,7 @@ void resolve_dependencies(std::unordered_map<std::string, Assignment>& assignmen
         (is_choice(type(assignment)) || is_set_of(type(assignment)) || is_sequence_of(type(assignment))))
     {
         // If circular dependancy, use dynamic storage. Else, resolve and use static storage
-        if (is_circular({Dependency{name, module_reference}}))
+        if (is_circular({Dependency{name, module.module_reference}}))
         {
             // As type is now dynamic it doesn't have any dependencies
             assignment_infos[name].depends_on = {};
@@ -214,12 +214,12 @@ void resolve_dependencies(std::unordered_map<std::string, Assignment>& assignmen
         {
             for (const Dependency& dependency : assignment.depends_on)
             {
-                if (dependency.module_reference && dependency.module_reference != module_reference)
+                if (dependency.module_reference && dependency.module_reference != module.module_reference)
                 {
                     continue;
                 }
 
-                resolve_dependencies(assignment_infos, dependency.name, module_reference, assigned_names, visited_names,
+                resolve_dependencies(assignment_infos, dependency.name, tree, module, assigned_names, visited_names,
                                      ordered_assignment_infos);
             }
         }
@@ -229,8 +229,24 @@ void resolve_dependencies(std::unordered_map<std::string, Assignment>& assignmen
         SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(type(assignment)));
         for (ComponentType& component : sequence.components)
         {
+            if (component.default_value)
+            {
+                for (const Dependency& dependency : depends_on(component.named_type.type))
+                {
+                    resolve_dependencies(assignment_infos, dependency.name, tree, module, assigned_names, visited_names,
+                                         ordered_assignment_infos);
+                }
+
+                if (absl::holds_alternative<DefinedValue>(component.default_value->value_selection) &&
+                    !is_enumerated(resolve_type(tree, module.module_reference, component.named_type).type))
+                {
+                    const DefinedValue& defined = absl::get<DefinedValue>(component.default_value->value_selection);
+                    resolve_dependencies(assignment_infos, defined.reference, tree, module, assigned_names,
+                                         visited_names, ordered_assignment_infos);
+                }
+            }
             // If circular dependancy, use dynamic storage. Else, resolve and use static storage
-            if (component.is_optional && is_circular(depends_on(component.named_type.type)))
+            else if (component.is_optional && is_circular(depends_on(component.named_type.type)))
             {
                 std::cout << "Optional member[" << component.named_type.name << "] of [" << name
                           << "] has circular dependencies, seting dynamic storage policy" << std::endl;
@@ -241,8 +257,8 @@ void resolve_dependencies(std::unordered_map<std::string, Assignment>& assignmen
             {
                 for (const Dependency& dependency : depends_on(component.named_type.type))
                 {
-                    resolve_dependencies(assignment_infos, dependency.name, module_reference, assigned_names,
-                                         visited_names, ordered_assignment_infos);
+                    resolve_dependencies(assignment_infos, dependency.name, tree, module, assigned_names, visited_names,
+                                         ordered_assignment_infos);
                 }
             }
         }
@@ -252,8 +268,24 @@ void resolve_dependencies(std::unordered_map<std::string, Assignment>& assignmen
         SetType& sequence = absl::get<SetType>(absl::get<BuiltinType>(type(assignment)));
         for (ComponentType& component : sequence.components)
         {
+            if (component.default_value)
+            {
+                for (const Dependency& dependency : depends_on(component.named_type.type))
+                {
+                    resolve_dependencies(assignment_infos, dependency.name, tree, module, assigned_names, visited_names,
+                                         ordered_assignment_infos);
+                }
+
+                if (absl::holds_alternative<DefinedValue>(component.default_value->value_selection) &&
+                    !is_enumerated(resolve_type(tree, module.module_reference, component.named_type).type))
+                {
+                    const DefinedValue& defined = absl::get<DefinedValue>(component.default_value->value_selection);
+                    resolve_dependencies(assignment_infos, defined.reference, tree, module, assigned_names,
+                                         visited_names, ordered_assignment_infos);
+                }
+            }
             // If circular dependancy, use dynamic storage. Else, resolve and use static storage
-            if (component.is_optional && is_circular(depends_on(component.named_type.type)))
+            else if (component.is_optional && is_circular(depends_on(component.named_type.type)))
             {
                 std::cout << "Optional member[" << component.named_type.name << "] of [" << name
                           << "] has circular dependencies, seting dynamic storage policy" << std::endl;
@@ -264,8 +296,8 @@ void resolve_dependencies(std::unordered_map<std::string, Assignment>& assignmen
             {
                 for (const Dependency& dependency : depends_on(component.named_type.type))
                 {
-                    resolve_dependencies(assignment_infos, dependency.name, module_reference, assigned_names,
-                                         visited_names, ordered_assignment_infos);
+                    resolve_dependencies(assignment_infos, dependency.name, tree, module, assigned_names, visited_names,
+                                         ordered_assignment_infos);
                 }
             }
         }
@@ -274,12 +306,12 @@ void resolve_dependencies(std::unordered_map<std::string, Assignment>& assignmen
     {
         for (const Dependency& dependency : assignment.depends_on)
         {
-            if (dependency.module_reference && dependency.module_reference != module_reference)
+            if (dependency.module_reference && dependency.module_reference != module.module_reference)
             {
                 continue;
             }
 
-            resolve_dependencies(assignment_infos, dependency.name, module_reference, assigned_names, visited_names,
+            resolve_dependencies(assignment_infos, dependency.name, tree, module, assigned_names, visited_names,
                                  ordered_assignment_infos);
         }
     }
@@ -290,7 +322,8 @@ void resolve_dependencies(std::unordered_map<std::string, Assignment>& assignmen
 
 // Reorder assignments, defining
 // Should be able to detect missing assignments and circular dependencies
-std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments, const std::string& module_reference)
+std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments, const Asn1Tree& tree,
+                                            const Module& module)
 {
     std::unordered_map<std::string, Assignment> assignment_map;
     assignment_map.reserve(assignments.size());
@@ -308,7 +341,7 @@ std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments
 
     for (const Assignment& assignment : assignments)
     {
-        resolve_dependencies(assignment_map, assignment.name, module_reference, assigned_names, visited_names,
+        resolve_dependencies(assignment_map, assignment.name, tree, module, assigned_names, visited_names,
                              ordered_assignments);
     }
 
@@ -480,7 +513,8 @@ std::vector<Assignment> split_imports(const Asn1Tree& tree, std::vector<Assignme
              log_debug(tree, "Importing type " + import + " <- " + module_import.module_reference + "." + import);
 
              assignments.push_back(
-                 Assignment{import, ValueAssignment{DefinedType{module_import.module_reference, import, {}}}, {}, {}});
+                 Assignment{import, ValueAssignment{DefinedType{module_import.module_reference, import, {}}}, {},
+         {}});
          }*/
     }
     return assignments;

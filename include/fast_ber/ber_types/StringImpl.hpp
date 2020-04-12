@@ -31,7 +31,7 @@ class StringImpl
 
     StringImpl(const char* input_data) noexcept { assign(absl::string_view(input_data)); }
     StringImpl(const std::string& input_data) noexcept { assign(absl::string_view(input_data)); }
-    explicit StringImpl(absl::string_view input_data) noexcept { assign(input_data); }
+    StringImpl(absl::string_view input_data) noexcept { assign(input_data); }
     explicit StringImpl(absl::Span<const uint8_t> input_data) noexcept { assign(input_data); }
     explicit StringImpl(BerView view) noexcept { decode(view); }
 
