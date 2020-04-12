@@ -150,6 +150,43 @@ const Assignment& resolve(const Asn1Tree& tree, const std::string& current_modul
     throw std::runtime_error("Reference to undefined object: " + module_reference + "." + defined.type_reference);
 }
 
+NamedType resolve_type(const Asn1Tree& tree, const std::string& current_module_reference,
+                         const DefinedType& original_defined)
+{
+    DefinedType defined = original_defined;
+    std::string module  = current_module_reference;
+    while (true)
+    {
+        assert(std::isupper(defined.type_reference[0]));
+        const Assignment& assignment = resolve(tree, module, defined);
+        if (!is_type(assignment))
+        {
+            throw std::runtime_error("Defined must be a type in this context! " + original_defined.type_reference);
+        }
+        if (is_defined(type(assignment)))
+        {
+            if (defined.module_reference)
+            {
+                module = *defined.module_reference;
+            }
+            defined = absl::get<DefinedType>(type(assignment));
+        }
+        else
+        {
+            return NamedType{assignment.name, type(assignment)};
+        }
+    }
+}
+
+NamedType resolve_type(const Asn1Tree& tree, const std::string& current_module_reference, const NamedType& type_info)
+{
+    if (is_defined(type_info.type))
+    {
+        return resolve_type(tree, current_module_reference, absl::get<DefinedType>(type_info.type));
+    }
+    return type_info;
+}
+
 bool exists(const Asn1Tree&, const Module& module, const std::string& reference)
 {
     for (const Assignment& assignemnt : module.assignments)

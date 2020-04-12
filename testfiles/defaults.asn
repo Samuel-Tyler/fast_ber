@@ -4,11 +4,23 @@ DEFINITIONS EXPLICIT TAGS ::=
 
 BEGIN
 
+defined_int INTEGER           ::= -172803790
+
 SequenceWithDefault ::= SEQUENCE
 {
+    integer INTEGER DEFAULT 88,
     flag    BOOLEAN DEFAULT FALSE,
-    seq     SEQUENCE OF INTEGER,
+    string  OCTET STRING DEFAULT "dog",
+    defined INTEGER DEFAULT defined_int,
+    colour  Colour DEFAULT blue,
     ...
+}
+
+Colour ::= ENUMERATED
+{
+    red,
+    green,
+    blue
 }
 
 END

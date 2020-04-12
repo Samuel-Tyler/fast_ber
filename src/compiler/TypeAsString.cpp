@@ -1,6 +1,9 @@
 #include "fast_ber/compiler/TypeAsString.hpp"
+
 #include "fast_ber/compiler/Identifier.hpp"
 #include "fast_ber/compiler/ResolveType.hpp"
+#include "fast_ber/compiler/ValueAsString.hpp"
+#include "fast_ber/compiler/ValueType.hpp"
 
 #include "absl/container/flat_hash_set.h"
 
@@ -21,6 +24,27 @@ std::string collection_as_string(const Collection& collection, const Module& mod
                                  const std::string& collection_name)
 {
     std::string res = " {\n";
+
+    bool has_defaults;
+    for (const ComponentType& component : collection.components)
+    {
+        if (component.default_value)
+        {
+            std::string name = component.named_type.name;
+            name[0]          = std::toupper(name[0]);
+            res += "    struct DefaultValue" + name + " { constexpr static " +
+                   value_type(component.named_type.type, module, tree, component.named_type.name, {}) +
+                   " get_value() noexcept { return " +
+                   value_as_string(resolve_type(tree, module.module_reference, component.named_type),
+                                   *component.default_value) +
+                   "; } };\n";
+            has_defaults = true;
+        }
+    }
+    if (has_defaults)
+    {
+        res += "\n\n";
+    }
 
     int64_t tag_counter = 0;
 
@@ -62,6 +86,13 @@ std::string collection_as_string(const Collection& collection, const Module& mod
         if (component.is_optional)
         {
             component_type = make_type_optional(component_type, component.optional_storage);
+        }
+        else if (component.default_value)
+        {
+            std::string name = component.named_type.name;
+            name[0]          = std::toupper(name[0]);
+            name             = "DefaultValue" + name;
+            component_type   = "Default<" + component_type + ", " + name + ">";
         }
         res += "    " + component_type + " " + component.named_type.name + ";\n";
         component_types.push_back(component_type);
@@ -522,6 +553,7 @@ std::string type_as_string(const DefinedType& defined_type, const Module& module
     }
     else
     {
+        // const Type& referenced = resolve_type(tree, module.module_reference, defined_type);
         const Type& referenced = type(resolve(tree, module.module_reference, defined_type));
         return assigned_type + "<" + identifier(referenced, module, tree).name() + ">";
     }

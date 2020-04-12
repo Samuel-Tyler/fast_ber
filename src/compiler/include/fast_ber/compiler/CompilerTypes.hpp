@@ -441,10 +441,25 @@ struct CharStringValue
     std::string value;
 };
 
+struct BooleanValue
+{
+    bool value;
+};
+
+struct NullValue
+{
+
+};
+
+struct TimeValue
+{
+    std::string time;
+};
+
 struct Value
 {
     absl::variant<std::vector<Value>, int64_t, std::string, NamedNumber, BitStringValue, HexStringValue,
-                  CharStringValue, DefinedValue>
+                  CharStringValue, DefinedValue, BooleanValue, NullValue, TimeValue, double>
         value_selection;
 };
 

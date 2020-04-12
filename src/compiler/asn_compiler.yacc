@@ -211,9 +211,9 @@
 %type<std::string>       simplestring
 %type<std::string>       xmltstring
 %type<double>            realnumber
-%type<long long>         number
-%type<long long>         negativenumber
-%type<long long>         SignedNumber
+%type<int64_t>           number
+%type<int64_t>           negativenumber
+%type<int64_t>           SignedNumber
 %type<DefinedValue>      DefinedValue
 %type<BuiltinType>       BuiltinType;
 %type<DefinedType>       DefinedType;
@@ -296,6 +296,8 @@
 %type<Value>             Value;
 %type<Value>             SingleValue;
 %type<Value>             ValueWithoutTypeIdentifier;
+%type<BooleanValue>      BooleanValue;
+%type<TimeValue>         TimeValue;
 %type<std::vector<Value>> SequenceOfValues;
 %type<std::string>       Reference;
 %type<std::string>       Symbol;
@@ -1115,7 +1117,9 @@ BooleanType:
 
 BooleanValue:
     TRUE
-|   FALSE;
+    { $$ = {true}; }
+|   FALSE
+    { $$ = {false}; }
 
 IntegerType:
     INTEGER
@@ -1248,16 +1252,14 @@ ComponentType:
     { std::cerr << context.location << " WARNING: unnamed type\n";
       $$ = ComponentType{{gen_anon_member_name(), $1}, true, absl::nullopt, absl::nullopt, StorageMode::static_ }; }
 |   Type DEFAULT SingleValue
-    { $$ = ComponentType{{gen_anon_member_name(), $1}, false, $3, absl::nullopt, StorageMode::static_ }; 
-      feature_not_implemented(context.location, context.asn1_tree, "DEFAULT", "Not yet specifying default. ");
+    { $$ = ComponentType{{gen_anon_member_name(), $1}, false, $3, absl::nullopt, StorageMode::static_ };
       std::cerr << context.location << " WARNING: unnamed type\n"; }
 |   NamedType
     { $$ = ComponentType{$1, false, absl::nullopt, absl::nullopt, StorageMode::static_ }; }
 |   NamedType OPTIONAL
     { $$ = ComponentType{$1, true, absl::nullopt, absl::nullopt, StorageMode::static_ }; }
 |   NamedType DEFAULT SingleValue
-    { $$ = ComponentType{$1, false, $3, absl::nullopt, StorageMode::static_ };
-      feature_not_implemented(context.location, context.asn1_tree, "DEFAULT", "Not yet specifying default. "); }
+    { $$ = ComponentType{$1, false, $3, absl::nullopt, StorageMode::static_ }; }
 |   COMPONENTS OF Type
     { $$ = ComponentType{{}, false, absl::nullopt, $3, StorageMode::static_}; }
 
@@ -1596,16 +1598,26 @@ SubtypeElements:
 
 SingleValue:
     BooleanValue
+    { $$.value_selection = $1; }
 //|   IRIValue
 |   ASN_NULL
+    { $$.value_selection = NullValue{}; }
 |   TimeValue
+    { $$.value_selection = $1; }
 |   bstring
+    { $$.value_selection = $1; }
 |   hstring
+    { $$.value_selection = $1; }
 |   cstring
+    { $$.value_selection = $1; }
 |   GENERIC_IDENTIFIER_UPPERCASE
-|   GENERIC_IDENTIFIER_LOWERCASE
+    { $$.value_selection = $1; }
+|   DefinedValue
+    { $$.value_selection = $1; }
 |   SignedNumber
+    { $$.value_selection = $1; }
 |   realnumber
+    { $$.value_selection = $1; }
 
 ContainedSubtype:
     Includes Type;

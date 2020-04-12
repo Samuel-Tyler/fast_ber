@@ -17,6 +17,10 @@ const Assignment& resolve(const Asn1Tree& tree, const std::string& module_refere
 const Assignment& resolve(const Asn1Tree& tree, const std::string& current_module_reference,
                           const DefinedType& defined);
 
+NamedType resolve_type(const Asn1Tree& tree, const std::string& current_module_reference,
+                      const DefinedType& original_defined);
+NamedType resolve_type(const Asn1Tree& tree, const std::string& current_module_reference, const NamedType& type);
+
 bool exists(const Asn1Tree& tree, const Module& module, const std::string& reference);
 bool exists(const Asn1Tree& tree, const std::string& module_reference, const std::string& reference);
 bool exists(const Asn1Tree& tree, const std::string& current_module_reference, const DefinedType& defined);

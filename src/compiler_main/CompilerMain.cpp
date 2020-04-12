@@ -9,6 +9,8 @@
 #include "fast_ber/compiler/ReorderAssignments.hpp"
 #include "fast_ber/compiler/ResolveType.hpp"
 #include "fast_ber/compiler/TypeAsString.hpp"
+#include "fast_ber/compiler/ValueAsString.hpp"
+#include "fast_ber/compiler/ValueType.hpp"
 
 #include <string>
 #include <unordered_map>
@@ -61,29 +63,6 @@ std::string create_type_assignment(const Assignment& assignment, const Module& m
            "\n";
 }
 
-std::string cpp_value(const HexStringValue& hex)
-{
-    std::string res = "\"";
-    size_t      i   = 0;
-
-    if (hex.value.length() % 2 == 1)
-    {
-        const std::string& byte = std::string(hex.value.begin(), hex.value.begin() + 1);
-        res += "\\";
-        res += std::to_string(std::stoi(byte, nullptr, 16));
-        i++;
-    }
-
-    for (; i < hex.value.length(); i += 2)
-    {
-        const std::string& byte = std::string(hex.value.begin() + i, hex.value.begin() + i + 2);
-        res += "\\";
-        res += std::to_string(std::stoi(byte, nullptr, 16));
-    }
-
-    return res + "\"";
-}
-
 std::string create_assignment(const Asn1Tree& tree, const Module& module, const Assignment& assignment)
 {
     try
@@ -94,89 +73,14 @@ std::string create_assignment(const Asn1Tree& tree, const Module& module, const 
 
             const ValueAssignment& value_assign = absl::get<ValueAssignment>(assignment.specific);
             std::string            result =
-                "static const " + type_as_string(value_assign.type, module, tree) + " " + assignment.name + " = ";
+                "static const " + value_type(value_assign.type, module, tree) + " " + assignment.name + " = ";
 
             const Type& assigned_to_type =
                 (is_defined(value_assign.type))
                     ? type(resolve(tree, module.module_reference, absl::get<DefinedType>(value_assign.type)))
                     : value_assign.type;
-            if (is_oid(assigned_to_type))
-            {
-                result += "ObjectIdentifier<>{";
-                try
-                {
-                    const ObjectIdComponents& object_id = ObjectIdComponents(value_assign.value);
 
-                    for (size_t i = 0; i < object_id.components.size(); i++)
-                    {
-                        if (object_id.components[i].value)
-                        {
-                            result += std::to_string(*object_id.components[i].value);
-                        }
-                        else
-                        {
-                            result += std::to_string(0);
-                        }
-
-                        if (i < object_id.components.size() - 1)
-                        {
-                            result += ", ";
-                        }
-                    }
-                }
-                catch (const std::runtime_error& e)
-                {
-                    std::cerr << "Warning: Not an object identifier : " + assignment.name + std::string(" : ") +
-                                     e.what()
-                              << std::endl;
-                    return "";
-                }
-                result += "}";
-            }
-            else if (is_bit_string(assigned_to_type))
-            {
-                if (absl::holds_alternative<BitStringValue>(value_assign.value.value_selection))
-                {
-                    const BitStringValue& bstring = absl::get<BitStringValue>(value_assign.value.value_selection);
-                    (void)bstring; // TODO: convert bstring to cstring
-                    result += "\"\"";
-                }
-                else
-                {
-                    result += "\"\"";
-                }
-            }
-            else if (absl::holds_alternative<std::string>(value_assign.value.value_selection))
-            {
-                const std::string& string = absl::get<std::string>(value_assign.value.value_selection);
-                result += string;
-            }
-            else if (absl::holds_alternative<HexStringValue>(value_assign.value.value_selection))
-            {
-                const HexStringValue& hstring = absl::get<HexStringValue>(value_assign.value.value_selection);
-                result += cpp_value(hstring);
-            }
-            else if (absl::holds_alternative<CharStringValue>(value_assign.value.value_selection))
-            {
-                const CharStringValue& cstring = absl::get<CharStringValue>(value_assign.value.value_selection);
-                result += cstring.value;
-            }
-            else if (absl::holds_alternative<int64_t>(value_assign.value.value_selection))
-            {
-                const int64_t integer = absl::get<int64_t>(value_assign.value.value_selection);
-                result += std::to_string(integer);
-            }
-            else if (absl::holds_alternative<DefinedValue>(value_assign.value.value_selection))
-            {
-                const DefinedValue& defined = absl::get<DefinedValue>(value_assign.value.value_selection);
-                result += defined.reference;
-            }
-            else
-            {
-                throw std::runtime_error("Strange value assign");
-            }
-
-            result += ";\n";
+            result += value_as_string(NamedType{assignment.name, assigned_to_type}, value_assign.value) + ";\n";
             return result;
         }
         else if (absl::holds_alternative<TypeAssignment>(assignment.specific))
@@ -413,7 +317,14 @@ create_collection_decode_functions(const std::vector<std::string>& namespaces, c
             res += "    }\n";
             res += "    else\n";
             res += "    {\n";
-            res += "        this->" + component.named_type.name + " = fast_ber::empty;\n";
+            if (component.is_optional)
+            {
+                res += "        this->" + component.named_type.name + " = fast_ber::empty;\n";
+            }
+            else
+            {
+                res += "        this->" + component.named_type.name + ".set_to_default();\n";
+            }
             res += "    }\n";
         }
         else
@@ -842,7 +753,7 @@ int main(int argc, char** argv)
 
         for (auto& module : context.asn1_tree.modules)
         {
-            module.assignments = reorder_assignments(module.assignments, module.module_reference);
+            module.assignments = reorder_assignments(module.assignments, context.asn1_tree, module);
         }
 
         output_file << create_output_file(context.asn1_tree, fwd_filame, detail_filame);
