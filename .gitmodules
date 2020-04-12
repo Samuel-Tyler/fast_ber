@@ -20,3 +20,6 @@
 [submodule "3rd_party/--force"]
 	path = 3rd_party/--force
 	url = https://github.com/vlm/asn1c.git
+[submodule "3rd_party/run-clang-format"]
+	path = 3rd_party/run-clang-format
+	url = git@github.com:Sarcasm/run-clang-format.git
