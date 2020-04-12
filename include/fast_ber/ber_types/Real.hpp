@@ -661,7 +661,8 @@ inline Real<Identifier>& Real<Identifier>::operator=(const Real<Identifier2>& rh
 template <typename Identifier>
 inline void Real<Identifier>::assign(double val) noexcept
 {
-    m_contents.resize_content(encode_real(absl::Span<uint8_t>(m_contents.content_data(), detail::MaxEncodedLength), val));
+    m_contents.resize_content(
+        encode_real(absl::Span<uint8_t>(m_contents.content_data(), detail::MaxEncodedLength), val));
 }
 
 template <typename Identifier>
