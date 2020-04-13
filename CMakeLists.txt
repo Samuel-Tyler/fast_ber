@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(fast_ber VERSION "0.3")
+project(fast_ber VERSION "0.4")
 
 if (NOT DEFINED CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 11)
