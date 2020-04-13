@@ -21,22 +21,6 @@ namespace fast_ber
 namespace detail
 {
 constexpr size_t MaxEncodedLength = 100;
-
-/*enum class RealEncoding
-{
-    binary,
-    decimal,
-    special_real_value
-};
-
-enum class SpecialValues : uint8_t
-{
-    infinity       = 0b01000000,
-    minus_infinity = 0b01000001,
-    not_a_number   = 0b01000010,
-    minus_zero     = 0b01000011
-};*/
-
 } // namespace detail
 
 inline bool   decode_real(absl::Span<const uint8_t> input, double& output) noexcept;
@@ -71,38 +55,7 @@ class Real
     void assign(double val) noexcept;
     void assign(const Real& rhs) noexcept;
 
-    /* Inspired from https://www.embeddeduse.com/2019/08/26/qt-compare-two-floats/ */
-    bool operator==(const Real& rhs) const noexcept
-    {
-        /* Cannot compare NAN */
-        if (std::isnan(this->value()) || std::isnan(rhs.value()))
-        {
-            return false;
-        }
-
-        /* According to https://www.gnu.org/software/libc/manual/html_node/Infinity-and-NaN.html
-         * In comparison operations, positive infinity is larger than all values except itself and NaN */
-        if (std::isinf(this->value()) && std::isinf(rhs.value()))
-        {
-            if (std::signbit(this->value()) == std::signbit(rhs.value()))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        if (std::abs(this->value() - rhs.value()) <= std::numeric_limits<double>::epsilon())
-        {
-            return true;
-        }
-
-        return std::abs(this->value() - rhs.value()) <=
-               std::numeric_limits<double>::epsilon() * std::max(std::abs(this->value()), std::abs(rhs.value()));
-    }
-
+    bool operator==(const Real& rhs) const noexcept;
     bool operator!=(const Real& rhs) const noexcept { return !(*this == rhs); }
 
     size_t       encoded_length() const noexcept;
@@ -188,20 +141,20 @@ inline bool decode_real(absl::Span<const uint8_t> input, double& output) noexcep
         output = 0.0;
         res    = true;
     }
-    /* X690 Clause 8.5.9: it is a Special Real Value */
-    else if (input[0] & 0x40)
-    {
-        res = decode_real_special(input, output);
-    }
     /* X690 Clause 8.5.7: it is a Binary value */
-    else if (input[0] & 0x80)
+    else if ((input[0] & 0x80) >> 7)
     {
         res = decode_real_binary(input, output);
     }
     /* X690 Clause 8.5.8: it is a Decimal value */
-    else if ((input[0] & 0xC0) == 0)
+    else if ((input[0] & 0xC0) >> 6 == 0)
     {
         res = decode_real_decimal(input, output);
+    }
+    /* X690 Clause 8.5.9: it is a Special Real Value */
+    else if ((input[0] & 0xC0) >> 6 == 1)
+    {
+        res = decode_real_special(input, output);
     }
 
     return res;
@@ -263,7 +216,7 @@ inline bool decode_real_binary(absl::Span<const uint8_t> input, double& output) 
         return false;
     }
 
-    size_t exponent_len    = (input[0] & 0x3) + 1;
+    size_t exponent_len    = (input[0] & 0x03) + 1;
     size_t exponent_offset = 1;
 
     /* X690 Clause 8.5.7.4.d */
@@ -283,7 +236,7 @@ inline bool decode_real_binary(absl::Span<const uint8_t> input, double& output) 
     int exponent = (input[exponent_offset] & 0x80) ? -1 : 0;
 
     /* X690 Clause 8.5.7.1 */
-    int mantissa_sign = (input[0] & 0x40) >> 6;
+    int mantissa_sign = ((input[0] & 0x40) >> 6) & 0x01;
 
     /* X690 Clause 8.5.7.2 */
     int base = (input[0] & 0x30) >> 4;
@@ -511,12 +464,13 @@ inline bool decode_real_decimal(absl::Span<const uint8_t> input, double& output)
 
 inline size_t encode_real(absl::Span<uint8_t> output, double input) noexcept
 {
-    std::array<uint8_t, sizeof(double)> buffer;
+    std::array<uint8_t, sizeof(double) + 1> buffer;
     std::memcpy(buffer.data(), &input, sizeof(double));
+    buffer.back() = 0;
 
 #ifdef ABSL_IS_LITTLE_ENDIAN
     /* Reverse bytes if needed */
-    std::reverse(buffer.begin(), buffer.end());
+    std::reverse(buffer.begin(), buffer.end() - 1);
 #endif
 
     unsigned int sign           = buffer[0] >> 7;
@@ -567,9 +521,8 @@ inline size_t encode_real(absl::Span<uint8_t> output, double input) noexcept
         }
         else
         {
-            /* Denormalized value */
-            buffer[8] = 0;
-            for (size_t i = 1; i < buffer.size(); i++)
+            /* Denormalized value - shift left 1 bit at a time */
+            for (size_t i = 1; i < buffer.size() - 1; ++i)
             {
                 unsigned int current_byte_shifted = static_cast<unsigned int>(buffer[i]) << 8;
                 buffer[i]                         = (current_byte_shifted | buffer[i + 1]) >> 7;
@@ -668,6 +621,35 @@ template <typename Identifier>
 inline void Real<Identifier>::assign(const Real<Identifier>& rhs) noexcept
 {
     m_contents = rhs.m_contents;
+}
+
+template <typename Identifier>
+inline bool Real<Identifier>::operator==(const Real& rhs) const noexcept
+{
+    /* Inspired from https://www.embeddeduse.com/2019/08/26/qt-compare-two-floats/ */
+    const double lhs_value = this->value();
+    const double rhs_value = rhs.value();
+
+    /* Cannot compare NAN */
+    if (std::isnan(lhs_value) || std::isnan(rhs_value))
+    {
+        return false;
+    }
+
+    /* According to https://www.gnu.org/software/libc/manual/html_node/Infinity-and-NaN.html
+     * In comparison operations, positive infinity is larger than all values except itself and NaN */
+    if (std::isinf(lhs_value) && std::isinf(rhs_value))
+    {
+        return std::signbit(lhs_value) == std::signbit(rhs_value);
+    }
+
+    if (std::abs(lhs_value - rhs_value) <= std::numeric_limits<double>::epsilon())
+    {
+        return true;
+    }
+
+    return std::abs(lhs_value - rhs_value) <=
+           std::numeric_limits<double>::epsilon() * std::max(std::abs(lhs_value), std::abs(rhs_value));
 }
 
 template <typename Identifier>

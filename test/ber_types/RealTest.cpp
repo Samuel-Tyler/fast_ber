@@ -59,13 +59,17 @@ struct TestData
 
 TEST_CASE("Real: Decoding")
 {
-    // todo:
-    // std::numeric_limits<double>::infinity()
-    // -std::numeric_limits<double>::infinity()
-    // -0.0
-
     std::vector<TestData> test_data = {{{0x09, 0x00}, 0.0},
-                                       {{0x09, 0x08, 0x03, 0x31, 0x32, 0x33, 0x2e, 0x45, 0x2d, 0x33}, 0.123}};
+                                       {{0x09, 0x08, 0x03, 0x31, 0x32, 0x33, 0x2e, 0x45, 0x2d, 0x33}, 0.123},
+                                       {{0x09, 0x01, 0x40}, std::numeric_limits<double>::infinity()},
+                                       {{0x09, 0x01, 0x41}, -std::numeric_limits<double>::infinity()},
+                                       {{0x09, 0x01, 0x43}, -0.0},
+                                       {{0x09, 0x05, 0x01, '0', '0', '0', '0'}, 0},
+                                       {{0x09, 0x05, 0x01, '2', '0', '9', '4'}, 2094},
+                                       {{0x09, 0x06, 0x01, '-', '2', '0', '9', '4'}, -2094},
+                                       {{0x09, 0x06, 0x01, '+', '4', '3', '2', '1'}, 4321},
+                                       {{0x09, 0x07, 0x02, '3', '2', '1', ',', '5', '4'}, 321.54},
+                                       {{0x09, 0x08, 0x03, '+', '6', '.', '5', 'e', '3', '0'}, 6.5e30}};
 
     for (TestData test : test_data)
     {
@@ -75,17 +79,6 @@ TEST_CASE("Real: Decoding")
         REQUIRE(res.success);
         REQUIRE(r == test.value);
     }
-}
-
-TEST_CASE("Real: Assign from raw")
-{
-    fast_ber::Real<>        r(100);
-    std::array<uint8_t, 11> test_data{0x09, 0x09, 0x80, 0xd8, 0x12, 0x34, 0x00, 0x00, 0x00, 0x00, 0x00};
-
-    fast_ber::DecodeResult decoded_res =
-        r.decode(fast_ber::BerView(absl::MakeSpan(test_data.data(), test_data.size())));
-    REQUIRE(decoded_res.success);
-    REQUIRE(r == 0x1234);
 }
 
 TEST_CASE("Real: Default value") { REQUIRE(fast_ber::Real<>() == 0); }
