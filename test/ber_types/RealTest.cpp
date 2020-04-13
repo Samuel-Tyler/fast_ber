@@ -102,7 +102,7 @@ TEST_CASE("Real: Tagging")
 TEST_CASE("Default: Serialize")
 {
     std::stringstream ss;
-    fast_ber::Real<>  r = -16;
+    fast_ber::Real<>  r = 0.5;
 
     ss << r;
     REQUIRE(ss.str() == "0.5");
