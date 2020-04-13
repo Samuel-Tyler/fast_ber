@@ -3,7 +3,9 @@
 #include "absl/types/optional.h"
 
 #include <catch2/catch.hpp>
+
 #include <limits>
+#include <sstream>
 
 TEST_CASE("Real: Construction from double")
 {
@@ -95,4 +97,13 @@ TEST_CASE("Real: Tagging")
     static_assert(std::is_same<fast_ber::Identifier<fast_ber::Real<>>, DefaultTag>::value, "Tagged Real");
     static_assert(std::is_same<fast_ber::Identifier<TaggedReal>, Tag>::value, "Tagged Real");
     static_assert(std::is_same<fast_ber::Identifier<ExplicitTaggedReal>, ExplicitTag>::value, "Tagged Real");
+}
+
+TEST_CASE("Default: Serialize")
+{
+    std::stringstream ss;
+    fast_ber::Real<>  r = -16;
+
+    ss << r;
+    REQUIRE(ss.str() == "0.5");
 }

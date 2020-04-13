@@ -107,10 +107,9 @@ std::string value_type(const OctetStringType&, const Module&, const Asn1Tree&, c
 {
     return "absl::string_view";
 }
-std::string value_type(const RealType&, const Module&, const Asn1Tree&, const std::string&,
-                       const std::string& identifier_override)
+std::string value_type(const RealType&, const Module&, const Asn1Tree&, const std::string&, const std::string&)
 {
-    return "Real" + identifier_template_params(identifier_override);
+    return "double";
 }
 std::string value_type(const RelativeIRIType&, const Module&, const Asn1Tree&, const std::string&,
                        const std::string& identifier_override)

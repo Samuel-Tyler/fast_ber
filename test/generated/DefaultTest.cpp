@@ -14,12 +14,14 @@ TEST_CASE("Default: Generated Defaults")
     REQUIRE(s.string == "dog");
     REQUIRE(s.defined == -172803790);
     REQUIRE(s.colour == fast_ber::Defaults::ColourValues::blue);
+    REQUIRE(s.real == 5523432.12323);
 
     REQUIRE(s.integer.is_default());
     REQUIRE(s.flag.is_default());
     REQUIRE(s.string.is_default());
     REQUIRE(s.defined.is_default());
     REQUIRE(s.colour.is_default());
+    REQUIRE(s.real.is_default());
 }
 
 TEST_CASE("Default: Encode")
@@ -36,13 +38,14 @@ TEST_CASE("Default: Encode")
 TEST_CASE("Default: Decode")
 {
     std::array<std::uint8_t, 2>               buffer{0x30, 0x00};
-    fast_ber::Defaults::SequenceWithDefault<> s{20, true, "cat", -10, fast_ber::Defaults::ColourValues::red};
+    fast_ber::Defaults::SequenceWithDefault<> s{20, true, "cat", -10, fast_ber::Defaults::ColourValues::red, 25.0};
 
     REQUIRE(!s.integer.is_default());
     REQUIRE(!s.flag.is_default());
     REQUIRE(!s.string.is_default());
     REQUIRE(!s.defined.is_default());
     REQUIRE(!s.colour.is_default());
+    REQUIRE(!s.real.is_default());
 
     fast_ber::DecodeResult decode_result = fast_ber::decode(absl::Span<const uint8_t>(buffer), s);
 
@@ -53,13 +56,15 @@ TEST_CASE("Default: Decode")
     REQUIRE(s.string.is_default());
     REQUIRE(s.defined.is_default());
     REQUIRE(s.colour.is_default());
+    REQUIRE(s.real.is_default());
 }
 
 TEST_CASE("Default: Serialize")
 {
     std::stringstream                         ss;
-    fast_ber::Defaults::SequenceWithDefault<> s{{}, true, {}, -10, fast_ber::Defaults::ColourValues::red};
+    fast_ber::Defaults::SequenceWithDefault<> s{{}, true, {}, -10, fast_ber::Defaults::ColourValues::red, -16.0};
 
     ss << s;
-    REQUIRE(ss.str() == R"({"integer" : 88, "flag" : true, "string" : "dog", "defined" : -10, "colour" : "red"})");
+    REQUIRE(ss.str() ==
+            R"({"integer" : 88, "flag" : true, "string" : "dog", "defined" : -10, "colour" : "red", "real" : -16})");
 }
