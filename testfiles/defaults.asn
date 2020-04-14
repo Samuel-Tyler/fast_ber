@@ -13,6 +13,7 @@ SequenceWithDefault ::= SEQUENCE
     string  OCTET STRING DEFAULT "dog",
     defined INTEGER DEFAULT defined_int,
     colour  Colour DEFAULT blue,
+    real    REAL   DEFAULT 5523432.12323,
     ...
 }
 

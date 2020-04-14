@@ -83,6 +83,7 @@ TEST_CASE("Component Performance: Encode")
     component_benchmark_encode(fast_ber::Default<fast_ber::OctetString<>, StringDefault>("Test string!"),
                                "Default OctetString");
     component_benchmark_encode(fast_ber::Null<>(), "Null");
+    component_benchmark_encode(fast_ber::Real<>(0.333333333333333314829616256247390992939472198486328125), "Real");
     component_benchmark_encode(fast_ber::ObjectIdentifier<>(fast_ber::ObjectIdentifierComponents{1, 2, 840, 113549}),
                                "ObjectIdentifier");
     component_benchmark_encode(fast_ber::Optional<fast_ber::OctetString<>>("hello!"), "Optional (String)");
@@ -110,6 +111,7 @@ TEST_CASE("Component Performance: Decode")
     component_benchmark_decode(fast_ber::Default<fast_ber::OctetString<>, StringDefault>("Test string!"),
                                "Default OctetString");
     component_benchmark_decode(fast_ber::Null<>(), "Null");
+    component_benchmark_decode(fast_ber::Real<>(0.333333333333333314829616256247390992939472198486328125), "Real");
     component_benchmark_decode(fast_ber::ObjectIdentifier<>(fast_ber::ObjectIdentifierComponents{1, 2, 840, 113549}),
                                "ObjectIdentifier");
     component_benchmark_decode(fast_ber::Optional<fast_ber::OctetString<>>("hello!"), "Optional (String)");
@@ -137,6 +139,7 @@ TEST_CASE("Component Performance: Object Construction")
     component_benchmark_construct<fast_ber::Default<fast_ber::OctetString<>, StringDefault>>("Test string!",
                                                                                              "Default String");
     component_benchmark_construct<fast_ber::Null<>>(fast_ber::Null<>{}, "Null");
+    component_benchmark_construct<fast_ber::Real<>>(0.333333333333333314829616256247390992939472198486328125, "Real");
     component_benchmark_construct<fast_ber::ObjectIdentifier<>>(fast_ber::ObjectIdentifierComponents{1, 2, 840, 113549},
                                                                 "ObjectIdentifier");
     component_benchmark_construct<fast_ber::Optional<fast_ber::OctetString<>>>("hello!", "Optional (String)");
@@ -160,6 +163,7 @@ TEST_CASE("Component Performance: Default Construction")
     component_benchmark_default_construct<fast_ber::OctetString<>>("OctetString");
     component_benchmark_default_construct<fast_ber::Default<fast_ber::OctetString<>, StringDefault>>("Default Str");
     component_benchmark_default_construct<fast_ber::Null<>>("Null");
+    component_benchmark_default_construct<fast_ber::Real<>>("Real");
     component_benchmark_default_construct<fast_ber::ObjectIdentifier<>>("ObjectId");
     component_benchmark_default_construct<fast_ber::Optional<fast_ber::Integer<>>>("Optional");
     component_benchmark_default_construct<
