@@ -18,12 +18,6 @@ matrix:
           packages:
             - bison
 
-    - env: BUILD_TYPE=Release CXX_STANDARD=11
-      compiler: clang
-
-    - env: BUILD_TYPE=Release CXX_STANDARD=11
-      compiler: gcc
-
     - env: BUILD_TYPE=Release CXX_STANDARD=17
       compiler: clang
       dist: bionic
