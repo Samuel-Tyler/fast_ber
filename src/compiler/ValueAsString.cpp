@@ -116,6 +116,11 @@ std::string value_as_string(const NamedType& value_type, const Value& value)
         const BooleanValue& boolean = absl::get<BooleanValue>(value.value_selection);
         result += (boolean.value) ? "true" : "false";
     }
+    else if (absl::holds_alternative<double>(value.value_selection))
+    {
+        const double& real = absl::get<double>(value.value_selection);
+        result += std::to_string(real);
+    }
     else
     {
         throw std::runtime_error("Strange value assign");
