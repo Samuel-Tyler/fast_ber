@@ -1,3 +1,7 @@
+branches:
+  only:
+    - master
+
 platform:
   - x64
 
@@ -16,11 +20,10 @@ before_build:
   - git submodule update --init
   - mkdir build
   - cd build
-    
+
 build_script:
   - cmake .. -DCMAKE_BUILD_TYPE=Release -G "NMake Makefiles"
   - cmake --build . --config Release
 
 test_script:
-  - ctest -C Release -j 8
-  
+  - ctest -C Release -j 4

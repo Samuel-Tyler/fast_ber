@@ -32,9 +32,13 @@ matrix:
       compiler: gcc
       dist: bionic
 
+branches:
+  only:
+    - master
+
 script:
   - mkdir build
   - cd build
   - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_STANDARD=$CXX_STANDARD
-  - cmake --build . -- -j8
-  - ctest
+  - cmake --build . -- -j4
+  - ctest -j4
