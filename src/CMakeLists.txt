@@ -39,8 +39,8 @@ target_include_directories(${PROJECT_NAME}_compiler_lib PUBLIC
                            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/compiler/include>
                            ${CMAKE_CURRENT_BINARY_DIR})
 
-target_link_libraries(fast_ber_lib ${ABSEIL_LIBS})
-target_link_libraries(fast_ber_compiler_lib ${ABSEIL_LIBS})
+target_link_libraries(fast_ber_lib PUBLIC ${ABSEIL_LIBS})
+target_link_libraries(fast_ber_compiler_lib PUBLIC ${ABSEIL_LIBS})
 target_link_libraries(${PROJECT_NAME}_compiler fast_ber_compiler_lib)
 target_link_libraries(${PROJECT_NAME}_view fast_ber_lib)
 

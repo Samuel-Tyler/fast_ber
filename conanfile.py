@@ -12,8 +12,8 @@ class FastberConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False]}
     default_options = {"shared": False}
-    generators = "cmake"
-    requires = "abseil/20181200@bincrafters/stable"
+    generators = ("cmake", "cmake_find_package_multi")
+    requires = "abseil/20200205"
     scm = {"type": "git", "url": url, "revision": "devel", "subfolder": name}
 
     def build(self):
