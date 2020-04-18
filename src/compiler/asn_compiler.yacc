@@ -1914,7 +1914,7 @@ re2c:define:YYCURSOR = "context.cursor";
                         { context.location.columns(context.cursor - start); return yylex(context); }
 "--" ([\-]?[^\r\n\-])*[\-]?
                         { context.location.columns(context.cursor - start); return yylex(context); }
-"/*" ([^\*]|[\*][^/])* "*/"
+"/*" ([^\*]|([\*]+[^\*\/]))*[\*]+ "/"
                         { for (char c: std::string(start, context.cursor)) { context.location.columns(); if (c == '\n') context.location.lines(); } return yylex(context); }
 
 // Identifiers
