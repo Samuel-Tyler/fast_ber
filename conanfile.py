@@ -29,8 +29,8 @@ class FastberConan(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
-        self.cpp_info.names["cmake_find_package"] = "fast_ber"
-        self.cpp_info.names["cmake_find_package_multi"] = "fast_ber"
+#        self.cpp_info.names["cmake_find_package"] = "fast_ber"
+#        self.cpp_info.names["cmake_find_package_multi"] = "fast_ber"
         self.cpp_info.build_modules.append("lib/fast_ber/fast_ber_generate.cmake")
         self.env_info.PATH = os.path.join(self.package_folder, "bin")
 
