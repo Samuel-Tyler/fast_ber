@@ -27,7 +27,7 @@ endif()
 
 
 aux_source_directory(compiler SRC_LIST)
-add_library(fast_ber_lib STATIC util/BerView.cpp)
+add_library(fast_ber_lib STATIC util/BerView.cpp ber_types/Real.cpp)
 add_library(fast_ber_compiler_lib STATIC ${SRC_LIST} ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp)
 add_executable(fast_ber_compiler compiler_main/CompilerMain.cpp)
 add_executable(fast_ber_view view/view.cpp)

@@ -13,7 +13,6 @@
 #include <cmath>
 #include <cstdint>
 #include <limits>
-#include <regex>
 
 namespace fast_ber
 {
@@ -26,13 +25,9 @@ constexpr size_t MaxEncodedLength = 100;
 inline bool   decode_real(absl::Span<const uint8_t> input, double& output) noexcept;
 inline bool   decode_real_special(absl::Span<const uint8_t> input, double& output) noexcept;
 inline bool   decode_real_binary(absl::Span<const uint8_t> input, double& output) noexcept;
-inline bool   decode_real_decimal(absl::Span<const uint8_t> input, double& output) noexcept;
+bool          decode_real_decimal(absl::Span<const uint8_t> input, double& output) noexcept; // In .cpp due to <regex>
 inline bool   check_real_binary(absl::Span<const uint8_t> input) noexcept;
 inline size_t encode_real(absl::Span<uint8_t> output, double input) noexcept;
-
-static const std::regex iso_6093_nr1{"^[ ]*[+-]?[0-9]+$"};
-static const std::regex iso_6093_nr2{"^[ ]*[+-]?([0-9]+[\\.\\,]{1}[0-9]*|[0-9]*[\\.\\,]{1}[0-9]+)$"};
-static const std::regex iso_6093_nr3{"^[ ]*[+-]?([0-9]+[\\.\\,]{1}[0-9]*|[0-9]*[\\.\\,]{1}[0-9]+)[Ee][+-]?[0-9]+$"};
 
 template <typename Identifier = ExplicitId<UniversalTag::real>>
 class Real
@@ -435,31 +430,6 @@ inline bool decode_real_binary(absl::Span<const uint8_t> input, double& output) 
 
     memcpy(&output, double_bytes.data(), sizeof(double));
     return true;
-}
-
-/**
- * Decodes a real decimal value
- * @param input BER encoded real decimal value
- * @param output decoded decimal value
- * @return true on success, false on failure
- */
-inline bool decode_real_decimal(absl::Span<const uint8_t> input, double& output) noexcept
-{
-    std::string iso_6093_value(reinterpret_cast<const char*>(&input[1]), input.length() - 1);
-
-    /* Check that string matches the iso 6093 NR1/NR2/NR3 forms */
-    if (std::regex_match(iso_6093_value, iso_6093_nr1) || std::regex_match(iso_6093_value, iso_6093_nr2) ||
-        std::regex_match(iso_6093_value, iso_6093_nr3))
-    {
-        /* Replace potential comma by a dot */
-        std::replace(iso_6093_value.begin(), iso_6093_value.end(), ',', '.');
-
-        return absl::SimpleAtod(iso_6093_value, &output);
-    }
-    else
-    {
-        return false;
-    }
 }
 
 inline size_t encode_real(absl::Span<uint8_t> output, double input) noexcept
