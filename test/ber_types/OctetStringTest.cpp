@@ -59,7 +59,7 @@ TEST_CASE("OctetString: Construction from const char*")
 TEST_CASE("OctetString: Construction from sample packet")
 {
     fast_ber::OctetString<> octet_string;
-    octet_string.assign_ber(hello_world_packet);
+    octet_string.decode(fast_ber::BerView(hello_world_packet));
     REQUIRE(octet_string.value() == "Hello world");
 }
 

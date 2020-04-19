@@ -1,4 +1,4 @@
-# fast_ber ![version](https://img.shields.io/github/tag/samuel-tyler/fast_ber.svg) [![Appveyor status](https://ci.appveyor.com/api/projects/status/github/Samuel-Tyler/fast_ber?branch=master&svg=true)](https://ci.appveyor.com/project/Samuel-Tyler/fast-ber) [![Travis status](https://api.travis-ci.com/Samuel-Tyler/fast_ber.svg?branch=master)](https://travis-ci.com/Samuel-Tyler/fast_ber) ![C++11](https://img.shields.io/badge/language-C%2B%2B11-green.svg) ![C++14](https://img.shields.io/badge/language-C%2B%2B14-green.svg) ![C++17](https://img.shields.io/badge/language-C%2B%2B17-green.svg) ![C++20](https://img.shields.io/badge/language-C%2B%2B20-green.svg)
+# fast_ber ![version](https://img.shields.io/github/tag/samuel-tyler/fast_ber.svg) [![Appveyor status](https://ci.appveyor.com/api/projects/status/github/Samuel-Tyler/fast_ber?branch=master&svg=true)](https://ci.appveyor.com/project/Samuel-Tyler/fast-ber) [![Travis status](https://api.travis-ci.com/Samuel-Tyler/fast_ber.svg?branch=master)](https://travis-ci.com/Samuel-Tyler/fast_ber) ![C++11](https://img.shields.io/badge/language-C%2B%2B11-green.svg) ![C++14](https://img.shields.io/badge/language-C%2B%2B14-green.svg) ![C++17](https://img.shields.io/badge/language-C%2B%2B17-green.svg) ![C++20](https://img.shields.io/badge/language-C%2B%2B20-green.svg) ![clang-format](https://github.com/Samuel-Tyler/fast_ber/workflows/clang-format/badge.svg)
 A performant ASN.1 BER encoding and decoding library written in C++11
 
 ## Introduction
@@ -8,7 +8,6 @@ fast_ber is a small, lightweight library for BER encoding and decoding. Fast ber
 - Simple, modern C++ interface
 - ASN.1 sequences are represented as POD structs - no private members or complex getters and setters
 - No exceptions, no RTTI and limited memory allocations (everything is small buffer optimised)
-- Header only
 - View classes are provided for zero copy decoding
 - Interfaces mimic STL types such as std::string, std::vector and std::optional
 
@@ -18,13 +17,27 @@ fast_ber is a small, lightweight library for BER encoding and decoding. Fast ber
 - No circular data structures
 - Size and value constraints are not implemented
 
+### Tools
+fast_ber_view can be used to dump the contents of a BER PDU, without requiring a schema.
+```
+./build/src/fast_ber_view ./build_gcc/sample/pokemon.ber | jq
+{
+  "length": 125,
+  "identifier": {
+    "class": "Universal",
+    "tag": "Sequence / Sequence Of"
+  },
+  "content": ...
+}
+```
+
 ## Call for Test Data
 Test data is wanted to improve this project! If you have any test ASN.1 specs or BER files please share them. More test data will improve parsing and help find any issues with the library.
 
 ## Example Project
 `fast_ber` is designed to be easy to consume via CMake. This is demonstrated in [`fast_ber_ldap3`](https://github.com/Samuel-Tyler/fast_ber_ldap3), an example project using `fast_ber` to create and dissect LDAP3 certificates.
 
-## Usage
+## Compiler Usage
 1. Build the compiler:
 ```
 git submodule update --init

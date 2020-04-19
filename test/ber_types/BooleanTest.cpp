@@ -27,7 +27,7 @@ TEST_CASE("Boolean: Encoding false")
     std::array<uint8_t, 100> buffer   = {};
     std::array<uint8_t, 3>   expected = {0x01, 0x01, 0xFF};
 
-    size_t size = encode(absl::MakeSpan(buffer.data(), buffer.size()), test).length;
+    size_t size = test.encode(absl::MakeSpan(buffer.data(), buffer.size())).length;
 
     REQUIRE(size == 3);
     REQUIRE(absl::MakeSpan(buffer.data(), 3) == absl::MakeSpan(expected));
@@ -39,7 +39,7 @@ TEST_CASE("Boolean: Encoding true")
     std::array<uint8_t, 100> buffer   = {};
     std::array<uint8_t, 3>   expected = {0x01, 0x01, 0x00};
 
-    size_t size = encode(absl::MakeSpan(buffer.data(), buffer.size()), test).length;
+    size_t size = test.encode(absl::MakeSpan(buffer.data(), buffer.size())).length;
     REQUIRE(size == 3);
     REQUIRE(absl::MakeSpan(buffer.data(), 3) == absl::MakeSpan(expected));
 }

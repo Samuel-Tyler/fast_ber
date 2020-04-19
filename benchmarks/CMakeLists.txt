@@ -1,5 +1,6 @@
 project(fast_ber_benchmarks)
 
+include(${CMAKE_SOURCE_DIR}/cmake/fast_ber_generate.cmake)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/autogen)
 
 add_custom_command(
@@ -10,14 +11,6 @@ add_custom_command(
 if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
     add_compile_options("-w") # Silence spam from asn1c build
 endif()
-
-function(fast_ber_generate input_file output_name)
-    add_custom_command(
-        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}.hpp
-        COMMAND fast_ber_compiler ${input_file} ${CMAKE_CURRENT_BINARY_DIR}/autogen/${output_name}
-        DEPENDS fast_ber_compiler ${input_file}
-    )
-endfunction(fast_ber_generate)
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c)
 function(asn1c_generate input_file)
@@ -43,6 +36,6 @@ endif()
 target_include_directories(${PROJECT_NAME} PRIVATE SYSTEM ${CMAKE_SOURCE_DIR}/3rd_party/Catch2/single_include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn1c)
-target_link_libraries(${PROJECT_NAME} fast_ber_lib absl::strings)
+target_link_libraries(${PROJECT_NAME} fast_ber_lib)
 
 add_test(NAME fast_ber_benchmarks COMMAND ${PROJECT_NAME})

@@ -2,11 +2,11 @@
 
 #include <catch2/catch.hpp>
 
+#include <utility>
 #include <vector>
 
 struct TestPacket
 {
-    TestPacket(const std::vector<uint8_t>& d, fast_ber::Tag t, uint64_t l) noexcept : data(d), tag(t), length(l) {}
     std::vector<uint8_t> data;
     fast_ber::Tag        tag;
     uint64_t             length;

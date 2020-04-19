@@ -15,4 +15,23 @@ CircularSequenceOf1 ::= SEQUENCE {
 
 CircularSequenceOf2 ::= SEQUENCE OF CircularSequenceOf1
 
+CircularChoice1 ::= CHOICE {
+    int INTEGER,
+    choice [1] EXPLICIT CircularChoice2,
+    seq SEQUENCE { inner SEQUENCE { number MyInt } },
+    enum ENUMERATED { one, two }
+}
+
+CircularChoice2 ::= SEQUENCE {
+    str OCTET STRING,
+    choice CircularChoice1
+}
+
+MyInt ::= INTEGER
+
+SelfReference ::= CHOICE {
+    str [0] OCTET STRING,
+    self [1] SelfReference
+}
+
 END-- Comment at end

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "fast_ber/util/BerLengthAndContentContainer.hpp"
 #include "fast_ber/util/DecodeHelpers.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
+#include "fast_ber/util/FixedIdBerContainer.hpp"
 
 #include "absl/strings/string_view.h"
 #include "absl/time/time.h"
@@ -35,17 +35,24 @@ class GeneralizedTime
     std::string string() const;
     TimeFormat  format() const;
 
-    size_t       assign_ber(const BerView& view) noexcept;
-    size_t       encoded_content_and_length_length() const noexcept { return m_contents.content_and_length_length(); }
-    EncodeResult encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept;
-
+    GeneralizedTime() noexcept { set_time(absl::Time()); }
+    GeneralizedTime(const GeneralizedTime&)     = default;
+    GeneralizedTime(GeneralizedTime&&) noexcept = default;
     GeneralizedTime(const absl::Time& time) { set_time(time); }
-    GeneralizedTime() { set_time(absl::Time()); }
+    explicit GeneralizedTime(BerView view) { decode(view); }
+    ~GeneralizedTime() noexcept = default;
+
+    GeneralizedTime& operator=(const GeneralizedTime&) = default;
+    GeneralizedTime& operator=(GeneralizedTime&&) noexcept = default;
+
+    size_t       encoded_length() const noexcept;
+    EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
+    DecodeResult decode(BerView buffer) noexcept;
 
     using AsnId = Identifier;
 
   private:
-    BerLengthAndContentContainer m_contents;
+    FixedIdBerContainer<Identifier> m_contents;
 };
 
 template <typename Identifier>
@@ -85,7 +92,8 @@ void GeneralizedTime<Identifier>::set_time(const absl::Time& time, int timezone_
     std::string time_str = absl::FormatTime(g_universal_time_with_time_zone_format, time, absl::UTCTimeZone());
 
     std::string timezone_extension = std::string(5, '\0');
-    snprintf(&timezone_extension[0], timezone_extension.length() + 1, "%c%2.2d%2.2d",
+    snprintf(&timezone_extension[0], timezone_extension.length() + 1,
+             "%c%2.2d%2.2d", // NOLINT(cppcoreguidelines-pro-type-vararg)
              (timezone_offset_minutes >= 0) ? '+' : '-', std::abs(timezone_offset_minutes) / 60,
              std::abs(timezone_offset_minutes) % 60);
     time_str += timezone_extension;
@@ -152,41 +160,26 @@ std::string GeneralizedTime<Identifier>::string() const
 }
 
 template <typename Identifier>
-size_t GeneralizedTime<Identifier>::assign_ber(const BerView& view) noexcept
+size_t GeneralizedTime<Identifier>::encoded_length() const noexcept
 {
-    if (!view.is_valid() || view.construction() != Construction::primitive)
+    return this->m_contents.ber().length();
+}
+
+template <typename Identifier>
+EncodeResult GeneralizedTime<Identifier>::encode(absl::Span<uint8_t> output) const noexcept
+{
+    return this->m_contents.encode(output);
+}
+
+template <typename Identifier>
+DecodeResult GeneralizedTime<Identifier>::decode(BerView view) noexcept
+{
+    DecodeResult res = m_contents.decode(view);
+    if (m_contents.content_length() < minimum_timestamp_length || m_contents.content_length() > max_timestamp_length)
     {
-        return false;
+        return DecodeResult{false};
     }
-    if (view.content_length() < minimum_timestamp_length || view.content_length() > max_timestamp_length)
-    {
-        return false;
-    }
-    return m_contents.assign(view);
-}
-
-template <typename Identifier>
-EncodeResult GeneralizedTime<Identifier>::encode_content_and_length(absl::Span<uint8_t> buffer) const noexcept
-{
-    return m_contents.content_and_length_to_raw(buffer);
-}
-
-template <typename Identifier>
-size_t encoded_length(const GeneralizedTime<Identifier>& object)
-{
-    return encoded_length(object.encoded_content_and_length_length(), Identifier{});
-}
-
-template <typename Identifier>
-EncodeResult encode(absl::Span<uint8_t> output, const GeneralizedTime<Identifier>& object)
-{
-    return encode_impl(output, object, Identifier{});
-}
-
-template <typename Identifier>
-DecodeResult decode(BerViewIterator& input, GeneralizedTime<Identifier>& output) noexcept
-{
-    return decode_impl(input, output, Identifier{});
+    return res;
 }
 
 template <typename Identifier>

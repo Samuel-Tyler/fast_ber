@@ -47,17 +47,20 @@ TEST_CASE("EncodeIdentifiers: Length length")
 
 TEST_CASE("EncodeIdentifiers: Creating tags")
 {
-    const auto test_vals = std::initializer_list<fast_ber::Tag>{
-        0, 1, 10, 55, 66, 127, 128, 255, 256, 500, 14000, 99244, 382348, 400532434, 99999999999ll};
+    const std::array<fast_ber::Tag, 16> test_vals = {
+        0,   1,   10,    55,    66,     127,       128,           255,
+        256, 500, 14000, 99244, 382348, 400532434, 99999999999ll, std::numeric_limits<fast_ber::Tag>::max()};
 
-    for (const int64_t test_val : test_vals)
+    for (const fast_ber::Tag test_val : test_vals)
     {
         std::array<uint8_t, 10> buffer = {};
 
         fast_ber::Tag tag = 1;
         INFO(test_val);
 
-        REQUIRE(fast_ber::encode_tag(absl::Span<uint8_t>(buffer.data(), buffer.size()), test_val));
+        size_t expected_length = fast_ber::encoded_tag_length(test_val);
+        size_t actual_length   = fast_ber::encode_tag(absl::Span<uint8_t>(buffer.data(), buffer.size()), test_val);
+        REQUIRE(expected_length == actual_length);
         REQUIRE(fast_ber::extract_tag(absl::Span<uint8_t>(buffer.data(), buffer.size()), tag));
         REQUIRE(test_val == tag);
     }
@@ -65,9 +68,9 @@ TEST_CASE("EncodeIdentifiers: Creating tags")
 
 TEST_CASE("EncodeIdentifiers: Creating lengths")
 {
-    const auto test_vals =
-        std::initializer_list<size_t>{0,   1,   10,    55,    66,     127,      128, 255,
-                                      256, 500, 14000, 99244, 382348, 400532434 /*64 bit systems only, 99999999999*/};
+    const std::array<size_t, 16> test_vals = {
+        0,   1,   10,    55,    66,     127,       128,         255,
+        256, 500, 14000, 99244, 382348, 400532434, 99999999999, std::numeric_limits<size_t>::max()};
 
     for (const size_t test_val : test_vals)
     {
@@ -79,5 +82,19 @@ TEST_CASE("EncodeIdentifiers: Creating lengths")
         REQUIRE(fast_ber::encode_length(absl::Span<uint8_t>(buffer.data(), buffer.size()), test_val));
         REQUIRE(fast_ber::extract_length(absl::Span<uint8_t>(buffer.data(), buffer.size()), length, 0));
         REQUIRE(test_val == length);
+    }
+}
+
+TEST_CASE("EncodeIdentifiers: Tags - round trip")
+{
+    std::array<uint8_t, 100> buffer{};
+    for (fast_ber::Tag i = 0; i < 10000; i++)
+    {
+        fast_ber::Tag out = -1;
+
+        size_t length = fast_ber::encoded_tag_length(i);
+        REQUIRE(fast_ber::encode_tag(absl::Span<uint8_t>(buffer), i) == length);
+        REQUIRE(fast_ber::extract_tag(buffer, out) == length);
+        REQUIRE(out == i);
     }
 }

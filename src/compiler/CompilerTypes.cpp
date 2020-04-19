@@ -6,7 +6,7 @@ SetOfType::SetOfType(bool a, std::unique_ptr<NamedType>&& b, std::unique_ptr<Typ
 }
 SetOfType::SetOfType(const SetOfType& rhs)
     : has_name(rhs.has_name), named_type(rhs.named_type ? new NamedType(*rhs.named_type) : nullptr),
-      type(rhs.type ? new Type(*rhs.type) : nullptr)
+      type(rhs.type ? new Type(*rhs.type) : nullptr), storage(rhs.storage)
 {
 }
 SetOfType& SetOfType::operator=(const SetOfType& rhs)
@@ -14,6 +14,7 @@ SetOfType& SetOfType::operator=(const SetOfType& rhs)
     has_name   = rhs.has_name;
     named_type = rhs.named_type ? std::unique_ptr<NamedType>(new NamedType(*rhs.named_type)) : nullptr;
     type       = rhs.type ? std::unique_ptr<Type>(new Type(*rhs.type)) : nullptr;
+    storage    = rhs.storage;
     return *this;
 }
 SequenceOfType::SequenceOfType(bool a, std::unique_ptr<NamedType>&& b, std::unique_ptr<Type>&& c)
@@ -23,7 +24,7 @@ SequenceOfType::SequenceOfType(bool a, std::unique_ptr<NamedType>&& b, std::uniq
 SequenceOfType::SequenceOfType(const SequenceOfType& rhs)
     : has_name(rhs.has_name),
       named_type(rhs.named_type ? std::unique_ptr<NamedType>(new NamedType(*rhs.named_type)) : nullptr),
-      type(rhs.type ? new Type(*rhs.type) : nullptr)
+      type(rhs.type ? new Type(*rhs.type) : nullptr), storage(rhs.storage)
 {
 }
 SequenceOfType& SequenceOfType::operator=(const SequenceOfType& rhs)
@@ -31,6 +32,7 @@ SequenceOfType& SequenceOfType::operator=(const SequenceOfType& rhs)
     has_name   = rhs.has_name;
     named_type = rhs.named_type ? std::unique_ptr<NamedType>(new NamedType(*rhs.named_type)) : nullptr;
     type       = rhs.type ? std::unique_ptr<Type>(new Type(*rhs.type)) : nullptr;
+    storage    = rhs.storage;
     return *this;
 }
 
@@ -152,6 +154,8 @@ static const std::unordered_set<std::string> reserved_keywords = {
     "IA5String",
     "IRI",
     "ISO646String",
+    "Id",
+    "Identifier",
     "InstanceOf",
     "Integer",
     "Null",
@@ -177,8 +181,9 @@ static const std::unordered_set<std::string> reserved_keywords = {
     "UniversalString",
     "VideotexString",
     "VisibleString",
-    "Id",
-    "Identifier"};
+    "decode",
+    "encode",
+    "encoded_length"};
 
 // Switch asn '-' for C++ '_'
 // Rename any names which are reserved in C++
@@ -223,13 +228,27 @@ std::string to_string(Class class_, bool abbreviated)
         return "Class::private_";
     }
 
-    return "UknownClass";
+    return "Unknown Class";
 }
 
-std::string make_type_optional(const std::string& type, const Asn1Tree& tree)
+std::string to_string(StorageMode mode)
 {
-    return "Optional<" + type +
-           (tree.is_circular ? std::string(", StorageMode::dynamic") : std::string(", StorageMode::static_")) + ">";
+    switch (mode)
+    {
+    case StorageMode::static_:
+        return "StorageMode::static_";
+    case StorageMode::small_buffer_optimised:
+        return "StorageMode::small_buffer_optimised";
+    case StorageMode::dynamic:
+        return "StorageMode::dynamic";
+    }
+
+    return "Unknown StorageMode";
+}
+
+std::string make_type_optional(const std::string& type, StorageMode mode)
+{
+    return "Optional<" + type + ", " + to_string(mode) + ">";
 }
 
 bool is_any(const Type& type)
@@ -288,6 +307,18 @@ bool is_integer(const Type& type)
 {
     return absl::holds_alternative<BuiltinType>(type) &&
            absl::holds_alternative<IntegerType>(absl::get<BuiltinType>(type));
+}
+
+bool is_octet_string(const Type& type)
+{
+    return absl::holds_alternative<BuiltinType>(type) &&
+           absl::holds_alternative<OctetStringType>(absl::get<BuiltinType>(type));
+}
+
+bool is_boolean(const Type& type)
+{
+    return absl::holds_alternative<BuiltinType>(type) &&
+           absl::holds_alternative<BooleanType>(absl::get<BuiltinType>(type));
 }
 
 bool is_oid(const Type& type)

@@ -9,6 +9,7 @@
 %code requires
 {
     #include "fast_ber/compiler/CompilerTypes.hpp"
+    #include "fast_ber/compiler/Logging.hpp"
 }
 
 %code
@@ -22,8 +23,7 @@
     };
     void yy::asn1_parser::error(const location_type& l, const std::string& m)
     {
-        std::cerr << (l.begin.filename ? l.begin.filename->c_str() : "(undefined)");
-        std::cerr << ':' << l.begin.line << ':' << l.begin.column << '-' << l.end.column << ": " << m << '\n';
+        std::cerr << l << m << '\n';
     }
 
     namespace yy { asn1_parser::symbol_type yylex(Context& c); }
@@ -211,9 +211,9 @@
 %type<std::string>       simplestring
 %type<std::string>       xmltstring
 %type<double>            realnumber
-%type<long long>         number
-%type<long long>         negativenumber
-%type<long long>         SignedNumber
+%type<int64_t>           number
+%type<int64_t>           negativenumber
+%type<int64_t>           SignedNumber
 %type<DefinedValue>      DefinedValue
 %type<BuiltinType>       BuiltinType;
 %type<DefinedType>       DefinedType;
@@ -296,6 +296,8 @@
 %type<Value>             Value;
 %type<Value>             SingleValue;
 %type<Value>             ValueWithoutTypeIdentifier;
+%type<BooleanValue>      BooleanValue;
+%type<TimeValue>         TimeValue;
 %type<std::vector<Value>> SequenceOfValues;
 %type<std::string>       Reference;
 %type<std::string>       Symbol;
@@ -363,7 +365,7 @@ ObjectClassAssignment:
 
 ObjectClass:
     DefinedObjectClass
-    { std::cerr << "Warning - Unhandled DefinedObjectClass\n"; }
+    { feature_not_implemented(context.location, context.asn1_tree, "ObjectClass"); }
 |   ObjectClassDefn
     { $$ = $1; }
 //|   ParameterizedObjectClass;
@@ -667,7 +669,8 @@ ObjectSetFromObjects:
     ReferencedObjects "." FieldNameList;
 
 InstanceOfType:
-    INSTANCE OF DefinedObjectClass;
+    INSTANCE OF DefinedObjectClass
+    { feature_not_implemented(context.location, context.asn1_tree, "InstanceOfType"); }
 
 ParameterizedReference:
     Reference
@@ -689,6 +692,8 @@ GeneralConstraint:
 
 UserDefinedConstraint:
     CONSTRAINED BY "{" UserDefinedConstraintParameter "}"
+    { feature_not_implemented(context.location, context.asn1_tree, "UserDefinedConstraint", "Not yet checking contraints. "); }
+
 
 UserDefinedConstraintParameter:
     Governor ":" Value
@@ -829,16 +834,27 @@ SymbolsFromModuleList:
 
 SymbolsFromModule:
     SymbolList FROM GlobalModuleReference
-    { $$ = Import{ $3, $1 }; }
+    { $$ = Import{ $3, {}, {} };
+      for (const std::string& ref: $1)
+      {
+        if (std::isupper(ref[0]))
+        {
+          $$.imported_types.push_back(ref);
+        }
+        else
+        {
+          $$.imported_values.push_back(ref);
+        }
+      }
+    }
 
 GlobalModuleReference:
-    modulereference AssignedIdentifier
+    modulereference
     { $$ = $1; }
-
-AssignedIdentifier:
-    ObjectIdentifierValue
-|   valuereference
-|   %empty;
+|   modulereference ObjectIdentifierValue
+    { $$ = $1; }
+// |   modulereference valuereference
+//    { $$ = $1; } // Clashes with value import
 
 SymbolList:
     Symbol
@@ -976,9 +992,9 @@ Type:
 |   DefinedType
     { $$ = $1; }
 |   SelectionType
-    { std::cerr << "Warning: Not handled - SelectionType\n"; }
+    { feature_not_implemented(context.location, context.asn1_tree, "SelectionType"); }
 |   TypeFromObject
-    { std::cerr << "Warning: Not handled - TypeFromObject\n"; }
+    { feature_not_implemented(context.location, context.asn1_tree, "TypeFromObject"); }
 //|   ValueSetFromObjects { std::cerr << std::string("Not handled - ValueSetFromObjects\n"); }
 
 BuiltinType:
@@ -987,32 +1003,32 @@ BuiltinType:
 |   BooleanType { $$ = $1; }
 |   CharacterStringType { $$ = $1; }
 |   ChoiceType { $$ = $1; }
-|   DateType { $$ = $1; }
-|   DateTimeType { $$ = $1; }
-|   DurationType { $$ = $1; }
-|   EmbeddedPDVType { $$ = $1; }
+|   DateType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "DateType"); }
+|   DateTimeType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "DateTimeType"); }
+|   DurationType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "DurationType"); }
+|   EmbeddedPDVType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "EmbeddedPDVType"); }
 |   EnumeratedType { $$ = $1; }
-|   ExternalType { $$ = $1; }
+|   ExternalType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "ExternalType"); }
 |   GeneralizedTime { $$ = GeneralizedTimeType(); }
-|   InstanceOfType { $$ = $1; }
+|   InstanceOfType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "InstanceOfType"); }
 |   IntegerType { $$ = $1; }
-|   IRIType { $$ = $1; }
+|   IRIType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "IRIType"); }
 |   NullType { $$ = $1; }
-|   ObjectClassFieldType { $$ = $1; }
+|   ObjectClassFieldType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "ObjectClassFieldType"); }
 |   ObjectDescriptor { $$ = ObjectDescriptorType(); }
 |   ObjectIdentifierType { $$ = $1; }
 |   OctetStringType { $$ = $1; }
-|   RealType { $$ = $1; }
-|   RelativeIRIType { $$ = $1; }
-|   RelativeOIDType { $$ = $1; }
+|   RealType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "RealType"); }
+|   RelativeIRIType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "RelativeIRIType"); }
+|   RelativeOIDType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "RelativeOIDType"); }
 |   SequenceType { $$ = $1; }
 |   SequenceOfType { $$ = $1; }
-|   SetType { $$ = $1; }
+|   SetType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "SET", "Currently SET is treated as a SEQUENCE type. "); }
 |   SetOfType { $$ = $1; }
 |   PrefixedType { $$ = $1; }
-|   TimeType { $$ = $1; }
-|   TimeOfDayType { $$ = $1; }
-|   UTCTime { $$ = UTCTimeType(); }
+|   TimeType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "TimeType"); }
+|   TimeOfDayType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "TimeOfDayType"); }
+|   UTCTime { $$ = UTCTimeType(); feature_not_implemented(context.location, context.asn1_tree, "UTCTime"); }
 
 NamedType:
     identifier Type
@@ -1101,7 +1117,9 @@ BooleanType:
 
 BooleanValue:
     TRUE
-|   FALSE;
+    { $$ = {true}; }
+|   FALSE
+    { $$ = {false}; }
 
 IntegerType:
     INTEGER
@@ -1228,19 +1246,22 @@ ComponentTypeList:
 
 ComponentType:
     Type
-    { $$ = ComponentType{{gen_anon_member_name(), $1}, false, absl::nullopt, absl::nullopt}; }
+    { std::cerr << context.location << " WARNING: unnamed type\n";
+      $$ = ComponentType{{gen_anon_member_name(), $1}, false, absl::nullopt, absl::nullopt, StorageMode::static_ }; }
 |   Type OPTIONAL
-    { $$ = ComponentType{{gen_anon_member_name(), $1}, true, absl::nullopt, absl::nullopt}; }
+    { std::cerr << context.location << " WARNING: unnamed type\n";
+      $$ = ComponentType{{gen_anon_member_name(), $1}, true, absl::nullopt, absl::nullopt, StorageMode::static_ }; }
 |   Type DEFAULT SingleValue
-    { $$ = ComponentType{{gen_anon_member_name(), $1}, false, $3, absl::nullopt}; }
+    { $$ = ComponentType{{gen_anon_member_name(), $1}, false, $3, absl::nullopt, StorageMode::static_ };
+      std::cerr << context.location << " WARNING: unnamed type\n"; }
 |   NamedType
-    { $$ = ComponentType{$1, false, absl::nullopt, absl::nullopt}; }
+    { $$ = ComponentType{$1, false, absl::nullopt, absl::nullopt, StorageMode::static_ }; }
 |   NamedType OPTIONAL
-    { $$ = ComponentType{$1, true, absl::nullopt, absl::nullopt}; }
+    { $$ = ComponentType{$1, true, absl::nullopt, absl::nullopt, StorageMode::static_ }; }
 |   NamedType DEFAULT SingleValue
-    { $$ = ComponentType{$1, false, $3, absl::nullopt}; }
+    { $$ = ComponentType{$1, false, $3, absl::nullopt, StorageMode::static_ }; }
 |   COMPONENTS OF Type
-    { $$ = ComponentType{{}, false, absl::nullopt, $3}; }
+    { $$ = ComponentType{{}, false, absl::nullopt, $3, StorageMode::static_}; }
 
 SequenceValue:
     "{" ComponentValueList "}"
@@ -1270,7 +1291,7 @@ SetOfType:
 
 ChoiceType:
     CHOICE "{" AlternativeTypeLists "}"
-    { $$ = ChoiceType{ $3 }; }
+    { $$ = ChoiceType{ $3, StorageMode::static_ }; }
 
 AlternativeTypeLists:
     RootAlternativeTypeList
@@ -1484,7 +1505,7 @@ ConstrainedType:
     Type Constraint
     { $$ = $1; }
 |   TypeWithConstraint
-    { $$ = $1; }
+    { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "TypeWithConstraint", "Not yet checking contraints. ");  }
 
 TypeWithConstraint:
     SET Constraint OF Type
@@ -1505,7 +1526,8 @@ TypeWithConstraint:
     { $$ = SequenceOfType{ true, std::unique_ptr<NamedType>(new NamedType($4)), nullptr }; }
 
 Constraint:
-    "(" ConstraintSpec ExceptionSpec ")";
+    "(" ConstraintSpec ExceptionSpec ")"
+    { feature_not_implemented(context.location, context.asn1_tree, "ConstraintSpec", "Not yet checking contraints. "); }
 
 ConstraintSpec:
     SubtypeConstraint
@@ -1576,16 +1598,26 @@ SubtypeElements:
 
 SingleValue:
     BooleanValue
+    { $$.value_selection = $1; }
 //|   IRIValue
 |   ASN_NULL
+    { $$.value_selection = NullValue{}; }
 |   TimeValue
+    { $$.value_selection = $1; }
 |   bstring
+    { $$.value_selection = $1; }
 |   hstring
+    { $$.value_selection = $1; }
 |   cstring
+    { $$.value_selection = $1; }
 |   GENERIC_IDENTIFIER_UPPERCASE
-|   GENERIC_IDENTIFIER_LOWERCASE
+    { $$.value_selection = $1; }
+|   DefinedValue
+    { $$.value_selection = $1; }
 |   SignedNumber
+    { $$.value_selection = $1; }
 |   realnumber
+    { $$.value_selection = $1; }
 
 ContainedSubtype:
     Includes Type;
@@ -1882,8 +1914,8 @@ re2c:define:YYCURSOR = "context.cursor";
                         { context.location.columns(context.cursor - start); return yylex(context); }
 "--" ([\-]?[^\r\n\-])*[\-]?
                         { context.location.columns(context.cursor - start); return yylex(context); }
-"/*" ([^\*]|[\*][^/])* "*/"
-                        { context.location.columns(context.cursor - start); return yylex(context); }
+"/*" ([^\*]|([\*]+[^\*\/]))*[\*]+ "/"
+                        { for (char c: std::string(start, context.cursor)) { context.location.columns(); if (c == '\n') context.location.lines(); } return yylex(context); }
 
 // Identifiers
 [0-9]+'\.'[0-9]+        { context.location.columns(context.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context.cursor)), context.location); }
@@ -1926,7 +1958,6 @@ re2c:define:YYCURSOR = "context.cursor";
 "!"                     { context.location.columns(context.cursor - start); return asn1_parser::make_EXCLAMATION_MARK (context.location); }
 "<"                     { context.location.columns(context.cursor - start); return asn1_parser::make_LESS_THAN (context.location); }
 "^"                     { context.location.columns(context.cursor - start); return asn1_parser::make_ACCENT (context.location); }
-
 "@"                     { context.location.columns(context.cursor - start); return asn1_parser::make_AT (context.location); }
 .                       { std::cerr << "Ignoring unknown symbol: " <<  static_cast<int>(*start) << std::endl; return yylex(context); }
 %}

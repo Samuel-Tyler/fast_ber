@@ -9,24 +9,25 @@
 
 #include <array>
 
-template <typename T>
-void test_sequences(const std::initializer_list<fast_ber::SequenceOf<T>>& sequences)
+template <typename T, typename Identifier>
+void test_sequences(const std::initializer_list<fast_ber::SequenceOf<T, Identifier>>& sequences)
 {
     std::array<uint8_t, 10000> buffer = {};
     for (const auto& sequence : sequences)
     {
-        fast_ber::SequenceOf<T> copy;
+        fast_ber::SequenceOf<T, Identifier> copy;
 
-        size_t expected_size = encoded_length(sequence);
-        size_t encode_size   = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), sequence).length;
-        fast_ber::BerViewIterator iter    = fast_ber::BerViewIterator(absl::MakeSpan(buffer.data(), encode_size));
-        bool                      success = fast_ber::decode(iter, copy).success;
+        size_t                 expected_size = encoded_length(sequence);
+        fast_ber::EncodeResult encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), sequence);
+        fast_ber::BerViewIterator iter = fast_ber::BerViewIterator(absl::MakeSpan(buffer.data(), encode_result.length));
+        fast_ber::DecodeResult    decode_result = fast_ber::decode(iter, copy);
 
-        REQUIRE(success);
-        REQUIRE(expected_size == encode_size);
-        REQUIRE(copy.size() == sequence.size());
-        REQUIRE(sequence == copy);
-        REQUIRE(iter == fast_ber::BerViewIterator(fast_ber::End::end));
+        CHECK(encode_result.success);
+        CHECK(decode_result.success);
+        CHECK(expected_size == encode_result.length);
+        CHECK(copy.size() == sequence.size());
+        CHECK(sequence == copy);
+        CHECK(iter == fast_ber::BerViewIterator(fast_ber::End::end));
     }
 }
 
@@ -44,16 +45,28 @@ TEST_CASE("SequenceOf: Encode decode integer")
 
 TEST_CASE("SequenceOf: Various tags")
 {
-    auto tagged =
+    auto tagged_content =
         fast_ber::SequenceOf<fast_ber::Integer<fast_ber::Id<fast_ber::Class::context_specific, 55555555555555>>>{
             1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, -999, 999, 999999999};
 
-    auto double_tagged = fast_ber::SequenceOf<fast_ber::Integer<fast_ber::DoubleId<
+    auto double_tagged_content = fast_ber::SequenceOf<fast_ber::Integer<fast_ber::DoubleId<
         fast_ber::Id<fast_ber::Class::context_specific, 10>, fast_ber::Id<fast_ber::Class::private_, 91239129321538>>>>{
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, -999, 999};
 
-    test_sequences({fast_ber::SequenceOf<fast_ber::OctetString<>>{"", ";;", "!", "@"}});
-    test_sequences({fast_ber::SequenceOf<fast_ber::OctetString<>>{"", ";;", "!", "@"}});
+    auto tagged_sequence =
+        fast_ber::SequenceOf<fast_ber::Integer<>, fast_ber::Id<fast_ber::Class::context_specific, 55555555555555>>{
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, -999, 999, 999999999};
+
+    auto double_tagged_sequence =
+        fast_ber::SequenceOf<fast_ber::Integer<>,
+                             fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::context_specific, 10>,
+                                                fast_ber::Id<fast_ber::Class::private_, 91239129321538>>>{
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, -999, 999};
+
+    test_sequences({tagged_content});
+    test_sequences({double_tagged_content});
+    test_sequences({tagged_sequence});
+    test_sequences({double_tagged_sequence});
 }
 
 TEST_CASE("SequenceOf: Various types")

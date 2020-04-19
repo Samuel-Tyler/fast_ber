@@ -1,0 +1,144 @@
+Wineco-common-top-level
+ {joint-iso-itu-t international-organization(23) set(42)
+ set-vendors(9) wineco(43) modules(2) top(0)}
+ DEFINITIONS
+ AUTOMATIC TAGS ::=
+ BEGIN
+ EXPORTS ;
+ IMPORTS Order-for-stock FROM
+ Wineco-ordering-protocol
+ --{wineco-OID modules(2) ordering(1)}
+ Return-of-sales FROM
+ Wineco-returns-protocol
+ --{wineco-OID modules(2) returns(2)}--;
+ 
+ 
+ wineco-OID OBJECT IDENTIFIER ::=
+ {joint-iso-itu-t international-organization(23) set(42)
+ set-vendors(9) wineco(43)}
+ Wineco-protocol ::= CHOICE
+ {ordering [APPLICATION 1] Order-for-stock,
+ sales [APPLICATION 2] Return-of-sales,
+ ...
+ }
+END
+--New page in published spec.
+Wineco-ordering-protocol
+ {joint-iso-itu-t international-organization(23) set(42)
+ set-vendors(9) wineco(43)modules(2) ordering(1)}
+ DEFINITIONS
+ AUTOMATIC TAGS ::=
+ BEGIN
+ EXPORTS Order-for-stock;
+ IMPORTS OutletType, Address, Security-Type FROM
+ Wineco-common-types
+ {wineco-OID modules(2) common (3)};
+ wineco-OID OBJECT IDENTIFIER ::=
+ {joint-iso-itu-t international-organization(23) set(42)
+ set-vendors(9) wineco(43)}
+ Order-for-stock ::= SEQUENCE
+ {order-no INTEGER,
+ name-address BranchIdentification,
+ details SEQUENCE OF
+ SEQUENCE
+ {item OBJECT IDENTIFIER,
+ cases INTEGER},
+ urgency ENUMERATED
+ {tomorrow(0),
+ three-day(1),
+ week(2)} DEFAULT week,
+ authenticator Security-Type}
+ BranchIdentification ::= SET
+ {unique-id OBJECT IDENTIFIER,
+ details CHOICE
+ {uk [0] SEQUENCE
+ {name VisibleString,
+ type OutletType,
+ location Address},
+ overseas [1] SEQUENCE
+ {name UTF8String,
+ type OutletType,
+ location Address},
+ warehouse [2] CHOICE
+ {northern [0] NULL,
+ southern [1] NULL} } }
+ END
+--New page in published spec.
+ Wineco-returns-protocol
+ {joint-iso-itu-t international-organization(23) set(42)
+ set-vendors(9) wineco(43) modules(2) returns(2)}
+ DEFINITIONS
+ AUTOMATIC TAGS ::=
+ BEGIN
+ EXPORTS Return-of-sales;
+ IMPORTS OutletType, Address, Security-Type FROM
+ Wineco-common-types
+ {wineco-OID modules(2) common (3)};
+ wineco-OID OBJECT IDENTIFIER ::=
+ {joint-iso-itu-t international-organization(23) set(42)
+ set-vendors(9) wineco(43)}
+ Return-of-sales ::= SEQUENCE
+ {version BIT STRING
+ {version1 (0), version2 (1)} DEFAULT {version1},
+ no-of-days-reported-on INTEGER
+ {week(7), month (28), maximum (56)} (1..56) DEFAULT week,
+ time-and-date-of-report CHOICE
+ {two-digit-year UTCTime,
+ four-digit-year GeneralizedTime},
+ -- If the system clock provides a four-digit year,
+ -- the second alternative shall be used. With the
+ -- first alternative the time shall be interpreted
+ -- as a sliding window.
+ reason-for-delay ENUMERATED
+ {computer-failure, network-failure, other} OPTIONAL,
+ -- Include this field if and only if the
+ -- no-of-days-reported-on exceeds seven.
+ additional-information SEQUENCE OF PrintableString OPTIONAL,
+ -- Include this field if and only if the
+ -- reason-for-delay is "other".
+ sales-data SET OF Report-item,
+ ... }
+ Report-item ::= SEQUENCE
+ {item OBJECT IDENTIFIER,
+ item-description ObjectDescriptor OPTIONAL,
+ -- To be included for any newly-stocked item.
+ bar-code-data OCTET STRING,
+ -- Represents the bar-code for the item as specified
+ -- in the wineco manual chapter 29.
+ ran-out-of-stock BOOLEAN DEFAULT FALSE,
+ -- Send TRUE if stock for item became exhausted at any
+ -- time during the period reported on.
+ min-stock-level REAL,
+ max-stock-level REAL,
+ average-stock-level REAL
+ -- Give minimum, maximum, and average levels during the
+ -- period as a percentage of normal target stock-level-- }
+ wineco-items OBJECT IDENTIFIER ::=
+ {joint-iso-itu-t international-organization(23) set(42)
+ set-vendors(9) wineco(43)stock-items (0)}
+END
+Wineco-common-types
+ {joint-iso-itu-t internationalRA(23) set(42)
+ set-vendors(9) wineco(43) modules(2) common(3)}
+ DEFINITIONS
+ AUTOMATIC TAGS ::=
+ BEGIN
+ EXPORTS OutletType, Address, Security-Type;
+-- IMPORTS Security-Type FROM
+-- SET-module
+-- {joint-iso-itu-t internationalRA(23) set(42) module(6) 0};
+--Removed for this appendix to avoid needing the import,
+--and replaced by the type below.
+Security-Type ::= SEQUENCE{
+ algorithm OBJECT IDENTIFIER,
+ encoding OCTET STRING}
+--OutletType is not populated in main text--
+ OutletType ::= SEQUENCE
+ {type ENUMERATED{mail-order, retail},
+ description CHARACTER STRING}
+--Address is not populated in main text--
+ Address ::= SEQUENCE
+ {name UTF8String,
+ town UTF8String,
+ country UTF8String}
+ END

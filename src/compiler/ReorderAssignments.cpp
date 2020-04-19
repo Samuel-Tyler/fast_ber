@@ -1,8 +1,8 @@
 #include "fast_ber/compiler/ReorderAssignments.hpp"
 #include "fast_ber/compiler/Dependencies.hpp"
+#include "fast_ber/compiler/Logging.hpp"
 #include "fast_ber/compiler/ResolveType.hpp"
-
-#include <iostream>
+#include "fast_ber/compiler/TypeAsString.hpp"
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -129,16 +129,18 @@ void resolve_components_of(Asn1Tree& tree)
     }
 }
 
-void resolve_dependencies(const std::unordered_map<std::string, Assignment>& assignment_infos, const std::string& name,
-                          std::unordered_set<std::string>& assigned_names,
+void resolve_dependencies(std::unordered_map<std::string, Assignment>& assignment_infos, const std::string& name,
+                          const Asn1Tree& tree, const Module& module, std::unordered_set<std::string>& assigned_names,
                           std::unordered_set<std::string>& visited_names,
-                          std::vector<Assignment>& ordered_assignment_infos, bool& is_circular)
+                          std::vector<Assignment>&         ordered_assignment_infos)
 {
     const auto& assign_iter = assignment_infos.find(name);
     if (assign_iter == assignment_infos.end())
     {
         throw std::runtime_error("Reference to undefined type: " + name);
     }
+
+    Assignment& assignment = assign_iter->second;
 
     if (assigned_names.count(name) == 1)
     {
@@ -148,18 +150,170 @@ void resolve_dependencies(const std::unordered_map<std::string, Assignment>& ass
 
     if (visited_names.count(name) == 1)
     {
-        std::cerr << "Warning: Circular dependency when trying to resolve dependencies of " << name << std::endl;
-        is_circular = true;
-        return;
+        throw std::runtime_error("Circular dependency when trying to resolve dependencies of " + name);
     }
 
     visited_names.insert(name);
 
-    const Assignment& assignment = assign_iter->second;
-    for (const std::string& dependency : assignment.depends_on)
+    auto is_circular = [&](const std::vector<Dependency>& depends) -> bool {
+        absl::flat_hash_set<Dependency> complete_depends;
+        for (const Dependency& dependency : depends)
+        {
+            // If circular dependancy, use dynamic storage. Else, resolve and use static storage
+            get_dependencies_recursive(dependency.name, module.module_reference, assignment_infos, complete_depends);
+        }
+
+        return std::any_of(complete_depends.begin(), complete_depends.end(),
+                           [&](const Dependency& depend) { return depend.name == name; });
+    };
+
+    if (is_type(assignment) &&
+        (is_choice(type(assignment)) || is_set_of(type(assignment)) || is_sequence_of(type(assignment))))
     {
-        resolve_dependencies(assignment_infos, dependency, assigned_names, visited_names, ordered_assignment_infos,
-                             is_circular);
+        // If circular dependancy, use dynamic storage. Else, resolve and use static storage
+        if (is_circular({Dependency{name, module.module_reference}}))
+        {
+            // As type is now dynamic it doesn't have any dependencies
+            assignment_infos[name].depends_on = {};
+
+            if (is_choice(type(assignment)))
+            {
+                ChoiceType& choice = absl::get<ChoiceType>(absl::get<BuiltinType>(type(assignment)));
+                choice.storage     = StorageMode::dynamic;
+
+                // Also mark self referential children as dynamic (Sizeof choice cannot yet be determined)
+                // TODO: should only be dynamic if refer to choice
+                for (NamedType& child : choice.choices)
+                {
+                    Type& child_type =
+                        is_prefixed(child.type)
+                            ? absl::get<PrefixedType>(absl::get<BuiltinType>(child.type)).tagged_type->type
+                            : child.type;
+
+                    if (is_set_of(child_type))
+                    {
+                        absl::get<SetOfType>(absl::get<BuiltinType>(child_type)).storage = StorageMode::dynamic;
+                    }
+                    if (is_sequence_of(child_type))
+                    {
+                        absl::get<SequenceOfType>(absl::get<BuiltinType>(child_type)).storage = StorageMode::dynamic;
+                    }
+                }
+            }
+            else if (is_set_of(type(assignment)))
+            {
+                absl::get<SetOfType>(absl::get<BuiltinType>(type(assignment))).storage = StorageMode::dynamic;
+            }
+            else if (is_sequence_of(type(assignment)))
+            {
+                absl::get<SequenceOfType>(absl::get<BuiltinType>(type(assignment))).storage = StorageMode::dynamic;
+            }
+            std::cout << "Type " << name << " has circular dependencies, seting dynamic storage policy" << std::endl;
+        }
+        else
+        {
+            for (const Dependency& dependency : assignment.depends_on)
+            {
+                if (dependency.module_reference && dependency.module_reference != module.module_reference)
+                {
+                    continue;
+                }
+
+                resolve_dependencies(assignment_infos, dependency.name, tree, module, assigned_names, visited_names,
+                                     ordered_assignment_infos);
+            }
+        }
+    }
+    else if (is_type(assignment) && is_sequence(type(assignment)))
+    {
+        SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(type(assignment)));
+        for (ComponentType& component : sequence.components)
+        {
+            if (component.default_value)
+            {
+                for (const Dependency& dependency : depends_on(component.named_type.type))
+                {
+                    resolve_dependencies(assignment_infos, dependency.name, tree, module, assigned_names, visited_names,
+                                         ordered_assignment_infos);
+                }
+
+                if (absl::holds_alternative<DefinedValue>(component.default_value->value_selection) &&
+                    !is_enumerated(resolve_type(tree, module.module_reference, component.named_type).type))
+                {
+                    const DefinedValue& defined = absl::get<DefinedValue>(component.default_value->value_selection);
+                    resolve_dependencies(assignment_infos, defined.reference, tree, module, assigned_names,
+                                         visited_names, ordered_assignment_infos);
+                }
+            }
+            // If circular dependancy, use dynamic storage. Else, resolve and use static storage
+            else if (component.is_optional && is_circular(depends_on(component.named_type.type)))
+            {
+                std::cout << "Optional member[" << component.named_type.name << "] of [" << name
+                          << "] has circular dependencies, seting dynamic storage policy" << std::endl;
+
+                component.optional_storage = StorageMode::dynamic;
+            }
+            else
+            {
+                for (const Dependency& dependency : depends_on(component.named_type.type))
+                {
+                    resolve_dependencies(assignment_infos, dependency.name, tree, module, assigned_names, visited_names,
+                                         ordered_assignment_infos);
+                }
+            }
+        }
+    }
+    else if (is_type(assignment) && is_set(type(assignment)))
+    {
+        SetType& sequence = absl::get<SetType>(absl::get<BuiltinType>(type(assignment)));
+        for (ComponentType& component : sequence.components)
+        {
+            if (component.default_value)
+            {
+                for (const Dependency& dependency : depends_on(component.named_type.type))
+                {
+                    resolve_dependencies(assignment_infos, dependency.name, tree, module, assigned_names, visited_names,
+                                         ordered_assignment_infos);
+                }
+
+                if (absl::holds_alternative<DefinedValue>(component.default_value->value_selection) &&
+                    !is_enumerated(resolve_type(tree, module.module_reference, component.named_type).type))
+                {
+                    const DefinedValue& defined = absl::get<DefinedValue>(component.default_value->value_selection);
+                    resolve_dependencies(assignment_infos, defined.reference, tree, module, assigned_names,
+                                         visited_names, ordered_assignment_infos);
+                }
+            }
+            // If circular dependancy, use dynamic storage. Else, resolve and use static storage
+            else if (component.is_optional && is_circular(depends_on(component.named_type.type)))
+            {
+                std::cout << "Optional member[" << component.named_type.name << "] of [" << name
+                          << "] has circular dependencies, seting dynamic storage policy" << std::endl;
+
+                component.optional_storage = StorageMode::dynamic;
+            }
+            else
+            {
+                for (const Dependency& dependency : depends_on(component.named_type.type))
+                {
+                    resolve_dependencies(assignment_infos, dependency.name, tree, module, assigned_names, visited_names,
+                                         ordered_assignment_infos);
+                }
+            }
+        }
+    }
+    else
+    {
+        for (const Dependency& dependency : assignment.depends_on)
+        {
+            if (dependency.module_reference && dependency.module_reference != module.module_reference)
+            {
+                continue;
+            }
+
+            resolve_dependencies(assignment_infos, dependency.name, tree, module, assigned_names, visited_names,
+                                 ordered_assignment_infos);
+        }
     }
 
     ordered_assignment_infos.push_back(assignment);
@@ -168,8 +322,8 @@ void resolve_dependencies(const std::unordered_map<std::string, Assignment>& ass
 
 // Reorder assignments, defining
 // Should be able to detect missing assignments and circular dependencies
-std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments, const std::vector<Import>& imports,
-                                            bool& is_circular)
+std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments, const Asn1Tree& tree,
+                                            const Module& module)
 {
     std::unordered_map<std::string, Assignment> assignment_map;
     assignment_map.reserve(assignments.size());
@@ -182,22 +336,13 @@ std::vector<Assignment> reorder_assignments(std::vector<Assignment>& assignments
     std::unordered_set<std::string> assigned_names;
     std::unordered_set<std::string> visited_names;
 
-    for (const Import& import : imports)
-    {
-        for (const std::string& import_name : import.imports)
-        {
-            assignment_map[import_name] = Assignment{};
-            assigned_names.insert(import_name);
-        }
-    }
-
     std::vector<Assignment> ordered_assignments;
     ordered_assignments.reserve(assignments.size());
 
-    for (const std::pair<std::string, Assignment>& assignment : assignment_map)
+    for (const Assignment& assignment : assignments)
     {
-        resolve_dependencies(assignment_map, assignment.first, assigned_names, visited_names, ordered_assignments,
-                             is_circular);
+        resolve_dependencies(assignment_map, assignment.name, tree, module, assigned_names, visited_names,
+                             ordered_assignments);
     }
 
     if (assignments.size() != ordered_assignments.size())
@@ -220,7 +365,7 @@ void find_nested_structs(const Module& module, Type& type, std::vector<NamedType
             {
                 const std::string& name = "UnnamedEnum" + std::to_string(unnamed_definition_num++);
                 nested_structs.push_back(NamedType{name, component.named_type.type});
-                component.named_type.type = DefinedType{module.module_reference, name, {}};
+                component.named_type.type = DefinedType{{}, name, {}};
             }
             else
             {
@@ -236,7 +381,7 @@ void find_nested_structs(const Module& module, Type& type, std::vector<NamedType
             {
                 const std::string& name = "UnnamedEnum" + std::to_string(unnamed_definition_num++);
                 nested_structs.push_back(NamedType{name, component.named_type.type});
-                component.named_type.type = DefinedType{module.module_reference, name, {}};
+                component.named_type.type = DefinedType{{}, name, {}};
             }
             else
             {
@@ -347,6 +492,32 @@ void find_nested_structs(const Module& module, Type& type, std::vector<NamedType
             inner_type = DefinedType{module.module_reference, name, {}};
         }
     }
+}
+
+// Create assignments for imported types
+std::vector<Assignment> split_imports(const Asn1Tree& tree, std::vector<Assignment> assignments,
+                                      const std::vector<Import>& imports)
+{
+    for (const Import& module_import : imports)
+    {
+        for (const std::string& import : module_import.imported_types)
+        {
+            log_debug(tree, "Importing type " + import + " <- " + module_import.module_reference + "." + import);
+
+            assignments.push_back(
+                Assignment{import, TypeAssignment{DefinedType{module_import.module_reference, import, {}}}, {}, {}});
+        }
+
+        /* for (const std::string& import : module_import.imported_values)
+         {
+             log_debug(tree, "Importing type " + import + " <- " + module_import.module_reference + "." + import);
+
+             assignments.push_back(
+                 Assignment{import, ValueAssignment{DefinedType{module_import.module_reference, import, {}}}, {},
+         {}});
+         }*/
+    }
+    return assignments;
 }
 
 // Statements such as integer type definitions can introduce new statements, such as value assignments

@@ -18,12 +18,6 @@ matrix:
           packages:
             - bison
 
-    - env: BUILD_TYPE=Release CXX_STANDARD=11
-      compiler: clang
-
-    - env: BUILD_TYPE=Release CXX_STANDARD=11
-      compiler: gcc
-
     - env: BUILD_TYPE=Release CXX_STANDARD=17
       compiler: clang
       dist: bionic
@@ -31,10 +25,14 @@ matrix:
     - env: BUILD_TYPE=Release CXX_STANDARD=17
       compiler: gcc
       dist: bionic
+
+branches:
+  only:
+    - master
 
 script:
   - mkdir build
   - cd build
   - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CXX_STANDARD=$CXX_STANDARD
-  - make
-  - ctest
+  - cmake --build . -- -j4
+  - ctest -j4

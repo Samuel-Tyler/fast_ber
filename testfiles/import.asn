@@ -1,7 +1,7 @@
 ModuleA DEFINITIONS IMPLICIT TAGS ::= BEGIN
 IMPORTS
     StringInModuleB, string-value FROM ModuleB
-    IntegerInModuleC, integer-value FROM ModuleC;
+    integer-value, IntegerInModuleC FROM ModuleC;
 
 Collection ::= SEQUENCE {
     string StringInModuleB,

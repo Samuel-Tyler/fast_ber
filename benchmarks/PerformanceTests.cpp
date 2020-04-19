@@ -133,7 +133,7 @@ TEST_CASE("Benchmark: Decode Performance")
 {
     bool success = false;
 
-    BENCHMARK("fast_ber        - decode " + std::to_string(large_test_collection_packet.size()) + " byte packet")
+    BENCHMARK("fast_ber        - 1,000,000 x decode " + std::to_string(large_test_collection_packet.size()) + "B pdu")
     {
         for (int i = 0; i < iterations; i++)
         {
@@ -148,7 +148,7 @@ TEST_CASE("Benchmark: Decode Performance")
 
 #ifdef INCLUDE_ASN1C
     asn_dec_rval_t rval = {};
-    BENCHMARK("asn1c           - decode " + std::to_string(large_test_collection_packet.size()) + " byte packet")
+    BENCHMARK("asn1c           - 1,000,000 x decode " + std::to_string(large_test_collection_packet.size()) + "B pdu")
     {
         for (int i = 0; i < iterations; i++)
         {
@@ -162,7 +162,7 @@ TEST_CASE("Benchmark: Decode Performance")
     REQUIRE(rval.code == RC_OK);
 #endif
 
-    BENCHMARK("fast_ber        - decode " + std::to_string(small_test_collection_packet.size()) + " byte packet")
+    BENCHMARK("fast_ber        - 1,000,000 x decode " + std::to_string(small_test_collection_packet.size()) + "B pdu")
     {
         for (int i = 0; i < iterations; i++)
         {
@@ -176,7 +176,7 @@ TEST_CASE("Benchmark: Decode Performance")
     REQUIRE(success);
 
 #ifdef INCLUDE_ASN1C
-    BENCHMARK("asn1c           - decode " + std::to_string(small_test_collection_packet.size()) + " byte packet")
+    BENCHMARK("asn1c           - 1,000,000 x decode " + std::to_string(small_test_collection_packet.size()) + "B pdu")
     {
         for (int i = 0; i < iterations; i++)
         {
@@ -212,9 +212,9 @@ TEST_CASE("Benchmark: Encode Performance")
             fast_ber::Integer<>(-42), fast_ber::SequenceOf<fast_ber::OctetString<>>{}},
         fast_ber::Simple::Child<fast_ber::Id<fast_ber::Class::context_specific, 5>>{
             999999999, fast_ber::SequenceOf<fast_ber::OctetString<>>{the, second, child, long_string}},
-        decltype(collection.the_choice){absl::in_place_index_t<1>(), "I chose a string!"}};
+        decltype(collection.the_choice){fast_ber::in_place_index_t<1>(), "I chose a string!"}};
 
-    BENCHMARK("fast_ber        - encode")
+    BENCHMARK("fast_ber        - 1,000,000 x encode " + std::to_string(fast_ber::encoded_length(collection)) + "B pdu")
     {
         for (int i = 0; i < iterations; i++)
         {
@@ -249,7 +249,7 @@ TEST_CASE("Benchmark: Encode Performance")
     asn1c_collection.the_choice.present = the_choice_PR_goodbye;
     OCTET_STRING_fromString(&asn1c_collection.the_choice.choice.goodbye, "I chose a string!");
 
-    BENCHMARK("asn1c           - encode")
+    BENCHMARK("asn1c           - 1,000,000 x encode " + std::to_string(fast_ber::encoded_length(collection)) + "B pdu")
     {
         for (int i = 0; i < iterations; i++)
         {
@@ -286,7 +286,7 @@ TEST_CASE("Benchmark: Object Construction Performance")
     const std::string second      = "second";
     const std::string child       = "child";
 
-    BENCHMARK("fast_ber        - construct")
+    BENCHMARK("fast_ber        - 1,000,000 x construct data")
     {
         for (int i = 0; i < iterations; i++)
         {
@@ -299,12 +299,12 @@ TEST_CASE("Benchmark: Object Construction Performance")
                     -42, fast_ber::SequenceOf<fast_ber::OctetString<>>{}},
                 fast_ber::Simple::Child<fast_ber::Id<fast_ber::Class::context_specific, 5>>{
                     999999999, fast_ber::SequenceOf<fast_ber::OctetString<>>{the, second, child, long_string}},
-                decltype(collection.the_choice){absl::in_place_index_t<1>(), "I chose a string!"}};
+                decltype(collection.the_choice){fast_ber::in_place_index_t<1>(), "I chose a string!"}};
         }
     }
 
 #ifdef INCLUDE_ASN1C
-    BENCHMARK("asn1c           - construct")
+    BENCHMARK("asn1c           - 1,000,000 x construct data")
     {
         for (int i = 0; i < iterations; i++)
         {
@@ -369,10 +369,10 @@ TEST_CASE("Benchmark: Calculate Encoded Length Performance")
             fast_ber::Integer<>(-42), fast_ber::SequenceOf<fast_ber::OctetString<>>{}},
         fast_ber::Simple::Child<fast_ber::Id<fast_ber::Class::context_specific, 5>>{
             999999999, fast_ber::SequenceOf<fast_ber::OctetString<>>{the, second, child, long_string}},
-        decltype(collection.the_choice){absl::in_place_index_t<1>(), "I chose a string!"}};
+        decltype(collection.the_choice){fast_ber::in_place_index_t<1>(), "I chose a string!"}};
 
     size_t encoded_length = 0;
-    BENCHMARK("fast_ber        - calculate encoded length")
+    BENCHMARK("fast_ber        - 1,000,000 x encoded length")
     {
         for (int i = 0; i < iterations; i++)
         {
