@@ -58,7 +58,8 @@ std::string collection_as_string(const Collection& collection, const Module& mod
                 type_as_string(component.named_type.type, module, tree, component.named_type.name + "_type");
 
             res += create_template_definition(
-                {id_template_param + " = ExplicitId<UniversalTag::" + collection_name + ">"});
+                       {id_template_param + " = ExplicitId<UniversalTag::" + collection_name + ">"}) +
+                   '\n';
             res += "struct " + component.named_type.name + "_type " + component_type;
         }
     }

@@ -21,7 +21,7 @@ std::string create_template_definition(const std::vector<std::string>& types)
         is_first = false;
     }
 
-    definition += ">\n";
+    definition += ">";
     return definition;
 }
 
