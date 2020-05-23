@@ -135,7 +135,7 @@ struct variant_size<Choice<Choices<Types...>, Identifier, storage>>
 {
 };
 
-template <std::size_t I, typename... Types>
+template <std::size_t I, typename Choice>
 struct variant_alternative;
 
 template <std::size_t I, typename... Types, typename Identifier, StorageMode storage>
