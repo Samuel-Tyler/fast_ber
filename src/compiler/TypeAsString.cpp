@@ -328,6 +328,7 @@ std::string type_as_string(const ChoiceType& choice, const Module& module, const
     res += "    using AliasedType = " + base + ";\n";
     res += "    using AliasedType::AliasedType;\n";
     res += "    using AliasedType::operator=;\n";
+    res += "    " + name + "() noexcept : AliasedType(){}\n";
     res += "    " + name + "(const " + name + "& rhs) noexcept : AliasedType(static_cast<const AliasedType&>(rhs)){}\n";
     res +=
         "    " + name + "(" + name + "&& rhs) noexcept : AliasedType(static_cast<AliasedType&&>(std::move(rhs))){}\n";
