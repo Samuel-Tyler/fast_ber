@@ -54,3 +54,18 @@ Clash ::= CHOICE {
 }
 
 END
+
+ChoiceOfChoice DEFINITIONS ::= BEGIN
+
+C ::= CHOICE {
+    one CHOICE {
+        a [1] IMPLICIT OCTET STRING,
+        b [2] IMPLICIT OCTET STRING
+    },
+    two CHOICE {
+        c [3] IMPLICIT OCTET STRING,
+        d [4] IMPLICIT OCTET STRING
+    }
+}
+
+END

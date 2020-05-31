@@ -30,6 +30,21 @@ struct ChoiceId
     constexpr static bool check_id_match(Class c, Tag t) { return is_an_identifier_choice(c, t, Identifiers{}...); }
 };
 
+// Not implemented, used to help with symetry
+template <typename... Identifiers>
+std::size_t encoded_length(size_t, ChoiceId<Identifiers...>)
+{
+    assert(0);
+    return 0;
+}
+
+template <typename... Identifiers>
+EncodeResult wrap_with_ber_header(absl::Span<uint8_t>, size_t, ChoiceId<Identifiers...>, size_t)
+{
+    assert(0);
+    return {};
+}
+
 template <typename T>
 struct IsChoiceId : std::false_type
 {
@@ -432,9 +447,9 @@ struct Choice<Choices<Types...>, Identifier, storage>
 
     void swap(Choice& rhs) noexcept { return m_base.swap(rhs.base()); }
 
-    size_t       encoded_length() const noexcept;
-    EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
-    DecodeResult decode(BerView input) noexcept;
+    size_t       encoded_length_old() const noexcept;
+    EncodeResult encode_old(absl::Span<uint8_t> buffer) const noexcept;
+    DecodeResult decode_old(BerView input) noexcept;
 
     using AsnId = Identifier;
 
@@ -524,7 +539,7 @@ size_t encoded_length_impl(const Choice<Choices<Variants...>, Identifier, storag
 }
 
 template <typename... Variants, typename Identifier, StorageMode storage>
-size_t Choice<Choices<Variants...>, Identifier, storage>::encoded_length() const noexcept
+size_t Choice<Choices<Variants...>, Identifier, storage>::encoded_length_old() const noexcept
 {
     return encoded_length_impl(*this);
 }
@@ -594,7 +609,7 @@ EncodeResult encode_impl(absl::Span<uint8_t>                                    
 }
 
 template <typename... Variants, typename Identifier, StorageMode storage>
-EncodeResult Choice<Choices<Variants...>, Identifier, storage>::encode(absl::Span<uint8_t> buffer) const noexcept
+EncodeResult Choice<Choices<Variants...>, Identifier, storage>::encode_old(absl::Span<uint8_t> buffer) const noexcept
 {
     return encode_impl(buffer, *this);
 }
@@ -657,7 +672,7 @@ DecodeResult decode_impl(BerView input, Choice<Choices<Variants...>, Identifier,
 }
 
 template <typename... Variants, typename Identifier, StorageMode storage>
-DecodeResult Choice<Choices<Variants...>, Identifier, storage>::decode(BerView input) noexcept
+DecodeResult Choice<Choices<Variants...>, Identifier, storage>::decode_old(BerView input) noexcept
 {
     return decode_impl(input, *this);
 }

@@ -413,6 +413,12 @@ void find_nested_structs(const Module& module, Type& type, std::vector<NamedType
             nested_structs.push_back(NamedType{name, inner_type});
             inner_type = DefinedType{module.module_reference, name, {}};
         }
+        else if (is_choice(inner_type))
+        {
+            const std::string& name = "UnnamedChoice" + std::to_string(unnamed_definition_num++);
+            nested_structs.push_back(NamedType{name, inner_type});
+            inner_type = DefinedType{module.module_reference, name, {}};
+        }
     }
     else if (is_sequence_of(type))
     {
@@ -436,6 +442,12 @@ void find_nested_structs(const Module& module, Type& type, std::vector<NamedType
         else if (is_enumerated(inner_type))
         {
             const std::string& name = "UnnamedEnum" + std::to_string(unnamed_definition_num++);
+            nested_structs.push_back(NamedType{name, inner_type});
+            inner_type = DefinedType{module.module_reference, name, {}};
+        }
+        else if (is_choice(inner_type))
+        {
+            const std::string& name = "UnnamedChoice" + std::to_string(unnamed_definition_num++);
             nested_structs.push_back(NamedType{name, inner_type});
             inner_type = DefinedType{module.module_reference, name, {}};
         }
@@ -466,6 +478,12 @@ void find_nested_structs(const Module& module, Type& type, std::vector<NamedType
                 nested_structs.push_back(NamedType{name, inner_type});
                 inner_type = DefinedType{module.module_reference, name, {}};
             }
+            else if (is_choice(inner_type))
+            {
+                const std::string& name = "UnnamedChoice" + std::to_string(unnamed_definition_num++);
+                nested_structs.push_back(NamedType{name, inner_type});
+                inner_type = DefinedType{module.module_reference, name, {}};
+            }
         }
     }
     else if (is_prefixed(type))
@@ -488,6 +506,12 @@ void find_nested_structs(const Module& module, Type& type, std::vector<NamedType
         else if (is_enumerated(inner_type))
         {
             const std::string& name = "UnnamedEnum" + std::to_string(unnamed_definition_num++);
+            nested_structs.push_back(NamedType{name, inner_type});
+            inner_type = DefinedType{module.module_reference, name, {}};
+        }
+        else if (is_choice(inner_type))
+        {
+            const std::string& name = "UnnamedChoice" + std::to_string(unnamed_definition_num++);
             nested_structs.push_back(NamedType{name, inner_type});
             inner_type = DefinedType{module.module_reference, name, {}};
         }

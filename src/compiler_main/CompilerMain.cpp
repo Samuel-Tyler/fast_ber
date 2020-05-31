@@ -42,8 +42,14 @@ std::string create_type_assignment(const std::string& name, const Type& assignme
     if (is_set(assignment_type) || is_sequence(assignment_type))
     {
         res += create_template_definition({"Identifier"}) + '\n';
-        res += "struct " + name + type_as_string(assignment_type, module, tree, name);
+        res += type_as_string(assignment_type, module, tree, name);
     }
+    else if (is_choice(assignment_type))
+    {
+        res += create_template_definition({"Identifier"}) + '\n';
+        res += type_as_string(assignment_type, module, tree, name, "Identifier");
+    }
+
     else if (is_enumerated(assignment_type))
     {
         res += "enum class " + name + "Values" + type_as_string(assignment_type, module, tree);

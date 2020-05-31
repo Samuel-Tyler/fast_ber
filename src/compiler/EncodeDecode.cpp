@@ -52,34 +52,29 @@ class CodeScope
     CodeBlock& m_block;
 };
 
+std::string create_encode_functions(const std::vector<std::string>& namespaces, const std::string& assignment_name,
+                                    const std::vector<Parameter>& parameters, const Type& type, const Module& module,
+                                    const Asn1Tree& tree);
+std::string create_decode_functions(const std::vector<std::string>& namespaces, const std::string& assignment_name,
+                                    const std::vector<Parameter>& parameters, const Type& type, const Module& module,
+                                    const Asn1Tree& tree);
+
 template <typename CollectionType>
 std::string
 create_collection_encode_functions(const std::vector<std::string>& namespaces, const std::string& assignment_name,
                                    const std::vector<Parameter>& parameters, const CollectionType& collection,
-                                   const Module& module, const Asn1Tree tree)
+                                   const Module& module, const Asn1Tree& tree)
 {
     CodeBlock block;
 
     std::vector<std::string> child_namespaces = namespaces;
     child_namespaces.push_back(assignment_name);
 
-    // Make child encode functions
+    // Make encode functions for nested types
     for (const ComponentType& component : collection.components)
     {
-        if (is_sequence(component.named_type.type))
-        {
-            const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(component.named_type.type));
-
-            block.add_block(create_collection_encode_functions(child_namespaces, component.named_type.name + "_type",
-                                                               parameters, sequence, module, tree));
-        }
-        else if (is_set(component.named_type.type))
-        {
-            const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(component.named_type.type));
-
-            block.add_block(create_collection_encode_functions(child_namespaces, component.named_type.name + "_type",
-                                                               parameters, set, module, tree));
-        }
+        block.add_block(create_encode_functions(child_namespaces, component.named_type.name + "_type", parameters,
+                                                component.named_type.type, module, tree));
     }
 
     std::string namespace_name = module.module_reference + "::";
@@ -154,18 +149,113 @@ create_collection_encode_functions(const std::vector<std::string>& namespaces, c
     return block.to_string();
 }
 
-/*
 std::string create_choice_encode_functions(const std::vector<std::string>& namespaces,
-                                           const std::string& assignment_name, const std::vector<Parameter>& parameters,
-                                           const CollectionType& collection, const Module& module, const Asn1Tree tree)
+                                           const std::string& assignment_name, const std::vector<Parameter>&,
+                                           const ChoiceType& choice, const Module& module, const Asn1Tree&)
 {
-}*/
+    CodeBlock block;
+
+    std::vector<std::string> child_namespaces = namespaces;
+    child_namespaces.push_back(assignment_name);
+
+    std::string namespace_name = module.module_reference + "::";
+
+    int count = 0;
+    for (const std::string& ns : namespaces)
+    {
+        namespace_name += ns + "<Identifier" + std::to_string(count++) + ">::";
+    }
+
+    const std::string type_identifier = "Identifier" + std::to_string(count);
+    const std::string name =
+        "fast_ber::" + namespace_name + assignment_name + create_template_arguments({type_identifier});
+
+    for (int i = 0; i <= count; i++)
+    {
+        block.add_line(create_template_definition({"Identifier" + std::to_string(i)}));
+    }
+
+    block.add_line("inline EncodeResult " + name + "::encode(absl::Span<uint8_t> output) const noexcept");
+    {
+        auto scope1 = CodeScope(block);
+        block.add_line("return this->encode_old(output);");
+        block.add_line("EncodeResult res;");
+        block.add_line("auto content = output;");
+
+        // If an alternative (non ChoiceId) identifier is provided choice type should be wrapped,
+        // else use identifier of selected choice
+        block.add_line("size_t header_length_guess = 0;");
+        block.add_line("if (!IsChoiceId<" + type_identifier + ">::value)");
+        {
+            auto scope2 = CodeScope(block);
+            block.add_line(R"(std::cout << "choice id!" << std::endl;)");
+            block.add_line(" header_length_guess = fast_ber::encoded_length(0," + type_identifier + "{});");
+
+            block.add_line("if (output.length() < header_length_guess)");
+            {
+                auto scope3 = CodeScope(block);
+                block.add_line("return EncodeResult{false, 0};");
+            }
+            block.add_line("content.remove_prefix(header_length_guess);");
+        }
+
+        block.add_line(R"(std::cout << " decoding choice " << this->index() << std::endl;)");
+        block.add_line("switch (this->index())");
+        {
+            auto scope2 = CodeScope(block);
+            for (size_t i = 0; i < choice.choices.size(); i++)
+            {
+                block.add_line("case " + std::to_string(i) + ":");
+                block.add_line("	res = fast_ber::get<" + std::to_string(i) + ">(*this)" + ".encode(content);");
+                block.add_line("	break;");
+            }
+            block.add_line("default: assert(0);");
+        }
+
+        block.add_line("if (!IsChoiceId<" + type_identifier + ">::value)");
+        {
+            auto scope2 = CodeScope(block);
+            block.add_line("if (!res.success)");
+            {
+                auto scope3 = CodeScope(block);
+                block.add_line("return res;");
+            }
+            block.add_line("const size_t content_length = res.length;");
+            block.add_line(R"(std::cout << "encode success!" << content_length << std::endl;)");
+            block.add_line("res =  wrap_with_ber_header(output, content_length, " + type_identifier +
+                           "{}, header_length_guess);");
+            block.add_line(R"(std::cout << "encode success!" << res.length << std::endl;)");
+            block.add_line("return res;");
+        }
+        block.add_line("else");
+        {
+            auto scope2 = CodeScope(block);
+            block.add_line("return res;");
+        }
+    }
+
+    block.add_line();
+
+    for (int i = 0; i <= count; i++)
+    {
+        block.add_line(create_template_definition({"Identifier" + std::to_string(i)}));
+    }
+
+    block.add_line("inline std::size_t " + name + "::encoded_length() const noexcept");
+    {
+        auto scope1 = CodeScope(block);
+        block.add_line("return this->encoded_length_old();");
+    }
+
+    block.add_line();
+    return block.to_string();
+}
 
 template <typename CollectionType>
 std::string
 create_collection_decode_functions(const std::vector<std::string>& namespaces, const std::string& assignment_name,
                                    const std::vector<Parameter>& parameters, const CollectionType& collection,
-                                   const Module& module, const Asn1Tree tree)
+                                   const Module& module, const Asn1Tree& tree)
 {
     std::string namespace_name = module.module_reference + "::";
 
@@ -193,7 +283,7 @@ create_collection_decode_functions(const std::vector<std::string>& namespaces, c
         auto scope = CodeScope(block);
         block.add_line("if (!has_correct_header(input, " + type_identifier + "{}, Construction::constructed))");
         {
-            auto scope = CodeScope(block);
+            auto scope2 = CodeScope(block);
             block.add_line("return DecodeResult{false};");
         }
 
@@ -255,51 +345,103 @@ create_collection_decode_functions(const std::vector<std::string>& namespaces, c
         block.add_line("return DecodeResult{true};");
     }
 
-    // Make child decode functions
+    // Make encode functions for nested types
     for (const ComponentType& component : collection.components)
     {
-        if (is_sequence(component.named_type.type))
-        {
-            const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(component.named_type.type));
-
-            block.add_block(create_collection_decode_functions(child_namespaces, component.named_type.name + "_type",
-                                                               parameters, sequence, module, tree));
-        }
-        else if (is_set(component.named_type.type))
-        {
-            const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(component.named_type.type));
-
-            block.add_block(create_collection_decode_functions(child_namespaces, component.named_type.name + "_type",
-                                                               parameters, set, module, tree));
-        }
+        block.add_block(create_decode_functions(child_namespaces, component.named_type.name + "_type", parameters,
+                                                component.named_type.type, module, tree));
     }
     return block.to_string();
+}
+
+std::string create_choice_decode_functions(const std::vector<std::string>& namespaces,
+                                           const std::string& assignment_name, const std::vector<Parameter>&,
+                                           const ChoiceType& choice, const Module& module, const Asn1Tree&)
+{
+    CodeBlock block;
+
+    std::vector<std::string> child_namespaces = namespaces;
+    child_namespaces.push_back(assignment_name);
+
+    std::string namespace_name = module.module_reference + "::";
+
+    int count = 0;
+    for (const std::string& ns : namespaces)
+    {
+        namespace_name += ns + "<Identifier" + std::to_string(count++) + ">::";
+    }
+
+    const std::string type_identifier = "Identifier" + std::to_string(count);
+    const std::string name =
+        "fast_ber::" + namespace_name + assignment_name + create_template_arguments({type_identifier});
+
+    for (int i = 0; i <= count; i++)
+    {
+        block.add_line(create_template_definition({"Identifier" + std::to_string(i)}));
+    }
+
+    block.add_line("inline DecodeResult " + name + "::decode(BerView output) noexcept");
+    {
+        auto scope1 = CodeScope(block);
+        block.add_line("return this->decode_old(output);");
+        block.add_line("EncodeResult res;");
+    }
+
+    block.add_line();
+    return block.to_string();
+}
+
+std::string create_encode_functions(const std::vector<std::string>& namespaces, const std::string& assignment_name,
+                                    const std::vector<Parameter>& parameters, const Type& type, const Module& module,
+                                    const Asn1Tree& tree)
+{
+    if (is_sequence(type))
+    {
+        const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(type));
+        return create_collection_encode_functions(namespaces, assignment_name, parameters, sequence, module, tree);
+    }
+    else if (is_set(type))
+    {
+        const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(type));
+        return create_collection_encode_functions(namespaces, assignment_name, parameters, set, module, tree);
+    }
+    else if (is_choice(type))
+    {
+        const ChoiceType& choice = absl::get<ChoiceType>(absl::get<BuiltinType>(type));
+        return create_choice_encode_functions(namespaces, assignment_name, parameters, choice, module, tree);
+    }
+    return "";
+}
+
+std::string create_decode_functions(const std::vector<std::string>& namespaces, const std::string& assignment_name,
+                                    const std::vector<Parameter>& parameters, const Type& type, const Module& module,
+                                    const Asn1Tree& tree)
+{
+    if (is_sequence(type))
+    {
+        const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(type));
+        return create_collection_decode_functions(namespaces, assignment_name, parameters, sequence, module, tree);
+    }
+    else if (is_set(type))
+    {
+        const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(type));
+        return create_collection_decode_functions(namespaces, assignment_name, parameters, set, module, tree);
+    }
+    else if (is_choice(type))
+    {
+        const ChoiceType& choice = absl::get<ChoiceType>(absl::get<BuiltinType>(type));
+        return create_choice_decode_functions(namespaces, assignment_name, parameters, choice, module, tree);
+    }
+    return "";
 }
 
 std::string create_encode_functions(const Assignment& assignment, const Module& module, const Asn1Tree& tree)
 {
     if (absl::holds_alternative<TypeAssignment>(assignment.specific))
     {
-        const TypeAssignment& type_assignment = absl::get<TypeAssignment>(assignment.specific);
-
-        if (is_sequence(type_assignment.type))
-        {
-            const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(type_assignment.type));
-            return create_collection_encode_functions({}, assignment.name, assignment.parameters, sequence, module,
-                                                      tree);
-        }
-        else if (is_set(type_assignment.type))
-        {
-            const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(type_assignment.type));
-            return create_collection_encode_functions({}, assignment.name, assignment.parameters, set, module, tree);
-        }
-        else if (is_choice(type_assignment.type))
-        {
-            const ChoiceType& choice = absl::get<ChoiceType>(absl::get<BuiltinType>(type_assignment.type));
-            // return create_choice_encode_functions({}, assignment.name, assignment.parameters, choice, module,
-            // tree);
-        }
+        return create_encode_functions({}, assignment.name, assignment.parameters, type(assignment), module, tree);
     }
+
     return "";
 }
 
@@ -307,19 +449,8 @@ std::string create_decode_functions(const Assignment& assignment, const Module& 
 {
     if (absl::holds_alternative<TypeAssignment>(assignment.specific))
     {
-        const TypeAssignment& type_assignment = absl::get<TypeAssignment>(assignment.specific);
-
-        if (is_sequence(type_assignment.type))
-        {
-            const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(type_assignment.type));
-            return create_collection_decode_functions({}, assignment.name, assignment.parameters, sequence, module,
-                                                      tree);
-        }
-        else if (is_set(type_assignment.type))
-        {
-            const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(type_assignment.type));
-            return create_collection_decode_functions({}, assignment.name, assignment.parameters, set, module, tree);
-        }
+        return create_decode_functions({}, assignment.name, assignment.parameters, type(assignment), module, tree);
     }
+
     return "";
 }

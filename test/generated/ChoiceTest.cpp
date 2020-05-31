@@ -44,21 +44,22 @@ TEST_CASE("Choice: Generated choice explicit tags")
 TEST_CASE("Choice: Tags")
 {
     fast_ber::MakeAChoice::Collection<> c;
+    using ChoiceType = fast_ber::MakeAChoice::Collection<>::the_choice_type<>::AliasedType;
     CHECK(std::is_same<
-          fast_ber::Identifier<decltype(c.the_choice)>,
+          fast_ber::Identifier<ChoiceType>,
           fast_ber::ChoiceId<
               fast_ber::Id<fast_ber::Class::context_specific, 0>, fast_ber::Id<fast_ber::Class::context_specific, 1>,
               fast_ber::Id<fast_ber::Class::context_specific, 2>, fast_ber::Id<fast_ber::Class::context_specific, 3>,
               fast_ber::Id<fast_ber::Class::context_specific, 4>>>::value);
-    CHECK(std::is_same<fast_ber::Identifier<fast_ber::variant_alternative_t<0, decltype(c.the_choice)>>,
+    CHECK(std::is_same<fast_ber::Identifier<fast_ber::variant_alternative_t<0, ChoiceType>>,
                        fast_ber::Id<fast_ber::Class::context_specific, 0>>::value);
-    CHECK(std::is_same<fast_ber::Identifier<fast_ber::variant_alternative_t<1, decltype(c.the_choice)>>,
+    CHECK(std::is_same<fast_ber::Identifier<fast_ber::variant_alternative_t<1, ChoiceType>>,
                        fast_ber::Id<fast_ber::Class::context_specific, 1>>::value);
-    CHECK(std::is_same<fast_ber::Identifier<fast_ber::variant_alternative_t<2, decltype(c.the_choice)>>,
+    CHECK(std::is_same<fast_ber::Identifier<fast_ber::variant_alternative_t<2, ChoiceType>>,
                        fast_ber::Id<fast_ber::Class::context_specific, 2>>::value);
-    CHECK(std::is_same<fast_ber::Identifier<fast_ber::variant_alternative_t<3, decltype(c.the_choice)>>,
+    CHECK(std::is_same<fast_ber::Identifier<fast_ber::variant_alternative_t<3, ChoiceType>>,
                        fast_ber::Id<fast_ber::Class::context_specific, 3>>::value);
-    CHECK(std::is_same<fast_ber::Identifier<fast_ber::variant_alternative_t<4, decltype(c.the_choice)>>,
+    CHECK(std::is_same<fast_ber::Identifier<fast_ber::variant_alternative_t<4, ChoiceType>>,
                        fast_ber::Id<fast_ber::Class::context_specific, 4>>::value);
 }
 
@@ -202,18 +203,13 @@ TEST_CASE("Choice: Clashing type")
 
 TEST_CASE("Choice: Choice of choices")
 {
-    using Choice1 =
-        fast_ber::Choice<fast_ber::Choices<fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 1>>,
-                                           fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 2>>>>;
-    using Choice2 =
-        fast_ber::Choice<fast_ber::Choices<fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 3>>,
-                                           fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 4>>>>;
-    using Choice3 = fast_ber::Choice<fast_ber::Choices<Choice1, Choice2>>;
+    using Choice1 = fast_ber::ChoiceOfChoice::UnnamedChoice1<>;
+    using Choice2 = fast_ber::ChoiceOfChoice::UnnamedChoice2<>;
+    using Choice3 = fast_ber::ChoiceOfChoice::C<>;
 
-    using ExpectedId = fast_ber::ChoiceId<fast_ber::ChoiceId<fast_ber::Id<fast_ber::Class::context_specific, 1>,
-                                                             fast_ber::Id<fast_ber::Class::context_specific, 2>>,
-                                          fast_ber::ChoiceId<fast_ber::Id<fast_ber::Class::context_specific, 3>,
-                                                             fast_ber::Id<fast_ber::Class::context_specific, 4>>>;
+    using ExpectedId = fast_ber::ChoiceId<
+        fast_ber::Id<fast_ber::Class::context_specific, 1>, fast_ber::Id<fast_ber::Class::context_specific, 2>,
+        fast_ber::Id<fast_ber::Class::context_specific, 3>, fast_ber::Id<fast_ber::Class::context_specific, 4>>;
 
     Choice3 choice_orig = fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 4>>{};
     Choice3 choice_copy = fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 1>>{};
@@ -234,4 +230,27 @@ TEST_CASE("Choice: Choice of choices")
     CHECK(fast_ber::holds_alternative<Choice2>(choice_copy));
     CHECK(choice_orig == choice_copy);
     CHECK(std::is_same<fast_ber::Identifier<Choice3>, ExpectedId>::value);
+}
+
+TEST_CASE("Choice: Copy")
+{
+    const fast_ber::SimpleChoice::Simple<> choice("Test string");
+    const fast_ber::SimpleChoice::Simple<> copy(choice);
+
+    CHECK(choice == copy);
+    CHECK(fast_ber::get<1>(copy) == "Test string");
+}
+
+TEST_CASE("Choice: Move")
+{
+    fast_ber::SimpleChoice::Simple<>       choice("Test string");
+    const fast_ber::SimpleChoice::Simple<> copy(std::move(choice));
+
+    CHECK(fast_ber::get<1>(copy) == "Test string");
+}
+
+TEST_CASE("Choice: Inplace")
+{
+    fast_ber::SimpleChoice::Simple<> choice(fast_ber::in_place_index_t<1>{}, "Test string");
+    CHECK(fast_ber::get<1>(choice) == "Test string");
 }
