@@ -178,7 +178,6 @@ std::string create_choice_encode_functions(const std::vector<std::string>& names
     block.add_line("inline EncodeResult " + name + "::encode(absl::Span<uint8_t> output) const noexcept");
     {
         auto scope1 = CodeScope(block);
-        block.add_line("return this->encode_old(output);");
         block.add_line("EncodeResult res;");
         block.add_line("auto content = output;");
 
@@ -188,7 +187,6 @@ std::string create_choice_encode_functions(const std::vector<std::string>& names
         block.add_line("if (!IsChoiceId<" + type_identifier + ">::value)");
         {
             auto scope2 = CodeScope(block);
-            block.add_line(R"(std::cout << "choice id!" << std::endl;)");
             block.add_line(" header_length_guess = fast_ber::encoded_length(0," + type_identifier + "{});");
 
             block.add_line("if (output.length() < header_length_guess)");
@@ -199,7 +197,6 @@ std::string create_choice_encode_functions(const std::vector<std::string>& names
             block.add_line("content.remove_prefix(header_length_guess);");
         }
 
-        block.add_line(R"(std::cout << " decoding choice " << this->index() << std::endl;)");
         block.add_line("switch (this->index())");
         {
             auto scope2 = CodeScope(block);
@@ -221,10 +218,8 @@ std::string create_choice_encode_functions(const std::vector<std::string>& names
                 block.add_line("return res;");
             }
             block.add_line("const size_t content_length = res.length;");
-            block.add_line(R"(std::cout << "encode success!" << content_length << std::endl;)");
             block.add_line("res =  wrap_with_ber_header(output, content_length, " + type_identifier +
                            "{}, header_length_guess);");
-            block.add_line(R"(std::cout << "encode success!" << res.length << std::endl;)");
             block.add_line("return res;");
         }
         block.add_line("else");
@@ -244,7 +239,30 @@ std::string create_choice_encode_functions(const std::vector<std::string>& names
     block.add_line("inline std::size_t " + name + "::encoded_length() const noexcept");
     {
         auto scope1 = CodeScope(block);
-        block.add_line("return this->encoded_length_old();");
+        block.add_line("std::size_t content_length = 0;");
+        block.add_line("switch (this->index())");
+        {
+            auto scope2 = CodeScope(block);
+            for (size_t i = 0; i < choice.choices.size(); i++)
+            {
+                block.add_line("case " + std::to_string(i) + ":");
+                block.add_line("	content_length = fast_ber::get<" + std::to_string(i) + ">(*this)" +
+                               ".encoded_length();");
+                block.add_line("	break;");
+            }
+            block.add_line("default: assert(0);");
+        }
+
+        block.add_line("if (!IsChoiceId<" + type_identifier + ">::value)");
+        {
+            auto scope2 = CodeScope(block);
+            block.add_line("return fast_ber::encoded_length(content_length, " + type_identifier + "{});");
+        }
+        block.add_line("else");
+        {
+            auto scope2 = CodeScope(block);
+            block.add_line("return content_length;");
+        }
     }
 
     block.add_line();
