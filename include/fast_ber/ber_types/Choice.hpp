@@ -27,7 +27,8 @@ constexpr bool is_an_identifier_choice(Class class_, Tag tag, Identifier id, Ide
 template <typename... Identifiers>
 struct ChoiceId
 {
-    constexpr static bool check_id_match(Class c, Tag t) { return is_an_identifier_choice(c, t, Identifiers{}...); }
+    constexpr static bool   check_id_match(Class c, Tag t) { return is_an_identifier_choice(c, t, Identifiers{}...); }
+    constexpr static size_t depth() { return 1; }
 };
 
 // Not implemented, used to help with symetry
@@ -40,6 +41,13 @@ std::size_t encoded_length(size_t, ChoiceId<Identifiers...>)
 
 template <typename... Identifiers>
 EncodeResult wrap_with_ber_header(absl::Span<uint8_t>, size_t, ChoiceId<Identifiers...>, size_t)
+{
+    assert(0);
+    return {};
+}
+
+template <typename... Identifiers>
+bool has_correct_header(BerView, ChoiceId<Identifiers...>, Construction)
 {
     assert(0);
     return {};

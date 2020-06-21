@@ -594,7 +594,10 @@ struct Identifier
 
     Identifier() = default;
     explicit Identifier(Class c, int64_t tag) : class_(c), tag_number(tag) {}
-    explicit Identifier(UniversalTag tag) : class_(Class::universal), tag_number(0), universal(tag) {}
+    explicit Identifier(UniversalTag tag)
+        : class_(Class::universal), tag_number(static_cast<int64_t>(tag)), universal(tag)
+    {
+    }
 
     std::string name() const
     {

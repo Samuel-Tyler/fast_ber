@@ -374,7 +374,7 @@ create_collection_decode_functions(const std::vector<std::string>& namespaces, c
 
 std::string create_choice_decode_functions(const std::vector<std::string>& namespaces,
                                            const std::string& assignment_name, const std::vector<Parameter>&,
-                                           const ChoiceType& choice, const Module& module, const Asn1Tree&)
+                                           const ChoiceType& choice, const Module& module, const Asn1Tree& tree)
 {
     CodeBlock block;
 
@@ -398,11 +398,61 @@ std::string create_choice_decode_functions(const std::vector<std::string>& names
         block.add_line(create_template_definition({"Identifier" + std::to_string(i)}));
     }
 
-    block.add_line("inline DecodeResult " + name + "::decode(BerView output) noexcept");
+    block.add_line("inline DecodeResult " + name + "::decode(BerView input) noexcept");
     {
         auto scope1 = CodeScope(block);
-        block.add_line("return this->decode_old(output);");
-        block.add_line("EncodeResult res;");
+        block.add_line("BerView content(input);");
+        block.add_line("if (!IsChoiceId<" + type_identifier + ">::value)");
+        {
+            auto scope2 = CodeScope(block);
+            block.add_line("if (!input.is_valid())");
+            {
+                auto scope3 = CodeScope(block);
+                block.add_line(R"(std::cerr << "Invalid packet when decoding choice [)" + name + R"(]" << std::endl;)");
+                block.add_line("return DecodeResult{false};");
+            }
+            block.add_line("if (!has_correct_header(input, " + type_identifier + "{}, Construction::constructed))");
+            {
+                auto scope3 = CodeScope(block);
+                block.add_line(
+                    R"(std::cerr << "Invalid header when decoding choice type [" << input.identifier() << "] in choice [)" +
+                    name + R"(]" << std::endl;)");
+                block.add_line("return DecodeResult{false};");
+            }
+
+            block.add_line("BerViewIterator child = (" + type_identifier +
+                           "::depth() == 1) ? input.begin() : input.begin()->begin();");
+            block.add_line("if (!child->is_valid())");
+            {
+                auto scope3 = CodeScope(block);
+                block.add_line("return DecodeResult{false};");
+            }
+            block.add_line("content = *child;");
+        }
+        block.add_line("switch (content.tag())");
+        auto   scope2 = CodeScope(block);
+        size_t i      = 0;
+        for (const NamedType& named_type : choice.choices)
+        {
+            const std::vector<Identifier>& ids = outer_identifiers(named_type.type, module, tree);
+            if (module.tagging_default == TaggingMode::automatic)
+            {
+                block.add_line("case " + std::to_string(i) + ":");
+            }
+            else
+            {
+                for (const Identifier& id : ids)
+                {
+                    block.add_line("case " + std::to_string(id.tag_number) + ":");
+                }
+            }
+            block.add_line("	return this->template emplace<" + std::to_string(i) + ">().decode(content);");
+            i++;
+        }
+        block.add_line("default:");
+        block.add_line(R"(std::cerr << "Unknown tag [" << content.identifier() << "] in choice [)" + name +
+                       R"(]" << std::endl;)");
+        block.add_line("return DecodeResult{false};");
     }
 
     block.add_line();
