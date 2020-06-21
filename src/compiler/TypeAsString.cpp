@@ -23,9 +23,9 @@ std::string collection_as_string(const Collection& collection, const Module& mod
                                  const std::string& type_name, const std::string& identifier_override,
                                  const std::string& collection_name)
 {
-    std::string res = " {\n";
+    std::string res = "struct " + type_name + " {\n";
 
-    bool has_defaults;
+    bool has_defaults = false;
     for (const ComponentType& component : collection.components)
     {
         if (component.default_value)
@@ -48,18 +48,30 @@ std::string collection_as_string(const Collection& collection, const Module& mod
 
     int64_t tag_counter = 0;
 
+    // Define child types
     for (const ComponentType& component : collection.components)
     {
         std::string component_type;
-        if (is_set(component.named_type.type) || is_sequence(component.named_type.type))
+        if (is_sequence(component.named_type.type) || is_set(component.named_type.type))
         {
             const std::string id_template_param = "Identifier" + std::to_string(id_counter++);
-            component_type =
-                type_as_string(component.named_type.type, module, tree, component.named_type.name + "_type");
 
             res += create_template_definition(
-                {id_template_param + " = ExplicitId<UniversalTag::" + collection_name + ">"});
-            res += "struct " + component.named_type.name + "_type " + component_type;
+                       {id_template_param + " = ExplicitId<UniversalTag::" + collection_name + ">"}) +
+                   '\n';
+
+            res += type_as_string(component.named_type.type, module, tree, component.named_type.name + "_type");
+        }
+        else if (is_choice(component.named_type.type))
+        {
+            const std::string id_template_param = "Identifier" + std::to_string(id_counter++);
+
+            res += create_template_definition(
+                       {id_template_param + " = " + identifier(component.named_type.type, module, tree).name()}) +
+                   '\n';
+
+            res += type_as_string(component.named_type.type, module, tree, component.named_type.name + "_type",
+                                  id_template_param);
         }
     }
 
@@ -69,7 +81,8 @@ std::string collection_as_string(const Collection& collection, const Module& mod
     {
         std::string component_type;
 
-        if (is_set(component.named_type.type) || is_sequence(component.named_type.type))
+        if (is_set(component.named_type.type) || is_sequence(component.named_type.type) ||
+            is_choice(component.named_type.type))
         {
             component_type = component.named_type.name + "_type<> ";
         }
@@ -140,8 +153,8 @@ std::string collection_as_string(const Collection& collection, const Module& mod
         res += "    {}\n";
     }
     bool is_first = true;
-    res += "    template <typename Identifier2>\n";
-    res += "    " + type_name + "(const " + type_name + "<Identifier2>& rhs)\n";
+    res += "    template <typename OtherIdentifier>\n";
+    res += "    " + type_name + "(const " + type_name + "<OtherIdentifier>& rhs)\n";
     for (const ComponentType& component : collection.components)
     {
         res += "        ";
@@ -167,8 +180,8 @@ std::string collection_as_string(const Collection& collection, const Module& mod
     }
 
     is_first = true;
-    res += "    template <typename Identifier2>\n";
-    res += "    " + type_name + "(" + type_name + "<Identifier2>&& rhs) noexcept\n";
+    res += "    template <typename OtherIdentifier>\n";
+    res += "    " + type_name + "(" + type_name + "<OtherIdentifier>&& rhs) noexcept\n";
     for (const ComponentType& component : collection.components)
     {
         res += "        ";
@@ -193,8 +206,8 @@ std::string collection_as_string(const Collection& collection, const Module& mod
         res += "        {}\n";
     }
 
-    res += "\n    template <typename Identifier2>\n";
-    res += "    " + type_name + "& operator=(const " + type_name + "<Identifier2>& rhs)\n";
+    res += "\n    template <typename OtherIdentifier>\n";
+    res += "    " + type_name + "& operator=(const " + type_name + "<OtherIdentifier>& rhs) noexcept\n";
     res += "    {\n";
     if (collection.components.size() == 0)
     {
@@ -207,8 +220,8 @@ std::string collection_as_string(const Collection& collection, const Module& mod
     res += "        return *this;\n";
     res += "    }\n";
 
-    res += "    template <typename Identifier2>\n";
-    res += "    " + type_name + "& operator=(" + type_name + "<Identifier2>&& rhs) noexcept\n";
+    res += "    template <typename OtherIdentifier>\n";
+    res += "    " + type_name + "& operator=(" + type_name + "<OtherIdentifier>&& rhs) noexcept\n";
     res += "    {\n";
     if (collection.components.size() == 0)
     {
@@ -253,48 +266,84 @@ std::string type_as_string(const CharacterStringType& type, const Module& module
 {
     return to_string(type) + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const ChoiceType& choice, const Module& module, const Asn1Tree& tree, const std::string&,
-                           const std::string& identifier_override)
+std::string type_as_string(const ChoiceType& choice, const Module& module, const Asn1Tree& tree,
+                           const std::string& name, const std::string& identifier_override)
 {
-    std::string res      = "Choice<Choices<";
+    std::string base     = "Choice<Choices<";
     bool        is_first = true;
 
     int64_t tag_counter = 0;
     for (const auto& named_type : choice.choices)
     {
         if (!is_first)
-            res += ", ";
+            base += ", ";
 
-        if (is_sequence(named_type.type) || is_set(named_type.type) || is_enumerated(named_type.type))
+        if (is_sequence(named_type.type) || is_set(named_type.type) || is_enumerated(named_type.type) ||
+            is_choice(named_type.type))
         {
-            throw std::runtime_error("ChoiceType must not be a structure or enum" +
-                                     type_as_string(named_type.type, module, tree));
+            //    base+= named_type.name +"_type " + named_type.name
+            throw std::runtime_error("ChoiceType must not be a structure or enum [" + name + "] [" +
+                                     type_as_string(named_type.type, module, tree) + "]");
         }
 
         if (module.tagging_default == TaggingMode::automatic)
         {
-            res += type_as_string(named_type.type, module, tree, "",
-                                  Identifier(Class::context_specific, tag_counter++).name());
+            base += type_as_string(named_type.type, module, tree, "",
+                                   Identifier(Class::context_specific, tag_counter++).name());
         }
         else
         {
-            res += type_as_string(named_type.type, module, tree);
+            base += type_as_string(named_type.type, module, tree);
         }
         is_first = false;
     }
-    res += ">, ";
+    base += ">, ";
 
     if (identifier_override.empty())
     {
-        res += identifier(choice, module, tree).name();
+        base += identifier(choice, module, tree).name();
     }
     else
     {
-        res += identifier_override;
+        base += identifier_override;
     }
 
-    res += ", " + to_string(choice.storage);
-    res += ">";
+    base += ", " + to_string(choice.storage);
+    base += ">";
+
+    std::string res = "struct " + name + " : " + base + "{\n";
+
+    // Define sub types
+    for (const NamedType& named_type : choice.choices)
+    {
+        std::string component_type;
+        if (is_set(named_type.type) || is_sequence(named_type.type) || is_choice(named_type.type))
+        {
+            const std::string id_template_param = "Identifier" + std::to_string(id_counter++);
+            res += create_template_definition({id_template_param + " = ExplicitId<UniversalTag::sequence>"}) + '\n';
+            res += type_as_string(named_type.type, module, tree, named_type.name + "_type");
+        }
+    }
+
+    res += "    using AliasedType = " + base + ";\n";
+    res += "    using AliasedType::AliasedType;\n";
+#ifndef _MSC_VER
+    res += "    using AliasedType::operator=;\n";
+    res += "    " + name + "() noexcept : AliasedType(){}\n";
+    res += "    " + name + "(const " + name + "& rhs) noexcept : AliasedType(static_cast<const AliasedType&>(rhs)){}\n";
+    res +=
+        "    " + name + "(" + name + "&& rhs) noexcept : AliasedType(static_cast<AliasedType&&>(std::move(rhs))){}\n";
+    res += "    " + name + "& operator=(const " + name +
+           "& rhs) noexcept { static_cast<AliasedType>(*this) = static_cast<const AliasedType&>(rhs); "
+           "return *this; }\n";
+    res += "    " + name + "& operator=(" + name +
+           "&& rhs) noexcept { static_cast<AliasedType>(*this) = static_cast<AliasedType&&>(std::move(rhs)); "
+           "return *this; }\n";
+#endif
+    res += "    std::size_t encoded_length() const noexcept;\n";
+    res += "    EncodeResult encode(absl::Span<uint8_t> output) const noexcept;\n";
+    res += "    DecodeResult decode(BerView output) noexcept;\n";
+    res += "};\n";
     return res;
 }
 std::string type_as_string(const DateType& type, const Module& module, const Asn1Tree& tree, const std::string&,

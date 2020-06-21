@@ -23,9 +23,10 @@ function(asn1c_generate input_file)
 endfunction(asn1c_generate)
 
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/simple5.asn simple)
+fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/all_types_test.asn all)
 
 aux_source_directory(. BENCH_SRC)
-add_executable(${PROJECT_NAME} Test ${BENCH_SRC} autogen/simple.hpp)
+add_executable(${PROJECT_NAME} Test ${BENCH_SRC} autogen/simple.hpp autogen/all.hpp)
 
 if(BENCHMARKS_INCLUDE_ASN1C)
     asn1c_generate(${CMAKE_SOURCE_DIR}/testfiles/simple5.asn)

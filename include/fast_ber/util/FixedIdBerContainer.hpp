@@ -23,21 +23,21 @@ class FixedIdBerContainer
 {
   public:
     FixedIdBerContainer() noexcept;
-    FixedIdBerContainer(const FixedIdBerContainer& rhs);
+    FixedIdBerContainer(const FixedIdBerContainer& rhs) noexcept;
     FixedIdBerContainer(FixedIdBerContainer&& rhs) noexcept;
     FixedIdBerContainer(BerView input_view) noexcept { decode(input_view); }
     FixedIdBerContainer(absl::Span<const uint8_t> input_data, ConstructionMethod method) noexcept;
     FixedIdBerContainer(Construction input_construction, Class input_class, Tag input_tag,
                         absl::Span<const uint8_t> input_content) noexcept;
     template <typename Identifier2>
-    FixedIdBerContainer(const FixedIdBerContainer<Identifier2>& rhs);
+    FixedIdBerContainer(const FixedIdBerContainer<Identifier2>& rhs) noexcept;
     ~FixedIdBerContainer() noexcept = default;
 
     FixedIdBerContainer& operator=(BerView input_view) noexcept;
-    FixedIdBerContainer& operator=(const FixedIdBerContainer& input_container);
+    FixedIdBerContainer& operator=(const FixedIdBerContainer& input_container) noexcept;
     FixedIdBerContainer& operator=(FixedIdBerContainer&& input_container) noexcept;
     template <typename Identifier2>
-    FixedIdBerContainer& operator=(const FixedIdBerContainer<Identifier2>& rhs);
+    FixedIdBerContainer& operator=(const FixedIdBerContainer<Identifier2>& rhs) noexcept;
 
     void assign_content(const absl::Span<const uint8_t> input_content) noexcept;
     void resize_content(size_t size);
@@ -82,7 +82,7 @@ FixedIdBerContainer<Identifier>::FixedIdBerContainer() noexcept : m_data()
 }
 
 template <typename Identifier>
-FixedIdBerContainer<Identifier>::FixedIdBerContainer(const FixedIdBerContainer& rhs)
+FixedIdBerContainer<Identifier>::FixedIdBerContainer(const FixedIdBerContainer& rhs) noexcept
     : m_data(rhs.m_data), m_content_length(rhs.m_content_length)
 {
 }
@@ -121,7 +121,7 @@ FixedIdBerContainer<Identifier>::FixedIdBerContainer(Construction input_construc
 
 template <typename Identifier>
 template <typename Identifier2>
-FixedIdBerContainer<Identifier>::FixedIdBerContainer(const FixedIdBerContainer<Identifier2>& rhs)
+FixedIdBerContainer<Identifier>::FixedIdBerContainer(const FixedIdBerContainer<Identifier2>& rhs) noexcept
 {
     assign_content(rhs.content());
 }
@@ -135,7 +135,7 @@ FixedIdBerContainer<Identifier>& FixedIdBerContainer<Identifier>::operator=(BerV
 
 template <typename Identifier1>
 FixedIdBerContainer<Identifier1>& FixedIdBerContainer<Identifier1>::
-                                  operator=(const FixedIdBerContainer<Identifier1>& rhs)
+                                  operator=(const FixedIdBerContainer<Identifier1>& rhs) noexcept
 {
     m_data           = rhs.m_data;
     m_content_length = rhs.m_content_length;
@@ -154,7 +154,7 @@ FixedIdBerContainer<Identifier1>& FixedIdBerContainer<Identifier1>::
 template <typename Identifier1>
 template <typename Identifier2>
 FixedIdBerContainer<Identifier1>& FixedIdBerContainer<Identifier1>::
-                                  operator=(const FixedIdBerContainer<Identifier2>& rhs)
+                                  operator=(const FixedIdBerContainer<Identifier2>& rhs) noexcept
 {
     assign_content(rhs.content());
     return *this;

@@ -1,22 +1,42 @@
 All DEFINITIONS AUTOMATIC TAGS ::= BEGIN
 
+The-BitString ::= BIT STRING
+The-Boolean ::= BOOLEAN
+The-CharacterString ::= CHARACTER STRING
+The-Choice ::= CHOICE
+{
+   member_one BOOLEAN,
+   member_two OCTET STRING
+}
+The-Date ::= DATE
+The-DateTime ::= DATE-TIME
+The-Duration ::= DURATION
 The-Enum ::= ENUMERATED
 {
    apple,
    pear,
    orange
 }
-
-The-Set ::= SET
-{
-   member_one OCTET STRING,
-   member_two INTEGER
-}
-
+The-GeneralizedTime ::= GeneralizedTime
+The-Integer ::= INTEGER
+The-Null ::= NULL
+The-ObjectIdentifier ::= OBJECT IDENTIFIER
+The-OctetString ::= OCTET STRING
+The-Real ::= REAL
+The-Time ::= TIME
+The-TimeOfDay ::= TIME-OF-DAY
 The-Sequence ::= SEQUENCE
 {
    member_one OCTET STRING,
    member_two INTEGER
 }
+The-SequenceOf ::= SEQUENCE OF INTEGER
+The-Set ::= SET
+{
+   member_one OCTET STRING,
+   member_two INTEGER
+}
+The-SetOf ::= SEQUENCE OF OCTET STRING
+The-VisibleString ::= VisibleString
 
 END

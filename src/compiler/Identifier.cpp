@@ -42,7 +42,14 @@ TaggingInfo identifier(const ChoiceType& choice, const Module& module, const Asn
     {
         for (size_t i = 0; i < choice.choices.size(); i++)
         {
-            info.choice_ids.push_back(Identifier{Class::context_specific, static_cast<int64_t>(i)});
+            if (is_prefixed(choice.choices[i].type))
+            {
+                info.choice_ids.push_back(outer_identifiers(choice.choices[i].type, module, tree)[0]);
+            }
+            else
+            {
+                info.choice_ids.push_back(Identifier{Class::context_specific, static_cast<int64_t>(i)});
+            }
         }
     }
     else

@@ -35,3 +35,37 @@ MyChoice ::= CHOICE {
 }
 
 END
+
+SimpleChoice DEFINITIONS ::= BEGIN
+
+Simple ::= CHOICE {
+    a INTEGER,
+    b OCTET STRING
+}
+
+END
+
+Clashing DEFINITIONS ::= BEGIN
+
+Clash ::= CHOICE {
+    a [ 98] IMPLICIT INTEGER,
+    b [ 99] IMPLICIT OCTET STRING,
+    c [100] IMPLICIT OCTET STRING
+}
+
+END
+
+ChoiceOfChoice DEFINITIONS ::= BEGIN
+
+C ::= CHOICE {
+    one CHOICE {
+        a [1] IMPLICIT OCTET STRING,
+        b [2] IMPLICIT OCTET STRING
+    },
+    two CHOICE {
+        c [3] IMPLICIT OCTET STRING,
+        d [4] IMPLICIT OCTET STRING
+    }
+}
+
+END
