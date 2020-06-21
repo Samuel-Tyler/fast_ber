@@ -429,27 +429,52 @@ std::string create_choice_decode_functions(const std::vector<std::string>& names
             }
             block.add_line("content = *child;");
         }
-        block.add_line("switch (content.tag())");
-        auto   scope2 = CodeScope(block);
-        size_t i      = 0;
-        for (const NamedType& named_type : choice.choices)
+
+        if (module.tagging_default == TaggingMode::automatic)
         {
-            const std::vector<Identifier>& ids = outer_identifiers(named_type.type, module, tree);
-            if (module.tagging_default == TaggingMode::automatic)
+            block.add_line("switch (content.tag())");
             {
-                block.add_line("case " + std::to_string(i) + ":");
-            }
-            else
-            {
-                for (const Identifier& id : ids)
+                auto scope2 = CodeScope(block);
+                for (size_t i = 0; i < choice.choices.size(); i++)
                 {
-                    block.add_line("case " + std::to_string(id.tag_number) + ":");
+                    block.add_line("case " + std::to_string(i) + ":");
+                    block.add_line("	return this->template emplace<" + std::to_string(i) + ">().decode(content);");
                 }
             }
-            block.add_line("	return this->template emplace<" + std::to_string(i) + ">().decode(content);");
-            i++;
         }
-        block.add_line("default:");
+        else
+        {
+            for (Class class_ : {
+                     Class::universal,
+                     Class::application,
+                     Class::context_specific,
+                     Class::private_,
+                 })
+            {
+                const std::vector<Identifier>& outer_ids = outer_identifiers(choice, module, tree);
+                if (std::any_of(outer_ids.begin(), outer_ids.end(),
+                                [class_](const Identifier& id) { return id.class_ == class_; }))
+                {
+                    block.add_line("switch (content.tag())");
+                    auto   scope2 = CodeScope(block);
+                    size_t i      = 0;
+                    for (const NamedType& named_type : choice.choices)
+                    {
+                        const std::vector<Identifier>& ids = outer_identifiers(named_type.type, module, tree);
+                        for (const Identifier& id : ids)
+                        {
+                            if (id.class_ == class_)
+                            {
+                                block.add_line("case " + std::to_string(id.tag_number) + ":");
+                                block.add_line("	return this->template emplace<" + std::to_string(i) +
+                                               ">().decode(content);");
+                            }
+                        }
+                        i++;
+                    }
+                }
+            }
+        }
         block.add_line(R"(std::cerr << "Unknown tag [" << content.identifier() << "] in choice [)" + name +
                        R"(]" << std::endl;)");
         block.add_line("return DecodeResult{false};");
