@@ -327,17 +327,9 @@ std::string type_as_string(const ChoiceType& choice, const Module& module, const
 
     res += "    using AliasedType = " + base + ";\n";
     res += "    using AliasedType::AliasedType;\n";
+#ifndef _MSC_VER
     res += "    using AliasedType::operator=;\n";
-    res += "    " + name + "() noexcept : AliasedType(){}\n";
-    res += "    " + name + "(const " + name + "& rhs) noexcept : AliasedType(static_cast<const AliasedType&>(rhs)){}\n";
-    res +=
-        "    " + name + "(" + name + "&& rhs) noexcept : AliasedType(static_cast<AliasedType&&>(std::move(rhs))){}\n";
-    res += "    " + name + "& operator=(const " + name +
-           "& rhs) noexcept { static_cast<AliasedType>(*this) = static_cast<const AliasedType&>(rhs); "
-           "return *this; }\n";
-    res += "    " + name + "& operator=(" + name +
-           "&& rhs) noexcept { static_cast<AliasedType>(*this) = static_cast<AliasedType&&>(std::move(rhs)); "
-           "return *this; }\n";
+#endif    
     res += "    std::size_t encoded_length() const noexcept;\n";
     res += "    EncodeResult encode(absl::Span<uint8_t> output) const noexcept;\n";
     res += "    DecodeResult decode(BerView output) noexcept;\n";
