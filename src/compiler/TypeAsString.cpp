@@ -329,7 +329,6 @@ std::string type_as_string(const ChoiceType& choice, const Module& module, const
     res += "    using AliasedType::AliasedType;\n";
 #ifndef _MSC_VER
     res += "    using AliasedType::operator=;\n";
-#else
     res += "    " + name + "() noexcept : AliasedType(){}\n";
     res += "    " + name + "(const " + name + "& rhs) noexcept : AliasedType(static_cast<const AliasedType&>(rhs)){}\n";
     res +=
