@@ -143,9 +143,9 @@ TEST_CASE("Tags: Encoding and decoding a packet with various tagging modes")
                                        fast_ber::Construction::primitive));
     ++itr;
 
-    //TODO: FIXME!
-//    CHECK(fast_ber::has_correct_header(*itr, fast_ber::Id<fast_ber::Class::application, 6>{},
-  //                                     fast_ber::Construction::primitive));
+    // TODO: FIXME!
+    //    CHECK(fast_ber::has_correct_header(*itr, fast_ber::Id<fast_ber::Class::application, 6>{},
+    //                                     fast_ber::Construction::primitive));
 }
 
 TEST_CASE("Tags: Tagging an enum")

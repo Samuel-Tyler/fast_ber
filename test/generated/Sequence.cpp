@@ -39,12 +39,13 @@ TEST_CASE("Sequence: Encode / Decode")
     REQUIRE(decode_result.success);
     REQUIRE(encode_result.length == 2);
 
-   /* CORRECT OUTPUT:
-    * TODO: Fixme
-    * REQUIRE(encode_result.success);
-    REQUIRE(decode_result.success);
-    REQUIRE(encode_result.length == 4);
-    REQUIRE(fast_ber::BerView(buffer).is_valid());
-    REQUIRE(fast_ber::BerView(buffer).identifier() == fast_ber::RuntimeId{fast_ber::Class::context_specific, 10});
-    REQUIRE(fast_ber::BerView(buffer).begin()->identifier() == fast_ber::RuntimeId{fast_ber::UniversalTag::sequence}); */
+    /* CORRECT OUTPUT:
+     * TODO: Fixme
+     * REQUIRE(encode_result.success);
+     REQUIRE(decode_result.success);
+     REQUIRE(encode_result.length == 4);
+     REQUIRE(fast_ber::BerView(buffer).is_valid());
+     REQUIRE(fast_ber::BerView(buffer).identifier() == fast_ber::RuntimeId{fast_ber::Class::context_specific, 10});
+     REQUIRE(fast_ber::BerView(buffer).begin()->identifier() == fast_ber::RuntimeId{fast_ber::UniversalTag::sequence});
+   */
 }

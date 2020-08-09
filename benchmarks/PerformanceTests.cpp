@@ -208,10 +208,9 @@ TEST_CASE("Benchmark: Encode Performance")
         goodbye,
         5,
         fast_ber::Boolean<>(true),
-        fast_ber::Simple::Child{
-            fast_ber::Integer<>(-42), fast_ber::SequenceOf<fast_ber::OctetString<>>{}},
-        fast_ber::Simple::Child{
-            999999999, fast_ber::SequenceOf<fast_ber::OctetString<>>{the, second, child, long_string}},
+        fast_ber::Simple::Child{fast_ber::Integer<>(-42), fast_ber::SequenceOf<fast_ber::OctetString<>>{}},
+        fast_ber::Simple::Child{999999999,
+                                fast_ber::SequenceOf<fast_ber::OctetString<>>{the, second, child, long_string}},
         decltype(collection.the_choice){fast_ber::in_place_index_t<1>(), "I chose a string!"}};
 
     BENCHMARK("fast_ber        - 1,000,000 x encode " + std::to_string(fast_ber::encoded_length(collection)) + "B pdu")
@@ -295,10 +294,9 @@ TEST_CASE("Benchmark: Object Construction Performance")
                 goodbye,
                 5,
                 fast_ber::Boolean<>(true),
-                fast_ber::Simple::Child{
-                    -42, fast_ber::SequenceOf<fast_ber::OctetString<>>{}},
-                fast_ber::Simple::Child{
-                    999999999, fast_ber::SequenceOf<fast_ber::OctetString<>>{the, second, child, long_string}},
+                fast_ber::Simple::Child{-42, fast_ber::SequenceOf<fast_ber::OctetString<>>{}},
+                fast_ber::Simple::Child{999999999,
+                                        fast_ber::SequenceOf<fast_ber::OctetString<>>{the, second, child, long_string}},
                 decltype(collection.the_choice){fast_ber::in_place_index_t<1>(), "I chose a string!"}};
         }
     }
@@ -365,10 +363,9 @@ TEST_CASE("Benchmark: Calculate Encoded Length Performance")
         goodbye,
         5,
         fast_ber::Boolean<>(true),
-        fast_ber::Simple::Child{
-            fast_ber::Integer<>(-42), fast_ber::SequenceOf<fast_ber::OctetString<>>{}},
-        fast_ber::Simple::Child{
-            999999999, fast_ber::SequenceOf<fast_ber::OctetString<>>{the, second, child, long_string}},
+        fast_ber::Simple::Child{fast_ber::Integer<>(-42), fast_ber::SequenceOf<fast_ber::OctetString<>>{}},
+        fast_ber::Simple::Child{999999999,
+                                fast_ber::SequenceOf<fast_ber::OctetString<>>{the, second, child, long_string}},
         decltype(collection.the_choice){fast_ber::in_place_index_t<1>(), "I chose a string!"}};
 
     size_t encoded_length = 0;
