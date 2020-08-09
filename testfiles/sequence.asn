@@ -1,6 +1,6 @@
 Sequence DEFINITIONS IMPLICIT TAGS ::= BEGIN
 
-Empty ::= SEQUENCE {
+Empty ::= [10] SEQUENCE {
 }
 
 Collection ::= SEQUENCE {

@@ -27,11 +27,9 @@ std::string strip_path(const std::string& path)
     return path.substr(found + 1);
 }
 
-std::string create_type_fwd(const std::string& name, const Type& type, const Module& module, const Asn1Tree& tree)
+std::string create_type_fwd(const std::string& name, const Type&, const Module&, const Asn1Tree&)
 {
-    TaggingInfo tag = identifier(type, module, tree);
-
-    return create_template_definition({"Identifier = " + tag.name()}) + "\nstruct " + name + ";\n";
+    return "struct " + name + ";\n";
 }
 
 std::string create_type_assignment(const std::string& name, const Type& assignment_type, const Module& module,
@@ -39,28 +37,19 @@ std::string create_type_assignment(const std::string& name, const Type& assignme
 {
     std::string res;
 
-    if (is_set(assignment_type) || is_sequence(assignment_type))
+    if (is_set(assignment_type) || is_sequence(assignment_type) || is_choice(assignment_type))
     {
-        res += create_template_definition({"Identifier"}) + '\n';
         res += type_as_string(assignment_type, module, tree, name);
     }
-    else if (is_choice(assignment_type))
-    {
-        res += create_template_definition({"Identifier"}) + '\n';
-        res += type_as_string(assignment_type, module, tree, name, "Identifier");
-    }
-
     else if (is_enumerated(assignment_type))
     {
         res += "enum class " + name + "Values" + type_as_string(assignment_type, module, tree);
-        res += create_template_definition({"Identifier"}) + '\n';
-        res += "FAST_BER_ALIAS(" + name + ", " + "Enumerated<" + name + "Values, Identifier>);\n";
+        res += "FAST_BER_ALIAS(" + name + ", " + "Enumerated<" + name + "Values," +
+               identifier(assignment_type, module, tree).name() + ">);\n";
     }
     else
     {
-        res += create_template_definition({"Identifier"}) + '\n';
-        res +=
-            "FAST_BER_ALIAS(" + name + ", " + type_as_string(assignment_type, module, tree, "", "Identifier") + ");\n";
+        res += "FAST_BER_ALIAS(" + name + ", " + type_as_string(assignment_type, module, tree) + ");\n";
     }
     return res;
 }
@@ -113,73 +102,10 @@ std::string create_assignment(const Asn1Tree& tree, const Module& module, const 
 }
 
 template <typename CollectionType>
-std::string create_identifier_functions_recursive(const std::string& assignment_name, const CollectionType& collection,
-                                                  const std::string&              module_name,
-                                                  const std::vector<std::string>& namespace_names)
+std::string create_ostream_operators(const CollectionType& collection, const std::string& full_name)
 {
     std::string res;
-
-    auto child_namespaces = namespace_names;
-    child_namespaces.push_back(assignment_name);
-
-    for (const auto& child : collection.components)
-    {
-        if (is_sequence(child.named_type.type))
-        {
-            res += create_identifier_functions_recursive(
-                child.named_type.name + "_type", absl::get<SequenceType>(absl::get<BuiltinType>(child.named_type.type)),
-                module_name, child_namespaces);
-        }
-        else if (is_set(child.named_type.type))
-        {
-            res += create_identifier_functions_recursive(
-                child.named_type.name + "_type", absl::get<SetType>(absl::get<BuiltinType>(child.named_type.type)),
-                module_name, child_namespaces);
-        }
-    }
-
-    std::string name = module_name + "::";
-    for (const std::string& ns : namespace_names)
-    {
-        name += ns + "<>::template ";
-    }
-    name += assignment_name + create_template_arguments({"Identifier"});
-
-    res += create_template_definition({"Identifier"}) + '\n';
-    res += "struct IdentifierType<" + name + ">{ using type = Identifier ; };\n";
-
-    return res;
-}
-
-std::string create_identifier_functions(const Assignment& assignment, const Module& module)
-{
-    std::string res;
-
-    if (absl::holds_alternative<TypeAssignment>(assignment.specific))
-    {
-        const TypeAssignment& type_assign = absl::get<TypeAssignment>(assignment.specific);
-        if (is_sequence(type_assign.type))
-        {
-            const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(type_assign.type));
-            return create_identifier_functions_recursive(assignment.name, sequence,
-                                                         "fast_ber::" + module.module_reference, {});
-        }
-        else if (is_set(type_assign.type))
-        {
-            const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(type_assign.type));
-            return create_identifier_functions_recursive(assignment.name, set, "fast_ber::" + module.module_reference,
-                                                         {});
-        }
-    }
-    return "";
-}
-
-template <typename CollectionType>
-std::string create_ostream_operators(const CollectionType& collection, const std::string& name_with_template_params)
-{
-    std::string res;
-    res += create_template_definition({"Identifier"}) + '\n';
-    res += "std::ostream& operator<<(std::ostream& os, const " + name_with_template_params + "& object)\n";
+    res += "std::ostream& operator<<(std::ostream& os, const " + full_name + "& object)\n";
     res += "{\n";
     res += "    bool first = true;\n";
     res += "    os << '{';\n";
@@ -209,19 +135,16 @@ std::string create_collection_equality_operators(const CollectionType& collectio
     std::string full_namespace;
     for (const std::string& parent : parents)
     {
-        full_namespace += parent + "<>::template ";
+        full_namespace += parent + "::";
     }
 
-    std::string name_with_template_params   = full_namespace + name + create_template_arguments({"Identifier"});
-    std::string name_with_template_params_1 = full_namespace + name + create_template_arguments({"Identifier1"});
-    std::string name_with_template_params_2 = full_namespace + name + create_template_arguments({"Identifier2"});
+    std::string full_name = full_namespace + name;
 
     std::string res;
 
-    res += create_template_definition({"Identifier1", "Identifier2"}) + '\n';
     res += "bool operator==(";
-    res += "const " + name_with_template_params_1 + "& lhs, ";
-    res += "const " + name_with_template_params_2 + "& rhs)\n";
+    res += "const " + full_name + "& lhs, ";
+    res += "const " + full_name + "& rhs)\n";
     res += "{\n";
 
     if (collection.components.size() == 0)
@@ -238,14 +161,13 @@ std::string create_collection_equality_operators(const CollectionType& collectio
     }
     res += ";\n}\n\n";
 
-    res += create_template_definition({"Identifier1", "Identifier2"}) + '\n';
     res += "bool operator!=(";
-    res += "const " + name_with_template_params_1 + "& lhs, ";
-    res += "const " + name_with_template_params_2 + "& rhs)\n";
+    res += "const " + full_name + "& lhs, ";
+    res += "const " + full_name + "& rhs)\n";
     res += "{\n";
     res += "    return !(lhs == rhs);\n}\n\n";
 
-    res += create_ostream_operators(collection, name_with_template_params);
+    res += create_ostream_operators(collection, full_name);
 
     parents.push_back(name);
 
@@ -397,18 +319,7 @@ std::string create_detail_body(const Asn1Tree& tree)
     std::string output;
     output += "/* Functionality provided for Encoding and Decoding BER */\n\n";
 
-    std::string body;
-
-    for (const Module& module : tree.modules)
-    {
-        // Inside namespace due to argument dependant lookup rules
-        for (const Assignment& assignment : module.assignments)
-        {
-            body += create_identifier_functions(assignment, module);
-        }
-    }
-
-    body += '\n';
+    std::string body = "\n";
 
     for (const Module& module : tree.modules)
     {

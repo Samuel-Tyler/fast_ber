@@ -54,6 +54,13 @@ struct Optional : public OptionalImplementation<T, storage>::Type
     size_t       encoded_length() const noexcept;
     EncodeResult encode(absl::Span<uint8_t> buffer) const noexcept;
     DecodeResult decode(BerView input) noexcept;
+
+    template <typename Identifier>
+    size_t encoded_length_with_id() const noexcept;
+    template <typename Identifier>
+    EncodeResult encode_with_id(absl::Span<uint8_t> buffer) const noexcept;
+    template <typename Identifier>
+    DecodeResult decode_with_id(BerView input) noexcept;
 };
 
 template <typename T, StorageMode s1>
@@ -122,6 +129,54 @@ DecodeResult Optional<T, s1>::decode(BerView input) noexcept
     {
         this->emplace();
         return (*this)->decode(input);
+    }
+    else if (!input.is_valid())
+    {
+        *this = empty;
+        return DecodeResult{true};
+    }
+    else
+    {
+        return DecodeResult{false};
+    }
+}
+
+template <typename T, StorageMode s1>
+template <typename Identifier>
+size_t Optional<T, s1>::encoded_length_with_id() const noexcept
+{
+    if (this->has_value())
+    {
+        return (*this)->template encoded_length_with_id<Identifier>();
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+template <typename T, StorageMode s1>
+template <typename Identifier>
+EncodeResult Optional<T, s1>::encode_with_id(absl::Span<uint8_t> buffer) const noexcept
+{
+    if (this->has_value())
+    {
+        return (*this)->template encode_with_id<Identifier>(buffer);
+    }
+    else
+    {
+        return {true, 0};
+    }
+}
+
+template <typename T, StorageMode s1>
+template <typename Identifier>
+DecodeResult Optional<T, s1>::decode_with_id(BerView input) noexcept
+{
+    if (input.is_valid() && Identifier::check_id_match(input.class_(), input.tag()))
+    {
+        this->emplace();
+        return (*this)->template decode_with_id<Identifier>(input);
     }
     else if (!input.is_valid())
     {

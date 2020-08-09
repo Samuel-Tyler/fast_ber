@@ -8,7 +8,7 @@
 
 TEST_CASE("Imports: Single file")
 {
-    fast_ber::ModuleA::Collection<> c;
+    fast_ber::ModuleA::Collection c;
     REQUIRE(std::is_same<decltype(c.string)::AliasedType::AliasedType, fast_ber::OctetString<>>::value);
     REQUIRE(std::is_same<decltype(c.integer)::AliasedType::AliasedType, fast_ber::Integer<>>::value);
 
@@ -18,7 +18,7 @@ TEST_CASE("Imports: Single file")
 
 TEST_CASE("Imports: Multiple files")
 {
-    fast_ber::MultiModuleA::Collection<> c;
+    fast_ber::MultiModuleA::Collection c;
     REQUIRE(std::is_same<decltype(c.string)::AliasedType::AliasedType, fast_ber::OctetString<>>::value);
     REQUIRE(std::is_same<decltype(c.integer)::AliasedType::AliasedType, fast_ber::Integer<>>::value);
 

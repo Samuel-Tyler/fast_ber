@@ -184,6 +184,13 @@ NamedType resolve_type(const Asn1Tree& tree, const std::string& current_module_r
     {
         return resolve_type(tree, current_module_reference, absl::get<DefinedType>(type_info.type));
     }
+    if (is_prefixed(type_info.type))
+    {
+        return resolve_type(
+            tree, current_module_reference,
+            NamedType{type_info.name,
+                      absl::get<PrefixedType>(absl::get<BuiltinType>(type_info.type)).tagged_type->type});
+    }
     return type_info;
 }
 

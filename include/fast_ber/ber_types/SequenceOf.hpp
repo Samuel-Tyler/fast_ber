@@ -131,17 +131,9 @@ DecodeResult SequenceOf<T, I, s>::decode(BerView input) noexcept
     BerView child_range = (I::depth() == 1) ? input : *input.begin();
     for (const BerView child : child_range)
     {
-        constexpr Identifier<T> child_id;
-        if (child_id.check_id_match(child.class_(), child.tag()))
-        {
-            this->emplace_back();
-            bool success = this->back().decode(child).success;
-            if (!success)
-            {
-                return DecodeResult{false};
-            }
-        }
-        else
+        this->emplace_back();
+        bool success = this->back().decode(child).success;
+        if (!success)
         {
             return DecodeResult{false};
         }

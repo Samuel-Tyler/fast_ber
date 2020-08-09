@@ -127,6 +127,9 @@ TEST_CASE("OctetString: Equality")
     fast_ber::OctetString<> test_octets = "Duck";
     REQUIRE(test_octets == "Duck");
     REQUIRE(test_octets != "Quack");
+
+    fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 0>> tagged_string("hello");
+    REQUIRE(tagged_string == "hello");
 }
 
 TEST_CASE("OctetString: Default value") { REQUIRE(fast_ber::OctetString<>{} == ""); }
