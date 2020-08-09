@@ -69,13 +69,16 @@ std::string create_assignment(const Asn1Tree& tree, const Module& module, const 
             log_debug(tree, "Creating value assignment: " + module.module_reference + "." + assignment.name);
 
             const ValueAssignment& value_assign = absl::get<ValueAssignment>(assignment.specific);
-            std::string            result =
-                "static const " + value_type(value_assign.type, module, tree) + " " + assignment.name + " = ";
-
-            const Type& assigned_to_type =
+            const Type&            assigned_to_type =
                 (is_defined(value_assign.type))
                     ? type(resolve(tree, module.module_reference, absl::get<DefinedType>(value_assign.type)))
                     : value_assign.type;
+
+            std::string constness =
+                is_oid(assigned_to_type) ? std::string("static const ") : std::string("static constexpr ");
+
+            std::string result =
+                constness + value_type(value_assign.type, module, tree) + " " + assignment.name + " = ";
 
             result += value_as_string(NamedType{assignment.name, assigned_to_type}, value_assign.value) + ";\n";
             return result;
