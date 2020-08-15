@@ -5,6 +5,7 @@
 
 #include "absl/strings/string_view.h"
 
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -216,6 +217,13 @@ std::string create_choice_encode_functions(const std::vector<std::string>& names
         }
     }
 
+    // Make encode functions for nested types
+    for (const NamedType& named_type : choice.choices)
+    {
+        block.add_block(
+            create_encode_functions(namespaces, assignment_name + named_type.name, {}, named_type.type, module, tree));
+    }
+
     block.add_line();
     return block.to_string();
 }
@@ -422,6 +430,13 @@ std::string create_choice_decode_functions(const std::vector<std::string>& names
         block.add_line("return DecodeResult{false};");
     }
 
+    // Make decode functions for nested types
+    for (const NamedType& named_type : choice.choices)
+    {
+        block.add_block(
+            create_decode_functions(namespaces, assignment_name + named_type.name, {}, named_type.type, module, tree));
+    }
+
     block.add_line();
     return block.to_string();
 }
@@ -444,6 +459,12 @@ std::string create_encode_functions(const std::vector<std::string>& namespaces, 
     {
         const ChoiceType& choice = absl::get<ChoiceType>(absl::get<BuiltinType>(type));
         return create_choice_encode_functions(namespaces, assignment_name, parameters, choice, module, tree);
+    }
+    else if (is_prefixed(type))
+    {
+        const PrefixedType& prefixed = absl::get<PrefixedType>(absl::get<BuiltinType>(type));
+        return create_encode_functions(namespaces, assignment_name, parameters, prefixed.tagged_type->type, module,
+                                       tree);
     }
     return "";
 }

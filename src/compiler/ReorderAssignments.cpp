@@ -458,32 +458,7 @@ void find_nested_structs(const Module& module, Type& type, std::vector<NamedType
         for (NamedType& choice_selection : choice.choices)
         {
             Type& inner_type = choice_selection.type;
-            find_nested_structs(module, choice_selection.type, nested_structs);
-
-            if (is_set(inner_type))
-            {
-                const std::string& name = "UnnamedSet" + std::to_string(unnamed_definition_num++);
-                nested_structs.push_back(NamedType{name, inner_type});
-                inner_type = DefinedType{module.module_reference, name, {}};
-            }
-            else if (is_sequence(inner_type))
-            {
-                const std::string& name = "UnnamedSequence" + std::to_string(unnamed_definition_num++);
-                nested_structs.push_back(NamedType{name, inner_type});
-                inner_type = DefinedType{module.module_reference, name, {}};
-            }
-            else if (is_enumerated(inner_type))
-            {
-                const std::string& name = "UnnamedEnum" + std::to_string(unnamed_definition_num++);
-                nested_structs.push_back(NamedType{name, inner_type});
-                inner_type = DefinedType{module.module_reference, name, {}};
-            }
-            else if (is_choice(inner_type))
-            {
-                const std::string& name = "UnnamedChoice" + std::to_string(unnamed_definition_num++);
-                nested_structs.push_back(NamedType{name, inner_type});
-                inner_type = DefinedType{module.module_reference, name, {}};
-            }
+            find_nested_structs(module, inner_type, nested_structs);
         }
     }
     else if (is_prefixed(type))

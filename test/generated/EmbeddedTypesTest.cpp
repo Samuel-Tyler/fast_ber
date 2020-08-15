@@ -22,3 +22,4 @@ TEST_CASE("Embedded Types: Encode and decode nested structures")
     REQUIRE(decode_res.success);
     REQUIRE(copy == collection);
 }
+

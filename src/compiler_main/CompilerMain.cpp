@@ -4,6 +4,7 @@
 #include "fast_ber/compiler/CppGeneration.hpp"
 #include "fast_ber/compiler/Dependencies.hpp"
 #include "fast_ber/compiler/EncodeDecode.hpp"
+#include "fast_ber/compiler/GenerateHelpers.hpp"
 #include "fast_ber/compiler/Identifier.hpp"
 #include "fast_ber/compiler/Logging.hpp"
 #include "fast_ber/compiler/ObjectClass.hpp"
@@ -30,34 +31,6 @@ std::string strip_path(const std::string& path)
 std::string create_type_fwd(const std::string& name, const Type&, const Module&, const Asn1Tree&)
 {
     return "struct " + name + ";\n";
-}
-
-std::string create_type_assignment(const std::string& name, const Type& assignment_type, const Module& module,
-                                   const Asn1Tree& tree)
-{
-    std::string res;
-
-    if (is_set(assignment_type) || is_sequence(assignment_type) || is_choice(assignment_type))
-    {
-        res += type_as_string(assignment_type, module, tree, name);
-    }
-    else if (is_enumerated(assignment_type))
-    {
-        res += "enum class " + name + "Values" + type_as_string(assignment_type, module, tree);
-        res += "FAST_BER_ALIAS(" + name + ", " + "Enumerated<" + name + "Values," +
-               identifier(assignment_type, module, tree).name() + ">);\n";
-    }
-    else
-    {
-        res += "FAST_BER_ALIAS(" + name + ", " + type_as_string(assignment_type, module, tree) + ");\n";
-    }
-    return res;
-}
-
-std::string create_type_assignment(const Assignment& assignment, const Module& module, const Asn1Tree& tree)
-{
-    return create_type_assignment(assignment.name, absl::get<TypeAssignment>(assignment.specific).type, module, tree) +
-           "\n";
 }
 
 std::string create_assignment(const Asn1Tree& tree, const Module& module, const Assignment& assignment)
@@ -102,142 +75,6 @@ std::string create_assignment(const Asn1Tree& tree, const Module& module, const 
     {
         throw(std::runtime_error("failed creating assignment [" + assignment.name + "] [" + e.what() + "]"));
     }
-}
-
-template <typename CollectionType>
-std::string create_ostream_operators(const CollectionType& collection, const std::string& full_name)
-{
-    std::string res;
-    res += "std::ostream& operator<<(std::ostream& os, const " + full_name + "& object)\n";
-    res += "{\n";
-    res += "    bool first = true;\n";
-    res += "    os << '{';\n";
-    if (collection.components.size() == 0)
-    {
-        res += "    (void)object;\n";
-        res += "    (void)first;\n";
-    }
-
-    for (const ComponentType& component : collection.components)
-    {
-        res += "    if (!first) os << \", \";\n";
-        res +=
-            "    os << \"\\\"" + component.named_type.name + "\\\" : \" << object." + component.named_type.name + ";\n";
-        res += "    first = false;\n";
-    }
-    res += "    os << '}';\n";
-    res += "    return os;\n";
-    res += "}\n\n";
-    return res;
-}
-
-template <typename CollectionType>
-std::string create_collection_equality_operators(const CollectionType& collection, std::vector<std::string> parents,
-                                                 const std::string& name)
-{
-    std::string full_namespace;
-    for (const std::string& parent : parents)
-    {
-        full_namespace += parent + "::";
-    }
-
-    std::string full_name = full_namespace + name;
-
-    std::string res;
-
-    res += "bool operator==(";
-    res += "const " + full_name + "& lhs, ";
-    res += "const " + full_name + "& rhs)\n";
-    res += "{\n";
-
-    if (collection.components.size() == 0)
-    {
-        res += "    (void)lhs;\n";
-        res += "    (void)rhs;\n";
-    }
-
-    res += "    return true";
-    for (const ComponentType& component : collection.components)
-    {
-        res += " &&\n      lhs." + component.named_type.name + " == ";
-        res += "rhs." + component.named_type.name;
-    }
-    res += ";\n}\n\n";
-
-    res += "bool operator!=(";
-    res += "const " + full_name + "& lhs, ";
-    res += "const " + full_name + "& rhs)\n";
-    res += "{\n";
-    res += "    return !(lhs == rhs);\n}\n\n";
-
-    res += create_ostream_operators(collection, full_name);
-
-    parents.push_back(name);
-
-    std::string child_equality;
-    // Create assignments for any children too
-    for (const ComponentType& component : collection.components)
-    {
-        if (is_sequence(component.named_type.type))
-        {
-            const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(component.named_type.type));
-            child_equality +=
-                create_collection_equality_operators(sequence, parents, component.named_type.name + "_type");
-        }
-        else if (is_set(component.named_type.type))
-        {
-            const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(component.named_type.type));
-            child_equality += create_collection_equality_operators(set, parents, component.named_type.name + "_type");
-        }
-    }
-    return child_equality + res;
-}
-
-std::string create_helper_functions(const Assignment& assignment)
-{
-    if (absl::holds_alternative<TypeAssignment>(assignment.specific))
-    {
-        const TypeAssignment& type_assignment = absl::get<TypeAssignment>(assignment.specific);
-
-        if (is_sequence(type_assignment.type))
-        {
-            const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(type_assignment.type));
-            return create_collection_equality_operators(sequence, {}, assignment.name);
-        }
-        else if (is_set(type_assignment.type))
-        {
-            const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(type_assignment.type));
-            return create_collection_equality_operators(set, {}, assignment.name);
-        }
-        else if (is_enumerated(type_assignment.type))
-        {
-            const EnumeratedType& e    = absl::get<EnumeratedType>(absl::get<BuiltinType>(type_assignment.type));
-            const std::string     name = assignment.name + "Values";
-
-            std::string res;
-            res += "const char* to_string(" + name + " e)\n";
-            res += "{\n";
-            res += "    switch (e)\n";
-            res += "    {\n";
-            for (const EnumerationValue& enum_value : e.enum_values)
-            {
-                res += "    case " + name + "::" + enum_value.name + ": return \"" + enum_value.name + "\";\n";
-            }
-
-            res += "    default: return \"Invalid state!\";\n";
-            res += "    }\n";
-            res += "}\n\n";
-
-            res += "std::ostream& operator<<(std::ostream& os, " + name + " object)\n";
-            res += "{\n";
-            res += "    os << to_string(object);\n";
-            res += "    return os;\n";
-            res += "}\n\n";
-            return res;
-        }
-    }
-
-    return "";
 }
 
 std::string create_imports(const Asn1Tree& tree, const Module& module)

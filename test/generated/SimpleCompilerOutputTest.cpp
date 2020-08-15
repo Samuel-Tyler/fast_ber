@@ -20,10 +20,7 @@ TEST_CASE("SimpleCompilerOutput: Testing a generated ber container")
     collection.boolean               = true;
     collection.child.meaning_of_life = -42;
     collection.optional_child = fast_ber::Simple::Child{999999999, {"The", "second", "child", std::string(2000, 'x')}};
-    // TODO: fix
-    // collection.the_choice = decltype(collection.the_choice){fast_ber::in_place_index_t<1>(), "I chose a string!"};
-    collection.the_choice =
-        fast_ber::OctetString<fast_ber::Id<fast_ber::Class::context_specific, 1>>("I chose a string!");
+    collection.the_choice     = fast_ber::Simple::UnnamedChoice0goodbye("I chose a string!");
 
     fast_ber::EncodeResult encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), collection);
     fast_ber::DecodeResult decode_result =

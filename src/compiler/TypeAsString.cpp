@@ -139,32 +139,31 @@ std::string type_as_string(const CharacterStringType& type, const Module& module
 std::string type_as_string(const ChoiceType& choice, const Module& module, const Asn1Tree& tree,
                            const std::string& name, const std::string& identifier_override)
 {
+    int64_t     tag_counter = 0;
+    std::string definitions;
+    for (const auto& named_type : choice.choices)
+    {
+        if (module.tagging_default == TaggingMode::automatic)
+        {
+            std::string id = Identifier(Class::context_specific, tag_counter++).name();
+            definitions += create_type_assignment(name + named_type.name, named_type.type, module, tree, id, false);
+        }
+        else
+        {
+            definitions += create_type_assignment(name + named_type.name, named_type.type, module, tree, {}, false);
+        }
+    }
+
     std::string base     = "Choice<Choices<";
     bool        is_first = true;
 
-    int64_t tag_counter = 0;
     for (const auto& named_type : choice.choices)
     {
         if (!is_first)
             base += ", ";
-
-        if (is_sequence(named_type.type) || is_set(named_type.type) || is_enumerated(named_type.type) ||
-            is_choice(named_type.type))
-        {
-            throw std::runtime_error("ChoiceType must not be a structure or enum [" + name + "] [" +
-                                     type_as_string(named_type.type, module, tree) + "]");
-        }
-
-        if (module.tagging_default == TaggingMode::automatic)
-        {
-            base += type_as_string(named_type.type, module, tree, "",
-                                   Identifier(Class::context_specific, tag_counter++).name());
-        }
-        else
-        {
-            base += type_as_string(named_type.type, module, tree);
-        }
         is_first = false;
+
+        base += name + named_type.name;
     }
     base += ">, ";
 
@@ -174,16 +173,21 @@ std::string type_as_string(const ChoiceType& choice, const Module& module, const
     base += ", " + to_string(choice.storage);
     base += ">";
 
-    std::string res = "struct " + name + " : " + base + "{\n";
+    std::string res = definitions + '\n';
+    res += "struct " + name + " : " + base + "{\n";
 
     // Define sub types
     for (const NamedType& named_type : choice.choices)
     {
         std::string component_type;
-        if (is_set(named_type.type) || is_sequence(named_type.type) || is_choice(named_type.type))
+        if (is_set(named_type.type) || is_sequence(named_type.type))
         {
             const std::string id_template_param = "Identifier" + std::to_string(id_counter++);
-            res += create_template_definition({id_template_param + " = ExplicitId<UniversalTag::sequence>"}) + '\n';
+            res += type_as_string(named_type.type, module, tree, named_type.name + "_type");
+        }
+        if (is_choice(named_type.type))
+        {
+            const std::string id_template_param = "Identifier" + std::to_string(id_counter++);
             res += type_as_string(named_type.type, module, tree, named_type.name + "_type");
         }
     }
@@ -366,10 +370,6 @@ std::string type_as_string(const SequenceOfType& sequence, const Module& module,
                            const std::string&, const std::string& identifier_override)
 {
     const Type& type = sequence.has_name ? sequence.named_type->type : *sequence.type;
-    if (is_sequence(type) || is_set(type) || is_enumerated(type))
-    {
-        throw std::runtime_error("SequenceOfType must not be a structure or enum");
-    }
 
     std::string res = "SequenceOf<" + type_as_string(type, module, tree);
     if (identifier_override.empty())
@@ -496,9 +496,49 @@ std::string type_as_string(const BuiltinType& type, const Module& module, const 
     ToStringHelper string_helper{module, tree, type_name, identifier_override};
     return absl::visit(string_helper, type);
 }
+
 std::string type_as_string(const Type& type, const Module& module, const Asn1Tree& tree, const std::string& type_name,
                            const std::string& identifier_override)
 {
     ToStringHelper string_helper{module, tree, type_name, identifier_override};
     return absl::visit(string_helper, type);
+}
+
+std::string create_type_assignment(const std::string& name, const Type& assignment_type, const Module& module,
+                                   const Asn1Tree& tree, const std::string& identifier_override, bool introduce_type)
+{
+    std::string res;
+
+    if (is_set(assignment_type) || is_sequence(assignment_type) || is_choice(assignment_type))
+    {
+        res += type_as_string(assignment_type, module, tree, name, identifier_override);
+    }
+    else if (is_enumerated(assignment_type))
+    {
+        auto id =
+            (!identifier_override.empty()) ? identifier_override : identifier(assignment_type, module, tree).name();
+
+        res += "enum class " + name + "Values" + type_as_string(assignment_type, module, tree);
+        res += "FAST_BER_ALIAS(" + name + ", " + "Enumerated<" + name + "Values," + id + ">);\n";
+    }
+    else
+    {
+        if (introduce_type)
+        {
+            res += "FAST_BER_ALIAS(" + name + ", " +
+                   type_as_string(assignment_type, module, tree, name, identifier_override) + ");\n";
+        }
+        else
+        {
+            res += "using " + name + " = " + type_as_string(assignment_type, module, tree, name, identifier_override) +
+                   ";\n";
+        }
+    }
+    return res;
+}
+
+std::string create_type_assignment(const Assignment& assignment, const Module& module, const Asn1Tree& tree)
+{
+    return create_type_assignment(assignment.name, absl::get<TypeAssignment>(assignment.specific).type, module, tree) +
+           "\n";
 }
