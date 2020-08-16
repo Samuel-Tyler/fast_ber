@@ -58,3 +58,11 @@ std::string add_namespace(const std::string& name, const std::string& enclosed)
 
     return output;
 }
+
+// Creates a C++ type following conventions of project (ie starts with capital letter)
+std::string make_type_name(std::string name)
+{
+    assert(!name.empty());
+    name[0] = std::toupper(name[0]);
+    return name;
+}

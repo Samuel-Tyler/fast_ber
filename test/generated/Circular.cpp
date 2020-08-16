@@ -55,7 +55,7 @@ TEST_CASE("Circular Types: Choice")
 {
     fast_ber::Circular::CircularChoice1 copy;
     fast_ber::Circular::CircularChoice1 circular;
-    circular.emplace<1>(fast_ber::Circular::CircularChoice1choice{"bla", {}});
+    circular.emplace<1>(fast_ber::Circular::CircularChoice1Choice{"bla", {}});
 
     REQUIRE(copy != circular);
 

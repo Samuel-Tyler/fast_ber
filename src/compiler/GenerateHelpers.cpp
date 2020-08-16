@@ -78,12 +78,13 @@ std::string create_collection_equality_operators(const CollectionType& collectio
         {
             const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(component.named_type.type));
             child_equality +=
-                create_collection_equality_operators(sequence, parents, component.named_type.name + "_type");
+                create_collection_equality_operators(sequence, parents, make_type_name(component.named_type.name));
         }
         else if (is_set(component.named_type.type))
         {
             const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(component.named_type.type));
-            child_equality += create_collection_equality_operators(set, parents, component.named_type.name + "_type");
+            child_equality +=
+                create_collection_equality_operators(set, parents, make_type_name(component.named_type.name));
         }
     }
     return child_equality + res;
@@ -133,7 +134,7 @@ std::string create_helper_functions(const std::string& name, const Type& type)
         const ChoiceType& choice = absl::get<ChoiceType>(absl::get<BuiltinType>(type));
         for (const NamedType& named_type : choice.choices)
         {
-            res += create_helper_functions(name + named_type.name, named_type.type);
+            res += create_helper_functions(name + make_type_name(named_type.name), named_type.type);
         }
         return res;
     }

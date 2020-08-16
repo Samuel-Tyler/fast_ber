@@ -44,7 +44,7 @@ create_collection_encode_functions(const std::vector<std::string>& namespaces, c
     // Make encode functions for nested types
     for (const ComponentType& component : collection.components)
     {
-        block.add_block(create_encode_functions(child_namespaces, component.named_type.name + "_type", parameters,
+        block.add_block(create_encode_functions(child_namespaces, make_type_name(component.named_type.name), parameters,
                                                 component.named_type.type, module, tree));
     }
 
@@ -81,7 +81,7 @@ create_collection_encode_functions(const std::vector<std::string>& namespaces, c
 
         for (const ComponentType& component : collection.components)
         {
-            block.add_line("	res = " + component.named_type.name + "." +
+            block.add_line("res = " + component.named_type.name + "." +
                            make_component_function("encode", component.named_type, module, tree) + "(content);");
             block.add_line("if (!res.success)");
             {
@@ -220,8 +220,8 @@ std::string create_choice_encode_functions(const std::vector<std::string>& names
     // Make encode functions for nested types
     for (const NamedType& named_type : choice.choices)
     {
-        block.add_block(
-            create_encode_functions(namespaces, assignment_name + named_type.name, {}, named_type.type, module, tree));
+        block.add_block(create_encode_functions(namespaces, assignment_name + make_type_name(named_type.name), {},
+                                                named_type.type, module, tree));
     }
 
     block.add_line();
@@ -321,7 +321,7 @@ create_collection_decode_functions(const std::vector<std::string>& namespaces, c
     // Make encode functions for nested types
     for (const ComponentType& component : collection.components)
     {
-        block.add_block(create_decode_functions(child_namespaces, component.named_type.name + "_type", parameters,
+        block.add_block(create_decode_functions(child_namespaces, make_type_name(component.named_type.name), parameters,
                                                 component.named_type.type, module, tree));
     }
     return block.to_string();
@@ -433,8 +433,8 @@ std::string create_choice_decode_functions(const std::vector<std::string>& names
     // Make decode functions for nested types
     for (const NamedType& named_type : choice.choices)
     {
-        block.add_block(
-            create_decode_functions(namespaces, assignment_name + named_type.name, {}, named_type.type, module, tree));
+        block.add_block(create_decode_functions(namespaces, assignment_name + make_type_name(named_type.name), {},
+                                                named_type.type, module, tree));
     }
 
     block.add_line();

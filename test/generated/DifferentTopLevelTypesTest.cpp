@@ -33,11 +33,11 @@ TEST_CASE("Different Top Level Types: String as top level type")
 
 TEST_CASE("Different Top Level Types: Choice as top level type")
 {
-    using StringType  = fast_ber::TopLevel::MyChoicehello;
-    using IntegerType = fast_ber::TopLevel::MyChoiceinteger;
+    using StringType  = fast_ber::TopLevel::MyChoiceHello;
+    using IntegerType = fast_ber::TopLevel::MyChoiceInteger;
 
     std::array<uint8_t, 5000>    buffer        = {};
-    fast_ber::TopLevel::MyChoice my_string     = fast_ber::TopLevel::MyChoicehello("The String");
+    fast_ber::TopLevel::MyChoice my_string     = fast_ber::TopLevel::MyChoiceHello("The String");
     fast_ber::TopLevel::MyChoice my_new_string = 500;
 
     REQUIRE(fast_ber::get<StringType>(my_string) == "The String");

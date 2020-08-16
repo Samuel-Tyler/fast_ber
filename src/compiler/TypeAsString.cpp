@@ -55,7 +55,7 @@ std::string collection_as_string(const Collection& collection, const Module& mod
         if (is_sequence(component.named_type.type) || is_set(component.named_type.type) ||
             is_choice(component.named_type.type))
         {
-            res += type_as_string(component.named_type.type, module, tree, component.named_type.name + "_type");
+            res += type_as_string(component.named_type.type, module, tree, make_type_name(component.named_type.name));
         }
     }
 
@@ -68,7 +68,7 @@ std::string collection_as_string(const Collection& collection, const Module& mod
         if (is_set(component.named_type.type) || is_sequence(component.named_type.type) ||
             is_choice(component.named_type.type))
         {
-            component_type = component.named_type.name + "_type ";
+            component_type = make_type_name(component.named_type.name);
         }
         else if (!is_prefixed(component.named_type.type) && module.tagging_default == TaggingMode::automatic)
         {
@@ -146,11 +146,13 @@ std::string type_as_string(const ChoiceType& choice, const Module& module, const
         if (module.tagging_default == TaggingMode::automatic)
         {
             std::string id = Identifier(Class::context_specific, tag_counter++).name();
-            definitions += create_type_assignment(name + named_type.name, named_type.type, module, tree, id, false);
+            definitions += create_type_assignment(name + make_type_name(named_type.name), named_type.type, module, tree,
+                                                  id, false);
         }
         else
         {
-            definitions += create_type_assignment(name + named_type.name, named_type.type, module, tree, {}, false);
+            definitions += create_type_assignment(name + make_type_name(named_type.name), named_type.type, module, tree,
+                                                  {}, false);
         }
     }
 
@@ -163,7 +165,7 @@ std::string type_as_string(const ChoiceType& choice, const Module& module, const
             base += ", ";
         is_first = false;
 
-        base += name + named_type.name;
+        base += name + make_type_name(named_type.name);
     }
     base += ">, ";
 
@@ -175,22 +177,6 @@ std::string type_as_string(const ChoiceType& choice, const Module& module, const
 
     std::string res = definitions + '\n';
     res += "struct " + name + " : " + base + "{\n";
-
-    // Define sub types
-    for (const NamedType& named_type : choice.choices)
-    {
-        std::string component_type;
-        if (is_set(named_type.type) || is_sequence(named_type.type))
-        {
-            const std::string id_template_param = "Identifier" + std::to_string(id_counter++);
-            res += type_as_string(named_type.type, module, tree, named_type.name + "_type");
-        }
-        if (is_choice(named_type.type))
-        {
-            const std::string id_template_param = "Identifier" + std::to_string(id_counter++);
-            res += type_as_string(named_type.type, module, tree, named_type.name + "_type");
-        }
-    }
 
     res += "    using AliasedType = " + base + ";\n";
     res += "    using AliasedType::AliasedType;\n";

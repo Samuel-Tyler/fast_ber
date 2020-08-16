@@ -5,7 +5,7 @@
 TEST_CASE("Choice: Generated choice")
 {
     fast_ber::MakeAChoice::Collection collection;
-    collection.the_choice = fast_ber::MakeAChoice::Collection::the_choice_typeinteger(5);
+    collection.the_choice = fast_ber::MakeAChoice::Collection::The_choiceInteger(5);
 
     std::vector<uint8_t> buffer;
     size_t               expected_length = fast_ber::encoded_length(collection);
@@ -25,7 +25,7 @@ TEST_CASE("Choice: Generated choice")
 TEST_CASE("Choice: Generated choice explicit tags")
 {
     fast_ber::ExplicitChoice::MyChoice choice;
-    choice = fast_ber::ExplicitChoice::MyChoicesequence{};
+    choice = fast_ber::ExplicitChoice::MyChoiceSequence{};
 
     std::vector<uint8_t> buffer(1000, 0x00);
     size_t               expected_length = fast_ber::encoded_length(choice);
@@ -44,7 +44,7 @@ TEST_CASE("Choice: Generated choice explicit tags")
 TEST_CASE("Choice: Tags")
 {
     fast_ber::MakeAChoice::Collection c;
-    using ChoiceType = fast_ber::MakeAChoice::Collection::the_choice_type::AliasedType;
+    using ChoiceType = fast_ber::MakeAChoice::Collection::The_choice::AliasedType;
     std::vector<uint8_t> buffer(1000, 0x00);
 
     c.the_choice = fast_ber::variant_alternative_t<0, ChoiceType>{};
@@ -97,19 +97,19 @@ TEST_CASE("Choice: Type deduction")
 
     fast_ber::MakeAChoice::Collection collection{fast_ber::MakeAChoice::BoolMod2(true)};
 
-    collection.the_choice = fast_ber::MakeAChoice::Collection::the_choice_typehello("one");
+    collection.the_choice = fast_ber::MakeAChoice::Collection::The_choiceHello("one");
     CHECK(fast_ber::get<0>(collection.the_choice) == "one");
 
-    collection.the_choice = fast_ber::MakeAChoice::Collection::the_choice_typegoodbye("two");
+    collection.the_choice = fast_ber::MakeAChoice::Collection::The_choiceGoodbye("two");
     CHECK(fast_ber::get<1>(collection.the_choice) == "two");
 
-    collection.the_choice = fast_ber::MakeAChoice::Collection::the_choice_typeinteger(5);
+    collection.the_choice = fast_ber::MakeAChoice::Collection::The_choiceInteger(5);
     CHECK(fast_ber::get<2>(collection.the_choice) == 5);
 
-    collection.the_choice = fast_ber::MakeAChoice::Collection::the_choice_typeboolean(true);
+    collection.the_choice = fast_ber::MakeAChoice::Collection::The_choiceBoolean(true);
     CHECK(fast_ber::get<3>(collection.the_choice));
 
-    collection.the_choice = fast_ber::MakeAChoice::Collection::the_choice_typeboolean(false);
+    collection.the_choice = fast_ber::MakeAChoice::Collection::The_choiceBoolean(false);
     CHECK(!fast_ber::get<3>(collection.the_choice));
 }
 
@@ -186,8 +186,8 @@ TEST_CASE("Choice: Basic choice")
     choice_1 = "Test string";
     choice_2 = 10;
 
-    CHECK(fast_ber::holds_alternative<fast_ber::SimpleChoice::Simpleb>(choice_1));
-    CHECK(fast_ber::holds_alternative<fast_ber::SimpleChoice::Simplea>(choice_2));
+    CHECK(fast_ber::holds_alternative<fast_ber::SimpleChoice::SimpleB>(choice_1));
+    CHECK(fast_ber::holds_alternative<fast_ber::SimpleChoice::SimpleA>(choice_2));
 
     std::vector<uint8_t> choice_encoded(100, 0x00);
     bool enc_success = fast_ber::encode(absl::MakeSpan(choice_encoded.data(), choice_encoded.size()), choice_1).success;
@@ -195,8 +195,8 @@ TEST_CASE("Choice: Basic choice")
 
     CHECK(enc_success);
     CHECK(dec_success);
-    CHECK(fast_ber::holds_alternative<fast_ber::SimpleChoice::Simpleb>(choice_1));
-    CHECK(fast_ber::holds_alternative<fast_ber::SimpleChoice::Simpleb>(choice_2));
+    CHECK(fast_ber::holds_alternative<fast_ber::SimpleChoice::SimpleB>(choice_1));
+    CHECK(fast_ber::holds_alternative<fast_ber::SimpleChoice::SimpleB>(choice_2));
     CHECK(choice_1 == choice_2);
 }
 
@@ -222,8 +222,8 @@ TEST_CASE("Choice: Clashing type")
 
 TEST_CASE("Choice: Choice of choices")
 {
-    using Choice1 = fast_ber::ChoiceOfChoice::Cone;
-    using Choice2 = fast_ber::ChoiceOfChoice::Ctwo;
+    using Choice1 = fast_ber::ChoiceOfChoice::COne;
+    using Choice2 = fast_ber::ChoiceOfChoice::CTwo;
     using Choice3 = fast_ber::ChoiceOfChoice::C;
 
     using ExpectedId = fast_ber::ChoiceId<
