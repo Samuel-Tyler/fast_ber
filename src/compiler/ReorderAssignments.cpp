@@ -361,32 +361,14 @@ void find_nested_structs(const Module& module, Type& type, std::vector<NamedType
     {
         for (ComponentType& component : absl::get<SetType>(absl::get<BuiltinType>(type)).components)
         {
-            if (is_enumerated(component.named_type.type))
-            {
-                const std::string& name = "UnnamedEnum" + std::to_string(unnamed_definition_num++);
-                nested_structs.push_back(NamedType{name, component.named_type.type});
-                component.named_type.type = DefinedType{{}, name, {}};
-            }
-            else
-            {
-                find_nested_structs(module, component.named_type.type, nested_structs);
-            }
+            find_nested_structs(module, component.named_type.type, nested_structs);
         }
     }
     else if (is_sequence(type))
     {
         for (ComponentType& component : absl::get<SequenceType>(absl::get<BuiltinType>(type)).components)
         {
-            if (is_enumerated(component.named_type.type))
-            {
-                const std::string& name = "UnnamedEnum" + std::to_string(unnamed_definition_num++);
-                nested_structs.push_back(NamedType{name, component.named_type.type});
-                component.named_type.type = DefinedType{{}, name, {}};
-            }
-            else
-            {
-                find_nested_structs(module, component.named_type.type, nested_structs);
-            }
+            find_nested_structs(module, component.named_type.type, nested_structs);
         }
     }
     else if (is_set_of(type))

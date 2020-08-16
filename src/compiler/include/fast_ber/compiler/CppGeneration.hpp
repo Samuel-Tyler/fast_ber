@@ -14,7 +14,7 @@ std::string create_template_arguments(const std::vector<std::string>& types);
 
 std::string add_namespace(const std::string& name, const std::string& enclosed);
 
-std::string make_type_name(std::string name);
+std::string make_type_name(std::string name, absl::string_view parent_name = {});
 
 class CodeBlock
 {

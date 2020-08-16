@@ -70,37 +70,35 @@ std::string create_collection_equality_operators(const CollectionType& collectio
 
     parents.push_back(name);
 
-    std::string child_equality;
-    // Create assignments for any children too
-    for (const ComponentType& component : collection.components)
-    {
-        if (is_sequence(component.named_type.type))
-        {
-            const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(component.named_type.type));
-            child_equality +=
-                create_collection_equality_operators(sequence, parents, make_type_name(component.named_type.name));
-        }
-        else if (is_set(component.named_type.type))
-        {
-            const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(component.named_type.type));
-            child_equality +=
-                create_collection_equality_operators(set, parents, make_type_name(component.named_type.name));
-        }
-    }
-    return child_equality + res;
+    return res;
 }
 
 std::string create_helper_functions(const std::string& name, const Type& type)
 {
     if (is_sequence(type))
     {
+        std::string         res;
         const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(type));
-        return create_collection_equality_operators(sequence, {}, name);
+        for (const ComponentType& component : sequence.components)
+        {
+            res += create_helper_functions(name + "::" + make_type_name(component.named_type.name),
+                                           component.named_type.type);
+        }
+        res += create_collection_equality_operators(sequence, {}, name);
+        return res;
     }
     else if (is_set(type))
     {
+        std::string    res;
         const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(type));
-        return create_collection_equality_operators(set, {}, name);
+        for (const ComponentType& component : set.components)
+        {
+            res += create_helper_functions(name + "::" + make_type_name(component.named_type.name),
+                                           component.named_type.type);
+        }
+
+        res += create_collection_equality_operators(set, {}, name);
+        return res;
     }
     else if (is_enumerated(type))
     {

@@ -60,9 +60,13 @@ std::string add_namespace(const std::string& name, const std::string& enclosed)
 }
 
 // Creates a C++ type following conventions of project (ie starts with capital letter)
-std::string make_type_name(std::string name)
+std::string make_type_name(std::string name, absl::string_view parent_name)
 {
     assert(!name.empty());
     name[0] = std::toupper(name[0]);
+    if (name == parent_name) // C++ types may not share a name with their enclosing class
+    {
+        return name + '_';
+    }
     return name;
 }
