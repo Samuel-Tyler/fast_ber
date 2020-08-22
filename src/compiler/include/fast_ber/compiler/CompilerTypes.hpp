@@ -593,6 +593,7 @@ struct Identifier
     UniversalTag universal  = UniversalTag::reserved;
 
     Identifier() = default;
+    explicit Identifier(Tag tag) : class_(tag.class_), tag_number(tag.tag_number) {}
     explicit Identifier(Class c, int64_t tag) : class_(c), tag_number(tag) {}
     explicit Identifier(UniversalTag tag)
         : class_(Class::universal), tag_number(static_cast<int64_t>(tag)), universal(tag)
