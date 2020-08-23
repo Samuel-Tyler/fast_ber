@@ -37,6 +37,12 @@ class Boolean
     template <typename Identifier2>
     Boolean& operator=(const Boolean<Identifier2>& rhs) noexcept;
 
+    template <typename Identifier2>
+    bool operator==(const Boolean<Identifier2>& rhs) const noexcept;
+
+    template <typename Identifier2>
+    bool operator!=(const Boolean<Identifier2>& rhs) const noexcept;
+
     void assign(bool val) noexcept;
     template <typename Identifier2>
     void assign(const Boolean<Identifier2>& rhs) noexcept;
@@ -74,6 +80,20 @@ inline Boolean<Identifier>& Boolean<Identifier>::operator=(const Boolean<Identif
 {
     m_data.back() = rhs.m_data.back();
     return *this;
+}
+
+template <typename Identifier>
+template <typename Identifier2>
+bool Boolean<Identifier>::operator==(const Boolean<Identifier2>& rhs) const noexcept
+{
+    return this->value() == rhs.value();
+}
+
+template <typename Identifier>
+template <typename Identifier2>
+bool Boolean<Identifier>::operator!=(const Boolean<Identifier2>& rhs) const noexcept
+{
+    return !(*this == rhs);
 }
 
 template <typename Identifier>
