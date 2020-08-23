@@ -1023,7 +1023,7 @@ BuiltinType:
 |   RelativeOIDType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "RelativeOIDType"); }
 |   SequenceType { $$ = $1; }
 |   SequenceOfType { $$ = $1; }
-|   SetType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "SET", "Currently SET is treated as a SEQUENCE type. "); }
+|   SetType { $$ = $1; }
 |   SetOfType { $$ = $1; }
 |   PrefixedType { $$ = $1; }
 |   TimeType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "TimeType"); }
