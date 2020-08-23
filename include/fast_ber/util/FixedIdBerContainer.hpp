@@ -134,8 +134,8 @@ FixedIdBerContainer<Identifier>& FixedIdBerContainer<Identifier>::operator=(BerV
 }
 
 template <typename Identifier1>
-FixedIdBerContainer<Identifier1>& FixedIdBerContainer<Identifier1>::
-                                  operator=(const FixedIdBerContainer<Identifier1>& rhs) noexcept
+FixedIdBerContainer<Identifier1>&
+FixedIdBerContainer<Identifier1>::operator=(const FixedIdBerContainer<Identifier1>& rhs) noexcept
 {
     m_data           = rhs.m_data;
     m_content_length = rhs.m_content_length;
@@ -143,8 +143,8 @@ FixedIdBerContainer<Identifier1>& FixedIdBerContainer<Identifier1>::
 }
 
 template <typename Identifier1>
-FixedIdBerContainer<Identifier1>& FixedIdBerContainer<Identifier1>::
-                                  operator=(FixedIdBerContainer<Identifier1>&& rhs) noexcept
+FixedIdBerContainer<Identifier1>&
+FixedIdBerContainer<Identifier1>::operator=(FixedIdBerContainer<Identifier1>&& rhs) noexcept
 {
     m_data           = std::move(rhs.m_data);
     m_content_length = std::move(rhs.m_content_length);
@@ -153,8 +153,8 @@ FixedIdBerContainer<Identifier1>& FixedIdBerContainer<Identifier1>::
 
 template <typename Identifier1>
 template <typename Identifier2>
-FixedIdBerContainer<Identifier1>& FixedIdBerContainer<Identifier1>::
-                                  operator=(const FixedIdBerContainer<Identifier2>& rhs) noexcept
+FixedIdBerContainer<Identifier1>&
+FixedIdBerContainer<Identifier1>::operator=(const FixedIdBerContainer<Identifier2>& rhs) noexcept
 {
     assign_content(rhs.content());
     return *this;
