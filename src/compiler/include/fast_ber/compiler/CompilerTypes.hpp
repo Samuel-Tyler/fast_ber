@@ -41,7 +41,7 @@ enum class StorageMode
     dynamic,
 };
 
-std::string to_string(Class class_, bool abbreviated);
+std::string to_string(Class class_, bool abbreviated = false);
 std::string to_string(StorageMode mode);
 
 struct ComponentType;

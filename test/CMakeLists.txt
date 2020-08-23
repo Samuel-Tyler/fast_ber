@@ -25,6 +25,7 @@ fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/embedded.asn embedded)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/parameterized_types.asn parameterized_types)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/sequence.asn sequence)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/sequence_of.asn sequence_of)
+fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/set.asn set)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/time.asn time)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/circular.asn circular)
 fast_ber_generate(${CMAKE_SOURCE_DIR}/testfiles/defaults.asn defaults)
@@ -58,6 +59,7 @@ add_executable(fast_ber_generated_tests Test ${GENERATED_TEST_SRC}
                                                  autogen/parameterized_types.hpp
                                                  autogen/sequence.hpp
                                                  autogen/sequence_of.hpp
+                                                 autogen/set.hpp
                                                  autogen/time.hpp
                                                  autogen/circular.hpp
                                                  autogen/defaults.hpp

@@ -307,57 +307,188 @@ create_collection_decode_functions(const std::vector<std::string>& namespaces, c
 
         if (collection.components.size() > 0)
         {
+            block.add_line("DecodeResult res;");
             block.add_line("auto iterator = (" + type_identifier + "::depth() == 1) ? input.begin()");
             block.add_line("                                            : input.begin()->begin();");
-            block.add_line("DecodeResult res;");
-        }
 
-        for (const ComponentType& component : collection.components)
-        {
-            if (component.is_optional || component.default_value)
+            if (std::is_same<CollectionType, SetType>::value)
             {
-                std::string id_check = "if (iterator->is_valid() && (false ";
-                for (const Identifier& id : outer_identifiers(component.named_type.type, module, tree))
-                {
-                    id_check += " || " + id.name() + "::check_id_match(iterator->class_(), iterator->tag())";
-                }
-                id_check += "))";
-                block.add_line(id_check);
+                block.add_line("auto const end = (" + type_identifier + "::depth() == 1) ? input.end()");
+                block.add_line("                                             : input.begin()->end();");
+                block.add_line();
 
+                block.add_line("std::array<size_t, " + std::to_string(collection.components.size()) +
+                               "> decode_counts = {};");
+                block.add_line("while (iterator != end)");
                 {
                     auto scope2 = CodeScope(block);
-                    block.add_line("res = this->" + component.named_type.name + ".decode(*iterator);");
-                    block.add_line("if (!res.success)");
+                    if (module.tagging_default == TaggingMode::automatic)
                     {
+                        block.add_line("if (iterator->class_() == " + to_string(Class::context_specific) + ")");
                         auto scope3 = CodeScope(block);
                         {
-                            block.add_line("return res;");
+                            block.add_line("switch (iterator->tag())");
+                            auto   scope4 = CodeScope(block);
+                            size_t i      = 0;
+                            for (const ComponentType& component : collection.components)
+                            {
+                                block.add_line("case " + std::to_string(i) + ":");
+                                block.add_line("res = " + component.named_type.name + ".decode(*iterator);");
+                                block.add_line("if (!res.success)");
+                                {
+                                    auto scope5 = CodeScope(block);
+                                    {
+                                        block.add_line("return res;");
+                                    }
+                                }
+                                block.add_line("++decode_counts[" + std::to_string(i) + "];");
+                                block.add_line("++iterator;");
+                                block.add_line("continue;");
+                                i++;
+                            }
                         }
-                    }
-                    block.add_line("++iterator;");
-                }
-                block.add_line("else");
-                {
-                    auto scope3 = CodeScope(block);
-                    if (component.is_optional)
-                    {
-                        block.add_line("this->" + component.named_type.name + " = fast_ber::empty;");
                     }
                     else
                     {
-                        block.add_line("this->" + component.named_type.name + ".set_to_default();");
+                        for (Class class_ : {
+                                 Class::universal,
+                                 Class::application,
+                                 Class::context_specific,
+                                 Class::private_,
+                             })
+                        {
+                            if (std::any_of(collection.components.begin(), collection.components.end(),
+                                            [&](const ComponentType& component) {
+                                                const std::vector<Identifier>& outer_ids =
+                                                    outer_identifiers(component.named_type.type, module, tree);
+                                                return std::any_of(
+                                                    outer_ids.begin(), outer_ids.end(),
+                                                    [class_](const Identifier& id) { return id.class_ == class_; });
+                                            }))
+                            {
+
+                                block.add_line("if (iterator->class_() == " + to_string(class_) + ")");
+                                auto scope3 = CodeScope(block);
+                                {
+                                    block.add_line("switch (iterator->tag())");
+                                    auto   scope4 = CodeScope(block);
+                                    size_t i      = 0;
+                                    for (const ComponentType& component : collection.components)
+                                    {
+                                        const std::vector<Identifier>& ids =
+                                            outer_identifiers(component.named_type.type, module, tree);
+                                        for (const Identifier& id : ids)
+                                        {
+                                            if (id.class_ == class_)
+                                            {
+                                                block.add_line("case " + std::to_string(id.tag_number) + ":");
+                                                block.add_line("res = " + component.named_type.name +
+                                                               ".decode(*iterator);");
+                                                block.add_line("if (!res.success)");
+                                                {
+                                                    auto scope5 = CodeScope(block);
+                                                    {
+                                                        block.add_line("return res;");
+                                                    }
+                                                }
+                                                block.add_line("++decode_counts[" + std::to_string(i) + "];");
+                                                block.add_line("++iterator;");
+                                                block.add_line("continue;");
+                                            }
+                                        }
+                                        i++;
+                                    }
+                                }
+                            }
+                        }
                     }
+                    block.add_line(R"(std::cerr << "Invalid ID when decoding set [)" + name +
+                                   R"(] [" << iterator->identifier() << "]" << std::endl;)");
+                    block.add_line("return fast_ber::DecodeResult{false};");
+                }
+                size_t i = 0;
+                for (const ComponentType& component : collection.components)
+                {
+
+                    block.add_line("if (decode_counts[" + std::to_string(i) + "] == 0)");
+                    {
+                        auto scope3 = CodeScope(block);
+
+                        if (component.is_optional)
+                        {
+                            block.add_line("this->" + component.named_type.name + " = fast_ber::empty;");
+                        }
+                        else if (component.default_value)
+                        {
+                            block.add_line("this->" + component.named_type.name + ".set_to_default();");
+                        }
+                        else
+                        {
+                            block.add_line(R"(std::cerr << "Missing non-optional member [)" +
+                                           component.named_type.name + R"(] of set [)" + name + R"()]" << std::endl;)");
+                            block.add_line("return fast_ber::DecodeResult{false};");
+                        }
+                    }
+                    block.add_line("if (decode_counts[" + std::to_string(i) + "] > 1)");
+                    {
+                        auto scope3 = CodeScope(block);
+                        block.add_line(R"(std::cerr << "Member [)" + component.named_type.name +
+                                       R"(] present multiple times in set [)" + name + R"()]" << std::endl;)");
+                        block.add_line("return fast_ber::DecodeResult{false};");
+                    }
+                    i++;
                 }
             }
             else
             {
-                block.add_line("res = this->" + component.named_type.name + ".decode(*iterator);");
-                block.add_line("if (!res.success)");
+                for (const ComponentType& component : collection.components)
                 {
-                    auto scope2 = CodeScope(block);
-                    block.add_line("return res;");
+                    if (component.is_optional || component.default_value)
+                    {
+                        std::string id_check = "if (iterator->is_valid() && (false ";
+                        for (const Identifier& id : outer_identifiers(component.named_type.type, module, tree))
+                        {
+                            id_check += " || " + id.name() + "::check_id_match(iterator->class_(), iterator->tag())";
+                        }
+                        id_check += "))";
+                        block.add_line(id_check);
+
+                        {
+                            auto scope2 = CodeScope(block);
+                            block.add_line("res = this->" + component.named_type.name + ".decode(*iterator);");
+                            block.add_line("if (!res.success)");
+                            {
+                                auto scope3 = CodeScope(block);
+                                {
+                                    block.add_line("return res;");
+                                }
+                            }
+                            block.add_line("++iterator;");
+                        }
+                        block.add_line("else");
+                        {
+                            auto scope3 = CodeScope(block);
+                            if (component.is_optional)
+                            {
+                                block.add_line("this->" + component.named_type.name + " = fast_ber::empty;");
+                            }
+                            else
+                            {
+                                block.add_line("this->" + component.named_type.name + ".set_to_default();");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        block.add_line("res = this->" + component.named_type.name + ".decode(*iterator);");
+                        block.add_line("if (!res.success)");
+                        {
+                            auto scope2 = CodeScope(block);
+                            block.add_line("return res;");
+                        }
+                        block.add_line("++iterator;");
+                    }
                 }
-                block.add_line("++iterator;");
             }
         }
         block.add_line("return DecodeResult{true};");
