@@ -402,9 +402,16 @@ create_collection_decode_functions(const std::vector<std::string>& namespaces, c
                             }
                         }
                     }
-                    block.add_line(R"(std::cerr << "Invalid ID when decoding set [)" + name +
-                                   R"(] [" << iterator->identifier() << "]" << std::endl;)");
-                    block.add_line("return fast_ber::DecodeResult{false};");
+                    if (!collection.allow_extensions)
+                    {
+                        block.add_line(R"(std::cerr << "Invalid ID when decoding set [)" + name +
+                                       R"(] [" << iterator->identifier() << "]" << std::endl;)");
+                        block.add_line("return fast_ber::DecodeResult{false};");
+                    }
+                    else
+                    {
+                        block.add_line("++iterator;");
+                    }
                 }
                 size_t i = 0;
                 for (const ComponentType& component : collection.components)

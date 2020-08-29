@@ -10,6 +10,14 @@ Set ::= SET {
     string  UTF8String
 }
 
+SetWithExtensions ::= SET {
+    null    NULL,
+    integer INTEGER,
+    boolean BOOLEAN OPTIONAL,
+    string  UTF8String,
+    ...
+}
+
 SetWithDuplicateTagDifferentClass ::= SET
 {
     appl [APPLICATION 2] INTEGER,

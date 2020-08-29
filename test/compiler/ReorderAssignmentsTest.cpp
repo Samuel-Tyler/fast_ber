@@ -53,14 +53,13 @@ TEST_CASE("ReorderAssignments: Defined")
 
 TEST_CASE("ReorderAssignments: Sequence")
 {
+    ComponentTypeList components{
+        {ComponentType{NamedType{"member", DefinedType{{}, {"Boolean"}, {}}}, true, {}, {}, StorageMode::static_}}};
+    Collection collection;
+    collection.components = components;
+
     std::vector<Assignment> assignments = {
-        Assignment{"Defined",
-                   TypeAssignment{
-                       SequenceType{{ComponentType{
-                           NamedType{"member", DefinedType{{}, {"Boolean"}, {}}}, true, {}, {}, StorageMode::static_}}},
-                   },
-                   {},
-                   {}},
+        Assignment{"Defined", TypeAssignment{SequenceType{collection}}, {}, {}},
         Assignment{"Boolean", TypeAssignment{BooleanType{}}, {}, {}},
     };
 
@@ -86,10 +85,13 @@ TEST_CASE("ReorderAssignments: Circular Sequence")
 {
     ComponentType component = {
         NamedType{"member", DefinedType{{}, {"Defined"}, {}}}, true, {}, {}, StorageMode::static_};
+    Collection collection;
+    collection.components               = ComponentTypeList{component};
+
     std::vector<Assignment> assignments = {
         Assignment{"Defined",
                    TypeAssignment{
-                       SequenceType{{component}},
+                       SequenceType{collection},
                    },
                    {},
                    {}},

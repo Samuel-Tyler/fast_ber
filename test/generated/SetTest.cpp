@@ -167,6 +167,38 @@ TEST_CASE("Set: Decode Automatic Tags")
     REQUIRE(set.string == utf_string);
 }
 
+TEST_CASE("Set: Decode Extension")
+{
+    // Check that unknown tags are ignored when decoding set with extensions
+    std::array<uint8_t, 100>            buffer = {};
+    fast_ber::Set_::SetWithExtensions<> set    = {};
+    fast_ber::Null<>                    null;
+    fast_ber::Integer<>                 integer    = 50;
+    fast_ber::Boolean<>                 boolean    = true;
+    fast_ber::UTF8String<>              utf_string = "Decode Ordered";
+    fast_ber::Real<>                    extension  = 55;
+
+    auto inner_buffer = absl::Span<uint8_t>(buffer);
+
+    inner_buffer.remove_prefix(null.encode(inner_buffer).length);
+    inner_buffer.remove_prefix(integer.encode(inner_buffer).length);
+    inner_buffer.remove_prefix(boolean.encode(inner_buffer).length);
+    inner_buffer.remove_prefix(utf_string.encode(inner_buffer).length);
+    inner_buffer.remove_prefix(extension.encode(inner_buffer).length);
+
+    size_t content_length = buffer.size() - inner_buffer.size();
+    fast_ber::wrap_with_ber_header(absl::Span<uint8_t>(buffer), content_length,
+                                   fast_ber::ExplicitId<fast_ber::UniversalTag::set>());
+
+    fast_ber::DecodeResult decode_result = fast_ber::decode(absl::MakeSpan(buffer.data(), buffer.size()), set);
+    REQUIRE(decode_result.success);
+
+    REQUIRE(set.null == null);
+    REQUIRE(set.integer == integer);
+    REQUIRE(set.boolean == boolean);
+    REQUIRE(set.string == utf_string);
+}
+
 TEST_CASE("Set: Decode Fail - Missing Members")
 {
     // Check that set fails to decode if non optional members are missing
