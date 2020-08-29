@@ -29,7 +29,7 @@
     namespace yy { asn1_parser::symbol_type yylex(Context& c); }
 } // End code
 
-%param { Context& context }
+%param { Context& context_ }
 
 %token END_OF_FILE 0
 
@@ -340,7 +340,7 @@ ModuleDefinition:
     END
     { $8.module_reference = $1;
       $8.tagging_default = $4;
-      context.asn1_tree.modules.push_back($8); }
+      context_.asn1_tree.modules.push_back($8); }
 
 SyntaxList:
    "{" TokenOrGroupSpecList "}";
@@ -365,7 +365,7 @@ ObjectClassAssignment:
 
 ObjectClass:
     DefinedObjectClass
-    { feature_not_implemented(context.location, context.asn1_tree, "ObjectClass"); }
+    { feature_not_implemented(context_.location, context_.asn1_tree, "ObjectClass"); }
 |   ObjectClassDefn
     { $$ = $1; }
 //|   ParameterizedObjectClass;
@@ -670,7 +670,7 @@ ObjectSetFromObjects:
 
 InstanceOfType:
     INSTANCE OF DefinedObjectClass
-    { feature_not_implemented(context.location, context.asn1_tree, "InstanceOfType"); }
+    { feature_not_implemented(context_.location, context_.asn1_tree, "InstanceOfType"); }
 
 ParameterizedReference:
     Reference
@@ -692,7 +692,7 @@ GeneralConstraint:
 
 UserDefinedConstraint:
     CONSTRAINED BY "{" UserDefinedConstraintParameter "}"
-    { feature_not_implemented(context.location, context.asn1_tree, "UserDefinedConstraint", "Not yet checking contraints. "); }
+    { feature_not_implemented(context_.location, context_.asn1_tree, "UserDefinedConstraint", "Not yet checking contraints. "); }
 
 
 UserDefinedConstraintParameter:
@@ -992,9 +992,9 @@ Type:
 |   DefinedType
     { $$ = $1; }
 |   SelectionType
-    { feature_not_implemented(context.location, context.asn1_tree, "SelectionType"); }
+    { feature_not_implemented(context_.location, context_.asn1_tree, "SelectionType"); }
 |   TypeFromObject
-    { feature_not_implemented(context.location, context.asn1_tree, "TypeFromObject"); }
+    { feature_not_implemented(context_.location, context_.asn1_tree, "TypeFromObject"); }
 //|   ValueSetFromObjects { std::cerr << std::string("Not handled - ValueSetFromObjects\n"); }
 
 BuiltinType:
@@ -1003,32 +1003,32 @@ BuiltinType:
 |   BooleanType { $$ = $1; }
 |   CharacterStringType { $$ = $1; }
 |   ChoiceType { $$ = $1; }
-|   DateType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "DateType"); }
-|   DateTimeType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "DateTimeType"); }
-|   DurationType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "DurationType"); }
-|   EmbeddedPDVType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "EmbeddedPDVType"); }
+|   DateType { $$ = $1; feature_not_implemented(context_.location, context_.asn1_tree, "DateType"); }
+|   DateTimeType { $$ = $1; feature_not_implemented(context_.location, context_.asn1_tree, "DateTimeType"); }
+|   DurationType { $$ = $1; feature_not_implemented(context_.location, context_.asn1_tree, "DurationType"); }
+|   EmbeddedPDVType { $$ = $1; feature_not_implemented(context_.location, context_.asn1_tree, "EmbeddedPDVType"); }
 |   EnumeratedType { $$ = $1; }
-|   ExternalType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "ExternalType"); }
+|   ExternalType { $$ = $1; feature_not_implemented(context_.location, context_.asn1_tree, "ExternalType"); }
 |   GeneralizedTime { $$ = GeneralizedTimeType(); }
-|   InstanceOfType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "InstanceOfType"); }
+|   InstanceOfType { $$ = $1; feature_not_implemented(context_.location, context_.asn1_tree, "InstanceOfType"); }
 |   IntegerType { $$ = $1; }
-|   IRIType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "IRIType"); }
+|   IRIType { $$ = $1; feature_not_implemented(context_.location, context_.asn1_tree, "IRIType"); }
 |   NullType { $$ = $1; }
-|   ObjectClassFieldType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "ObjectClassFieldType"); }
+|   ObjectClassFieldType { $$ = $1; feature_not_implemented(context_.location, context_.asn1_tree, "ObjectClassFieldType"); }
 |   ObjectDescriptor { $$ = ObjectDescriptorType(); }
 |   ObjectIdentifierType { $$ = $1; }
 |   OctetStringType { $$ = $1; }
-|   RealType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "RealType"); }
-|   RelativeIRIType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "RelativeIRIType"); }
-|   RelativeOIDType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "RelativeOIDType"); }
+|   RealType { $$ = $1; feature_not_implemented(context_.location, context_.asn1_tree, "RealType"); }
+|   RelativeIRIType { $$ = $1; feature_not_implemented(context_.location, context_.asn1_tree, "RelativeIRIType"); }
+|   RelativeOIDType { $$ = $1; feature_not_implemented(context_.location, context_.asn1_tree, "RelativeOIDType"); }
 |   SequenceType { $$ = $1; }
 |   SequenceOfType { $$ = $1; }
 |   SetType { $$ = $1; }
 |   SetOfType { $$ = $1; }
 |   PrefixedType { $$ = $1; }
-|   TimeType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "TimeType"); }
-|   TimeOfDayType { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "TimeOfDayType"); }
-|   UTCTime { $$ = UTCTimeType(); feature_not_implemented(context.location, context.asn1_tree, "UTCTime"); }
+|   TimeType { $$ = $1; feature_not_implemented(context_.location, context_.asn1_tree, "TimeType"); }
+|   TimeOfDayType { $$ = $1; feature_not_implemented(context_.location, context_.asn1_tree, "TimeOfDayType"); }
+|   UTCTime { $$ = UTCTimeType(); feature_not_implemented(context_.location, context_.asn1_tree, "UTCTime"); }
 
 NamedType:
     identifier Type
@@ -1246,14 +1246,14 @@ ComponentTypeList:
 
 ComponentType:
     Type
-    { std::cerr << context.location << " WARNING: unnamed type\n";
+    { std::cerr << context_.location << " WARNING: unnamed type\n";
       $$ = ComponentType{{gen_anon_member_name(), $1}, false, absl::nullopt, absl::nullopt, StorageMode::static_ }; }
 |   Type OPTIONAL
-    { std::cerr << context.location << " WARNING: unnamed type\n";
+    { std::cerr << context_.location << " WARNING: unnamed type\n";
       $$ = ComponentType{{gen_anon_member_name(), $1}, true, absl::nullopt, absl::nullopt, StorageMode::static_ }; }
 |   Type DEFAULT SingleValue
     { $$ = ComponentType{{gen_anon_member_name(), $1}, false, $3, absl::nullopt, StorageMode::static_ };
-      std::cerr << context.location << " WARNING: unnamed type\n"; }
+      std::cerr << context_.location << " WARNING: unnamed type\n"; }
 |   NamedType
     { $$ = ComponentType{$1, false, absl::nullopt, absl::nullopt, StorageMode::static_ }; }
 |   NamedType OPTIONAL
@@ -1505,7 +1505,7 @@ ConstrainedType:
     Type Constraint
     { $$ = $1; }
 |   TypeWithConstraint
-    { $$ = $1; feature_not_implemented(context.location, context.asn1_tree, "TypeWithConstraint", "Not yet checking contraints. ");  }
+    { $$ = $1; feature_not_implemented(context_.location, context_.asn1_tree, "TypeWithConstraint", "Not yet checking contraints. ");  }
 
 TypeWithConstraint:
     SET Constraint OF Type
@@ -1527,7 +1527,7 @@ TypeWithConstraint:
 
 Constraint:
     "(" ConstraintSpec ExceptionSpec ")"
-    { feature_not_implemented(context.location, context.asn1_tree, "ConstraintSpec", "Not yet checking contraints. "); }
+    { feature_not_implemented(context_.location, context_.asn1_tree, "ConstraintSpec", "Not yet checking contraints. "); }
 
 ConstraintSpec:
     SubtypeConstraint
@@ -1804,162 +1804,162 @@ word:
 
 namespace yy {
 
-    asn1_parser::symbol_type yylex(Context& context)
+    asn1_parser::symbol_type yylex(Context& context_)
     {
-        const char* start = context.cursor;
+        const char* start = context_.cursor;
         const char* YYMARKER = nullptr;
-        context.location.step();
+        context_.location.step();
         // Lexer
 %{
 re2c:yyfill:enable   = 0;
 re2c:define:YYCTYPE  = "char";
-re2c:define:YYCURSOR = "context.cursor";
+re2c:define:YYCURSOR = "context_.cursor";
 
 // Keywords
-"ABSENT"                { context.location.columns(context.cursor - start); return asn1_parser::make_ABSENT (context.location); }
-"ABSTRACT-SYNTAX"       { context.location.columns(context.cursor - start); return asn1_parser::make_ABSTRACT_SYNTAX (context.location); }
-"ALL"                   { context.location.columns(context.cursor - start); return asn1_parser::make_ALL (context.location); }
-"ANY"                   { context.location.columns(context.cursor - start); return asn1_parser::make_ANY (context.location); }
-"APPLICATION"           { context.location.columns(context.cursor - start); return asn1_parser::make_APPLICATION (context.location); }
-"AUTOMATIC"             { context.location.columns(context.cursor - start); return asn1_parser::make_AUTOMATIC (context.location); }
-"BEGIN"                 { context.location.columns(context.cursor - start); return asn1_parser::make_BEGIN (context.location); }
-"BIT"                   { context.location.columns(context.cursor - start); return asn1_parser::make_BIT (context.location); }
-"BMPString"             { context.location.columns(context.cursor - start); return asn1_parser::make_BMPString (context.location); }
-"BOOLEAN"               { context.location.columns(context.cursor - start); return asn1_parser::make_BOOLEAN (context.location); }
-"BY"                    { context.location.columns(context.cursor - start); return asn1_parser::make_BY (context.location); }
-"CHARACTER"             { context.location.columns(context.cursor - start); return asn1_parser::make_CHARACTER (context.location); }
-"CHOICE"                { context.location.columns(context.cursor - start); return asn1_parser::make_CHOICE (context.location); }
-"CLASS"                 { context.location.columns(context.cursor - start); return asn1_parser::make_CLASS (context.location); }
-"COMPONENT"             { context.location.columns(context.cursor - start); return asn1_parser::make_COMPONENT (context.location); }
-"COMPONENTS"            { context.location.columns(context.cursor - start); return asn1_parser::make_COMPONENTS (context.location); }
-"CONSTRAINED"           { context.location.columns(context.cursor - start); return asn1_parser::make_CONSTRAINED (context.location); }
-"CONTAINING"            { context.location.columns(context.cursor - start); return asn1_parser::make_CONTAINING (context.location); }
-"DATE"                  { context.location.columns(context.cursor - start); return asn1_parser::make_DATE (context.location); }
-"DATE-TIME"             { context.location.columns(context.cursor - start); return asn1_parser::make_DATE_TIME (context.location); }
-"DEFAULT"               { context.location.columns(context.cursor - start); return asn1_parser::make_DEFAULT (context.location); }
-"DEFINITIONS"           { context.location.columns(context.cursor - start); return asn1_parser::make_DEFINITIONS (context.location); }
-"DURATION"              { context.location.columns(context.cursor - start); return asn1_parser::make_DURATION (context.location); }
-"EMBEDDED"              { context.location.columns(context.cursor - start); return asn1_parser::make_EMBEDDED (context.location); }
-"ENCODED"               { context.location.columns(context.cursor - start); return asn1_parser::make_ENCODED (context.location); }
-"ENCODING_CONTROL"      { context.location.columns(context.cursor - start); return asn1_parser::make_ENCODING_CONTROL (context.location); }
-"END"                   { context.location.columns(context.cursor - start); return asn1_parser::make_END (context.location); }
-"ENUMERATED"            { context.location.columns(context.cursor - start); return asn1_parser::make_ENUMERATED (context.location); }
-"EXCEPT"                { context.location.columns(context.cursor - start); return asn1_parser::make_EXCEPT (context.location); }
-"EXPLICIT"              { context.location.columns(context.cursor - start); return asn1_parser::make_EXPLICIT (context.location); }
-"EXPORTS"               { context.location.columns(context.cursor - start); return asn1_parser::make_EXPORTS (context.location); }
-"EXTENSIBILITY"         { context.location.columns(context.cursor - start); return asn1_parser::make_EXTENSIBILITY (context.location); }
-"EXTERNAL"              { context.location.columns(context.cursor - start); return asn1_parser::make_EXTERNAL (context.location); }
-"FALSE"                 { context.location.columns(context.cursor - start); return asn1_parser::make_FALSE (context.location); }
-"FROM"                  { context.location.columns(context.cursor - start); return asn1_parser::make_FROM (context.location); }
-"GeneralizedTime"       { context.location.columns(context.cursor - start); return asn1_parser::make_GeneralizedTime (context.location); }
-"GeneralString"         { context.location.columns(context.cursor - start); return asn1_parser::make_GeneralString (context.location); }
-"GraphicString"         { context.location.columns(context.cursor - start); return asn1_parser::make_GraphicString (context.location); }
-"IA5String"             { context.location.columns(context.cursor - start); return asn1_parser::make_IA5String (context.location); }
-"IDENTIFIER"            { context.location.columns(context.cursor - start); return asn1_parser::make_IDENTIFIER (context.location); }
-"IMPLICIT"              { context.location.columns(context.cursor - start); return asn1_parser::make_IMPLICIT (context.location); }
-"IMPLIED"               { context.location.columns(context.cursor - start); return asn1_parser::make_IMPLIED (context.location); }
-"IMPORTS"               { context.location.columns(context.cursor - start); return asn1_parser::make_IMPORTS (context.location); }
-"INCLUDES"              { context.location.columns(context.cursor - start); return asn1_parser::make_INCLUDES (context.location); }
-"INSTANCE"              { context.location.columns(context.cursor - start); return asn1_parser::make_INSTANCE (context.location); }
-"INSTRUCTIONS"          { context.location.columns(context.cursor - start); return asn1_parser::make_INSTRUCTIONS (context.location); }
-"INTEGER"               { context.location.columns(context.cursor - start); return asn1_parser::make_INTEGER (context.location); }
-"INTERSECTION"          { context.location.columns(context.cursor - start); return asn1_parser::make_INTERSECTION (context.location); }
-"ISO646String"          { context.location.columns(context.cursor - start); return asn1_parser::make_ISO646String (context.location); }
-"MAX"                   { context.location.columns(context.cursor - start); return asn1_parser::make_MAX (context.location); }
-"MIN"                   { context.location.columns(context.cursor - start); return asn1_parser::make_MIN (context.location); }
-"MINUS-INFINITY"        { context.location.columns(context.cursor - start); return asn1_parser::make_MINUS_INFINITY (context.location); }
-"NOT-A-NUMBER"          { context.location.columns(context.cursor - start); return asn1_parser::make_NOT_A_NUMBER (context.location); }
-"NULL"                  { context.location.columns(context.cursor - start); return asn1_parser::make_ASN_NULL (context.location); }
-"NumericString"         { context.location.columns(context.cursor - start); return asn1_parser::make_NumericString (context.location); }
-"OBJECT"                { context.location.columns(context.cursor - start); return asn1_parser::make_OBJECT (context.location); }
-"ObjectDescriptor"      { context.location.columns(context.cursor - start); return asn1_parser::make_ObjectDescriptor (context.location); }
-"OCTET"                 { context.location.columns(context.cursor - start); return asn1_parser::make_OCTET (context.location); }
-"OF"                    { context.location.columns(context.cursor - start); return asn1_parser::make_OF (context.location); }
-"OID_IRI"               { context.location.columns(context.cursor - start); return asn1_parser::make_OID_IRI (context.location); }
-"OPTIONAL"              { context.location.columns(context.cursor - start); return asn1_parser::make_OPTIONAL (context.location); }
-"PATTERN"               { context.location.columns(context.cursor - start); return asn1_parser::make_PATTERN (context.location); }
-"PDV"                   { context.location.columns(context.cursor - start); return asn1_parser::make_PDV (context.location); }
-"PLUS_INFINITY"         { context.location.columns(context.cursor - start); return asn1_parser::make_PLUS_INFINITY (context.location); }
-"PRESENT"               { context.location.columns(context.cursor - start); return asn1_parser::make_PRESENT (context.location); }
-"PrintableString"       { context.location.columns(context.cursor - start); return asn1_parser::make_PrintableString (context.location); }
-"PRIVATE"               { context.location.columns(context.cursor - start); return asn1_parser::make_PRIVATE (context.location); }
-"REAL"                  { context.location.columns(context.cursor - start); return asn1_parser::make_REAL (context.location); }
-"RELATIVE-OID"          { context.location.columns(context.cursor - start); return asn1_parser::make_RELATIVE_OID (context.location); }
-"RELATIVE-OID-IRI"      { context.location.columns(context.cursor - start); return asn1_parser::make_RELATIVE_OID_IRI (context.location); }
-"SEQUENCE"              { context.location.columns(context.cursor - start); return asn1_parser::make_SEQUENCE (context.location); }
-"SET"                   { context.location.columns(context.cursor - start); return asn1_parser::make_SET (context.location); }
-"SETTINGS"              { context.location.columns(context.cursor - start); return asn1_parser::make_SETTINGS (context.location); }
-"SIZE"                  { context.location.columns(context.cursor - start); return asn1_parser::make_SIZE (context.location); }
-"STRING"                { context.location.columns(context.cursor - start); return asn1_parser::make_STRING (context.location); }
-"SYNTAX"                { context.location.columns(context.cursor - start); return asn1_parser::make_SYNTAX (context.location); }
-"T61String"             { context.location.columns(context.cursor - start); return asn1_parser::make_T61String (context.location); }
-"TAGS"                  { context.location.columns(context.cursor - start); return asn1_parser::make_TAGS (context.location); }
-"TeletexString"         { context.location.columns(context.cursor - start); return asn1_parser::make_TeletexString (context.location); }
-"TIME"                  { context.location.columns(context.cursor - start); return asn1_parser::make_TIME (context.location); }
-"TIME-OF-DAY"           { context.location.columns(context.cursor - start); return asn1_parser::make_TIME_OF_DAY (context.location); }
-"TRUE"                  { context.location.columns(context.cursor - start); return asn1_parser::make_TRUE (context.location); }
-"TYPE-IDENTIFIER"       { context.location.columns(context.cursor - start); return asn1_parser::make_TYPE_IDENTIFIER (context.location); }
-"UNION"                 { context.location.columns(context.cursor - start); return asn1_parser::make_UNION (context.location); }
-"UNIQUE"                { context.location.columns(context.cursor - start); return asn1_parser::make_UNIQUE (context.location); }
-"UNIVERSAL"             { context.location.columns(context.cursor - start); return asn1_parser::make_UNIVERSAL (context.location); }
-"UniversalString"       { context.location.columns(context.cursor - start); return asn1_parser::make_UniversalString (context.location); }
-"UTCTime"               { context.location.columns(context.cursor - start); return asn1_parser::make_UTCTime (context.location); }
-"UTF8String"            { context.location.columns(context.cursor - start); return asn1_parser::make_UTF8String (context.location); }
-"VideotexString"        { context.location.columns(context.cursor - start); return asn1_parser::make_VideotexString (context.location); }
-"VisibleString"         { context.location.columns(context.cursor - start); return asn1_parser::make_VisibleString (context.location); }
-"WITH"                  { context.location.columns(context.cursor - start); return asn1_parser::make_WITH (context.location); }
+"ABSENT"                { context_.location.columns(context_.cursor - start); return asn1_parser::make_ABSENT (context_.location); }
+"ABSTRACT-SYNTAX"       { context_.location.columns(context_.cursor - start); return asn1_parser::make_ABSTRACT_SYNTAX (context_.location); }
+"ALL"                   { context_.location.columns(context_.cursor - start); return asn1_parser::make_ALL (context_.location); }
+"ANY"                   { context_.location.columns(context_.cursor - start); return asn1_parser::make_ANY (context_.location); }
+"APPLICATION"           { context_.location.columns(context_.cursor - start); return asn1_parser::make_APPLICATION (context_.location); }
+"AUTOMATIC"             { context_.location.columns(context_.cursor - start); return asn1_parser::make_AUTOMATIC (context_.location); }
+"BEGIN"                 { context_.location.columns(context_.cursor - start); return asn1_parser::make_BEGIN (context_.location); }
+"BIT"                   { context_.location.columns(context_.cursor - start); return asn1_parser::make_BIT (context_.location); }
+"BMPString"             { context_.location.columns(context_.cursor - start); return asn1_parser::make_BMPString (context_.location); }
+"BOOLEAN"               { context_.location.columns(context_.cursor - start); return asn1_parser::make_BOOLEAN (context_.location); }
+"BY"                    { context_.location.columns(context_.cursor - start); return asn1_parser::make_BY (context_.location); }
+"CHARACTER"             { context_.location.columns(context_.cursor - start); return asn1_parser::make_CHARACTER (context_.location); }
+"CHOICE"                { context_.location.columns(context_.cursor - start); return asn1_parser::make_CHOICE (context_.location); }
+"CLASS"                 { context_.location.columns(context_.cursor - start); return asn1_parser::make_CLASS (context_.location); }
+"COMPONENT"             { context_.location.columns(context_.cursor - start); return asn1_parser::make_COMPONENT (context_.location); }
+"COMPONENTS"            { context_.location.columns(context_.cursor - start); return asn1_parser::make_COMPONENTS (context_.location); }
+"CONSTRAINED"           { context_.location.columns(context_.cursor - start); return asn1_parser::make_CONSTRAINED (context_.location); }
+"CONTAINING"            { context_.location.columns(context_.cursor - start); return asn1_parser::make_CONTAINING (context_.location); }
+"DATE"                  { context_.location.columns(context_.cursor - start); return asn1_parser::make_DATE (context_.location); }
+"DATE-TIME"             { context_.location.columns(context_.cursor - start); return asn1_parser::make_DATE_TIME (context_.location); }
+"DEFAULT"               { context_.location.columns(context_.cursor - start); return asn1_parser::make_DEFAULT (context_.location); }
+"DEFINITIONS"           { context_.location.columns(context_.cursor - start); return asn1_parser::make_DEFINITIONS (context_.location); }
+"DURATION"              { context_.location.columns(context_.cursor - start); return asn1_parser::make_DURATION (context_.location); }
+"EMBEDDED"              { context_.location.columns(context_.cursor - start); return asn1_parser::make_EMBEDDED (context_.location); }
+"ENCODED"               { context_.location.columns(context_.cursor - start); return asn1_parser::make_ENCODED (context_.location); }
+"ENCODING_CONTROL"      { context_.location.columns(context_.cursor - start); return asn1_parser::make_ENCODING_CONTROL (context_.location); }
+"END"                   { context_.location.columns(context_.cursor - start); return asn1_parser::make_END (context_.location); }
+"ENUMERATED"            { context_.location.columns(context_.cursor - start); return asn1_parser::make_ENUMERATED (context_.location); }
+"EXCEPT"                { context_.location.columns(context_.cursor - start); return asn1_parser::make_EXCEPT (context_.location); }
+"EXPLICIT"              { context_.location.columns(context_.cursor - start); return asn1_parser::make_EXPLICIT (context_.location); }
+"EXPORTS"               { context_.location.columns(context_.cursor - start); return asn1_parser::make_EXPORTS (context_.location); }
+"EXTENSIBILITY"         { context_.location.columns(context_.cursor - start); return asn1_parser::make_EXTENSIBILITY (context_.location); }
+"EXTERNAL"              { context_.location.columns(context_.cursor - start); return asn1_parser::make_EXTERNAL (context_.location); }
+"FALSE"                 { context_.location.columns(context_.cursor - start); return asn1_parser::make_FALSE (context_.location); }
+"FROM"                  { context_.location.columns(context_.cursor - start); return asn1_parser::make_FROM (context_.location); }
+"GeneralizedTime"       { context_.location.columns(context_.cursor - start); return asn1_parser::make_GeneralizedTime (context_.location); }
+"GeneralString"         { context_.location.columns(context_.cursor - start); return asn1_parser::make_GeneralString (context_.location); }
+"GraphicString"         { context_.location.columns(context_.cursor - start); return asn1_parser::make_GraphicString (context_.location); }
+"IA5String"             { context_.location.columns(context_.cursor - start); return asn1_parser::make_IA5String (context_.location); }
+"IDENTIFIER"            { context_.location.columns(context_.cursor - start); return asn1_parser::make_IDENTIFIER (context_.location); }
+"IMPLICIT"              { context_.location.columns(context_.cursor - start); return asn1_parser::make_IMPLICIT (context_.location); }
+"IMPLIED"               { context_.location.columns(context_.cursor - start); return asn1_parser::make_IMPLIED (context_.location); }
+"IMPORTS"               { context_.location.columns(context_.cursor - start); return asn1_parser::make_IMPORTS (context_.location); }
+"INCLUDES"              { context_.location.columns(context_.cursor - start); return asn1_parser::make_INCLUDES (context_.location); }
+"INSTANCE"              { context_.location.columns(context_.cursor - start); return asn1_parser::make_INSTANCE (context_.location); }
+"INSTRUCTIONS"          { context_.location.columns(context_.cursor - start); return asn1_parser::make_INSTRUCTIONS (context_.location); }
+"INTEGER"               { context_.location.columns(context_.cursor - start); return asn1_parser::make_INTEGER (context_.location); }
+"INTERSECTION"          { context_.location.columns(context_.cursor - start); return asn1_parser::make_INTERSECTION (context_.location); }
+"ISO646String"          { context_.location.columns(context_.cursor - start); return asn1_parser::make_ISO646String (context_.location); }
+"MAX"                   { context_.location.columns(context_.cursor - start); return asn1_parser::make_MAX (context_.location); }
+"MIN"                   { context_.location.columns(context_.cursor - start); return asn1_parser::make_MIN (context_.location); }
+"MINUS-INFINITY"        { context_.location.columns(context_.cursor - start); return asn1_parser::make_MINUS_INFINITY (context_.location); }
+"NOT-A-NUMBER"          { context_.location.columns(context_.cursor - start); return asn1_parser::make_NOT_A_NUMBER (context_.location); }
+"NULL"                  { context_.location.columns(context_.cursor - start); return asn1_parser::make_ASN_NULL (context_.location); }
+"NumericString"         { context_.location.columns(context_.cursor - start); return asn1_parser::make_NumericString (context_.location); }
+"OBJECT"                { context_.location.columns(context_.cursor - start); return asn1_parser::make_OBJECT (context_.location); }
+"ObjectDescriptor"      { context_.location.columns(context_.cursor - start); return asn1_parser::make_ObjectDescriptor (context_.location); }
+"OCTET"                 { context_.location.columns(context_.cursor - start); return asn1_parser::make_OCTET (context_.location); }
+"OF"                    { context_.location.columns(context_.cursor - start); return asn1_parser::make_OF (context_.location); }
+"OID_IRI"               { context_.location.columns(context_.cursor - start); return asn1_parser::make_OID_IRI (context_.location); }
+"OPTIONAL"              { context_.location.columns(context_.cursor - start); return asn1_parser::make_OPTIONAL (context_.location); }
+"PATTERN"               { context_.location.columns(context_.cursor - start); return asn1_parser::make_PATTERN (context_.location); }
+"PDV"                   { context_.location.columns(context_.cursor - start); return asn1_parser::make_PDV (context_.location); }
+"PLUS_INFINITY"         { context_.location.columns(context_.cursor - start); return asn1_parser::make_PLUS_INFINITY (context_.location); }
+"PRESENT"               { context_.location.columns(context_.cursor - start); return asn1_parser::make_PRESENT (context_.location); }
+"PrintableString"       { context_.location.columns(context_.cursor - start); return asn1_parser::make_PrintableString (context_.location); }
+"PRIVATE"               { context_.location.columns(context_.cursor - start); return asn1_parser::make_PRIVATE (context_.location); }
+"REAL"                  { context_.location.columns(context_.cursor - start); return asn1_parser::make_REAL (context_.location); }
+"RELATIVE-OID"          { context_.location.columns(context_.cursor - start); return asn1_parser::make_RELATIVE_OID (context_.location); }
+"RELATIVE-OID-IRI"      { context_.location.columns(context_.cursor - start); return asn1_parser::make_RELATIVE_OID_IRI (context_.location); }
+"SEQUENCE"              { context_.location.columns(context_.cursor - start); return asn1_parser::make_SEQUENCE (context_.location); }
+"SET"                   { context_.location.columns(context_.cursor - start); return asn1_parser::make_SET (context_.location); }
+"SETTINGS"              { context_.location.columns(context_.cursor - start); return asn1_parser::make_SETTINGS (context_.location); }
+"SIZE"                  { context_.location.columns(context_.cursor - start); return asn1_parser::make_SIZE (context_.location); }
+"STRING"                { context_.location.columns(context_.cursor - start); return asn1_parser::make_STRING (context_.location); }
+"SYNTAX"                { context_.location.columns(context_.cursor - start); return asn1_parser::make_SYNTAX (context_.location); }
+"T61String"             { context_.location.columns(context_.cursor - start); return asn1_parser::make_T61String (context_.location); }
+"TAGS"                  { context_.location.columns(context_.cursor - start); return asn1_parser::make_TAGS (context_.location); }
+"TeletexString"         { context_.location.columns(context_.cursor - start); return asn1_parser::make_TeletexString (context_.location); }
+"TIME"                  { context_.location.columns(context_.cursor - start); return asn1_parser::make_TIME (context_.location); }
+"TIME-OF-DAY"           { context_.location.columns(context_.cursor - start); return asn1_parser::make_TIME_OF_DAY (context_.location); }
+"TRUE"                  { context_.location.columns(context_.cursor - start); return asn1_parser::make_TRUE (context_.location); }
+"TYPE-IDENTIFIER"       { context_.location.columns(context_.cursor - start); return asn1_parser::make_TYPE_IDENTIFIER (context_.location); }
+"UNION"                 { context_.location.columns(context_.cursor - start); return asn1_parser::make_UNION (context_.location); }
+"UNIQUE"                { context_.location.columns(context_.cursor - start); return asn1_parser::make_UNIQUE (context_.location); }
+"UNIVERSAL"             { context_.location.columns(context_.cursor - start); return asn1_parser::make_UNIVERSAL (context_.location); }
+"UniversalString"       { context_.location.columns(context_.cursor - start); return asn1_parser::make_UniversalString (context_.location); }
+"UTCTime"               { context_.location.columns(context_.cursor - start); return asn1_parser::make_UTCTime (context_.location); }
+"UTF8String"            { context_.location.columns(context_.cursor - start); return asn1_parser::make_UTF8String (context_.location); }
+"VideotexString"        { context_.location.columns(context_.cursor - start); return asn1_parser::make_VideotexString (context_.location); }
+"VisibleString"         { context_.location.columns(context_.cursor - start); return asn1_parser::make_VisibleString (context_.location); }
+"WITH"                  { context_.location.columns(context_.cursor - start); return asn1_parser::make_WITH (context_.location); }
 
 // Comments
 "--" ([\-]?[^\r\n\-])* "--"
-                        { context.location.columns(context.cursor - start); return yylex(context); }
+                        { context_.location.columns(context_.cursor - start); return yylex(context_); }
 "--" ([\-]?[^\r\n\-])*[\-]?
-                        { context.location.columns(context.cursor - start); return yylex(context); }
+                        { context_.location.columns(context_.cursor - start); return yylex(context_); }
 "/*" ([^\*]|([\*]+[^\*\/]))*[\*]+ "/"
-                        { for (char c: std::string(start, context.cursor)) { context.location.columns(); if (c == '\n') context.location.lines(); } return yylex(context); }
+                        { for (char c: std::string(start, context_.cursor)) { context_.location.columns(); if (c == '\n') context_.location.lines(); } return yylex(context_); }
 
 // Identifiers
-[0-9]+'\.'[0-9]+        { context.location.columns(context.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context.cursor)), context.location); }
-[0-9]+                  { context.location.columns(context.cursor - start); return asn1_parser::make_number(std::stoll(std::string(start, context.cursor)), context.location); }
-"-"[0-9]+               { context.location.columns(context.cursor - start); return asn1_parser::make_negativenumber(std::stoll(std::string(start, context.cursor)), context.location); }
+[0-9]+'\.'[0-9]+        { context_.location.columns(context_.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context_.cursor)), context_.location); }
+[0-9]+                  { context_.location.columns(context_.cursor - start); return asn1_parser::make_number(std::stoll(std::string(start, context_.cursor)), context_.location); }
+"-"[0-9]+               { context_.location.columns(context_.cursor - start); return asn1_parser::make_negativenumber(std::stoll(std::string(start, context_.cursor)), context_.location); }
 ['\"']('\\'.|"\"\""|[^'\"'])*['\"']
-                        { context.location.columns(context.cursor - start); return asn1_parser::make_cstring(std::string(start, context.cursor), context.location); }
+                        { context_.location.columns(context_.cursor - start); return asn1_parser::make_cstring(std::string(start, context_.cursor), context_.location); }
 ['\'']('0'|'1')*['\'']"B"
-                        { context.location.columns(context.cursor - start); return asn1_parser::make_bstring(std::string(start + 1, context.cursor - 2), context.location); }
+                        { context_.location.columns(context_.cursor - start); return asn1_parser::make_bstring(std::string(start + 1, context_.cursor - 2), context_.location); }
 ['\''][0-9A-Fa-f]*['\'']"H"
-                        { context.location.columns(context.cursor - start); return asn1_parser::make_hstring(std::string(start + 1, context.cursor - 2), context.location); }
-[A-Z]([\-]?[A-Za-z_0-9])*  { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(santize_name(std::string(start, context.cursor)), context.location); }
-[a-z]([\-]?[A-Za-z_0-9])*  { context.location.columns(context.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(santize_name(std::string(start, context.cursor)), context.location); }
-[&][A-Z]([\-]?[A-Za-z_0-9])* { context.location.columns(context.cursor - start); return asn1_parser::make_typefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
-[&][a-z]([\-]?[A-Za-z_0-9])* { context.location.columns(context.cursor - start); return asn1_parser::make_valuefieldreference(santize_name(std::string(start, context.cursor)), context.location); }
+                        { context_.location.columns(context_.cursor - start); return asn1_parser::make_hstring(std::string(start + 1, context_.cursor - 2), context_.location); }
+[A-Z]([\-]?[A-Za-z_0-9])*  { context_.location.columns(context_.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(santize_name(std::string(start, context_.cursor)), context_.location); }
+[a-z]([\-]?[A-Za-z_0-9])*  { context_.location.columns(context_.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(santize_name(std::string(start, context_.cursor)), context_.location); }
+[&][A-Z]([\-]?[A-Za-z_0-9])* { context_.location.columns(context_.cursor - start); return asn1_parser::make_typefieldreference(santize_name(std::string(start, context_.cursor)), context_.location); }
+[&][a-z]([\-]?[A-Za-z_0-9])* { context_.location.columns(context_.cursor - start); return asn1_parser::make_valuefieldreference(santize_name(std::string(start, context_.cursor)), context_.location); }
 
 // End of file
-"\000"                  { context.location.columns(context.cursor - start); return asn1_parser::make_END_OF_FILE(context.location); }
+"\000"                  { context_.location.columns(context_.cursor - start); return asn1_parser::make_END_OF_FILE(context_.location); }
 
 // White space
-"\r\n" | "\n"           { context.location.columns(context.cursor - start); context.location.lines();   return yylex(context); }
-[\t\v\b\f ]             { context.location.columns(context.cursor - start); context.location.columns(); return yylex(context); }
+"\r\n" | "\n"           { context_.location.columns(context_.cursor - start); context_.location.lines();   return yylex(context_); }
+[\t\v\b\f ]             { context_.location.columns(context_.cursor - start); context_.location.columns(); return yylex(context_); }
 
 // Symbols
-"::="                   { context.location.columns(context.cursor - start); return asn1_parser::make_DEFINED_AS (context.location); }
-"\.\.\."                { context.location.columns(context.cursor - start); return asn1_parser::make_ELIPSIS (context.location); }
-"\.\."                  { context.location.columns(context.cursor - start); return asn1_parser::make_RANGE (context.location); }
-"{"                     { context.location.columns(context.cursor - start); return asn1_parser::make_OPEN_BRACE (context.location); }
-"}"                     { context.location.columns(context.cursor - start); return asn1_parser::make_CLOSE_BRACE (context.location); }
-"("                     { context.location.columns(context.cursor - start); return asn1_parser::make_OPEN_PARENTHESIS (context.location); }
-")"                     { context.location.columns(context.cursor - start); return asn1_parser::make_CLOSE_PARENTHESIS (context.location); }
-"["                     { context.location.columns(context.cursor - start); return asn1_parser::make_OPEN_SQUARE_BRACKET (context.location); }
-"]"                     { context.location.columns(context.cursor - start); return asn1_parser::make_CLOSE_SQUARE_BRACKET (context.location); }
-":"                     { context.location.columns(context.cursor - start); return asn1_parser::make_COLON (context.location); }
-";"                     { context.location.columns(context.cursor - start); return asn1_parser::make_SEMICOLON (context.location); }
-","                     { context.location.columns(context.cursor - start); return asn1_parser::make_COMMA (context.location); }
-"-"                     { context.location.columns(context.cursor - start); return asn1_parser::make_HYPHEN_MINUS (context.location); }
-"\."                    { context.location.columns(context.cursor - start); return asn1_parser::make_FULL_STOP (context.location); }
-"|"                     { context.location.columns(context.cursor - start); return asn1_parser::make_VERTICAL_LINE (context.location); }
-"!"                     { context.location.columns(context.cursor - start); return asn1_parser::make_EXCLAMATION_MARK (context.location); }
-"<"                     { context.location.columns(context.cursor - start); return asn1_parser::make_LESS_THAN (context.location); }
-"^"                     { context.location.columns(context.cursor - start); return asn1_parser::make_ACCENT (context.location); }
-"@"                     { context.location.columns(context.cursor - start); return asn1_parser::make_AT (context.location); }
-.                       { std::cerr << "Ignoring unknown symbol: " <<  static_cast<int>(*start) << std::endl; return yylex(context); }
+"::="                   { context_.location.columns(context_.cursor - start); return asn1_parser::make_DEFINED_AS (context_.location); }
+"\.\.\."                { context_.location.columns(context_.cursor - start); return asn1_parser::make_ELIPSIS (context_.location); }
+"\.\."                  { context_.location.columns(context_.cursor - start); return asn1_parser::make_RANGE (context_.location); }
+"{"                     { context_.location.columns(context_.cursor - start); return asn1_parser::make_OPEN_BRACE (context_.location); }
+"}"                     { context_.location.columns(context_.cursor - start); return asn1_parser::make_CLOSE_BRACE (context_.location); }
+"("                     { context_.location.columns(context_.cursor - start); return asn1_parser::make_OPEN_PARENTHESIS (context_.location); }
+")"                     { context_.location.columns(context_.cursor - start); return asn1_parser::make_CLOSE_PARENTHESIS (context_.location); }
+"["                     { context_.location.columns(context_.cursor - start); return asn1_parser::make_OPEN_SQUARE_BRACKET (context_.location); }
+"]"                     { context_.location.columns(context_.cursor - start); return asn1_parser::make_CLOSE_SQUARE_BRACKET (context_.location); }
+":"                     { context_.location.columns(context_.cursor - start); return asn1_parser::make_COLON (context_.location); }
+";"                     { context_.location.columns(context_.cursor - start); return asn1_parser::make_SEMICOLON (context_.location); }
+","                     { context_.location.columns(context_.cursor - start); return asn1_parser::make_COMMA (context_.location); }
+"-"                     { context_.location.columns(context_.cursor - start); return asn1_parser::make_HYPHEN_MINUS (context_.location); }
+"\."                    { context_.location.columns(context_.cursor - start); return asn1_parser::make_FULL_STOP (context_.location); }
+"|"                     { context_.location.columns(context_.cursor - start); return asn1_parser::make_VERTICAL_LINE (context_.location); }
+"!"                     { context_.location.columns(context_.cursor - start); return asn1_parser::make_EXCLAMATION_MARK (context_.location); }
+"<"                     { context_.location.columns(context_.cursor - start); return asn1_parser::make_LESS_THAN (context_.location); }
+"^"                     { context_.location.columns(context_.cursor - start); return asn1_parser::make_ACCENT (context_.location); }
+"@"                     { context_.location.columns(context_.cursor - start); return asn1_parser::make_AT (context_.location); }
+.                       { std::cerr << "Ignoring unknown symbol: " <<  static_cast<int>(*start) << std::endl; return yylex(context_); }
 %}
     }
 }

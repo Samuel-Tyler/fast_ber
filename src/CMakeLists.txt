@@ -6,18 +6,18 @@ if(NOT SKIP_AUTO_GENERATION)
 
     # Build re2c
     add_custom_command(
-        OUTPUT ${CMAKE_SOURCE_DIR}/3rd_party/re2c/re2c/re2c
-        COMMAND cd ${CMAKE_SOURCE_DIR}/3rd_party/re2c/re2c && ./autogen.sh && ./configure && make
+        OUTPUT ${CMAKE_SOURCE_DIR}/3rd_party/re2c/re2c
+        COMMAND cd ${CMAKE_SOURCE_DIR}/3rd_party/re2c && ./autogen.sh && ./configure && make
     )
 
     # Generate fast_ber compiler using bison / re2c
     add_custom_command(
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp
         BYPRODUCTS ${CMAKE_BINARY_DIR}/autogen/asn_compiler.re
-        DEPENDS ${CMAKE_SOURCE_DIR}/src/compiler/asn_compiler.yacc ${CMAKE_SOURCE_DIR}/3rd_party/re2c/re2c/re2c
+        DEPENDS ${CMAKE_SOURCE_DIR}/src/compiler/asn_compiler.yacc ${CMAKE_SOURCE_DIR}/3rd_party/re2c/re2c
 
         COMMAND bison ${CMAKE_CURRENT_SOURCE_DIR}/compiler/asn_compiler.yacc -t --report=all -o ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.re
-        COMMAND ${CMAKE_SOURCE_DIR}/3rd_party/re2c/re2c/re2c --no-generation-date -o ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.re
+        COMMAND ${CMAKE_SOURCE_DIR}/3rd_party/re2c/re2c --no-generation-date -o ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.re
         COMMAND cp ${CMAKE_CURRENT_BINARY_DIR}/autogen/asn_compiler.hpp ${CMAKE_SOURCE_DIR}/src/compiler/autogen_copy/asn_compiler.hpp
     )
 else()
