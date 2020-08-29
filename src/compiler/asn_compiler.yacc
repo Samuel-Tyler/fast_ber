@@ -1921,7 +1921,7 @@ re2c:define:YYCURSOR = "context_.cursor";
 [0-9]+'\.'[0-9]+        { context_.location.columns(context_.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context_.cursor)), context_.location); }
 [0-9]+                  { context_.location.columns(context_.cursor - start); return asn1_parser::make_number(std::stoll(std::string(start, context_.cursor)), context_.location); }
 "-"[0-9]+               { context_.location.columns(context_.cursor - start); return asn1_parser::make_negativenumber(std::stoll(std::string(start, context_.cursor)), context_.location); }
-['\"']('\\'.|"\"\""|[^'\"'])*['\"']
+['\"']('\\'.|"\"\""|[^'\"'"\n""\000"])*['\"']
                         { context_.location.columns(context_.cursor - start); return asn1_parser::make_cstring(std::string(start, context_.cursor), context_.location); }
 ['\'']('0'|'1')*['\'']"B"
                         { context_.location.columns(context_.cursor - start); return asn1_parser::make_bstring(std::string(start + 1, context_.cursor - 2), context_.location); }
@@ -1959,7 +1959,7 @@ re2c:define:YYCURSOR = "context_.cursor";
 "<"                     { context_.location.columns(context_.cursor - start); return asn1_parser::make_LESS_THAN (context_.location); }
 "^"                     { context_.location.columns(context_.cursor - start); return asn1_parser::make_ACCENT (context_.location); }
 "@"                     { context_.location.columns(context_.cursor - start); return asn1_parser::make_AT (context_.location); }
-.                       { std::cerr << "Ignoring unknown symbol: " <<  static_cast<int>(*start) << std::endl; return yylex(context_); }
+.                       { std::cerr << "Ignoring unknown symbol: [" <<  *start << "] (" << static_cast<int>(*start) << ") at " << context_.location<< std::endl; return yylex(context_); }
 %}
     }
 }

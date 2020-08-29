@@ -11892,14 +11892,14 @@ namespace yy {
 	case '\r':	goto yy10;
 	case '!':	goto yy11;
 	case '"':	goto yy13;
-	case '&':	goto yy15;
-	case '\'':	goto yy16;
-	case '(':	goto yy18;
-	case ')':	goto yy20;
-	case ',':	goto yy22;
-	case '-':	goto yy24;
-	case '.':	goto yy26;
-	case '/':	goto yy28;
+	case '&':	goto yy14;
+	case '\'':	goto yy15;
+	case '(':	goto yy16;
+	case ')':	goto yy18;
+	case ',':	goto yy20;
+	case '-':	goto yy22;
+	case '.':	goto yy24;
+	case '/':	goto yy26;
 	case '0':
 	case '1':
 	case '2':
@@ -11909,18 +11909,18 @@ namespace yy {
 	case '6':
 	case '7':
 	case '8':
-	case '9':	goto yy29;
-	case ':':	goto yy32;
-	case ';':	goto yy34;
-	case '<':	goto yy36;
-	case '@':	goto yy38;
-	case 'A':	goto yy40;
-	case 'B':	goto yy42;
-	case 'C':	goto yy43;
-	case 'D':	goto yy44;
-	case 'E':	goto yy45;
-	case 'F':	goto yy46;
-	case 'G':	goto yy47;
+	case '9':	goto yy27;
+	case ':':	goto yy30;
+	case ';':	goto yy32;
+	case '<':	goto yy34;
+	case '@':	goto yy36;
+	case 'A':	goto yy38;
+	case 'B':	goto yy40;
+	case 'C':	goto yy41;
+	case 'D':	goto yy42;
+	case 'E':	goto yy43;
+	case 'F':	goto yy44;
+	case 'G':	goto yy45;
 	case 'H':
 	case 'J':
 	case 'K':
@@ -11928,21 +11928,21 @@ namespace yy {
 	case 'Q':
 	case 'X':
 	case 'Y':
-	case 'Z':	goto yy48;
-	case 'I':	goto yy50;
-	case 'M':	goto yy51;
-	case 'N':	goto yy52;
-	case 'O':	goto yy53;
-	case 'P':	goto yy54;
-	case 'R':	goto yy55;
-	case 'S':	goto yy56;
-	case 'T':	goto yy57;
-	case 'U':	goto yy58;
-	case 'V':	goto yy59;
-	case 'W':	goto yy60;
-	case '[':	goto yy61;
-	case ']':	goto yy63;
-	case '^':	goto yy65;
+	case 'Z':	goto yy46;
+	case 'I':	goto yy48;
+	case 'M':	goto yy49;
+	case 'N':	goto yy50;
+	case 'O':	goto yy51;
+	case 'P':	goto yy52;
+	case 'R':	goto yy53;
+	case 'S':	goto yy54;
+	case 'T':	goto yy55;
+	case 'U':	goto yy56;
+	case 'V':	goto yy57;
+	case 'W':	goto yy58;
+	case '[':	goto yy59;
+	case ']':	goto yy61;
+	case '^':	goto yy63;
 	case 'a':
 	case 'b':
 	case 'c':
@@ -11968,10 +11968,10 @@ namespace yy {
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy67;
-	case '{':	goto yy70;
-	case '|':	goto yy72;
-	case '}':	goto yy74;
+	case 'z':	goto yy65;
+	case '{':	goto yy68;
+	case '|':	goto yy70;
+	case '}':	goto yy72;
 	default:	goto yy4;
 	}
 yy2:
@@ -11983,7 +11983,7 @@ yy4:
 	++context_.cursor;
 yy5:
 #line 1962 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ std::cerr << "Ignoring unknown symbol: " <<  static_cast<int>(*start) << std::endl; return yylex(context_); }
+	{ std::cerr << "Ignoring unknown symbol: [" <<  *start << "] (" << static_cast<int>(*start) << ") at " << context_.location<< std::endl; return yylex(context_); }
 #line 11988 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy6:
 	++context_.cursor;
@@ -12007,156 +12007,120 @@ yy11:
 	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_EXCLAMATION_MARK (context_.location); }
 #line 12009 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy13:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '"':	goto yy76;
-	case '\'':	goto yy78;
-	case '\\':	goto yy79;
-	default:	goto yy13;
-	}
-yy15:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':	goto yy81;
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy84;
-	default:	goto yy5;
-	}
-yy16:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '"':	goto yy76;
-	case '\'':	goto yy87;
-	case '0':
-	case '1':	goto yy16;
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':	goto yy88;
-	case '\\':	goto yy79;
-	default:	goto yy13;
-	}
-yy18:
-	++context_.cursor;
-#line 1948 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_OPEN_PARENTHESIS (context_.location); }
-#line 12109 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy20:
-	++context_.cursor;
-#line 1949 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_CLOSE_PARENTHESIS (context_.location); }
-#line 12114 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy22:
-	++context_.cursor;
-#line 1954 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_COMMA (context_.location); }
-#line 12119 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy24:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '-':	goto yy90;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':	goto yy93;
-	default:	goto yy25;
-	}
-yy25:
-#line 1955 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_HYPHEN_MINUS (context_.location); }
-#line 12139 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy26:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '.':	goto yy96;
-	default:	goto yy27;
-	}
-yy27:
-#line 1956 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_FULL_STOP (context_.location); }
-#line 12149 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy28:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '*':	goto yy98;
-	default:	goto yy5;
-	}
-yy29:
 	yyaccept = 0;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '.':	goto yy100;
+	case 0x00:
+	case '\n':	goto yy5;
+	default:	goto yy75;
+	}
+yy14:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':	goto yy82;
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy85;
+	default:	goto yy5;
+	}
+yy15:
+	yyaccept = 0;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 0x00:
+	case '\n':	goto yy5;
+	case '\'':	goto yy88;
+	case '0':
+	case '1':	goto yy89;
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':	goto yy91;
+	default:	goto yy75;
+	}
+yy16:
+	++context_.cursor;
+#line 1948 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_OPEN_PARENTHESIS (context_.location); }
+#line 12110 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy18:
+	++context_.cursor;
+#line 1949 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_CLOSE_PARENTHESIS (context_.location); }
+#line 12115 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy20:
+	++context_.cursor;
+#line 1954 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_COMMA (context_.location); }
+#line 12120 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy22:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case '-':	goto yy93;
 	case '0':
 	case '1':
 	case '2':
@@ -12166,302 +12130,151 @@ yy29:
 	case '6':
 	case '7':
 	case '8':
-	case '9':	goto yy29;
-	default:	goto yy31;
+	case '9':	goto yy96;
+	default:	goto yy23;
 	}
-yy31:
-#line 1922 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_number(std::stoll(std::string(start, context_.cursor)), context_.location); }
-#line 12176 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy32:
+yy23:
+#line 1955 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_HYPHEN_MINUS (context_.location); }
+#line 12140 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy24:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case '.':	goto yy99;
+	default:	goto yy25;
+	}
+yy25:
+#line 1956 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_FULL_STOP (context_.location); }
+#line 12150 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy26:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case '*':	goto yy101;
+	default:	goto yy5;
+	}
+yy27:
 	yyaccept = 1;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case ':':	goto yy102;
-	default:	goto yy33;
+	case '.':	goto yy103;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':	goto yy27;
+	default:	goto yy29;
 	}
-yy33:
+yy29:
+#line 1922 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_number(std::stoll(std::string(start, context_.cursor)), context_.location); }
+#line 12177 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy30:
+	yyaccept = 2;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case ':':	goto yy104;
+	default:	goto yy31;
+	}
+yy31:
 #line 1952 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
 	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_COLON (context_.location); }
-#line 12187 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy34:
+#line 12188 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy32:
 	++context_.cursor;
 #line 1953 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
 	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_SEMICOLON (context_.location); }
-#line 12192 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy36:
+#line 12193 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy34:
 	++context_.cursor;
 #line 1959 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
 	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_LESS_THAN (context_.location); }
-#line 12197 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy38:
+#line 12198 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy36:
 	++context_.cursor;
 #line 1961 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
 	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_AT (context_.location); }
-#line 12202 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy40:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'B':	goto yy104;
-	case 'L':	goto yy105;
-	case 'N':	goto yy106;
-	case 'P':	goto yy107;
-	case 'U':	goto yy108;
-	default:	goto yy49;
-	}
-yy41:
-#line 1930 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(santize_name(std::string(start, context_.cursor)), context_.location); }
-#line 12217 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy42:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy109;
-	case 'I':	goto yy110;
-	case 'M':	goto yy111;
-	case 'O':	goto yy112;
-	case 'Y':	goto yy113;
-	default:	goto yy49;
-	}
-yy43:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'H':	goto yy115;
-	case 'L':	goto yy116;
-	case 'O':	goto yy117;
-	default:	goto yy49;
-	}
-yy44:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'A':	goto yy118;
-	case 'E':	goto yy119;
-	case 'U':	goto yy120;
-	default:	goto yy49;
-	}
-yy45:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'M':	goto yy121;
-	case 'N':	goto yy122;
-	case 'X':	goto yy123;
-	default:	goto yy49;
-	}
-yy46:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'A':	goto yy124;
-	case 'R':	goto yy125;
-	default:	goto yy49;
-	}
-yy47:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'e':	goto yy126;
-	case 'r':	goto yy127;
-	default:	goto yy49;
-	}
-yy48:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-yy49:
-	switch (yych) {
-	case '-':	goto yy103;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy41;
-	}
-yy50:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'A':	goto yy128;
-	case 'D':	goto yy129;
-	case 'M':	goto yy130;
-	case 'N':	goto yy131;
-	case 'S':	goto yy132;
-	default:	goto yy49;
-	}
-yy51:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'A':	goto yy133;
-	case 'I':	goto yy134;
-	default:	goto yy49;
-	}
-yy52:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'O':	goto yy135;
-	case 'U':	goto yy136;
-	case 'u':	goto yy137;
-	default:	goto yy49;
-	}
-yy53:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'B':	goto yy138;
-	case 'C':	goto yy139;
-	case 'F':	goto yy140;
-	case 'I':	goto yy142;
-	case 'P':	goto yy143;
-	case 'b':	goto yy144;
-	default:	goto yy49;
-	}
-yy54:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'A':	goto yy145;
-	case 'D':	goto yy146;
-	case 'L':	goto yy147;
-	case 'R':	goto yy148;
-	case 'r':	goto yy149;
-	default:	goto yy49;
-	}
-yy55:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy150;
-	default:	goto yy49;
-	}
-yy56:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy151;
-	case 'I':	goto yy152;
-	case 'T':	goto yy153;
-	case 'Y':	goto yy154;
-	default:	goto yy49;
-	}
-yy57:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case '6':	goto yy155;
-	case 'A':	goto yy156;
-	case 'I':	goto yy157;
-	case 'R':	goto yy158;
-	case 'Y':	goto yy159;
-	case 'e':	goto yy160;
-	default:	goto yy49;
-	}
-yy58:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'N':	goto yy161;
-	case 'T':	goto yy162;
-	case 'n':	goto yy163;
-	default:	goto yy49;
-	}
-yy59:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'i':	goto yy164;
-	default:	goto yy49;
-	}
-yy60:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy165;
-	default:	goto yy49;
-	}
-yy61:
-	++context_.cursor;
-#line 1950 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_OPEN_SQUARE_BRACKET (context_.location); }
-#line 12450 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy63:
-	++context_.cursor;
-#line 1951 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_CLOSE_SQUARE_BRACKET (context_.location); }
-#line 12455 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy65:
-	++context_.cursor;
-#line 1960 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ACCENT (context_.location); }
-#line 12460 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy67:
+#line 12203 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy38:
 	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy166;
+	case 'B':	goto yy106;
+	case 'L':	goto yy107;
+	case 'N':	goto yy108;
+	case 'P':	goto yy109;
+	case 'U':	goto yy110;
+	default:	goto yy47;
+	}
+yy39:
+#line 1930 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_UPPERCASE(santize_name(std::string(start, context_.cursor)), context_.location); }
+#line 12218 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy40:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy111;
+	case 'I':	goto yy112;
+	case 'M':	goto yy113;
+	case 'O':	goto yy114;
+	case 'Y':	goto yy115;
+	default:	goto yy47;
+	}
+yy41:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'H':	goto yy117;
+	case 'L':	goto yy118;
+	case 'O':	goto yy119;
+	default:	goto yy47;
+	}
+yy42:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'A':	goto yy120;
+	case 'E':	goto yy121;
+	case 'U':	goto yy122;
+	default:	goto yy47;
+	}
+yy43:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'M':	goto yy123;
+	case 'N':	goto yy124;
+	case 'X':	goto yy125;
+	default:	goto yy47;
+	}
+yy44:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'A':	goto yy126;
+	case 'R':	goto yy127;
+	default:	goto yy47;
+	}
+yy45:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'e':	goto yy128;
+	case 'r':	goto yy129;
+	default:	goto yy47;
+	}
+yy46:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+yy47:
+	switch (yych) {
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -12524,53 +12337,132 @@ yy67:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy67;
-	default:	goto yy69;
+	case 'z':	goto yy46;
+	default:	goto yy39;
 	}
-yy69:
-#line 1931 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(santize_name(std::string(start, context_.cursor)), context_.location); }
-#line 12534 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy70:
-	++context_.cursor;
-#line 1946 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_OPEN_BRACE (context_.location); }
-#line 12539 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy72:
-	++context_.cursor;
-#line 1957 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_VERTICAL_LINE (context_.location); }
-#line 12544 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy74:
-	++context_.cursor;
-#line 1947 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_CLOSE_BRACE (context_.location); }
-#line 12549 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy76:
-	yych = *++context_.cursor;
+yy48:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '"':	goto yy13;
-	default:	goto yy77;
+	case 'A':	goto yy130;
+	case 'D':	goto yy131;
+	case 'M':	goto yy132;
+	case 'N':	goto yy133;
+	case 'S':	goto yy134;
+	default:	goto yy47;
 	}
-yy77:
-#line 1925 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_cstring(std::string(start, context_.cursor), context_.location); }
-#line 12559 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy78:
-	++context_.cursor;
-	goto yy77;
-yy79:
-	yych = *++context_.cursor;
+yy49:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '"':	goto yy167;
-	case '\\':	goto yy79;
-	default:	goto yy13;
+	case 'A':	goto yy135;
+	case 'I':	goto yy136;
+	default:	goto yy47;
 	}
-yy81:
+yy50:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'O':	goto yy137;
+	case 'U':	goto yy138;
+	case 'u':	goto yy139;
+	default:	goto yy47;
+	}
+yy51:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'B':	goto yy140;
+	case 'C':	goto yy141;
+	case 'F':	goto yy142;
+	case 'I':	goto yy144;
+	case 'P':	goto yy145;
+	case 'b':	goto yy146;
+	default:	goto yy47;
+	}
+yy52:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'A':	goto yy147;
+	case 'D':	goto yy148;
+	case 'L':	goto yy149;
+	case 'R':	goto yy150;
+	case 'r':	goto yy151;
+	default:	goto yy47;
+	}
+yy53:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy152;
+	default:	goto yy47;
+	}
+yy54:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy153;
+	case 'I':	goto yy154;
+	case 'T':	goto yy155;
+	case 'Y':	goto yy156;
+	default:	goto yy47;
+	}
+yy55:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case '6':	goto yy157;
+	case 'A':	goto yy158;
+	case 'I':	goto yy159;
+	case 'R':	goto yy160;
+	case 'Y':	goto yy161;
+	case 'e':	goto yy162;
+	default:	goto yy47;
+	}
+yy56:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy163;
+	case 'T':	goto yy164;
+	case 'n':	goto yy165;
+	default:	goto yy47;
+	}
+yy57:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'i':	goto yy166;
+	default:	goto yy47;
+	}
+yy58:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy167;
+	default:	goto yy47;
+	}
+yy59:
+	++context_.cursor;
+#line 1950 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_OPEN_SQUARE_BRACKET (context_.location); }
+#line 12451 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy61:
+	++context_.cursor;
+#line 1951 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_CLOSE_SQUARE_BRACKET (context_.location); }
+#line 12456 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy63:
+	++context_.cursor;
+#line 1960 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ACCENT (context_.location); }
+#line 12461 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy65:
 	yyaccept = 4;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy169;
+	case '-':	goto yy168;
 	case '0':
 	case '1':
 	case '2':
@@ -12633,390 +12525,530 @@ yy81:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy81;
-	default:	goto yy83;
+	case 'z':	goto yy65;
+	default:	goto yy67;
 	}
-yy83:
-#line 1932 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_typefieldreference(santize_name(std::string(start, context_.cursor)), context_.location); }
-#line 12643 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy84:
-	yyaccept = 5;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case '-':	goto yy170;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy84;
-	default:	goto yy86;
-	}
-yy86:
-#line 1933 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_valuefieldreference(santize_name(std::string(start, context_.cursor)), context_.location); }
-#line 12717 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy87:
+yy67:
+#line 1931 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_GENERIC_IDENTIFIER_LOWERCASE(santize_name(std::string(start, context_.cursor)), context_.location); }
+#line 12535 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy68:
+	++context_.cursor;
+#line 1946 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_OPEN_BRACE (context_.location); }
+#line 12540 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy70:
+	++context_.cursor;
+#line 1957 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_VERTICAL_LINE (context_.location); }
+#line 12545 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy72:
+	++context_.cursor;
+#line 1947 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_CLOSE_BRACE (context_.location); }
+#line 12550 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy74:
 	yych = *++context_.cursor;
+yy75:
 	switch (yych) {
-	case 'B':	goto yy171;
-	case 'H':	goto yy173;
-	default:	goto yy77;
+	case 0x00:
+	case '\n':	goto yy76;
+	case '"':	goto yy77;
+	case '\'':	goto yy79;
+	case '\\':	goto yy80;
+	default:	goto yy74;
 	}
-yy88:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '"':	goto yy76;
-	case '\'':	goto yy175;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':	goto yy88;
-	case '\\':	goto yy79;
-	default:	goto yy13;
-	}
-yy90:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '\n':
-	case '\r':	goto yy92;
-	case '-':	goto yy176;
-	default:	goto yy90;
-	}
-yy92:
-#line 1916 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return yylex(context_); }
-#line 12766 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy93:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':	goto yy93;
-	default:	goto yy95;
-	}
-yy95:
-#line 1923 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_negativenumber(std::stoll(std::string(start, context_.cursor)), context_.location); }
-#line 12785 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy96:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '.':	goto yy177;
-	default:	goto yy97;
-	}
-yy97:
-#line 1945 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_RANGE (context_.location); }
-#line 12795 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy98:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '*':	goto yy179;
-	default:	goto yy98;
-	}
-yy100:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':	goto yy181;
-	default:	goto yy101;
-	}
-yy101:
+yy76:
 	context_.cursor = YYMARKER;
 	switch (yyaccept) {
 	case 0:
-		goto yy31;
+		goto yy5;
 	case 1:
-		goto yy33;
+		goto yy29;
 	case 2:
-		goto yy41;
+		goto yy31;
 	case 3:
-		goto yy69;
+		goto yy39;
 	case 4:
-		goto yy83;
+		goto yy67;
 	case 5:
-		goto yy86;
+		goto yy78;
 	case 6:
-		goto yy114;
+		goto yy84;
 	case 7:
-		goto yy141;
+		goto yy87;
 	case 8:
-		goto yy188;
+		goto yy116;
 	case 9:
-		goto yy190;
+		goto yy143;
 	case 10:
-		goto yy195;
+		goto yy191;
 	case 11:
-		goto yy209;
+		goto yy193;
 	case 12:
-		goto yy226;
+		goto yy198;
 	case 13:
-		goto yy228;
+		goto yy212;
 	case 14:
-		goto yy239;
+		goto yy229;
 	case 15:
-		goto yy248;
+		goto yy231;
 	case 16:
-		goto yy283;
+		goto yy242;
 	case 17:
-		goto yy296;
+		goto yy251;
 	case 18:
-		goto yy310;
+		goto yy286;
 	case 19:
-		goto yy323;
+		goto yy299;
 	case 20:
-		goto yy328;
+		goto yy313;
 	case 21:
-		goto yy333;
+		goto yy326;
 	case 22:
-		goto yy335;
+		goto yy331;
 	case 23:
-		goto yy337;
+		goto yy336;
 	case 24:
-		goto yy349;
+		goto yy338;
 	case 25:
-		goto yy355;
+		goto yy340;
 	case 26:
-		goto yy361;
+		goto yy352;
 	case 27:
-		goto yy378;
+		goto yy358;
 	case 28:
-		goto yy396;
+		goto yy364;
 	case 29:
-		goto yy415;
+		goto yy381;
 	case 30:
-		goto yy424;
+		goto yy399;
 	case 31:
-		goto yy432;
+		goto yy418;
 	case 32:
-		goto yy445;
+		goto yy427;
 	case 33:
-		goto yy467;
+		goto yy435;
 	case 34:
-		goto yy480;
+		goto yy448;
 	case 35:
-		goto yy482;
+		goto yy470;
 	case 36:
-		goto yy488;
+		goto yy483;
 	case 37:
-		goto yy500;
+		goto yy485;
 	case 38:
-		goto yy507;
+		goto yy491;
 	case 39:
-		goto yy512;
+		goto yy503;
 	case 40:
-		goto yy517;
+		goto yy510;
 	case 41:
-		goto yy526;
+		goto yy515;
 	case 42:
-		goto yy528;
+		goto yy520;
 	case 43:
-		goto yy533;
+		goto yy529;
 	case 44:
-		goto yy540;
+		goto yy531;
 	case 45:
-		goto yy544;
+		goto yy536;
 	case 46:
-		goto yy547;
+		goto yy543;
 	case 47:
-		goto yy549;
+		goto yy547;
 	case 48:
-		goto yy560;
+		goto yy550;
 	case 49:
-		goto yy576;
+		goto yy552;
 	case 50:
-		goto yy578;
+		goto yy563;
 	case 51:
-		goto yy582;
+		goto yy579;
 	case 52:
-		goto yy585;
+		goto yy581;
 	case 53:
-		goto yy592;
+		goto yy585;
 	case 54:
-		goto yy594;
+		goto yy588;
 	case 55:
-		goto yy596;
+		goto yy595;
 	case 56:
-		goto yy604;
+		goto yy597;
 	case 57:
-		goto yy610;
+		goto yy599;
 	case 58:
-		goto yy612;
+		goto yy607;
 	case 59:
-		goto yy625;
+		goto yy613;
 	case 60:
-		goto yy627;
+		goto yy615;
 	case 61:
-		goto yy629;
+		goto yy628;
 	case 62:
-		goto yy631;
+		goto yy630;
 	case 63:
-		goto yy635;
+		goto yy632;
 	case 64:
-		goto yy644;
+		goto yy634;
 	case 65:
-		goto yy657;
+		goto yy638;
 	case 66:
-		goto yy662;
+		goto yy647;
 	case 67:
-		goto yy670;
+		goto yy660;
 	case 68:
-		goto yy673;
+		goto yy665;
 	case 69:
-		goto yy677;
+		goto yy673;
 	case 70:
-		goto yy683;
+		goto yy676;
 	case 71:
-		goto yy698;
+		goto yy680;
 	case 72:
-		goto yy704;
+		goto yy686;
 	case 73:
-		goto yy706;
+		goto yy701;
 	case 74:
-		goto yy708;
+		goto yy707;
 	case 75:
-		goto yy725;
+		goto yy709;
 	case 76:
-		goto yy738;
+		goto yy711;
 	case 77:
-		goto yy740;
+		goto yy728;
 	case 78:
-		goto yy742;
+		goto yy741;
 	case 79:
-		goto yy745;
+		goto yy743;
 	case 80:
-		goto yy751;
+		goto yy745;
 	case 81:
-		goto yy760;
+		goto yy748;
 	case 82:
-		goto yy762;
+		goto yy754;
 	case 83:
-		goto yy765;
+		goto yy763;
 	case 84:
-		goto yy768;
+		goto yy765;
 	case 85:
-		goto yy771;
+		goto yy768;
 	case 86:
-		goto yy776;
+		goto yy771;
 	case 87:
-		goto yy780;
+		goto yy774;
 	case 88:
-		goto yy785;
+		goto yy779;
 	case 89:
-		goto yy792;
+		goto yy783;
 	case 90:
-		goto yy794;
+		goto yy788;
 	case 91:
-		goto yy797;
+		goto yy795;
 	case 92:
-		goto yy800;
+		goto yy797;
 	case 93:
-		goto yy803;
+		goto yy800;
 	case 94:
-		goto yy805;
+		goto yy803;
 	case 95:
-		goto yy807;
+		goto yy806;
 	case 96:
-		goto yy809;
+		goto yy808;
+	case 97:
+		goto yy810;
+	case 98:
+		goto yy812;
 	default:
-		goto yy811;
+		goto yy814;
 	}
-yy102:
+yy77:
+	yyaccept = 5;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case '"':	goto yy74;
+	default:	goto yy78;
+	}
+yy78:
+#line 1925 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_cstring(std::string(start, context_.cursor), context_.location); }
+#line 12776 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy79:
+	++context_.cursor;
+	goto yy78;
+yy80:
 	yych = *++context_.cursor;
 	switch (yych) {
-	case '=':	goto yy184;
+	case '\n':	goto yy76;
+	case '"':	goto yy169;
+	case '\'':	goto yy171;
+	case '\\':	goto yy80;
+	default:	goto yy74;
+	}
+yy82:
+	yyaccept = 6;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case '-':	goto yy172;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy82;
+	default:	goto yy84;
+	}
+yy84:
+#line 1932 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_typefieldreference(santize_name(std::string(start, context_.cursor)), context_.location); }
+#line 12862 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy85:
+	yyaccept = 7;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case '-':	goto yy173;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy85;
+	default:	goto yy87;
+	}
+yy87:
+#line 1933 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_valuefieldreference(santize_name(std::string(start, context_.cursor)), context_.location); }
+#line 12936 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy88:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case 'B':	goto yy174;
+	case 'H':	goto yy176;
+	default:	goto yy78;
+	}
+yy89:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case 0x00:
+	case '\n':	goto yy76;
+	case '"':	goto yy77;
+	case '\'':	goto yy88;
+	case '0':
+	case '1':	goto yy89;
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':	goto yy91;
+	case '\\':	goto yy80;
+	default:	goto yy74;
+	}
+yy91:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case 0x00:
+	case '\n':	goto yy76;
+	case '"':	goto yy77;
+	case '\'':	goto yy178;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':	goto yy91;
+	case '\\':	goto yy80;
+	default:	goto yy74;
+	}
+yy93:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case '\n':
+	case '\r':	goto yy95;
+	case '-':	goto yy179;
+	default:	goto yy93;
+	}
+yy95:
+#line 1916 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return yylex(context_); }
+#line 13019 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy96:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':	goto yy96;
+	default:	goto yy98;
+	}
+yy98:
+#line 1923 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_negativenumber(std::stoll(std::string(start, context_.cursor)), context_.location); }
+#line 13038 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy99:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case '.':	goto yy180;
+	default:	goto yy100;
+	}
+yy100:
+#line 1945 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_RANGE (context_.location); }
+#line 13048 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy101:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case '*':	goto yy182;
 	default:	goto yy101;
 	}
 yy103:
@@ -13031,914 +13063,151 @@ yy103:
 	case '6':
 	case '7':
 	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy101;
+	case '9':	goto yy184;
+	default:	goto yy76;
 	}
 yy104:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
+	yych = *++context_.cursor;
 	switch (yych) {
-	case 'S':	goto yy186;
-	default:	goto yy49;
+	case '=':	goto yy187;
+	default:	goto yy76;
 	}
 yy105:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
+	yych = *++context_.cursor;
 	switch (yych) {
-	case 'L':	goto yy187;
-	default:	goto yy49;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy46;
+	default:	goto yy76;
 	}
 yy106:
-	yyaccept = 2;
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'Y':	goto yy189;
-	default:	goto yy49;
+	case 'S':	goto yy189;
+	default:	goto yy47;
 	}
 yy107:
-	yyaccept = 2;
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'P':	goto yy191;
-	default:	goto yy49;
+	case 'L':	goto yy190;
+	default:	goto yy47;
 	}
 yy108:
-	yyaccept = 2;
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'T':	goto yy192;
-	default:	goto yy49;
+	case 'Y':	goto yy192;
+	default:	goto yy47;
 	}
 yy109:
-	yyaccept = 2;
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'G':	goto yy193;
-	default:	goto yy49;
+	case 'P':	goto yy194;
+	default:	goto yy47;
 	}
 yy110:
-	yyaccept = 2;
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'T':	goto yy194;
-	default:	goto yy49;
+	case 'T':	goto yy195;
+	default:	goto yy47;
 	}
 yy111:
-	yyaccept = 2;
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'P':	goto yy196;
-	default:	goto yy49;
+	case 'G':	goto yy196;
+	default:	goto yy47;
 	}
 yy112:
-	yyaccept = 2;
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'O':	goto yy197;
-	default:	goto yy49;
+	case 'T':	goto yy197;
+	default:	goto yy47;
 	}
 yy113:
-	yyaccept = 6;
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy114;
+	case 'P':	goto yy199;
+	default:	goto yy47;
 	}
 yy114:
-#line 1829 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_BY (context_.location); }
-#line 13227 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'O':	goto yy200;
+	default:	goto yy47;
+	}
 yy115:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'A':	goto yy198;
-	case 'O':	goto yy199;
-	default:	goto yy49;
-	}
-yy116:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'A':	goto yy200;
-	default:	goto yy49;
-	}
-yy117:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'M':	goto yy201;
-	case 'N':	goto yy202;
-	default:	goto yy49;
-	}
-yy118:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy203;
-	default:	goto yy49;
-	}
-yy119:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'F':	goto yy204;
-	default:	goto yy49;
-	}
-yy120:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'R':	goto yy205;
-	default:	goto yy49;
-	}
-yy121:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'B':	goto yy206;
-	default:	goto yy49;
-	}
-yy122:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'C':	goto yy207;
-	case 'D':	goto yy208;
-	case 'U':	goto yy210;
-	default:	goto yy49;
-	}
-yy123:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'C':	goto yy211;
-	case 'P':	goto yy212;
-	case 'T':	goto yy213;
-	default:	goto yy49;
-	}
-yy124:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'L':	goto yy214;
-	default:	goto yy49;
-	}
-yy125:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'O':	goto yy215;
-	default:	goto yy49;
-	}
-yy126:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'n':	goto yy216;
-	default:	goto yy49;
-	}
-yy127:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'a':	goto yy217;
-	default:	goto yy49;
-	}
-yy128:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case '5':	goto yy218;
-	default:	goto yy49;
-	}
-yy129:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy219;
-	default:	goto yy49;
-	}
-yy130:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'P':	goto yy220;
-	default:	goto yy49;
-	}
-yy131:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'C':	goto yy221;
-	case 'S':	goto yy222;
-	case 'T':	goto yy223;
-	default:	goto yy49;
-	}
-yy132:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'O':	goto yy224;
-	default:	goto yy49;
-	}
-yy133:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'X':	goto yy225;
-	default:	goto yy49;
-	}
-yy134:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'N':	goto yy227;
-	default:	goto yy49;
-	}
-yy135:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy229;
-	default:	goto yy49;
-	}
-yy136:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'L':	goto yy230;
-	default:	goto yy49;
-	}
-yy137:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'm':	goto yy231;
-	default:	goto yy49;
-	}
-yy138:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'J':	goto yy232;
-	default:	goto yy49;
-	}
-yy139:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy233;
-	default:	goto yy49;
-	}
-yy140:
-	yyaccept = 7;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case '-':	goto yy103;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy141;
-	}
-yy141:
-#line 1877 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_OF (context_.location); }
-#line 13484 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy142:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'D':	goto yy234;
-	default:	goto yy49;
-	}
-yy143:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy235;
-	default:	goto yy49;
-	}
-yy144:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'j':	goto yy236;
-	default:	goto yy49;
-	}
-yy145:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy237;
-	default:	goto yy49;
-	}
-yy146:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'V':	goto yy238;
-	default:	goto yy49;
-	}
-yy147:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'U':	goto yy240;
-	default:	goto yy49;
-	}
-yy148:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy241;
-	case 'I':	goto yy242;
-	default:	goto yy49;
-	}
-yy149:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'i':	goto yy243;
-	default:	goto yy49;
-	}
-yy150:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'A':	goto yy244;
-	case 'L':	goto yy245;
-	default:	goto yy49;
-	}
-yy151:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'Q':	goto yy246;
-	case 'T':	goto yy247;
-	default:	goto yy49;
-	}
-yy152:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'Z':	goto yy249;
-	default:	goto yy49;
-	}
-yy153:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'R':	goto yy250;
-	default:	goto yy49;
-	}
-yy154:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'N':	goto yy251;
-	default:	goto yy49;
-	}
-yy155:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case '1':	goto yy252;
-	default:	goto yy49;
-	}
-yy156:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'G':	goto yy253;
-	default:	goto yy49;
-	}
-yy157:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'M':	goto yy254;
-	default:	goto yy49;
-	}
-yy158:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'U':	goto yy255;
-	default:	goto yy49;
-	}
-yy159:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'P':	goto yy256;
-	default:	goto yy49;
-	}
-yy160:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'l':	goto yy257;
-	default:	goto yy49;
-	}
-yy161:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy258;
-	default:	goto yy49;
-	}
-yy162:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'C':	goto yy259;
-	case 'F':	goto yy260;
-	default:	goto yy49;
-	}
-yy163:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'i':	goto yy261;
-	default:	goto yy49;
-	}
-yy164:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'd':	goto yy262;
-	case 's':	goto yy263;
-	default:	goto yy49;
-	}
-yy165:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy264;
-	default:	goto yy49;
-	}
-yy166:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy67;
-	default:	goto yy101;
-	}
-yy167:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '"':	goto yy167;
-	case '\'':	goto yy78;
-	case '\\':	goto yy79;
-	default:	goto yy13;
-	}
-yy169:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy81;
-	default:	goto yy101;
-	}
-yy170:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy84;
-	default:	goto yy101;
-	}
-yy171:
-	++context_.cursor;
-#line 1927 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_bstring(std::string(start + 1, context_.cursor - 2), context_.location); }
-#line 13874 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy173:
-	++context_.cursor;
-#line 1929 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_hstring(std::string(start + 1, context_.cursor - 2), context_.location); }
-#line 13879 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy175:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case 'H':	goto yy173;
-	default:	goto yy77;
-	}
-yy176:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '\n':
-	case '\r':	goto yy92;
-	case '-':	goto yy265;
-	default:	goto yy90;
-	}
-yy177:
-	++context_.cursor;
-#line 1944 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ELIPSIS (context_.location); }
-#line 13898 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy179:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '*':	goto yy179;
-	case '/':	goto yy267;
-	default:	goto yy98;
-	}
-yy181:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':	goto yy181;
-	default:	goto yy183;
-	}
-yy183:
-#line 1921 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context_.cursor)), context_.location); }
-#line 13924 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy184:
-	++context_.cursor;
-#line 1943 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_DEFINED_AS (context_.location); }
-#line 13929 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy186:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy269;
-	case 'T':	goto yy270;
-	default:	goto yy49;
-	}
-yy187:
 	yyaccept = 8;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -14001,18 +13270,201 @@ yy187:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy188;
+	case 'z':	goto yy46;
+	default:	goto yy116;
 	}
-yy188:
-#line 1821 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ALL (context_.location); }
-#line 14011 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy189:
+yy116:
+#line 1829 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_BY (context_.location); }
+#line 13280 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy117:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'A':	goto yy201;
+	case 'O':	goto yy202;
+	default:	goto yy47;
+	}
+yy118:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'A':	goto yy203;
+	default:	goto yy47;
+	}
+yy119:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'M':	goto yy204;
+	case 'N':	goto yy205;
+	default:	goto yy47;
+	}
+yy120:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy206;
+	default:	goto yy47;
+	}
+yy121:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'F':	goto yy207;
+	default:	goto yy47;
+	}
+yy122:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'R':	goto yy208;
+	default:	goto yy47;
+	}
+yy123:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'B':	goto yy209;
+	default:	goto yy47;
+	}
+yy124:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'C':	goto yy210;
+	case 'D':	goto yy211;
+	case 'U':	goto yy213;
+	default:	goto yy47;
+	}
+yy125:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'C':	goto yy214;
+	case 'P':	goto yy215;
+	case 'T':	goto yy216;
+	default:	goto yy47;
+	}
+yy126:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'L':	goto yy217;
+	default:	goto yy47;
+	}
+yy127:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'O':	goto yy218;
+	default:	goto yy47;
+	}
+yy128:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'n':	goto yy219;
+	default:	goto yy47;
+	}
+yy129:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'a':	goto yy220;
+	default:	goto yy47;
+	}
+yy130:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case '5':	goto yy221;
+	default:	goto yy47;
+	}
+yy131:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy222;
+	default:	goto yy47;
+	}
+yy132:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'P':	goto yy223;
+	default:	goto yy47;
+	}
+yy133:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'C':	goto yy224;
+	case 'S':	goto yy225;
+	case 'T':	goto yy226;
+	default:	goto yy47;
+	}
+yy134:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'O':	goto yy227;
+	default:	goto yy47;
+	}
+yy135:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'X':	goto yy228;
+	default:	goto yy47;
+	}
+yy136:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy230;
+	default:	goto yy47;
+	}
+yy137:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy232;
+	default:	goto yy47;
+	}
+yy138:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'L':	goto yy233;
+	default:	goto yy47;
+	}
+yy139:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'm':	goto yy234;
+	default:	goto yy47;
+	}
+yy140:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'J':	goto yy235;
+	default:	goto yy47;
+	}
+yy141:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy236;
+	default:	goto yy47;
+	}
+yy142:
 	yyaccept = 9;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -14075,39 +13527,485 @@ yy189:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy190;
+	case 'z':	goto yy46;
+	default:	goto yy143;
+	}
+yy143:
+#line 1877 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_OF (context_.location); }
+#line 13537 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy144:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'D':	goto yy237;
+	default:	goto yy47;
+	}
+yy145:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy238;
+	default:	goto yy47;
+	}
+yy146:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'j':	goto yy239;
+	default:	goto yy47;
+	}
+yy147:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy240;
+	default:	goto yy47;
+	}
+yy148:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'V':	goto yy241;
+	default:	goto yy47;
+	}
+yy149:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'U':	goto yy243;
+	default:	goto yy47;
+	}
+yy150:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy244;
+	case 'I':	goto yy245;
+	default:	goto yy47;
+	}
+yy151:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'i':	goto yy246;
+	default:	goto yy47;
+	}
+yy152:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'A':	goto yy247;
+	case 'L':	goto yy248;
+	default:	goto yy47;
+	}
+yy153:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'Q':	goto yy249;
+	case 'T':	goto yy250;
+	default:	goto yy47;
+	}
+yy154:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'Z':	goto yy252;
+	default:	goto yy47;
+	}
+yy155:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'R':	goto yy253;
+	default:	goto yy47;
+	}
+yy156:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy254;
+	default:	goto yy47;
+	}
+yy157:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case '1':	goto yy255;
+	default:	goto yy47;
+	}
+yy158:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'G':	goto yy256;
+	default:	goto yy47;
+	}
+yy159:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'M':	goto yy257;
+	default:	goto yy47;
+	}
+yy160:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'U':	goto yy258;
+	default:	goto yy47;
+	}
+yy161:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'P':	goto yy259;
+	default:	goto yy47;
+	}
+yy162:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'l':	goto yy260;
+	default:	goto yy47;
+	}
+yy163:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy261;
+	default:	goto yy47;
+	}
+yy164:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'C':	goto yy262;
+	case 'F':	goto yy263;
+	default:	goto yy47;
+	}
+yy165:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'i':	goto yy264;
+	default:	goto yy47;
+	}
+yy166:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'd':	goto yy265;
+	case 's':	goto yy266;
+	default:	goto yy47;
+	}
+yy167:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy267;
+	default:	goto yy47;
+	}
+yy168:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy65;
+	default:	goto yy76;
+	}
+yy169:
+	yyaccept = 5;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 0x00:
+	case '\n':	goto yy78;
+	case '"':	goto yy169;
+	case '\'':	goto yy79;
+	case '\\':	goto yy80;
+	default:	goto yy74;
+	}
+yy171:
+	yyaccept = 5;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 0x00:
+	case '\n':	goto yy78;
+	case '"':	goto yy77;
+	case '\'':	goto yy79;
+	case '\\':	goto yy80;
+	default:	goto yy74;
+	}
+yy172:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy82;
+	default:	goto yy76;
+	}
+yy173:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy85;
+	default:	goto yy76;
+	}
+yy174:
+	++context_.cursor;
+#line 1927 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_bstring(std::string(start + 1, context_.cursor - 2), context_.location); }
+#line 13941 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy176:
+	++context_.cursor;
+#line 1929 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_hstring(std::string(start + 1, context_.cursor - 2), context_.location); }
+#line 13946 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy178:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case 'H':	goto yy176;
+	default:	goto yy78;
+	}
+yy179:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case '\n':
+	case '\r':	goto yy95;
+	case '-':	goto yy268;
+	default:	goto yy93;
+	}
+yy180:
+	++context_.cursor;
+#line 1944 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ELIPSIS (context_.location); }
+#line 13965 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy182:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case '*':	goto yy182;
+	case '/':	goto yy270;
+	default:	goto yy101;
+	}
+yy184:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':	goto yy184;
+	default:	goto yy186;
+	}
+yy186:
+#line 1921 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_realnumber(std::stod(std::string(start, context_.cursor)), context_.location); }
+#line 13991 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy187:
+	++context_.cursor;
+#line 1943 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_DEFINED_AS (context_.location); }
+#line 13996 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy189:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy272;
+	case 'T':	goto yy273;
+	default:	goto yy47;
 	}
 yy190:
-#line 1822 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ANY (context_.location); }
-#line 14085 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy191:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'L':	goto yy271;
-	default:	goto yy49;
-	}
-yy192:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'O':	goto yy272;
-	default:	goto yy49;
-	}
-yy193:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy273;
-	default:	goto yy49;
-	}
-yy194:
 	yyaccept = 10;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -14170,104 +14068,18 @@ yy194:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy195;
+	case 'z':	goto yy46;
+	default:	goto yy191;
 	}
-yy195:
-#line 1826 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_BIT (context_.location); }
-#line 14180 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy196:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy274;
-	default:	goto yy49;
-	}
-yy197:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'L':	goto yy275;
-	default:	goto yy49;
-	}
-yy198:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'R':	goto yy276;
-	default:	goto yy49;
-	}
-yy199:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy277;
-	default:	goto yy49;
-	}
-yy200:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy278;
-	default:	goto yy49;
-	}
-yy201:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'P':	goto yy279;
-	default:	goto yy49;
-	}
-yy202:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy280;
-	case 'T':	goto yy281;
-	default:	goto yy49;
-	}
-yy203:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy282;
-	default:	goto yy49;
-	}
-yy204:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'A':	goto yy284;
-	case 'I':	goto yy285;
-	default:	goto yy49;
-	}
-yy205:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'A':	goto yy286;
-	default:	goto yy49;
-	}
-yy206:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy287;
-	default:	goto yy49;
-	}
-yy207:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'O':	goto yy288;
-	default:	goto yy49;
-	}
-yy208:
+yy191:
+#line 1821 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ALL (context_.location); }
+#line 14078 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy192:
 	yyaccept = 11;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -14330,125 +14142,39 @@ yy208:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy209;
+	case 'z':	goto yy46;
+	default:	goto yy193;
 	}
-yy209:
-#line 1845 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_END (context_.location); }
-#line 14340 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy210:
-	yyaccept = 2;
+yy193:
+#line 1822 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ANY (context_.location); }
+#line 14152 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy194:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'M':	goto yy289;
-	default:	goto yy49;
+	case 'L':	goto yy274;
+	default:	goto yy47;
 	}
-yy211:
-	yyaccept = 2;
+yy195:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'E':	goto yy290;
-	default:	goto yy49;
+	case 'O':	goto yy275;
+	default:	goto yy47;
 	}
-yy212:
-	yyaccept = 2;
+yy196:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'L':	goto yy291;
-	case 'O':	goto yy292;
-	default:	goto yy49;
+	case 'I':	goto yy276;
+	default:	goto yy47;
 	}
-yy213:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy293;
-	default:	goto yy49;
-	}
-yy214:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy294;
-	default:	goto yy49;
-	}
-yy215:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'M':	goto yy295;
-	default:	goto yy49;
-	}
-yy216:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'e':	goto yy297;
-	default:	goto yy49;
-	}
-yy217:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'p':	goto yy298;
-	default:	goto yy49;
-	}
-yy218:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy299;
-	default:	goto yy49;
-	}
-yy219:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'N':	goto yy300;
-	default:	goto yy49;
-	}
-yy220:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'L':	goto yy301;
-	case 'O':	goto yy302;
-	default:	goto yy49;
-	}
-yy221:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'L':	goto yy303;
-	default:	goto yy49;
-	}
-yy222:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy304;
-	default:	goto yy49;
-	}
-yy223:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy305;
-	default:	goto yy49;
-	}
-yy224:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case '6':	goto yy306;
-	default:	goto yy49;
-	}
-yy225:
+yy197:
 	yyaccept = 12;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -14511,18 +14237,104 @@ yy225:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy226;
+	case 'z':	goto yy46;
+	default:	goto yy198;
 	}
-yy226:
-#line 1868 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_MAX (context_.location); }
-#line 14521 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy227:
+yy198:
+#line 1826 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_BIT (context_.location); }
+#line 14247 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy199:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'S':	goto yy277;
+	default:	goto yy47;
+	}
+yy200:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'L':	goto yy278;
+	default:	goto yy47;
+	}
+yy201:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'R':	goto yy279;
+	default:	goto yy47;
+	}
+yy202:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy280;
+	default:	goto yy47;
+	}
+yy203:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'S':	goto yy281;
+	default:	goto yy47;
+	}
+yy204:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'P':	goto yy282;
+	default:	goto yy47;
+	}
+yy205:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'S':	goto yy283;
+	case 'T':	goto yy284;
+	default:	goto yy47;
+	}
+yy206:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy285;
+	default:	goto yy47;
+	}
+yy207:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'A':	goto yy287;
+	case 'I':	goto yy288;
+	default:	goto yy47;
+	}
+yy208:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'A':	goto yy289;
+	default:	goto yy47;
+	}
+yy209:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy290;
+	default:	goto yy47;
+	}
+yy210:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'O':	goto yy291;
+	default:	goto yy47;
+	}
+yy211:
 	yyaccept = 13;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -14553,6 +14365,7 @@ yy227:
 	case 'R':
 	case 'S':
 	case 'T':
+	case 'U':
 	case 'V':
 	case 'W':
 	case 'X':
@@ -14584,82 +14397,125 @@ yy227:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	case 'U':	goto yy307;
-	default:	goto yy228;
+	case 'z':	goto yy46;
+	default:	goto yy212;
+	}
+yy212:
+#line 1845 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_END (context_.location); }
+#line 14407 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy213:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'M':	goto yy292;
+	default:	goto yy47;
+	}
+yy214:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy293;
+	default:	goto yy47;
+	}
+yy215:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'L':	goto yy294;
+	case 'O':	goto yy295;
+	default:	goto yy47;
+	}
+yy216:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy296;
+	default:	goto yy47;
+	}
+yy217:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'S':	goto yy297;
+	default:	goto yy47;
+	}
+yy218:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'M':	goto yy298;
+	default:	goto yy47;
+	}
+yy219:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'e':	goto yy300;
+	default:	goto yy47;
+	}
+yy220:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'p':	goto yy301;
+	default:	goto yy47;
+	}
+yy221:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'S':	goto yy302;
+	default:	goto yy47;
+	}
+yy222:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy303;
+	default:	goto yy47;
+	}
+yy223:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'L':	goto yy304;
+	case 'O':	goto yy305;
+	default:	goto yy47;
+	}
+yy224:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'L':	goto yy306;
+	default:	goto yy47;
+	}
+yy225:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy307;
+	default:	goto yy47;
+	}
+yy226:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy308;
+	default:	goto yy47;
+	}
+yy227:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case '6':	goto yy309;
+	default:	goto yy47;
 	}
 yy228:
-#line 1869 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_MIN (context_.location); }
-#line 14595 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy229:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case '-':	goto yy308;
-	default:	goto yy49;
-	}
-yy230:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'L':	goto yy309;
-	default:	goto yy49;
-	}
-yy231:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'e':	goto yy311;
-	default:	goto yy49;
-	}
-yy232:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy312;
-	default:	goto yy49;
-	}
-yy233:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy313;
-	default:	goto yy49;
-	}
-yy234:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case '_':	goto yy314;
-	default:	goto yy49;
-	}
-yy235:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy315;
-	default:	goto yy49;
-	}
-yy236:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'e':	goto yy316;
-	default:	goto yy49;
-	}
-yy237:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy317;
-	default:	goto yy49;
-	}
-yy238:
 	yyaccept = 14;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -14722,67 +14578,18 @@ yy238:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy239;
+	case 'z':	goto yy46;
+	default:	goto yy229;
 	}
-yy239:
-#line 1881 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_PDV (context_.location); }
-#line 14732 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy240:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy318;
-	default:	goto yy49;
-	}
-yy241:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy319;
-	default:	goto yy49;
-	}
-yy242:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'V':	goto yy320;
-	default:	goto yy49;
-	}
-yy243:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'n':	goto yy321;
-	default:	goto yy49;
-	}
-yy244:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'L':	goto yy322;
-	default:	goto yy49;
-	}
-yy245:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'A':	goto yy324;
-	default:	goto yy49;
-	}
-yy246:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'U':	goto yy325;
-	default:	goto yy49;
-	}
-yy247:
+yy229:
+#line 1868 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_MAX (context_.location); }
+#line 14588 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy230:
 	yyaccept = 15;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -14812,7 +14619,7 @@ yy247:
 	case 'Q':
 	case 'R':
 	case 'S':
-	case 'U':
+	case 'T':
 	case 'V':
 	case 'W':
 	case 'X':
@@ -14844,234 +14651,82 @@ yy247:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	case 'T':	goto yy326;
-	default:	goto yy248;
+	case 'z':	goto yy46;
+	case 'U':	goto yy310;
+	default:	goto yy231;
 	}
-yy248:
-#line 1890 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_SET (context_.location); }
-#line 14855 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy249:
-	yyaccept = 2;
+yy231:
+#line 1869 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_MIN (context_.location); }
+#line 14662 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy232:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'E':	goto yy327;
-	default:	goto yy49;
+	case '-':	goto yy311;
+	default:	goto yy47;
 	}
-yy250:
-	yyaccept = 2;
+yy233:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'I':	goto yy329;
-	default:	goto yy49;
+	case 'L':	goto yy312;
+	default:	goto yy47;
 	}
-yy251:
-	yyaccept = 2;
+yy234:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'T':	goto yy330;
-	default:	goto yy49;
+	case 'e':	goto yy314;
+	default:	goto yy47;
 	}
-yy252:
-	yyaccept = 2;
+yy235:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'S':	goto yy331;
-	default:	goto yy49;
+	case 'E':	goto yy315;
+	default:	goto yy47;
 	}
-yy253:
-	yyaccept = 2;
+yy236:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'S':	goto yy332;
-	default:	goto yy49;
+	case 'E':	goto yy316;
+	default:	goto yy47;
 	}
-yy254:
-	yyaccept = 2;
+yy237:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'E':	goto yy334;
-	default:	goto yy49;
+	case '_':	goto yy317;
+	default:	goto yy47;
 	}
-yy255:
-	yyaccept = 2;
+yy238:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'E':	goto yy336;
-	default:	goto yy49;
+	case 'I':	goto yy318;
+	default:	goto yy47;
 	}
-yy256:
-	yyaccept = 2;
+yy239:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'E':	goto yy338;
-	default:	goto yy49;
+	case 'e':	goto yy319;
+	default:	goto yy47;
 	}
-yy257:
-	yyaccept = 2;
+yy240:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'e':	goto yy339;
-	default:	goto yy49;
+	case 'T':	goto yy320;
+	default:	goto yy47;
 	}
-yy258:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'O':	goto yy340;
-	case 'Q':	goto yy341;
-	case 'V':	goto yy342;
-	default:	goto yy49;
-	}
-yy259:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy343;
-	default:	goto yy49;
-	}
-yy260:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case '8':	goto yy344;
-	default:	goto yy49;
-	}
-yy261:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'v':	goto yy345;
-	default:	goto yy49;
-	}
-yy262:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'e':	goto yy346;
-	default:	goto yy49;
-	}
-yy263:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'i':	goto yy347;
-	default:	goto yy49;
-	}
-yy264:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'H':	goto yy348;
-	default:	goto yy49;
-	}
-yy265:
-	++context_.cursor;
-#line 1914 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return yylex(context_); }
-#line 14974 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy267:
-	++context_.cursor;
-#line 1918 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ for (char c: std::string(start, context_.cursor)) { context_.location.columns(); if (c == '\n') context_.location.lines(); } return yylex(context_); }
-#line 14979 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy269:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'N':	goto yy350;
-	default:	goto yy49;
-	}
-yy270:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'R':	goto yy351;
-	default:	goto yy49;
-	}
-yy271:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy352;
-	default:	goto yy49;
-	}
-yy272:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'M':	goto yy353;
-	default:	goto yy49;
-	}
-yy273:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'N':	goto yy354;
-	default:	goto yy49;
-	}
-yy274:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 't':	goto yy356;
-	default:	goto yy49;
-	}
-yy275:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy357;
-	default:	goto yy49;
-	}
-yy276:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'A':	goto yy358;
-	default:	goto yy49;
-	}
-yy277:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'C':	goto yy359;
-	default:	goto yy49;
-	}
-yy278:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy360;
-	default:	goto yy49;
-	}
-yy279:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'O':	goto yy362;
-	default:	goto yy49;
-	}
-yy280:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy363;
-	default:	goto yy49;
-	}
-yy281:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'A':	goto yy364;
-	default:	goto yy49;
-	}
-yy282:
+yy241:
 	yyaccept = 16;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy365;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -15134,96 +14789,67 @@ yy282:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy283;
+	case 'z':	goto yy46;
+	default:	goto yy242;
 	}
-yy283:
-#line 1837 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_DATE (context_.location); }
-#line 15144 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy284:
-	yyaccept = 2;
+yy242:
+#line 1881 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_PDV (context_.location); }
+#line 14799 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy243:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'U':	goto yy366;
-	default:	goto yy49;
+	case 'S':	goto yy321;
+	default:	goto yy47;
 	}
-yy285:
-	yyaccept = 2;
+yy244:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'N':	goto yy367;
-	default:	goto yy49;
+	case 'S':	goto yy322;
+	default:	goto yy47;
 	}
-yy286:
-	yyaccept = 2;
+yy245:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'T':	goto yy368;
-	default:	goto yy49;
+	case 'V':	goto yy323;
+	default:	goto yy47;
 	}
-yy287:
-	yyaccept = 2;
+yy246:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'D':	goto yy369;
-	default:	goto yy49;
+	case 'n':	goto yy324;
+	default:	goto yy47;
 	}
-yy288:
-	yyaccept = 2;
+yy247:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'D':	goto yy370;
-	default:	goto yy49;
+	case 'L':	goto yy325;
+	default:	goto yy47;
 	}
-yy289:
-	yyaccept = 2;
+yy248:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'E':	goto yy371;
-	default:	goto yy49;
+	case 'A':	goto yy327;
+	default:	goto yy47;
 	}
-yy290:
-	yyaccept = 2;
+yy249:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'P':	goto yy372;
-	default:	goto yy49;
+	case 'U':	goto yy328;
+	default:	goto yy47;
 	}
-yy291:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy373;
-	default:	goto yy49;
-	}
-yy292:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'R':	goto yy374;
-	default:	goto yy49;
-	}
-yy293:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'N':	goto yy375;
-	case 'R':	goto yy376;
-	default:	goto yy49;
-	}
-yy294:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy377;
-	default:	goto yy49;
-	}
-yy295:
+yy250:
 	yyaccept = 17;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -15253,7 +14879,6 @@ yy295:
 	case 'Q':
 	case 'R':
 	case 'S':
-	case 'T':
 	case 'U':
 	case 'V':
 	case 'W':
@@ -15286,165 +14911,234 @@ yy295:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy296;
+	case 'z':	goto yy46;
+	case 'T':	goto yy329;
+	default:	goto yy251;
 	}
-yy296:
-#line 1853 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_FROM (context_.location); }
-#line 15296 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy297:
-	yyaccept = 2;
+yy251:
+#line 1890 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_SET (context_.location); }
+#line 14922 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy252:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'r':	goto yy379;
-	default:	goto yy49;
+	case 'E':	goto yy330;
+	default:	goto yy47;
 	}
-yy298:
-	yyaccept = 2;
+yy253:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'h':	goto yy380;
-	default:	goto yy49;
+	case 'I':	goto yy332;
+	default:	goto yy47;
 	}
-yy299:
-	yyaccept = 2;
+yy254:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 't':	goto yy381;
-	default:	goto yy49;
+	case 'T':	goto yy333;
+	default:	goto yy47;
 	}
-yy300:
-	yyaccept = 2;
+yy255:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'T':	goto yy382;
-	default:	goto yy49;
+	case 'S':	goto yy334;
+	default:	goto yy47;
 	}
-yy301:
-	yyaccept = 2;
+yy256:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'I':	goto yy383;
-	default:	goto yy49;
+	case 'S':	goto yy335;
+	default:	goto yy47;
 	}
-yy302:
-	yyaccept = 2;
+yy257:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'R':	goto yy384;
-	default:	goto yy49;
+	case 'E':	goto yy337;
+	default:	goto yy47;
 	}
-yy303:
-	yyaccept = 2;
+yy258:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'U':	goto yy385;
-	default:	goto yy49;
+	case 'E':	goto yy339;
+	default:	goto yy47;
 	}
-yy304:
-	yyaccept = 2;
+yy259:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'A':	goto yy386;
-	case 'R':	goto yy387;
-	default:	goto yy49;
+	case 'E':	goto yy341;
+	default:	goto yy47;
 	}
-yy305:
-	yyaccept = 2;
+yy260:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'G':	goto yy388;
-	case 'R':	goto yy389;
-	default:	goto yy49;
+	case 'e':	goto yy342;
+	default:	goto yy47;
 	}
-yy306:
-	yyaccept = 2;
+yy261:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '4':	goto yy390;
-	default:	goto yy49;
+	case 'O':	goto yy343;
+	case 'Q':	goto yy344;
+	case 'V':	goto yy345;
+	default:	goto yy47;
 	}
-yy307:
-	yyaccept = 2;
+yy262:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'S':	goto yy391;
-	default:	goto yy49;
+	case 'T':	goto yy346;
+	default:	goto yy47;
 	}
-yy308:
-	yych = *++context_.cursor;
+yy263:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	case 'A':	goto yy392;
-	default:	goto yy101;
+	case '8':	goto yy347;
+	default:	goto yy47;
 	}
-yy309:
+yy264:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'v':	goto yy348;
+	default:	goto yy47;
+	}
+yy265:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'e':	goto yy349;
+	default:	goto yy47;
+	}
+yy266:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'i':	goto yy350;
+	default:	goto yy47;
+	}
+yy267:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'H':	goto yy351;
+	default:	goto yy47;
+	}
+yy268:
+	++context_.cursor;
+#line 1914 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return yylex(context_); }
+#line 15041 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy270:
+	++context_.cursor;
+#line 1918 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ for (char c: std::string(start, context_.cursor)) { context_.location.columns(); if (c == '\n') context_.location.lines(); } return yylex(context_); }
+#line 15046 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy272:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy353;
+	default:	goto yy47;
+	}
+yy273:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'R':	goto yy354;
+	default:	goto yy47;
+	}
+yy274:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy355;
+	default:	goto yy47;
+	}
+yy275:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'M':	goto yy356;
+	default:	goto yy47;
+	}
+yy276:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy357;
+	default:	goto yy47;
+	}
+yy277:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 't':	goto yy359;
+	default:	goto yy47;
+	}
+yy278:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy360;
+	default:	goto yy47;
+	}
+yy279:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'A':	goto yy361;
+	default:	goto yy47;
+	}
+yy280:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'C':	goto yy362;
+	default:	goto yy47;
+	}
+yy281:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'S':	goto yy363;
+	default:	goto yy47;
+	}
+yy282:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'O':	goto yy365;
+	default:	goto yy47;
+	}
+yy283:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy366;
+	default:	goto yy47;
+	}
+yy284:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'A':	goto yy367;
+	default:	goto yy47;
+	}
+yy285:
 	yyaccept = 18;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy368;
 	case '0':
 	case '1':
 	case '2':
@@ -15507,95 +15201,96 @@ yy309:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy310;
+	case 'z':	goto yy46;
+	default:	goto yy286;
 	}
-yy310:
-#line 1872 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ASN_NULL (context_.location); }
-#line 15517 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy311:
-	yyaccept = 2;
+yy286:
+#line 1837 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_DATE (context_.location); }
+#line 15211 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy287:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'r':	goto yy393;
-	default:	goto yy49;
+	case 'U':	goto yy369;
+	default:	goto yy47;
 	}
-yy312:
-	yyaccept = 2;
+yy288:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'C':	goto yy394;
-	default:	goto yy49;
+	case 'N':	goto yy370;
+	default:	goto yy47;
 	}
-yy313:
-	yyaccept = 2;
+yy289:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'T':	goto yy395;
-	default:	goto yy49;
+	case 'T':	goto yy371;
+	default:	goto yy47;
 	}
-yy314:
-	yyaccept = 2;
+yy290:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'I':	goto yy397;
-	default:	goto yy49;
+	case 'D':	goto yy372;
+	default:	goto yy47;
 	}
-yy315:
-	yyaccept = 2;
+yy291:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'O':	goto yy398;
-	default:	goto yy49;
+	case 'D':	goto yy373;
+	default:	goto yy47;
 	}
-yy316:
-	yyaccept = 2;
+yy292:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'c':	goto yy399;
-	default:	goto yy49;
+	case 'E':	goto yy374;
+	default:	goto yy47;
 	}
-yy317:
-	yyaccept = 2;
+yy293:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'E':	goto yy400;
-	default:	goto yy49;
+	case 'P':	goto yy375;
+	default:	goto yy47;
 	}
-yy318:
-	yyaccept = 2;
+yy294:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '_':	goto yy401;
-	default:	goto yy49;
+	case 'I':	goto yy376;
+	default:	goto yy47;
 	}
-yy319:
-	yyaccept = 2;
+yy295:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'E':	goto yy402;
-	default:	goto yy49;
+	case 'R':	goto yy377;
+	default:	goto yy47;
 	}
-yy320:
-	yyaccept = 2;
+yy296:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'A':	goto yy403;
-	default:	goto yy49;
+	case 'N':	goto yy378;
+	case 'R':	goto yy379;
+	default:	goto yy47;
 	}
-yy321:
-	yyaccept = 2;
+yy297:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 't':	goto yy404;
-	default:	goto yy49;
+	case 'E':	goto yy380;
+	default:	goto yy47;
 	}
-yy322:
+yy298:
 	yyaccept = 19;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -15658,39 +15353,165 @@ yy322:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy323;
+	case 'z':	goto yy46;
+	default:	goto yy299;
 	}
-yy323:
-#line 1886 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_REAL (context_.location); }
-#line 15668 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy324:
-	yyaccept = 2;
+yy299:
+#line 1853 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_FROM (context_.location); }
+#line 15363 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy300:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'T':	goto yy405;
-	default:	goto yy49;
+	case 'r':	goto yy382;
+	default:	goto yy47;
 	}
-yy325:
-	yyaccept = 2;
+yy301:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'E':	goto yy406;
-	default:	goto yy49;
+	case 'h':	goto yy383;
+	default:	goto yy47;
 	}
-yy326:
-	yyaccept = 2;
+yy302:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'I':	goto yy407;
-	default:	goto yy49;
+	case 't':	goto yy384;
+	default:	goto yy47;
 	}
-yy327:
+yy303:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy385;
+	default:	goto yy47;
+	}
+yy304:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy386;
+	default:	goto yy47;
+	}
+yy305:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'R':	goto yy387;
+	default:	goto yy47;
+	}
+yy306:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'U':	goto yy388;
+	default:	goto yy47;
+	}
+yy307:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'A':	goto yy389;
+	case 'R':	goto yy390;
+	default:	goto yy47;
+	}
+yy308:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'G':	goto yy391;
+	case 'R':	goto yy392;
+	default:	goto yy47;
+	}
+yy309:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case '4':	goto yy393;
+	default:	goto yy47;
+	}
+yy310:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'S':	goto yy394;
+	default:	goto yy47;
+	}
+yy311:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy46;
+	case 'A':	goto yy395;
+	default:	goto yy76;
+	}
+yy312:
 	yyaccept = 20;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -15753,39 +15574,95 @@ yy327:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy328;
+	case 'z':	goto yy46;
+	default:	goto yy313;
 	}
-yy328:
-#line 1892 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_SIZE (context_.location); }
-#line 15763 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy329:
-	yyaccept = 2;
+yy313:
+#line 1872 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ASN_NULL (context_.location); }
+#line 15584 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy314:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'N':	goto yy408;
-	default:	goto yy49;
+	case 'r':	goto yy396;
+	default:	goto yy47;
 	}
-yy330:
-	yyaccept = 2;
+yy315:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'A':	goto yy409;
-	default:	goto yy49;
+	case 'C':	goto yy397;
+	default:	goto yy47;
 	}
-yy331:
-	yyaccept = 2;
+yy316:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 't':	goto yy410;
-	default:	goto yy49;
+	case 'T':	goto yy398;
+	default:	goto yy47;
 	}
-yy332:
+yy317:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy400;
+	default:	goto yy47;
+	}
+yy318:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'O':	goto yy401;
+	default:	goto yy47;
+	}
+yy319:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'c':	goto yy402;
+	default:	goto yy47;
+	}
+yy320:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy403;
+	default:	goto yy47;
+	}
+yy321:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case '_':	goto yy404;
+	default:	goto yy47;
+	}
+yy322:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy405;
+	default:	goto yy47;
+	}
+yy323:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'A':	goto yy406;
+	default:	goto yy47;
+	}
+yy324:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 't':	goto yy407;
+	default:	goto yy47;
+	}
+yy325:
 	yyaccept = 21;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -15848,18 +15725,39 @@ yy332:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy333;
+	case 'z':	goto yy46;
+	default:	goto yy326;
 	}
-yy333:
-#line 1896 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_TAGS (context_.location); }
-#line 15858 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy334:
+yy326:
+#line 1886 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_REAL (context_.location); }
+#line 15735 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy327:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy408;
+	default:	goto yy47;
+	}
+yy328:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy409;
+	default:	goto yy47;
+	}
+yy329:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy410;
+	default:	goto yy47;
+	}
+yy330:
 	yyaccept = 22;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy411;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -15922,162 +15820,113 @@ yy334:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy335;
+	case 'z':	goto yy46;
+	default:	goto yy331;
 	}
-yy335:
-#line 1898 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_TIME (context_.location); }
-#line 15932 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy336:
-	yyaccept = 23;
+yy331:
+#line 1892 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_SIZE (context_.location); }
+#line 15830 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy332:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy337;
+	case 'N':	goto yy411;
+	default:	goto yy47;
 	}
-yy337:
-#line 1900 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_TRUE (context_.location); }
-#line 16006 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy338:
-	yyaccept = 2;
+yy333:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy412;
-	default:	goto yy49;
+	case 'A':	goto yy412;
+	default:	goto yy47;
 	}
-yy339:
-	yyaccept = 2;
+yy334:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
 	case 't':	goto yy413;
-	default:	goto yy49;
+	default:	goto yy47;
 	}
-yy340:
-	yyaccept = 2;
+yy335:
+	yyaccept = 23;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'N':	goto yy414;
-	default:	goto yy49;
+	case '-':	goto yy105;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy46;
+	default:	goto yy336;
 	}
-yy341:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'U':	goto yy416;
-	default:	goto yy49;
-	}
-yy342:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy417;
-	default:	goto yy49;
-	}
-yy343:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'i':	goto yy418;
-	default:	goto yy49;
-	}
-yy344:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy419;
-	default:	goto yy49;
-	}
-yy345:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'e':	goto yy420;
-	default:	goto yy49;
-	}
-yy346:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'o':	goto yy421;
-	default:	goto yy49;
-	}
-yy347:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'b':	goto yy422;
-	default:	goto yy49;
-	}
-yy348:
+yy336:
+#line 1896 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_TAGS (context_.location); }
+#line 15925 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy337:
 	yyaccept = 24;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy414;
 	case '0':
 	case '1':
 	case '2':
@@ -16140,46 +15989,18 @@ yy348:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy349;
+	case 'z':	goto yy46;
+	default:	goto yy338;
 	}
-yy349:
-#line 1910 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_WITH (context_.location); }
-#line 16150 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy350:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy423;
-	default:	goto yy49;
-	}
-yy351:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'A':	goto yy425;
-	default:	goto yy49;
-	}
-yy352:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'C':	goto yy426;
-	default:	goto yy49;
-	}
-yy353:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'A':	goto yy427;
-	default:	goto yy49;
-	}
-yy354:
+yy338:
+#line 1898 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_TIME (context_.location); }
+#line 15999 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy339:
 	yyaccept = 25;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -16242,46 +16063,88 @@ yy354:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy355;
+	case 'z':	goto yy46;
+	default:	goto yy340;
 	}
-yy355:
-#line 1825 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_BEGIN (context_.location); }
-#line 16252 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy356:
-	yyaccept = 2;
+yy340:
+#line 1900 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_TRUE (context_.location); }
+#line 16073 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy341:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'r':	goto yy428;
-	default:	goto yy49;
+	case '-':	goto yy415;
+	default:	goto yy47;
 	}
-yy357:
-	yyaccept = 2;
+yy342:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'A':	goto yy429;
-	default:	goto yy49;
+	case 't':	goto yy416;
+	default:	goto yy47;
 	}
-yy358:
-	yyaccept = 2;
+yy343:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'C':	goto yy430;
-	default:	goto yy49;
+	case 'N':	goto yy417;
+	default:	goto yy47;
 	}
-yy359:
-	yyaccept = 2;
+yy344:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'E':	goto yy431;
-	default:	goto yy49;
+	case 'U':	goto yy419;
+	default:	goto yy47;
 	}
-yy360:
+yy345:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy420;
+	default:	goto yy47;
+	}
+yy346:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'i':	goto yy421;
+	default:	goto yy47;
+	}
+yy347:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'S':	goto yy422;
+	default:	goto yy47;
+	}
+yy348:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'e':	goto yy423;
+	default:	goto yy47;
+	}
+yy349:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'o':	goto yy424;
+	default:	goto yy47;
+	}
+yy350:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'b':	goto yy425;
+	default:	goto yy47;
+	}
+yy351:
 	yyaccept = 26;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -16344,185 +16207,46 @@ yy360:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy361;
+	case 'z':	goto yy46;
+	default:	goto yy352;
 	}
-yy361:
-#line 1832 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_CLASS (context_.location); }
-#line 16354 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy362:
-	yyaccept = 2;
+yy352:
+#line 1910 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_WITH (context_.location); }
+#line 16217 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy353:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'N':	goto yy433;
-	default:	goto yy49;
+	case 'T':	goto yy426;
+	default:	goto yy47;
 	}
-yy363:
-	yyaccept = 2;
+yy354:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'R':	goto yy434;
-	default:	goto yy49;
+	case 'A':	goto yy428;
+	default:	goto yy47;
 	}
-yy364:
-	yyaccept = 2;
+yy355:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'I':	goto yy435;
-	default:	goto yy49;
+	case 'C':	goto yy429;
+	default:	goto yy47;
 	}
-yy365:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	case 'T':	goto yy436;
-	default:	goto yy101;
-	}
-yy366:
-	yyaccept = 2;
+yy356:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'L':	goto yy437;
-	default:	goto yy49;
+	case 'A':	goto yy430;
+	default:	goto yy47;
 	}
-yy367:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy438;
-	default:	goto yy49;
-	}
-yy368:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy439;
-	default:	goto yy49;
-	}
-yy369:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'D':	goto yy440;
-	default:	goto yy49;
-	}
-yy370:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy441;
-	case 'I':	goto yy442;
-	default:	goto yy49;
-	}
-yy371:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'R':	goto yy443;
-	default:	goto yy49;
-	}
-yy372:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy444;
-	default:	goto yy49;
-	}
-yy373:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'C':	goto yy446;
-	default:	goto yy49;
-	}
-yy374:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy447;
-	default:	goto yy49;
-	}
-yy375:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy448;
-	default:	goto yy49;
-	}
-yy376:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'N':	goto yy449;
-	default:	goto yy49;
-	}
-yy377:
+yy357:
 	yyaccept = 27;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -16585,131 +16309,46 @@ yy377:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy378;
+	case 'z':	goto yy46;
+	default:	goto yy358;
 	}
-yy378:
-#line 1852 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_FALSE (context_.location); }
-#line 16595 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy379:
-	yyaccept = 2;
+yy358:
+#line 1825 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_BEGIN (context_.location); }
+#line 16319 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy359:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'a':	goto yy450;
-	default:	goto yy49;
+	case 'r':	goto yy431;
+	default:	goto yy47;
 	}
-yy380:
-	yyaccept = 2;
+yy360:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'i':	goto yy451;
-	default:	goto yy49;
+	case 'A':	goto yy432;
+	default:	goto yy47;
 	}
-yy381:
-	yyaccept = 2;
+yy361:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'r':	goto yy452;
-	default:	goto yy49;
+	case 'C':	goto yy433;
+	default:	goto yy47;
 	}
-yy382:
-	yyaccept = 2;
+yy362:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'I':	goto yy453;
-	default:	goto yy49;
+	case 'E':	goto yy434;
+	default:	goto yy47;
 	}
-yy383:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'C':	goto yy454;
-	case 'E':	goto yy455;
-	default:	goto yy49;
-	}
-yy384:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy456;
-	default:	goto yy49;
-	}
-yy385:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'D':	goto yy457;
-	default:	goto yy49;
-	}
-yy386:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'N':	goto yy458;
-	default:	goto yy49;
-	}
-yy387:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'U':	goto yy459;
-	default:	goto yy49;
-	}
-yy388:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy460;
-	default:	goto yy49;
-	}
-yy389:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy461;
-	default:	goto yy49;
-	}
-yy390:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case '6':	goto yy462;
-	default:	goto yy49;
-	}
-yy391:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case '-':	goto yy463;
-	default:	goto yy49;
-	}
-yy392:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case '-':	goto yy464;
-	default:	goto yy49;
-	}
-yy393:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'i':	goto yy465;
-	default:	goto yy49;
-	}
-yy394:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy466;
-	default:	goto yy49;
-	}
-yy395:
+yy363:
 	yyaccept = 28;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -16772,112 +16411,35 @@ yy395:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy396;
+	case 'z':	goto yy46;
+	default:	goto yy364;
 	}
-yy396:
-#line 1876 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_OCTET (context_.location); }
-#line 16782 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy397:
-	yyaccept = 2;
+yy364:
+#line 1832 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_CLASS (context_.location); }
+#line 16421 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy365:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'R':	goto yy468;
-	default:	goto yy49;
+	case 'N':	goto yy436;
+	default:	goto yy47;
 	}
-yy398:
-	yyaccept = 2;
+yy366:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'N':	goto yy469;
-	default:	goto yy49;
+	case 'R':	goto yy437;
+	default:	goto yy47;
 	}
-yy399:
-	yyaccept = 2;
+yy367:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 't':	goto yy470;
-	default:	goto yy49;
+	case 'I':	goto yy438;
+	default:	goto yy47;
 	}
-yy400:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'R':	goto yy471;
-	default:	goto yy49;
-	}
-yy401:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy472;
-	default:	goto yy49;
-	}
-yy402:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'N':	goto yy473;
-	default:	goto yy49;
-	}
-yy403:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy474;
-	default:	goto yy49;
-	}
-yy404:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'a':	goto yy475;
-	default:	goto yy49;
-	}
-yy405:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy476;
-	default:	goto yy49;
-	}
-yy406:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'N':	goto yy477;
-	default:	goto yy49;
-	}
-yy407:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'N':	goto yy478;
-	default:	goto yy49;
-	}
-yy408:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'G':	goto yy479;
-	default:	goto yy49;
-	}
-yy409:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'X':	goto yy481;
-	default:	goto yy49;
-	}
-yy410:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'r':	goto yy483;
-	default:	goto yy49;
-	}
-yy411:
+yy368:
 	yych = *++context_.cursor;
 	switch (yych) {
 	case '0':
@@ -16904,79 +16466,11 @@ yy411:
 	case 'L':
 	case 'M':
 	case 'N':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	case 'O':	goto yy484;
-	default:	goto yy101;
-	}
-yy412:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
 	case 'O':
 	case 'P':
 	case 'Q':
 	case 'R':
 	case 'S':
-	case 'T':
 	case 'U':
 	case 'V':
 	case 'W':
@@ -17009,22 +16503,93 @@ yy412:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	case 'I':	goto yy485;
-	default:	goto yy101;
+	case 'z':	goto yy46;
+	case 'T':	goto yy439;
+	default:	goto yy76;
 	}
-yy413:
-	yyaccept = 2;
+yy369:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'e':	goto yy486;
-	default:	goto yy49;
+	case 'L':	goto yy440;
+	default:	goto yy47;
 	}
-yy414:
+yy370:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy441;
+	default:	goto yy47;
+	}
+yy371:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy442;
+	default:	goto yy47;
+	}
+yy372:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'D':	goto yy443;
+	default:	goto yy47;
+	}
+yy373:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy444;
+	case 'I':	goto yy445;
+	default:	goto yy47;
+	}
+yy374:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'R':	goto yy446;
+	default:	goto yy47;
+	}
+yy375:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy447;
+	default:	goto yy47;
+	}
+yy376:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'C':	goto yy449;
+	default:	goto yy47;
+	}
+yy377:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy450;
+	default:	goto yy47;
+	}
+yy378:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'S':	goto yy451;
+	default:	goto yy47;
+	}
+yy379:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy452;
+	default:	goto yy47;
+	}
+yy380:
 	yyaccept = 29;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -17087,67 +16652,131 @@ yy414:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy415;
+	case 'z':	goto yy46;
+	default:	goto yy381;
 	}
-yy415:
-#line 1902 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_UNION (context_.location); }
-#line 17097 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy416:
-	yyaccept = 2;
+yy381:
+#line 1852 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_FALSE (context_.location); }
+#line 16662 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy382:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'E':	goto yy487;
-	default:	goto yy49;
+	case 'a':	goto yy453;
+	default:	goto yy47;
 	}
-yy417:
-	yyaccept = 2;
+yy383:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'R':	goto yy489;
-	default:	goto yy49;
+	case 'i':	goto yy454;
+	default:	goto yy47;
 	}
-yy418:
-	yyaccept = 2;
+yy384:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'm':	goto yy490;
-	default:	goto yy49;
+	case 'r':	goto yy455;
+	default:	goto yy47;
 	}
-yy419:
-	yyaccept = 2;
+yy385:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 't':	goto yy491;
-	default:	goto yy49;
+	case 'I':	goto yy456;
+	default:	goto yy47;
 	}
-yy420:
-	yyaccept = 2;
+yy386:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'r':	goto yy492;
-	default:	goto yy49;
+	case 'C':	goto yy457;
+	case 'E':	goto yy458;
+	default:	goto yy47;
 	}
-yy421:
-	yyaccept = 2;
+yy387:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 't':	goto yy493;
-	default:	goto yy49;
+	case 'T':	goto yy459;
+	default:	goto yy47;
 	}
-yy422:
-	yyaccept = 2;
+yy388:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'l':	goto yy494;
-	default:	goto yy49;
+	case 'D':	goto yy460;
+	default:	goto yy47;
 	}
-yy423:
+yy389:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy461;
+	default:	goto yy47;
+	}
+yy390:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'U':	goto yy462;
+	default:	goto yy47;
+	}
+yy391:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy463;
+	default:	goto yy47;
+	}
+yy392:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'S':	goto yy464;
+	default:	goto yy47;
+	}
+yy393:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case '6':	goto yy465;
+	default:	goto yy47;
+	}
+yy394:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case '-':	goto yy466;
+	default:	goto yy47;
+	}
+yy395:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case '-':	goto yy467;
+	default:	goto yy47;
+	}
+yy396:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'i':	goto yy468;
+	default:	goto yy47;
+	}
+yy397:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy469;
+	default:	goto yy47;
+	}
+yy398:
 	yyaccept = 30;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -17210,60 +16839,259 @@ yy423:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy424;
+	case 'z':	goto yy46;
+	default:	goto yy399;
 	}
-yy424:
-#line 1819 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ABSENT (context_.location); }
-#line 17220 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy425:
-	yyaccept = 2;
+yy399:
+#line 1876 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_OCTET (context_.location); }
+#line 16849 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy400:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'C':	goto yy495;
-	default:	goto yy49;
+	case 'R':	goto yy471;
+	default:	goto yy47;
 	}
-yy426:
-	yyaccept = 2;
+yy401:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'A':	goto yy496;
-	default:	goto yy49;
+	case 'N':	goto yy472;
+	default:	goto yy47;
 	}
-yy427:
-	yyaccept = 2;
+yy402:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'T':	goto yy497;
-	default:	goto yy49;
+	case 't':	goto yy473;
+	default:	goto yy47;
 	}
-yy428:
-	yyaccept = 2;
+yy403:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'i':	goto yy498;
-	default:	goto yy49;
+	case 'R':	goto yy474;
+	default:	goto yy47;
 	}
-yy429:
-	yyaccept = 2;
+yy404:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'N':	goto yy499;
-	default:	goto yy49;
+	case 'I':	goto yy475;
+	default:	goto yy47;
 	}
-yy430:
-	yyaccept = 2;
+yy405:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'T':	goto yy501;
-	default:	goto yy49;
+	case 'N':	goto yy476;
+	default:	goto yy47;
 	}
-yy431:
+yy406:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy477;
+	default:	goto yy47;
+	}
+yy407:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'a':	goto yy478;
+	default:	goto yy47;
+	}
+yy408:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy479;
+	default:	goto yy47;
+	}
+yy409:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy480;
+	default:	goto yy47;
+	}
+yy410:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy481;
+	default:	goto yy47;
+	}
+yy411:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'G':	goto yy482;
+	default:	goto yy47;
+	}
+yy412:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'X':	goto yy484;
+	default:	goto yy47;
+	}
+yy413:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'r':	goto yy486;
+	default:	goto yy47;
+	}
+yy414:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy46;
+	case 'O':	goto yy487;
+	default:	goto yy76;
+	}
+yy415:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy46;
+	case 'I':	goto yy488;
+	default:	goto yy76;
+	}
+yy416:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'e':	goto yy489;
+	default:	goto yy47;
+	}
+yy417:
 	yyaccept = 31;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -17326,95 +17154,67 @@ yy431:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy432;
+	case 'z':	goto yy46;
+	default:	goto yy418;
 	}
-yy432:
-#line 1831 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_CHOICE (context_.location); }
-#line 17336 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy433:
-	yyaccept = 2;
+yy418:
+#line 1902 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_UNION (context_.location); }
+#line 17164 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy419:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'E':	goto yy502;
-	default:	goto yy49;
+	case 'E':	goto yy490;
+	default:	goto yy47;
 	}
-yy434:
-	yyaccept = 2;
+yy420:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'A':	goto yy503;
-	default:	goto yy49;
+	case 'R':	goto yy492;
+	default:	goto yy47;
 	}
-yy435:
-	yyaccept = 2;
+yy421:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'N':	goto yy504;
-	default:	goto yy49;
+	case 'm':	goto yy493;
+	default:	goto yy47;
 	}
-yy436:
-	yyaccept = 2;
+yy422:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'I':	goto yy505;
-	default:	goto yy49;
+	case 't':	goto yy494;
+	default:	goto yy47;
 	}
-yy437:
-	yyaccept = 2;
+yy423:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'T':	goto yy506;
-	default:	goto yy49;
+	case 'r':	goto yy495;
+	default:	goto yy47;
 	}
-yy438:
-	yyaccept = 2;
+yy424:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'T':	goto yy508;
-	default:	goto yy49;
+	case 't':	goto yy496;
+	default:	goto yy47;
 	}
-yy439:
-	yyaccept = 2;
+yy425:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'O':	goto yy509;
-	default:	goto yy49;
+	case 'l':	goto yy497;
+	default:	goto yy47;
 	}
-yy440:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy510;
-	default:	goto yy49;
-	}
-yy441:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'D':	goto yy511;
-	default:	goto yy49;
-	}
-yy442:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'N':	goto yy513;
-	default:	goto yy49;
-	}
-yy443:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'A':	goto yy514;
-	default:	goto yy49;
-	}
-yy444:
+yy426:
 	yyaccept = 32;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -17477,280 +17277,60 @@ yy444:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy445;
+	case 'z':	goto yy46;
+	default:	goto yy427;
 	}
-yy445:
-#line 1847 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_EXCEPT (context_.location); }
-#line 17487 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy446:
-	yyaccept = 2;
+yy427:
+#line 1819 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ABSENT (context_.location); }
+#line 17287 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy428:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'I':	goto yy515;
-	default:	goto yy49;
+	case 'C':	goto yy498;
+	default:	goto yy47;
 	}
-yy447:
-	yyaccept = 2;
+yy429:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'S':	goto yy516;
-	default:	goto yy49;
+	case 'A':	goto yy499;
+	default:	goto yy47;
 	}
-yy448:
-	yyaccept = 2;
+yy430:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'I':	goto yy518;
-	default:	goto yy49;
+	case 'T':	goto yy500;
+	default:	goto yy47;
 	}
-yy449:
-	yyaccept = 2;
+yy431:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'A':	goto yy519;
-	default:	goto yy49;
+	case 'i':	goto yy501;
+	default:	goto yy47;
 	}
-yy450:
-	yyaccept = 2;
+yy432:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'l':	goto yy520;
-	default:	goto yy49;
+	case 'N':	goto yy502;
+	default:	goto yy47;
 	}
-yy451:
-	yyaccept = 2;
+yy433:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'c':	goto yy521;
-	default:	goto yy49;
+	case 'T':	goto yy504;
+	default:	goto yy47;
 	}
-yy452:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'i':	goto yy522;
-	default:	goto yy49;
-	}
-yy453:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'F':	goto yy523;
-	default:	goto yy49;
-	}
-yy454:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy524;
-	default:	goto yy49;
-	}
-yy455:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'D':	goto yy525;
-	default:	goto yy49;
-	}
-yy456:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy527;
-	default:	goto yy49;
-	}
-yy457:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy529;
-	default:	goto yy49;
-	}
-yy458:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'C':	goto yy530;
-	default:	goto yy49;
-	}
-yy459:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'C':	goto yy531;
-	default:	goto yy49;
-	}
-yy460:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'R':	goto yy532;
-	default:	goto yy49;
-	}
-yy461:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy534;
-	default:	goto yy49;
-	}
-yy462:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy535;
-	default:	goto yy49;
-	}
-yy463:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	case 'I':	goto yy536;
-	default:	goto yy101;
-	}
-yy464:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	case 'N':	goto yy537;
-	default:	goto yy101;
-	}
-yy465:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'c':	goto yy538;
-	default:	goto yy49;
-	}
-yy466:
+yy434:
 	yyaccept = 33;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -17813,95 +17393,95 @@ yy466:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy467;
+	case 'z':	goto yy46;
+	default:	goto yy435;
 	}
-yy467:
-#line 1874 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_OBJECT (context_.location); }
-#line 17823 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy468:
-	yyaccept = 2;
+yy435:
+#line 1831 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_CHOICE (context_.location); }
+#line 17403 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy436:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'I':	goto yy539;
-	default:	goto yy49;
+	case 'E':	goto yy505;
+	default:	goto yy47;
 	}
-yy469:
-	yyaccept = 2;
+yy437:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'A':	goto yy541;
-	default:	goto yy49;
+	case 'A':	goto yy506;
+	default:	goto yy47;
 	}
-yy470:
-	yyaccept = 2;
+yy438:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'D':	goto yy542;
-	default:	goto yy49;
+	case 'N':	goto yy507;
+	default:	goto yy47;
 	}
-yy471:
-	yyaccept = 2;
+yy439:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'N':	goto yy543;
-	default:	goto yy49;
+	case 'I':	goto yy508;
+	default:	goto yy47;
 	}
-yy472:
-	yyaccept = 2;
+yy440:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'N':	goto yy545;
-	default:	goto yy49;
+	case 'T':	goto yy509;
+	default:	goto yy47;
 	}
-yy473:
-	yyaccept = 2;
+yy441:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'T':	goto yy546;
-	default:	goto yy49;
+	case 'T':	goto yy511;
+	default:	goto yy47;
 	}
-yy474:
-	yyaccept = 2;
+yy442:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'E':	goto yy548;
-	default:	goto yy49;
+	case 'O':	goto yy512;
+	default:	goto yy47;
 	}
-yy475:
-	yyaccept = 2;
+yy443:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'b':	goto yy550;
-	default:	goto yy49;
+	case 'E':	goto yy513;
+	default:	goto yy47;
 	}
-yy476:
-	yyaccept = 2;
+yy444:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'V':	goto yy551;
-	default:	goto yy49;
+	case 'D':	goto yy514;
+	default:	goto yy47;
 	}
-yy477:
-	yyaccept = 2;
+yy445:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'C':	goto yy552;
-	default:	goto yy49;
+	case 'N':	goto yy516;
+	default:	goto yy47;
 	}
-yy478:
-	yyaccept = 2;
+yy446:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'G':	goto yy553;
-	default:	goto yy49;
+	case 'A':	goto yy517;
+	default:	goto yy47;
 	}
-yy479:
+yy447:
 	yyaccept = 34;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -17964,18 +17544,280 @@ yy479:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy480;
+	case 'z':	goto yy46;
+	default:	goto yy448;
 	}
-yy480:
-#line 1893 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_STRING (context_.location); }
-#line 17974 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy481:
+yy448:
+#line 1847 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_EXCEPT (context_.location); }
+#line 17554 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy449:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy518;
+	default:	goto yy47;
+	}
+yy450:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'S':	goto yy519;
+	default:	goto yy47;
+	}
+yy451:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy521;
+	default:	goto yy47;
+	}
+yy452:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'A':	goto yy522;
+	default:	goto yy47;
+	}
+yy453:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'l':	goto yy523;
+	default:	goto yy47;
+	}
+yy454:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'c':	goto yy524;
+	default:	goto yy47;
+	}
+yy455:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'i':	goto yy525;
+	default:	goto yy47;
+	}
+yy456:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'F':	goto yy526;
+	default:	goto yy47;
+	}
+yy457:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy527;
+	default:	goto yy47;
+	}
+yy458:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'D':	goto yy528;
+	default:	goto yy47;
+	}
+yy459:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'S':	goto yy530;
+	default:	goto yy47;
+	}
+yy460:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy532;
+	default:	goto yy47;
+	}
+yy461:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'C':	goto yy533;
+	default:	goto yy47;
+	}
+yy462:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'C':	goto yy534;
+	default:	goto yy47;
+	}
+yy463:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'R':	goto yy535;
+	default:	goto yy47;
+	}
+yy464:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy537;
+	default:	goto yy47;
+	}
+yy465:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'S':	goto yy538;
+	default:	goto yy47;
+	}
+yy466:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy46;
+	case 'I':	goto yy539;
+	default:	goto yy76;
+	}
+yy467:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy46;
+	case 'N':	goto yy540;
+	default:	goto yy76;
+	}
+yy468:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'c':	goto yy541;
+	default:	goto yy47;
+	}
+yy469:
 	yyaccept = 35;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -18038,46 +17880,95 @@ yy481:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy482;
+	case 'z':	goto yy46;
+	default:	goto yy470;
+	}
+yy470:
+#line 1874 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_OBJECT (context_.location); }
+#line 17890 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy471:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy542;
+	default:	goto yy47;
+	}
+yy472:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'A':	goto yy544;
+	default:	goto yy47;
+	}
+yy473:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'D':	goto yy545;
+	default:	goto yy47;
+	}
+yy474:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy546;
+	default:	goto yy47;
+	}
+yy475:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy548;
+	default:	goto yy47;
+	}
+yy476:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy549;
+	default:	goto yy47;
+	}
+yy477:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy551;
+	default:	goto yy47;
+	}
+yy478:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'b':	goto yy553;
+	default:	goto yy47;
+	}
+yy479:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'V':	goto yy554;
+	default:	goto yy47;
+	}
+yy480:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'C':	goto yy555;
+	default:	goto yy47;
+	}
+yy481:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'G':	goto yy556;
+	default:	goto yy47;
 	}
 yy482:
-#line 1894 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_SYNTAX (context_.location); }
-#line 18048 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy483:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'i':	goto yy554;
-	default:	goto yy49;
-	}
-yy484:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'F':	goto yy555;
-	default:	goto yy49;
-	}
-yy485:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'D':	goto yy556;
-	default:	goto yy49;
-	}
-yy486:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'x':	goto yy557;
-	default:	goto yy49;
-	}
-yy487:
 	yyaccept = 36;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -18140,88 +18031,18 @@ yy487:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy488;
+	case 'z':	goto yy46;
+	default:	goto yy483;
 	}
-yy488:
-#line 1903 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_UNIQUE (context_.location); }
-#line 18150 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy489:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy558;
-	default:	goto yy49;
-	}
-yy490:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'e':	goto yy559;
-	default:	goto yy49;
-	}
-yy491:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'r':	goto yy561;
-	default:	goto yy49;
-	}
-yy492:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 's':	goto yy562;
-	default:	goto yy49;
-	}
-yy493:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'e':	goto yy563;
-	default:	goto yy49;
-	}
-yy494:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'e':	goto yy564;
-	default:	goto yy49;
-	}
-yy495:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy565;
-	default:	goto yy49;
-	}
-yy496:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy566;
-	default:	goto yy49;
-	}
-yy497:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy567;
-	default:	goto yy49;
-	}
-yy498:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'n':	goto yy568;
-	default:	goto yy49;
-	}
-yy499:
+yy483:
+#line 1893 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_STRING (context_.location); }
+#line 18041 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy484:
 	yyaccept = 37;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -18284,53 +18105,46 @@ yy499:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy500;
+	case 'z':	goto yy46;
+	default:	goto yy485;
 	}
-yy500:
-#line 1828 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_BOOLEAN (context_.location); }
-#line 18294 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy501:
-	yyaccept = 2;
+yy485:
+#line 1894 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_SYNTAX (context_.location); }
+#line 18115 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy486:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'E':	goto yy569;
-	default:	goto yy49;
+	case 'i':	goto yy557;
+	default:	goto yy47;
 	}
-yy502:
-	yyaccept = 2;
+yy487:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'N':	goto yy570;
-	default:	goto yy49;
+	case 'F':	goto yy558;
+	default:	goto yy47;
 	}
-yy503:
-	yyaccept = 2;
+yy488:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'I':	goto yy571;
-	default:	goto yy49;
+	case 'D':	goto yy559;
+	default:	goto yy47;
 	}
-yy504:
-	yyaccept = 2;
+yy489:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'I':	goto yy572;
-	default:	goto yy49;
+	case 'x':	goto yy560;
+	default:	goto yy47;
 	}
-yy505:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'M':	goto yy573;
-	default:	goto yy49;
-	}
-yy506:
+yy490:
 	yyaccept = 38;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -18393,39 +18207,88 @@ yy506:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy507;
+	case 'z':	goto yy46;
+	default:	goto yy491;
 	}
-yy507:
-#line 1839 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_DEFAULT (context_.location); }
-#line 18403 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy508:
-	yyaccept = 2;
+yy491:
+#line 1903 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_UNIQUE (context_.location); }
+#line 18217 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy492:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'I':	goto yy574;
-	default:	goto yy49;
+	case 'S':	goto yy561;
+	default:	goto yy47;
 	}
-yy509:
-	yyaccept = 2;
+yy493:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'N':	goto yy575;
-	default:	goto yy49;
+	case 'e':	goto yy562;
+	default:	goto yy47;
 	}
-yy510:
-	yyaccept = 2;
+yy494:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'D':	goto yy577;
-	default:	goto yy49;
+	case 'r':	goto yy564;
+	default:	goto yy47;
 	}
-yy511:
+yy495:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 's':	goto yy565;
+	default:	goto yy47;
+	}
+yy496:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'e':	goto yy566;
+	default:	goto yy47;
+	}
+yy497:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'e':	goto yy567;
+	default:	goto yy47;
+	}
+yy498:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy568;
+	default:	goto yy47;
+	}
+yy499:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy569;
+	default:	goto yy47;
+	}
+yy500:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy570;
+	default:	goto yy47;
+	}
+yy501:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'n':	goto yy571;
+	default:	goto yy47;
+	}
+yy502:
 	yyaccept = 39;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -18488,39 +18351,53 @@ yy511:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy512;
+	case 'z':	goto yy46;
+	default:	goto yy503;
 	}
-yy512:
-#line 1843 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ENCODED (context_.location); }
-#line 18498 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy513:
-	yyaccept = 2;
+yy503:
+#line 1828 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_BOOLEAN (context_.location); }
+#line 18361 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy504:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'G':	goto yy579;
-	default:	goto yy49;
+	case 'E':	goto yy572;
+	default:	goto yy47;
 	}
-yy514:
-	yyaccept = 2;
+yy505:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'T':	goto yy580;
-	default:	goto yy49;
+	case 'N':	goto yy573;
+	default:	goto yy47;
 	}
-yy515:
-	yyaccept = 2;
+yy506:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'T':	goto yy581;
-	default:	goto yy49;
+	case 'I':	goto yy574;
+	default:	goto yy47;
 	}
-yy516:
+yy507:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy575;
+	default:	goto yy47;
+	}
+yy508:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'M':	goto yy576;
+	default:	goto yy47;
+	}
+yy509:
 	yyaccept = 40;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -18583,68 +18460,39 @@ yy516:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy517;
+	case 'z':	goto yy46;
+	default:	goto yy510;
 	}
-yy517:
-#line 1849 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_EXPORTS (context_.location); }
-#line 18593 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy518:
-	yyaccept = 2;
+yy510:
+#line 1839 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_DEFAULT (context_.location); }
+#line 18470 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy511:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'B':	goto yy583;
-	default:	goto yy49;
+	case 'I':	goto yy577;
+	default:	goto yy47;
 	}
-yy519:
-	yyaccept = 2;
+yy512:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'L':	goto yy584;
-	default:	goto yy49;
+	case 'N':	goto yy578;
+	default:	goto yy47;
 	}
-yy520:
-	yyaccept = 2;
+yy513:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'S':	goto yy586;
-	case 'i':	goto yy587;
-	default:	goto yy49;
+	case 'D':	goto yy580;
+	default:	goto yy47;
 	}
-yy521:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy588;
-	default:	goto yy49;
-	}
-yy522:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'n':	goto yy589;
-	default:	goto yy49;
-	}
-yy523:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy590;
-	default:	goto yy49;
-	}
-yy524:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy591;
-	default:	goto yy49;
-	}
-yy525:
+yy514:
 	yyaccept = 41;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -18707,18 +18555,39 @@ yy525:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy526;
+	case 'z':	goto yy46;
+	default:	goto yy515;
 	}
-yy526:
-#line 1860 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_IMPLIED (context_.location); }
-#line 18717 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy527:
+yy515:
+#line 1843 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ENCODED (context_.location); }
+#line 18565 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy516:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'G':	goto yy582;
+	default:	goto yy47;
+	}
+yy517:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy583;
+	default:	goto yy47;
+	}
+yy518:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy584;
+	default:	goto yy47;
+	}
+yy519:
 	yyaccept = 42;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -18781,39 +18650,68 @@ yy527:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy528;
+	case 'z':	goto yy46;
+	default:	goto yy520;
+	}
+yy520:
+#line 1849 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_EXPORTS (context_.location); }
+#line 18660 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy521:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'B':	goto yy586;
+	default:	goto yy47;
+	}
+yy522:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'L':	goto yy587;
+	default:	goto yy47;
+	}
+yy523:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'S':	goto yy589;
+	case 'i':	goto yy590;
+	default:	goto yy47;
+	}
+yy524:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'S':	goto yy591;
+	default:	goto yy47;
+	}
+yy525:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'n':	goto yy592;
+	default:	goto yy47;
+	}
+yy526:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy593;
+	default:	goto yy47;
+	}
+yy527:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy594;
+	default:	goto yy47;
 	}
 yy528:
-#line 1861 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_IMPORTS (context_.location); }
-#line 18791 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy529:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy593;
-	default:	goto yy49;
-	}
-yy530:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy595;
-	default:	goto yy49;
-	}
-yy531:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy597;
-	default:	goto yy49;
-	}
-yy532:
 	yyaccept = 43;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -18876,53 +18774,18 @@ yy532:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy533;
+	case 'z':	goto yy46;
+	default:	goto yy529;
 	}
-yy533:
-#line 1865 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_INTEGER (context_.location); }
-#line 18886 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy534:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'C':	goto yy598;
-	default:	goto yy49;
-	}
-yy535:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 't':	goto yy599;
-	default:	goto yy49;
-	}
-yy536:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'N':	goto yy600;
-	default:	goto yy49;
-	}
-yy537:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'U':	goto yy601;
-	default:	goto yy49;
-	}
-yy538:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy602;
-	default:	goto yy49;
-	}
-yy539:
+yy529:
+#line 1860 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_IMPLIED (context_.location); }
+#line 18784 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy530:
 	yyaccept = 44;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -18985,32 +18848,39 @@ yy539:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy540;
+	case 'z':	goto yy46;
+	default:	goto yy531;
 	}
-yy540:
-#line 1878 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_OID_IRI (context_.location); }
-#line 18995 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy541:
-	yyaccept = 2;
+yy531:
+#line 1861 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_IMPORTS (context_.location); }
+#line 18858 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy532:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'L':	goto yy603;
-	default:	goto yy49;
+	case 'S':	goto yy596;
+	default:	goto yy47;
 	}
-yy542:
-	yyaccept = 2;
+yy533:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'e':	goto yy605;
-	default:	goto yy49;
+	case 'E':	goto yy598;
+	default:	goto yy47;
 	}
-yy543:
+yy534:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy600;
+	default:	goto yy47;
+	}
+yy535:
 	yyaccept = 45;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -19073,25 +18943,53 @@ yy543:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy544;
+	case 'z':	goto yy46;
+	default:	goto yy536;
 	}
-yy544:
-#line 1880 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_PATTERN (context_.location); }
-#line 19083 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy545:
-	yyaccept = 2;
+yy536:
+#line 1865 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_INTEGER (context_.location); }
+#line 18953 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy537:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'F':	goto yy606;
-	default:	goto yy49;
+	case 'C':	goto yy601;
+	default:	goto yy47;
 	}
-yy546:
+yy538:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 't':	goto yy602;
+	default:	goto yy47;
+	}
+yy539:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy603;
+	default:	goto yy47;
+	}
+yy540:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'U':	goto yy604;
+	default:	goto yy47;
+	}
+yy541:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'S':	goto yy605;
+	default:	goto yy47;
+	}
+yy542:
 	yyaccept = 46;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -19154,18 +19052,32 @@ yy546:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy547;
+	case 'z':	goto yy46;
+	default:	goto yy543;
 	}
-yy547:
-#line 1883 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_PRESENT (context_.location); }
-#line 19164 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy548:
+yy543:
+#line 1878 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_OID_IRI (context_.location); }
+#line 19062 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy544:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'L':	goto yy606;
+	default:	goto yy47;
+	}
+yy545:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'e':	goto yy608;
+	default:	goto yy47;
+	}
+yy546:
 	yyaccept = 47;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -19228,81 +19140,25 @@ yy548:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy549;
+	case 'z':	goto yy46;
+	default:	goto yy547;
+	}
+yy547:
+#line 1880 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_PATTERN (context_.location); }
+#line 19150 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy548:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'F':	goto yy609;
+	default:	goto yy47;
 	}
 yy549:
-#line 1885 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_PRIVATE (context_.location); }
-#line 19238 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy550:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'l':	goto yy607;
-	default:	goto yy49;
-	}
-yy551:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy608;
-	default:	goto yy49;
-	}
-yy552:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy609;
-	default:	goto yy49;
-	}
-yy553:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy611;
-	default:	goto yy49;
-	}
-yy554:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'n':	goto yy613;
-	default:	goto yy49;
-	}
-yy555:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case '-':	goto yy614;
-	default:	goto yy49;
-	}
-yy556:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy615;
-	default:	goto yy49;
-	}
-yy557:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy616;
-	default:	goto yy49;
-	}
-yy558:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'A':	goto yy617;
-	default:	goto yy49;
-	}
-yy559:
 	yyaccept = 48;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -19365,116 +19221,18 @@ yy559:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy560;
+	case 'z':	goto yy46;
+	default:	goto yy550;
 	}
-yy560:
-#line 1906 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_UTCTime (context_.location); }
-#line 19375 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy561:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'i':	goto yy618;
-	default:	goto yy49;
-	}
-yy562:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'a':	goto yy619;
-	default:	goto yy49;
-	}
-yy563:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'x':	goto yy620;
-	default:	goto yy49;
-	}
-yy564:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy621;
-	default:	goto yy49;
-	}
-yy565:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case '-':	goto yy622;
-	default:	goto yy49;
-	}
-yy566:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy623;
-	default:	goto yy49;
-	}
-yy567:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'C':	goto yy624;
-	default:	goto yy49;
-	}
-yy568:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'g':	goto yy626;
-	default:	goto yy49;
-	}
-yy569:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'R':	goto yy628;
-	default:	goto yy49;
-	}
-yy570:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy630;
-	default:	goto yy49;
-	}
-yy571:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'N':	goto yy632;
-	default:	goto yy49;
-	}
-yy572:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'N':	goto yy633;
-	default:	goto yy49;
-	}
-yy573:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy634;
-	default:	goto yy49;
-	}
-yy574:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'O':	goto yy636;
-	default:	goto yy49;
-	}
-yy575:
+yy550:
+#line 1883 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_PRESENT (context_.location); }
+#line 19231 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy551:
 	yyaccept = 49;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -19537,18 +19295,81 @@ yy575:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy576;
+	case 'z':	goto yy46;
+	default:	goto yy552;
 	}
-yy576:
-#line 1841 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_DURATION (context_.location); }
-#line 19547 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy577:
+yy552:
+#line 1885 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_PRIVATE (context_.location); }
+#line 19305 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy553:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'l':	goto yy610;
+	default:	goto yy47;
+	}
+yy554:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy611;
+	default:	goto yy47;
+	}
+yy555:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy612;
+	default:	goto yy47;
+	}
+yy556:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'S':	goto yy614;
+	default:	goto yy47;
+	}
+yy557:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'n':	goto yy616;
+	default:	goto yy47;
+	}
+yy558:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case '-':	goto yy617;
+	default:	goto yy47;
+	}
+yy559:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy618;
+	default:	goto yy47;
+	}
+yy560:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'S':	goto yy619;
+	default:	goto yy47;
+	}
+yy561:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'A':	goto yy620;
+	default:	goto yy47;
+	}
+yy562:
 	yyaccept = 50;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -19611,32 +19432,116 @@ yy577:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy578;
+	case 'z':	goto yy46;
+	default:	goto yy563;
+	}
+yy563:
+#line 1906 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_UTCTime (context_.location); }
+#line 19442 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy564:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'i':	goto yy621;
+	default:	goto yy47;
+	}
+yy565:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'a':	goto yy622;
+	default:	goto yy47;
+	}
+yy566:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'x':	goto yy623;
+	default:	goto yy47;
+	}
+yy567:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'S':	goto yy624;
+	default:	goto yy47;
+	}
+yy568:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case '-':	goto yy625;
+	default:	goto yy47;
+	}
+yy569:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy626;
+	default:	goto yy47;
+	}
+yy570:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'C':	goto yy627;
+	default:	goto yy47;
+	}
+yy571:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'g':	goto yy629;
+	default:	goto yy47;
+	}
+yy572:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'R':	goto yy631;
+	default:	goto yy47;
+	}
+yy573:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy633;
+	default:	goto yy47;
+	}
+yy574:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy635;
+	default:	goto yy47;
+	}
+yy575:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy636;
+	default:	goto yy47;
+	}
+yy576:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy637;
+	default:	goto yy47;
+	}
+yy577:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'O':	goto yy639;
+	default:	goto yy47;
 	}
 yy578:
-#line 1842 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_EMBEDDED (context_.location); }
-#line 19621 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy579:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case '_':	goto yy637;
-	default:	goto yy49;
-	}
-yy580:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy638;
-	default:	goto yy49;
-	}
-yy581:
 	yyaccept = 51;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -19699,25 +19604,18 @@ yy581:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy582;
+	case 'z':	goto yy46;
+	default:	goto yy579;
 	}
-yy582:
-#line 1848 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_EXPLICIT (context_.location); }
-#line 19709 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy583:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy639;
-	default:	goto yy49;
-	}
-yy584:
+yy579:
+#line 1841 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_DURATION (context_.location); }
+#line 19614 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy580:
 	yyaccept = 52;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -19780,53 +19678,32 @@ yy584:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy585;
+	case 'z':	goto yy46;
+	default:	goto yy581;
 	}
-yy585:
-#line 1851 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_EXTERNAL (context_.location); }
-#line 19790 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy586:
-	yyaccept = 2;
+yy581:
+#line 1842 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_EMBEDDED (context_.location); }
+#line 19688 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy582:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 't':	goto yy640;
-	default:	goto yy49;
+	case '_':	goto yy640;
+	default:	goto yy47;
 	}
-yy587:
-	yyaccept = 2;
+yy583:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'z':	goto yy641;
-	default:	goto yy49;
+	case 'E':	goto yy641;
+	default:	goto yy47;
 	}
-yy588:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 't':	goto yy642;
-	default:	goto yy49;
-	}
-yy589:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'g':	goto yy643;
-	default:	goto yy49;
-	}
-yy590:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy645;
-	default:	goto yy49;
-	}
-yy591:
+yy584:
 	yyaccept = 53;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -19889,18 +19766,25 @@ yy591:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy592;
+	case 'z':	goto yy46;
+	default:	goto yy585;
 	}
-yy592:
-#line 1859 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_IMPLICIT (context_.location); }
-#line 19899 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy593:
+yy585:
+#line 1848 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_EXPLICIT (context_.location); }
+#line 19776 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy586:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy642;
+	default:	goto yy47;
+	}
+yy587:
 	yyaccept = 54;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -19963,18 +19847,53 @@ yy593:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy594;
+	case 'z':	goto yy46;
+	default:	goto yy588;
+	}
+yy588:
+#line 1851 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_EXTERNAL (context_.location); }
+#line 19857 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy589:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 't':	goto yy643;
+	default:	goto yy47;
+	}
+yy590:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'z':	goto yy644;
+	default:	goto yy47;
+	}
+yy591:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 't':	goto yy645;
+	default:	goto yy47;
+	}
+yy592:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'g':	goto yy646;
+	default:	goto yy47;
+	}
+yy593:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy648;
+	default:	goto yy47;
 	}
 yy594:
-#line 1862 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_INCLUDES (context_.location); }
-#line 19973 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy595:
 	yyaccept = 55;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -20037,60 +19956,18 @@ yy595:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy596;
+	case 'z':	goto yy46;
+	default:	goto yy595;
 	}
+yy595:
+#line 1859 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_IMPLICIT (context_.location); }
+#line 19966 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy596:
-#line 1863 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_INSTANCE (context_.location); }
-#line 20047 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy597:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy646;
-	default:	goto yy49;
-	}
-yy598:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy647;
-	default:	goto yy49;
-	}
-yy599:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'r':	goto yy648;
-	default:	goto yy49;
-	}
-yy600:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'F':	goto yy649;
-	default:	goto yy49;
-	}
-yy601:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'M':	goto yy650;
-	default:	goto yy49;
-	}
-yy602:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 't':	goto yy651;
-	default:	goto yy49;
-	}
-yy603:
 	yyaccept = 56;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -20153,46 +20030,18 @@ yy603:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy604;
+	case 'z':	goto yy46;
+	default:	goto yy597;
 	}
-yy604:
-#line 1879 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_OPTIONAL (context_.location); }
-#line 20163 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy605:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 's':	goto yy652;
-	default:	goto yy49;
-	}
-yy606:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy653;
-	default:	goto yy49;
-	}
-yy607:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'e':	goto yy654;
-	default:	goto yy49;
-	}
-yy608:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case '-':	goto yy655;
-	default:	goto yy49;
-	}
-yy609:
+yy597:
+#line 1862 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_INCLUDES (context_.location); }
+#line 20040 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy598:
 	yyaccept = 57;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -20255,18 +20104,60 @@ yy609:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy610;
+	case 'z':	goto yy46;
+	default:	goto yy599;
 	}
-yy610:
-#line 1889 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_SEQUENCE (context_.location); }
-#line 20265 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy611:
+yy599:
+#line 1863 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_INSTANCE (context_.location); }
+#line 20114 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy600:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy649;
+	default:	goto yy47;
+	}
+yy601:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy650;
+	default:	goto yy47;
+	}
+yy602:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'r':	goto yy651;
+	default:	goto yy47;
+	}
+yy603:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'F':	goto yy652;
+	default:	goto yy47;
+	}
+yy604:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'M':	goto yy653;
+	default:	goto yy47;
+	}
+yy605:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 't':	goto yy654;
+	default:	goto yy47;
+	}
+yy606:
 	yyaccept = 58;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -20329,217 +20220,46 @@ yy611:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy612;
+	case 'z':	goto yy46;
+	default:	goto yy607;
+	}
+yy607:
+#line 1879 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_OPTIONAL (context_.location); }
+#line 20230 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy608:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 's':	goto yy655;
+	default:	goto yy47;
+	}
+yy609:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy656;
+	default:	goto yy47;
+	}
+yy610:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'e':	goto yy657;
+	default:	goto yy47;
+	}
+yy611:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case '-':	goto yy658;
+	default:	goto yy47;
 	}
 yy612:
-#line 1891 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_SETTINGS (context_.location); }
-#line 20339 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy613:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'g':	goto yy656;
-	default:	goto yy49;
-	}
-yy614:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	case 'D':	goto yy658;
-	default:	goto yy101;
-	}
-yy615:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'N':	goto yy659;
-	default:	goto yy49;
-	}
-yy616:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 't':	goto yy660;
-	default:	goto yy49;
-	}
-yy617:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'L':	goto yy661;
-	default:	goto yy49;
-	}
-yy618:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'n':	goto yy663;
-	default:	goto yy49;
-	}
-yy619:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'l':	goto yy664;
-	default:	goto yy49;
-	}
-yy620:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy665;
-	default:	goto yy49;
-	}
-yy621:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 't':	goto yy666;
-	default:	goto yy49;
-	}
-yy622:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	case 'S':	goto yy667;
-	default:	goto yy101;
-	}
-yy623:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'O':	goto yy668;
-	default:	goto yy49;
-	}
-yy624:
 	yyaccept = 59;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -20602,18 +20322,18 @@ yy624:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy625;
+	case 'z':	goto yy46;
+	default:	goto yy613;
 	}
-yy625:
-#line 1824 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_AUTOMATIC (context_.location); }
-#line 20612 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy626:
+yy613:
+#line 1889 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_SEQUENCE (context_.location); }
+#line 20332 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy614:
 	yyaccept = 60;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -20676,18 +20396,217 @@ yy626:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy627;
+	case 'z':	goto yy46;
+	default:	goto yy615;
+	}
+yy615:
+#line 1891 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_SETTINGS (context_.location); }
+#line 20406 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy616:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'g':	goto yy659;
+	default:	goto yy47;
+	}
+yy617:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy46;
+	case 'D':	goto yy661;
+	default:	goto yy76;
+	}
+yy618:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy662;
+	default:	goto yy47;
+	}
+yy619:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 't':	goto yy663;
+	default:	goto yy47;
+	}
+yy620:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'L':	goto yy664;
+	default:	goto yy47;
+	}
+yy621:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'n':	goto yy666;
+	default:	goto yy47;
+	}
+yy622:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'l':	goto yy667;
+	default:	goto yy47;
+	}
+yy623:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'S':	goto yy668;
+	default:	goto yy47;
+	}
+yy624:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 't':	goto yy669;
+	default:	goto yy47;
+	}
+yy625:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy46;
+	case 'S':	goto yy670;
+	default:	goto yy76;
+	}
+yy626:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'O':	goto yy671;
+	default:	goto yy47;
 	}
 yy627:
-#line 1827 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_BMPString (context_.location); }
-#line 20686 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy628:
 	yyaccept = 61;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -20750,18 +20669,18 @@ yy628:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy629;
+	case 'z':	goto yy46;
+	default:	goto yy628;
 	}
+yy628:
+#line 1824 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_AUTOMATIC (context_.location); }
+#line 20679 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy629:
-#line 1830 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_CHARACTER (context_.location); }
-#line 20760 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy630:
 	yyaccept = 62;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -20790,6 +20709,7 @@ yy630:
 	case 'P':
 	case 'Q':
 	case 'R':
+	case 'S':
 	case 'T':
 	case 'U':
 	case 'V':
@@ -20823,33 +20743,18 @@ yy630:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	case 'S':	goto yy669;
-	default:	goto yy631;
+	case 'z':	goto yy46;
+	default:	goto yy630;
 	}
+yy630:
+#line 1827 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_BMPString (context_.location); }
+#line 20753 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy631:
-#line 1833 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_COMPONENT (context_.location); }
-#line 20834 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy632:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy671;
-	default:	goto yy49;
-	}
-yy633:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'G':	goto yy672;
-	default:	goto yy49;
-	}
-yy634:
 	yyaccept = 63;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -20912,67 +20817,18 @@ yy634:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy635;
+	case 'z':	goto yy46;
+	default:	goto yy632;
 	}
-yy635:
-#line 1838 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_DATE_TIME (context_.location); }
-#line 20922 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy636:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'N':	goto yy674;
-	default:	goto yy49;
-	}
-yy637:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'C':	goto yy675;
-	default:	goto yy49;
-	}
-yy638:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'D':	goto yy676;
-	default:	goto yy49;
-	}
-yy639:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'L':	goto yy678;
-	default:	goto yy49;
-	}
-yy640:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'r':	goto yy679;
-	default:	goto yy49;
-	}
-yy641:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'e':	goto yy680;
-	default:	goto yy49;
-	}
-yy642:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'r':	goto yy681;
-	default:	goto yy49;
-	}
-yy643:
+yy632:
+#line 1830 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_CHARACTER (context_.location); }
+#line 20827 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy633:
 	yyaccept = 64;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -21001,7 +20857,6 @@ yy643:
 	case 'P':
 	case 'Q':
 	case 'R':
-	case 'S':
 	case 'T':
 	case 'U':
 	case 'V':
@@ -21035,156 +20890,33 @@ yy643:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy644;
+	case 'z':	goto yy46;
+	case 'S':	goto yy672;
+	default:	goto yy634;
 	}
-yy644:
-#line 1857 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_IA5String (context_.location); }
-#line 21045 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy645:
-	yyaccept = 2;
+yy634:
+#line 1833 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_COMPONENT (context_.location); }
+#line 20901 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy635:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'R':	goto yy682;
-	default:	goto yy49;
+	case 'E':	goto yy674;
+	default:	goto yy47;
 	}
-yy646:
-	yyaccept = 2;
+yy636:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'O':	goto yy684;
-	default:	goto yy49;
+	case 'G':	goto yy675;
+	default:	goto yy47;
 	}
-yy647:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy685;
-	default:	goto yy49;
-	}
-yy648:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'i':	goto yy686;
-	default:	goto yy49;
-	}
-yy649:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy687;
-	default:	goto yy49;
-	}
-yy650:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'B':	goto yy688;
-	default:	goto yy49;
-	}
-yy651:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'r':	goto yy689;
-	default:	goto yy49;
-	}
-yy652:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'c':	goto yy690;
-	default:	goto yy49;
-	}
-yy653:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'N':	goto yy691;
-	default:	goto yy49;
-	}
-yy654:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy692;
-	default:	goto yy49;
-	}
-yy655:
-	yych = *++context_.cursor;
-	switch (yych) {
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	case 'O':	goto yy693;
-	default:	goto yy101;
-	}
-yy656:
+yy637:
 	yyaccept = 65;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -21247,39 +20979,67 @@ yy656:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy657;
+	case 'z':	goto yy46;
+	default:	goto yy638;
 	}
-yy657:
-#line 1895 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_T61String (context_.location); }
-#line 21257 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy658:
-	yyaccept = 2;
+yy638:
+#line 1838 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_DATE_TIME (context_.location); }
+#line 20989 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy639:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'A':	goto yy694;
-	default:	goto yy49;
+	case 'N':	goto yy677;
+	default:	goto yy47;
 	}
-yy659:
-	yyaccept = 2;
+yy640:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'T':	goto yy695;
-	default:	goto yy49;
+	case 'C':	goto yy678;
+	default:	goto yy47;
 	}
-yy660:
-	yyaccept = 2;
+yy641:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'r':	goto yy696;
-	default:	goto yy49;
+	case 'D':	goto yy679;
+	default:	goto yy47;
 	}
-yy661:
+yy642:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'L':	goto yy681;
+	default:	goto yy47;
+	}
+yy643:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'r':	goto yy682;
+	default:	goto yy47;
+	}
+yy644:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'e':	goto yy683;
+	default:	goto yy47;
+	}
+yy645:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'r':	goto yy684;
+	default:	goto yy47;
+	}
+yy646:
 	yyaccept = 66;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -21342,60 +21102,156 @@ yy661:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy662;
+	case 'z':	goto yy46;
+	default:	goto yy647;
 	}
-yy662:
-#line 1904 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_UNIVERSAL (context_.location); }
-#line 21352 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy663:
-	yyaccept = 2;
+yy647:
+#line 1857 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_IA5String (context_.location); }
+#line 21112 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy648:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'g':	goto yy697;
-	default:	goto yy49;
+	case 'R':	goto yy685;
+	default:	goto yy47;
 	}
-yy664:
-	yyaccept = 2;
+yy649:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'S':	goto yy699;
-	default:	goto yy49;
+	case 'O':	goto yy687;
+	default:	goto yy47;
 	}
-yy665:
-	yyaccept = 2;
+yy650:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 't':	goto yy700;
-	default:	goto yy49;
+	case 'I':	goto yy688;
+	default:	goto yy47;
 	}
-yy666:
-	yyaccept = 2;
+yy651:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'r':	goto yy701;
-	default:	goto yy49;
+	case 'i':	goto yy689;
+	default:	goto yy47;
 	}
-yy667:
-	yyaccept = 2;
+yy652:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'Y':	goto yy702;
-	default:	goto yy49;
+	case 'I':	goto yy690;
+	default:	goto yy47;
 	}
-yy668:
-	yyaccept = 2;
+yy653:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'N':	goto yy703;
-	default:	goto yy49;
+	case 'B':	goto yy691;
+	default:	goto yy47;
 	}
-yy669:
+yy654:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'r':	goto yy692;
+	default:	goto yy47;
+	}
+yy655:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'c':	goto yy693;
+	default:	goto yy47;
+	}
+yy656:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy694;
+	default:	goto yy47;
+	}
+yy657:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'S':	goto yy695;
+	default:	goto yy47;
+	}
+yy658:
+	yych = *++context_.cursor;
+	switch (yych) {
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy46;
+	case 'O':	goto yy696;
+	default:	goto yy76;
+	}
+yy659:
 	yyaccept = 67;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -21458,25 +21314,39 @@ yy669:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy670;
+	case 'z':	goto yy46;
+	default:	goto yy660;
 	}
-yy670:
-#line 1834 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_COMPONENTS (context_.location); }
-#line 21468 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy671:
-	yyaccept = 2;
+yy660:
+#line 1895 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_T61String (context_.location); }
+#line 21324 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy661:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'D':	goto yy705;
-	default:	goto yy49;
+	case 'A':	goto yy697;
+	default:	goto yy47;
 	}
-yy672:
+yy662:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy698;
+	default:	goto yy47;
+	}
+yy663:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'r':	goto yy699;
+	default:	goto yy47;
+	}
+yy664:
 	yyaccept = 68;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -21539,32 +21409,60 @@ yy672:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy673;
+	case 'z':	goto yy46;
+	default:	goto yy665;
 	}
-yy673:
-#line 1836 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_CONTAINING (context_.location); }
-#line 21549 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy674:
-	yyaccept = 2;
+yy665:
+#line 1904 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_UNIVERSAL (context_.location); }
+#line 21419 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy666:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'S':	goto yy707;
-	default:	goto yy49;
+	case 'g':	goto yy700;
+	default:	goto yy47;
 	}
-yy675:
-	yyaccept = 2;
+yy667:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'O':	goto yy709;
-	default:	goto yy49;
+	case 'S':	goto yy702;
+	default:	goto yy47;
 	}
-yy676:
+yy668:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 't':	goto yy703;
+	default:	goto yy47;
+	}
+yy669:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'r':	goto yy704;
+	default:	goto yy47;
+	}
+yy670:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'Y':	goto yy705;
+	default:	goto yy47;
+	}
+yy671:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy706;
+	default:	goto yy47;
+	}
+yy672:
 	yyaccept = 69;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -21627,46 +21525,25 @@ yy676:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy677;
+	case 'z':	goto yy46;
+	default:	goto yy673;
 	}
-yy677:
-#line 1846 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ENUMERATED (context_.location); }
-#line 21637 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy678:
-	yyaccept = 2;
+yy673:
+#line 1834 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_COMPONENTS (context_.location); }
+#line 21535 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy674:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'I':	goto yy710;
-	default:	goto yy49;
+	case 'D':	goto yy708;
+	default:	goto yy47;
 	}
-yy679:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'i':	goto yy711;
-	default:	goto yy49;
-	}
-yy680:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'd':	goto yy712;
-	default:	goto yy49;
-	}
-yy681:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'i':	goto yy713;
-	default:	goto yy49;
-	}
-yy682:
+yy675:
 	yyaccept = 70;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -21729,109 +21606,32 @@ yy682:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy683;
+	case 'z':	goto yy46;
+	default:	goto yy676;
 	}
-yy683:
-#line 1858 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_IDENTIFIER (context_.location); }
-#line 21739 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy684:
-	yyaccept = 2;
+yy676:
+#line 1836 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_CONTAINING (context_.location); }
+#line 21616 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy677:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'N':	goto yy714;
-	default:	goto yy49;
+	case 'S':	goto yy710;
+	default:	goto yy47;
 	}
-yy685:
-	yyaccept = 2;
+yy678:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'O':	goto yy715;
-	default:	goto yy49;
+	case 'O':	goto yy712;
+	default:	goto yy47;
 	}
-yy686:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'n':	goto yy716;
-	default:	goto yy49;
-	}
-yy687:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'N':	goto yy717;
-	default:	goto yy49;
-	}
-yy688:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy718;
-	default:	goto yy49;
-	}
-yy689:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'i':	goto yy719;
-	default:	goto yy49;
-	}
-yy690:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'r':	goto yy720;
-	default:	goto yy49;
-	}
-yy691:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy721;
-	default:	goto yy49;
-	}
-yy692:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 't':	goto yy722;
-	default:	goto yy49;
-	}
-yy693:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy723;
-	default:	goto yy49;
-	}
-yy694:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'Y':	goto yy724;
-	default:	goto yy49;
-	}
-yy695:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy726;
-	default:	goto yy49;
-	}
-yy696:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'i':	goto yy727;
-	default:	goto yy49;
-	}
-yy697:
+yy679:
 	yyaccept = 71;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -21894,46 +21694,46 @@ yy697:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy698;
+	case 'z':	goto yy46;
+	default:	goto yy680;
 	}
-yy698:
-#line 1907 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_UTF8String (context_.location); }
-#line 21904 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy699:
-	yyaccept = 2;
+yy680:
+#line 1846 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ENUMERATED (context_.location); }
+#line 21704 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy681:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 't':	goto yy728;
-	default:	goto yy49;
+	case 'I':	goto yy713;
+	default:	goto yy47;
 	}
-yy700:
-	yyaccept = 2;
+yy682:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'r':	goto yy729;
-	default:	goto yy49;
+	case 'i':	goto yy714;
+	default:	goto yy47;
 	}
-yy701:
-	yyaccept = 2;
+yy683:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'i':	goto yy730;
-	default:	goto yy49;
+	case 'd':	goto yy715;
+	default:	goto yy47;
 	}
-yy702:
-	yyaccept = 2;
+yy684:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'N':	goto yy731;
-	default:	goto yy49;
+	case 'i':	goto yy716;
+	default:	goto yy47;
 	}
-yy703:
+yy685:
 	yyaccept = 72;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -21996,18 +21796,109 @@ yy703:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy704;
+	case 'z':	goto yy46;
+	default:	goto yy686;
 	}
-yy704:
-#line 1823 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_APPLICATION (context_.location); }
-#line 22006 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy705:
+yy686:
+#line 1858 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_IDENTIFIER (context_.location); }
+#line 21806 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy687:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy717;
+	default:	goto yy47;
+	}
+yy688:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'O':	goto yy718;
+	default:	goto yy47;
+	}
+yy689:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'n':	goto yy719;
+	default:	goto yy47;
+	}
+yy690:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy720;
+	default:	goto yy47;
+	}
+yy691:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'E':	goto yy721;
+	default:	goto yy47;
+	}
+yy692:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'i':	goto yy722;
+	default:	goto yy47;
+	}
+yy693:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'r':	goto yy723;
+	default:	goto yy47;
+	}
+yy694:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy724;
+	default:	goto yy47;
+	}
+yy695:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 't':	goto yy725;
+	default:	goto yy47;
+	}
+yy696:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy726;
+	default:	goto yy47;
+	}
+yy697:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'Y':	goto yy727;
+	default:	goto yy47;
+	}
+yy698:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy729;
+	default:	goto yy47;
+	}
+yy699:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'i':	goto yy730;
+	default:	goto yy47;
+	}
+yy700:
 	yyaccept = 73;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -22070,18 +21961,46 @@ yy705:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy706;
+	case 'z':	goto yy46;
+	default:	goto yy701;
+	}
+yy701:
+#line 1907 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_UTF8String (context_.location); }
+#line 21971 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy702:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 't':	goto yy731;
+	default:	goto yy47;
+	}
+yy703:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'r':	goto yy732;
+	default:	goto yy47;
+	}
+yy704:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'i':	goto yy733;
+	default:	goto yy47;
+	}
+yy705:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy734;
+	default:	goto yy47;
 	}
 yy706:
-#line 1835 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_CONSTRAINED (context_.location); }
-#line 22080 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy707:
 	yyaccept = 74;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -22144,123 +22063,18 @@ yy707:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy708;
+	case 'z':	goto yy46;
+	default:	goto yy707;
 	}
+yy707:
+#line 1823 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_APPLICATION (context_.location); }
+#line 22073 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy708:
-#line 1840 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_DEFINITIONS (context_.location); }
-#line 22154 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy709:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'N':	goto yy732;
-	default:	goto yy49;
-	}
-yy710:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy733;
-	default:	goto yy49;
-	}
-yy711:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'n':	goto yy734;
-	default:	goto yy49;
-	}
-yy712:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy735;
-	default:	goto yy49;
-	}
-yy713:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'n':	goto yy736;
-	default:	goto yy49;
-	}
-yy714:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'S':	goto yy737;
-	default:	goto yy49;
-	}
-yy715:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'N':	goto yy739;
-	default:	goto yy49;
-	}
-yy716:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'g':	goto yy741;
-	default:	goto yy49;
-	}
-yy717:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'I':	goto yy743;
-	default:	goto yy49;
-	}
-yy718:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'R':	goto yy744;
-	default:	goto yy49;
-	}
-yy719:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'n':	goto yy746;
-	default:	goto yy49;
-	}
-yy720:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'i':	goto yy747;
-	default:	goto yy49;
-	}
-yy721:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy748;
-	default:	goto yy49;
-	}
-yy722:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'r':	goto yy749;
-	default:	goto yy49;
-	}
-yy723:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'D':	goto yy750;
-	default:	goto yy49;
-	}
-yy724:
 	yyaccept = 75;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -22323,95 +22137,18 @@ yy724:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy725;
+	case 'z':	goto yy46;
+	default:	goto yy709;
 	}
-yy725:
-#line 1899 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_TIME_OF_DAY (context_.location); }
-#line 22333 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy726:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'F':	goto yy752;
-	default:	goto yy49;
-	}
-yy727:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'n':	goto yy753;
-	default:	goto yy49;
-	}
-yy728:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'r':	goto yy754;
-	default:	goto yy49;
-	}
-yy729:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'i':	goto yy755;
-	default:	goto yy49;
-	}
-yy730:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'n':	goto yy756;
-	default:	goto yy49;
-	}
-yy731:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy757;
-	default:	goto yy49;
-	}
-yy732:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'T':	goto yy758;
-	default:	goto yy49;
-	}
-yy733:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'Y':	goto yy759;
-	default:	goto yy49;
-	}
-yy734:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'g':	goto yy761;
-	default:	goto yy49;
-	}
-yy735:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'i':	goto yy763;
-	default:	goto yy49;
-	}
-yy736:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'g':	goto yy764;
-	default:	goto yy49;
-	}
-yy737:
+yy709:
+#line 1835 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_CONSTRAINED (context_.location); }
+#line 22147 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy710:
 	yyaccept = 76;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -22474,18 +22211,123 @@ yy737:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy738;
+	case 'z':	goto yy46;
+	default:	goto yy711;
 	}
-yy738:
-#line 1864 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_INSTRUCTIONS (context_.location); }
-#line 22484 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy739:
+yy711:
+#line 1840 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_DEFINITIONS (context_.location); }
+#line 22221 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy712:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy735;
+	default:	goto yy47;
+	}
+yy713:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy736;
+	default:	goto yy47;
+	}
+yy714:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'n':	goto yy737;
+	default:	goto yy47;
+	}
+yy715:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy738;
+	default:	goto yy47;
+	}
+yy716:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'n':	goto yy739;
+	default:	goto yy47;
+	}
+yy717:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'S':	goto yy740;
+	default:	goto yy47;
+	}
+yy718:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'N':	goto yy742;
+	default:	goto yy47;
+	}
+yy719:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'g':	goto yy744;
+	default:	goto yy47;
+	}
+yy720:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy746;
+	default:	goto yy47;
+	}
+yy721:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'R':	goto yy747;
+	default:	goto yy47;
+	}
+yy722:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'n':	goto yy749;
+	default:	goto yy47;
+	}
+yy723:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'i':	goto yy750;
+	default:	goto yy47;
+	}
+yy724:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy751;
+	default:	goto yy47;
+	}
+yy725:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'r':	goto yy752;
+	default:	goto yy47;
+	}
+yy726:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'D':	goto yy753;
+	default:	goto yy47;
+	}
+yy727:
 	yyaccept = 77;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -22548,201 +22390,243 @@ yy739:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy740;
+	case 'z':	goto yy46;
+	default:	goto yy728;
 	}
-yy740:
-#line 1866 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_INTERSECTION (context_.location); }
-#line 22558 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy741:
-	yyaccept = 78;
+yy728:
+#line 1899 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_TIME_OF_DAY (context_.location); }
+#line 22400 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy729:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy742;
+	case 'F':	goto yy755;
+	default:	goto yy47;
 	}
-yy742:
-#line 1867 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ISO646String (context_.location); }
-#line 22632 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy743:
-	yyaccept = 2;
+yy730:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'T':	goto yy766;
-	default:	goto yy49;
+	case 'n':	goto yy756;
+	default:	goto yy47;
 	}
-yy744:
-	yyaccept = 79;
+yy731:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy745;
+	case 'r':	goto yy757;
+	default:	goto yy47;
 	}
-yy745:
-#line 1871 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_NOT_A_NUMBER (context_.location); }
-#line 22713 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy746:
-	yyaccept = 2;
+yy732:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'i':	goto yy758;
+	default:	goto yy47;
+	}
+yy733:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'n':	goto yy759;
+	default:	goto yy47;
+	}
+yy734:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy760;
+	default:	goto yy47;
+	}
+yy735:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'T':	goto yy761;
+	default:	goto yy47;
+	}
+yy736:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'Y':	goto yy762;
+	default:	goto yy47;
+	}
+yy737:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'g':	goto yy764;
+	default:	goto yy47;
+	}
+yy738:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'i':	goto yy766;
+	default:	goto yy47;
+	}
+yy739:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
 	case 'g':	goto yy767;
-	default:	goto yy49;
+	default:	goto yy47;
 	}
-yy747:
-	yyaccept = 2;
+yy740:
+	yyaccept = 78;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'p':	goto yy769;
-	default:	goto yy49;
+	case '-':	goto yy105;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy46;
+	default:	goto yy741;
 	}
-yy748:
-	yyaccept = 2;
+yy741:
+#line 1864 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_INSTRUCTIONS (context_.location); }
+#line 22551 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy742:
+	yyaccept = 79;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'Y':	goto yy770;
-	default:	goto yy49;
+	case '-':	goto yy105;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy46;
+	default:	goto yy743;
 	}
-yy749:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'i':	goto yy772;
-	default:	goto yy49;
-	}
-yy750:
+yy743:
+#line 1866 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_INTERSECTION (context_.location); }
+#line 22625 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy744:
 	yyaccept = 80;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy773;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -22805,67 +22689,25 @@ yy750:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy751;
+	case 'z':	goto yy46;
+	default:	goto yy745;
 	}
-yy751:
-#line 1887 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_RELATIVE_OID (context_.location); }
-#line 22815 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy752:
-	yyaccept = 2;
+yy745:
+#line 1867 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ISO646String (context_.location); }
+#line 22699 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy746:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'I':	goto yy774;
-	default:	goto yy49;
+	case 'T':	goto yy769;
+	default:	goto yy47;
 	}
-yy753:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'g':	goto yy775;
-	default:	goto yy49;
-	}
-yy754:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'i':	goto yy777;
-	default:	goto yy49;
-	}
-yy755:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'n':	goto yy778;
-	default:	goto yy49;
-	}
-yy756:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'g':	goto yy779;
-	default:	goto yy49;
-	}
-yy757:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'A':	goto yy781;
-	default:	goto yy49;
-	}
-yy758:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'R':	goto yy782;
-	default:	goto yy49;
-	}
-yy759:
+yy747:
 	yyaccept = 81;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -22928,18 +22770,46 @@ yy759:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy760;
+	case 'z':	goto yy46;
+	default:	goto yy748;
 	}
-yy760:
-#line 1850 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_EXTENSIBILITY (context_.location); }
-#line 22938 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy761:
+yy748:
+#line 1871 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_NOT_A_NUMBER (context_.location); }
+#line 22780 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy749:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'g':	goto yy770;
+	default:	goto yy47;
+	}
+yy750:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'p':	goto yy772;
+	default:	goto yy47;
+	}
+yy751:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'Y':	goto yy773;
+	default:	goto yy47;
+	}
+yy752:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'i':	goto yy775;
+	default:	goto yy47;
+	}
+yy753:
 	yyaccept = 82;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy776;
 	case '0':
 	case '1':
 	case '2':
@@ -23002,25 +22872,67 @@ yy761:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy762;
+	case 'z':	goto yy46;
+	default:	goto yy754;
 	}
-yy762:
-#line 1855 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_GeneralString (context_.location); }
-#line 23012 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy763:
-	yyaccept = 2;
+yy754:
+#line 1887 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_RELATIVE_OID (context_.location); }
+#line 22882 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy755:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'm':	goto yy783;
-	default:	goto yy49;
+	case 'I':	goto yy777;
+	default:	goto yy47;
 	}
-yy764:
+yy756:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'g':	goto yy778;
+	default:	goto yy47;
+	}
+yy757:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'i':	goto yy780;
+	default:	goto yy47;
+	}
+yy758:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'n':	goto yy781;
+	default:	goto yy47;
+	}
+yy759:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'g':	goto yy782;
+	default:	goto yy47;
+	}
+yy760:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'A':	goto yy784;
+	default:	goto yy47;
+	}
+yy761:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'R':	goto yy785;
+	default:	goto yy47;
+	}
+yy762:
 	yyaccept = 83;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -23083,25 +22995,18 @@ yy764:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy765;
+	case 'z':	goto yy46;
+	default:	goto yy763;
 	}
-yy765:
-#line 1856 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_GraphicString (context_.location); }
-#line 23093 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy766:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'Y':	goto yy784;
-	default:	goto yy49;
-	}
-yy767:
+yy763:
+#line 1850 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_EXTENSIBILITY (context_.location); }
+#line 23005 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy764:
 	yyaccept = 84;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -23164,25 +23069,25 @@ yy767:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy768;
+	case 'z':	goto yy46;
+	default:	goto yy765;
 	}
-yy768:
-#line 1873 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_NumericString (context_.location); }
-#line 23174 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy769:
-	yyaccept = 2;
+yy765:
+#line 1855 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_GeneralString (context_.location); }
+#line 23079 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy766:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 't':	goto yy786;
-	default:	goto yy49;
+	case 'm':	goto yy786;
+	default:	goto yy47;
 	}
-yy770:
+yy767:
 	yyaccept = 85;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -23245,21 +23150,183 @@ yy770:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
+	case 'z':	goto yy46;
+	default:	goto yy768;
+	}
+yy768:
+#line 1856 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_GraphicString (context_.location); }
+#line 23160 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy769:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'Y':	goto yy787;
+	default:	goto yy47;
+	}
+yy770:
+	yyaccept = 86;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case '-':	goto yy105;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy46;
 	default:	goto yy771;
 	}
 yy771:
-#line 1882 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_PLUS_INFINITY (context_.location); }
-#line 23255 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 1873 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_NumericString (context_.location); }
+#line 23241 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy772:
-	yyaccept = 2;
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'n':	goto yy787;
-	default:	goto yy49;
+	case 't':	goto yy789;
+	default:	goto yy47;
 	}
 yy773:
+	yyaccept = 87;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case '-':	goto yy105;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy46;
+	default:	goto yy774;
+	}
+yy774:
+#line 1882 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_PLUS_INFINITY (context_.location); }
+#line 23322 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy775:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'n':	goto yy790;
+	default:	goto yy47;
+	}
+yy776:
 	yych = *++context_.cursor;
 	switch (yych) {
 	case '0':
@@ -23323,205 +23390,22 @@ yy773:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	case 'I':	goto yy788;
-	default:	goto yy101;
+	case 'z':	goto yy46;
+	case 'I':	goto yy791;
+	default:	goto yy76;
 	}
-yy774:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'E':	goto yy789;
-	default:	goto yy49;
-	}
-yy775:
-	yyaccept = 86;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case '-':	goto yy103;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy776;
-	}
-yy776:
-#line 1897 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_TeletexString (context_.location); }
-#line 23411 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy777:
-	yyaccept = 2;
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'n':	goto yy790;
-	default:	goto yy49;
+	case 'E':	goto yy792;
+	default:	goto yy47;
 	}
 yy778:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'g':	goto yy791;
-	default:	goto yy49;
-	}
-yy779:
-	yyaccept = 87;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case '-':	goto yy103;
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	case 'A':
-	case 'B':
-	case 'C':
-	case 'D':
-	case 'E':
-	case 'F':
-	case 'G':
-	case 'H':
-	case 'I':
-	case 'J':
-	case 'K':
-	case 'L':
-	case 'M':
-	case 'N':
-	case 'O':
-	case 'P':
-	case 'Q':
-	case 'R':
-	case 'S':
-	case 'T':
-	case 'U':
-	case 'V':
-	case 'W':
-	case 'X':
-	case 'Y':
-	case 'Z':
-	case '_':
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'd':
-	case 'e':
-	case 'f':
-	case 'g':
-	case 'h':
-	case 'i':
-	case 'j':
-	case 'k':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'o':
-	case 'p':
-	case 'q':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case 'v':
-	case 'w':
-	case 'x':
-	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy780;
-	}
-yy780:
-#line 1909 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_VisibleString (context_.location); }
-#line 23499 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy781:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'X':	goto yy793;
-	default:	goto yy49;
-	}
-yy782:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'O':	goto yy795;
-	default:	goto yy49;
-	}
-yy783:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'e':	goto yy796;
-	default:	goto yy49;
-	}
-yy784:
 	yyaccept = 88;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -23584,53 +23468,32 @@ yy784:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy785;
+	case 'z':	goto yy46;
+	default:	goto yy779;
 	}
-yy785:
-#line 1870 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_MINUS_INFINITY (context_.location); }
-#line 23594 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy786:
-	yyaccept = 2;
+yy779:
+#line 1897 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_TeletexString (context_.location); }
+#line 23478 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy780:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'o':	goto yy798;
-	default:	goto yy49;
+	case 'n':	goto yy793;
+	default:	goto yy47;
 	}
-yy787:
-	yyaccept = 2;
+yy781:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'g':	goto yy799;
-	default:	goto yy49;
+	case 'g':	goto yy794;
+	default:	goto yy47;
 	}
-yy788:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'R':	goto yy801;
-	default:	goto yy49;
-	}
-yy789:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'R':	goto yy802;
-	default:	goto yy49;
-	}
-yy790:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'g':	goto yy804;
-	default:	goto yy49;
-	}
-yy791:
+yy782:
 	yyaccept = 89;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -23693,18 +23556,39 @@ yy791:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy792;
+	case 'z':	goto yy46;
+	default:	goto yy783;
 	}
-yy792:
-#line 1908 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_VideotexString (context_.location); }
-#line 23703 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy793:
+yy783:
+#line 1909 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_VisibleString (context_.location); }
+#line 23566 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy784:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'X':	goto yy796;
+	default:	goto yy47;
+	}
+yy785:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'O':	goto yy798;
+	default:	goto yy47;
+	}
+yy786:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'e':	goto yy799;
+	default:	goto yy47;
+	}
+yy787:
 	yyaccept = 90;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -23767,25 +23651,53 @@ yy793:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy794;
+	case 'z':	goto yy46;
+	default:	goto yy788;
 	}
-yy794:
-#line 1820 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ABSTRACT_SYNTAX (context_.location); }
-#line 23777 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy795:
-	yyaccept = 2;
+yy788:
+#line 1870 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_MINUS_INFINITY (context_.location); }
+#line 23661 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy789:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'L':	goto yy806;
-	default:	goto yy49;
+	case 'o':	goto yy801;
+	default:	goto yy47;
 	}
-yy796:
+yy790:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'g':	goto yy802;
+	default:	goto yy47;
+	}
+yy791:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'R':	goto yy804;
+	default:	goto yy47;
+	}
+yy792:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'R':	goto yy805;
+	default:	goto yy47;
+	}
+yy793:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'g':	goto yy807;
+	default:	goto yy47;
+	}
+yy794:
 	yyaccept = 91;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -23848,25 +23760,18 @@ yy796:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy797;
+	case 'z':	goto yy46;
+	default:	goto yy795;
 	}
-yy797:
-#line 1854 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_GeneralizedTime (context_.location); }
-#line 23858 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy798:
-	yyaccept = 2;
-	yych = *(YYMARKER = ++context_.cursor);
-	switch (yych) {
-	case 'r':	goto yy808;
-	default:	goto yy49;
-	}
-yy799:
+yy795:
+#line 1908 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_VideotexString (context_.location); }
+#line 23770 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy796:
 	yyaccept = 92;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -23929,25 +23834,25 @@ yy799:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy800;
+	case 'z':	goto yy46;
+	default:	goto yy797;
 	}
-yy800:
-#line 1884 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_PrintableString (context_.location); }
-#line 23939 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy801:
-	yyaccept = 2;
+yy797:
+#line 1820 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ABSTRACT_SYNTAX (context_.location); }
+#line 23844 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy798:
+	yyaccept = 3;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case 'I':	goto yy810;
-	default:	goto yy49;
+	case 'L':	goto yy809;
+	default:	goto yy47;
 	}
-yy802:
+yy799:
 	yyaccept = 93;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -24010,18 +23915,25 @@ yy802:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy803;
+	case 'z':	goto yy46;
+	default:	goto yy800;
 	}
-yy803:
-#line 1901 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_TYPE_IDENTIFIER (context_.location); }
-#line 24020 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy804:
+yy800:
+#line 1854 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_GeneralizedTime (context_.location); }
+#line 23925 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy801:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'r':	goto yy811;
+	default:	goto yy47;
+	}
+yy802:
 	yyaccept = 94;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -24084,18 +23996,25 @@ yy804:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy805;
+	case 'z':	goto yy46;
+	default:	goto yy803;
+	}
+yy803:
+#line 1884 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_PrintableString (context_.location); }
+#line 24006 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy804:
+	yyaccept = 3;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case 'I':	goto yy813;
+	default:	goto yy47;
 	}
 yy805:
-#line 1905 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_UniversalString (context_.location); }
-#line 24094 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy806:
 	yyaccept = 95;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -24158,18 +24077,18 @@ yy806:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy807;
+	case 'z':	goto yy46;
+	default:	goto yy806;
 	}
+yy806:
+#line 1901 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_TYPE_IDENTIFIER (context_.location); }
+#line 24087 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy807:
-#line 1844 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ENCODING_CONTROL (context_.location); }
-#line 24168 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy808:
 	yyaccept = 96;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -24232,18 +24151,18 @@ yy808:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy809;
+	case 'z':	goto yy46;
+	default:	goto yy808;
 	}
+yy808:
+#line 1905 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_UniversalString (context_.location); }
+#line 24161 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy809:
-#line 1875 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
-	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ObjectDescriptor (context_.location); }
-#line 24242 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
-yy810:
 	yyaccept = 97;
 	yych = *(YYMARKER = ++context_.cursor);
 	switch (yych) {
-	case '-':	goto yy103;
+	case '-':	goto yy105;
 	case '0':
 	case '1':
 	case '2':
@@ -24306,13 +24225,161 @@ yy810:
 	case 'w':
 	case 'x':
 	case 'y':
-	case 'z':	goto yy48;
-	default:	goto yy811;
+	case 'z':	goto yy46;
+	default:	goto yy810;
 	}
+yy810:
+#line 1844 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ENCODING_CONTROL (context_.location); }
+#line 24235 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 yy811:
+	yyaccept = 98;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case '-':	goto yy105;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy46;
+	default:	goto yy812;
+	}
+yy812:
+#line 1875 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
+	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_ObjectDescriptor (context_.location); }
+#line 24309 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+yy813:
+	yyaccept = 99;
+	yych = *(YYMARKER = ++context_.cursor);
+	switch (yych) {
+	case '-':	goto yy105;
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+	case 'A':
+	case 'B':
+	case 'C':
+	case 'D':
+	case 'E':
+	case 'F':
+	case 'G':
+	case 'H':
+	case 'I':
+	case 'J':
+	case 'K':
+	case 'L':
+	case 'M':
+	case 'N':
+	case 'O':
+	case 'P':
+	case 'Q':
+	case 'R':
+	case 'S':
+	case 'T':
+	case 'U':
+	case 'V':
+	case 'W':
+	case 'X':
+	case 'Y':
+	case 'Z':
+	case '_':
+	case 'a':
+	case 'b':
+	case 'c':
+	case 'd':
+	case 'e':
+	case 'f':
+	case 'g':
+	case 'h':
+	case 'i':
+	case 'j':
+	case 'k':
+	case 'l':
+	case 'm':
+	case 'n':
+	case 'o':
+	case 'p':
+	case 'q':
+	case 'r':
+	case 's':
+	case 't':
+	case 'u':
+	case 'v':
+	case 'w':
+	case 'x':
+	case 'y':
+	case 'z':	goto yy46;
+	default:	goto yy814;
+	}
+yy814:
 #line 1888 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
 	{ context_.location.columns(context_.cursor - start); return asn1_parser::make_RELATIVE_OID_IRI (context_.location); }
-#line 24316 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
+#line 24383 "/home/styler/git/fast_ber/build/src/autogen/asn_compiler.hpp"
 }
 #line 1963 "/home/styler/git/fast_ber/src/compiler/asn_compiler.yacc"
 
