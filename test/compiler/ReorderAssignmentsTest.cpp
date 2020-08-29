@@ -86,7 +86,7 @@ TEST_CASE("ReorderAssignments: Circular Sequence")
     ComponentType component = {
         NamedType{"member", DefinedType{{}, {"Defined"}, {}}}, true, {}, {}, StorageMode::static_};
     Collection collection;
-    collection.components               = ComponentTypeList{component};
+    collection.components = ComponentTypeList{component};
 
     std::vector<Assignment> assignments = {
         Assignment{"Defined",
