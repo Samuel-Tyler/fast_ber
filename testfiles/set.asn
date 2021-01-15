@@ -1,0 +1,40 @@
+Set DEFINITIONS EXPLICIT TAGS ::= BEGIN
+
+Empty ::= SET {
+}
+
+Set ::= SET {
+    null    NULL,
+    integer INTEGER,
+    boolean BOOLEAN OPTIONAL,
+    string  UTF8String
+}
+
+SetWithExtensions ::= SET {
+    null    NULL,
+    integer INTEGER,
+    boolean BOOLEAN OPTIONAL,
+    string  UTF8String,
+    ...
+}
+
+SetWithDuplicateTagDifferentClass ::= SET
+{
+    appl [APPLICATION 2] INTEGER,
+    priv [PRIVATE 2]     INTEGER
+}
+
+END
+
+SetAutomatic DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+Set ::= SET {
+    null    NULL,
+    integer INTEGER,
+    boolean BOOLEAN OPTIONAL,
+    string  UTF8String
+}
+
+END
+
+

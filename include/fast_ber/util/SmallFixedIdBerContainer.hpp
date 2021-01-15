@@ -108,8 +108,8 @@ SmallFixedIdBerContainer<Identifier, max_content_length>::SmallFixedIdBerContain
 }
 
 template <typename Identifier, size_t max_content_length>
-SmallFixedIdBerContainer<Identifier, max_content_length>& SmallFixedIdBerContainer<Identifier, max_content_length>::
-                                                          operator=(const BerView input_view) noexcept
+SmallFixedIdBerContainer<Identifier, max_content_length>&
+SmallFixedIdBerContainer<Identifier, max_content_length>::operator=(const BerView input_view) noexcept
 {
     decode(input_view);
     return *this;
@@ -117,8 +117,9 @@ SmallFixedIdBerContainer<Identifier, max_content_length>& SmallFixedIdBerContain
 
 template <typename Identifier1, size_t max_content_length>
 template <typename Identifier2, size_t max_content_length_2>
-SmallFixedIdBerContainer<Identifier1, max_content_length>& SmallFixedIdBerContainer<Identifier1, max_content_length>::
-                                                           operator=(const SmallFixedIdBerContainer<Identifier2, max_content_length_2>& rhs) noexcept
+SmallFixedIdBerContainer<Identifier1, max_content_length>&
+SmallFixedIdBerContainer<Identifier1, max_content_length>::operator=(
+    const SmallFixedIdBerContainer<Identifier2, max_content_length_2>& rhs) noexcept
 {
     assign_content(rhs.content());
     return *this;
