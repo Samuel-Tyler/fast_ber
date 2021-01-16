@@ -9,13 +9,22 @@
 
 #include <iostream>
 
-thread_local static size_t id_counter = 0;
-
 template <typename Type>
 std::string identifier_template_params(const Type&, const Module&, const Asn1Tree&,
                                        const std::string& identifier_override)
 {
     return "<" + identifier_override + ">";
+}
+
+// Generated types do not contain tagging info within the type, so need new type definitions to introduct a new tag
+bool is_generated_type(const Type& type)
+{
+    if (is_sequence(type) || is_set(type) || is_enumerated(type) || is_choice(type) || is_sequence_of(type) ||
+        is_set_of(type))
+        return true;
+    if (is_prefixed(type))
+        return is_generated_type(absl::get<PrefixedType>(absl::get<BuiltinType>(type)).tagged_type->type);
+    return false;
 }
 
 template <typename Collection>
@@ -350,8 +359,8 @@ std::string type_as_string(const SequenceOfType& sequence, const Module& module,
 {
     const Type& type = sequence.has_name ? sequence.named_type->type : *sequence.type;
 
-    std::string contained_type_definition = create_type_assignment(type_name + "Contained", type,
-                                                   module, tree, {}, false) + '\n';
+    std::string contained_type_definition =
+        create_type_assignment(type_name + "Contained", type, module, tree, {}, false) + '\n';
 
     std::string res = "SequenceOf<" + type_name + "Contained";
     if (identifier_override.empty())
@@ -366,7 +375,7 @@ std::string type_as_string(const SequenceOfType& sequence, const Module& module,
     res += ", " + to_string(sequence.storage);
     res += ">";
 
-    return contained_type_definition + "FAST_BER_ALIAS(" +type_name +", "+ res + ");";
+    return contained_type_definition + "FAST_BER_ALIAS(" + type_name + ", " + res + ");";
 }
 std::string type_as_string(const SetType& set, const Module& module, const Asn1Tree& tree, const std::string& type_name,
                            const std::string& identifier_override)
@@ -390,13 +399,13 @@ std::string type_as_string(const SetType& set, const Module& module, const Asn1T
 
     return collection_as_string(set, module, tree, type_name, identifier_override, "set");
 }
-std::string type_as_string(const SetOfType& set, const Module& module, const Asn1Tree& tree, const std::string& type_name,
-                           const std::string& identifier_override)
+std::string type_as_string(const SetOfType& set, const Module& module, const Asn1Tree& tree,
+                           const std::string& type_name, const std::string& identifier_override)
 {
     const Type& type = set.has_name ? set.named_type->type : *set.type;
 
-    std::string contained_type_definition = create_type_assignment(type_name + "Contained", type,
-                                                   module, tree, {}, false) + '\n';
+    std::string contained_type_definition =
+        create_type_assignment(type_name + "Contained", type, module, tree, {}, false) + '\n';
 
     std::string res = "SequenceOf<" + type_name + "Contained";
     if (identifier_override.empty())
@@ -411,7 +420,7 @@ std::string type_as_string(const SetOfType& set, const Module& module, const Asn
     res += ", " + to_string(set.storage);
     res += ">";
 
-    return contained_type_definition + "FAST_BER_ALIAS(" +type_name +", "+ res + ");";
+    return contained_type_definition + "FAST_BER_ALIAS(" + type_name + ", " + res + ");";
 }
 std::string type_as_string(const PrefixedType& prefixed_type, const Module& module, const Asn1Tree& tree,
                            const std::string&, const std::string& identifier_override)
@@ -440,14 +449,15 @@ std::string type_as_string(const UTCTimeType& type, const Module& module, const 
     return "::fast_ber::UTCTime" + identifier_template_params(type, module, tree, identifier_override);
 }
 std::string type_as_string(const DefinedType& defined_type, const Module& module, const Asn1Tree& tree,
-                           const std::string&, const std::string& identifier_override)
+                           const std::string& type_name, const std::string& identifier_override)
 {
     if (!identifier_override.empty())
     {
         NamedType resolved = resolve_type(tree, module.module_reference, defined_type);
-        if (!is_sequence(resolved.type) && !is_set(resolved.type) && !is_enumerated(resolved.type) &&
-            !is_choice(resolved.type) && !is_sequence_of(resolved.type) && !is_set_of(resolved.type))
-            return type_as_string(resolved.type, module, tree, resolved.name, identifier_override);
+        if (!is_generated_type(resolved.type))
+        {
+            return create_type_assignment(type_name, resolved.type, module, tree, {}, true);
+        }
     }
 
     const std::string& assigned_type =
@@ -455,7 +465,7 @@ std::string type_as_string(const DefinedType& defined_type, const Module& module
         (defined_type.module_reference ? *defined_type.module_reference + "::" : module.module_reference + "::") +
         defined_type.type_reference;
 
-    return assigned_type;
+    return "FAST_BER_ALIAS(" + type_name + ", " + assigned_type + ");";
 }
 
 struct ToStringHelper
@@ -491,7 +501,8 @@ std::string create_type_assignment(const std::string& name, const Type& assignme
 {
     std::string res;
 
-    if (is_set(assignment_type) || is_sequence(assignment_type) || is_choice(assignment_type) || is_set_of(assignment_type) || is_sequence_of(assignment_type))
+    if (is_set(assignment_type) || is_sequence(assignment_type) || is_choice(assignment_type) ||
+        is_set_of(assignment_type) || is_sequence_of(assignment_type) || is_defined(assignment_type))
     {
         res += type_as_string(assignment_type, module, tree, name, identifier_override);
     }
@@ -506,7 +517,8 @@ std::string create_type_assignment(const std::string& name, const Type& assignme
     else if (is_prefixed(assignment_type))
     {
         PrefixedType prefixed = absl::get<PrefixedType>(absl::get<BuiltinType>(assignment_type));
-        res+= create_type_assignment(name, prefixed.tagged_type->type, module, tree, Identifier(prefixed.tagged_type->tag).name(), introduce_type);
+        res += create_type_assignment(name, prefixed.tagged_type->type, module, tree,
+                                      Identifier(prefixed.tagged_type->tag).name(), introduce_type);
     }
     else
     {
