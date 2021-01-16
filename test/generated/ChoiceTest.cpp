@@ -95,7 +95,7 @@ TEST_CASE("Choice: Type deduction")
     choice2 = fast_ber::Integer<>{};
     choice2 = fast_ber::Boolean<>{};
 
-    fast_ber::MakeAChoice::Collection collection{fast_ber::MakeAChoice::BoolMod2(true)};
+    fast_ber::MakeAChoice::Collection collection{fast_ber::MakeAChoice::Collection::The_choiceBoolean(true)};
 
     collection.the_choice = fast_ber::MakeAChoice::Collection::The_choiceHello("one");
     CHECK(fast_ber::get<0>(collection.the_choice) == "one");

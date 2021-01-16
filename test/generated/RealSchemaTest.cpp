@@ -18,7 +18,7 @@ const fast_ber::SGSN_2009A_CDR::SGSNPDPRecord test_record = {
     fast_ber::empty,
     "CC",
     "D",
-    fast_ber::SequenceOf<fast_ber::SGSN_2009A_CDR::ChangeOfCharCondition>{
+    fast_ber::SGSN_2009A_CDR::SGSNPDPRecord::ListOfTrafficVolumes{
         fast_ber::SGSN_2009A_CDR::ChangeOfCharCondition{{}, {}, {}, {}, {}, "24:00:00T"},
         fast_ber::SGSN_2009A_CDR::ChangeOfCharCondition{{}, {}, {}, {}, {}, "24:00:00T"}},
     "24:00:00T",
