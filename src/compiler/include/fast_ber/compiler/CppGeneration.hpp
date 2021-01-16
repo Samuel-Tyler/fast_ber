@@ -42,23 +42,24 @@ class CodeBlock
 class CodeScope
 {
   public:
-    CodeScope(CodeBlock& block) : m_block(block)
+    CodeScope(CodeBlock& block, bool semicolon = false) : m_block(block), m_semicolon(semicolon)
     {
         m_block.add_line("{");
         m_block.indentation()++;
     }
     CodeScope(CodeScope&) = delete;
-    CodeScope(CodeScope&& rhs) : m_block(rhs.m_block) { rhs.active = false; }
+    CodeScope(CodeScope&& rhs) : m_block(rhs.m_block) { rhs.m_active = false; }
     ~CodeScope()
     {
-        if (active)
+        if (m_active)
         {
             m_block.indentation()--;
-            m_block.add_line("}");
+            m_block.add_line(m_semicolon ? "};" : "}");
         }
     }
 
   private:
-    bool       active = true;
+    bool       m_active = true;
     CodeBlock& m_block;
+    bool       m_semicolon;
 };
