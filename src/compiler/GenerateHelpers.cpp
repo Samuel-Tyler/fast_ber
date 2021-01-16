@@ -136,6 +136,11 @@ std::string create_helper_functions(const std::string& name, const Type& type)
         }
         return res;
     }
+    else if (is_prefixed(type))
+    {
+        const PrefixedType& prefixed = absl::get<PrefixedType>(absl::get<BuiltinType>(type));
+        return create_helper_functions(name, prefixed.tagged_type->type);
+    }
 
     return "";
 }
