@@ -44,8 +44,8 @@ std::string create_assignment(const Asn1Tree& tree, const Module& module, const 
             const ValueAssignment& value_assign = absl::get<ValueAssignment>(assignment.specific);
             const Type&            assigned_to_type =
                 (is_defined(value_assign.type))
-                    ? type(resolve(tree, module.module_reference, absl::get<DefinedType>(value_assign.type)))
-                    : value_assign.type;
+                               ? type(resolve(tree, module.module_reference, absl::get<DefinedType>(value_assign.type)))
+                               : value_assign.type;
 
             std::string constness =
                 is_oid(assigned_to_type) ? std::string("static const ") : std::string("static constexpr ");
