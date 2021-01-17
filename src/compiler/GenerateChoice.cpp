@@ -244,6 +244,38 @@ CodeBlock create_choice_holds_alternative(const std::string& name, const ChoiceT
 
     return block;
 }
+
+CodeBlock create_choice_helpers(const ChoiceType&, const std::string& name, bool forward_definition_only)
+{
+    std::string maybe_semicolon = forward_definition_only? ";" : "";
+    CodeBlock block;
+    block.add_line("bool operator==(const " + name + "& lhs, const " + name + "& rhs) noexcept" + maybe_semicolon);
+    if (!forward_definition_only)
+    {
+        CodeScope scope1(block);
+        block.add_line("return lhs.impl() == rhs.impl();");
+    }
+    block.add_line();
+
+    block.add_line("bool operator!=(const " + name + "& lhs, const " + name + "& rhs) noexcept" + maybe_semicolon);
+    if (!forward_definition_only)
+    {
+        CodeScope scope1(block);
+        block.add_line("return !(lhs == rhs);");
+    }
+    block.add_line();
+
+    block.add_line("std::ostream& operator<<(std::ostream& os, const " + name + "& object)" + maybe_semicolon);
+    if (!forward_definition_only)
+    {
+        CodeScope scope1(block);
+        block.add_line("return os << object.impl();");
+    }
+    block.add_line();
+
+    return block;
+}
+
 CodeBlock create_choice_functions_impl(const Asn1Tree&, const Module&, const Type& type, const std::string& name)
 {
     if (!is_choice(type))
@@ -254,6 +286,7 @@ CodeBlock create_choice_functions_impl(const Asn1Tree&, const Module&, const Typ
     CodeBlock         block;
     const ChoiceType& choice = absl::get<ChoiceType>(absl::get<BuiltinType>(type));
 
+    block.add_block(create_choice_helpers(choice, name, true));
     block.add_block(create_choice_types(name, choice));
     block.add_block(create_choice_holds_alternative(name, choice));
     block.add_block(create_choice_getters(name, choice));
@@ -264,31 +297,4 @@ CodeBlock create_choice_functions_impl(const Asn1Tree&, const Module&, const Typ
 std::string create_choice_functions(const Asn1Tree& tree, const Module& module, const Assignment& assignment)
 {
     return visit_all_types(tree, module, assignment, create_choice_functions_impl).to_string();
-}
-
-CodeBlock create_choice_helpers(const ChoiceType&, const std::string& name)
-{
-    CodeBlock block;
-    block.add_line("bool operator==(const " + name + "& lhs, const " + name + "& rhs) noexcept");
-    {
-        CodeScope scope1(block);
-        block.add_line("return lhs.impl() == rhs.impl();");
-    }
-    block.add_line();
-
-    block.add_line("bool operator!=(const " + name + "& lhs, const " + name + "& rhs) noexcept");
-    {
-        CodeScope scope1(block);
-        block.add_line("return !(lhs == rhs);");
-    }
-    block.add_line();
-
-    block.add_line("std::ostream& operator<<(std::ostream& os, const " + name + "& object)");
-    {
-        CodeScope scope1(block);
-        block.add_line("return os << object.impl();");
-    }
-    block.add_line();
-
-    return block;
 }

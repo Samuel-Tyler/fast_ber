@@ -1,3 +1,5 @@
+#pragma once
+
 #include "fast_ber/compiler/CompilerTypes.hpp"
 
 std::string create_choice_definition(const ChoiceType& choice, const Module& module, const Asn1Tree& tree,
@@ -5,4 +7,4 @@ std::string create_choice_definition(const ChoiceType& choice, const Module& mod
 
 std::string create_choice_functions(const Asn1Tree& tree, const Module& module, const Assignment& assignment);
 
-CodeBlock create_choice_helpers(const ChoiceType&, const std::string& name);
+CodeBlock create_choice_helpers(const ChoiceType&, const std::string& name, bool forward_definition_only = false);
