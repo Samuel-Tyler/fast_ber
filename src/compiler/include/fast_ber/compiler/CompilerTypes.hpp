@@ -738,6 +738,7 @@ bool is_octet_string(const Type& type);
 bool is_boolean(const Type& type);
 bool is_oid(const Type& type);
 bool is_defined(const Type& type);
+bool is_generated(const Type& type);
 
 struct Context;
 

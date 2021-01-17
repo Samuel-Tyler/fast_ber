@@ -329,6 +329,17 @@ bool is_oid(const Type& type)
 
 bool is_defined(const Type& type) { return absl::holds_alternative<DefinedType>(type); }
 
+// Generated types do not contain tagging info within the type, so need new type definitions to introduct a new tag
+bool is_generated(const Type& type)
+{
+    if (is_sequence(type) || is_set(type) || is_enumerated(type) || is_choice(type) || is_sequence_of(type) ||
+        is_set_of(type))
+        return true;
+    if (is_prefixed(type))
+        return is_generated(absl::get<PrefixedType>(absl::get<BuiltinType>(type)).tagged_type->type);
+    return false;
+}
+
 std::string gen_anon_member_name()
 {
     static size_t count = 0;

@@ -37,7 +37,7 @@ CodeBlock create_ostream_operators(const CollectionType& collection, const std::
 template <typename CollectionType>
 CodeBlock create_collection_equality_operators(const CollectionType& collection, const std::string& name)
 {
-    CodeBlock   block;
+    CodeBlock block;
     block.add_line("bool operator==(const " + name + "& lhs, const " + name + "& rhs) noexcept");
     {
         CodeScope scope1(block);
@@ -70,7 +70,7 @@ CodeBlock create_collection_equality_operators(const CollectionType& collection,
 
 CodeBlock create_alias_helpers(const std::string& name)
 {
-    CodeBlock   block;
+    CodeBlock block;
     block.add_line("bool operator==(const " + name + "& lhs, const " + name + "& rhs) noexcept");
     {
         CodeScope scope1(block);
@@ -147,20 +147,20 @@ CodeBlock create_helper_functions_impl(const Asn1Tree&, const Module&, const Typ
 
 std::string create_helper_functions(const Asn1Tree& tree, const Module& module, const Assignment& assignment)
 {
-     if (!absl::holds_alternative<TypeAssignment>(assignment.specific))
-     {
-         return {};
-     }
+    if (!absl::holds_alternative<TypeAssignment>(assignment.specific))
+    {
+        return {};
+    }
 
-        const TypeAssignment& type_assignment = absl::get<TypeAssignment>(assignment.specific);
-    CodeBlock block;
+    const TypeAssignment& type_assignment = absl::get<TypeAssignment>(assignment.specific);
+    CodeBlock             block;
 
     if (!is_generated(type_assignment.type))
     {
         // Top level types are introduced using FAST_BER_ALIAS, so helper functions must be define
-     // block.add_block( create_alias_helpers(assignment.name));
+        // block.add_block( create_alias_helpers(assignment.name));
     }
 
     block.add_block(visit_all_types(tree, module, assignment, create_helper_functions_impl));
-return block.to_string();
+    return block.to_string();
 }

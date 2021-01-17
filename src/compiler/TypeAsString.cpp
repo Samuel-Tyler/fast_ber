@@ -1,5 +1,6 @@
 #include "fast_ber/compiler/TypeAsString.hpp"
 
+#include "fast_ber/compiler/GenerateChoice.hpp"
 #include "fast_ber/compiler/Identifier.hpp"
 #include "fast_ber/compiler/ResolveType.hpp"
 #include "fast_ber/compiler/ValueAsString.hpp"
@@ -14,17 +15,6 @@ std::string identifier_template_params(const Type&, const Module&, const Asn1Tre
                                        const std::string& identifier_override)
 {
     return "<" + identifier_override + ">";
-}
-
-// Generated types do not contain tagging info within the type, so need new type definitions to introduct a new tag
-bool is_generated_type(const Type& type)
-{
-    if (is_sequence(type) || is_set(type) || is_enumerated(type) || is_choice(type) || is_sequence_of(type) ||
-        is_set_of(type))
-        return true;
-    if (is_prefixed(type))
-        return is_generated_type(absl::get<PrefixedType>(absl::get<BuiltinType>(type)).tagged_type->type);
-    return false;
 }
 
 template <typename Collection>
@@ -141,77 +131,7 @@ std::string type_as_string(const CharacterStringType& type, const Module& module
 std::string type_as_string(const ChoiceType& choice, const Module& module, const Asn1Tree& tree,
                            const std::string& name, const std::string& identifier_override)
 {
-    int64_t     tag_counter = 0;
-    std::string definitions;
-    for (const auto& named_type : choice.choices)
-    {
-        if (module.tagging_default == TaggingMode::automatic)
-        {
-            std::string id = Identifier(Class::context_specific, tag_counter++).name();
-            definitions += "    " + create_type_assignment(name + make_type_name(named_type.name), named_type.type,
-                                                           module, tree, id, false);
-        }
-        else
-        {
-            definitions += "    " + create_type_assignment(name + make_type_name(named_type.name), named_type.type,
-                                                           module, tree, {}, false);
-        }
-    }
-
-    std::string base     = "::fast_ber::Choice<Choices<";
-    bool        is_first = true;
-
-    for (const auto& named_type : choice.choices)
-    {
-        if (!is_first)
-            base += ", ";
-        is_first = false;
-
-        base += name + make_type_name(named_type.name);
-    }
-    base += ">, ";
-
-    const auto id = identifier_override.empty() ? identifier(choice, module, tree).name() : identifier_override;
-
-    base += id;
-    base += ", " + to_string(choice.storage);
-    base += ">";
-
-    std::string res = definitions + '\n';
-    res += "struct " + name + " : " + base + "{\n";
-
-    res += "    using AliasedType = " + base + ";\n";
-    res += "    using AliasedType::AliasedType;\n";
-#ifndef _MSC_VER
-    res += "    using AliasedType::operator=;\n";
-    res += "    " + name + "() noexcept : AliasedType(){}\n";
-    res += "    " + name + "(const " + name + "& rhs) noexcept : AliasedType(static_cast<const AliasedType&>(rhs)){}\n";
-    res +=
-        "    " + name + "(" + name + "&& rhs) noexcept : AliasedType(static_cast<AliasedType&&>(std::move(rhs))){}\n";
-    res += "    " + name + "& operator=(const " + name +
-           "& rhs) noexcept { static_cast<AliasedType>(*this) = static_cast<const AliasedType&>(rhs); "
-           "return *this; }\n";
-    res += "    " + name + "& operator=(" + name +
-           "&& rhs) noexcept { static_cast<AliasedType>(*this) = static_cast<AliasedType&&>(std::move(rhs)); "
-           "return *this; }\n";
-#endif
-    res += "    " + create_template_definition({"Identifier = " + id}) + '\n';
-    res += "    std::size_t encoded_length_with_id() const noexcept;\n";
-    res += "    " + create_template_definition({"Identifier = " + id}) + '\n';
-    res += "    EncodeResult encode_with_id(absl::Span<uint8_t> output) const noexcept;\n";
-    res += "    " + create_template_definition({"Identifier = " + id}) + '\n';
-    res += "    DecodeResult decode_with_id(BerView output) noexcept;\n";
-
-    res += "    size_t encoded_length() const noexcept\n";
-    res += "    { return encoded_length_with_id<" + id + ">(); }\n";
-    res += "    EncodeResult encode(absl::Span<uint8_t> output) const noexcept\n";
-    res += "    { return encode_with_id<" + id + ">(output); }\n";
-    res += "    DecodeResult decode(BerView input) noexcept\n";
-    res += "    { return decode_with_id<" + id + ">(input); }\n";
-    res += "    using AsnId = " + id + ";\n";
-
-    res += "};\n";
-    return res;
+    return create_choice_definition(choice, module, tree, name, identifier_override);
 }
 std::string type_as_string(const DateType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
@@ -454,9 +374,9 @@ std::string type_as_string(const DefinedType& defined_type, const Module& module
     if (!identifier_override.empty())
     {
         NamedType resolved = resolve_type(tree, module.module_reference, defined_type);
-        if (!is_generated_type(resolved.type))
+        if (!is_generated(resolved.type))
         {
-            return create_type_assignment(type_name, resolved.type, module, tree, {}, true);
+            return type_as_string(resolved.type, module, tree, type_name, identifier_override);
         }
     }
 
@@ -465,7 +385,7 @@ std::string type_as_string(const DefinedType& defined_type, const Module& module
         (defined_type.module_reference ? *defined_type.module_reference + "::" : module.module_reference + "::") +
         defined_type.type_reference;
 
-    return "FAST_BER_ALIAS(" + type_name + ", " + assigned_type + ");";
+    return assigned_type;
 }
 
 struct ToStringHelper
@@ -502,7 +422,7 @@ std::string create_type_assignment(const std::string& name, const Type& assignme
     std::string res;
 
     if (is_set(assignment_type) || is_sequence(assignment_type) || is_choice(assignment_type) ||
-        is_set_of(assignment_type) || is_sequence_of(assignment_type) || is_defined(assignment_type))
+        is_set_of(assignment_type) || is_sequence_of(assignment_type))
     {
         res += type_as_string(assignment_type, module, tree, name, identifier_override);
     }
@@ -538,6 +458,7 @@ std::string create_type_assignment(const std::string& name, const Type& assignme
 
 std::string create_type_assignment(const Assignment& assignment, const Module& module, const Asn1Tree& tree)
 {
-    return create_type_assignment(assignment.name, absl::get<TypeAssignment>(assignment.specific).type, module, tree) +
+    return create_type_assignment(assignment.name, absl::get<TypeAssignment>(assignment.specific).type, module, tree,
+                                  {}, true) +
            "\n";
 }

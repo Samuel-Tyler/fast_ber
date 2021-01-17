@@ -26,9 +26,8 @@ std::string make_component_function(const std::string& function, const NamedType
 }
 
 template <typename CollectionType>
-CodeBlock
-create_collection_encode_functions(const std::string& name, const CollectionType& collection,
-                                   const Module& module, const Asn1Tree& tree)
+CodeBlock create_collection_encode_functions(const std::string& name, const CollectionType& collection,
+                                             const Module& module, const Asn1Tree& tree)
 {
     CodeBlock block;
 
@@ -86,8 +85,8 @@ create_collection_encode_functions(const std::string& name, const CollectionType
     return block;
 }
 
-CodeBlock create_choice_encode_functions(const std::string& name,
-                                           const ChoiceType& choice, const Module& module, const Asn1Tree& tree)
+CodeBlock create_choice_encode_functions(const std::string& name, const ChoiceType& choice, const Module& module,
+                                         const Asn1Tree& tree)
 {
     CodeBlock block;
 
@@ -182,10 +181,8 @@ CodeBlock create_choice_encode_functions(const std::string& name,
 }
 
 template <typename CollectionType>
-CodeBlock
-create_collection_decode_functions(const std::string& name,
-                                   const CollectionType& collection,
-                                   const Module& module, const Asn1Tree& tree)
+CodeBlock create_collection_decode_functions(const std::string& name, const CollectionType& collection,
+                                             const Module& module, const Asn1Tree& tree)
 {
     CodeBlock block;
     block.add_line(create_template_definition({"Identifier"}));
@@ -262,8 +259,8 @@ create_collection_decode_functions(const std::string& name,
     return block;
 }
 
-CodeBlock create_choice_decode_functions(const std::string& name,
-                                           const ChoiceType& choice, const Module& module, const Asn1Tree& tree)
+CodeBlock create_choice_decode_functions(const std::string& name, const ChoiceType& choice, const Module& module,
+                                         const Asn1Tree& tree)
 {
     CodeBlock block;
 
@@ -357,7 +354,8 @@ CodeBlock create_choice_decode_functions(const std::string& name,
     return block;
 }
 
-CodeBlock create_encode_functions_impl(const Asn1Tree& tree, const Module& module, const Type& type, const std::string& name)
+CodeBlock create_encode_functions_impl(const Asn1Tree& tree, const Module& module, const Type& type,
+                                       const std::string& name)
 {
     if (is_sequence(type))
     {
@@ -377,7 +375,8 @@ CodeBlock create_encode_functions_impl(const Asn1Tree& tree, const Module& modul
     return {};
 }
 
-CodeBlock create_decode_functions_impl(const Asn1Tree& tree, const Module& module, const Type& type, const std::string& name)
+CodeBlock create_decode_functions_impl(const Asn1Tree& tree, const Module& module, const Type& type,
+                                       const std::string& name)
 {
     if (is_sequence(type))
     {
@@ -401,7 +400,7 @@ std::string create_encode_functions(const Assignment& assignment, const Module& 
 {
     if (absl::holds_alternative<TypeAssignment>(assignment.specific))
     {
-    return visit_all_types(tree, module, assignment, create_encode_functions_impl).to_string();
+        return visit_all_types(tree, module, assignment, create_encode_functions_impl).to_string();
     }
 
     return "";
@@ -411,7 +410,7 @@ std::string create_decode_functions(const Assignment& assignment, const Module& 
 {
     if (absl::holds_alternative<TypeAssignment>(assignment.specific))
     {
-    return visit_all_types(tree, module, assignment, create_decode_functions_impl).to_string();
+        return visit_all_types(tree, module, assignment, create_decode_functions_impl).to_string();
     }
 
     return "";

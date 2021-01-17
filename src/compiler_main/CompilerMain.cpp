@@ -4,6 +4,7 @@
 #include "fast_ber/compiler/CppGeneration.hpp"
 #include "fast_ber/compiler/Dependencies.hpp"
 #include "fast_ber/compiler/EncodeDecode.hpp"
+#include "fast_ber/compiler/GenerateChoice.hpp"
 #include "fast_ber/compiler/GenerateHelpers.hpp"
 #include "fast_ber/compiler/Identifier.hpp"
 #include "fast_ber/compiler/Logging.hpp"
@@ -166,9 +167,10 @@ std::string create_detail_body(const Asn1Tree& tree)
         std::string helpers;
         for (const Assignment& assignment : module.assignments)
         {
+            body += create_choice_functions(tree, module, assignment);
             body += create_encode_functions(assignment, module, tree);
             body += create_decode_functions(assignment, module, tree);
-            helpers += create_helper_functions(assignment);
+            helpers += create_helper_functions(tree, module, assignment);
         }
 
         body += add_namespace(module.module_reference, helpers);

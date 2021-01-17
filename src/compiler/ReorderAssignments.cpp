@@ -208,7 +208,7 @@ void resolve_dependencies(std::unordered_map<std::string, Assignment>& assignmen
             {
                 absl::get<SequenceOfType>(absl::get<BuiltinType>(type(assignment))).storage = StorageMode::dynamic;
             }
-            std::cout << "Type " << name << " has circular dependencies, seting dynamic storage policy" << std::endl;
+            std::cout << "Type " << name << " has circular dependencies, setting dynamic storage policy" << std::endl;
         }
         else
         {
@@ -249,7 +249,7 @@ void resolve_dependencies(std::unordered_map<std::string, Assignment>& assignmen
             else if (component.is_optional && is_circular(depends_on(component.named_type.type)))
             {
                 std::cout << "Optional member[" << component.named_type.name << "] of [" << name
-                          << "] has circular dependencies, seting dynamic storage policy" << std::endl;
+                          << "] has circular dependencies, setting dynamic storage policy" << std::endl;
 
                 component.optional_storage = StorageMode::dynamic;
             }
@@ -288,7 +288,7 @@ void resolve_dependencies(std::unordered_map<std::string, Assignment>& assignmen
             else if (component.is_optional && is_circular(depends_on(component.named_type.type)))
             {
                 std::cout << "Optional member[" << component.named_type.name << "] of [" << name
-                          << "] has circular dependencies, seting dynamic storage policy" << std::endl;
+                          << "] has circular dependencies, setting dynamic storage policy" << std::endl;
 
                 component.optional_storage = StorageMode::dynamic;
             }
