@@ -135,7 +135,7 @@ bool operator==(const Boolean<Identifier1>& lhs, const Boolean<Identifier2>& rhs
 }
 
 template <typename Identifier1, typename Identifier2>
-bool operator!=(const Boolean<Identifier1>& lhs,const Boolean<Identifier2>& rhs) noexcept
+bool operator!=(const Boolean<Identifier1>& lhs, const Boolean<Identifier2>& rhs) noexcept
 {
     return !(lhs == rhs);
 }
