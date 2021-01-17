@@ -114,7 +114,7 @@ TEST_CASE("AllTypes: Check all types share a unified interface")
     test_type(fast_ber::All::The_BitString("TestString"));
     test_type(fast_ber::All::The_Boolean(true));
     test_type(fast_ber::All::The_CharacterString("TestString"));
-    test_type(fast_ber::All::The_Choice(fast_ber::All::The_ChoiceMember_one(true)));
+    test_type(fast_ber::All::The_Choice(fast_ber::All::The_Choice::Member_one(true)));
     // test_type(fast_ber::Date<>);
     // test_type(fast_ber::DateTime<>);
     test_type(fast_ber::Default<fast_ber::Integer<>, dflt::IntDefault>(dflt::IntDefault::get_value()));

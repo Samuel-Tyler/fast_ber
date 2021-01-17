@@ -57,7 +57,6 @@ static const std::array<uint8_t, 203> test_record_expected_encoding = {
 
 TEST_CASE("RealSchema: Testing a standard asn schema")
 {
-    /*
     std::array<uint8_t, 5000> buffer = {};
 
     fast_ber::SGSN_2009A_CDR::CallEventRecord      record;
@@ -81,5 +80,5 @@ TEST_CASE("RealSchema: Testing a standard asn schema")
 
     REQUIRE(record == fast_ber::SGSN_2009A_CDR::CallEventRecord{test_record});
     REQUIRE(fast_ber::encoded_length(record) == test_record_expected_encoding.size());
-    REQUIRE(absl::MakeSpan(buffer.data(), test_record_expected_encoding.size()) == test_record_expected_encoding);*/
+    REQUIRE(absl::MakeSpan(buffer.data(), test_record_expected_encoding.size()) == test_record_expected_encoding);
 }

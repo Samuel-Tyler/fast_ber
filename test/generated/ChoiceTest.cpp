@@ -5,7 +5,7 @@
 TEST_CASE("Choice: Generated choice")
 {
     fast_ber::MakeAChoice::Collection collection;
-    collection.the_choice = fast_ber::MakeAChoice::Collection::The_choiceInteger(5);
+    collection.the_choice = fast_ber::MakeAChoice::Collection::The_choice::Integer(5);
 
     std::vector<uint8_t> buffer;
     size_t               expected_length = fast_ber::encoded_length(collection);
@@ -25,7 +25,7 @@ TEST_CASE("Choice: Generated choice")
 TEST_CASE("Choice: Generated choice explicit tags")
 {
     fast_ber::ExplicitChoice::MyChoice choice;
-    choice = fast_ber::ExplicitChoice::MyChoiceSequence{};
+    choice = fast_ber::ExplicitChoice::MyChoice::Sequence{};
 
     std::vector<uint8_t> buffer(1000, 0x00);
     size_t               expected_length = fast_ber::encoded_length(choice);
@@ -44,7 +44,7 @@ TEST_CASE("Choice: Generated choice explicit tags")
 TEST_CASE("Choice: Tags")
 {
     fast_ber::MakeAChoice::Collection c;
-    using ChoiceType = fast_ber::MakeAChoice::Collection::The_choice::AliasedType;
+    using ChoiceType = fast_ber::MakeAChoice::Collection::The_choice;
     std::vector<uint8_t> buffer(1000, 0x00);
 
     c.the_choice = fast_ber::variant_alternative_t<0, ChoiceType>{};
@@ -95,21 +95,21 @@ TEST_CASE("Choice: Type deduction")
     choice2 = fast_ber::Integer<>{};
     choice2 = fast_ber::Boolean<>{};
 
-    fast_ber::MakeAChoice::Collection collection{fast_ber::MakeAChoice::Collection::The_choiceBoolean(true)};
+    fast_ber::MakeAChoice::Collection collection{fast_ber::MakeAChoice::Collection::The_choice::Boolean(true)};
 
-    collection.the_choice = fast_ber::MakeAChoice::Collection::The_choiceHello("one");
+    collection.the_choice = fast_ber::MakeAChoice::Collection::The_choice::Hello("one");
     CHECK(fast_ber::get<0>(collection.the_choice) == "one");
 
-    collection.the_choice = fast_ber::MakeAChoice::Collection::The_choiceGoodbye("two");
+    collection.the_choice = fast_ber::MakeAChoice::Collection::The_choice::Goodbye("two");
     CHECK(fast_ber::get<1>(collection.the_choice) == "two");
 
-    collection.the_choice = fast_ber::MakeAChoice::Collection::The_choiceInteger(5);
+    collection.the_choice = fast_ber::MakeAChoice::Collection::The_choice::Integer(5);
     CHECK(fast_ber::get<2>(collection.the_choice) == 5);
 
-    collection.the_choice = fast_ber::MakeAChoice::Collection::The_choiceBoolean(true);
+    collection.the_choice = fast_ber::MakeAChoice::Collection::The_choice::Boolean(true);
     CHECK(fast_ber::get<3>(collection.the_choice));
 
-    collection.the_choice = fast_ber::MakeAChoice::Collection::The_choiceBoolean(false);
+    collection.the_choice = fast_ber::MakeAChoice::Collection::The_choice::Boolean(false);
     CHECK(!fast_ber::get<3>(collection.the_choice));
 }
 
@@ -118,27 +118,27 @@ TEST_CASE("Choice: Explicit Tags")
     fast_ber::ExplicitChoice::MyChoice c;
     std::vector<uint8_t>               buffer(1000, 0x00);
 
-    c = fast_ber::variant_alternative_t<0, decltype(c)::AliasedType>{};
+    c = fast_ber::variant_alternative_t<0, decltype(c)>{};
     c.encode(absl::Span<uint8_t>(buffer));
     CHECK(fast_ber::BerView(buffer).identifier() == fast_ber::RuntimeId{fast_ber::Class::context_specific, 0});
     CHECK(fast_ber::BerView(buffer).begin()->identifier() == fast_ber::RuntimeId{fast_ber::UniversalTag::octet_string});
 
-    c = fast_ber::variant_alternative_t<1, decltype(c)::AliasedType>{};
+    c = fast_ber::variant_alternative_t<1, decltype(c)>{};
     c.encode(absl::Span<uint8_t>(buffer));
     CHECK(fast_ber::BerView(buffer).identifier() == fast_ber::RuntimeId{fast_ber::Class::context_specific, 1});
     CHECK(fast_ber::BerView(buffer).begin()->identifier() == fast_ber::RuntimeId{fast_ber::UniversalTag::octet_string});
 
-    c = fast_ber::variant_alternative_t<2, decltype(c)::AliasedType>{};
+    c = fast_ber::variant_alternative_t<2, decltype(c)>{};
     c.encode(absl::Span<uint8_t>(buffer));
     CHECK(fast_ber::BerView(buffer).identifier() == fast_ber::RuntimeId{fast_ber::Class::context_specific, 2});
     CHECK(fast_ber::BerView(buffer).begin()->identifier() == fast_ber::RuntimeId{fast_ber::UniversalTag::integer});
 
-    c = fast_ber::variant_alternative_t<3, decltype(c)::AliasedType>{};
+    c = fast_ber::variant_alternative_t<3, decltype(c)>{};
     c.encode(absl::Span<uint8_t>(buffer));
     CHECK(fast_ber::BerView(buffer).identifier() == fast_ber::RuntimeId{fast_ber::Class::context_specific, 3});
     CHECK(fast_ber::BerView(buffer).begin()->identifier() == fast_ber::RuntimeId{fast_ber::UniversalTag::boolean});
 
-    c = fast_ber::variant_alternative_t<4, decltype(c)::AliasedType>{};
+    c = fast_ber::variant_alternative_t<4, decltype(c)>{};
     c.encode(absl::Span<uint8_t>(buffer));
     CHECK(fast_ber::BerView(buffer).identifier() == fast_ber::RuntimeId{fast_ber::Class::context_specific, 4});
     CHECK(fast_ber::BerView(buffer).begin()->identifier() == fast_ber::RuntimeId{fast_ber::UniversalTag::sequence});
@@ -186,8 +186,8 @@ TEST_CASE("Choice: Basic choice")
     choice_1 = "Test string";
     choice_2 = 10;
 
-    CHECK(fast_ber::holds_alternative<fast_ber::SimpleChoice::SimpleB>(choice_1));
-    CHECK(fast_ber::holds_alternative<fast_ber::SimpleChoice::SimpleA>(choice_2));
+    CHECK(fast_ber::holds_alternative<fast_ber::SimpleChoice::Simple::B>(choice_1));
+    CHECK(fast_ber::holds_alternative<fast_ber::SimpleChoice::Simple::A>(choice_2));
 
     std::vector<uint8_t> choice_encoded(100, 0x00);
     bool enc_success = fast_ber::encode(absl::MakeSpan(choice_encoded.data(), choice_encoded.size()), choice_1).success;
@@ -195,8 +195,8 @@ TEST_CASE("Choice: Basic choice")
 
     CHECK(enc_success);
     CHECK(dec_success);
-    CHECK(fast_ber::holds_alternative<fast_ber::SimpleChoice::SimpleB>(choice_1));
-    CHECK(fast_ber::holds_alternative<fast_ber::SimpleChoice::SimpleB>(choice_2));
+    CHECK(fast_ber::holds_alternative<fast_ber::SimpleChoice::Simple::B>(choice_1));
+    CHECK(fast_ber::holds_alternative<fast_ber::SimpleChoice::Simple::B>(choice_2));
     CHECK(choice_1 == choice_2);
 }
 
@@ -213,17 +213,15 @@ TEST_CASE("Choice: Clashing type")
 
     CHECK(enc_success);
     CHECK(dec_success);
-    CHECK(fast_ber::holds_alternative<fast_ber::variant_alternative<2, fast_ber::Clashing::Clash::AliasedType>::type>(
-        choice_1));
-    CHECK(fast_ber::holds_alternative<fast_ber::variant_alternative<2, fast_ber::Clashing::Clash::AliasedType>::type>(
-        choice_2));
+    CHECK(fast_ber::holds_alternative<fast_ber::variant_alternative<2, fast_ber::Clashing::Clash>::type>(choice_1));
+    CHECK(fast_ber::holds_alternative<fast_ber::variant_alternative<2, fast_ber::Clashing::Clash>::type>(choice_2));
     CHECK(choice_1 == choice_2);
 }
 
 TEST_CASE("Choice: Choice of choices")
 {
-    using Choice1 = fast_ber::ChoiceOfChoice::COne;
-    using Choice2 = fast_ber::ChoiceOfChoice::CTwo;
+    using Choice1 = fast_ber::ChoiceOfChoice::C::One;
+    using Choice2 = fast_ber::ChoiceOfChoice::C::Two;
     using Choice3 = fast_ber::ChoiceOfChoice::C;
 
     using ExpectedId = fast_ber::ChoiceId<

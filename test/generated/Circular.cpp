@@ -1,6 +1,7 @@
 ﻿#include "autogen/circular.hpp"
 
 #include "catch2/catch.hpp"
+
 TEST_CASE("Circular Types: Optional Members")
 {
     fast_ber::Circular::CircularSequence1 copy;
@@ -55,7 +56,7 @@ TEST_CASE("Circular Types: Choice")
 {
     fast_ber::Circular::CircularChoice1 copy;
     fast_ber::Circular::CircularChoice1 circular;
-    circular.emplace<1>(fast_ber::Circular::CircularChoice1Choice{"bla", {}});
+    circular.emplace<1>(fast_ber::Circular::CircularChoice1::Choice{"bla", {}});
 
     REQUIRE(copy != circular);
 
