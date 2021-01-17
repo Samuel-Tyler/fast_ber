@@ -128,6 +128,18 @@ DecodeResult Boolean<Identifier>::decode(BerView input) noexcept
     return DecodeResult{false};
 }
 
+template <typename Identifier1, typename Identifier2>
+bool operator==(const Boolean<Identifier1>& lhs, const Boolean<Identifier2>& rhs) noexcept
+{
+    return lhs.value() == rhs.value();
+}
+
+template <typename Identifier1, typename Identifier2>
+bool operator!=(const Boolean<Identifier1>& lhs,const Boolean<Identifier2>& rhs) noexcept
+{
+    return !(lhs == rhs);
+}
+
 template <typename Identifier>
 std::ostream& operator<<(std::ostream& os, const Boolean<Identifier>& object)
 {
