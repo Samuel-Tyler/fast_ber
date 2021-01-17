@@ -1,5 +1,8 @@
 #include "fast_ber/compiler/GenerateHelpers.hpp"
 
+#include "fast_ber/compiler/GenerateChoice.hpp"
+#include "fast_ber/compiler/Visit.hpp"
+
 template <typename CollectionType>
 CodeBlock create_ostream_operators(const CollectionType& collection, const std::string& full_name)
 {
@@ -32,18 +35,10 @@ CodeBlock create_ostream_operators(const CollectionType& collection, const std::
 }
 
 template <typename CollectionType>
-CodeBlock create_collection_equality_operators(const CollectionType& collection, std::vector<std::string> parents,
-                                               const std::string& name)
+CodeBlock create_collection_equality_operators(const CollectionType& collection, const std::string& name)
 {
     CodeBlock   block;
-    std::string full_namespace;
-    for (const std::string& parent : parents)
-    {
-        full_namespace += parent + "::";
-    }
-    std::string full_name = full_namespace + name;
-
-    block.add_line("bool operator==(const " + full_name + "& lhs, const " + full_name + "& rhs) noexcept");
+    block.add_line("bool operator==(const " + name + "& lhs, const " + name + "& rhs) noexcept");
     {
         CodeScope scope1(block);
 
@@ -62,29 +57,55 @@ CodeBlock create_collection_equality_operators(const CollectionType& collection,
     }
     block.add_line();
 
-    block.add_line("bool operator!=(const " + full_name + "& lhs, const " + full_name + "& rhs) noexcept");
+    block.add_line("bool operator!=(const " + name + "& lhs, const " + name + "& rhs) noexcept");
     {
         CodeScope scope1(block);
         block.add_line("return !(lhs == rhs);");
     }
     block.add_line();
-    block.add_block(create_ostream_operators(collection, full_name));
-    parents.push_back(name);
+    block.add_block(create_ostream_operators(collection, name));
 
     return block;
 }
 
-CodeBlock create_helper_functions_impl(const std::string& name, const Type& type)
+CodeBlock create_alias_helpers(const std::string& name)
+{
+    CodeBlock   block;
+    block.add_line("bool operator==(const " + name + "& lhs, const " + name + "& rhs) noexcept");
+    {
+        CodeScope scope1(block);
+        block.add_line("return lhs.get_base() == rhs.get_base();");
+    }
+    block.add_line();
+
+    block.add_line("bool operator!=(const " + name + "& lhs, const " + name + "& rhs) noexcept");
+    {
+        CodeScope scope1(block);
+        block.add_line("return !(lhs == rhs);");
+    }
+    block.add_line();
+
+    block.add_line("std::ostream& operator<<(std::ostream& os, const " + name + "& object)");
+    {
+        CodeScope scope1(block);
+        block.add_line("return os << object.get_base();");
+    }
+    block.add_line();
+
+    return block;
+}
+
+CodeBlock create_helper_functions_impl(const Asn1Tree&, const Module&, const Type& type, const std::string& name)
 {
     if (is_sequence(type))
     {
         const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(type));
-        return create_collection_equality_operators(sequence, {}, name);
+        return create_collection_equality_operators(sequence, name);
     }
     else if (is_set(type))
     {
         const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(type));
-        return create_collection_equality_operators(set, {}, name);
+        return create_collection_equality_operators(set, name);
     }
     else if (is_enumerated(type))
     {
@@ -117,85 +138,29 @@ CodeBlock create_helper_functions_impl(const std::string& name, const Type& type
     }
     else if (is_choice(type))
     {
-        /*TODO std::string       res;
         const ChoiceType& choice = absl::get<ChoiceType>(absl::get<BuiltinType>(type));
-        for (const NamedType& named_type : choice.choices)
-        {
-            res += create_helper_functions(name + make_type_name(named_type.name), named_type.type);
-        }
-        return res;*/
-        return {};
+        return create_choice_helpers(choice, name);
     }
 
     return {};
 }
 
-template <typename Function>
-CodeBlock visit_all_types(const std::string& context_namespace, const Type& type, Function&& func)
+std::string create_helper_functions(const Asn1Tree& tree, const Module& module, const Assignment& assignment)
 {
+     if (!absl::holds_alternative<TypeAssignment>(assignment.specific))
+     {
+         return {};
+     }
+
+        const TypeAssignment& type_assignment = absl::get<TypeAssignment>(assignment.specific);
     CodeBlock block;
 
-    if (is_sequence(type))
+    if (!is_generated(type_assignment.type))
     {
-        const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(type));
-        for (const ComponentType& component : sequence.components)
-        {
-            const std::string name = context_namespace + "::" + make_type_name(component.named_type.name);
-            block.add_block(visit_all_types(name, component.named_type.type, std::forward<Function>(func)));
-        }
-    }
-    else if (is_set(type))
-    {
-        const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(type));
-        for (const ComponentType& component : set.components)
-        {
-            const std::string name = context_namespace + "::" + make_type_name(component.named_type.name);
-            block.add_block(visit_all_types(name, component.named_type.type, std::forward<Function>(func)));
-        }
-    }
-    else if (is_sequence_of(type))
-    {
-        const SequenceOfType& sequence = absl::get<SequenceOfType>(absl::get<BuiltinType>(type));
-        if (sequence.has_name)
-        {
-            const std::string name = context_namespace + "::" + make_type_name(sequence.named_type->name);
-            block.add_block(visit_all_types(name, sequence.named_type->type, std::forward<Function>(func)));
-        }
-    }
-    else if (is_set_of(type))
-    {
-        const SetOfType& set = absl::get<SetOfType>(absl::get<BuiltinType>(type));
-        if (set.has_name)
-        {
-            const std::string name = context_namespace + "::" + make_type_name(set.named_type->name);
-            block.add_block(visit_all_types(name, set.named_type->type, std::forward<Function>(func)));
-        }
-    }
-    else if (is_choice(type))
-    {
-        const ChoiceType& choice = absl::get<ChoiceType>(absl::get<BuiltinType>(type));
-        for (const NamedType& named_type : choice.choices)
-        {
-            const std::string name = context_namespace + "::" + make_type_name(named_type.name);
-            block.add_block(visit_all_types(name, named_type.type, std::forward<Function>(func)));
-        }
-    }
-    else if (is_prefixed(type))
-    {
-        const PrefixedType& prefixed = absl::get<PrefixedType>(absl::get<BuiltinType>(type));
-        block.add_block(visit_all_types(context_namespace, prefixed.tagged_type->type, std::forward<Function>(func)));
+        // Top level types are introduced using FAST_BER_ALIAS, so helper functions must be define
+     // block.add_block( create_alias_helpers(assignment.name));
     }
 
-    block.add_block(func(context_namespace, type));
-    return block;
-}
-
-std::string create_helper_functions(const Assignment& assignment)
-{
-    if (absl::holds_alternative<TypeAssignment>(assignment.specific))
-    {
-        const TypeAssignment& type_assignment = absl::get<TypeAssignment>(assignment.specific);
-        return visit_all_types(assignment.name, type_assignment.type, create_helper_functions_impl).to_string();
-    }
-    return "";
+    block.add_block(visit_all_types(tree, module, assignment, create_helper_functions_impl));
+return block.to_string();
 }
