@@ -270,14 +270,9 @@ std::string type_as_string(const SequenceType& sequence, const Module& module, c
     }
     return collection_as_string(sequence, module, tree, type_name, identifier_override, "sequence");
 }
-std::string type_as_string(const SequenceOfType& sequence, const Module& module, const Asn1Tree& tree,
+std::string type_as_string(const SequenceOfType& sequence, const Module& , const Asn1Tree& ,
                            const std::string& type_name, const std::string& identifier_override)
 {
-    const Type& type = sequence.has_name ? sequence.named_type->type : *sequence.type;
-
-    std::string contained_type_definition =
-        create_type_assignment(type_name + "Contained", type, module, tree, {}, false) + '\n';
-
     std::string res = "SequenceOf<" + type_name + "Contained";
     if (identifier_override.empty())
     {
@@ -291,7 +286,7 @@ std::string type_as_string(const SequenceOfType& sequence, const Module& module,
     res += ", " + to_string(sequence.storage);
     res += ">";
 
-    return contained_type_definition + "FAST_BER_ALIAS(" + type_name + ", " + res + ");";
+    return res;
 }
 std::string type_as_string(const SetType& set, const Module& module, const Asn1Tree& tree, const std::string& type_name,
                            const std::string& identifier_override)
@@ -318,25 +313,7 @@ std::string type_as_string(const SetType& set, const Module& module, const Asn1T
 std::string type_as_string(const SetOfType& set, const Module& module, const Asn1Tree& tree,
                            const std::string& type_name, const std::string& identifier_override)
 {
-    const Type& type = set.has_name ? set.named_type->type : *set.type;
-
-    std::string contained_type_definition =
-        create_type_assignment(type_name + "Contained", type, module, tree, {}, false) + '\n';
-
-    std::string res = "SequenceOf<" + type_name + "Contained";
-    if (identifier_override.empty())
-    {
-        res += ", ExplicitId<UniversalTag::sequence>";
-    }
-    else
-    {
-        res += ", " + identifier_override;
-    }
-
-    res += ", " + to_string(set.storage);
-    res += ">";
-
-    return contained_type_definition + "FAST_BER_ALIAS(" + type_name + ", " + res + ");";
+    return type_as_string(set.base(), module, tree, type_name, identifier_override);
 }
 std::string type_as_string(const PrefixedType& prefixed_type, const Module& module, const Asn1Tree& tree,
                            const std::string&, const std::string& identifier_override)
@@ -417,12 +394,7 @@ std::string create_type_assignment(const std::string& name, const Type& assignme
 {
     std::string res;
 
-    if (is_set(assignment_type) || is_sequence(assignment_type) || is_choice(assignment_type) ||
-        is_set_of(assignment_type) || is_sequence_of(assignment_type))
-    {
-        res += type_as_string(assignment_type, module, tree, name, identifier_override);
-    }
-    else if (is_enumerated(assignment_type))
+    if (is_enumerated(assignment_type))
     {
         const EnumeratedType& enumerated = absl::get<EnumeratedType>(absl::get<BuiltinType>(assignment_type));
         res += "enum class " + name + "Values {\n";
@@ -436,11 +408,23 @@ std::string create_type_assignment(const std::string& name, const Type& assignme
             res += ",\n";
         }
         res += "};\n\n";
+    }
+    else if (is_set_of(assignment_type))
+    {
+        const SetOfType& sequence = absl::get<SetOfType>(absl::get<BuiltinType>(assignment_type));
+        const Type& type = sequence.has_name ? sequence.named_type->type : *sequence.type;
+        res += create_type_assignment(name + "Contained", type, module, tree, {}, false) + '\n';
+    }
+    else if (is_sequence_of(assignment_type))
+    {
+        const SequenceOfType& sequence = absl::get<SequenceOfType>(absl::get<BuiltinType>(assignment_type));
+        const Type& type = sequence.has_name ? sequence.named_type->type : *sequence.type;
+        res += create_type_assignment(name + "Contained", type, module, tree, {}, false) + '\n';
+    }
 
-        auto id =
-            (!identifier_override.empty()) ? identifier_override : identifier(assignment_type, module, tree).name();
-
-        res += "FAST_BER_ALIAS(" + name + ", " + type_as_string(enumerated, module, tree, name, id) + ");";
+    if (is_set(assignment_type) || is_sequence(assignment_type) || is_choice(assignment_type))
+    {
+        res += type_as_string(assignment_type, module, tree, name, identifier_override);
     }
     else if (is_prefixed(assignment_type))
     {
@@ -450,7 +434,7 @@ std::string create_type_assignment(const std::string& name, const Type& assignme
             id = identifier(assignment_type, module, tree).name();
         }
 
-        PrefixedType prefixed = absl::get<PrefixedType>(absl::get<BuiltinType>(assignment_type));
+        const PrefixedType& prefixed = absl::get<PrefixedType>(absl::get<BuiltinType>(assignment_type));
         res += create_type_assignment(name, prefixed.tagged_type->type, module, tree, id, introduce_type);
     }
     else

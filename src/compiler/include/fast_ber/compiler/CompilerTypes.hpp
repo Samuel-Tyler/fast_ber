@@ -391,22 +391,17 @@ struct SequenceOfType
     StorageMode                storage = StorageMode::small_buffer_optimised;
 
     SequenceOfType() = default;
-    SequenceOfType(bool, std::unique_ptr<NamedType>&&, std::unique_ptr<Type>&&);
+    SequenceOfType(bool, std::unique_ptr<NamedType>&&, std::unique_ptr<Type>&&, StorageMode storage = StorageMode::small_buffer_optimised);
     SequenceOfType(const SequenceOfType& rhs);
     SequenceOfType& operator=(const SequenceOfType& rhs);
 };
-struct SetOfType
+struct SetOfType : SequenceOfType
 {
-    // Unique pointers used to prevent circular references
-    bool                       has_name;
-    std::unique_ptr<NamedType> named_type;
-    std::unique_ptr<Type>      type;
-    StorageMode                storage = StorageMode::small_buffer_optimised;
+    using SequenceOfType::SequenceOfType;
+    using SequenceOfType::operator=;
 
-    SetOfType() = default;
-    SetOfType(bool, std::unique_ptr<NamedType>&&, std::unique_ptr<Type>&&);
-    SetOfType(const SetOfType& rhs);
-    SetOfType& operator=(const SetOfType& rhs);
+    SequenceOfType& base() { return *this; }
+    SequenceOfType const& base() const { return *this; }
 };
 
 struct ChoiceType
