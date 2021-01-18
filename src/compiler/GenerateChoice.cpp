@@ -247,8 +247,8 @@ CodeBlock create_choice_holds_alternative(const std::string& name, const ChoiceT
 
 CodeBlock create_choice_helpers(const ChoiceType&, const std::string& name, bool forward_definition_only)
 {
-    std::string maybe_semicolon = forward_definition_only? ";" : "";
-    CodeBlock block;
+    std::string maybe_semicolon = forward_definition_only ? ";" : "";
+    CodeBlock   block;
     block.add_line("bool operator==(const " + name + "& lhs, const " + name + "& rhs) noexcept" + maybe_semicolon);
     if (!forward_definition_only)
     {

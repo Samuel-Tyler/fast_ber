@@ -189,9 +189,19 @@ CodeBlock create_collection_decode_functions(const std::string& name, const Coll
     block.add_line("DecodeResult " + name + "::decode_with_id(BerView input) noexcept");
     {
         auto scope = CodeScope(block);
+        block.add_line("if (!input.is_valid())");
+        {
+            auto scope2 = CodeScope(block);
+            block.add_line(R"(FAST_BER_ERROR("Invalid packet when decoding collection [)" + name + R"(]");)");
+            block.add_line("return DecodeResult{false};");
+        }
+
         block.add_line("if (!has_correct_header(input, Identifier{}, Construction::constructed))");
         {
             auto scope2 = CodeScope(block);
+            block.add_line(
+                R"(FAST_BER_ERROR("Invalid identifier [", input.identifier(), "] when decoding collection [)" + name +
+                R"(]");)");
             block.add_line("return DecodeResult{false};");
         }
 
@@ -221,9 +231,9 @@ CodeBlock create_collection_decode_functions(const std::string& name, const Coll
                     block.add_line("if (!res.success)");
                     {
                         auto scope3 = CodeScope(block);
-                        {
-                            block.add_line("return res;");
-                        }
+                        block.add_line(R"(FAST_BER_ERROR("failed to decode member [)" + component.named_type.name +
+                                       R"(] of collection [)" + name + R"(]");)");
+                        block.add_line("return res;");
                     }
                     block.add_line("++iterator;");
                 }
@@ -248,6 +258,8 @@ CodeBlock create_collection_decode_functions(const std::string& name, const Coll
                 block.add_line("if (!res.success)");
                 {
                     auto scope2 = CodeScope(block);
+                    block.add_line(R"(FAST_BER_ERROR("failed to decode member [)" + component.named_type.name +
+                                   R"(] of collection [)" + name + R"(]");)");
                     block.add_line("return res;");
                 }
                 block.add_line("++iterator;");
@@ -275,16 +287,15 @@ CodeBlock create_choice_decode_functions(const std::string& name, const ChoiceTy
             block.add_line("if (!input.is_valid())");
             {
                 auto scope3 = CodeScope(block);
-                block.add_line(R"(std::cerr << "Invalid packet when decoding choice [)" + name + R"(]" <<
-           std::endl;)");
+                block.add_line(R"(FAST_BER_ERROR("Invalid packet when decoding choice [)" + name + R"(]");)");
                 block.add_line("return DecodeResult{false};");
             }
             block.add_line("if (!has_correct_header(input, Identifier{}, Construction::constructed))");
             {
                 auto scope3 = CodeScope(block);
                 block.add_line(
-                    R"(std::cerr << "Invalid header when decoding choice type [" << input.identifier() << "] in choice [)" +
-                    name + R"(]" << std::endl;)");
+                    R"(FAST_BER_ERROR("Invalid header when decoding choice type [", input.identifier(), "] in choice [)" +
+                    name + R"(]");)");
                 block.add_line("return DecodeResult{false};");
             }
 
@@ -293,6 +304,8 @@ CodeBlock create_choice_decode_functions(const std::string& name, const ChoiceTy
             block.add_line("if (!child->is_valid())");
             {
                 auto scope3 = CodeScope(block);
+                block.add_line(R"(FAST_BER_ERROR("Invalid child packet when decoding choice [)" + name + R"(]");)");
+
                 block.add_line("return DecodeResult{false};");
             }
             block.add_line("content = *child;");
@@ -345,8 +358,7 @@ CodeBlock create_choice_decode_functions(const std::string& name, const ChoiceTy
                 }
             }
         }
-        block.add_line(R"(std::cerr << "Unknown tag [" << content.identifier() << "] in choice [)" + name +
-                       R"(]" << std::endl;)");
+        block.add_line(R"(FAST_BER_ERROR("Unknown tag [", content.identifier(), "] in choice [)" + name + R"(]");)");
         block.add_line("return DecodeResult{false};");
     }
 

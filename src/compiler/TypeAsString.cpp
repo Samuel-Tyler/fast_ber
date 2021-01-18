@@ -66,6 +66,10 @@ std::string collection_as_string(const Collection& collection, const Module& mod
     }
 
     res += definitions;
+    if (!collection.components.empty())
+    {
+        res += '\n';
+    }
 
     std::vector<std::string> component_types;
 
@@ -85,6 +89,10 @@ std::string collection_as_string(const Collection& collection, const Module& mod
         }
         res += "    " + component_type + " " + component.named_type.name + ";\n";
         component_types.push_back(component_type);
+    }
+    if (!collection.components.empty())
+    {
+        res += '\n';
     }
 
     auto id = identifier_override.empty() ? identifier(collection, module, tree).name() : identifier_override;
@@ -431,8 +439,7 @@ std::string create_type_assignment(const std::string& name, const Type& assignme
         auto id =
             (!identifier_override.empty()) ? identifier_override : identifier(assignment_type, module, tree).name();
 
-        res += "enum class " + name + "Values" + type_as_string(assignment_type, module, tree);
-        res += "FAST_BER_ALIAS(" + name + ", " + "Enumerated<" + name + "Values," + id + ">);\n";
+        res += "FAST_BER_ALIAS(" + name + ", " + type_as_string(enumerated, module, tree, name, id) + ");";
     }
     else if (is_prefixed(assignment_type))
     {
@@ -444,8 +451,7 @@ std::string create_type_assignment(const std::string& name, const Type& assignme
     {
         if (introduce_type)
         {
-            res += "FAST_BER_ALIAS(" + name + ", " +
-                   type_as_string(assignment_type, module, tree, name, identifier_override) + ");\n";
+            res += "FAST_BER_ALIAS(" + name + ", " + type_as_string(assignment_type, module, tree, name, id) + ");\n";
         }
         else
         {
