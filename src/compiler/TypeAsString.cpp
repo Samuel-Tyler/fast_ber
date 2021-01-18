@@ -166,9 +166,9 @@ std::string type_as_string(const EnumeratedType&, const Module&, const Asn1Tree&
 {
     if (!identifier_override.empty())
     {
-        return "Enumerated<" + type_name + "Values," + identifier_override + ">";
+        return "::fast_ber::Enumerated<" + type_name + "Values," + identifier_override + ">";
     }
-    return "Enumerated<" + type_name + "Values>";
+    return "::fast_ber::Enumerated<" + type_name + "Values>";
 }
 std::string type_as_string(const ExternalType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)

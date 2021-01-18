@@ -399,9 +399,14 @@ struct SequenceOfType
 struct SetOfType : SequenceOfType
 {
     using SequenceOfType::SequenceOfType;
-    using SequenceOfType::operator=;
+    using SequenceOfType::operator  =;
+    SetOfType()                     = default;
+    SetOfType(const SetOfType& rhs) = default;
+    SetOfType(SetOfType&& rhs)      = default;
+    SetOfType& operator=(const SetOfType& rhs) = default;
+    SetOfType& operator=(SetOfType&& rhs) = default;
 
-    SequenceOfType&       base() { return *this; }
+    SetOfType&            base() { return *this; }
     SequenceOfType const& base() const { return *this; }
 };
 

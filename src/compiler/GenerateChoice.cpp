@@ -53,13 +53,13 @@ std::string create_choice_definition(const ChoiceType& choice, const Module& mod
 
         block.add_line("template <size_t i>");
         block.add_line("using ToType = typename ToTypeImpl<i>::type;");
-        block.add_line("template <typename T>");
-        block.add_line("using ExactlyOnce = dynamic::detail::ExactlyOnce<T, " + type_list + ">;");
-        block.add_line("template <typename T>");
-        block.add_line("using AcceptedIndex = dynamic::detail::AcceptedIndex<T&&, dynamic::DynamicVariant<" +
+        block.add_line("template <typename T_>");
+        block.add_line("using ExactlyOnce = dynamic::detail::ExactlyOnce<T_, " + type_list + ">;");
+        block.add_line("template <typename T_>");
+        block.add_line("using AcceptedIndex = dynamic::detail::AcceptedIndex<T_&&, dynamic::DynamicVariant<" +
                        type_list + ">>;");
-        block.add_line("template <typename T>");
-        block.add_line("using AcceptedType = ToType<AcceptedIndex<T>::value>;");
+        block.add_line("template <typename T_>");
+        block.add_line("using AcceptedType = ToType<AcceptedIndex<T_>::value>;");
         block.add_line();
 
         // Standard Constructors / Assignment
@@ -72,24 +72,24 @@ std::string create_choice_definition(const ChoiceType& choice, const Module& mod
                        "&& rhs) noexcept { this->m_storage = std::move(rhs.m_storage); return *this; }");
         block.add_line();
 
-        block.add_line("template <typename T,");
-        block.add_line("    typename = absl::enable_if_t<!std::is_same<absl::decay_t<T>, " + name + ">::value>,");
-        block.add_line("    typename = absl::enable_if_t<ExactlyOnce<AcceptedType<T&&>>::value && "
-                       "std::is_constructible<AcceptedType<T&&>, T&&>::value>>");
-        block.add_line(name + "(T&& t) noexcept(std::is_nothrow_constructible<AcceptedType<T&&>, T&&>::value) : "
-                              "m_storage(std::forward<T>(t)) {}");
+        block.add_line("template <typename T_,");
+        block.add_line("    typename = absl::enable_if_t<!std::is_same<absl::decay_t<T_>, " + name + ">::value>,");
+        block.add_line("    typename = absl::enable_if_t<ExactlyOnce<AcceptedType<T_&&>>::value && "
+                       "std::is_constructible<AcceptedType<T_&&>, T_&&>::value>>");
+        block.add_line(name + "(T_&& t) noexcept(std::is_nothrow_constructible<AcceptedType<T_&&>, T_&&>::value) : "
+                              "m_storage(std::forward<T_>(t)) {}");
 
-        block.add_line("template <typename T, typename... Args,");
+        block.add_line("template <typename T_, typename... Args,");
         block.add_line(
-            "    typename = absl::enable_if_t<ExactlyOnce<T>::value && std::is_constructible<T, Args&&...>::value>>");
+            "    typename = absl::enable_if_t<ExactlyOnce<T_>::value && std::is_constructible<T_, Args&&...>::value>>");
         block.add_line("explicit " + name +
-                       "(in_place_type_t<T> i, Args&&... args) : m_storage(std::forward<Args>(i, args)...) {}");
+                       "(in_place_type_t<T_> i, Args&&... args) : m_storage(std::forward<Args>(i, args)...) {}");
 
-        block.add_line("template <typename T, typename U, typename... Args,");
-        block.add_line("    typename = absl::enable_if_t<ExactlyOnce<T>::value && std::is_constructible<T, "
+        block.add_line("template <typename T_, typename U, typename... Args,");
+        block.add_line("    typename = absl::enable_if_t<ExactlyOnce<T_>::value && std::is_constructible<T_, "
                        "std::initializer_list<U>&, Args&&...>::value>>");
         block.add_line("explicit " + name +
-                       "(in_place_type_t<T> ip, std::initializer_list<U> il, Args&&... args) : m_storage(ip, il, "
+                       "(in_place_type_t<T_> ip, std::initializer_list<U> il, Args&&... args) : m_storage(ip, il, "
                        "std::forward<Args>(args)...) {}");
 
         block.add_line("template <size_t i, typename... Args,");
@@ -100,12 +100,12 @@ std::string create_choice_definition(const ChoiceType& choice, const Module& mod
         block.add_line();
 
         // Emplace
-        block.add_line("template <typename T, typename... Args>");
-        block.add_line("T& emplace(Args&&... args)");
+        block.add_line("template <typename T_, typename... Args>");
+        block.add_line("T_& emplace(Args&&... args)");
         {
             CodeScope scope2(block);
             {
-                block.add_line("return m_storage.emplace<T>(std::forward<Args>(args)...);");
+                block.add_line("return m_storage.emplace<T_>(std::forward<Args>(args)...);");
             }
         }
         block.add_line("template <size_t index, typename... Args>");
@@ -286,7 +286,7 @@ CodeBlock create_choice_functions_impl(const Asn1Tree&, const Module&, const Typ
     CodeBlock         block;
     const ChoiceType& choice = absl::get<ChoiceType>(absl::get<BuiltinType>(type));
 
-    block.add_block(create_choice_helpers(choice, name, true));
+    // block.add_block(create_choice_helpers(choice, name, true));
     block.add_block(create_choice_types(name, choice));
     block.add_block(create_choice_holds_alternative(name, choice));
     block.add_block(create_choice_getters(name, choice));

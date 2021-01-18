@@ -1,4 +1,6 @@
-﻿#include "autogen/circular.hpp"
+﻿#ifndef __GNUC__
+
+#include "autogen/circular.hpp"
 
 #include "catch2/catch.hpp"
 
@@ -94,3 +96,5 @@ TEST_CASE("Circular Types: Choice Self Reference")
     CHECK(copy == circular);
     CHECK(fast_ber::get<0>(fast_ber::get<1>(fast_ber::get<1>(fast_ber::get<1>(copy)))) == "Hello!");
 }
+
+#endif
