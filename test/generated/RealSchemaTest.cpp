@@ -55,7 +55,46 @@ static const std::array<uint8_t, 203> test_record_expected_encoding = {
     0x0c, 0x30, 0x0a, 0x06, 0x03, 0x2a, 0x03, 0x04, 0x81, 0x01, 0xff, 0xa2, 0x00, 0x98, 0x01, 0x64, 0x99, 0x01, 0x00,
     0x9c, 0x02, 0x58, 0x58, 0x9d, 0x01, 0x64, 0xbe, 0x00, 0x9f, 0x20, 0x01, 0x04};
 
-TEST_CASE("RealSchema: Testing a standard asn schema")
+TEST_CASE("RealSchema: Default Construct")
+{
+    fast_ber::SGSN_2009A_CDR::SGSNPDPRecord record;
+
+    CHECK(record.recordType == 0);  // Should actaully be 18 due to constraints
+    CHECK(record.servedIMSI == ""); // Should actaully be "   " due to constraints
+    CHECK(!record.servedIMEI.has_value());
+    CHECK(!record.sgsnAddress.has_value());
+    CHECK(!record.msNetworkCapability.has_value());
+    CHECK(!record.routingArea.has_value());
+    CHECK(!record.locationAreaCode.has_value());
+    CHECK(!record.cellIdentifier.has_value());
+    CHECK(record.chargingID == 0);
+    CHECK(record.ggsnAddressUsed == fast_ber::SGSN_2009A_CDR::IPBinaryAddress());
+    CHECK(!record.accessPointNameNI.has_value());
+    CHECK(!record.pdpType.has_value());
+    CHECK(!record.servedPDPAddress.has_value());
+    CHECK(!record.listOfTrafficVolumes.has_value());
+    CHECK(record.recordOpeningTime == "");
+    CHECK(record.duration == 0);
+    CHECK(!record.sgsnChange.has_value());
+    CHECK(record.causeForRecClosing == 0);
+    CHECK(!record.diagnostics.has_value());
+    CHECK(!record.recordSequenceNumber.has_value());
+    CHECK(!record.nodeID.has_value());
+    CHECK(!record.recordExtensions.has_value());
+    CHECK(!record.localSequenceNumber.has_value());
+    CHECK(!record.apnSelectionMode.has_value());
+    CHECK(!record.accessPointNameOI.has_value());
+    CHECK(!record.servedMSISDN.has_value());
+    CHECK(record.chargingCharacteristics == "");
+    CHECK(!record.rATType.has_value());
+    CHECK(!record.cAMELInformationPDP.has_value());
+    CHECK(!record.chChSelectionMode.has_value());
+    CHECK(!record.dynamicAddressFlag.has_value());
+    CHECK(!record.pLMNIdentifier.has_value());
+    CHECK(!record.mSTimeZone.has_value());
+}
+
+TEST_CASE("RealSchema: Encoding Default Constructed")
 {
     std::array<uint8_t, 5000> buffer = {};
 
@@ -63,8 +102,6 @@ TEST_CASE("RealSchema: Testing a standard asn schema")
     fast_ber::SGSN_2009A_CDR::SGSNSMTRecord        smtr;
     fast_ber::SGSN_2009A_CDR::CAMELInformationPDP  pdp;
     fast_ber::SGSN_2009A_CDR::ManagementExtensions e;
-
-    record = test_record;
 
     REQUIRE(fast_ber::encode(absl::Span<uint8_t>(buffer), smtr).success);
     REQUIRE(fast_ber::decode(absl::Span<uint8_t>(buffer), smtr).success);
@@ -77,8 +114,19 @@ TEST_CASE("RealSchema: Testing a standard asn schema")
 
     REQUIRE(fast_ber::encode(absl::Span<uint8_t>(buffer), record).success);
     REQUIRE(fast_ber::decode(absl::Span<uint8_t>(buffer), record).success);
+}
 
+TEST_CASE("RealSchema: Expected Output")
+{
+    std::array<uint8_t, 5000> buffer = {};
+
+    fast_ber::SGSN_2009A_CDR::CallEventRecord      record;
+
+    REQUIRE(record != fast_ber::SGSN_2009A_CDR::CallEventRecord{test_record});
+    REQUIRE(fast_ber::decode(absl::Span<const uint8_t>(test_record_expected_encoding), record).success);
     REQUIRE(record == fast_ber::SGSN_2009A_CDR::CallEventRecord{test_record});
+
+    REQUIRE(fast_ber::encode(absl::Span<uint8_t>(buffer), record).success);
     REQUIRE(fast_ber::encoded_length(record) == test_record_expected_encoding.size());
     REQUIRE(absl::MakeSpan(buffer.data(), test_record_expected_encoding.size()) == test_record_expected_encoding);
 }
