@@ -47,9 +47,9 @@ std::string create_choice_definition(const ChoiceType& choice, const Module& mod
         block.add_line();
 
         // Type helpers
-        block.add_line("struct Nothing{};");
+        block.add_line("struct Nothing_{};");
         block.add_line("template <size_t i>");
-        block.add_line("struct ToTypeImpl{ using type = Nothing; };");
+        block.add_line("struct ToTypeImpl{ using type = Nothing_; };");
 
         block.add_line("template <size_t i>");
         block.add_line("using ToType = typename ToTypeImpl<i>::type;");

@@ -198,35 +198,35 @@ inline std::string to_string(CharacterStringType type)
     switch (type)
     {
     case CharacterStringType::bmp_string:
-        return "BMPString";
+        return "fast_ber::BMPString";
     case CharacterStringType::general_string:
-        return "GeneralString";
+        return "fast_ber::GeneralString";
     case CharacterStringType::graphic_string:
-        return "GraphicString";
+        return "fast_ber::GraphicString";
     case CharacterStringType::ia5_string:
-        return "IA5String";
+        return "fast_ber::IA5String";
     case CharacterStringType::iso646_string:
-        return "ISO646String";
+        return "fast_ber::ISO646String";
     case CharacterStringType::numeric_string:
-        return "NumericString";
+        return "fast_ber::NumericString";
     case CharacterStringType::printable_string:
-        return "PrintableString";
+        return "fast_ber::PrintableString";
     case CharacterStringType::teletex_string:
-        return "TeletexString";
+        return "fast_ber::TeletexString";
     case CharacterStringType::t61_string:
-        return "T161String";
+        return "fast_ber::T161String";
     case CharacterStringType::universal_string:
-        return "UniversalString";
+        return "fast_ber::UniversalString";
     case CharacterStringType::utf8_string:
-        return "UTF8String";
+        return "fast_ber::UTF8String";
     case CharacterStringType::videotex_string:
-        return "VideotexString";
+        return "fast_ber::VideotexString";
     case CharacterStringType::visible_string:
-        return "VisibleString";
+        return "fast_ber::VisibleString";
     case CharacterStringType::character_string:
-        return "CharacterString";
+        return "fast_ber::CharacterString";
     case CharacterStringType::unknown:
-        return "UnknownStringType";
+        return "fast_ber::UnknownStringType";
     }
     return "UnknownStringType";
 }

@@ -1,7 +1,7 @@
 #include "fast_ber/compiler/CompilerTypes.hpp"
 
-SequenceOfType::SequenceOfType(bool a, std::unique_ptr<NamedType>&& b, std::unique_ptr<Type>&& c, StorageMode storage)
-    : has_name(a), named_type(std::move(b)), type(std::move(c)), storage(storage)
+SequenceOfType::SequenceOfType(bool a, std::unique_ptr<NamedType>&& b, std::unique_ptr<Type>&& c, StorageMode s)
+    : has_name(a), named_type(std::move(b)), type(std::move(c)), storage(s)
 {
 }
 SequenceOfType::SequenceOfType(const SequenceOfType& rhs)
