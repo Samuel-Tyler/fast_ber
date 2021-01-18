@@ -89,7 +89,7 @@ TEST_CASE("Component Performance: Encode")
     component_benchmark_encode(fast_ber::Optional<fast_ber::OctetString<>>("hello!"), "Optional (String)");
     component_benchmark_encode(fast_ber::Optional<fast_ber::Integer<>>(500), "Optional (Integer)");
     component_benchmark_encode(fast_ber::Optional<fast_ber::Integer<>>(absl::nullopt), "Optional (Empty)");
-    component_benchmark_encode(fast_ber::All::The_Choice(fast_ber::All::The_ChoiceMember_two("hello!")),
+    component_benchmark_encode(fast_ber::All::The_Choice(fast_ber::All::The_Choice::Member_two("hello!")),
                                "Choice (String)");
     component_benchmark_encode(fast_ber::All::The_Choice(5), "Choice (Integer)");
 }
@@ -109,7 +109,7 @@ TEST_CASE("Component Performance: Decode")
     component_benchmark_decode(fast_ber::Optional<fast_ber::OctetString<>>("hello!"), "Optional (String)");
     component_benchmark_decode(fast_ber::Optional<fast_ber::Integer<>>(500), "Optional (Integer)");
     component_benchmark_decode(fast_ber::Optional<fast_ber::Integer<>>(absl::nullopt), "Optional (Empty)");
-    component_benchmark_decode(fast_ber::All::The_Choice(fast_ber::All::The_ChoiceMember_two("hello!")),
+    component_benchmark_decode(fast_ber::All::The_Choice(fast_ber::All::The_Choice::Member_two("hello!")),
                                "Choice (String)");
     component_benchmark_decode(fast_ber::All::The_Choice(5), "Choice (Integer)");
 }

@@ -6,7 +6,7 @@
 
 TEST_CASE("Parameterized Types: Encode and decode parameterized types")
 {
-    REQUIRE(std::is_same<fast_ber::Parameterized::T1, decltype(fast_ber::Parameterized::T3::b)>::value);
+    REQUIRE(std::is_same<fast_ber::Parameterized::T1::AliasedType, decltype(fast_ber::Parameterized::T3::b)>::value);
     REQUIRE(std::is_same<fast_ber::Integer<>, decltype(fast_ber::Parameterized::T4::A::b)>::value);
     REQUIRE(std::is_same<fast_ber::OctetString<>, decltype(fast_ber::Parameterized::T4::B::b)>::value);
 
