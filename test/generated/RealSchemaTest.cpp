@@ -120,7 +120,7 @@ TEST_CASE("RealSchema: Expected Output")
 {
     std::array<uint8_t, 5000> buffer = {};
 
-    fast_ber::SGSN_2009A_CDR::CallEventRecord      record;
+    fast_ber::SGSN_2009A_CDR::CallEventRecord record;
 
     REQUIRE(record != fast_ber::SGSN_2009A_CDR::CallEventRecord{test_record});
     REQUIRE(fast_ber::decode(absl::Span<const uint8_t>(test_record_expected_encoding), record).success);

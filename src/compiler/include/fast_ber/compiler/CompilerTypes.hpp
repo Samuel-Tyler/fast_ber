@@ -391,7 +391,8 @@ struct SequenceOfType
     StorageMode                storage = StorageMode::small_buffer_optimised;
 
     SequenceOfType() = default;
-    SequenceOfType(bool, std::unique_ptr<NamedType>&&, std::unique_ptr<Type>&&, StorageMode storage = StorageMode::small_buffer_optimised);
+    SequenceOfType(bool, std::unique_ptr<NamedType>&&, std::unique_ptr<Type>&&,
+                   StorageMode storage = StorageMode::small_buffer_optimised);
     SequenceOfType(const SequenceOfType& rhs);
     SequenceOfType& operator=(const SequenceOfType& rhs);
 };
@@ -400,7 +401,7 @@ struct SetOfType : SequenceOfType
     using SequenceOfType::SequenceOfType;
     using SequenceOfType::operator=;
 
-    SequenceOfType& base() { return *this; }
+    SequenceOfType&       base() { return *this; }
     SequenceOfType const& base() const { return *this; }
 };
 

@@ -270,8 +270,8 @@ std::string type_as_string(const SequenceType& sequence, const Module& module, c
     }
     return collection_as_string(sequence, module, tree, type_name, identifier_override, "sequence");
 }
-std::string type_as_string(const SequenceOfType& sequence, const Module& , const Asn1Tree& ,
-                           const std::string& type_name, const std::string& identifier_override)
+std::string type_as_string(const SequenceOfType& sequence, const Module&, const Asn1Tree&, const std::string& type_name,
+                           const std::string& identifier_override)
 {
     std::string res = "SequenceOf<" + type_name + "Contained";
     if (identifier_override.empty())
@@ -412,13 +412,13 @@ std::string create_type_assignment(const std::string& name, const Type& assignme
     else if (is_set_of(assignment_type))
     {
         const SetOfType& sequence = absl::get<SetOfType>(absl::get<BuiltinType>(assignment_type));
-        const Type& type = sequence.has_name ? sequence.named_type->type : *sequence.type;
+        const Type&      type     = sequence.has_name ? sequence.named_type->type : *sequence.type;
         res += create_type_assignment(name + "Contained", type, module, tree, {}, false) + '\n';
     }
     else if (is_sequence_of(assignment_type))
     {
         const SequenceOfType& sequence = absl::get<SequenceOfType>(absl::get<BuiltinType>(assignment_type));
-        const Type& type = sequence.has_name ? sequence.named_type->type : *sequence.type;
+        const Type&           type     = sequence.has_name ? sequence.named_type->type : *sequence.type;
         res += create_type_assignment(name + "Contained", type, module, tree, {}, false) + '\n';
     }
 
