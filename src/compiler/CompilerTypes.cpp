@@ -332,16 +332,24 @@ bool is_defined(const Type& type) { return absl::holds_alternative<DefinedType>(
 // Generated types do not contain tagging info within the type, so need new type definitions to introduct a new tag
 bool is_generated(const Type& type)
 {
-    if (is_sequence(type) || is_set(type) || is_enumerated(type) || is_choice(type) || is_sequence_of(type) ||
-        is_set_of(type))
+    if (is_sequence(type) || is_set(type) || is_choice(type) || is_sequence_of(type) || is_set_of(type))
         return true;
     if (is_prefixed(type))
         return is_generated(absl::get<PrefixedType>(absl::get<BuiltinType>(type)).tagged_type->type);
     return false;
 }
 
+bool is_choice_set_or_sequence(const Type& type)
+{
+    if (is_sequence(type) || is_set(type) || is_choice(type))
+        return true;
+    if (is_prefixed(type))
+        return is_choice_set_or_sequence(absl::get<PrefixedType>(absl::get<BuiltinType>(type)).tagged_type->type);
+    return false;
+}
+
 std::string gen_anon_member_name()
 {
-    static size_t count = 0;
+    static std::size_t count = 0;
     return "anonymous_member_" + std::to_string(count++);
 }

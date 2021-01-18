@@ -161,26 +161,14 @@ std::string type_as_string(const EmbeddedPDVType& type, const Module& module, co
 {
     return "::fast_ber::EmbeddedPDV" + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const EnumeratedType& enumerated, const Module&, const Asn1Tree&, const std::string&,
-                           const std::string&    identifier_override)
+std::string type_as_string(const EnumeratedType&, const Module&, const Asn1Tree&, const std::string& type_name,
+                           const std::string& identifier_override)
 {
-    std::string res = " {\n";
-    for (const EnumerationValue& enum_value : enumerated.enum_values)
-    {
-        res += "    " + enum_value.name;
-        if (enum_value.value)
-        {
-            res += " = " + std::to_string(*enum_value.value);
-        }
-        res += ",\n";
-    }
-    res += "};\n\n";
-
     if (!identifier_override.empty())
     {
-        throw std::runtime_error("Enum must be default tagged");
+        return "Enumerated<" + type_name + "Values," + identifier_override + ">";
     }
-    return res;
+    return "Enumerated<" + type_name + "Values>";
 }
 std::string type_as_string(const ExternalType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
@@ -377,14 +365,14 @@ std::string type_as_string(const UTCTimeType& type, const Module& module, const 
     return "::fast_ber::UTCTime" + identifier_template_params(type, module, tree, identifier_override);
 }
 std::string type_as_string(const DefinedType& defined_type, const Module& module, const Asn1Tree& tree,
-                           const std::string& type_name, const std::string& identifier_override)
+                           const std::string&, const std::string& identifier_override)
 {
     if (!identifier_override.empty())
     {
         NamedType resolved = resolve_type(tree, module.module_reference, defined_type);
         if (!is_generated(resolved.type))
         {
-            return type_as_string(resolved.type, module, tree, type_name, identifier_override);
+            return type_as_string(resolved.type, module, tree, defined_type.type_reference, identifier_override);
         }
     }
 
@@ -436,6 +424,19 @@ std::string create_type_assignment(const std::string& name, const Type& assignme
     }
     else if (is_enumerated(assignment_type))
     {
+        const EnumeratedType& enumerated = absl::get<EnumeratedType>(absl::get<BuiltinType>(assignment_type));
+        res += "enum class " + name + "Values {\n";
+        for (const EnumerationValue& enum_value : enumerated.enum_values)
+        {
+            res += "    " + enum_value.name;
+            if (enum_value.value)
+            {
+                res += " = " + std::to_string(*enum_value.value);
+            }
+            res += ",\n";
+        }
+        res += "};\n\n";
+
         auto id =
             (!identifier_override.empty()) ? identifier_override : identifier(assignment_type, module, tree).name();
 
@@ -443,20 +444,30 @@ std::string create_type_assignment(const std::string& name, const Type& assignme
     }
     else if (is_prefixed(assignment_type))
     {
+        std::string id = identifier_override;
+        if (id.empty())
+        {
+            id = identifier(assignment_type, module, tree).name();
+        }
+
         PrefixedType prefixed = absl::get<PrefixedType>(absl::get<BuiltinType>(assignment_type));
-        res += create_type_assignment(name, prefixed.tagged_type->type, module, tree,
-                                      Identifier(prefixed.tagged_type->tag).name(), introduce_type);
+        res += create_type_assignment(name, prefixed.tagged_type->type, module, tree, id, introduce_type);
     }
     else
     {
+        std::string id = identifier_override;
+        if (id.empty())
+        {
+            id = identifier(assignment_type, module, tree).name();
+        }
+
         if (introduce_type)
         {
             res += "FAST_BER_ALIAS(" + name + ", " + type_as_string(assignment_type, module, tree, name, id) + ");\n";
         }
         else
         {
-            res += "using " + name + " = " + type_as_string(assignment_type, module, tree, name, identifier_override) +
-                   ";\n";
+            res += "using " + name + " = " + type_as_string(assignment_type, module, tree, name, id) + ";\n";
         }
     }
     return res;
