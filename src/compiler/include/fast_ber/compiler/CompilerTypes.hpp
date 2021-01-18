@@ -41,7 +41,7 @@ enum class StorageMode
     dynamic,
 };
 
-std::string to_string(Class class_, bool abbreviated);
+std::string to_string(Class class_, bool abbreviated = false);
 std::string to_string(StorageMode mode);
 
 struct ComponentType;
@@ -324,14 +324,21 @@ struct RelativeIRIType
 struct RelativeOIDType
 {
 };
-struct SequenceType
+struct Collection
 {
     ComponentTypeList components;
+    bool              allow_extensions = false;
+};
+struct SequenceType : Collection
+{
+    SequenceType() = default;
+    SequenceType(const Collection& c) : Collection(c) {}
 };
 struct SequenceOfType;
-struct SetType
+struct SetType : Collection
 {
-    ComponentTypeList components;
+    SetType() = default;
+    SetType(const Collection& c) : Collection(c) {}
 };
 struct SetOfType;
 

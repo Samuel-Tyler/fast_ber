@@ -292,7 +292,7 @@
 %type<std::vector<NamedNumber>> NamedNumberList;
 %type<ComponentType>     ComponentType;
 %type<ComponentTypeList> ComponentTypeList;
-%type<ComponentTypeList> ComponentTypeLists;
+%type<Collection>        ComponentTypeLists;
 %type<Value>             Value;
 %type<Value>             SingleValue;
 %type<Value>             ValueWithoutTypeIdentifier;
@@ -1023,7 +1023,7 @@ BuiltinType:
 |   RelativeOIDType { $$ = $1; feature_not_implemented(context_.location, context_.asn1_tree, "RelativeOIDType"); }
 |   SequenceType { $$ = $1; }
 |   SequenceOfType { $$ = $1; }
-|   SetType { $$ = $1; feature_not_implemented(context_.location, context_.asn1_tree, "SET", "Currently SET is treated as a SEQUENCE type. "); }
+|   SetType { $$ = $1; }
 |   SetOfType { $$ = $1; }
 |   PrefixedType { $$ = $1; }
 |   TimeType { $$ = $1; feature_not_implemented(context_.location, context_.asn1_tree, "TimeType"); }
@@ -1220,23 +1220,35 @@ SequenceType:
 
 ComponentTypeLists:
     ComponentTypeList
-    { $$ = $1; }
+    { $$.components = $1; }
 |   ComponentTypeList "," ELIPSIS ExceptionSpec
-    { $$ = $1; }
+    { $$.components = $1;
+      $$.allow_extensions = true; }
 |   ComponentTypeList "," ELIPSIS ExceptionSpec "," ComponentTypeList
-    { $$ = $1; $$.insert($$.end(), $6.begin(), $6.end()); }
+    { $$.components = $1;
+      $$.components.insert($$.components.end(), $6.begin(), $6.end());
+      $$.allow_extensions = true; }
 |   ComponentTypeList "," ELIPSIS ExceptionSpec "," ComponentTypeList "," ELIPSIS
-    { $$ = $1; $$.insert($$.end(), $6.begin(), $6.end()); }
+    { $$.components = $1;
+      $$.components.insert($$.components.end(), $6.begin(), $6.end());
+      $$.allow_extensions = true; }
 |   ComponentTypeList "," ELIPSIS ExceptionSpec "," ComponentTypeList "," ELIPSIS "," ComponentTypeList
-    { $$ = $1; $$.insert($$.end(), $6.begin(), $6.end()); $$.insert($$.end(), $10.begin(), $10.end()); }
+    { $$.components = $1;
+      $$.components.insert($$.components.end(), $6.begin(), $6.end());
+      $$.components.insert($$.components.end(), $10.begin(), $10.end());
+      $$.allow_extensions = true; }
 |   ELIPSIS ExceptionSpec "," ComponentTypeList
-    { $$ = $4; }
+    { $$.components = $4;
+      $$.allow_extensions = true; }
 |   ELIPSIS ExceptionSpec "," ComponentTypeList "," ELIPSIS
-    { $$ = $4; }
+    { $$.components = $4;
+      $$.allow_extensions = true; }
 |   ELIPSIS ExceptionSpec
-    { $$ = {}; }
+    { $$.components = {};
+      $$.allow_extensions = true; }
 |   ELIPSIS ExceptionSpec "," ELIPSIS
-    { $$ = {}; }
+    { $$.components = {};
+      $$.allow_extensions = true; }
 
 ComponentTypeList:
     ComponentType
