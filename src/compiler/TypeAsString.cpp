@@ -18,11 +18,12 @@ std::string identifier_template_params(const Type&, const Module&, const Asn1Tre
 }
 
 template <typename Collection>
-std::string collection_as_string(const Collection& collection, const Module& module, const Asn1Tree& tree,
-                                 const std::string& type_name, const std::string& identifier_override,
-                                 const std::string&)
+CodeBlock create_collection_definition(const Collection& collection, const Module& module, const Asn1Tree& tree,
+                                       const std::string& type_name, const std::string& identifier_override)
 {
-    std::string res = "struct " + type_name + " {\n";
+    CodeBlock block;
+    block.add_line("struct " + type_name);
+    CodeScope scope(block, true);
 
     bool has_defaults = false;
     for (const ComponentType& component : collection.components)
@@ -31,47 +32,41 @@ std::string collection_as_string(const Collection& collection, const Module& mod
         {
             std::string name = component.named_type.name;
             name[0]          = std::toupper(name[0]);
-            res += "    struct DefaultValue" + name + " { constexpr static " +
-                   value_type(component.named_type.type, module, tree, component.named_type.name, {}) +
-                   " get_value() noexcept { return " +
-                   value_as_string(resolve_type(tree, module.module_reference, component.named_type),
-                                   *component.default_value) +
-                   "; } };\n";
+            block.add_line("struct DefaultValue" + name + " { constexpr static " +
+                           value_type(component.named_type.type, module, tree, component.named_type.name, {}) +
+                           " get_value() noexcept { return " +
+                           value_as_string(resolve_type(tree, module.module_reference, component.named_type),
+                                           *component.default_value) +
+                           "; } };");
             has_defaults = true;
         }
     }
     if (has_defaults)
     {
-        res += "\n\n";
+        block.add_line();
     }
 
     int64_t tag_counter = 0;
 
     // Define child types
-
-    std::string definitions;
     for (const ComponentType& component : collection.components)
     {
         if (module.tagging_default == TaggingMode::automatic)
         {
             std::string id = Identifier(Class::context_specific, tag_counter++).name();
-            definitions += "    " + create_type_assignment(make_type_name(component.named_type.name, type_name),
-                                                           component.named_type.type, module, tree, id, false);
+            block.add_block(create_type_assignment(make_type_name(component.named_type.name, type_name),
+                                                   component.named_type.type, module, tree, id, false));
         }
         else
         {
-            definitions += "    " + create_type_assignment(make_type_name(component.named_type.name, type_name),
-                                                           component.named_type.type, module, tree, {}, false);
+            block.add_block(create_type_assignment(make_type_name(component.named_type.name, type_name),
+                                                   component.named_type.type, module, tree, {}, false));
         }
     }
-
-    res += definitions;
     if (!collection.components.empty())
     {
-        res += '\n';
+        block.add_line();
     }
-
-    std::vector<std::string> component_types;
 
     for (const ComponentType& component : collection.components)
     {
@@ -87,33 +82,30 @@ std::string collection_as_string(const Collection& collection, const Module& mod
             name             = "DefaultValue" + name;
             component_type   = "Default<" + component_type + ", " + name + ">";
         }
-        res += "    " + component_type + " " + component.named_type.name + ";\n";
-        component_types.push_back(component_type);
+        block.add_line(component_type + " " + component.named_type.name + ";");
     }
     if (!collection.components.empty())
     {
-        res += '\n';
+        block.add_line();
     }
 
     auto id = identifier_override.empty() ? identifier(collection, module, tree).name() : identifier_override;
-    res += "    " + create_template_definition({"Identifier"}) + '\n';
-    res += "    size_t encoded_length_with_id() const noexcept;\n";
-    res += "    " + create_template_definition({"Identifier"}) + '\n';
-    res += "    EncodeResult encode_with_id(absl::Span<uint8_t>) const noexcept;\n";
-    res += "    " + create_template_definition({"Identifier"}) + '\n';
-    res += "    DecodeResult decode_with_id(BerView) noexcept;\n";
+    block.add_line(create_template_definition({"Identifier"}));
+    block.add_line("size_t encoded_length_with_id() const noexcept;");
+    block.add_line(create_template_definition({"Identifier"}));
+    block.add_line("EncodeResult encode_with_id(absl::Span<uint8_t>) const noexcept;");
+    block.add_line(create_template_definition({"Identifier"}));
+    block.add_line("DecodeResult decode_with_id(BerView) noexcept;");
 
-    res += "    size_t encoded_length() const noexcept\n";
-    res += "    { return encoded_length_with_id<" + id + ">(); }\n";
-    res += "    EncodeResult encode(absl::Span<uint8_t> output) const noexcept\n";
-    res += "    { return encode_with_id<" + id + ">(output); }\n";
-    res += "    DecodeResult decode(BerView input) noexcept\n";
-    res += "    { return decode_with_id<" + id + ">(input); }\n";
-    res += "    using AsnId = " + id + ";\n";
+    block.add_line("size_t encoded_length() const noexcept");
+    block.add_line("{ return encoded_length_with_id<" + id + ">(); }");
+    block.add_line("EncodeResult encode(absl::Span<uint8_t> output) const noexcept");
+    block.add_line("{ return encode_with_id<" + id + ">(output); }");
+    block.add_line("DecodeResult decode(BerView input) noexcept");
+    block.add_line("{ return decode_with_id<" + id + ">(input); }");
+    block.add_line("using AsnId = " + id + ";");
 
-    res += "};\n";
-
-    return res;
+    return block;
 }
 
 std::string type_as_string(const AnyType& type, const Module& module, const Asn1Tree& tree, const std::string&,
@@ -136,10 +128,10 @@ std::string type_as_string(const CharacterStringType& type, const Module& module
 {
     return to_string(type) + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const ChoiceType& choice, const Module& module, const Asn1Tree& tree,
-                           const std::string& name, const std::string& identifier_override)
+std::string type_as_string(const ChoiceType&, const Module&, const Asn1Tree&, const std::string& name,
+                           const std::string&)
 {
-    return create_choice_definition(choice, module, tree, name, identifier_override);
+    return name;
 }
 std::string type_as_string(const DateType& type, const Module& module, const Asn1Tree& tree, const std::string&,
                            const std::string& identifier_override)
@@ -235,9 +227,9 @@ std::string type_as_string(const RelativeOIDType& type, const Module& module, co
 {
     return "::fast_ber::RelativeOID" + identifier_template_params(type, module, tree, identifier_override);
 }
-std::string type_as_string(const SequenceType& sequence, const Module& module, const Asn1Tree& tree,
-                           const std::string& type_name, const std::string& identifier_override)
+void check_valid(const SequenceType& sequence, const Module& module, const Asn1Tree& tree, const std::string& type_name)
 {
+
     if (module.tagging_default != TaggingMode::automatic)
     {
         std::vector<Identifier>     previous_optional_ids;
@@ -268,7 +260,11 @@ std::string type_as_string(const SequenceType& sequence, const Module& module, c
             }
         }
     }
-    return collection_as_string(sequence, module, tree, type_name, identifier_override, "sequence");
+}
+std::string type_as_string(const SequenceType&, const Module&, const Asn1Tree&, const std::string& type_name,
+                           const std::string&)
+{
+    return type_name;
 }
 std::string type_as_string(const SequenceOfType& sequence, const Module&, const Asn1Tree&, const std::string& type_name,
                            const std::string& identifier_override)
@@ -288,8 +284,7 @@ std::string type_as_string(const SequenceOfType& sequence, const Module&, const 
 
     return res;
 }
-std::string type_as_string(const SetType& set, const Module& module, const Asn1Tree& tree, const std::string& type_name,
-                           const std::string& identifier_override)
+void check_valid(const SetType& set, const Module& module, const Asn1Tree& tree, const std::string& type_name)
 {
     if (module.tagging_default != TaggingMode::automatic)
     {
@@ -307,8 +302,11 @@ std::string type_as_string(const SetType& set, const Module& module, const Asn1T
             }
         }
     }
-
-    return collection_as_string(set, module, tree, type_name, identifier_override, "set");
+}
+std::string type_as_string(const SetType&, const Module&, const Asn1Tree&, const std::string& type_name,
+                           const std::string&)
+{
+    return type_name;
 }
 std::string type_as_string(const SetOfType& set, const Module& module, const Asn1Tree& tree,
                            const std::string& type_name, const std::string& identifier_override)
@@ -389,44 +387,59 @@ std::string type_as_string(const Type& type, const Module& module, const Asn1Tre
     return absl::visit(string_helper, type);
 }
 
-std::string create_type_assignment(const std::string& name, const Type& assignment_type, const Module& module,
-                                   const Asn1Tree& tree, const std::string& identifier_override, bool introduce_type)
+CodeBlock create_type_assignment(const std::string& name, const Type& assignment_type, const Module& module,
+                                 const Asn1Tree& tree, const std::string& identifier_override, bool introduce_type)
 {
-    std::string res;
+    CodeBlock block;
 
     if (is_enumerated(assignment_type))
     {
         const EnumeratedType& enumerated = absl::get<EnumeratedType>(absl::get<BuiltinType>(assignment_type));
-        res += "enum class " + name + "Values {\n";
+        block.add_line("enum class " + name + "Values");
+        CodeScope scope(block, true);
         for (const EnumerationValue& enum_value : enumerated.enum_values)
         {
-            res += "    " + enum_value.name;
             if (enum_value.value)
             {
-                res += " = " + std::to_string(*enum_value.value);
+                block.add_line(enum_value.name + " = " + std::to_string(*enum_value.value) + ',');
             }
-            res += ",\n";
+            else
+            {
+                block.add_line(enum_value.name + ',');
+            }
         }
-        res += "};\n\n";
     }
     else if (is_set_of(assignment_type))
     {
         const SetOfType& sequence = absl::get<SetOfType>(absl::get<BuiltinType>(assignment_type));
         const Type&      type     = sequence.has_name ? sequence.named_type->type : *sequence.type;
-        res += create_type_assignment(name + "Contained", type, module, tree, {}, false) + '\n';
+        block.add_block(create_type_assignment(name + "Contained", type, module, tree, {}, false));
     }
     else if (is_sequence_of(assignment_type))
     {
         const SequenceOfType& sequence = absl::get<SequenceOfType>(absl::get<BuiltinType>(assignment_type));
         const Type&           type     = sequence.has_name ? sequence.named_type->type : *sequence.type;
-        res += create_type_assignment(name + "Contained", type, module, tree, {}, false) + '\n';
+        block.add_block(create_type_assignment(name + "Contained", type, module, tree, {}, false));
+    }
+    else if (is_set(assignment_type))
+    {
+        const SetType& set = absl::get<SetType>(absl::get<BuiltinType>(assignment_type));
+        check_valid(set, module, tree, name);
+        return create_collection_definition(set, module, tree, name, identifier_override);
+    }
+    else if (is_sequence(assignment_type))
+    {
+        const SequenceType& sequence = absl::get<SequenceType>(absl::get<BuiltinType>(assignment_type));
+        check_valid(sequence, module, tree, name);
+        return create_collection_definition(sequence, module, tree, name, identifier_override);
+    }
+    else if (is_choice(assignment_type))
+    {
+        const ChoiceType& choice = absl::get<ChoiceType>(absl::get<BuiltinType>(assignment_type));
+        return create_choice_definition(choice, module, tree, name, identifier_override);
     }
 
-    if (is_set(assignment_type) || is_sequence(assignment_type) || is_choice(assignment_type))
-    {
-        res += type_as_string(assignment_type, module, tree, name, identifier_override);
-    }
-    else if (is_prefixed(assignment_type))
+    if (is_prefixed(assignment_type))
     {
         std::string id = identifier_override;
         if (id.empty())
@@ -435,7 +448,7 @@ std::string create_type_assignment(const std::string& name, const Type& assignme
         }
 
         const PrefixedType& prefixed = absl::get<PrefixedType>(absl::get<BuiltinType>(assignment_type));
-        res += create_type_assignment(name, prefixed.tagged_type->type, module, tree, id, introduce_type);
+        block.add_block(create_type_assignment(name, prefixed.tagged_type->type, module, tree, id, introduce_type));
     }
     else
     {
@@ -447,19 +460,19 @@ std::string create_type_assignment(const std::string& name, const Type& assignme
 
         if (introduce_type)
         {
-            res += "FAST_BER_ALIAS(" + name + ", " + type_as_string(assignment_type, module, tree, name, id) + ");\n";
+            block.add_line("FAST_BER_ALIAS(" + name + ", " + type_as_string(assignment_type, module, tree, name, id) +
+                           ");");
         }
         else
         {
-            res += "using " + name + " = " + type_as_string(assignment_type, module, tree, name, id) + ";\n";
+            block.add_line("using " + name + " = " + type_as_string(assignment_type, module, tree, name, id) + ";");
         }
     }
-    return res;
+    return block;
 }
 
-std::string create_type_assignment(const Assignment& assignment, const Module& module, const Asn1Tree& tree)
+CodeBlock create_type_assignment(const Assignment& assignment, const Module& module, const Asn1Tree& tree)
 {
     return create_type_assignment(assignment.name, absl::get<TypeAssignment>(assignment.specific).type, module, tree,
-                                  {}, true) +
-           "\n";
+                                  {}, true);
 }

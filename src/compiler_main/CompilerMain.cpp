@@ -61,7 +61,7 @@ std::string create_assignment(const Asn1Tree& tree, const Module& module, const 
         {
             log_debug(tree, "Creating type assignment: " + module.module_reference + "." + assignment.name);
 
-            return create_type_assignment(assignment, module, tree);
+            return create_type_assignment(assignment, module, tree).to_string() + '\n';
         }
         else if (absl::holds_alternative<ObjectClassAssignment>(assignment.specific))
         {

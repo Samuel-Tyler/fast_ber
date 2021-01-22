@@ -1,5 +1,7 @@
 #include "fast_ber/compiler/CppGeneration.hpp"
 
+#include <sstream>
+
 std::string create_include(const std::string& path) { return "#include \"" + path + "\"\n"; }
 
 std::string create_template_definition(const std::vector<std::string>& types)
@@ -69,4 +71,37 @@ std::string make_type_name(std::string name, absl::string_view parent_name)
         return name + '_';
     }
     return name;
+}
+
+const std::ostream& CodeBlock::stream(std::ostream& os, std::size_t indentation = 0) const
+{
+    for (const CodeBlockContents& content : m_content)
+    {
+        std::size_t depth = indentation + content.indentation;
+        if (absl::holds_alternative<CodeBlock>(content.data))
+        {
+            absl::get<CodeBlock>(content.data).stream(os, depth);
+        }
+        else
+        {
+            const std::string& line = absl::get<std::string>(content.data);
+            if (!line.empty())
+            {
+                for (std::size_t i = 0; i < depth * 4; i++)
+                {
+                    os << ' ';
+                }
+                os << line;
+            }
+            os << '\n';
+        }
+    }
+    return os;
+}
+
+std::string CodeBlock::to_string() const
+{
+    std::stringstream ss;
+    stream(ss);
+    return ss.str();
 }

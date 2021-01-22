@@ -5,8 +5,8 @@
 #include "fast_ber/compiler/TypeAsString.hpp"
 #include "fast_ber/compiler/Visit.hpp"
 
-std::string create_choice_definition(const ChoiceType& choice, const Module& module, const Asn1Tree& tree,
-                                     const std::string& name, const std::string& identifier_override)
+CodeBlock create_choice_definition(const ChoiceType& choice, const Module& module, const Asn1Tree& tree,
+                                   const std::string& name, const std::string& identifier_override)
 {
     bool        is_first = true;
     std::string type_list;
@@ -34,12 +34,12 @@ std::string create_choice_definition(const ChoiceType& choice, const Module& mod
             if (module.tagging_default == TaggingMode::automatic)
             {
                 std::string choice_id = Identifier(Class::context_specific, tag_counter++).name();
-                block.add_line(create_type_assignment(make_type_name(named_type.name), named_type.type, module, tree,
-                                                      choice_id, false));
+                block.add_block(create_type_assignment(make_type_name(named_type.name), named_type.type, module, tree,
+                                                       choice_id, false));
             }
             else
             {
-                block.add_line(
+                block.add_block(
                     create_type_assignment(make_type_name(named_type.name), named_type.type, module, tree, {}, false));
             }
         }
@@ -122,11 +122,11 @@ std::string create_choice_definition(const ChoiceType& choice, const Module& mod
         block.add_line("size_t index() const noexcept { return m_storage.index(); }");
 
         // Encode / Decode Functionality
-        block.add_line(create_template_definition({"Identifier = " + id}));
+        block.add_line(create_template_definition({"Identifier"}));
         block.add_line("std::size_t encoded_length_with_id() const noexcept;");
-        block.add_line(create_template_definition({"Identifier = " + id}));
+        block.add_line(create_template_definition({"Identifier"}));
         block.add_line("EncodeResult encode_with_id(absl::Span<uint8_t> output) const noexcept;");
-        block.add_line(create_template_definition({"Identifier = " + id}));
+        block.add_line(create_template_definition({"Identifier"}));
         block.add_line("DecodeResult decode_with_id(BerView output) noexcept;");
         block.add_line();
 
@@ -145,14 +145,14 @@ std::string create_choice_definition(const ChoiceType& choice, const Module& mod
         // Impl Helper
         for (const std::string& constness : {std::string("const "), std::string()})
         {
-            block.add_line(constness + storage + "& impl() " + constness + "noexcept");
+            block.add_line(constness + "Storage& impl() " + constness + "noexcept");
             block.add_line("{ return m_storage; }");
         }
 
         block.add_line("private:");
-        block.add_line(storage + " m_storage;");
+        block.add_line("Storage m_storage;");
     }
-    return block.to_string();
+    return block;
 }
 
 CodeBlock create_choice_getters(const std::string& name, const ChoiceType& choice)

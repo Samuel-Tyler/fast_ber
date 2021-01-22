@@ -1,10 +1,12 @@
 #pragma once
 
+#include <iosfwd>
 #include <set>
 #include <string>
 #include <vector>
 
 #include "absl/strings/string_view.h"
+#include "absl/types/variant.h"
 
 std::string create_include(const std::string& path);
 
@@ -16,28 +18,39 @@ std::string add_namespace(const std::string& name, const std::string& enclosed);
 
 std::string make_type_name(std::string name, absl::string_view parent_name = {});
 
+struct CodeBlockContents;
+
 class CodeBlock
 {
   public:
     size_t&       indentation() { return m_indentation; }
     const size_t& indentation() const { return m_indentation; }
 
-    void add_line() { m_content += '\n'; }
-    void add_line(const absl::string_view& line)
-    {
-        m_content += std::string(m_indentation * 4, ' ');
-        m_content.insert(m_content.end(), line.begin(), line.end());
-        m_content += '\n';
-    }
+    void add_line(const absl::string_view& block = {});
+    void add_block(CodeBlock block);
 
-    void add_block(const absl::string_view& block) { m_content.insert(m_content.end(), block.begin(), block.end()); }
-    void add_block(const CodeBlock& block) { m_content += block.to_string(); }
-    const std::string& to_string() const { return m_content; }
+    const std::ostream& stream(std::ostream& os, std::size_t indentation) const;
+    std::string         to_string() const;
 
   private:
-    size_t      m_indentation = 0;
-    std::string m_content     = {};
+    std::size_t                    m_indentation = 0;
+    std::vector<CodeBlockContents> m_content;
 };
+
+struct CodeBlockContents
+{
+    std::size_t                           indentation;
+    absl::variant<std::string, CodeBlock> data;
+};
+
+inline void CodeBlock::add_line(const absl::string_view& block)
+{
+    m_content.push_back(CodeBlockContents{m_indentation, std::string(block)});
+}
+inline void CodeBlock::add_block(CodeBlock block)
+{
+    m_content.push_back(CodeBlockContents{m_indentation, std::move(block)});
+}
 
 class CodeScope
 {
