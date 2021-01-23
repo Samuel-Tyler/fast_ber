@@ -1,4 +1,4 @@
-﻿#ifndef __GNUC__
+﻿#if !defined(__GNUC__) && !defined(_MSC_VER)
 
 #include "autogen/circular.hpp"
 

@@ -48,7 +48,7 @@ CodeBlock create_choice_definition(const ChoiceType& choice, const Module& modul
 
         // Type helpers
         block.add_line("struct Nothing_{};");
-        block.add_line("template <size_t i, bool = i < (" + std::to_string(choice.choices.size()) + ")>");
+        block.add_line("template <size_t i, bool = (i < " + std::to_string(choice.choices.size()) + ")>");
         block.add_line("struct ToTypeImpl{ using type = Nothing_; };");
 
         block.add_line("template <size_t i>");
@@ -208,8 +208,8 @@ CodeBlock create_choice_types(const std::string& name, const ChoiceType&)
 
     block.add_line("template <std::size_t i>");
     block.add_line("struct variant_alternative<i, " + name + ">");
-    CodeScope scope(block, true);
     {
+        CodeScope scope(block, true);
         block.add_line("using type = fast_ber::variant_alternative_t<i, " + name + "::Storage>;");
     }
     block.add_line();
@@ -295,3 +295,4 @@ std::string create_choice_functions(const Asn1Tree& tree, const Module& module, 
 {
     return visit_all_types(tree, module, assignment, create_choice_functions_impl).to_string();
 }
+

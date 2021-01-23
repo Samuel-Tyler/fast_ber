@@ -61,7 +61,7 @@ class CodeScope
         m_block.indentation()++;
     }
     CodeScope(CodeScope&) = delete;
-    CodeScope(CodeScope&& rhs) : m_block(rhs.m_block) { rhs.m_active = false; }
+    CodeScope(CodeScope&& rhs) : m_block(rhs.m_block), m_active(rhs.m_active), m_semicolon(rhs.m_semicolon) { rhs.m_active = false; }
     ~CodeScope()
     {
         if (m_active)
