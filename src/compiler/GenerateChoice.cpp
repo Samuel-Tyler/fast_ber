@@ -104,7 +104,9 @@ CodeBlock create_choice_definition(const ChoiceType& choice, const Module& modul
         block.add_line();
 
         // Emplace
-        block.add_line("template <typename T_, typename... Args>");
+        block.add_line("template <typename T_, typename... Args,");
+        block.add_line(
+            "    typename = absl::enable_if_t<std::is_constructible<T_, Args...>::value && ExactlyOnce<T_>::value>>");
         block.add_line("T_& emplace(Args&&... args)");
         {
             CodeScope scope2(block);
@@ -113,7 +115,9 @@ CodeBlock create_choice_definition(const ChoiceType& choice, const Module& modul
             }
         }
         block.add_line("template <size_t index, typename... Args>");
-        block.add_line("fast_ber::variant_alternative_t<index, Storage>& emplace(Args&&... args)");
+        block.add_line("    absl::enable_if_t<std::is_constructible<ToType<index>, Args...>::value,");
+        block.add_line("    ToType<index>&>");
+        block.add_line("emplace(Args&&... args)");
         {
             CodeScope scope2(block);
             {
