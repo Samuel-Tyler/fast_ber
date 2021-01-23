@@ -48,8 +48,12 @@ CodeBlock create_choice_definition(const ChoiceType& choice, const Module& modul
 
         // Type helpers
         block.add_line("struct Nothing_{};");
-        block.add_line("template <size_t i>");
+        block.add_line("template <size_t i, bool = i < (" + std::to_string(choice.choices.size()) + ")>");
         block.add_line("struct ToTypeImpl{ using type = Nothing_; };");
+
+        block.add_line("template <size_t i>");
+        block.add_line("struct ToTypeImpl<i, true>{ using type = dynamic::detail::TypeAtIndex<i, " + type_list +
+                       ">; };");
 
         block.add_line("template <size_t i>");
         block.add_line("using ToType = typename ToTypeImpl<i>::type;");
@@ -194,20 +198,9 @@ CodeBlock create_choice_getters(const std::string& name, const ChoiceType& choic
     return block;
 }
 
-CodeBlock create_choice_types(const std::string& name, const ChoiceType& choice)
+CodeBlock create_choice_types(const std::string& name, const ChoiceType&)
 {
     CodeBlock block;
-
-    size_t i = 0;
-    for (const auto& named_type : choice.choices)
-    {
-        const std::string choice_type_name = make_type_name(named_type.name);
-        block.add_line("template <>");
-        block.add_line("struct " + name + "::ToTypeImpl<" + std::to_string(i) + "> { using type = " + choice_type_name +
-                       "; };");
-        ++i;
-    }
-    block.add_line();
 
     block.add_line("template <std::size_t i>");
     block.add_line("struct variant_alternative<i, " + name + ">");
