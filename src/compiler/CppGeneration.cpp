@@ -1,5 +1,6 @@
 #include "fast_ber/compiler/CppGeneration.hpp"
 
+#include <cctype>
 #include <sstream>
 
 std::string create_include(const std::string& path) { return "#include \"" + path + "\"\n"; }
