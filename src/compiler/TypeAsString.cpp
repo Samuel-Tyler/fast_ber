@@ -24,87 +24,87 @@ CodeBlock create_collection_definition(const Collection& collection, const Modul
     CodeBlock block;
     block.add_line("struct " + type_name);
     {
-	    CodeScope scope(block, true);
+        CodeScope scope(block, true);
 
-	    bool has_defaults = false;
-	    for (const ComponentType& component : collection.components)
-	    {
-		if (component.default_value)
-		{
-		    std::string name = component.named_type.name;
-		    name[0]          = std::toupper(name[0]);
-		    block.add_line("struct DefaultValue" + name + " { constexpr static " +
-				   value_type(component.named_type.type, module, tree, component.named_type.name, {}) +
-				   " get_value() noexcept { return " +
-				   value_as_string(resolve_type(tree, module.module_reference, component.named_type),
-						   *component.default_value) +
-				   "; } };");
-		    has_defaults = true;
-		}
-	    }
-	    if (has_defaults)
-	    {
-		block.add_line();
-	    }
+        bool has_defaults = false;
+        for (const ComponentType& component : collection.components)
+        {
+            if (component.default_value)
+            {
+                std::string name = component.named_type.name;
+                name[0]          = std::toupper(name[0]);
+                block.add_line("struct DefaultValue" + name + " { constexpr static " +
+                               value_type(component.named_type.type, module, tree, component.named_type.name, {}) +
+                               " get_value() noexcept { return " +
+                               value_as_string(resolve_type(tree, module.module_reference, component.named_type),
+                                               *component.default_value) +
+                               "; } };");
+                has_defaults = true;
+            }
+        }
+        if (has_defaults)
+        {
+            block.add_line();
+        }
 
-	    int64_t tag_counter = 0;
+        int64_t tag_counter = 0;
 
-	    // Define child types
-	    for (const ComponentType& component : collection.components)
-	    {
-		if (module.tagging_default == TaggingMode::automatic)
-		{
-		    std::string id = Identifier(Class::context_specific, tag_counter++).name();
-		    block.add_block(create_type_assignment(make_type_name(component.named_type.name, type_name),
-							   component.named_type.type, module, tree, id, false));
-		}
-		else
-		{
-		    block.add_block(create_type_assignment(make_type_name(component.named_type.name, type_name),
-							   component.named_type.type, module, tree, {}, false));
-		}
-	    }
-	    if (!collection.components.empty())
-	    {
-		block.add_line();
-	    }
+        // Define child types
+        for (const ComponentType& component : collection.components)
+        {
+            if (module.tagging_default == TaggingMode::automatic)
+            {
+                std::string id = Identifier(Class::context_specific, tag_counter++).name();
+                block.add_block(create_type_assignment(make_type_name(component.named_type.name, type_name),
+                                                       component.named_type.type, module, tree, id, false));
+            }
+            else
+            {
+                block.add_block(create_type_assignment(make_type_name(component.named_type.name, type_name),
+                                                       component.named_type.type, module, tree, {}, false));
+            }
+        }
+        if (!collection.components.empty())
+        {
+            block.add_line();
+        }
 
-	    for (const ComponentType& component : collection.components)
-	    {
-		std::string component_type = make_type_name(component.named_type.name, type_name);
-		if (component.is_optional)
-		{
-		    component_type = make_type_optional(component_type, component.optional_storage);
-		}
-		else if (component.default_value)
-		{
-		    std::string name = component.named_type.name;
-		    name[0]          = std::toupper(name[0]);
-		    name             = "DefaultValue" + name;
-		    component_type   = "Default<" + component_type + ", " + name + ">";
-		}
-		block.add_line(component_type + " " + component.named_type.name + ";");
-	    }
-	    if (!collection.components.empty())
-	    {
-		block.add_line();
-	    }
+        for (const ComponentType& component : collection.components)
+        {
+            std::string component_type = make_type_name(component.named_type.name, type_name);
+            if (component.is_optional)
+            {
+                component_type = make_type_optional(component_type, component.optional_storage);
+            }
+            else if (component.default_value)
+            {
+                std::string name = component.named_type.name;
+                name[0]          = std::toupper(name[0]);
+                name             = "DefaultValue" + name;
+                component_type   = "Default<" + component_type + ", " + name + ">";
+            }
+            block.add_line(component_type + " " + component.named_type.name + ";");
+        }
+        if (!collection.components.empty())
+        {
+            block.add_line();
+        }
 
-	    auto id = identifier_override.empty() ? identifier(collection, module, tree).name() : identifier_override;
-	    block.add_line(create_template_definition({"Identifier"}));
-	    block.add_line("size_t encoded_length_with_id() const noexcept;");
-	    block.add_line(create_template_definition({"Identifier"}));
-	    block.add_line("EncodeResult encode_with_id(absl::Span<uint8_t>) const noexcept;");
-	    block.add_line(create_template_definition({"Identifier"}));
-	    block.add_line("DecodeResult decode_with_id(BerView) noexcept;");
+        auto id = identifier_override.empty() ? identifier(collection, module, tree).name() : identifier_override;
+        block.add_line(create_template_definition({"Identifier"}));
+        block.add_line("size_t encoded_length_with_id() const noexcept;");
+        block.add_line(create_template_definition({"Identifier"}));
+        block.add_line("EncodeResult encode_with_id(absl::Span<uint8_t>) const noexcept;");
+        block.add_line(create_template_definition({"Identifier"}));
+        block.add_line("DecodeResult decode_with_id(BerView) noexcept;");
 
-	    block.add_line("size_t encoded_length() const noexcept");
-	    block.add_line("{ return encoded_length_with_id<" + id + ">(); }");
-	    block.add_line("EncodeResult encode(absl::Span<uint8_t> output) const noexcept");
-	    block.add_line("{ return encode_with_id<" + id + ">(output); }");
-	    block.add_line("DecodeResult decode(BerView input) noexcept");
-	    block.add_line("{ return decode_with_id<" + id + ">(input); }");
-	    block.add_line("using AsnId = " + id + ";");
+        block.add_line("size_t encoded_length() const noexcept");
+        block.add_line("{ return encoded_length_with_id<" + id + ">(); }");
+        block.add_line("EncodeResult encode(absl::Span<uint8_t> output) const noexcept");
+        block.add_line("{ return encode_with_id<" + id + ">(output); }");
+        block.add_line("DecodeResult decode(BerView input) noexcept");
+        block.add_line("{ return decode_with_id<" + id + ">(input); }");
+        block.add_line("using AsnId = " + id + ";");
     }
     return block;
 }

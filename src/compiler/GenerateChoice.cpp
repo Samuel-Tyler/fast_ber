@@ -295,4 +295,3 @@ std::string create_choice_functions(const Asn1Tree& tree, const Module& module, 
 {
     return visit_all_types(tree, module, assignment, create_choice_functions_impl).to_string();
 }
-
