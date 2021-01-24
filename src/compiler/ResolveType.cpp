@@ -171,6 +171,22 @@ NamedType resolve_type(const Asn1Tree& tree, const std::string& current_module_r
             }
             defined = absl::get<DefinedType>(type(assignment));
         }
+        else if (is_prefixed(type(assignment)))
+        {
+            PrefixedType prefixed = absl::get<PrefixedType>(absl::get<BuiltinType>(type(assignment)));
+            if (is_defined(prefixed.tagged_type->type))
+            {
+                Type inner =
+                    resolve_type(tree, current_module_reference, absl::get<DefinedType>(prefixed.tagged_type->type))
+                        .type;
+                prefixed.tagged_type->type = inner;
+                return NamedType{assignment.name, prefixed};
+            }
+            else
+            {
+                return NamedType{assignment.name, type(assignment)};
+            }
+        }
         else
         {
             return NamedType{assignment.name, type(assignment)};
@@ -183,6 +199,13 @@ NamedType resolve_type(const Asn1Tree& tree, const std::string& current_module_r
     if (is_defined(type_info.type))
     {
         return resolve_type(tree, current_module_reference, absl::get<DefinedType>(type_info.type));
+    }
+    if (is_prefixed(type_info.type))
+    {
+        return resolve_type(
+            tree, current_module_reference,
+            NamedType{type_info.name,
+                      absl::get<PrefixedType>(absl::get<BuiltinType>(type_info.type)).tagged_type->type});
     }
     return type_info;
 }

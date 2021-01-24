@@ -6,4 +6,12 @@ Type3 ::= [2] Type2
 Type4 ::= [APPLICATION 7] IMPLICIT Type3
 Type5 ::= [2] IMPLICIT Type2
 
+Collection ::= SEQUENCE {
+    type1 Type1,
+    type2 Type2,
+    type3 Type3,
+    type4 Type4,
+    type5 Type5
+}
+
 END

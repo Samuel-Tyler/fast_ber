@@ -198,35 +198,35 @@ inline std::string to_string(CharacterStringType type)
     switch (type)
     {
     case CharacterStringType::bmp_string:
-        return "BMPString";
+        return "fast_ber::BMPString";
     case CharacterStringType::general_string:
-        return "GeneralString";
+        return "fast_ber::GeneralString";
     case CharacterStringType::graphic_string:
-        return "GraphicString";
+        return "fast_ber::GraphicString";
     case CharacterStringType::ia5_string:
-        return "IA5String";
+        return "fast_ber::IA5String";
     case CharacterStringType::iso646_string:
-        return "ISO646String";
+        return "fast_ber::ISO646String";
     case CharacterStringType::numeric_string:
-        return "NumericString";
+        return "fast_ber::NumericString";
     case CharacterStringType::printable_string:
-        return "PrintableString";
+        return "fast_ber::PrintableString";
     case CharacterStringType::teletex_string:
-        return "TeletexString";
+        return "fast_ber::TeletexString";
     case CharacterStringType::t61_string:
-        return "T161String";
+        return "fast_ber::T161String";
     case CharacterStringType::universal_string:
-        return "UniversalString";
+        return "fast_ber::UniversalString";
     case CharacterStringType::utf8_string:
-        return "UTF8String";
+        return "fast_ber::UTF8String";
     case CharacterStringType::videotex_string:
-        return "VideotexString";
+        return "fast_ber::VideotexString";
     case CharacterStringType::visible_string:
-        return "VisibleString";
+        return "fast_ber::VisibleString";
     case CharacterStringType::character_string:
-        return "CharacterString";
+        return "fast_ber::CharacterString";
     case CharacterStringType::unknown:
-        return "UnknownStringType";
+        return "fast_ber::UnknownStringType";
     }
     return "UnknownStringType";
 }
@@ -398,22 +398,23 @@ struct SequenceOfType
     StorageMode                storage = StorageMode::small_buffer_optimised;
 
     SequenceOfType() = default;
-    SequenceOfType(bool, std::unique_ptr<NamedType>&&, std::unique_ptr<Type>&&);
+    SequenceOfType(bool, std::unique_ptr<NamedType>&&, std::unique_ptr<Type>&&,
+                   StorageMode storage = StorageMode::small_buffer_optimised);
     SequenceOfType(const SequenceOfType& rhs);
     SequenceOfType& operator=(const SequenceOfType& rhs);
 };
-struct SetOfType
+struct SetOfType : SequenceOfType
 {
-    // Unique pointers used to prevent circular references
-    bool                       has_name;
-    std::unique_ptr<NamedType> named_type;
-    std::unique_ptr<Type>      type;
-    StorageMode                storage = StorageMode::small_buffer_optimised;
+    using SequenceOfType::SequenceOfType;
+    using SequenceOfType::operator  =;
+    SetOfType()                     = default;
+    SetOfType(const SetOfType& rhs) = default;
+    SetOfType(SetOfType&& rhs)      = default;
+    SetOfType& operator=(const SetOfType& rhs) = default;
+    SetOfType& operator=(SetOfType&& rhs) = default;
 
-    SetOfType() = default;
-    SetOfType(bool, std::unique_ptr<NamedType>&&, std::unique_ptr<Type>&&);
-    SetOfType(const SetOfType& rhs);
-    SetOfType& operator=(const SetOfType& rhs);
+    SetOfType&            base() { return *this; }
+    SequenceOfType const& base() const { return *this; }
 };
 
 struct ChoiceType
@@ -600,6 +601,7 @@ struct Identifier
     UniversalTag universal  = UniversalTag::reserved;
 
     Identifier() = default;
+    explicit Identifier(Tag tag) : class_(tag.class_), tag_number(tag.tag_number) {}
     explicit Identifier(Class c, int64_t tag) : class_(c), tag_number(tag) {}
     explicit Identifier(UniversalTag tag)
         : class_(Class::universal), tag_number(static_cast<int64_t>(tag)), universal(tag)
@@ -744,6 +746,7 @@ bool is_octet_string(const Type& type);
 bool is_boolean(const Type& type);
 bool is_oid(const Type& type);
 bool is_defined(const Type& type);
+bool is_generated(const Type& type);
 
 struct Context;
 

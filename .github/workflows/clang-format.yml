@@ -8,9 +8,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - uses: DoozyX/clang-format-lint-action@v0.5
+    - uses: DoozyX/clang-format-lint-action@v0.11
       with:
         source: 'include src test sample benchmarks'
         exclude: './src/compiler/autogen_copy/asn_compiler.hpp'
         extensions: 'h,cpp'
-        clangFormatVersion: 9
+        clangFormatVersion: 11

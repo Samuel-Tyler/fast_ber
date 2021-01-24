@@ -114,3 +114,8 @@ inline std::string type_name(const UTCTimeType&) { return "UTCTimeType"; }
 inline std::string type_name(const DefinedType&) { return "DefinedType"; }
 inline std::string type_name(const BuiltinType& t) { return absl::visit(TypeNameHelper{}, (t)); }
 inline std::string type_name(const Type& t) { return absl::visit(TypeNameHelper{}, (t)); }
+
+CodeBlock create_type_assignment(const std::string& name, const Type& assignment_type, const Module& module,
+                                 const Asn1Tree& tree, const std::string& identifier_override = {},
+                                 bool introduce_type = true);
+CodeBlock create_type_assignment(const Assignment& assignment, const Module& module, const Asn1Tree& tree);

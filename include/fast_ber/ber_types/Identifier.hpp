@@ -147,14 +147,14 @@ struct IdentifierType
 template <typename T>
 using Identifier = typename IdentifierType<T>::type;
 
-inline std::ostream& operator<<(std::ostream& os, RuntimeId id) noexcept
+inline std::ostream& operator<<(std::ostream& os, const RuntimeId& id) noexcept
 {
     if (id.class_() == Class::universal)
     {
         auto tag = static_cast<UniversalTag>(id.tag());
-        return os << R"({ "class": ")" << id.class_() << R"(", "tag": ")" << tag << "\"}";
+        return os << R"({ "class": ")" << id.class_() << R"(", "tag": ")" << tag << "\" }";
     }
-    return os << R"({ "class": ")" << id.class_() << R"(", "tag": )" << id.tag() << "}";
+    return os << R"({ "class": ")" << id.class_() << R"(", "tag": )" << id.tag() << " }";
 }
 
 template <Class class_1, Tag tag_1>
@@ -166,7 +166,7 @@ std::ostream& operator<<(std::ostream& os, Id<class_1, tag_1> id) noexcept
 template <typename OuterId, typename InnerId>
 std::ostream& operator<<(std::ostream& os, DoubleId<OuterId, InnerId> id) noexcept
 {
-    return os << "{ \"outer\": " << id.outer_id() << ", \"inner\": " << id.inner_id() << "}";
+    return os << "{ \"outer\": " << id.outer_id() << ", \"inner\": " << id.inner_id() << " }";
 }
 
 } // namespace fast_ber

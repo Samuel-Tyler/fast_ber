@@ -1,5 +1,6 @@
 #include "fast_ber/ber_types/Boolean.hpp"
 #include "fast_ber/ber_types/Identifier.hpp"
+#include "fast_ber/util/DecodeHelpers.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
 
 #include <catch2/catch.hpp>
@@ -42,4 +43,15 @@ TEST_CASE("Boolean: Encoding true")
     size_t size = test.encode(absl::MakeSpan(buffer.data(), buffer.size())).length;
     REQUIRE(size == 3);
     REQUIRE(absl::MakeSpan(buffer.data(), 3) == absl::MakeSpan(expected));
+}
+
+TEST_CASE("Boolean: Tagged")
+{
+    using TestId = fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::context_specific, 1000>,
+                                      fast_ber::Id<fast_ber::Class::private_, 9999999>>;
+    fast_ber::Boolean<TestId> test(false);
+    std::array<uint8_t, 100>  buffer = {};
+
+    test.encode(absl::MakeSpan(buffer.data(), buffer.size()));
+    CHECK(fast_ber::has_correct_header(fast_ber::BerView(buffer), TestId{}, fast_ber::Construction::primitive));
 }

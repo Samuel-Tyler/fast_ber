@@ -8,8 +8,8 @@
 
 TEST_CASE("Tags: Encoding a packet with various tagging modes")
 {
-    std::array<uint8_t, 5000>    buffer = {};
-    fast_ber::Tags::Collection<> tags   = {};
+    std::array<uint8_t, 5000>  buffer = {};
+    fast_ber::Tags::Collection tags   = {};
 
     fast_ber::EncodeResult encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), tags);
     REQUIRE(encode_result.success);
@@ -66,66 +66,92 @@ TEST_CASE("Tags: Encoding a packet with various tagging modes")
 
 TEST_CASE("Tags: Unspecified tags of an automatic sequence should be sequential")
 {
+    fast_ber::Tags::DefaultCollection c1;
+    std::vector<uint8_t>              buffer(1000, 0x00);
 
-    std::cout << fast_ber::Identifier<decltype(fast_ber::Tags::DefaultCollection<>::string1)>{} << std::endl;
-    REQUIRE(std::is_same<fast_ber::Identifier<decltype(fast_ber::Tags::DefaultCollection<>::string1)>,
-                         fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>>::value);
-    REQUIRE(std::is_same<fast_ber::Identifier<decltype(fast_ber::Tags::DefaultCollection<>::string2)>,
-                         fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>>::value);
-    REQUIRE(std::is_same<fast_ber::Identifier<decltype(fast_ber::Tags::DefaultCollection<>::string3)>,
-                         fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>>::value);
+    c1.encode(absl::Span<uint8_t>(buffer));
+    fast_ber::BerViewIterator itr = fast_ber::BerView(buffer).begin();
 
-    REQUIRE(std::is_same<fast_ber::Identifier<decltype(fast_ber::AutomaticTags::DefaultCollection<>::string1)>,
-                         fast_ber::Id<fast_ber::Class::context_specific, 0>>::value);
-    REQUIRE(std::is_same<fast_ber::Identifier<decltype(fast_ber::AutomaticTags::DefaultCollection<>::string2)>,
-                         fast_ber::Id<fast_ber::Class::context_specific, 1>>::value);
-    REQUIRE(std::is_same<fast_ber::Identifier<decltype(fast_ber::AutomaticTags::DefaultCollection<>::string3)>,
-                         fast_ber::Id<fast_ber::Class::context_specific, 2>>::value);
+    CHECK(fast_ber::has_correct_header(*itr, fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>{},
+                                       fast_ber::Construction::primitive));
+    ++itr;
+    CHECK(fast_ber::has_correct_header(*itr, fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>{},
+                                       fast_ber::Construction::primitive));
+    ++itr;
+    CHECK(fast_ber::has_correct_header(*itr, fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>{},
+                                       fast_ber::Construction::primitive));
+    ++itr;
+
+    fast_ber::AutomaticTags::DefaultCollection c2;
+    c2.encode(absl::Span<uint8_t>(buffer));
+    itr = fast_ber::BerView(buffer).begin();
+
+    CHECK(fast_ber::has_correct_header(*itr, fast_ber::Id<fast_ber::Class::context_specific, 0>{},
+                                       fast_ber::Construction::primitive));
+    ++itr;
+    CHECK(fast_ber::has_correct_header(*itr, fast_ber::Id<fast_ber::Class::context_specific, 1>{},
+                                       fast_ber::Construction::primitive));
+    ++itr;
+    CHECK(fast_ber::has_correct_header(*itr, fast_ber::Id<fast_ber::Class::context_specific, 2>{},
+                                       fast_ber::Construction::primitive));
+    ++itr;
 }
 
 TEST_CASE("Tags: Encoding and decoding a packet with various tagging modes")
 {
     std::array<uint8_t, 5000> buffer = {};
 
-    fast_ber::Tags::Collection<> tags{"Implicit", "And explicit tags", 0, true, false, true, {}};
-    fast_ber::Tags::Collection<> tags_copy{};
+    fast_ber::Tags::Collection tags{"Implicit", "And explicit tags", 0, true, false, true, {}};
+    fast_ber::Tags::Collection tags_copy{};
 
     fast_ber::EncodeResult encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), tags);
-    REQUIRE(encode_result.success);
+    CHECK(encode_result.success);
     fast_ber::DecodeResult decode_result = fast_ber::decode(absl::MakeSpan(buffer.data(), buffer.size()), tags_copy);
-    REQUIRE(decode_result.success);
+    CHECK(decode_result.success);
 
-    REQUIRE(tags_copy.string1 == "Implicit");
-    REQUIRE(tags_copy.string2 == "And explicit tags");
-    REQUIRE(tags_copy.integer == 0);
-    REQUIRE(tags_copy.bool1);
-    REQUIRE(!tags_copy.bool2);
-    REQUIRE(tags_copy.bool3);
-    REQUIRE(tags_copy.enumerated == decltype(fast_ber::Tags::Collection<>::enumerated){});
+    CHECK(tags_copy.string1 == "Implicit");
+    CHECK(tags_copy.string2 == "And explicit tags");
+    CHECK(tags_copy.integer == 0);
+    CHECK(tags_copy.bool1);
+    CHECK(!tags_copy.bool2);
+    CHECK(tags_copy.bool3);
+    CHECK(tags_copy.enumerated == decltype(fast_ber::Tags::Collection::enumerated){});
 
-    REQUIRE(tags_copy.bool3);
+    CHECK(tags_copy.bool3);
 
-    REQUIRE(std::is_same<fast_ber::Identifier<decltype(tags_copy.string2)>,
-                         fast_ber::Id<fast_ber::Class::context_specific, 1>>::value);
-    REQUIRE(std::is_same<fast_ber::Identifier<decltype(tags_copy.integer)>,
-                         fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::context_specific, 2>,
-                                            fast_ber::ExplicitId<fast_ber::UniversalTag::integer>>>::value);
-    REQUIRE(std::is_same<fast_ber::Identifier<decltype(tags_copy.bool1)>,
-                         fast_ber::Id<fast_ber::Class::context_specific, 3>>::value);
-    REQUIRE(std::is_same<fast_ber::Identifier<decltype(tags_copy.bool2)>,
-                         fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::private_, 4>,
-                                            fast_ber::ExplicitId<fast_ber::UniversalTag::boolean>>>::value);
-    REQUIRE(std::is_same<fast_ber::Identifier<decltype(tags_copy.bool3)>,
-                         fast_ber::Id<fast_ber::Class::application, 5>>::value);
-    REQUIRE(std::is_same<fast_ber::Identifier<decltype(tags_copy.enumerated)>,
-                         fast_ber::Id<fast_ber::Class::application, 6>>::value);
+    fast_ber::BerViewIterator itr = fast_ber::BerView(buffer).begin();
+    CHECK(fast_ber::has_correct_header(*itr, fast_ber::Id<fast_ber::Class::context_specific, 0>{},
+                                       fast_ber::Construction::primitive));
+    ++itr;
+    CHECK(fast_ber::has_correct_header(*itr, fast_ber::Id<fast_ber::Class::context_specific, 1>{},
+                                       fast_ber::Construction::primitive));
+    ++itr;
+    CHECK(fast_ber::has_correct_header(*itr,
+                                       fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::context_specific, 2>,
+                                                          fast_ber::ExplicitId<fast_ber::UniversalTag::integer>>{},
+                                       fast_ber::Construction::primitive));
+    ++itr;
+    CHECK(fast_ber::has_correct_header(*itr, fast_ber::Id<fast_ber::Class::context_specific, 3>{},
+                                       fast_ber::Construction::primitive));
+    ++itr;
+    CHECK(fast_ber::has_correct_header(*itr,
+                                       fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::private_, 4>,
+                                                          fast_ber::ExplicitId<fast_ber::UniversalTag::boolean>>{},
+                                       fast_ber::Construction::primitive));
+    ++itr;
+    CHECK(fast_ber::has_correct_header(*itr, fast_ber::Id<fast_ber::Class::application, 5>{},
+                                       fast_ber::Construction::primitive));
+    ++itr;
+
+    CHECK(fast_ber::has_correct_header(*itr, fast_ber::Id<fast_ber::Class::application, 6>{},
+                                       fast_ber::Construction::primitive));
 }
 
 TEST_CASE("Tags: Tagging an enum")
 {
-    fast_ber::Tags::TaggedEnum<> a = fast_ber::Tags::TaggedEnum<>::Values::enum_;
-    REQUIRE(fast_ber::Identifier<fast_ber::Tags::TaggedEnum<>>::tag() == 7);
-    REQUIRE(a == fast_ber::Tags::TaggedEnum<>::Values::enum_);
+    fast_ber::Tags::TaggedEnum a = fast_ber::Tags::TaggedEnum::Values::enum_;
+    REQUIRE(fast_ber::Identifier<fast_ber::Tags::TaggedEnum>::tag() == 7);
+    REQUIRE(a == fast_ber::Tags::TaggedEnum::Values::enum_);
 
     std::array<uint8_t, 5000> buffer        = {};
     fast_ber::EncodeResult    encode_result = fast_ber::encode(absl::MakeSpan(buffer.data(), buffer.size()), a);

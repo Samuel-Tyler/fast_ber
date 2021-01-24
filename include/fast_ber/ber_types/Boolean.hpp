@@ -37,12 +37,6 @@ class Boolean
     template <typename Identifier2>
     Boolean& operator=(const Boolean<Identifier2>& rhs) noexcept;
 
-    template <typename Identifier2>
-    bool operator==(const Boolean<Identifier2>& rhs) const noexcept;
-
-    template <typename Identifier2>
-    bool operator!=(const Boolean<Identifier2>& rhs) const noexcept;
-
     void assign(bool val) noexcept;
     template <typename Identifier2>
     void assign(const Boolean<Identifier2>& rhs) noexcept;
@@ -80,20 +74,6 @@ inline Boolean<Identifier>& Boolean<Identifier>::operator=(const Boolean<Identif
 {
     m_data.back() = rhs.m_data.back();
     return *this;
-}
-
-template <typename Identifier>
-template <typename Identifier2>
-bool Boolean<Identifier>::operator==(const Boolean<Identifier2>& rhs) const noexcept
-{
-    return this->value() == rhs.value();
-}
-
-template <typename Identifier>
-template <typename Identifier2>
-bool Boolean<Identifier>::operator!=(const Boolean<Identifier2>& rhs) const noexcept
-{
-    return !(*this == rhs);
 }
 
 template <typename Identifier>
@@ -146,6 +126,18 @@ DecodeResult Boolean<Identifier>::decode(BerView input) noexcept
         return DecodeResult{true};
     }
     return DecodeResult{false};
+}
+
+template <typename Identifier1, typename Identifier2>
+bool operator==(const Boolean<Identifier1>& lhs, const Boolean<Identifier2>& rhs) noexcept
+{
+    return lhs.value() == rhs.value();
+}
+
+template <typename Identifier1, typename Identifier2>
+bool operator!=(const Boolean<Identifier1>& lhs, const Boolean<Identifier2>& rhs) noexcept
+{
+    return !(lhs == rhs);
 }
 
 template <typename Identifier>

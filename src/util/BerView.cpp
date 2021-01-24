@@ -125,7 +125,7 @@ std::ostream& operator<<(std::ostream& os, BerView view) noexcept
         }
         os << "]";
     }
-    return os << "}";
+    return os << " }";
 }
 
 } // namespace fast_ber

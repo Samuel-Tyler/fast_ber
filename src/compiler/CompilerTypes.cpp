@@ -1,24 +1,7 @@
 #include "fast_ber/compiler/CompilerTypes.hpp"
 
-SetOfType::SetOfType(bool a, std::unique_ptr<NamedType>&& b, std::unique_ptr<Type>&& c)
-    : has_name(a), named_type(std::move(b)), type(std::move(c))
-{
-}
-SetOfType::SetOfType(const SetOfType& rhs)
-    : has_name(rhs.has_name), named_type(rhs.named_type ? new NamedType(*rhs.named_type) : nullptr),
-      type(rhs.type ? new Type(*rhs.type) : nullptr), storage(rhs.storage)
-{
-}
-SetOfType& SetOfType::operator=(const SetOfType& rhs)
-{
-    has_name   = rhs.has_name;
-    named_type = rhs.named_type ? std::unique_ptr<NamedType>(new NamedType(*rhs.named_type)) : nullptr;
-    type       = rhs.type ? std::unique_ptr<Type>(new Type(*rhs.type)) : nullptr;
-    storage    = rhs.storage;
-    return *this;
-}
-SequenceOfType::SequenceOfType(bool a, std::unique_ptr<NamedType>&& b, std::unique_ptr<Type>&& c)
-    : has_name(a), named_type(std::move(b)), type(std::move(c))
+SequenceOfType::SequenceOfType(bool a, std::unique_ptr<NamedType>&& b, std::unique_ptr<Type>&& c, StorageMode s)
+    : has_name(a), named_type(std::move(b)), type(std::move(c)), storage(s)
 {
 }
 SequenceOfType::SequenceOfType(const SequenceOfType& rhs)
@@ -329,8 +312,18 @@ bool is_oid(const Type& type)
 
 bool is_defined(const Type& type) { return absl::holds_alternative<DefinedType>(type); }
 
+// Generated types do not contain tagging info within the type, so need new type definitions to introduct a new tag
+bool is_generated(const Type& type)
+{
+    if (is_sequence(type) || is_set(type) || is_choice(type))
+        return true;
+    if (is_prefixed(type))
+        return is_generated(absl::get<PrefixedType>(absl::get<BuiltinType>(type)).tagged_type->type);
+    return false;
+}
+
 std::string gen_anon_member_name()
 {
-    static size_t count = 0;
+    static std::size_t count = 0;
     return "anonymous_member_" + std::to_string(count++);
 }

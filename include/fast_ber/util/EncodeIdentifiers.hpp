@@ -103,23 +103,17 @@ inline size_t encode_tag(absl::Span<uint8_t> output, UniversalTag tag) noexcept
 }
 constexpr inline size_t encoded_tag_length(Tag tag) noexcept
 {
-    return (tag < 0ll) ? 0
-                       : (tag <= 30ll)
-                             ? 1
-                             : (tag < 128ll)
-                                   ? 2
-                                   : (tag < 16384ll) ? 3
-                                                     : (tag < 2097152ll)
-                                                           ? 4
-                                                           : (tag < 268435456ll)
-                                                                 ? 5
-                                                                 : (tag < 34359738368ll)
-                                                                       ? 6
-                                                                       : (tag < 4398046511104ll)
-                                                                             ? 7
-                                                                             : (tag < 562949953421312ll)
-                                                                                   ? 8
-                                                                                   : (tag < 72057594037927936) ? 9 : 10;
+    return (tag < 0ll)                 ? 0
+           : (tag <= 30ll)             ? 1
+           : (tag < 128ll)             ? 2
+           : (tag < 16384ll)           ? 3
+           : (tag < 2097152ll)         ? 4
+           : (tag < 268435456ll)       ? 5
+           : (tag < 34359738368ll)     ? 6
+           : (tag < 4398046511104ll)   ? 7
+           : (tag < 562949953421312ll) ? 8
+           : (tag < 72057594037927936) ? 9
+                                       : 10;
 }
 
 constexpr inline size_t encoded_tag_length(UniversalTag tag) noexcept { return encoded_tag_length(as_underlying(tag)); }
@@ -249,19 +243,15 @@ inline size_t encode_length(absl::Span<uint8_t> output, uint64_t length) noexcep
 
 constexpr inline size_t encoded_length_length(size_t length) noexcept
 {
-    return (length < 0x80)
-               ? 1
-               : (length <= 0xFF)
-                     ? 2
-                     : (length <= 0xFFFF)
-                           ? 3
-                           : (length <= 0xFFFFFF)
-                                 ? 4
-                                 : (length <= 0xFFFFFFFF)
-                                       ? 5
-                                       : (length <= 0xFFFFFFFFFF)
-                                             ? 6
-                                             : (length <= 0xFFFFFFFFFFFF) ? 7 : (length <= 0xFFFFFFFFFFFFFF) ? 8 : 9;
+    return (length < 0x80)                ? 1
+           : (length <= 0xFF)             ? 2
+           : (length <= 0xFFFF)           ? 3
+           : (length <= 0xFFFFFF)         ? 4
+           : (length <= 0xFFFFFFFF)       ? 5
+           : (length <= 0xFFFFFFFFFF)     ? 6
+           : (length <= 0xFFFFFFFFFFFF)   ? 7
+           : (length <= 0xFFFFFFFFFFFFFF) ? 8
+                                          : 9;
 }
 
 inline size_t encode_header(absl::Span<uint8_t> output, Construction construction, Class class_, Tag tag,

@@ -5,6 +5,7 @@
 #include "fast_ber/util/BerView.hpp"
 #include "fast_ber/util/DecodeHelpers.hpp"
 #include "fast_ber/util/EncodeHelpers.hpp"
+#include "fast_ber/util/Error.hpp"
 
 #include "absl/container/inlined_vector.h"
 #include "absl/types/span.h"
@@ -166,6 +167,14 @@ DecodeResult FixedIdBerContainer<Identifier>::decode_impl(BerView input_view, Id
 {
     if (!has_correct_header(input_view, id, Construction::primitive))
     {
+        if (!input_view.is_valid())
+        {
+            FAST_BER_ERROR("Invalid packet when decoding packet with tag [", id, "]");
+        }
+        else
+        {
+            FAST_BER_ERROR("Incorrect header [", input_view.identifier(), "] when decoding packet with tag [", id, "]");
+        }
         return DecodeResult{false};
     }
 
@@ -181,6 +190,15 @@ DecodeResult FixedIdBerContainer<Identifier>::decode_impl(BerView               
 {
     if (!has_correct_header(input_view, id, Construction::primitive))
     {
+        if (!input_view.is_valid() || !input_view.begin()->is_valid())
+        {
+            FAST_BER_ERROR("Invalid packet when decoding packet with tag [", id, "]");
+        }
+        else
+        {
+            FAST_BER_ERROR("Incorrect header [", input_view.identifier(), ", ", input_view.begin()->identifier(),
+                           "] when decoding packet with tag [", id, "]");
+        }
         return DecodeResult{false};
     }
 

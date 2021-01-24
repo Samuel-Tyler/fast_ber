@@ -7,7 +7,7 @@
 
 TEST_CASE("Default: Generated Defaults")
 {
-    fast_ber::Defaults::SequenceWithDefault<> s;
+    fast_ber::Defaults::SequenceWithDefault s;
 
     REQUIRE(s.integer == 88);
     REQUIRE(s.flag == false);
@@ -26,8 +26,8 @@ TEST_CASE("Default: Generated Defaults")
 
 TEST_CASE("Default: Encode")
 {
-    std::array<std::uint8_t, 10>              buffer{};
-    fast_ber::Defaults::SequenceWithDefault<> s;
+    std::array<std::uint8_t, 10>            buffer{};
+    fast_ber::Defaults::SequenceWithDefault s;
 
     fast_ber::EncodeResult encode_result = s.encode(absl::Span<uint8_t>(buffer));
 
@@ -37,8 +37,8 @@ TEST_CASE("Default: Encode")
 
 TEST_CASE("Default: Decode")
 {
-    std::array<std::uint8_t, 2>               buffer{0x30, 0x00};
-    fast_ber::Defaults::SequenceWithDefault<> s{20, true, "cat", -10, fast_ber::Defaults::ColourValues::red, 25.0};
+    std::array<std::uint8_t, 2>             buffer{0x30, 0x00};
+    fast_ber::Defaults::SequenceWithDefault s{20, true, "cat", -10, fast_ber::Defaults::ColourValues::red, 25.0};
 
     REQUIRE(!s.integer.is_default());
     REQUIRE(!s.flag.is_default());
@@ -61,8 +61,8 @@ TEST_CASE("Default: Decode")
 
 TEST_CASE("Default: Serialize")
 {
-    std::stringstream                         ss;
-    fast_ber::Defaults::SequenceWithDefault<> s{{}, true, {}, -10, fast_ber::Defaults::ColourValues::red, -16.0};
+    std::stringstream                       ss;
+    fast_ber::Defaults::SequenceWithDefault s{{}, true, {}, -10, fast_ber::Defaults::ColourValues::red, -16.0};
 
     ss << s;
     REQUIRE(ss.str() ==

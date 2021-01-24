@@ -109,84 +109,36 @@ void test_type(const T& a)
     std::cout << "All test : " << a << "\n      id : " << ID{} << "\n\n";
 }
 
-template <typename Identifier>
-void test_type_with_id()
-{
-    test_type(fast_ber::All::The_BitString<Identifier>("TestString"));
-    test_type(fast_ber::All::The_Boolean<Identifier>(true));
-    test_type(fast_ber::All::The_CharacterString<Identifier>("TestString"));
-    test_type(fast_ber::All::The_Choice<Identifier>(fast_ber::Boolean<>(true)));
-    // test_type(fast_ber::Date<>);
-    // test_type(fast_ber::DateTime<>);
-    test_type(fast_ber::Default<fast_ber::Integer<Identifier>, dflt::IntDefault>(dflt::IntDefault::get_value()));
-    test_type(fast_ber::Default<fast_ber::All::The_Integer<Identifier>, dflt::IntDefault>(-123456));
-    test_type(fast_ber::Default<fast_ber::All::The_OctetString<Identifier>, dflt::StringDefault>(
-        dflt::StringDefault::get_value()));
-    test_type(fast_ber::Default<fast_ber::OctetString<Identifier>, dflt::StringDefault>("Non default string value"));
-    // test_type(fast_ber::Duration<>);
-    test_type(fast_ber::All::The_Enum<Identifier>(fast_ber::All::The_Enum<>::Values::pear));
-    test_type(fast_ber::All::The_GeneralizedTime<Identifier>(absl::Now()));
-    test_type(fast_ber::All::The_Integer<Identifier>(5));
-    test_type(fast_ber::All::The_Null<Identifier>());
-    test_type(fast_ber::All::The_ObjectIdentifier<Identifier>(fast_ber::ObjectIdentifierComponents{1, 2, 500, 9999}));
-    test_type(fast_ber::All::The_OctetString<Identifier>("TestString"));
-    test_type(fast_ber::Optional<fast_ber::All::The_Null<Identifier>>(fast_ber::Null<>()));
-    test_type(fast_ber::Optional<fast_ber::All::The_Set<Identifier>>(fast_ber::All::The_Set<>{"Hello", 42}));
-    test_type(fast_ber::All::The_Real<Identifier>(0.7774750819971197));
-    test_type(fast_ber::All::The_Sequence<Identifier>{"Hello", 42});
-    test_type(fast_ber::SequenceOf<fast_ber::Integer<>, Identifier, fast_ber::StorageMode::small_buffer_optimised>(
-        {1, 4, 6, 100, 2555}));
-    test_type(
-        fast_ber::SequenceOf<fast_ber::Integer<>, Identifier, fast_ber::StorageMode::dynamic>({1, 4, 6, 100, 2555}));
-    test_type(fast_ber::All::The_Set<Identifier>{"Hello", 42});
-    test_type(fast_ber::All::The_SetOf<Identifier>({"A", "list", "of", "strings"}));
-    test_type(fast_ber::All::The_Set<Identifier>({"Hello", 42}));
-    // test_type(fast_ber::Time);
-    // test_type(fast_ber::TimeOfDay);
-    test_type(fast_ber::All::The_VisibleString<Identifier>("TestString"));
-}
-
 TEST_CASE("AllTypes: Check all types share a unified interface")
 {
-    test_type_with_id<fast_ber::Id<fast_ber::Class::private_, 200>>();
-#if 0 // Commented out to reduce compile time (Heavy Templating)
-    test_type_with_id<fast_ber::Id<fast_ber::Class::application, 999999999>>();
-    test_type_with_id<fast_ber::Id<fast_ber::Class::context_specific, 4000>>();
-    test_type_with_id<fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>>();
-    test_type_with_id<fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::private_, 4>,
-                                         fast_ber::ExplicitId<fast_ber::UniversalTag::octet_string>>>();
-    test_type_with_id<fast_ber::DoubleId<fast_ber::Id<fast_ber::Class::context_specific, 999999999999999>,
-                                         fast_ber::Id<fast_ber::Class::context_specific, 9999999999999999>>>();
-
-    test_type(fast_ber::All::The_Choice<>>(fast_ber::Boolean<>(true)));
-#endif
-}
-
-TEST_CASE("AllTypes: Default Id")
-{
-    test_type(fast_ber::All::The_BitString<>("TestString"));
-    test_type(fast_ber::All::The_Boolean<>(true));
-    test_type(fast_ber::All::The_CharacterString<>("TestString"));
-    test_type(fast_ber::All::The_Choice<>(true));
+    test_type(fast_ber::All::The_BitString("TestString"));
+    test_type(fast_ber::All::The_Boolean(true));
+    test_type(fast_ber::All::The_CharacterString("TestString"));
+    test_type(fast_ber::All::The_Choice(fast_ber::All::The_Choice::Member_one(true)));
     // test_type(fast_ber::Date<>);
     // test_type(fast_ber::DateTime<>);
+    test_type(fast_ber::Default<fast_ber::Integer<>, dflt::IntDefault>(dflt::IntDefault::get_value()));
+    test_type(fast_ber::Default<fast_ber::All::The_Integer, dflt::IntDefault>(-123456));
+    test_type(fast_ber::Default<fast_ber::All::The_OctetString, dflt::StringDefault>(dflt::StringDefault::get_value()));
+    test_type(fast_ber::Default<fast_ber::OctetString<>, dflt::StringDefault>("Non default string value"));
     // test_type(fast_ber::Duration<>);
-    test_type(fast_ber::All::The_Enum<>(fast_ber::All::The_Enum<>::Values::pear));
-    test_type(fast_ber::All::The_GeneralizedTime<>(absl::Now()));
-    test_type(fast_ber::All::The_Integer<>(5));
-    test_type(fast_ber::All::The_Null<>());
-    test_type(fast_ber::All::The_ObjectIdentifier<>(fast_ber::ObjectIdentifierComponents{1, 2, 500, 9999}));
-    test_type(fast_ber::All::The_OctetString<>("TestString"));
-    test_type(fast_ber::Optional<fast_ber::All::The_Null<>>());
-    test_type(fast_ber::Optional<fast_ber::All::The_Null<>>(fast_ber::All::The_Null<>()));
-    test_type(fast_ber::Optional<fast_ber::All::The_Set<>>(fast_ber::All::The_Set<>{"Hello", 42}));
-    test_type(fast_ber::All::The_Real<>(-9999.456));
-    test_type(fast_ber::All::The_Sequence<>{"Hello", 42});
-    test_type(fast_ber::All::The_SequenceOf<>({1, 4, 6, 100, 2555}));
-    test_type(fast_ber::All::The_Set<>{"Hello", 42});
-    test_type(fast_ber::All::The_SetOf<>({"A", "list", "of", "strings"}));
-    test_type(fast_ber::All::The_Set<>({"Hello", 42}));
+    test_type(fast_ber::All::The_Enum(fast_ber::All::The_Enum::Values::pear));
+    test_type(fast_ber::All::The_GeneralizedTime(absl::Now()));
+    test_type(fast_ber::All::The_Integer(5));
+    test_type(fast_ber::All::The_Null());
+    test_type(fast_ber::All::The_ObjectIdentifier(fast_ber::ObjectIdentifierComponents{1, 2, 500, 9999}));
+    test_type(fast_ber::All::The_OctetString("TestString"));
+    test_type(fast_ber::Optional<fast_ber::All::The_Null>(fast_ber::All::The_Null()));
+    test_type(fast_ber::Optional<fast_ber::Integer<>>(42));
+    test_type(fast_ber::All::The_Real(0.7774750819971197));
+    test_type(fast_ber::All::The_Sequence{"Hello", 42});
+    test_type(fast_ber::SequenceOf<fast_ber::Integer<>, fast_ber::ExplicitId<fast_ber::UniversalTag::sequence>,
+                                   fast_ber::StorageMode::small_buffer_optimised>({1, 4, 6, 100, 2555}));
+    test_type(fast_ber::SequenceOf<fast_ber::Integer<>, fast_ber::ExplicitId<fast_ber::UniversalTag::sequence>,
+                                   fast_ber::StorageMode::dynamic>({1, 4, 6, 100, 2555}));
+    test_type(fast_ber::All::The_Set{"Hello", 42});
+    test_type(fast_ber::All::The_SetOf({"A", "list", "of", "strings"}));
     // test_type(fast_ber::Time);
     // test_type(fast_ber::TimeOfDay);
-    test_type(fast_ber::VisibleString<>("TestString"));
+    test_type(fast_ber::All::The_VisibleString("TestString"));
 }
