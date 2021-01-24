@@ -14,7 +14,7 @@
 std::string make_component_function(const std::string& function, const NamedType& component, const Module& module,
                                     const Asn1Tree& tree)
 {
-    if (is_choice_set_or_sequence(resolve_type(tree, module.module_reference, component).type))
+    if (is_generated(resolve_type(tree, module.module_reference, component).type))
     {
         auto id = identifier(component.type, module, tree);
         if (!id.is_default_tagged)

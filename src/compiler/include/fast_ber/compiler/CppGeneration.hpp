@@ -75,7 +75,7 @@ class CodeScope
     }
 
   private:
-    bool       m_active = true;
     CodeBlock& m_block;
+    bool       m_active = true;
     bool       m_semicolon;
 };

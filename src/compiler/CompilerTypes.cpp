@@ -322,15 +322,6 @@ bool is_generated(const Type& type)
     return false;
 }
 
-bool is_choice_set_or_sequence(const Type& type)
-{
-    if (is_sequence(type) || is_set(type) || is_choice(type))
-        return true;
-    if (is_prefixed(type))
-        return is_choice_set_or_sequence(absl::get<PrefixedType>(absl::get<BuiltinType>(type)).tagged_type->type);
-    return false;
-}
-
 std::string gen_anon_member_name()
 {
     static std::size_t count = 0;

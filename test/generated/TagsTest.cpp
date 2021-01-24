@@ -143,14 +143,12 @@ TEST_CASE("Tags: Encoding and decoding a packet with various tagging modes")
                                        fast_ber::Construction::primitive));
     ++itr;
 
-    // TODO: FIXME!
-    //    CHECK(fast_ber::has_correct_header(*itr, fast_ber::Id<fast_ber::Class::application, 6>{},
-    //                                     fast_ber::Construction::primitive));
+    CHECK(fast_ber::has_correct_header(*itr, fast_ber::Id<fast_ber::Class::application, 6>{},
+                                       fast_ber::Construction::primitive));
 }
 
 TEST_CASE("Tags: Tagging an enum")
 {
-    /* TODO: FIXME!
     fast_ber::Tags::TaggedEnum a = fast_ber::Tags::TaggedEnum::Values::enum_;
     REQUIRE(fast_ber::Identifier<fast_ber::Tags::TaggedEnum>::tag() == 7);
     REQUIRE(a == fast_ber::Tags::TaggedEnum::Values::enum_);
@@ -161,5 +159,4 @@ TEST_CASE("Tags: Tagging an enum")
 
     REQUIRE(encode_result.success);
     REQUIRE(decode_result.success);
-    */
 }
