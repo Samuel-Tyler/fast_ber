@@ -29,11 +29,11 @@ CodeBlock create_collection_encode_functions(const std::string& name, const Coll
 {
     CodeBlock block;
 
-    block.add_line(create_template_definition({"Identifier"}));
+    block.add_line(create_template_definition({"Identifier_"}));
     block.add_line("inline EncodeResult " + name + "::encode_with_id(absl::Span<uint8_t> output) const noexcept");
     {
         auto scope = CodeScope(block);
-        block.add_line("constexpr size_t header_length_guess = fast_ber::encoded_length(0, Identifier{});");
+        block.add_line("constexpr std::size_t header_length_guess = fast_ber::encoded_length(0, Identifier_{});");
         block.add_line("if (output.length() < header_length_guess)");
 
         {
@@ -47,7 +47,7 @@ CodeBlock create_collection_encode_functions(const std::string& name, const Coll
             block.add_line("auto content = output;");
             block.add_line("content.remove_prefix(header_length_guess);");
         }
-        block.add_line("size_t content_length = 0;");
+        block.add_line("std::size_t content_length = 0;");
 
         for (const ComponentType& component : collection.components)
         {
@@ -61,15 +61,15 @@ CodeBlock create_collection_encode_functions(const std::string& name, const Coll
             block.add_line("content.remove_prefix(res.length);");
             block.add_line("content_length += res.length;");
         }
-        block.add_line("return wrap_with_ber_header(output, content_length, Identifier{}, header_length_guess);");
+        block.add_line("return wrap_with_ber_header(output, content_length, Identifier_{}, header_length_guess);");
     }
     block.add_line();
 
-    block.add_line(create_template_definition({"Identifier"}));
-    block.add_line("size_t " + name + "::encoded_length_with_id() const noexcept");
+    block.add_line(create_template_definition({"Identifier_"}));
+    block.add_line("std::size_t " + name + "::encoded_length_with_id() const noexcept");
     {
         auto scope = CodeScope(block);
-        block.add_line("size_t content_length = 0;");
+        block.add_line("std::size_t content_length = 0;");
         block.add_line();
         for (const ComponentType& component : collection.components)
         {
@@ -77,7 +77,7 @@ CodeBlock create_collection_encode_functions(const std::string& name, const Coll
                            make_component_function("encoded_length", component.named_type, module, tree) + "();");
         }
         block.add_line();
-        block.add_line("return fast_ber::encoded_length(content_length, Identifier{});");
+        block.add_line("return fast_ber::encoded_length(content_length, Identifier_{});");
     }
     block.add_line();
     return block;
@@ -88,7 +88,7 @@ CodeBlock create_choice_encode_functions(const std::string& name, const ChoiceTy
 {
     CodeBlock block;
 
-    block.add_line(create_template_definition({"Identifier"}));
+    block.add_line(create_template_definition({"Identifier_"}));
     block.add_line("inline EncodeResult " + name + "::encode_with_id(absl::Span<uint8_t> output) const noexcept");
     {
         auto scope1 = CodeScope(block);
@@ -96,11 +96,11 @@ CodeBlock create_choice_encode_functions(const std::string& name, const ChoiceTy
         block.add_line("auto content = output;");
         // If an alternative (non ChoiceId) identifier is provided choice type should be wrapped,
         // else use identifier of selected choice
-        block.add_line("size_t header_length_guess = 0;");
-        block.add_line("if (!IsChoiceId<Identifier>::value)");
+        block.add_line("std::size_t header_length_guess = 0;");
+        block.add_line("if (!IsChoiceId<Identifier_>::value)");
         {
             auto scope2 = CodeScope(block);
-            block.add_line(" header_length_guess = fast_ber::encoded_length(0,Identifier{});");
+            block.add_line(" header_length_guess = fast_ber::encoded_length(0,Identifier_{});");
 
             block.add_line("if (output.length() < header_length_guess)");
             {
@@ -113,7 +113,7 @@ CodeBlock create_choice_encode_functions(const std::string& name, const ChoiceTy
         block.add_line("switch (this->index())");
         {
             auto scope2 = CodeScope(block);
-            for (size_t i = 0; i < choice.choices.size(); i++)
+            for (std::size_t i = 0; i < choice.choices.size(); i++)
             {
                 block.add_line("case " + std::to_string(i) + ":");
                 block.add_line("	res = fast_ber::get<" + std::to_string(i) + ">(*this)." +
@@ -123,7 +123,7 @@ CodeBlock create_choice_encode_functions(const std::string& name, const ChoiceTy
             block.add_line("default: assert(0);");
         }
 
-        block.add_line("if (!IsChoiceId<Identifier>::value)");
+        block.add_line("if (!IsChoiceId<Identifier_>::value)");
         {
             auto scope2 = CodeScope(block);
             block.add_line("if (!res.success)");
@@ -131,8 +131,8 @@ CodeBlock create_choice_encode_functions(const std::string& name, const ChoiceTy
                 auto scope3 = CodeScope(block);
                 block.add_line("return res;");
             }
-            block.add_line("const size_t content_length = res.length;");
-            block.add_line("res = wrap_with_ber_header(output, content_length, Identifier{}, header_length_guess);");
+            block.add_line("const std::size_t content_length = res.length;");
+            block.add_line("res = wrap_with_ber_header(output, content_length, Identifier_{}, header_length_guess);");
             block.add_line("return res;");
         }
         block.add_line("else");
@@ -144,7 +144,7 @@ CodeBlock create_choice_encode_functions(const std::string& name, const ChoiceTy
 
     block.add_line();
 
-    block.add_line(create_template_definition({"Identifier"}));
+    block.add_line(create_template_definition({"Identifier_"}));
     block.add_line("inline std::size_t " + name + "::encoded_length_with_id() const noexcept");
     {
         auto scope1 = CodeScope(block);
@@ -152,7 +152,7 @@ CodeBlock create_choice_encode_functions(const std::string& name, const ChoiceTy
         block.add_line("switch (this->index())");
         {
             auto scope2 = CodeScope(block);
-            for (size_t i = 0; i < choice.choices.size(); i++)
+            for (std::size_t i = 0; i < choice.choices.size(); i++)
             {
                 block.add_line("case " + std::to_string(i) + ":");
                 block.add_line("	content_length = fast_ber::get<" + std::to_string(i) + ">(*this)." +
@@ -162,10 +162,10 @@ CodeBlock create_choice_encode_functions(const std::string& name, const ChoiceTy
             block.add_line("default: assert(0);");
         }
 
-        block.add_line("if (!IsChoiceId<Identifier>::value)");
+        block.add_line("if (!IsChoiceId<Identifier_>::value)");
         {
             auto scope2 = CodeScope(block);
-            block.add_line("return fast_ber::encoded_length(content_length, Identifier{});");
+            block.add_line("return fast_ber::encoded_length(content_length, Identifier_{});");
         }
         block.add_line("else");
         {
@@ -183,7 +183,7 @@ CodeBlock create_collection_decode_functions(const std::string& name, const Coll
                                              const Module& module, const Asn1Tree& tree)
 {
     CodeBlock block;
-    block.add_line(create_template_definition({"Identifier"}));
+    block.add_line(create_template_definition({"Identifier_"}));
     block.add_line("DecodeResult " + name + "::decode_with_id(BerView input) noexcept");
     {
         auto scope = CodeScope(block);
@@ -193,7 +193,7 @@ CodeBlock create_collection_decode_functions(const std::string& name, const Coll
             block.add_line(R"(FAST_BER_ERROR("Invalid packet when decoding collection [)" + name + R"(]");)");
             block.add_line("return DecodeResult{false};");
         }
-        block.add_line("if (!has_correct_header(input, Identifier{}, Construction::constructed))");
+        block.add_line("if (!has_correct_header(input, Identifier_{}, Construction::constructed))");
         {
             auto scope2 = CodeScope(block);
             block.add_line(
@@ -205,16 +205,16 @@ CodeBlock create_collection_decode_functions(const std::string& name, const Coll
         if (collection.components.size() > 0)
         {
             block.add_line("DecodeResult res;");
-            block.add_line("auto iterator = (Identifier::depth() == 1) ? input.begin()");
+            block.add_line("auto iterator = (Identifier_::depth() == 1) ? input.begin()");
             block.add_line("                                            : input.begin()->begin();");
 
             if (std::is_same<CollectionType, SetType>::value)
             {
-                block.add_line("auto const end = (Identifier::depth() == 1) ? input.end()");
+                block.add_line("auto const end = (Identifier_::depth() == 1) ? input.end()");
                 block.add_line("                                             : input.begin()->end();");
                 block.add_line();
 
-                block.add_line("std::array<size_t, " + std::to_string(collection.components.size()) +
+                block.add_line("std::array<std::size_t, " + std::to_string(collection.components.size()) +
                                "> decode_counts = {};");
                 block.add_line("while (iterator != end)");
                 {
@@ -225,8 +225,8 @@ CodeBlock create_collection_decode_functions(const std::string& name, const Coll
                         auto scope3 = CodeScope(block);
                         {
                             block.add_line("switch (iterator->tag())");
-                            auto   scope4 = CodeScope(block);
-                            size_t i      = 0;
+                            auto        scope4 = CodeScope(block);
+                            std::size_t i      = 0;
                             for (const ComponentType& component : collection.components)
                             {
                                 block.add_line("case " + std::to_string(i) + ":");
@@ -273,8 +273,8 @@ CodeBlock create_collection_decode_functions(const std::string& name, const Coll
                                 auto scope3 = CodeScope(block);
                                 {
                                     block.add_line("switch (iterator->tag())");
-                                    auto   scope4 = CodeScope(block);
-                                    size_t i      = 0;
+                                    auto        scope4 = CodeScope(block);
+                                    std::size_t i      = 0;
                                     for (const ComponentType& component : collection.components)
                                     {
                                         const std::vector<Identifier>& ids =
@@ -321,7 +321,7 @@ CodeBlock create_collection_decode_functions(const std::string& name, const Coll
                         block.add_line("++iterator;");
                     }
                 }
-                size_t i = 0;
+                std::size_t i = 0;
                 for (const ComponentType& component : collection.components)
                 {
 
@@ -469,7 +469,7 @@ CodeBlock create_choice_decode_functions(const std::string& name, const ChoiceTy
             block.add_line("switch (content.tag())");
             {
                 auto scope2 = CodeScope(block);
-                for (size_t i = 0; i < choice.choices.size(); i++)
+                for (std::size_t i = 0; i < choice.choices.size(); i++)
                 {
                     block.add_line("case " + std::to_string(i) + ":");
                     block.add_line("	return this->template emplace<" + std::to_string(i) + ">()." +
@@ -491,8 +491,8 @@ CodeBlock create_choice_decode_functions(const std::string& name, const ChoiceTy
                                 [class_](const Identifier& id) { return id.class_ == class_; }))
                 {
                     block.add_line("switch (content.tag())");
-                    auto   scope2 = CodeScope(block);
-                    size_t i      = 0;
+                    auto        scope2 = CodeScope(block);
+                    std::size_t i      = 0;
                     for (const NamedType& named_type : choice.choices)
                     {
                         const std::vector<Identifier>& ids = outer_identifiers(named_type.type, module, tree);

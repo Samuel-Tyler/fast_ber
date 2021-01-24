@@ -48,14 +48,14 @@ CodeBlock create_choice_definition(const ChoiceType& choice, const Module& modul
 
         // Type helpers
         block.add_line("struct Nothing_{};");
-        block.add_line("template <size_t i, bool = i < (" + std::to_string(choice.choices.size()) + ")>");
+        block.add_line("template <std::size_t i, bool = i < (" + std::to_string(choice.choices.size()) + ")>");
         block.add_line("struct ToTypeImpl{ using type = Nothing_; };");
 
-        block.add_line("template <size_t i>");
+        block.add_line("template <std::size_t i>");
         block.add_line("struct ToTypeImpl<i, true>{ using type = dynamic::detail::TypeAtIndex<i, " + type_list +
                        ">; };");
 
-        block.add_line("template <size_t i>");
+        block.add_line("template <std::size_t i>");
         block.add_line("using ToType = typename ToTypeImpl<i>::type;");
         block.add_line("template <typename T_>");
         block.add_line("using ExactlyOnce = dynamic::detail::ExactlyOnce<T_, " + type_list + ">;");
@@ -96,7 +96,7 @@ CodeBlock create_choice_definition(const ChoiceType& choice, const Module& modul
                        "(in_place_type_t<T_> ip, std::initializer_list<U> il, Args&&... args) : m_storage(ip, il, "
                        "std::forward<Args>(args)...) {}");
 
-        block.add_line("template <size_t i, typename... Args,");
+        block.add_line("template <std::size_t i, typename... Args,");
         block.add_line("    typename = absl::enable_if_t<std::is_constructible<ToType<i>, Args&&...>::value>>");
         block.add_line("explicit " + name +
                        "(in_place_index_t<i> ip, Args&&... args) : m_storage(ip, std::forward<Args>(args)...) {}");
@@ -114,20 +114,20 @@ CodeBlock create_choice_definition(const ChoiceType& choice, const Module& modul
                 block.add_line("return m_storage.emplace<T_>(std::forward<Args>(args)...);");
             }
         }
-        block.add_line("template <size_t index, typename... Args>");
-        block.add_line("    absl::enable_if_t<std::is_constructible<ToType<index>, Args...>::value,");
-        block.add_line("    ToType<index>&>");
+        block.add_line("template <std::size_t i, typename... Args>");
+        block.add_line("    absl::enable_if_t<std::is_constructible<ToType<i>, Args...>::value,");
+        block.add_line("    ToType<i>&>");
         block.add_line("emplace(Args&&... args)");
         {
             CodeScope scope2(block);
             {
-                block.add_line("return m_storage.emplace<index>(std::forward<Args>(args)...);");
+                block.add_line("return m_storage.emplace<i>(std::forward<Args>(args)...);");
             }
         }
         block.add_line();
 
         // Index
-        block.add_line("size_t index() const noexcept { return m_storage.index(); }");
+        block.add_line("std::size_t index() const noexcept { return m_storage.index(); }");
 
         // Encode / Decode Functionality
         block.add_line(create_template_definition({"Identifier"}));
@@ -138,7 +138,7 @@ CodeBlock create_choice_definition(const ChoiceType& choice, const Module& modul
         block.add_line("DecodeResult decode_with_id(BerView output) noexcept;");
         block.add_line();
 
-        block.add_line("size_t encoded_length() const noexcept");
+        block.add_line("std::size_t encoded_length() const noexcept");
         block.add_line("{ return encoded_length_with_id<" + id + ">(); }");
         block.add_line("EncodeResult encode(absl::Span<uint8_t> output) const noexcept");
         block.add_line("{ return encode_with_id<" + id + ">(output); }");
@@ -169,7 +169,7 @@ CodeBlock create_choice_getters(const std::string& name, const ChoiceType& choic
 
     for (const std::string& constness : {std::string("const "), std::string()})
     {
-        size_t i = 0;
+        std::size_t i = 0;
         for (const NamedType& named_type : choice.choices)
         {
             block.add_line(constness + name + "::" + make_type_name(named_type.name, name) + "& get_impl(" + constness +
