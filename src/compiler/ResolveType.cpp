@@ -135,7 +135,8 @@ const Assignment& resolve(const Asn1Tree& tree, const std::string& module_refere
     throw std::runtime_error("Reference to undefined object: " + module_reference + "." + reference);
 }
 
-const Assignment& resolve(const Asn1Tree& tree, const std::string& current_module_reference, const DefinedType& defined)
+const Module& resolve_module(const Asn1Tree& tree, const std::string& current_module_reference,
+                             const DefinedType& defined)
 {
     const std::string& module_reference =
         (defined.module_reference) ? *defined.module_reference : current_module_reference;
@@ -144,21 +145,27 @@ const Assignment& resolve(const Asn1Tree& tree, const std::string& current_modul
     {
         if (module.module_reference == module_reference)
         {
-            return resolve(tree, module, defined.type_reference);
+            return module;
         }
     }
     throw std::runtime_error("Reference to undefined object: " + module_reference + "." + defined.type_reference);
 }
 
-NamedType resolve_type(const Asn1Tree& tree, const std::string& current_module_reference,
-                       const DefinedType& original_defined)
+const Assignment& resolve(const Asn1Tree& tree, const std::string& current_module_reference, const DefinedType& defined)
+{
+    return resolve(tree, resolve_module(tree, current_module_reference, defined), defined.type_reference);
+}
+
+NamedTypeAndModule resolve_type_and_module(const Asn1Tree& tree, const std::string& current_module_reference,
+                                           const DefinedType& original_defined)
 {
     DefinedType defined = original_defined;
     std::string module  = current_module_reference;
     while (true)
     {
         assert(std::isupper(defined.type_reference[0]));
-        const Assignment& assignment = resolve(tree, module, defined);
+        const Module&     working_module = resolve_module(tree, module, defined);
+        const Assignment& assignment     = resolve(tree, working_module, defined.type_reference);
         if (!is_type(assignment))
         {
             throw std::runtime_error("Defined must be a type in this context! " + original_defined.type_reference);
@@ -176,38 +183,50 @@ NamedType resolve_type(const Asn1Tree& tree, const std::string& current_module_r
             PrefixedType prefixed = absl::get<PrefixedType>(absl::get<BuiltinType>(type(assignment)));
             if (is_defined(prefixed.tagged_type->type))
             {
-                Type inner =
-                    resolve_type(tree, current_module_reference, absl::get<DefinedType>(prefixed.tagged_type->type))
-                        .type;
-                prefixed.tagged_type->type = inner;
-                return NamedType{assignment.name, prefixed};
+                NamedTypeAndModule const& inner = resolve_type_and_module(
+                    tree, current_module_reference, absl::get<DefinedType>(prefixed.tagged_type->type));
+                prefixed.tagged_type->type = inner.type.type;
+                return {NamedType{assignment.name, prefixed}, inner.module};
             }
             else
             {
-                return NamedType{assignment.name, type(assignment)};
+                return {NamedType{assignment.name, type(assignment)}, working_module};
             }
         }
         else
         {
-            return NamedType{assignment.name, type(assignment)};
+            return {NamedType{assignment.name, type(assignment)}, working_module};
         }
     }
 }
 
-NamedType resolve_type(const Asn1Tree& tree, const std::string& current_module_reference, const NamedType& type_info)
+NamedTypeAndModule resolve_type_and_module(const Asn1Tree& tree, const std::string& current_module_reference,
+                                           const NamedType& type_info)
 {
     if (is_defined(type_info.type))
     {
-        return resolve_type(tree, current_module_reference, absl::get<DefinedType>(type_info.type));
+        return resolve_type_and_module(tree, current_module_reference, absl::get<DefinedType>(type_info.type));
     }
     if (is_prefixed(type_info.type))
     {
-        return resolve_type(
+        return resolve_type_and_module(
             tree, current_module_reference,
             NamedType{type_info.name,
                       absl::get<PrefixedType>(absl::get<BuiltinType>(type_info.type)).tagged_type->type});
     }
-    return type_info;
+
+    return {type_info, find_module(tree, current_module_reference)};
+}
+
+NamedType resolve_type(const Asn1Tree& tree, const std::string& current_module_reference,
+                       const DefinedType& original_defined)
+{
+    return resolve_type_and_module(tree, current_module_reference, original_defined).type;
+}
+
+NamedType resolve_type(const Asn1Tree& tree, const std::string& current_module_reference, const NamedType& type_info)
+{
+    return resolve_type_and_module(tree, current_module_reference, type_info).type;
 }
 
 bool exists(const Asn1Tree&, const Module& module, const std::string& reference)

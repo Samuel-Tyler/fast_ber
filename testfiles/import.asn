@@ -1,11 +1,15 @@
 ModuleA DEFINITIONS IMPLICIT TAGS ::= BEGIN
 IMPORTS
     StringInModuleB, string-value FROM ModuleB
-    integer-value, IntegerInModuleC FROM ModuleC;
+    integer-value, IntegerInModuleC FROM ModuleC
+    EnumInModuleD FROM ModuleD
+    CollectionInModuleE FROM ModuleE;
 
 Collection ::= SEQUENCE {
     string StringInModuleB,
-    integer IntegerInModuleC
+    integer IntegerInModuleC,
+    enum EnumInModuleD,
+    collection CollectionInModuleE
 }
 
 END
@@ -25,5 +29,26 @@ EXPORTS IntegerInModuleC;
 IntegerInModuleC ::= INTEGER
 
 integer-value IntegerInModuleC ::= 5
+
+END
+
+ModuleD DEFINITIONS IMPLICIT TAGS ::= BEGIN
+EXPORTS EnumInModuleD;
+
+EnumInModuleD ::= ENUMERATED {
+    first (0),
+    second (1),
+    third (2)
+}
+
+END
+
+ModuleE DEFINITIONS IMPLICIT TAGS ::= BEGIN
+EXPORTS CollectionInModuleE;
+
+CollectionInModuleE ::= SEQUENCE {
+    string OCTET STRING,
+    integer INTEGER
+}
 
 END
