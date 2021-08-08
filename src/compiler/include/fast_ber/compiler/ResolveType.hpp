@@ -16,6 +16,16 @@ const Assignment& resolve(const Asn1Tree& tree, const Module& module, const std:
 const Assignment& resolve(const Asn1Tree& tree, const std::string& module_reference, const std::string& reference);
 const Assignment& resolve(const Asn1Tree& tree, const std::string& current_module_reference,
                           const DefinedType& defined);
+struct NamedTypeAndModule
+{
+    NamedType     type;
+    Module const& module;
+};
+
+NamedTypeAndModule resolve_type_and_module(const Asn1Tree& tree, const std::string& current_module_reference,
+                                           const DefinedType& original_defined);
+NamedTypeAndModule resolve_type_and_module(const Asn1Tree& tree, const std::string& current_module_reference,
+                                           const NamedType& type);
 
 NamedType resolve_type(const Asn1Tree& tree, const std::string& current_module_reference,
                        const DefinedType& original_defined);

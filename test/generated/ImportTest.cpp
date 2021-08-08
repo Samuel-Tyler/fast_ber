@@ -25,3 +25,13 @@ TEST_CASE("Imports: Multiple files")
     REQUIRE(fast_ber::MultiModuleA::integer_value == 5);
     REQUIRE(fast_ber::MultiModuleA::string_value == "pear");
 }
+
+TEST_CASE("Imports: Enum") { fast_ber::ModuleA::Collection c{}; }
+
+TEST_CASE("Imports: Collection")
+{
+    fast_ber::ModuleA::Collection c{};
+
+    REQUIRE(c.collection.string.empty());
+    REQUIRE(c.enum_ == fast_ber::ModuleD::EnumInModuleD::Values::first);
+}

@@ -459,6 +459,16 @@ CodeBlock create_type_assignment(const std::string& name, const Type& assignment
             id = identifier(assignment_type, module, tree).name();
         }
 
+        if (is_defined(assignment_type))
+        {
+            DefinedType const&        defined_type = absl::get<DefinedType>(assignment_type);
+            NamedTypeAndModule const& resolved = resolve_type_and_module(tree, module.module_reference, defined_type);
+            if (is_enumerated(resolved.type.type) && resolved.module.module_reference != module.module_reference)
+            {
+                block.add_line("using " + defined_type.type_reference + "Values = ::fast_ber::" +
+                               resolved.module.module_reference + "::" + defined_type.type_reference + "Values;");
+            }
+        }
         if (introduce_type)
         {
             block.add_line("FAST_BER_ALIAS(" + name + ", " + type_as_string(assignment_type, module, tree, name, id) +

@@ -71,6 +71,7 @@ class StringImpl
     size_t                    size() const noexcept { return m_contents.content_length(); }
     size_t                    length() const noexcept { return m_contents.content_length(); }
     std::string               value() const noexcept { return std::string(c_str(), length()); }
+    bool                      empty() const noexcept { return length() == 0; }
 
     template <UniversalTag tag2, typename Identifier2>
     void assign(const StringImpl<tag2, Identifier2>& rhs) noexcept;
